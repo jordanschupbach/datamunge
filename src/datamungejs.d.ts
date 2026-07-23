@@ -238,13 +238,43 @@ export  class DataFrame {
 
   fill_null_string(column_name: string, value: string): void;
 
+  mutate_numeric(column_name: string, values: any, valid_mask: any): DataFrame;
+
+  mutate_numeric(column_name: string, values: any): DataFrame;
+
+  mutate_string(column_name: string, values: any, valid_mask: any): DataFrame;
+
+  mutate_string(column_name: string, values: any): DataFrame;
+
+  mutate_string_encoded(column_name: string, encoded_values: string, valid_mask: any): DataFrame;
+
+  mutate_string_encoded(column_name: string, encoded_values: string): DataFrame;
+
+  rename(old_name: string, new_name: string): DataFrame;
+
   select(selected_columns: any): DataFrame;
 
   select_encoded(encoded_columns: string): DataFrame;
 
+  relocate(columns: any, after: string): DataFrame;
+
+  relocate(columns: any): DataFrame;
+
+  relocate_encoded(encoded_columns: string, after: string): DataFrame;
+
+  relocate_encoded(encoded_columns: string): DataFrame;
+
   sort_by(column_name: string, ascending: boolean): DataFrame;
 
   sort_by(column_name: string): DataFrame;
+
+  arrange(columns: any, ascending: any): DataFrame;
+
+  arrange(columns: any): DataFrame;
+
+  arrange_encoded(encoded_columns: string, ascending: any): DataFrame;
+
+  arrange_encoded(encoded_columns: string): DataFrame;
 
   drop_duplicates(subset: any): DataFrame;
 
@@ -252,11 +282,65 @@ export  class DataFrame {
 
   drop_duplicates_encoded(encoded_subset: string): DataFrame;
 
+  distinct(subset: any): DataFrame;
+
+  distinct(): DataFrame;
+
+  distinct_encoded(encoded_subset: string): DataFrame;
+
+  pull_numeric(column_name: string): any;
+
+  pull_numeric_valid(column_name: string): any;
+
+  pull_string(column_name: string): any;
+
+  pull_string_valid(column_name: string): any;
+
+  n_distinct(column_name: string): any;
+
   group_by_sum(key_columns: any, value_columns: any): DataFrame;
 
   group_by_sum_encoded(encoded_key_columns: string, encoded_value_columns: string): DataFrame;
 
-  join(right: DataFrame, left_key: string, right_key: string, left_join: boolean): DataFrame;
+  count(key_columns: any, count_column_name: string): DataFrame;
+
+  count(key_columns: any): DataFrame;
+
+  count_encoded(encoded_key_columns: string, count_column_name: string): DataFrame;
+
+  count_encoded(encoded_key_columns: string): DataFrame;
+
+  summarise(key_columns: any, agg_columns: any, agg_funcs: any, result_names: any): DataFrame;
+
+  summarise_encoded(encoded_key_columns: string, encoded_agg_columns: string, encoded_agg_funcs: string, encoded_result_names: string): DataFrame;
+
+  pivot_longer(value_columns: any, names_to: string, values_to: string): DataFrame;
+
+  pivot_longer(value_columns: any, names_to: string): DataFrame;
+
+  pivot_longer(value_columns: any): DataFrame;
+
+  pivot_longer_encoded(encoded_value_columns: string, names_to: string, values_to: string): DataFrame;
+
+  pivot_longer_encoded(encoded_value_columns: string, names_to: string): DataFrame;
+
+  pivot_longer_encoded(encoded_value_columns: string): DataFrame;
+
+  pivot_wider(names_from: string, values_from: string, id_columns: any): DataFrame;
+
+  pivot_wider(names_from: string, values_from: string): DataFrame;
+
+  pivot_wider_encoded(names_from: string, values_from: string, encoded_id_columns: string): DataFrame;
+
+  bind_rows(other: DataFrame): DataFrame;
+
+  bind_cols(other: DataFrame): DataFrame;
+
+  join(right: DataFrame, left_key: string, right_key: string, join_type: string, left_suffix: string, right_suffix: string): DataFrame;
+
+  join(right: DataFrame, left_key: string, right_key: string, join_type: string, left_suffix: string): DataFrame;
+
+  join(right: DataFrame, left_key: string, right_key: string, join_type: string): DataFrame;
 
   join(right: DataFrame, left_key: string, right_key: string): DataFrame;
 
@@ -287,6 +371,41 @@ export  class DataFrame {
  static iris(): DataFrame;
 
  static penguins(): DataFrame;
+}
+
+export  class ShapeLayer {
+
+ static read(path: string): ShapeLayer;
+
+  size(): any;
+
+  shape_type(): string;
+
+  bounds(): any;
+
+  attributes(): DataFrame;
+
+  shape_kind(shape_index: any): string;
+
+  num_parts(shape_index: any): any;
+
+  part_x(shape_index: any, part_index: any): any;
+
+  part_y(shape_index: any, part_index: any): any;
+
+  point_x(shape_index: any): any;
+
+  point_y(shape_index: any): any;
+
+  plot(fill_color: any, border_color: any, width: any, height: any): any;
+
+  plot(fill_color: any, border_color: any, width: any): any;
+
+  plot(fill_color: any, border_color: any): any;
+
+  plot(fill_color: any): any;
+
+  plot(): any;
 }
 
 export  class GGPlot {
@@ -1218,6 +1337,108 @@ export  class KMeans {
   summary(): string;
 
   print_summary(): void;
+}
+
+export  class PCA {
+
+  constructor(data: DataFrame, feature_columns: any, center: boolean, scale: boolean);
+
+  constructor(data: DataFrame, feature_columns: any, center: boolean);
+
+  constructor(data: DataFrame, feature_columns: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, center: boolean, scale: boolean);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, center: boolean);
+
+  constructor(data: DataFrame, encoded_feature_columns: string);
+
+  feature_names(): any;
+
+  observations(): any;
+
+  num_components(): any;
+
+  kept_row_indices(): any;
+
+  explained_variance(): any;
+
+  explained_variance_ratio(): any;
+
+  cumulative_explained_variance_ratio(): any;
+
+  component_loadings(component_index: any): any;
+
+  component_scores(component_index: any): any;
+
+  scores_frame(): DataFrame;
+
+  transform(newdata: DataFrame): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  plot_scores(component_x: any, component_y: any): any;
+
+  plot_scores(component_x: any): any;
+
+  plot_scores(): any;
+
+  plot_scores_grouped(group_labels: any, component_x: any, component_y: any): any;
+
+  plot_scores_grouped(group_labels: any, component_x: any): any;
+
+  plot_scores_grouped(group_labels: any): any;
+
+  plot_scree(): any;
+}
+
+export  class MDS {
+
+  constructor(data: DataFrame, feature_columns: any, n_components: any, metric: string);
+
+  constructor(data: DataFrame, feature_columns: any, n_components: any);
+
+  constructor(data: DataFrame, feature_columns: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_components: any, metric: string);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_components: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string);
+
+  feature_names(): any;
+
+  observations(): any;
+
+  n_components(): any;
+
+  kept_row_indices(): any;
+
+  eigenvalues(): any;
+
+  goodness_of_fit(): number;
+
+  dimension(index: any): any;
+
+  embedding_frame(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  plot_embedding(dimension_x: any, dimension_y: any): any;
+
+  plot_embedding(dimension_x: any): any;
+
+  plot_embedding(): any;
+
+  plot_embedding_grouped(group_labels: any, dimension_x: any, dimension_y: any): any;
+
+  plot_embedding_grouped(group_labels: any, dimension_x: any): any;
+
+  plot_embedding_grouped(group_labels: any): any;
 }
 
 export  class AgglomerativeClustering {
@@ -2743,6 +2964,37 @@ export abstract class DifferentiableSeparableFunction extends DifferentiableFunc
   gradient(coordinates: any): any;
 }
 
+export abstract class ProximalFunction extends DifferentiableFunction {
+
+  proximal(point: any, step: number): any;
+}
+
+export abstract class HessianFunction extends DifferentiableFunction {
+
+  hessian(coordinates: any): any;
+}
+
+export abstract class EqualityConstrainedFunction extends DifferentiableFunction {
+
+  constraints(coordinates: any): any;
+
+  constraint_jacobian(coordinates: any): any;
+}
+
+export abstract class InequalityConstrainedFunction extends DifferentiableFunction {
+
+  inequalities(coordinates: any): any;
+
+  inequality_jacobian(coordinates: any): any;
+}
+
+export abstract class ResidualFunction {
+
+  residuals(coordinates: any): any;
+
+  jacobian(coordinates: any): any;
+}
+
 export  class GradientDescentOptions {
 
   step_size: number;
@@ -2762,7 +3014,7 @@ export  class GradientDescent {
 
   constructor();
 
-  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
 }
 
 export  class AdamOptions {
@@ -2788,7 +3040,127 @@ export  class Adam {
 
   constructor();
 
-  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class AdaGradOptions {
+
+  step_size: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class AdaGrad {
+
+  constructor(options: AdaGradOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class AdaDeltaOptions {
+
+  decay_rate: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class AdaDelta {
+
+  constructor(options: AdaDeltaOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class AMSGradOptions {
+
+  step_size: number;
+
+  beta1: number;
+
+  beta2: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class AMSGrad {
+
+  constructor(options: AMSGradOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class NadamOptions {
+
+  step_size: number;
+
+  beta1: number;
+
+  beta2: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class Nadam {
+
+  constructor(options: NadamOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class RMSPropOptions {
+
+  step_size: number;
+
+  decay_rate: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class RMSProp {
+
+  constructor(options: RMSPropOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
 }
 
 export  class LBFGSOptions {
@@ -2814,7 +3186,35 @@ export  class LBFGS {
 
   constructor();
 
-  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class NelderMeadOptions {
+
+  initial_simplex_scale: number;
+
+  reflection: number;
+
+  expansion: number;
+
+  contraction: number;
+
+  shrink: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class NelderMead {
+
+  constructor(options: NelderMeadOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
 }
 
 export  class SGDOptions {
@@ -2843,6 +3243,178 @@ export  class SGD {
   optimize(_function: DifferentiableSeparableFunction, coordinates: any): number;
 }
 
+export  class SVRGOptions {
+
+  step_size: number;
+
+  max_epochs: any;
+
+  inner_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class SVRG {
+
+  constructor(options: SVRGOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class SAGAOptions {
+
+  step_size: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class SAGA {
+
+  constructor(options: SAGAOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class CoordinateDescentOptions {
+
+  step_size: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  armijo_c1: number;
+
+  backtracking_factor: number;
+
+  max_line_search_trials: any;
+
+  constructor();
+}
+
+export  class CoordinateDescent {
+
+  constructor(options: CoordinateDescentOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class RandomizedBlockCoordinateDescentOptions {
+
+  block_size: any;
+
+  step_size: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  armijo_c1: number;
+
+  backtracking_factor: number;
+
+  max_line_search_trials: any;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class RandomizedBlockCoordinateDescent {
+
+  constructor(options: RandomizedBlockCoordinateDescentOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class NesterovAcceleratedGradientOptions {
+
+  step_size: number;
+
+  momentum: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class NesterovAcceleratedGradient {
+
+  constructor(options: NesterovAcceleratedGradientOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class ConjugateGradientOptions {
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  armijo_c1: number;
+
+  backtracking_factor: number;
+
+  max_line_search_trials: any;
+
+  constructor();
+}
+
+export  class ConjugateGradient {
+
+  constructor(options: ConjugateGradientOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class CMAESOptions {
+
+  population_size: any;
+
+  initial_step_size: number;
+
+  max_generations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class CMAES {
+
+  constructor(options: CMAESOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
 export  class SimulatedAnnealingOptions {
 
   initial_temperature: number;
@@ -2864,7 +3436,7 @@ export  class SimulatedAnnealing {
 
   constructor();
 
-  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any): number;
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
 }
 
 export  class PSOOptions {
@@ -2900,7 +3472,7 @@ export  class PSO {
 
   constructor();
 
-  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
 }
 
 export  class DEOptions {
@@ -2930,7 +3502,7 @@ export  class DifferentialEvolution {
 
   constructor();
 
-  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
 }
 
 export  class GAOptions {
@@ -2970,7 +3542,515 @@ export  class GeneticAlgorithm {
 
   constructor();
 
-  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class ACOROptions {
+
+  archive_size: any;
+
+  samples_per_iteration: any;
+
+  locality: number;
+
+  convergence_speed: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ACOR {
+
+  constructor(options: ACOROptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class ArtificialBeeColonyOptions {
+
+  population_size: any;
+
+  abandonment_limit: any;
+
+  max_generations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ArtificialBeeColony {
+
+  constructor(options: ArtificialBeeColonyOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class CrossEntropyMethodOptions {
+
+  population_size: any;
+
+  elite_ratio: number;
+
+  initial_std_dev: number;
+
+  smoothing: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class CrossEntropyMethod {
+
+  constructor(options: CrossEntropyMethodOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class CuckooSearchOptions {
+
+  population_size: any;
+
+  discovery_rate: number;
+
+  levy_beta: number;
+
+  step_scale: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class CuckooSearch {
+
+  constructor(options: CuckooSearchOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class EstimationOfDistributionOptions {
+
+  population_size: any;
+
+  selection_ratio: number;
+
+  initial_std_dev: number;
+
+  covariance_regularization: number;
+
+  max_generations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class EstimationOfDistribution {
+
+  constructor(options: EstimationOfDistributionOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class EvolutionStrategyOptions {
+
+  mu: any;
+
+  offspring_size: any;
+
+  strategy: string;
+
+  initial_step_size: number;
+
+  max_generations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class EvolutionStrategy {
+
+  constructor(options: EvolutionStrategyOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class FireflyAlgorithmOptions {
+
+  population_size: any;
+
+  attractiveness_at_zero: number;
+
+  light_absorption: number;
+
+  randomization_step: number;
+
+  randomization_decay: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class FireflyAlgorithm {
+
+  constructor(options: FireflyAlgorithmOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class GreyWolfOptimizerOptions {
+
+  population_size: any;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class GreyWolfOptimizer {
+
+  constructor(options: GreyWolfOptimizerOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class HarmonySearchOptions {
+
+  population_size: any;
+
+  memory_consideration_rate: number;
+
+  pitch_adjustment_rate: number;
+
+  bandwidth_fraction: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class HarmonySearch {
+
+  constructor(options: HarmonySearchOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class ParallelTemperingOptions {
+
+  num_replicas: any;
+
+  initial_temperature: number;
+
+  final_temperature: number;
+
+  step_std_dev: number;
+
+  swap_interval: any;
+
+  max_sweeps: any;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ParallelTempering {
+
+  constructor(options: ParallelTemperingOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class WhaleOptimizationOptions {
+
+  population_size: any;
+
+  spiral_constant: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class WhaleOptimization {
+
+  constructor(options: WhaleOptimizationOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class FISTAOptions {
+
+  step_size: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class FISTA {
+
+  constructor(options: FISTAOptions);
+
+  constructor();
+
+  optimize(_function: ProximalFunction, coordinates: any): number;
+}
+
+export  class ProximalGradientOptions {
+
+  step_size: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class ProximalGradient {
+
+  constructor(options: ProximalGradientOptions);
+
+  constructor();
+
+  optimize(_function: ProximalFunction, coordinates: any): number;
+}
+
+export  class LevenbergMarquardtOptions {
+
+  initial_damping: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class LevenbergMarquardt {
+
+  constructor(options: LevenbergMarquardtOptions);
+
+  constructor();
+
+  optimize(_function: ResidualFunction, coordinates: any): number;
+}
+
+export  class NewtonOptions {
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  damping: number;
+
+  constructor();
+}
+
+export  class Newton {
+
+  constructor(options: NewtonOptions);
+
+  constructor();
+
+  optimize(_function: HessianFunction, coordinates: any): number;
+}
+
+export  class TrustRegionNewtonOptions {
+
+  initial_radius: number;
+
+  max_radius: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class TrustRegionNewton {
+
+  constructor(options: TrustRegionNewtonOptions);
+
+  constructor();
+
+  optimize(_function: HessianFunction, coordinates: any): number;
+}
+
+export  class AugmentedLagrangianOptions {
+
+  step_size: number;
+
+  initial_penalty: number;
+
+  max_outer_iterations: any;
+
+  inner_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class AugmentedLagrangian {
+
+  constructor(options: AugmentedLagrangianOptions);
+
+  constructor();
+
+  optimize(_function: EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class SQPOptions {
+
+  step_size: number;
+
+  regularization: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class SQP {
+
+  constructor(options: SQPOptions);
+
+  constructor();
+
+  optimize(_function: EqualityConstrainedFunction, coordinates: any): number;
+}
+
+export  class InteriorPointOptions {
+
+  step_size: number;
+
+  initial_barrier: number;
+
+  barrier_decay: number;
+
+  max_outer_iterations: any;
+
+  inner_iterations: any;
+
+  constructor();
+}
+
+export  class InteriorPoint {
+
+  constructor(options: InteriorPointOptions);
+
+  constructor();
+
+  optimize(_function: InequalityConstrainedFunction, coordinates: any): number;
+}
+
+export abstract class BayesianSurrogate {
+
+  fit(points: any, values: any): void;
+
+  acquisition(point: any, incumbent: number): number;
+}
+
+export  class BayesianOptimizationOptions {
+
+  initial_samples: any;
+
+  max_iterations: any;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class BayesianOptimization {
+
+  constructor(options: BayesianOptimizationOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any, lower: any, upper: any, surrogate: BayesianSurrogate): number;
+}
+
+export  class RBFGaussianProcessSurrogate extends BayesianSurrogate {
+
+  constructor(length_scale: number, noise: number);
+
+  constructor(length_scale: number);
+
+  constructor();
+
+  fit(points: any, values: any): void;
+
+  acquisition(point: any, incumbent: number): number;
 }
 
 export  class MAPOptions {
@@ -2990,7 +4070,7 @@ export  class MAP {
 
   constructor();
 
-  optimize(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+  optimize(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, coordinates: any): number;
 }
 
 export  class HMCOptions {
@@ -3027,7 +4107,7 @@ export  class HMC {
 
   constructor();
 
-  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, initial_params: any): HMCResult;
+  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, initial_params: any): HMCResult;
 }
 
 export  class NUTSOptions {
@@ -3068,7 +4148,7 @@ export  class NUTS {
 
   constructor();
 
-  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, initial_params: any): NUTSResult;
+  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction | HessianFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, initial_params: any): NUTSResult;
 }
 
 export  class RWMOptions {
@@ -3103,7 +4183,7 @@ export  class RandomWalkMetropolis {
 
   constructor();
 
-  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, initial_params: any): RWMResult;
+  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, initial_params: any): RWMResult;
 }
 
 export  class GibbsOptions {
@@ -3138,7 +4218,7 @@ export  class GibbsSampler {
 
   constructor();
 
-  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, initial_params: any): GibbsResult;
+  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, initial_params: any): GibbsResult;
 }
 
 export  class ImportanceSamplingOptions {
@@ -3169,7 +4249,69 @@ export  class ImportanceSampling {
 
   constructor();
 
-  sample(log_target: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, proposal_mean: any, proposal_covariance: any): ImportanceSamplingResult;
+  sample(log_target: ArbitraryFunction | DifferentiableSeparableFunction | HessianFunction | DifferentiableFunction | SeparableFunction | ProximalFunction | InequalityConstrainedFunction | EqualityConstrainedFunction, proposal_mean: any, proposal_covariance: any): ImportanceSamplingResult;
+}
+
+export abstract class RHS {
+
+  evaluate(t: number, y: any): any;
+}
+
+export const StepMethod_Euler: StepMethod;
+
+export const StepMethod_Midpoint: StepMethod;
+
+export const StepMethod_RK4: StepMethod;
+
+export const StepMethod_RK45: StepMethod;
+
+export const StepMethod_AdamsBashforth: StepMethod;
+
+export const StepMethod_AdamsMoulton: StepMethod;
+
+export type StepMethod = number & { readonly [_SWIG_type_tag]: 'StepMethod'; };
+
+export  class ODEOptions {
+
+  method: any;
+
+  multistep_order: any;
+
+  step_size: number;
+
+  abs_tol: number;
+
+  rel_tol: number;
+
+  max_step: number;
+
+  constructor();
+}
+
+export  class ODESolution {
+
+  steps_taken: any;
+
+  function_evaluations: any;
+
+  size(): any;
+
+  time_at(index: any): number;
+
+  state_at(index: any): any;
+
+  constructor();
+}
+
+export  class ODESolver {
+
+  constructor(options: ODEOptions);
+
+  constructor();
+
+  solve(rhs: RHS, y0: any, t_start: number, t_end: number): ODESolution;
+
+  solve_builtin(system: string, params: any, y0: any, t_start: number, t_end: number): ODESolution;
 }
 
 

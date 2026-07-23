@@ -14,6 +14,7 @@ type c_enum_type = [
 | `SeasonalType
 | `Alternative
 | `PAdjustMethod
+| `StepMethod
 ]
 type c_enum_value = [ 
   `Int of int
@@ -37,6 +38,12 @@ type c_enum_value = [
 | `Hommel
 | `BH
 | `BY
+| `Euler
+| `Midpoint
+| `RK4
+| `RK45
+| `AdamsBashforth
+| `AdamsMoulton
 ]
 
 type c_obj = c_enum_value c_obj_t
@@ -131,6 +138,12 @@ val _DataFrame_penguins : c_obj -> c_obj
 val _delete_DataFrame : c_obj -> c_obj
 
 val create_datamunge_xxDataFrame_from_ptr : c_obj -> c_obj
+
+
+val _ShapeLayer_read : c_obj -> c_obj
+val _delete_ShapeLayer : c_obj -> c_obj
+
+val create_datamunge_xxShapeLayer_from_ptr : c_obj -> c_obj
 
 
 val new_GGPlot : c_obj -> c_obj
@@ -250,6 +263,20 @@ val _new_KMeans : c_obj -> c_obj
 val _delete_KMeans : c_obj -> c_obj
 
 val create_datamunge_xxKMeans_from_ptr : c_obj -> c_obj
+
+
+val new_PCA : c_obj -> c_obj
+val _new_PCA : c_obj -> c_obj
+val _delete_PCA : c_obj -> c_obj
+
+val create_datamunge_xxPCA_from_ptr : c_obj -> c_obj
+
+
+val new_MDS : c_obj -> c_obj
+val _new_MDS : c_obj -> c_obj
+val _delete_MDS : c_obj -> c_obj
+
+val create_datamunge_xxMDS_from_ptr : c_obj -> c_obj
 
 
 val new_AgglomerativeClustering : c_obj -> c_obj
@@ -532,6 +559,41 @@ val _delete_DifferentiableSeparableFunction : c_obj -> c_obj
 val create_datamunge_xxoptim_xxDifferentiableSeparableFunction_from_ptr : c_obj -> c_obj
 
 
+val new_ProximalFunction : c_obj -> c_obj
+val _new_ProximalFunction : c_obj -> c_obj
+val _delete_ProximalFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxProximalFunction_from_ptr : c_obj -> c_obj
+
+
+val new_HessianFunction : c_obj -> c_obj
+val _new_HessianFunction : c_obj -> c_obj
+val _delete_HessianFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxHessianFunction_from_ptr : c_obj -> c_obj
+
+
+val new_EqualityConstrainedFunction : c_obj -> c_obj
+val _new_EqualityConstrainedFunction : c_obj -> c_obj
+val _delete_EqualityConstrainedFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxEqualityConstrainedFunction_from_ptr : c_obj -> c_obj
+
+
+val new_InequalityConstrainedFunction : c_obj -> c_obj
+val _new_InequalityConstrainedFunction : c_obj -> c_obj
+val _delete_InequalityConstrainedFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxInequalityConstrainedFunction_from_ptr : c_obj -> c_obj
+
+
+val _delete_ResidualFunction : c_obj -> c_obj
+val new_ResidualFunction : c_obj -> c_obj
+val _new_ResidualFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxResidualFunction_from_ptr : c_obj -> c_obj
+
+
 val new_GradientDescentOptions : c_obj -> c_obj
 val _new_GradientDescentOptions : c_obj -> c_obj
 val _delete_GradientDescentOptions : c_obj -> c_obj
@@ -560,6 +622,76 @@ val _delete_Adam : c_obj -> c_obj
 val create_datamunge_xxoptim_xxAdam_from_ptr : c_obj -> c_obj
 
 
+val new_AdaGradOptions : c_obj -> c_obj
+val _new_AdaGradOptions : c_obj -> c_obj
+val _delete_AdaGradOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdaGradOptions_from_ptr : c_obj -> c_obj
+
+
+val new_AdaGrad : c_obj -> c_obj
+val _new_AdaGrad : c_obj -> c_obj
+val _delete_AdaGrad : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdaGrad_from_ptr : c_obj -> c_obj
+
+
+val new_AdaDeltaOptions : c_obj -> c_obj
+val _new_AdaDeltaOptions : c_obj -> c_obj
+val _delete_AdaDeltaOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdaDeltaOptions_from_ptr : c_obj -> c_obj
+
+
+val new_AdaDelta : c_obj -> c_obj
+val _new_AdaDelta : c_obj -> c_obj
+val _delete_AdaDelta : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdaDelta_from_ptr : c_obj -> c_obj
+
+
+val new_AMSGradOptions : c_obj -> c_obj
+val _new_AMSGradOptions : c_obj -> c_obj
+val _delete_AMSGradOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAMSGradOptions_from_ptr : c_obj -> c_obj
+
+
+val new_AMSGrad : c_obj -> c_obj
+val _new_AMSGrad : c_obj -> c_obj
+val _delete_AMSGrad : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAMSGrad_from_ptr : c_obj -> c_obj
+
+
+val new_NadamOptions : c_obj -> c_obj
+val _new_NadamOptions : c_obj -> c_obj
+val _delete_NadamOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNadamOptions_from_ptr : c_obj -> c_obj
+
+
+val new_Nadam : c_obj -> c_obj
+val _new_Nadam : c_obj -> c_obj
+val _delete_Nadam : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNadam_from_ptr : c_obj -> c_obj
+
+
+val new_RMSPropOptions : c_obj -> c_obj
+val _new_RMSPropOptions : c_obj -> c_obj
+val _delete_RMSPropOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxRMSPropOptions_from_ptr : c_obj -> c_obj
+
+
+val new_RMSProp : c_obj -> c_obj
+val _new_RMSProp : c_obj -> c_obj
+val _delete_RMSProp : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxRMSProp_from_ptr : c_obj -> c_obj
+
+
 val new_LBFGSOptions : c_obj -> c_obj
 val _new_LBFGSOptions : c_obj -> c_obj
 val _delete_LBFGSOptions : c_obj -> c_obj
@@ -574,6 +706,20 @@ val _delete_LBFGS : c_obj -> c_obj
 val create_datamunge_xxoptim_xxLBFGS_from_ptr : c_obj -> c_obj
 
 
+val new_NelderMeadOptions : c_obj -> c_obj
+val _new_NelderMeadOptions : c_obj -> c_obj
+val _delete_NelderMeadOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNelderMeadOptions_from_ptr : c_obj -> c_obj
+
+
+val new_NelderMead : c_obj -> c_obj
+val _new_NelderMead : c_obj -> c_obj
+val _delete_NelderMead : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNelderMead_from_ptr : c_obj -> c_obj
+
+
 val new_SGDOptions : c_obj -> c_obj
 val _new_SGDOptions : c_obj -> c_obj
 val _delete_SGDOptions : c_obj -> c_obj
@@ -586,6 +732,104 @@ val _new_SGD : c_obj -> c_obj
 val _delete_SGD : c_obj -> c_obj
 
 val create_datamunge_xxoptim_xxSGD_from_ptr : c_obj -> c_obj
+
+
+val new_SVRGOptions : c_obj -> c_obj
+val _new_SVRGOptions : c_obj -> c_obj
+val _delete_SVRGOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSVRGOptions_from_ptr : c_obj -> c_obj
+
+
+val new_SVRG : c_obj -> c_obj
+val _new_SVRG : c_obj -> c_obj
+val _delete_SVRG : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSVRG_from_ptr : c_obj -> c_obj
+
+
+val new_SAGAOptions : c_obj -> c_obj
+val _new_SAGAOptions : c_obj -> c_obj
+val _delete_SAGAOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSAGAOptions_from_ptr : c_obj -> c_obj
+
+
+val new_SAGA : c_obj -> c_obj
+val _new_SAGA : c_obj -> c_obj
+val _delete_SAGA : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSAGA_from_ptr : c_obj -> c_obj
+
+
+val new_CoordinateDescentOptions : c_obj -> c_obj
+val _new_CoordinateDescentOptions : c_obj -> c_obj
+val _delete_CoordinateDescentOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCoordinateDescentOptions_from_ptr : c_obj -> c_obj
+
+
+val new_CoordinateDescent : c_obj -> c_obj
+val _new_CoordinateDescent : c_obj -> c_obj
+val _delete_CoordinateDescent : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCoordinateDescent_from_ptr : c_obj -> c_obj
+
+
+val new_RandomizedBlockCoordinateDescentOptions : c_obj -> c_obj
+val _new_RandomizedBlockCoordinateDescentOptions : c_obj -> c_obj
+val _delete_RandomizedBlockCoordinateDescentOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescentOptions_from_ptr : c_obj -> c_obj
+
+
+val new_RandomizedBlockCoordinateDescent : c_obj -> c_obj
+val _new_RandomizedBlockCoordinateDescent : c_obj -> c_obj
+val _delete_RandomizedBlockCoordinateDescent : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescent_from_ptr : c_obj -> c_obj
+
+
+val new_NesterovAcceleratedGradientOptions : c_obj -> c_obj
+val _new_NesterovAcceleratedGradientOptions : c_obj -> c_obj
+val _delete_NesterovAcceleratedGradientOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNesterovAcceleratedGradientOptions_from_ptr : c_obj -> c_obj
+
+
+val new_NesterovAcceleratedGradient : c_obj -> c_obj
+val _new_NesterovAcceleratedGradient : c_obj -> c_obj
+val _delete_NesterovAcceleratedGradient : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNesterovAcceleratedGradient_from_ptr : c_obj -> c_obj
+
+
+val new_ConjugateGradientOptions : c_obj -> c_obj
+val _new_ConjugateGradientOptions : c_obj -> c_obj
+val _delete_ConjugateGradientOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxConjugateGradientOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ConjugateGradient : c_obj -> c_obj
+val _new_ConjugateGradient : c_obj -> c_obj
+val _delete_ConjugateGradient : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxConjugateGradient_from_ptr : c_obj -> c_obj
+
+
+val new_CMAESOptions : c_obj -> c_obj
+val _new_CMAESOptions : c_obj -> c_obj
+val _delete_CMAESOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCMAESOptions_from_ptr : c_obj -> c_obj
+
+
+val new_CMAES : c_obj -> c_obj
+val _new_CMAES : c_obj -> c_obj
+val _delete_CMAES : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCMAES_from_ptr : c_obj -> c_obj
 
 
 val new_SimulatedAnnealingOptions : c_obj -> c_obj
@@ -642,6 +886,300 @@ val _new_GeneticAlgorithm : c_obj -> c_obj
 val _delete_GeneticAlgorithm : c_obj -> c_obj
 
 val create_datamunge_xxoptim_xxGeneticAlgorithm_from_ptr : c_obj -> c_obj
+
+
+val new_ACOROptions : c_obj -> c_obj
+val _new_ACOROptions : c_obj -> c_obj
+val _delete_ACOROptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxACOROptions_from_ptr : c_obj -> c_obj
+
+
+val new_ACOR : c_obj -> c_obj
+val _new_ACOR : c_obj -> c_obj
+val _delete_ACOR : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxACOR_from_ptr : c_obj -> c_obj
+
+
+val new_ArtificialBeeColonyOptions : c_obj -> c_obj
+val _new_ArtificialBeeColonyOptions : c_obj -> c_obj
+val _delete_ArtificialBeeColonyOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxArtificialBeeColonyOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ArtificialBeeColony : c_obj -> c_obj
+val _new_ArtificialBeeColony : c_obj -> c_obj
+val _delete_ArtificialBeeColony : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxArtificialBeeColony_from_ptr : c_obj -> c_obj
+
+
+val new_CrossEntropyMethodOptions : c_obj -> c_obj
+val _new_CrossEntropyMethodOptions : c_obj -> c_obj
+val _delete_CrossEntropyMethodOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCrossEntropyMethodOptions_from_ptr : c_obj -> c_obj
+
+
+val new_CrossEntropyMethod : c_obj -> c_obj
+val _new_CrossEntropyMethod : c_obj -> c_obj
+val _delete_CrossEntropyMethod : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCrossEntropyMethod_from_ptr : c_obj -> c_obj
+
+
+val new_CuckooSearchOptions : c_obj -> c_obj
+val _new_CuckooSearchOptions : c_obj -> c_obj
+val _delete_CuckooSearchOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCuckooSearchOptions_from_ptr : c_obj -> c_obj
+
+
+val new_CuckooSearch : c_obj -> c_obj
+val _new_CuckooSearch : c_obj -> c_obj
+val _delete_CuckooSearch : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxCuckooSearch_from_ptr : c_obj -> c_obj
+
+
+val new_EstimationOfDistributionOptions : c_obj -> c_obj
+val _new_EstimationOfDistributionOptions : c_obj -> c_obj
+val _delete_EstimationOfDistributionOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxEstimationOfDistributionOptions_from_ptr : c_obj -> c_obj
+
+
+val new_EstimationOfDistribution : c_obj -> c_obj
+val _new_EstimationOfDistribution : c_obj -> c_obj
+val _delete_EstimationOfDistribution : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxEstimationOfDistribution_from_ptr : c_obj -> c_obj
+
+
+val new_EvolutionStrategyOptions : c_obj -> c_obj
+val _new_EvolutionStrategyOptions : c_obj -> c_obj
+val _delete_EvolutionStrategyOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxEvolutionStrategyOptions_from_ptr : c_obj -> c_obj
+
+
+val new_EvolutionStrategy : c_obj -> c_obj
+val _new_EvolutionStrategy : c_obj -> c_obj
+val _delete_EvolutionStrategy : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxEvolutionStrategy_from_ptr : c_obj -> c_obj
+
+
+val new_FireflyAlgorithmOptions : c_obj -> c_obj
+val _new_FireflyAlgorithmOptions : c_obj -> c_obj
+val _delete_FireflyAlgorithmOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxFireflyAlgorithmOptions_from_ptr : c_obj -> c_obj
+
+
+val new_FireflyAlgorithm : c_obj -> c_obj
+val _new_FireflyAlgorithm : c_obj -> c_obj
+val _delete_FireflyAlgorithm : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxFireflyAlgorithm_from_ptr : c_obj -> c_obj
+
+
+val new_GreyWolfOptimizerOptions : c_obj -> c_obj
+val _new_GreyWolfOptimizerOptions : c_obj -> c_obj
+val _delete_GreyWolfOptimizerOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGreyWolfOptimizerOptions_from_ptr : c_obj -> c_obj
+
+
+val new_GreyWolfOptimizer : c_obj -> c_obj
+val _new_GreyWolfOptimizer : c_obj -> c_obj
+val _delete_GreyWolfOptimizer : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGreyWolfOptimizer_from_ptr : c_obj -> c_obj
+
+
+val new_HarmonySearchOptions : c_obj -> c_obj
+val _new_HarmonySearchOptions : c_obj -> c_obj
+val _delete_HarmonySearchOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxHarmonySearchOptions_from_ptr : c_obj -> c_obj
+
+
+val new_HarmonySearch : c_obj -> c_obj
+val _new_HarmonySearch : c_obj -> c_obj
+val _delete_HarmonySearch : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxHarmonySearch_from_ptr : c_obj -> c_obj
+
+
+val new_ParallelTemperingOptions : c_obj -> c_obj
+val _new_ParallelTemperingOptions : c_obj -> c_obj
+val _delete_ParallelTemperingOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxParallelTemperingOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ParallelTempering : c_obj -> c_obj
+val _new_ParallelTempering : c_obj -> c_obj
+val _delete_ParallelTempering : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxParallelTempering_from_ptr : c_obj -> c_obj
+
+
+val new_WhaleOptimizationOptions : c_obj -> c_obj
+val _new_WhaleOptimizationOptions : c_obj -> c_obj
+val _delete_WhaleOptimizationOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxWhaleOptimizationOptions_from_ptr : c_obj -> c_obj
+
+
+val new_WhaleOptimization : c_obj -> c_obj
+val _new_WhaleOptimization : c_obj -> c_obj
+val _delete_WhaleOptimization : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxWhaleOptimization_from_ptr : c_obj -> c_obj
+
+
+val new_FISTAOptions : c_obj -> c_obj
+val _new_FISTAOptions : c_obj -> c_obj
+val _delete_FISTAOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxFISTAOptions_from_ptr : c_obj -> c_obj
+
+
+val new_FISTA : c_obj -> c_obj
+val _new_FISTA : c_obj -> c_obj
+val _delete_FISTA : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxFISTA_from_ptr : c_obj -> c_obj
+
+
+val new_ProximalGradientOptions : c_obj -> c_obj
+val _new_ProximalGradientOptions : c_obj -> c_obj
+val _delete_ProximalGradientOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxProximalGradientOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ProximalGradient : c_obj -> c_obj
+val _new_ProximalGradient : c_obj -> c_obj
+val _delete_ProximalGradient : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxProximalGradient_from_ptr : c_obj -> c_obj
+
+
+val new_LevenbergMarquardtOptions : c_obj -> c_obj
+val _new_LevenbergMarquardtOptions : c_obj -> c_obj
+val _delete_LevenbergMarquardtOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxLevenbergMarquardtOptions_from_ptr : c_obj -> c_obj
+
+
+val new_LevenbergMarquardt : c_obj -> c_obj
+val _new_LevenbergMarquardt : c_obj -> c_obj
+val _delete_LevenbergMarquardt : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxLevenbergMarquardt_from_ptr : c_obj -> c_obj
+
+
+val new_NewtonOptions : c_obj -> c_obj
+val _new_NewtonOptions : c_obj -> c_obj
+val _delete_NewtonOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNewtonOptions_from_ptr : c_obj -> c_obj
+
+
+val new_Newton : c_obj -> c_obj
+val _new_Newton : c_obj -> c_obj
+val _delete_Newton : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxNewton_from_ptr : c_obj -> c_obj
+
+
+val new_TrustRegionNewtonOptions : c_obj -> c_obj
+val _new_TrustRegionNewtonOptions : c_obj -> c_obj
+val _delete_TrustRegionNewtonOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxTrustRegionNewtonOptions_from_ptr : c_obj -> c_obj
+
+
+val new_TrustRegionNewton : c_obj -> c_obj
+val _new_TrustRegionNewton : c_obj -> c_obj
+val _delete_TrustRegionNewton : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxTrustRegionNewton_from_ptr : c_obj -> c_obj
+
+
+val new_AugmentedLagrangianOptions : c_obj -> c_obj
+val _new_AugmentedLagrangianOptions : c_obj -> c_obj
+val _delete_AugmentedLagrangianOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAugmentedLagrangianOptions_from_ptr : c_obj -> c_obj
+
+
+val new_AugmentedLagrangian : c_obj -> c_obj
+val _new_AugmentedLagrangian : c_obj -> c_obj
+val _delete_AugmentedLagrangian : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAugmentedLagrangian_from_ptr : c_obj -> c_obj
+
+
+val new_SQPOptions : c_obj -> c_obj
+val _new_SQPOptions : c_obj -> c_obj
+val _delete_SQPOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSQPOptions_from_ptr : c_obj -> c_obj
+
+
+val new_SQP : c_obj -> c_obj
+val _new_SQP : c_obj -> c_obj
+val _delete_SQP : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSQP_from_ptr : c_obj -> c_obj
+
+
+val new_InteriorPointOptions : c_obj -> c_obj
+val _new_InteriorPointOptions : c_obj -> c_obj
+val _delete_InteriorPointOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxInteriorPointOptions_from_ptr : c_obj -> c_obj
+
+
+val new_InteriorPoint : c_obj -> c_obj
+val _new_InteriorPoint : c_obj -> c_obj
+val _delete_InteriorPoint : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxInteriorPoint_from_ptr : c_obj -> c_obj
+
+
+val _delete_BayesianSurrogate : c_obj -> c_obj
+val new_BayesianSurrogate : c_obj -> c_obj
+val _new_BayesianSurrogate : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxBayesianSurrogate_from_ptr : c_obj -> c_obj
+
+
+val new_BayesianOptimizationOptions : c_obj -> c_obj
+val _new_BayesianOptimizationOptions : c_obj -> c_obj
+val _delete_BayesianOptimizationOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxBayesianOptimizationOptions_from_ptr : c_obj -> c_obj
+
+
+val new_BayesianOptimization : c_obj -> c_obj
+val _new_BayesianOptimization : c_obj -> c_obj
+val _delete_BayesianOptimization : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxBayesianOptimization_from_ptr : c_obj -> c_obj
+
+
+val new_RBFGaussianProcessSurrogate : c_obj -> c_obj
+val _new_RBFGaussianProcessSurrogate : c_obj -> c_obj
+val _delete_RBFGaussianProcessSurrogate : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxRBFGaussianProcessSurrogate_from_ptr : c_obj -> c_obj
 
 
 val new_MAPOptions : c_obj -> c_obj
@@ -761,6 +1299,38 @@ val _new_ImportanceSampling : c_obj -> c_obj
 val _delete_ImportanceSampling : c_obj -> c_obj
 
 val create_datamunge_xxbayes_xxImportanceSampling_from_ptr : c_obj -> c_obj
+
+
+val _delete_RHS : c_obj -> c_obj
+
+val create_datamunge_xxode_xxRHS_from_ptr : c_obj -> c_obj
+
+
+val _Euler : c_obj -> Swig.c_obj
+val _Midpoint : c_obj -> Swig.c_obj
+val _RK4 : c_obj -> Swig.c_obj
+val _RK45 : c_obj -> Swig.c_obj
+val _AdamsBashforth : c_obj -> Swig.c_obj
+val _AdamsMoulton : c_obj -> Swig.c_obj
+val new_ODEOptions : c_obj -> c_obj
+val _new_ODEOptions : c_obj -> c_obj
+val _delete_ODEOptions : c_obj -> c_obj
+
+val create_datamunge_xxode_xxODEOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ODESolution : c_obj -> c_obj
+val _new_ODESolution : c_obj -> c_obj
+val _delete_ODESolution : c_obj -> c_obj
+
+val create_datamunge_xxode_xxODESolution_from_ptr : c_obj -> c_obj
+
+
+val new_ODESolver : c_obj -> c_obj
+val _new_ODESolver : c_obj -> c_obj
+val _delete_ODESolver : c_obj -> c_obj
+
+val create_datamunge_xxode_xxODESolver_from_ptr : c_obj -> c_obj
 
 
 val enum_to_int : c_enum_type -> c_obj -> Swig.c_obj

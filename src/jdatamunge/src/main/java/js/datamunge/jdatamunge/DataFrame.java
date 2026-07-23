@@ -113,6 +113,52 @@ public class DataFrame {
     datamungeJNI.DataFrame_fill_null_string(swigCPtr, this, column_name, value);
   }
 
+  /**
+   *  dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if<br>
+   *         present. Always returns a new DataFrame, so it composes into a pipe.
+   */
+  public DataFrame mutate_numeric(String column_name, DVector values, IVector valid_mask) {
+    long cPtr = datamungeJNI.DataFrame_mutate_numeric__SWIG_0(swigCPtr, this, column_name, DVector.getCPtr(values), values, IVector.getCPtr(valid_mask), valid_mask);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if<br>
+   *         present. Always returns a new DataFrame, so it composes into a pipe.
+   */
+  public DataFrame mutate_numeric(String column_name, DVector values) {
+    long cPtr = datamungeJNI.DataFrame_mutate_numeric__SWIG_1(swigCPtr, this, column_name, DVector.getCPtr(values), values);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame mutate_string(String column_name, SVector values, IVector valid_mask) {
+    long cPtr = datamungeJNI.DataFrame_mutate_string__SWIG_0(swigCPtr, this, column_name, SVector.getCPtr(values), values, IVector.getCPtr(valid_mask), valid_mask);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame mutate_string(String column_name, SVector values) {
+    long cPtr = datamungeJNI.DataFrame_mutate_string__SWIG_1(swigCPtr, this, column_name, SVector.getCPtr(values), values);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame mutate_string_encoded(String column_name, String encoded_values, IVector valid_mask) {
+    long cPtr = datamungeJNI.DataFrame_mutate_string_encoded__SWIG_0(swigCPtr, this, column_name, encoded_values, IVector.getCPtr(valid_mask), valid_mask);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame mutate_string_encoded(String column_name, String encoded_values) {
+    long cPtr = datamungeJNI.DataFrame_mutate_string_encoded__SWIG_1(swigCPtr, this, column_name, encoded_values);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Non-mutating, chainable single-pair rename.
+   */
+  public DataFrame rename(String old_name, String new_name) {
+    long cPtr = datamungeJNI.DataFrame_rename(swigCPtr, this, old_name, new_name);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
   public DataFrame select(SVector selected_columns) {
     long cPtr = datamungeJNI.DataFrame_select(swigCPtr, this, SVector.getCPtr(selected_columns), selected_columns);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
@@ -123,6 +169,34 @@ public class DataFrame {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
+  /**
+   *  dplyr::relocate()-style column reorder: moves `columns` to the front (default) or<br>
+   *         immediately after the column named `after`.
+   */
+  public DataFrame relocate(SVector columns, String after) {
+    long cPtr = datamungeJNI.DataFrame_relocate__SWIG_0(swigCPtr, this, SVector.getCPtr(columns), columns, after);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::relocate()-style column reorder: moves `columns` to the front (default) or<br>
+   *         immediately after the column named `after`.
+   */
+  public DataFrame relocate(SVector columns) {
+    long cPtr = datamungeJNI.DataFrame_relocate__SWIG_1(swigCPtr, this, SVector.getCPtr(columns), columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame relocate_encoded(String encoded_columns, String after) {
+    long cPtr = datamungeJNI.DataFrame_relocate_encoded__SWIG_0(swigCPtr, this, encoded_columns, after);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame relocate_encoded(String encoded_columns) {
+    long cPtr = datamungeJNI.DataFrame_relocate_encoded__SWIG_1(swigCPtr, this, encoded_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
   public DataFrame sort_by(String column_name, boolean ascending) {
     long cPtr = datamungeJNI.DataFrame_sort_by__SWIG_0(swigCPtr, this, column_name, ascending);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
@@ -130,6 +204,34 @@ public class DataFrame {
 
   public DataFrame sort_by(String column_name) {
     long cPtr = datamungeJNI.DataFrame_sort_by__SWIG_1(swigCPtr, this, column_name);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when<br>
+   *         provided it must have the same length as `columns`.
+   */
+  public DataFrame arrange(SVector columns, IVector ascending) {
+    long cPtr = datamungeJNI.DataFrame_arrange__SWIG_0(swigCPtr, this, SVector.getCPtr(columns), columns, IVector.getCPtr(ascending), ascending);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when<br>
+   *         provided it must have the same length as `columns`.
+   */
+  public DataFrame arrange(SVector columns) {
+    long cPtr = datamungeJNI.DataFrame_arrange__SWIG_1(swigCPtr, this, SVector.getCPtr(columns), columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame arrange_encoded(String encoded_columns, IVector ascending) {
+    long cPtr = datamungeJNI.DataFrame_arrange_encoded__SWIG_0(swigCPtr, this, encoded_columns, IVector.getCPtr(ascending), ascending);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame arrange_encoded(String encoded_columns) {
+    long cPtr = datamungeJNI.DataFrame_arrange_encoded__SWIG_1(swigCPtr, this, encoded_columns);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
@@ -148,6 +250,56 @@ public class DataFrame {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
+  /**
+   *  dplyr::distinct() alias for drop_duplicates().
+   */
+  public DataFrame distinct(SVector subset) {
+    long cPtr = datamungeJNI.DataFrame_distinct__SWIG_0(swigCPtr, this, SVector.getCPtr(subset), subset);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::distinct() alias for drop_duplicates().
+   */
+  public DataFrame distinct() {
+    long cPtr = datamungeJNI.DataFrame_distinct__SWIG_1(swigCPtr, this);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame distinct_encoded(String encoded_subset) {
+    long cPtr = datamungeJNI.DataFrame_distinct_encoded(swigCPtr, this, encoded_subset);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)<br>
+   *         in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =<br>
+   *         null, same convention as add_numeric_column's valid_mask) if nulls matter.
+   */
+  public DVector pull_numeric(String column_name) {
+    return new DVector(datamungeJNI.DataFrame_pull_numeric(swigCPtr, this, column_name), true);
+  }
+
+  public IVector pull_numeric_valid(String column_name) {
+    return new IVector(datamungeJNI.DataFrame_pull_numeric_valid(swigCPtr, this, column_name), true);
+  }
+
+  public SVector pull_string(String column_name) {
+    return new SVector(datamungeJNI.DataFrame_pull_string(swigCPtr, this, column_name), true);
+  }
+
+  public IVector pull_string_valid(String column_name) {
+    return new IVector(datamungeJNI.DataFrame_pull_string_valid(swigCPtr, this, column_name), true);
+  }
+
+  /**
+   *  Number of distinct values in column_name; a null counts as one additional distinct<br>
+   *         value if present.
+   */
+  public long n_distinct(String column_name) {
+    return datamungeJNI.DataFrame_n_distinct(swigCPtr, this, column_name);
+  }
+
   public DataFrame group_by_sum(SVector key_columns, SVector value_columns) {
     long cPtr = datamungeJNI.DataFrame_group_by_sum(swigCPtr, this, SVector.getCPtr(key_columns), key_columns, SVector.getCPtr(value_columns), value_columns);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
@@ -158,13 +310,170 @@ public class DataFrame {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public DataFrame join(DataFrame right, String left_key, String right_key, boolean left_join) {
-    long cPtr = datamungeJNI.DataFrame_join__SWIG_0(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key, left_join);
+  /**
+   *  dplyr::count()-style grouped row counts, default result column name "n".
+   */
+  public DataFrame count(SVector key_columns, String count_column_name) {
+    long cPtr = datamungeJNI.DataFrame_count__SWIG_0(swigCPtr, this, SVector.getCPtr(key_columns), key_columns, count_column_name);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
+  /**
+   *  dplyr::count()-style grouped row counts, default result column name "n".
+   */
+  public DataFrame count(SVector key_columns) {
+    long cPtr = datamungeJNI.DataFrame_count__SWIG_1(swigCPtr, this, SVector.getCPtr(key_columns), key_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame count_encoded(String encoded_key_columns, String count_column_name) {
+    long cPtr = datamungeJNI.DataFrame_count_encoded__SWIG_0(swigCPtr, this, encoded_key_columns, count_column_name);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame count_encoded(String encoded_key_columns) {
+    long cPtr = datamungeJNI.DataFrame_count_encoded__SWIG_1(swigCPtr, this, encoded_key_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  General dplyr::summarise()-style aggregation: one output row per distinct<br>
+   *         combination of `key_columns`, with one output column per (agg_columns[i],<br>
+   *         agg_funcs[i], result_names[i]) triple -- all three arrays must have the same length.<br>
+   *         agg_funcs entries are one of "sum", "mean", "min", "max", "median", "stddev",<br>
+   *         "count", "n_distinct" ("count" ignores the corresponding agg_columns entry, which may<br>
+   *         be ""); a "" result_names entry defaults to the agg_columns entry (or "n" for count).
+   */
+  public DataFrame summarise(SVector key_columns, SVector agg_columns, SVector agg_funcs, SVector result_names) {
+    long cPtr = datamungeJNI.DataFrame_summarise(swigCPtr, this, SVector.getCPtr(key_columns), key_columns, SVector.getCPtr(agg_columns), agg_columns, SVector.getCPtr(agg_funcs), agg_funcs, SVector.getCPtr(result_names), result_names);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame summarise_encoded(String encoded_key_columns, String encoded_agg_columns, String encoded_agg_funcs, String encoded_result_names) {
+    long cPtr = datamungeJNI.DataFrame_summarise_encoded(swigCPtr, this, encoded_key_columns, encoded_agg_columns, encoded_agg_funcs, encoded_result_names);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns<br>
+   *         (`names_to` holding the source column name, `values_to` holding its value).
+   */
+  public DataFrame pivot_longer(SVector value_columns, String names_to, String values_to) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer__SWIG_0(swigCPtr, this, SVector.getCPtr(value_columns), value_columns, names_to, values_to);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns<br>
+   *         (`names_to` holding the source column name, `values_to` holding its value).
+   */
+  public DataFrame pivot_longer(SVector value_columns, String names_to) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer__SWIG_1(swigCPtr, this, SVector.getCPtr(value_columns), value_columns, names_to);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns<br>
+   *         (`names_to` holding the source column name, `values_to` holding its value).
+   */
+  public DataFrame pivot_longer(SVector value_columns) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer__SWIG_2(swigCPtr, this, SVector.getCPtr(value_columns), value_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame pivot_longer_encoded(String encoded_value_columns, String names_to, String values_to) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer_encoded__SWIG_0(swigCPtr, this, encoded_value_columns, names_to, values_to);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame pivot_longer_encoded(String encoded_value_columns, String names_to) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer_encoded__SWIG_1(swigCPtr, this, encoded_value_columns, names_to);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame pivot_longer_encoded(String encoded_value_columns) {
+    long cPtr = datamungeJNI.DataFrame_pivot_longer_encoded__SWIG_2(swigCPtr, this, encoded_value_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new<br>
+   *         column names, `values_from` supplies their values; `id_columns` defaults to every<br>
+   *         other column.
+   */
+  public DataFrame pivot_wider(String names_from, String values_from, SVector id_columns) {
+    long cPtr = datamungeJNI.DataFrame_pivot_wider__SWIG_0(swigCPtr, this, names_from, values_from, SVector.getCPtr(id_columns), id_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new<br>
+   *         column names, `values_from` supplies their values; `id_columns` defaults to every<br>
+   *         other column.
+   */
+  public DataFrame pivot_wider(String names_from, String values_from) {
+    long cPtr = datamungeJNI.DataFrame_pivot_wider__SWIG_1(swigCPtr, this, names_from, values_from);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public DataFrame pivot_wider_encoded(String names_from, String values_from, String encoded_id_columns) {
+    long cPtr = datamungeJNI.DataFrame_pivot_wider_encoded(swigCPtr, this, names_from, values_from, encoded_id_columns);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,<br>
+   *         which isn't exposed here), null-filling any column present in only one frame.
+   */
+  public DataFrame bind_rows(DataFrame other) {
+    long cPtr = datamungeJNI.DataFrame_bind_rows(swigCPtr, this, DataFrame.getCPtr(other), other);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  dplyr::bind_cols()-style column union: both frames must have the same row count and<br>
+   *         disjoint column names.
+   */
+  public DataFrame bind_cols(DataFrame other) {
+    long cPtr = datamungeJNI.DataFrame_bind_cols(swigCPtr, this, DataFrame.getCPtr(other), other);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  @param join_type One of "inner" (default), "left", "right", "full", "semi", "anti". Any<br>
+   *         column name present in both frames (other than the key column when left_key ==<br>
+   *         right_key) is suffixed on both sides so the result never has duplicate names.
+   */
+  public DataFrame join(DataFrame right, String left_key, String right_key, String join_type, String left_suffix, String right_suffix) {
+    long cPtr = datamungeJNI.DataFrame_join__SWIG_0(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key, join_type, left_suffix, right_suffix);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  @param join_type One of "inner" (default), "left", "right", "full", "semi", "anti". Any<br>
+   *         column name present in both frames (other than the key column when left_key ==<br>
+   *         right_key) is suffixed on both sides so the result never has duplicate names.
+   */
+  public DataFrame join(DataFrame right, String left_key, String right_key, String join_type, String left_suffix) {
+    long cPtr = datamungeJNI.DataFrame_join__SWIG_1(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key, join_type, left_suffix);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  @param join_type One of "inner" (default), "left", "right", "full", "semi", "anti". Any<br>
+   *         column name present in both frames (other than the key column when left_key ==<br>
+   *         right_key) is suffixed on both sides so the result never has duplicate names.
+   */
+  public DataFrame join(DataFrame right, String left_key, String right_key, String join_type) {
+    long cPtr = datamungeJNI.DataFrame_join__SWIG_2(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key, join_type);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  
+   */
   public DataFrame join(DataFrame right, String left_key, String right_key) {
-    long cPtr = datamungeJNI.DataFrame_join__SWIG_1(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key);
+    long cPtr = datamungeJNI.DataFrame_join__SWIG_3(swigCPtr, this, DataFrame.getCPtr(right), right, left_key, right_key);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 

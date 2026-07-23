@@ -212,20 +212,20 @@ public class LM {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.LM_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.LM_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_normal_qq() {
-    return new ScatterPlot(datamungeJNI.LM_plot_normal_qq(swigCPtr, this), true);
+  public RPlot plot_normal_qq() {
+    return new RPlot(datamungeJNI.LM_plot_normal_qq(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_scale_location() {
-    return new ScatterPlot(datamungeJNI.LM_plot_scale_location(swigCPtr, this), true);
+  public RPlot plot_scale_location() {
+    return new RPlot(datamungeJNI.LM_plot_scale_location(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_leverage() {
-    return new ScatterPlot(datamungeJNI.LM_plot_residuals_vs_leverage(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_leverage() {
+    return new RPlot(datamungeJNI.LM_plot_residuals_vs_leverage(swigCPtr, this), true);
   }
 
   /**

@@ -199,28 +199,28 @@ public class GaussianProcessRegression {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public ScatterPlot plot_fit(DataFrame data, long grid_resolution, double level) {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_0(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution, level), true);
+  public RPlot plot_fit(DataFrame data, long grid_resolution, double level) {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_0(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution, level), true);
   }
 
-  public ScatterPlot plot_fit(DataFrame data, long grid_resolution) {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_1(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution), true);
+  public RPlot plot_fit(DataFrame data, long grid_resolution) {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_1(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution), true);
   }
 
-  public ScatterPlot plot_fit(DataFrame data) {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_2(swigCPtr, this, DataFrame.getCPtr(data), data), true);
+  public RPlot plot_fit(DataFrame data) {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_fit__SWIG_2(swigCPtr, this, DataFrame.getCPtr(data), data), true);
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_predicted_vs_actual(swigCPtr, this), true);
+  public RPlot plot_predicted_vs_actual() {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_predicted_vs_actual(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_length_scale_profile() {
-    return new ScatterPlot(datamungeJNI.GaussianProcessRegression_plot_length_scale_profile(swigCPtr, this), true);
+  public RPlot plot_length_scale_profile() {
+    return new RPlot(datamungeJNI.GaussianProcessRegression_plot_length_scale_profile(swigCPtr, this), true);
   }
 
 }

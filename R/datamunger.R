@@ -217,6 +217,8 @@ setClass('_p_datamunge__Lasso', contains = 'C++Reference')
 setClass('_p_datamunge__KNNClassifier', contains = 'C++Reference')
 setClass('_p_datamunge__KNNRegressor', contains = 'C++Reference')
 setClass('_p_datamunge__KMeans', contains = 'C++Reference')
+setClass('_p_datamunge__PCA', contains = 'C++Reference')
+setClass('_p_datamunge__MDS', contains = 'C++Reference')
 setClass('_p_datamunge__AgglomerativeClustering', contains = 'C++Reference')
 setClass('_p_datamunge__DBSCAN', contains = 'C++Reference')
 setClass('_p_datamunge__GBMClassifier', contains = 'C++Reference')
@@ -346,6 +348,11 @@ setClass('_p_datamunge__optim__ArbitraryFunction', contains = 'C++Reference')
 setClass('_p_datamunge__optim__DifferentiableFunction', contains = c('_p_datamunge__optim__ArbitraryFunction'))
 setClass('_p_datamunge__optim__SeparableFunction', contains = c('_p_datamunge__optim__ArbitraryFunction'))
 setClass('_p_datamunge__optim__DifferentiableSeparableFunction', contains = c('_p_datamunge__optim__DifferentiableFunction'))
+setClass('_p_datamunge__optim__ProximalFunction', contains = c('_p_datamunge__optim__DifferentiableFunction'))
+setClass('_p_datamunge__optim__HessianFunction', contains = c('_p_datamunge__optim__DifferentiableFunction'))
+setClass('_p_datamunge__optim__EqualityConstrainedFunction', contains = c('_p_datamunge__optim__DifferentiableFunction'))
+setClass('_p_datamunge__optim__InequalityConstrainedFunction', contains = c('_p_datamunge__optim__DifferentiableFunction'))
+setClass('_p_datamunge__optim__ResidualFunction', contains = 'C++Reference')
 setClass('_p_datamunge__optim__GradientDescentOptions', contains = 'C++Reference')
 setClass("datamunge::optim::GradientDescentOptions",
     representation(
@@ -374,6 +381,76 @@ setClass("datamunge::optim::AdamOptions",
 # End class datamunge::optim::AdamOptions
 
 setClass('_p_datamunge__optim__Adam', contains = 'C++Reference')
+setClass('_p_datamunge__optim__AdaGradOptions', contains = 'C++Reference')
+setClass("datamunge::optim::AdaGradOptions",
+    representation(
+        step_size = "numeric",
+        epsilon = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::AdaGradOptions
+
+setClass('_p_datamunge__optim__AdaGrad', contains = 'C++Reference')
+setClass('_p_datamunge__optim__AdaDeltaOptions', contains = 'C++Reference')
+setClass("datamunge::optim::AdaDeltaOptions",
+    representation(
+        decay_rate = "numeric",
+        epsilon = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::AdaDeltaOptions
+
+setClass('_p_datamunge__optim__AdaDelta', contains = 'C++Reference')
+setClass('_p_datamunge__optim__AMSGradOptions', contains = 'C++Reference')
+setClass("datamunge::optim::AMSGradOptions",
+    representation(
+        step_size = "numeric",
+        beta1 = "numeric",
+        beta2 = "numeric",
+        epsilon = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::AMSGradOptions
+
+setClass('_p_datamunge__optim__AMSGrad', contains = 'C++Reference')
+setClass('_p_datamunge__optim__NadamOptions', contains = 'C++Reference')
+setClass("datamunge::optim::NadamOptions",
+    representation(
+        step_size = "numeric",
+        beta1 = "numeric",
+        beta2 = "numeric",
+        epsilon = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::NadamOptions
+
+setClass('_p_datamunge__optim__Nadam', contains = 'C++Reference')
+setClass('_p_datamunge__optim__RMSPropOptions', contains = 'C++Reference')
+setClass("datamunge::optim::RMSPropOptions",
+    representation(
+        step_size = "numeric",
+        decay_rate = "numeric",
+        epsilon = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::RMSPropOptions
+
+setClass('_p_datamunge__optim__RMSProp', contains = 'C++Reference')
 setClass('_p_datamunge__optim__LBFGSOptions', contains = 'C++Reference')
 setClass("datamunge::optim::LBFGSOptions",
     representation(
@@ -389,6 +466,22 @@ setClass("datamunge::optim::LBFGSOptions",
 # End class datamunge::optim::LBFGSOptions
 
 setClass('_p_datamunge__optim__LBFGS', contains = 'C++Reference')
+setClass('_p_datamunge__optim__NelderMeadOptions', contains = 'C++Reference')
+setClass("datamunge::optim::NelderMeadOptions",
+    representation(
+        initial_simplex_scale = "numeric",
+        reflection = "numeric",
+        expansion = "numeric",
+        contraction = "numeric",
+        shrink = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::NelderMeadOptions
+
+setClass('_p_datamunge__optim__NelderMead', contains = 'C++Reference')
 setClass('_p_datamunge__optim__SGDOptions', contains = 'C++Reference')
 setClass("datamunge::optim::SGDOptions",
     representation(
@@ -404,6 +497,106 @@ setClass("datamunge::optim::SGDOptions",
 # End class datamunge::optim::SGDOptions
 
 setClass('_p_datamunge__optim__SGD', contains = 'C++Reference')
+setClass('_p_datamunge__optim__SVRGOptions', contains = 'C++Reference')
+setClass("datamunge::optim::SVRGOptions",
+    representation(
+        step_size = "numeric",
+        max_epochs = "integer",
+        inner_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::SVRGOptions
+
+setClass('_p_datamunge__optim__SVRG', contains = 'C++Reference')
+setClass('_p_datamunge__optim__SAGAOptions', contains = 'C++Reference')
+setClass("datamunge::optim::SAGAOptions",
+    representation(
+        step_size = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::SAGAOptions
+
+setClass('_p_datamunge__optim__SAGA', contains = 'C++Reference')
+setClass('_p_datamunge__optim__CoordinateDescentOptions', contains = 'C++Reference')
+setClass("datamunge::optim::CoordinateDescentOptions",
+    representation(
+        step_size = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        armijo_c1 = "numeric",
+        backtracking_factor = "numeric",
+        max_line_search_trials = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::CoordinateDescentOptions
+
+setClass('_p_datamunge__optim__CoordinateDescent', contains = 'C++Reference')
+setClass('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', contains = 'C++Reference')
+setClass("datamunge::optim::RandomizedBlockCoordinateDescentOptions",
+    representation(
+        block_size = "integer",
+        step_size = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        armijo_c1 = "numeric",
+        backtracking_factor = "numeric",
+        max_line_search_trials = "integer",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::RandomizedBlockCoordinateDescentOptions
+
+setClass('_p_datamunge__optim__RandomizedBlockCoordinateDescent', contains = 'C++Reference')
+setClass('_p_datamunge__optim__NesterovAcceleratedGradientOptions', contains = 'C++Reference')
+setClass("datamunge::optim::NesterovAcceleratedGradientOptions",
+    representation(
+        step_size = "numeric",
+        momentum = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::NesterovAcceleratedGradientOptions
+
+setClass('_p_datamunge__optim__NesterovAcceleratedGradient', contains = 'C++Reference')
+setClass('_p_datamunge__optim__ConjugateGradientOptions', contains = 'C++Reference')
+setClass("datamunge::optim::ConjugateGradientOptions",
+    representation(
+        max_iterations = "integer",
+        tolerance = "numeric",
+        armijo_c1 = "numeric",
+        backtracking_factor = "numeric",
+        max_line_search_trials = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::ConjugateGradientOptions
+
+setClass('_p_datamunge__optim__ConjugateGradient', contains = 'C++Reference')
+setClass('_p_datamunge__optim__CMAESOptions', contains = 'C++Reference')
+setClass("datamunge::optim::CMAESOptions",
+    representation(
+        population_size = "integer",
+        initial_step_size = "numeric",
+        max_generations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::CMAESOptions
+
+setClass('_p_datamunge__optim__CMAES', contains = 'C++Reference')
 setClass('_p_datamunge__optim__SimulatedAnnealingOptions', contains = 'C++Reference')
 setClass("datamunge::optim::SimulatedAnnealingOptions",
     representation(
@@ -477,6 +670,292 @@ setClass("datamunge::optim::GAOptions",
 # End class datamunge::optim::GAOptions
 
 setClass('_p_datamunge__optim__GeneticAlgorithm', contains = 'C++Reference')
+setClass('_p_datamunge__optim__ACOROptions', contains = 'C++Reference')
+setClass("datamunge::optim::ACOROptions",
+    representation(
+        archive_size = "integer",
+        samples_per_iteration = "integer",
+        locality = "numeric",
+        convergence_speed = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::ACOROptions
+
+setClass('_p_datamunge__optim__ACOR', contains = 'C++Reference')
+setClass('_p_datamunge__optim__ArtificialBeeColonyOptions', contains = 'C++Reference')
+setClass("datamunge::optim::ArtificialBeeColonyOptions",
+    representation(
+        population_size = "integer",
+        abandonment_limit = "integer",
+        max_generations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::ArtificialBeeColonyOptions
+
+setClass('_p_datamunge__optim__ArtificialBeeColony', contains = 'C++Reference')
+setClass('_p_datamunge__optim__CrossEntropyMethodOptions', contains = 'C++Reference')
+setClass("datamunge::optim::CrossEntropyMethodOptions",
+    representation(
+        population_size = "integer",
+        elite_ratio = "numeric",
+        initial_std_dev = "numeric",
+        smoothing = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::CrossEntropyMethodOptions
+
+setClass('_p_datamunge__optim__CrossEntropyMethod', contains = 'C++Reference')
+setClass('_p_datamunge__optim__CuckooSearchOptions', contains = 'C++Reference')
+setClass("datamunge::optim::CuckooSearchOptions",
+    representation(
+        population_size = "integer",
+        discovery_rate = "numeric",
+        levy_beta = "numeric",
+        step_scale = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::CuckooSearchOptions
+
+setClass('_p_datamunge__optim__CuckooSearch', contains = 'C++Reference')
+setClass('_p_datamunge__optim__EstimationOfDistributionOptions', contains = 'C++Reference')
+setClass("datamunge::optim::EstimationOfDistributionOptions",
+    representation(
+        population_size = "integer",
+        selection_ratio = "numeric",
+        initial_std_dev = "numeric",
+        covariance_regularization = "numeric",
+        max_generations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::EstimationOfDistributionOptions
+
+setClass('_p_datamunge__optim__EstimationOfDistribution', contains = 'C++Reference')
+setClass('_p_datamunge__optim__EvolutionStrategyOptions', contains = 'C++Reference')
+setClass("datamunge::optim::EvolutionStrategyOptions",
+    representation(
+        mu = "integer",
+        offspring_size = "integer",
+        strategy = "character",
+        initial_step_size = "numeric",
+        max_generations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::EvolutionStrategyOptions
+
+setClass('_p_datamunge__optim__EvolutionStrategy', contains = 'C++Reference')
+setClass('_p_datamunge__optim__FireflyAlgorithmOptions', contains = 'C++Reference')
+setClass("datamunge::optim::FireflyAlgorithmOptions",
+    representation(
+        population_size = "integer",
+        attractiveness_at_zero = "numeric",
+        light_absorption = "numeric",
+        randomization_step = "numeric",
+        randomization_decay = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::FireflyAlgorithmOptions
+
+setClass('_p_datamunge__optim__FireflyAlgorithm', contains = 'C++Reference')
+setClass('_p_datamunge__optim__GreyWolfOptimizerOptions', contains = 'C++Reference')
+setClass("datamunge::optim::GreyWolfOptimizerOptions",
+    representation(
+        population_size = "integer",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::GreyWolfOptimizerOptions
+
+setClass('_p_datamunge__optim__GreyWolfOptimizer', contains = 'C++Reference')
+setClass('_p_datamunge__optim__HarmonySearchOptions', contains = 'C++Reference')
+setClass("datamunge::optim::HarmonySearchOptions",
+    representation(
+        population_size = "integer",
+        memory_consideration_rate = "numeric",
+        pitch_adjustment_rate = "numeric",
+        bandwidth_fraction = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::HarmonySearchOptions
+
+setClass('_p_datamunge__optim__HarmonySearch', contains = 'C++Reference')
+setClass('_p_datamunge__optim__ParallelTemperingOptions', contains = 'C++Reference')
+setClass("datamunge::optim::ParallelTemperingOptions",
+    representation(
+        num_replicas = "integer",
+        initial_temperature = "numeric",
+        final_temperature = "numeric",
+        step_std_dev = "numeric",
+        swap_interval = "integer",
+        max_sweeps = "integer",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::ParallelTemperingOptions
+
+setClass('_p_datamunge__optim__ParallelTempering', contains = 'C++Reference')
+setClass('_p_datamunge__optim__WhaleOptimizationOptions', contains = 'C++Reference')
+setClass("datamunge::optim::WhaleOptimizationOptions",
+    representation(
+        population_size = "integer",
+        spiral_constant = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::WhaleOptimizationOptions
+
+setClass('_p_datamunge__optim__WhaleOptimization', contains = 'C++Reference')
+setClass('_p_datamunge__optim__FISTAOptions', contains = 'C++Reference')
+setClass("datamunge::optim::FISTAOptions",
+    representation(
+        step_size = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::FISTAOptions
+
+setClass('_p_datamunge__optim__FISTA', contains = 'C++Reference')
+setClass('_p_datamunge__optim__ProximalGradientOptions', contains = 'C++Reference')
+setClass("datamunge::optim::ProximalGradientOptions",
+    representation(
+        step_size = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::ProximalGradientOptions
+
+setClass('_p_datamunge__optim__ProximalGradient', contains = 'C++Reference')
+setClass('_p_datamunge__optim__LevenbergMarquardtOptions', contains = 'C++Reference')
+setClass("datamunge::optim::LevenbergMarquardtOptions",
+    representation(
+        initial_damping = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::LevenbergMarquardtOptions
+
+setClass('_p_datamunge__optim__LevenbergMarquardt', contains = 'C++Reference')
+setClass('_p_datamunge__optim__NewtonOptions', contains = 'C++Reference')
+setClass("datamunge::optim::NewtonOptions",
+    representation(
+        max_iterations = "integer",
+        tolerance = "numeric",
+        damping = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::NewtonOptions
+
+setClass('_p_datamunge__optim__Newton', contains = 'C++Reference')
+setClass('_p_datamunge__optim__TrustRegionNewtonOptions', contains = 'C++Reference')
+setClass("datamunge::optim::TrustRegionNewtonOptions",
+    representation(
+        initial_radius = "numeric",
+        max_radius = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::TrustRegionNewtonOptions
+
+setClass('_p_datamunge__optim__TrustRegionNewton', contains = 'C++Reference')
+setClass('_p_datamunge__optim__AugmentedLagrangianOptions', contains = 'C++Reference')
+setClass("datamunge::optim::AugmentedLagrangianOptions",
+    representation(
+        step_size = "numeric",
+        initial_penalty = "numeric",
+        max_outer_iterations = "integer",
+        inner_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::AugmentedLagrangianOptions
+
+setClass('_p_datamunge__optim__AugmentedLagrangian', contains = 'C++Reference')
+setClass('_p_datamunge__optim__SQPOptions', contains = 'C++Reference')
+setClass("datamunge::optim::SQPOptions",
+    representation(
+        step_size = "numeric",
+        regularization = "numeric",
+        max_iterations = "integer",
+        tolerance = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::SQPOptions
+
+setClass('_p_datamunge__optim__SQP', contains = 'C++Reference')
+setClass('_p_datamunge__optim__InteriorPointOptions', contains = 'C++Reference')
+setClass("datamunge::optim::InteriorPointOptions",
+    representation(
+        step_size = "numeric",
+        initial_barrier = "numeric",
+        barrier_decay = "numeric",
+        max_outer_iterations = "integer",
+        inner_iterations = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::InteriorPointOptions
+
+setClass('_p_datamunge__optim__InteriorPoint', contains = 'C++Reference')
+setClass('_p_datamunge__optim__BayesianSurrogate', contains = 'C++Reference')
+setClass('_p_datamunge__optim__BayesianOptimizationOptions', contains = 'C++Reference')
+setClass("datamunge::optim::BayesianOptimizationOptions",
+    representation(
+        initial_samples = "integer",
+        max_iterations = "integer",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::optim::BayesianOptimizationOptions
+
+setClass('_p_datamunge__optim__BayesianOptimization', contains = 'C++Reference')
+setClass('_p_datamunge__optim__RBFGaussianProcessSurrogate', contains = c('_p_datamunge__optim__BayesianSurrogate'))
 setClass('_p_datamunge__bayes__MAPOptions', contains = 'C++Reference')
 setClass("datamunge::bayes::MAPOptions",
     representation(
@@ -616,6 +1095,34 @@ setClass("datamunge::bayes::ImportanceSamplingResult",
 # End class datamunge::bayes::ImportanceSamplingResult
 
 setClass('_p_datamunge__bayes__ImportanceSampling', contains = 'C++Reference')
+setClass('_p_datamunge__ode__RHS', contains = 'C++Reference')
+setClass('_p_datamunge__ode__ODEOptions', contains = 'C++Reference')
+setClass("datamunge::ode::ODEOptions",
+    representation(
+        method = "character",
+        multistep_order = "integer",
+        step_size = "numeric",
+        abs_tol = "numeric",
+        rel_tol = "numeric",
+        max_step = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::ode::ODEOptions
+
+setClass('_p_datamunge__ode__ODESolution', contains = 'C++Reference')
+setClass("datamunge::ode::ODESolution",
+    representation(
+        t = "numeric",
+        y = "list",
+        steps_taken = "integer",
+        function_evaluations = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::ode::ODESolution
+
+setClass('_p_datamunge__ode__ODESolver', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__Polynomial', contains = 'C++Reference')
 setClass('_p_std__vectorT_datamunge__algebra__Polynomial_t', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__PolyExtendedGcdResult', contains = 'C++Reference')
@@ -16219,6 +16726,1131 @@ setMethod('$', '_p_datamunge__KMeans', function(x, name)
 );
 # end of accessor method for datamunge::KMeans
 setMethod('delete', '_p_datamunge__KMeans', function(obj) {delete_datamunge__KMeans(obj)})
+# Start of new_PCA
+
+`PCA__SWIG_0` = function(data, feature_columns, center, scale)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  center = as.logical(center);
+  scale = as.logical(scale);
+  ;ans = .Call('R_swig_new_PCA__SWIG_0', data, feature_columns, center, scale, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_0`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t', 'logical', 'logical')
+class(`PCA__SWIG_0`) = c("SWIGFunction", class('PCA__SWIG_0'))
+
+# Start of new_PCA
+
+`PCA__SWIG_1` = function(data, feature_columns, center)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  center = as.logical(center);
+  ;ans = .Call('R_swig_new_PCA__SWIG_1', data, feature_columns, center, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_1`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t', 'logical')
+class(`PCA__SWIG_1`) = c("SWIGFunction", class('PCA__SWIG_1'))
+
+# Start of new_PCA
+
+`PCA__SWIG_2` = function(data, feature_columns)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  ;ans = .Call('R_swig_new_PCA__SWIG_2', data, feature_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_2`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_2`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t')
+class(`PCA__SWIG_2`) = c("SWIGFunction", class('PCA__SWIG_2'))
+
+# Start of new_PCA
+
+`PCA__SWIG_3` = function(data, encoded_feature_columns, center, scale)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  center = as.logical(center);
+  scale = as.logical(scale);
+  ;ans = .Call('R_swig_new_PCA__SWIG_3', data, encoded_feature_columns, center, scale, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_3`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_3`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'logical', 'logical')
+class(`PCA__SWIG_3`) = c("SWIGFunction", class('PCA__SWIG_3'))
+
+# Start of new_PCA
+
+`PCA__SWIG_4` = function(data, encoded_feature_columns, center)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  center = as.logical(center);
+  ;ans = .Call('R_swig_new_PCA__SWIG_4', data, encoded_feature_columns, center, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_4`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_4`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'logical')
+class(`PCA__SWIG_4`) = c("SWIGFunction", class('PCA__SWIG_4'))
+
+# Start of new_PCA
+
+`PCA__SWIG_5` = function(data, encoded_feature_columns)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  ;ans = .Call('R_swig_new_PCA__SWIG_5', data, encoded_feature_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__PCA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_PCA);
+  ans
+  
+}
+
+attr(`PCA__SWIG_5`, 'returnType') = '_p_datamunge__PCA'
+attr(`PCA__SWIG_5`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`PCA__SWIG_5`) = c("SWIGFunction", class('PCA__SWIG_5'))
+
+`PCA` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 6
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- PCA__SWIG_5; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- PCA__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- PCA__SWIG_4; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- PCA__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.logical(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- PCA__SWIG_3; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.logical(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- PCA__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for PCA with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of PCA_feature_names
+
+`PCA_feature_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_feature_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_feature_names`, 'returnType') = 'character'
+attr(`PCA_feature_names`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_feature_names`) = c("SWIGFunction", class('PCA_feature_names'))
+
+# Start of PCA_observations
+
+`PCA_observations` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_observations', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_observations`, 'returnType') = 'integer'
+attr(`PCA_observations`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_observations`) = c("SWIGFunction", class('PCA_observations'))
+
+# Start of PCA_num_components
+
+`PCA_num_components` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_num_components', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_num_components`, 'returnType') = 'integer'
+attr(`PCA_num_components`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_num_components`) = c("SWIGFunction", class('PCA_num_components'))
+
+# Start of PCA_kept_row_indices
+
+`PCA_kept_row_indices` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_kept_row_indices', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_kept_row_indices`, 'returnType') = '_p_std__vectorT_size_t_t'
+attr(`PCA_kept_row_indices`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_kept_row_indices`) = c("SWIGFunction", class('PCA_kept_row_indices'))
+
+# Start of PCA_explained_variance
+
+`PCA_explained_variance` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_explained_variance', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_explained_variance`, 'returnType') = 'numeric'
+attr(`PCA_explained_variance`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_explained_variance`) = c("SWIGFunction", class('PCA_explained_variance'))
+
+# Start of PCA_explained_variance_ratio
+
+`PCA_explained_variance_ratio` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_explained_variance_ratio', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_explained_variance_ratio`, 'returnType') = 'numeric'
+attr(`PCA_explained_variance_ratio`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_explained_variance_ratio`) = c("SWIGFunction", class('PCA_explained_variance_ratio'))
+
+# Start of PCA_cumulative_explained_variance_ratio
+
+`PCA_cumulative_explained_variance_ratio` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_cumulative_explained_variance_ratio', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_cumulative_explained_variance_ratio`, 'returnType') = 'numeric'
+attr(`PCA_cumulative_explained_variance_ratio`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_cumulative_explained_variance_ratio`) = c("SWIGFunction", class('PCA_cumulative_explained_variance_ratio'))
+
+# Start of PCA_component_loadings
+
+`PCA_component_loadings` = function(self, component_index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  component_index = as.integer(component_index);
+  
+  if(length(component_index) > 1) {
+    warning("using only the first element of component_index");
+  };
+  
+  ;.Call('R_swig_PCA_component_loadings', self, component_index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_component_loadings`, 'returnType') = 'numeric'
+attr(`PCA_component_loadings`, "inputTypes") = c('_p_datamunge__PCA', 'integer')
+class(`PCA_component_loadings`) = c("SWIGFunction", class('PCA_component_loadings'))
+
+# Start of PCA_component_scores
+
+`PCA_component_scores` = function(self, component_index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  component_index = as.integer(component_index);
+  
+  if(length(component_index) > 1) {
+    warning("using only the first element of component_index");
+  };
+  
+  ;.Call('R_swig_PCA_component_scores', self, component_index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_component_scores`, 'returnType') = 'numeric'
+attr(`PCA_component_scores`, "inputTypes") = c('_p_datamunge__PCA', 'integer')
+class(`PCA_component_scores`) = c("SWIGFunction", class('PCA_component_scores'))
+
+# Start of PCA_scores_frame
+
+`PCA_scores_frame` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_PCA_scores_frame', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_scores_frame`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`PCA_scores_frame`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_scores_frame`) = c("SWIGFunction", class('PCA_scores_frame'))
+
+# Start of PCA_transform
+
+`PCA_transform` = function(self, newdata)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  ;ans = .Call('R_swig_PCA_transform', self, newdata, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_transform`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`PCA_transform`, "inputTypes") = c('_p_datamunge__PCA', '_p_datamunge__DataFrame')
+class(`PCA_transform`) = c("SWIGFunction", class('PCA_transform'))
+
+# Start of PCA_summary
+
+`PCA_summary` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_summary', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_summary`, 'returnType') = 'character'
+attr(`PCA_summary`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_summary`) = c("SWIGFunction", class('PCA_summary'))
+
+# Start of PCA_print_summary
+
+`PCA_print_summary` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_PCA_print_summary', self, PACKAGE='datamunger');
+  
+}
+
+attr(`PCA_print_summary`, 'returnType') = 'void'
+attr(`PCA_print_summary`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_print_summary`) = c("SWIGFunction", class('PCA_print_summary'))
+
+# Start of PCA_plot_scores
+
+`PCA_plot_scores__SWIG_0` = function(self, component_x, component_y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  component_x = as.integer(component_x);
+  
+  if(length(component_x) > 1) {
+    warning("using only the first element of component_x");
+  };
+  
+  component_y = as.integer(component_y);
+  
+  if(length(component_y) > 1) {
+    warning("using only the first element of component_y");
+  };
+  
+  ;ans = .Call('R_swig_PCA_plot_scores__SWIG_0', self, component_x, component_y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_0`, "inputTypes") = c('_p_datamunge__PCA', 'integer', 'integer')
+class(`PCA_plot_scores__SWIG_0`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_0'))
+
+# Start of PCA_plot_scores
+
+`PCA_plot_scores__SWIG_1` = function(self, component_x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  component_x = as.integer(component_x);
+  
+  if(length(component_x) > 1) {
+    warning("using only the first element of component_x");
+  };
+  
+  ;ans = .Call('R_swig_PCA_plot_scores__SWIG_1', self, component_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_1`, "inputTypes") = c('_p_datamunge__PCA', 'integer')
+class(`PCA_plot_scores__SWIG_1`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_1'))
+
+# Start of PCA_plot_scores
+
+`PCA_plot_scores__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_PCA_plot_scores__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores__SWIG_2`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_plot_scores__SWIG_2`) = c("SWIGFunction", class('PCA_plot_scores__SWIG_2'))
+
+`PCA_plot_scores` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) {
+      f <- PCA_plot_scores__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- PCA_plot_scores__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- PCA_plot_scores__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for PCA_plot_scores with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of PCA_plot_scores_grouped
+
+`PCA_plot_scores_grouped__SWIG_0` = function(self, group_labels, component_x, component_y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  component_x = as.integer(component_x);
+  
+  if(length(component_x) > 1) {
+    warning("using only the first element of component_x");
+  };
+  
+  component_y = as.integer(component_y);
+  
+  if(length(component_y) > 1) {
+    warning("using only the first element of component_y");
+  };
+  
+  ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_0', self, group_labels, component_x, component_y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t', 'integer', 'integer')
+class(`PCA_plot_scores_grouped__SWIG_0`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_0'))
+
+# Start of PCA_plot_scores_grouped
+
+`PCA_plot_scores_grouped__SWIG_1` = function(self, group_labels, component_x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  component_x = as.integer(component_x);
+  
+  if(length(component_x) > 1) {
+    warning("using only the first element of component_x");
+  };
+  
+  ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_1', self, group_labels, component_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t', 'integer')
+class(`PCA_plot_scores_grouped__SWIG_1`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_1'))
+
+# Start of PCA_plot_scores_grouped
+
+`PCA_plot_scores_grouped__SWIG_2` = function(self, group_labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  ;ans = .Call('R_swig_PCA_plot_scores_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scores_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scores_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__PCA', '_p_std__vectorT_std__string_t')
+class(`PCA_plot_scores_grouped__SWIG_2`) = c("SWIGFunction", class('PCA_plot_scores_grouped__SWIG_2'))
+
+`PCA_plot_scores_grouped` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- PCA_plot_scores_grouped__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- PCA_plot_scores_grouped__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__PCA') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- PCA_plot_scores_grouped__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for PCA_plot_scores_grouped with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of PCA_plot_scree
+
+`PCA_plot_scree` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_PCA_plot_scree', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`PCA_plot_scree`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`PCA_plot_scree`, "inputTypes") = c('_p_datamunge__PCA')
+class(`PCA_plot_scree`) = c("SWIGFunction", class('PCA_plot_scree'))
+
+# Start of delete_PCA
+
+`delete_PCA` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_PCA', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_PCA`, 'returnType') = 'void'
+attr(`delete_PCA`, "inputTypes") = c('_p_datamunge__PCA')
+class(`delete_PCA`) = c("SWIGFunction", class('delete_PCA'))
+
+# Start of accessor method for datamunge::PCA
+setMethod('$', '_p_datamunge__PCA', function(x, name)
+
+{
+  accessorFuns = list('feature_names' = PCA_feature_names, 'observations' = PCA_observations, 'num_components' = PCA_num_components, 'kept_row_indices' = PCA_kept_row_indices, 'explained_variance' = PCA_explained_variance, 'explained_variance_ratio' = PCA_explained_variance_ratio, 'cumulative_explained_variance_ratio' = PCA_cumulative_explained_variance_ratio, 'component_loadings' = PCA_component_loadings, 'component_scores' = PCA_component_scores, 'scores_frame' = PCA_scores_frame, 'transform' = PCA_transform, 'summary' = PCA_summary, 'print_summary' = PCA_print_summary, 'plot_scores' = PCA_plot_scores, 'plot_scores_grouped' = PCA_plot_scores_grouped, 'plot_scree' = PCA_plot_scree);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::PCA
+setMethod('delete', '_p_datamunge__PCA', function(obj) {delete_datamunge__PCA(obj)})
+# Start of new_MDS
+
+`MDS__SWIG_0` = function(data, feature_columns, n_components, metric)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  n_components = as.integer(n_components);
+  
+  if(length(n_components) > 1) {
+    warning("using only the first element of n_components");
+  };
+  
+  metric = as(metric, "character"); 
+  ;ans = .Call('R_swig_new_MDS__SWIG_0', data, feature_columns, n_components, metric, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_0`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t', 'integer', 'character')
+class(`MDS__SWIG_0`) = c("SWIGFunction", class('MDS__SWIG_0'))
+
+# Start of new_MDS
+
+`MDS__SWIG_1` = function(data, feature_columns, n_components)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  n_components = as.integer(n_components);
+  
+  if(length(n_components) > 1) {
+    warning("using only the first element of n_components");
+  };
+  
+  ;ans = .Call('R_swig_new_MDS__SWIG_1', data, feature_columns, n_components, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_1`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t', 'integer')
+class(`MDS__SWIG_1`) = c("SWIGFunction", class('MDS__SWIG_1'))
+
+# Start of new_MDS
+
+`MDS__SWIG_2` = function(data, feature_columns)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  if (inherits(feature_columns, "ExternalReference")) feature_columns = slot(feature_columns,"ref"); 
+  ;ans = .Call('R_swig_new_MDS__SWIG_2', data, feature_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_2`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_2`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t')
+class(`MDS__SWIG_2`) = c("SWIGFunction", class('MDS__SWIG_2'))
+
+# Start of new_MDS
+
+`MDS__SWIG_3` = function(data, encoded_feature_columns, n_components, metric)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  n_components = as.integer(n_components);
+  
+  if(length(n_components) > 1) {
+    warning("using only the first element of n_components");
+  };
+  
+  metric = as(metric, "character"); 
+  ;ans = .Call('R_swig_new_MDS__SWIG_3', data, encoded_feature_columns, n_components, metric, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_3`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_3`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'integer', 'character')
+class(`MDS__SWIG_3`) = c("SWIGFunction", class('MDS__SWIG_3'))
+
+# Start of new_MDS
+
+`MDS__SWIG_4` = function(data, encoded_feature_columns, n_components)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  n_components = as.integer(n_components);
+  
+  if(length(n_components) > 1) {
+    warning("using only the first element of n_components");
+  };
+  
+  ;ans = .Call('R_swig_new_MDS__SWIG_4', data, encoded_feature_columns, n_components, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_4`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_4`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'integer')
+class(`MDS__SWIG_4`) = c("SWIGFunction", class('MDS__SWIG_4'))
+
+# Start of new_MDS
+
+`MDS__SWIG_5` = function(data, encoded_feature_columns)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  encoded_feature_columns = as(encoded_feature_columns, "character"); 
+  ;ans = .Call('R_swig_new_MDS__SWIG_5', data, encoded_feature_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__MDS", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_MDS);
+  ans
+  
+}
+
+attr(`MDS__SWIG_5`, 'returnType') = '_p_datamunge__MDS'
+attr(`MDS__SWIG_5`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`MDS__SWIG_5`) = c("SWIGFunction", class('MDS__SWIG_5'))
+
+`MDS` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 6
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- MDS__SWIG_5; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- MDS__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- MDS__SWIG_4; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- MDS__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- MDS__SWIG_3; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- MDS__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for MDS with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of MDS_feature_names
+
+`MDS_feature_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_feature_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_feature_names`, 'returnType') = 'character'
+attr(`MDS_feature_names`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_feature_names`) = c("SWIGFunction", class('MDS_feature_names'))
+
+# Start of MDS_observations
+
+`MDS_observations` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_observations', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_observations`, 'returnType') = 'integer'
+attr(`MDS_observations`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_observations`) = c("SWIGFunction", class('MDS_observations'))
+
+# Start of MDS_n_components
+
+`MDS_n_components` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_n_components', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_n_components`, 'returnType') = 'integer'
+attr(`MDS_n_components`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_n_components`) = c("SWIGFunction", class('MDS_n_components'))
+
+# Start of MDS_kept_row_indices
+
+`MDS_kept_row_indices` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_kept_row_indices', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_kept_row_indices`, 'returnType') = '_p_std__vectorT_size_t_t'
+attr(`MDS_kept_row_indices`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_kept_row_indices`) = c("SWIGFunction", class('MDS_kept_row_indices'))
+
+# Start of MDS_eigenvalues
+
+`MDS_eigenvalues` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_eigenvalues', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_eigenvalues`, 'returnType') = 'numeric'
+attr(`MDS_eigenvalues`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_eigenvalues`) = c("SWIGFunction", class('MDS_eigenvalues'))
+
+# Start of MDS_goodness_of_fit
+
+`MDS_goodness_of_fit` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_goodness_of_fit', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_goodness_of_fit`, 'returnType') = 'numeric'
+attr(`MDS_goodness_of_fit`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_goodness_of_fit`) = c("SWIGFunction", class('MDS_goodness_of_fit'))
+
+# Start of MDS_dimension
+
+`MDS_dimension` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  if(length(index) > 1) {
+    warning("using only the first element of index");
+  };
+  
+  ;.Call('R_swig_MDS_dimension', self, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_dimension`, 'returnType') = 'numeric'
+attr(`MDS_dimension`, "inputTypes") = c('_p_datamunge__MDS', 'integer')
+class(`MDS_dimension`) = c("SWIGFunction", class('MDS_dimension'))
+
+# Start of MDS_embedding_frame
+
+`MDS_embedding_frame` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_MDS_embedding_frame', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_embedding_frame`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`MDS_embedding_frame`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_embedding_frame`) = c("SWIGFunction", class('MDS_embedding_frame'))
+
+# Start of MDS_summary
+
+`MDS_summary` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_summary', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_summary`, 'returnType') = 'character'
+attr(`MDS_summary`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_summary`) = c("SWIGFunction", class('MDS_summary'))
+
+# Start of MDS_print_summary
+
+`MDS_print_summary` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_MDS_print_summary', self, PACKAGE='datamunger');
+  
+}
+
+attr(`MDS_print_summary`, 'returnType') = 'void'
+attr(`MDS_print_summary`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_print_summary`) = c("SWIGFunction", class('MDS_print_summary'))
+
+# Start of MDS_plot_embedding
+
+`MDS_plot_embedding__SWIG_0` = function(self, dimension_x, dimension_y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  dimension_x = as.integer(dimension_x);
+  
+  if(length(dimension_x) > 1) {
+    warning("using only the first element of dimension_x");
+  };
+  
+  dimension_y = as.integer(dimension_y);
+  
+  if(length(dimension_y) > 1) {
+    warning("using only the first element of dimension_y");
+  };
+  
+  ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_0', self, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_0`, "inputTypes") = c('_p_datamunge__MDS', 'integer', 'integer')
+class(`MDS_plot_embedding__SWIG_0`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_0'))
+
+# Start of MDS_plot_embedding
+
+`MDS_plot_embedding__SWIG_1` = function(self, dimension_x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  dimension_x = as.integer(dimension_x);
+  
+  if(length(dimension_x) > 1) {
+    warning("using only the first element of dimension_x");
+  };
+  
+  ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_1', self, dimension_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_1`, "inputTypes") = c('_p_datamunge__MDS', 'integer')
+class(`MDS_plot_embedding__SWIG_1`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_1'))
+
+# Start of MDS_plot_embedding
+
+`MDS_plot_embedding__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_MDS_plot_embedding__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding__SWIG_2`, "inputTypes") = c('_p_datamunge__MDS')
+class(`MDS_plot_embedding__SWIG_2`) = c("SWIGFunction", class('MDS_plot_embedding__SWIG_2'))
+
+`MDS_plot_embedding` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) {
+      f <- MDS_plot_embedding__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- MDS_plot_embedding__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- MDS_plot_embedding__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for MDS_plot_embedding with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of MDS_plot_embedding_grouped
+
+`MDS_plot_embedding_grouped__SWIG_0` = function(self, group_labels, dimension_x, dimension_y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  dimension_x = as.integer(dimension_x);
+  
+  if(length(dimension_x) > 1) {
+    warning("using only the first element of dimension_x");
+  };
+  
+  dimension_y = as.integer(dimension_y);
+  
+  if(length(dimension_y) > 1) {
+    warning("using only the first element of dimension_y");
+  };
+  
+  ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_0', self, group_labels, dimension_x, dimension_y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding_grouped__SWIG_0`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_0`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t', 'integer', 'integer')
+class(`MDS_plot_embedding_grouped__SWIG_0`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_0'))
+
+# Start of MDS_plot_embedding_grouped
+
+`MDS_plot_embedding_grouped__SWIG_1` = function(self, group_labels, dimension_x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  dimension_x = as.integer(dimension_x);
+  
+  if(length(dimension_x) > 1) {
+    warning("using only the first element of dimension_x");
+  };
+  
+  ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_1', self, group_labels, dimension_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding_grouped__SWIG_1`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_1`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t', 'integer')
+class(`MDS_plot_embedding_grouped__SWIG_1`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_1'))
+
+# Start of MDS_plot_embedding_grouped
+
+`MDS_plot_embedding_grouped__SWIG_2` = function(self, group_labels, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(group_labels, "ExternalReference")) group_labels = slot(group_labels,"ref"); 
+  ;ans = .Call('R_swig_MDS_plot_embedding_grouped__SWIG_2', self, group_labels, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`MDS_plot_embedding_grouped__SWIG_2`, 'returnType') = '_p_datamunge__plot__RPlot'
+attr(`MDS_plot_embedding_grouped__SWIG_2`, "inputTypes") = c('_p_datamunge__MDS', '_p_std__vectorT_std__string_t')
+class(`MDS_plot_embedding_grouped__SWIG_2`) = c("SWIGFunction", class('MDS_plot_embedding_grouped__SWIG_2'))
+
+`MDS_plot_embedding_grouped` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- MDS_plot_embedding_grouped__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- MDS_plot_embedding_grouped__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__MDS') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- MDS_plot_embedding_grouped__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for MDS_plot_embedding_grouped with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_MDS
+
+`delete_MDS` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_MDS', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_MDS`, 'returnType') = 'void'
+attr(`delete_MDS`, "inputTypes") = c('_p_datamunge__MDS')
+class(`delete_MDS`) = c("SWIGFunction", class('delete_MDS'))
+
+# Start of accessor method for datamunge::MDS
+setMethod('$', '_p_datamunge__MDS', function(x, name)
+
+{
+  accessorFuns = list('feature_names' = MDS_feature_names, 'observations' = MDS_observations, 'n_components' = MDS_n_components, 'kept_row_indices' = MDS_kept_row_indices, 'eigenvalues' = MDS_eigenvalues, 'goodness_of_fit' = MDS_goodness_of_fit, 'dimension' = MDS_dimension, 'embedding_frame' = MDS_embedding_frame, 'summary' = MDS_summary, 'print_summary' = MDS_print_summary, 'plot_embedding' = MDS_plot_embedding, 'plot_embedding_grouped' = MDS_plot_embedding_grouped);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::MDS
+setMethod('delete', '_p_datamunge__MDS', function(obj) {delete_datamunge__MDS(obj)})
 # Start of new_AgglomerativeClustering
 
 `AgglomerativeClustering__SWIG_0` = function(data, feature_columns, n_clusters, linkage, metric)
@@ -33725,6 +35357,274 @@ setMethod('$', '_p_datamunge__optim__DifferentiableSeparableFunction', function(
 );
 # end of accessor method for datamunge::optim::DifferentiableSeparableFunction
 setMethod('delete', '_p_datamunge__optim__DifferentiableSeparableFunction', function(obj) {delete_datamunge__optim__DifferentiableSeparableFunction(obj)})
+# Start of ProximalFunction_proximal
+
+`ProximalFunction_proximal` = function(self, point, step, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  
+  ;.Call('R_swig_ProximalFunction_proximal', self, point, step, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalFunction_proximal`, 'returnType') = 'numeric'
+attr(`ProximalFunction_proximal`, "inputTypes") = c('_p_datamunge__optim__ProximalFunction', '_p_std__vectorT_double_t', 'numeric')
+class(`ProximalFunction_proximal`) = c("SWIGFunction", class('ProximalFunction_proximal'))
+
+# Start of delete_ProximalFunction
+
+`delete_ProximalFunction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ProximalFunction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ProximalFunction`, 'returnType') = 'void'
+attr(`delete_ProximalFunction`, "inputTypes") = c('_p_datamunge__optim__ProximalFunction')
+class(`delete_ProximalFunction`) = c("SWIGFunction", class('delete_ProximalFunction'))
+
+# Start of accessor method for datamunge::optim::ProximalFunction
+setMethod('$', '_p_datamunge__optim__ProximalFunction', function(x, name)
+
+{
+  accessorFuns = list('proximal' = ProximalFunction_proximal);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ProximalFunction
+setMethod('delete', '_p_datamunge__optim__ProximalFunction', function(obj) {delete_datamunge__optim__ProximalFunction(obj)})
+# Start of HessianFunction_hessian
+
+`HessianFunction_hessian` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_HessianFunction_hessian', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HessianFunction_hessian`, 'returnType') = 'list'
+attr(`HessianFunction_hessian`, "inputTypes") = c('_p_datamunge__optim__HessianFunction', '_p_std__vectorT_double_t')
+class(`HessianFunction_hessian`) = c("SWIGFunction", class('HessianFunction_hessian'))
+
+# Start of delete_HessianFunction
+
+`delete_HessianFunction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_HessianFunction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_HessianFunction`, 'returnType') = 'void'
+attr(`delete_HessianFunction`, "inputTypes") = c('_p_datamunge__optim__HessianFunction')
+class(`delete_HessianFunction`) = c("SWIGFunction", class('delete_HessianFunction'))
+
+# Start of accessor method for datamunge::optim::HessianFunction
+setMethod('$', '_p_datamunge__optim__HessianFunction', function(x, name)
+
+{
+  accessorFuns = list('hessian' = HessianFunction_hessian);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::HessianFunction
+setMethod('delete', '_p_datamunge__optim__HessianFunction', function(obj) {delete_datamunge__optim__HessianFunction(obj)})
+# Start of EqualityConstrainedFunction_constraints
+
+`EqualityConstrainedFunction_constraints` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_EqualityConstrainedFunction_constraints', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EqualityConstrainedFunction_constraints`, 'returnType') = 'numeric'
+attr(`EqualityConstrainedFunction_constraints`, "inputTypes") = c('_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`EqualityConstrainedFunction_constraints`) = c("SWIGFunction", class('EqualityConstrainedFunction_constraints'))
+
+# Start of EqualityConstrainedFunction_constraint_jacobian
+
+`EqualityConstrainedFunction_constraint_jacobian` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_EqualityConstrainedFunction_constraint_jacobian', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EqualityConstrainedFunction_constraint_jacobian`, 'returnType') = 'list'
+attr(`EqualityConstrainedFunction_constraint_jacobian`, "inputTypes") = c('_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`EqualityConstrainedFunction_constraint_jacobian`) = c("SWIGFunction", class('EqualityConstrainedFunction_constraint_jacobian'))
+
+# Start of delete_EqualityConstrainedFunction
+
+`delete_EqualityConstrainedFunction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_EqualityConstrainedFunction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_EqualityConstrainedFunction`, 'returnType') = 'void'
+attr(`delete_EqualityConstrainedFunction`, "inputTypes") = c('_p_datamunge__optim__EqualityConstrainedFunction')
+class(`delete_EqualityConstrainedFunction`) = c("SWIGFunction", class('delete_EqualityConstrainedFunction'))
+
+# Start of accessor method for datamunge::optim::EqualityConstrainedFunction
+setMethod('$', '_p_datamunge__optim__EqualityConstrainedFunction', function(x, name)
+
+{
+  accessorFuns = list('constraints' = EqualityConstrainedFunction_constraints, 'constraint_jacobian' = EqualityConstrainedFunction_constraint_jacobian);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::EqualityConstrainedFunction
+setMethod('delete', '_p_datamunge__optim__EqualityConstrainedFunction', function(obj) {delete_datamunge__optim__EqualityConstrainedFunction(obj)})
+# Start of InequalityConstrainedFunction_inequalities
+
+`InequalityConstrainedFunction_inequalities` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_InequalityConstrainedFunction_inequalities', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InequalityConstrainedFunction_inequalities`, 'returnType') = 'numeric'
+attr(`InequalityConstrainedFunction_inequalities`, "inputTypes") = c('_p_datamunge__optim__InequalityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`InequalityConstrainedFunction_inequalities`) = c("SWIGFunction", class('InequalityConstrainedFunction_inequalities'))
+
+# Start of InequalityConstrainedFunction_inequality_jacobian
+
+`InequalityConstrainedFunction_inequality_jacobian` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_InequalityConstrainedFunction_inequality_jacobian', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InequalityConstrainedFunction_inequality_jacobian`, 'returnType') = 'list'
+attr(`InequalityConstrainedFunction_inequality_jacobian`, "inputTypes") = c('_p_datamunge__optim__InequalityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`InequalityConstrainedFunction_inequality_jacobian`) = c("SWIGFunction", class('InequalityConstrainedFunction_inequality_jacobian'))
+
+# Start of delete_InequalityConstrainedFunction
+
+`delete_InequalityConstrainedFunction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_InequalityConstrainedFunction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_InequalityConstrainedFunction`, 'returnType') = 'void'
+attr(`delete_InequalityConstrainedFunction`, "inputTypes") = c('_p_datamunge__optim__InequalityConstrainedFunction')
+class(`delete_InequalityConstrainedFunction`) = c("SWIGFunction", class('delete_InequalityConstrainedFunction'))
+
+# Start of accessor method for datamunge::optim::InequalityConstrainedFunction
+setMethod('$', '_p_datamunge__optim__InequalityConstrainedFunction', function(x, name)
+
+{
+  accessorFuns = list('inequalities' = InequalityConstrainedFunction_inequalities, 'inequality_jacobian' = InequalityConstrainedFunction_inequality_jacobian);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::InequalityConstrainedFunction
+setMethod('delete', '_p_datamunge__optim__InequalityConstrainedFunction', function(obj) {delete_datamunge__optim__InequalityConstrainedFunction(obj)})
+# Start of delete_ResidualFunction
+
+`delete_ResidualFunction` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ResidualFunction', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ResidualFunction`, 'returnType') = 'void'
+attr(`delete_ResidualFunction`, "inputTypes") = c('_p_datamunge__optim__ResidualFunction')
+class(`delete_ResidualFunction`) = c("SWIGFunction", class('delete_ResidualFunction'))
+
+# Start of ResidualFunction_residuals
+
+`ResidualFunction_residuals` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_ResidualFunction_residuals', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ResidualFunction_residuals`, 'returnType') = 'numeric'
+attr(`ResidualFunction_residuals`, "inputTypes") = c('_p_datamunge__optim__ResidualFunction', '_p_std__vectorT_double_t')
+class(`ResidualFunction_residuals`) = c("SWIGFunction", class('ResidualFunction_residuals'))
+
+# Start of ResidualFunction_jacobian
+
+`ResidualFunction_jacobian` = function(self, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_ResidualFunction_jacobian', self, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ResidualFunction_jacobian`, 'returnType') = 'list'
+attr(`ResidualFunction_jacobian`, "inputTypes") = c('_p_datamunge__optim__ResidualFunction', '_p_std__vectorT_double_t')
+class(`ResidualFunction_jacobian`) = c("SWIGFunction", class('ResidualFunction_jacobian'))
+
+# Start of accessor method for datamunge::optim::ResidualFunction
+setMethod('$', '_p_datamunge__optim__ResidualFunction', function(x, name)
+
+{
+  accessorFuns = list('residuals' = ResidualFunction_residuals, 'jacobian' = ResidualFunction_jacobian);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ResidualFunction
+setMethod('delete', '_p_datamunge__optim__ResidualFunction', function(obj) {delete_datamunge__optim__ResidualFunction(obj)})
 # Start of GradientDescentOptions_step_size_set
 
 `GradientDescentOptions_step_size_set` = function(self, s_step_size)
@@ -34425,6 +36325,1756 @@ setMethod('$', '_p_datamunge__optim__Adam', function(x, name)
 );
 # end of accessor method for datamunge::optim::Adam
 setMethod('delete', '_p_datamunge__optim__Adam', function(obj) {delete_datamunge__optim__Adam(obj)})
+# Start of AdaGradOptions_step_size_set
+
+`AdaGradOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaGradOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_step_size_set`, 'returnType') = 'void'
+attr(`AdaGradOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions', 'numeric')
+class(`AdaGradOptions_step_size_set`) = c("SWIGFunction", class('AdaGradOptions_step_size_set'))
+
+# Start of AdaGradOptions_step_size_get
+
+`AdaGradOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaGradOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`AdaGradOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`AdaGradOptions_step_size_get`) = c("SWIGFunction", class('AdaGradOptions_step_size_get'))
+
+# Start of AdaGradOptions_epsilon_set
+
+`AdaGradOptions_epsilon_set` = function(self, s_epsilon)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaGradOptions_epsilon_set', self, s_epsilon, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_epsilon_set`, 'returnType') = 'void'
+attr(`AdaGradOptions_epsilon_set`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions', 'numeric')
+class(`AdaGradOptions_epsilon_set`) = c("SWIGFunction", class('AdaGradOptions_epsilon_set'))
+
+# Start of AdaGradOptions_epsilon_get
+
+`AdaGradOptions_epsilon_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaGradOptions_epsilon_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_epsilon_get`, 'returnType') = 'numeric'
+attr(`AdaGradOptions_epsilon_get`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`AdaGradOptions_epsilon_get`) = c("SWIGFunction", class('AdaGradOptions_epsilon_get'))
+
+# Start of AdaGradOptions_max_iterations_set
+
+`AdaGradOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_AdaGradOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`AdaGradOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions', 'integer')
+class(`AdaGradOptions_max_iterations_set`) = c("SWIGFunction", class('AdaGradOptions_max_iterations_set'))
+
+# Start of AdaGradOptions_max_iterations_get
+
+`AdaGradOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaGradOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`AdaGradOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`AdaGradOptions_max_iterations_get`) = c("SWIGFunction", class('AdaGradOptions_max_iterations_get'))
+
+# Start of AdaGradOptions_tolerance_set
+
+`AdaGradOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaGradOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_tolerance_set`, 'returnType') = 'void'
+attr(`AdaGradOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions', 'numeric')
+class(`AdaGradOptions_tolerance_set`) = c("SWIGFunction", class('AdaGradOptions_tolerance_set'))
+
+# Start of AdaGradOptions_tolerance_get
+
+`AdaGradOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaGradOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGradOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`AdaGradOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`AdaGradOptions_tolerance_get`) = c("SWIGFunction", class('AdaGradOptions_tolerance_get'))
+
+# Start of new_AdaGradOptions
+
+`AdaGradOptions` = function()
+{
+  ;ans = .Call('R_swig_new_AdaGradOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaGradOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaGradOptions);
+  ans
+  
+}
+
+attr(`AdaGradOptions`, 'returnType') = '_p_datamunge__optim__AdaGradOptions'
+class(`AdaGradOptions`) = c("SWIGFunction", class('AdaGradOptions'))
+
+# Start of delete_AdaGradOptions
+
+`delete_AdaGradOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AdaGradOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AdaGradOptions`, 'returnType') = 'void'
+attr(`delete_AdaGradOptions`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`delete_AdaGradOptions`) = c("SWIGFunction", class('delete_AdaGradOptions'))
+
+# Start of accessor method for datamunge::optim::AdaGradOptions
+setMethod('$', '_p_datamunge__optim__AdaGradOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = AdaGradOptions_step_size_get, 'epsilon' = AdaGradOptions_epsilon_get, 'max_iterations' = AdaGradOptions_max_iterations_get, 'tolerance' = AdaGradOptions_tolerance_get);
+  vaccessors = c('step_size', 'epsilon', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaGradOptions
+# Start of accessor method for datamunge::optim::AdaGradOptions
+setMethod('$<-', '_p_datamunge__optim__AdaGradOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = AdaGradOptions_step_size_set, 'epsilon' = AdaGradOptions_epsilon_set, 'max_iterations' = AdaGradOptions_max_iterations_set, 'tolerance' = AdaGradOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__AdaGradOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = AdaGradOptions_step_size_set, 'epsilon' = AdaGradOptions_epsilon_set, 'max_iterations' = AdaGradOptions_max_iterations_set, 'tolerance' = AdaGradOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaGradOptions
+setMethod('delete', '_p_datamunge__optim__AdaGradOptions', function(obj) {delete_datamunge__optim__AdaGradOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::AdaGradOptions
+CopyToR_datamunge__optim__AdaGradOptions = function(value, obj = new("datamunge::optim::AdaGradOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@epsilon = value$epsilon;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__AdaGradOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$epsilon = value@epsilon;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::AdaGradOptions
+setMethod('copyToR', '_p_datamunge__optim__AdaGradOptions', CopyToR_datamunge__optim__AdaGradOptions);
+setMethod('copyToC', 'datamunge::optim::AdaGradOptions', CopyToC_datamunge__optim__AdaGradOptions);
+
+# End definition of copy methods for datamunge::optim::AdaGradOptions
+# End definition of copy functions & methods for datamunge::optim::AdaGradOptions
+# Start of new_AdaGrad
+
+`AdaGrad__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_AdaGrad__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaGrad", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaGrad);
+  ans
+  
+}
+
+attr(`AdaGrad__SWIG_0`, 'returnType') = '_p_datamunge__optim__AdaGrad'
+attr(`AdaGrad__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__AdaGradOptions')
+class(`AdaGrad__SWIG_0`) = c("SWIGFunction", class('AdaGrad__SWIG_0'))
+
+# Start of new_AdaGrad
+
+`AdaGrad__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_AdaGrad__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaGrad", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaGrad);
+  ans
+  
+}
+
+attr(`AdaGrad__SWIG_1`, 'returnType') = '_p_datamunge__optim__AdaGrad'
+class(`AdaGrad__SWIG_1`) = c("SWIGFunction", class('AdaGrad__SWIG_1'))
+
+`AdaGrad` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- AdaGrad__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__AdaGradOptions') && length(argv[[1]]) == 1 ) {
+      f <- AdaGrad__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for AdaGrad with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of AdaGrad_optimize
+
+`AdaGrad_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_AdaGrad_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaGrad_optimize`, 'returnType') = 'numeric'
+attr(`AdaGrad_optimize`, "inputTypes") = c('_p_datamunge__optim__AdaGrad', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`AdaGrad_optimize`) = c("SWIGFunction", class('AdaGrad_optimize'))
+
+# Start of delete_AdaGrad
+
+`delete_AdaGrad` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AdaGrad', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AdaGrad`, 'returnType') = 'void'
+attr(`delete_AdaGrad`, "inputTypes") = c('_p_datamunge__optim__AdaGrad')
+class(`delete_AdaGrad`) = c("SWIGFunction", class('delete_AdaGrad'))
+
+# Start of accessor method for datamunge::optim::AdaGrad
+setMethod('$', '_p_datamunge__optim__AdaGrad', function(x, name)
+
+{
+  accessorFuns = list('optimize' = AdaGrad_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaGrad
+setMethod('delete', '_p_datamunge__optim__AdaGrad', function(obj) {delete_datamunge__optim__AdaGrad(obj)})
+# Start of AdaDeltaOptions_decay_rate_set
+
+`AdaDeltaOptions_decay_rate_set` = function(self, s_decay_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaDeltaOptions_decay_rate_set', self, s_decay_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_decay_rate_set`, 'returnType') = 'void'
+attr(`AdaDeltaOptions_decay_rate_set`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions', 'numeric')
+class(`AdaDeltaOptions_decay_rate_set`) = c("SWIGFunction", class('AdaDeltaOptions_decay_rate_set'))
+
+# Start of AdaDeltaOptions_decay_rate_get
+
+`AdaDeltaOptions_decay_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaDeltaOptions_decay_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_decay_rate_get`, 'returnType') = 'numeric'
+attr(`AdaDeltaOptions_decay_rate_get`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`AdaDeltaOptions_decay_rate_get`) = c("SWIGFunction", class('AdaDeltaOptions_decay_rate_get'))
+
+# Start of AdaDeltaOptions_epsilon_set
+
+`AdaDeltaOptions_epsilon_set` = function(self, s_epsilon)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaDeltaOptions_epsilon_set', self, s_epsilon, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_epsilon_set`, 'returnType') = 'void'
+attr(`AdaDeltaOptions_epsilon_set`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions', 'numeric')
+class(`AdaDeltaOptions_epsilon_set`) = c("SWIGFunction", class('AdaDeltaOptions_epsilon_set'))
+
+# Start of AdaDeltaOptions_epsilon_get
+
+`AdaDeltaOptions_epsilon_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaDeltaOptions_epsilon_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_epsilon_get`, 'returnType') = 'numeric'
+attr(`AdaDeltaOptions_epsilon_get`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`AdaDeltaOptions_epsilon_get`) = c("SWIGFunction", class('AdaDeltaOptions_epsilon_get'))
+
+# Start of AdaDeltaOptions_max_iterations_set
+
+`AdaDeltaOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_AdaDeltaOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`AdaDeltaOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions', 'integer')
+class(`AdaDeltaOptions_max_iterations_set`) = c("SWIGFunction", class('AdaDeltaOptions_max_iterations_set'))
+
+# Start of AdaDeltaOptions_max_iterations_get
+
+`AdaDeltaOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaDeltaOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`AdaDeltaOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`AdaDeltaOptions_max_iterations_get`) = c("SWIGFunction", class('AdaDeltaOptions_max_iterations_get'))
+
+# Start of AdaDeltaOptions_tolerance_set
+
+`AdaDeltaOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AdaDeltaOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_tolerance_set`, 'returnType') = 'void'
+attr(`AdaDeltaOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions', 'numeric')
+class(`AdaDeltaOptions_tolerance_set`) = c("SWIGFunction", class('AdaDeltaOptions_tolerance_set'))
+
+# Start of AdaDeltaOptions_tolerance_get
+
+`AdaDeltaOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AdaDeltaOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDeltaOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`AdaDeltaOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`AdaDeltaOptions_tolerance_get`) = c("SWIGFunction", class('AdaDeltaOptions_tolerance_get'))
+
+# Start of new_AdaDeltaOptions
+
+`AdaDeltaOptions` = function()
+{
+  ;ans = .Call('R_swig_new_AdaDeltaOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaDeltaOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaDeltaOptions);
+  ans
+  
+}
+
+attr(`AdaDeltaOptions`, 'returnType') = '_p_datamunge__optim__AdaDeltaOptions'
+class(`AdaDeltaOptions`) = c("SWIGFunction", class('AdaDeltaOptions'))
+
+# Start of delete_AdaDeltaOptions
+
+`delete_AdaDeltaOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AdaDeltaOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AdaDeltaOptions`, 'returnType') = 'void'
+attr(`delete_AdaDeltaOptions`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`delete_AdaDeltaOptions`) = c("SWIGFunction", class('delete_AdaDeltaOptions'))
+
+# Start of accessor method for datamunge::optim::AdaDeltaOptions
+setMethod('$', '_p_datamunge__optim__AdaDeltaOptions', function(x, name)
+
+{
+  accessorFuns = list('decay_rate' = AdaDeltaOptions_decay_rate_get, 'epsilon' = AdaDeltaOptions_epsilon_get, 'max_iterations' = AdaDeltaOptions_max_iterations_get, 'tolerance' = AdaDeltaOptions_tolerance_get);
+  vaccessors = c('decay_rate', 'epsilon', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaDeltaOptions
+# Start of accessor method for datamunge::optim::AdaDeltaOptions
+setMethod('$<-', '_p_datamunge__optim__AdaDeltaOptions', function(x, name, value)
+
+{
+  accessorFuns = list('decay_rate' = AdaDeltaOptions_decay_rate_set, 'epsilon' = AdaDeltaOptions_epsilon_set, 'max_iterations' = AdaDeltaOptions_max_iterations_set, 'tolerance' = AdaDeltaOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__AdaDeltaOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('decay_rate' = AdaDeltaOptions_decay_rate_set, 'epsilon' = AdaDeltaOptions_epsilon_set, 'max_iterations' = AdaDeltaOptions_max_iterations_set, 'tolerance' = AdaDeltaOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaDeltaOptions
+setMethod('delete', '_p_datamunge__optim__AdaDeltaOptions', function(obj) {delete_datamunge__optim__AdaDeltaOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::AdaDeltaOptions
+CopyToR_datamunge__optim__AdaDeltaOptions = function(value, obj = new("datamunge::optim::AdaDeltaOptions"))
+{
+  obj@decay_rate = value$decay_rate;
+  obj@epsilon = value$epsilon;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__AdaDeltaOptions = function(value, obj)
+{
+  obj$decay_rate = value@decay_rate;
+  obj$epsilon = value@epsilon;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::AdaDeltaOptions
+setMethod('copyToR', '_p_datamunge__optim__AdaDeltaOptions', CopyToR_datamunge__optim__AdaDeltaOptions);
+setMethod('copyToC', 'datamunge::optim::AdaDeltaOptions', CopyToC_datamunge__optim__AdaDeltaOptions);
+
+# End definition of copy methods for datamunge::optim::AdaDeltaOptions
+# End definition of copy functions & methods for datamunge::optim::AdaDeltaOptions
+# Start of new_AdaDelta
+
+`AdaDelta__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_AdaDelta__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaDelta", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaDelta);
+  ans
+  
+}
+
+attr(`AdaDelta__SWIG_0`, 'returnType') = '_p_datamunge__optim__AdaDelta'
+attr(`AdaDelta__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__AdaDeltaOptions')
+class(`AdaDelta__SWIG_0`) = c("SWIGFunction", class('AdaDelta__SWIG_0'))
+
+# Start of new_AdaDelta
+
+`AdaDelta__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_AdaDelta__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AdaDelta", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AdaDelta);
+  ans
+  
+}
+
+attr(`AdaDelta__SWIG_1`, 'returnType') = '_p_datamunge__optim__AdaDelta'
+class(`AdaDelta__SWIG_1`) = c("SWIGFunction", class('AdaDelta__SWIG_1'))
+
+`AdaDelta` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- AdaDelta__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__AdaDeltaOptions') && length(argv[[1]]) == 1 ) {
+      f <- AdaDelta__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for AdaDelta with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of AdaDelta_optimize
+
+`AdaDelta_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_AdaDelta_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AdaDelta_optimize`, 'returnType') = 'numeric'
+attr(`AdaDelta_optimize`, "inputTypes") = c('_p_datamunge__optim__AdaDelta', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`AdaDelta_optimize`) = c("SWIGFunction", class('AdaDelta_optimize'))
+
+# Start of delete_AdaDelta
+
+`delete_AdaDelta` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AdaDelta', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AdaDelta`, 'returnType') = 'void'
+attr(`delete_AdaDelta`, "inputTypes") = c('_p_datamunge__optim__AdaDelta')
+class(`delete_AdaDelta`) = c("SWIGFunction", class('delete_AdaDelta'))
+
+# Start of accessor method for datamunge::optim::AdaDelta
+setMethod('$', '_p_datamunge__optim__AdaDelta', function(x, name)
+
+{
+  accessorFuns = list('optimize' = AdaDelta_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::AdaDelta
+setMethod('delete', '_p_datamunge__optim__AdaDelta', function(obj) {delete_datamunge__optim__AdaDelta(obj)})
+# Start of AMSGradOptions_step_size_set
+
+`AMSGradOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AMSGradOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_step_size_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'numeric')
+class(`AMSGradOptions_step_size_set`) = c("SWIGFunction", class('AMSGradOptions_step_size_set'))
+
+# Start of AMSGradOptions_step_size_get
+
+`AMSGradOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`AMSGradOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_step_size_get`) = c("SWIGFunction", class('AMSGradOptions_step_size_get'))
+
+# Start of AMSGradOptions_beta1_set
+
+`AMSGradOptions_beta1_set` = function(self, s_beta1)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AMSGradOptions_beta1_set', self, s_beta1, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_beta1_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_beta1_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'numeric')
+class(`AMSGradOptions_beta1_set`) = c("SWIGFunction", class('AMSGradOptions_beta1_set'))
+
+# Start of AMSGradOptions_beta1_get
+
+`AMSGradOptions_beta1_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_beta1_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_beta1_get`, 'returnType') = 'numeric'
+attr(`AMSGradOptions_beta1_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_beta1_get`) = c("SWIGFunction", class('AMSGradOptions_beta1_get'))
+
+# Start of AMSGradOptions_beta2_set
+
+`AMSGradOptions_beta2_set` = function(self, s_beta2)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AMSGradOptions_beta2_set', self, s_beta2, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_beta2_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_beta2_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'numeric')
+class(`AMSGradOptions_beta2_set`) = c("SWIGFunction", class('AMSGradOptions_beta2_set'))
+
+# Start of AMSGradOptions_beta2_get
+
+`AMSGradOptions_beta2_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_beta2_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_beta2_get`, 'returnType') = 'numeric'
+attr(`AMSGradOptions_beta2_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_beta2_get`) = c("SWIGFunction", class('AMSGradOptions_beta2_get'))
+
+# Start of AMSGradOptions_epsilon_set
+
+`AMSGradOptions_epsilon_set` = function(self, s_epsilon)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AMSGradOptions_epsilon_set', self, s_epsilon, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_epsilon_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_epsilon_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'numeric')
+class(`AMSGradOptions_epsilon_set`) = c("SWIGFunction", class('AMSGradOptions_epsilon_set'))
+
+# Start of AMSGradOptions_epsilon_get
+
+`AMSGradOptions_epsilon_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_epsilon_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_epsilon_get`, 'returnType') = 'numeric'
+attr(`AMSGradOptions_epsilon_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_epsilon_get`) = c("SWIGFunction", class('AMSGradOptions_epsilon_get'))
+
+# Start of AMSGradOptions_max_iterations_set
+
+`AMSGradOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_AMSGradOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'integer')
+class(`AMSGradOptions_max_iterations_set`) = c("SWIGFunction", class('AMSGradOptions_max_iterations_set'))
+
+# Start of AMSGradOptions_max_iterations_get
+
+`AMSGradOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`AMSGradOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_max_iterations_get`) = c("SWIGFunction", class('AMSGradOptions_max_iterations_get'))
+
+# Start of AMSGradOptions_tolerance_set
+
+`AMSGradOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AMSGradOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_tolerance_set`, 'returnType') = 'void'
+attr(`AMSGradOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions', 'numeric')
+class(`AMSGradOptions_tolerance_set`) = c("SWIGFunction", class('AMSGradOptions_tolerance_set'))
+
+# Start of AMSGradOptions_tolerance_get
+
+`AMSGradOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AMSGradOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGradOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`AMSGradOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGradOptions_tolerance_get`) = c("SWIGFunction", class('AMSGradOptions_tolerance_get'))
+
+# Start of new_AMSGradOptions
+
+`AMSGradOptions` = function()
+{
+  ;ans = .Call('R_swig_new_AMSGradOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AMSGradOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AMSGradOptions);
+  ans
+  
+}
+
+attr(`AMSGradOptions`, 'returnType') = '_p_datamunge__optim__AMSGradOptions'
+class(`AMSGradOptions`) = c("SWIGFunction", class('AMSGradOptions'))
+
+# Start of delete_AMSGradOptions
+
+`delete_AMSGradOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AMSGradOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AMSGradOptions`, 'returnType') = 'void'
+attr(`delete_AMSGradOptions`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`delete_AMSGradOptions`) = c("SWIGFunction", class('delete_AMSGradOptions'))
+
+# Start of accessor method for datamunge::optim::AMSGradOptions
+setMethod('$', '_p_datamunge__optim__AMSGradOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = AMSGradOptions_step_size_get, 'beta1' = AMSGradOptions_beta1_get, 'beta2' = AMSGradOptions_beta2_get, 'epsilon' = AMSGradOptions_epsilon_get, 'max_iterations' = AMSGradOptions_max_iterations_get, 'tolerance' = AMSGradOptions_tolerance_get);
+  vaccessors = c('step_size', 'beta1', 'beta2', 'epsilon', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::AMSGradOptions
+# Start of accessor method for datamunge::optim::AMSGradOptions
+setMethod('$<-', '_p_datamunge__optim__AMSGradOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = AMSGradOptions_step_size_set, 'beta1' = AMSGradOptions_beta1_set, 'beta2' = AMSGradOptions_beta2_set, 'epsilon' = AMSGradOptions_epsilon_set, 'max_iterations' = AMSGradOptions_max_iterations_set, 'tolerance' = AMSGradOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__AMSGradOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = AMSGradOptions_step_size_set, 'beta1' = AMSGradOptions_beta1_set, 'beta2' = AMSGradOptions_beta2_set, 'epsilon' = AMSGradOptions_epsilon_set, 'max_iterations' = AMSGradOptions_max_iterations_set, 'tolerance' = AMSGradOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::AMSGradOptions
+setMethod('delete', '_p_datamunge__optim__AMSGradOptions', function(obj) {delete_datamunge__optim__AMSGradOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::AMSGradOptions
+CopyToR_datamunge__optim__AMSGradOptions = function(value, obj = new("datamunge::optim::AMSGradOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@beta1 = value$beta1;
+  obj@beta2 = value$beta2;
+  obj@epsilon = value$epsilon;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__AMSGradOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$beta1 = value@beta1;
+  obj$beta2 = value@beta2;
+  obj$epsilon = value@epsilon;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::AMSGradOptions
+setMethod('copyToR', '_p_datamunge__optim__AMSGradOptions', CopyToR_datamunge__optim__AMSGradOptions);
+setMethod('copyToC', 'datamunge::optim::AMSGradOptions', CopyToC_datamunge__optim__AMSGradOptions);
+
+# End definition of copy methods for datamunge::optim::AMSGradOptions
+# End definition of copy functions & methods for datamunge::optim::AMSGradOptions
+# Start of new_AMSGrad
+
+`AMSGrad__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_AMSGrad__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AMSGrad", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AMSGrad);
+  ans
+  
+}
+
+attr(`AMSGrad__SWIG_0`, 'returnType') = '_p_datamunge__optim__AMSGrad'
+attr(`AMSGrad__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__AMSGradOptions')
+class(`AMSGrad__SWIG_0`) = c("SWIGFunction", class('AMSGrad__SWIG_0'))
+
+# Start of new_AMSGrad
+
+`AMSGrad__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_AMSGrad__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AMSGrad", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AMSGrad);
+  ans
+  
+}
+
+attr(`AMSGrad__SWIG_1`, 'returnType') = '_p_datamunge__optim__AMSGrad'
+class(`AMSGrad__SWIG_1`) = c("SWIGFunction", class('AMSGrad__SWIG_1'))
+
+`AMSGrad` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- AMSGrad__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__AMSGradOptions') && length(argv[[1]]) == 1 ) {
+      f <- AMSGrad__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for AMSGrad with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of AMSGrad_optimize
+
+`AMSGrad_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_AMSGrad_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AMSGrad_optimize`, 'returnType') = 'numeric'
+attr(`AMSGrad_optimize`, "inputTypes") = c('_p_datamunge__optim__AMSGrad', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`AMSGrad_optimize`) = c("SWIGFunction", class('AMSGrad_optimize'))
+
+# Start of delete_AMSGrad
+
+`delete_AMSGrad` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AMSGrad', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AMSGrad`, 'returnType') = 'void'
+attr(`delete_AMSGrad`, "inputTypes") = c('_p_datamunge__optim__AMSGrad')
+class(`delete_AMSGrad`) = c("SWIGFunction", class('delete_AMSGrad'))
+
+# Start of accessor method for datamunge::optim::AMSGrad
+setMethod('$', '_p_datamunge__optim__AMSGrad', function(x, name)
+
+{
+  accessorFuns = list('optimize' = AMSGrad_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::AMSGrad
+setMethod('delete', '_p_datamunge__optim__AMSGrad', function(obj) {delete_datamunge__optim__AMSGrad(obj)})
+# Start of NadamOptions_step_size_set
+
+`NadamOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NadamOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_step_size_set`, 'returnType') = 'void'
+attr(`NadamOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'numeric')
+class(`NadamOptions_step_size_set`) = c("SWIGFunction", class('NadamOptions_step_size_set'))
+
+# Start of NadamOptions_step_size_get
+
+`NadamOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`NadamOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_step_size_get`) = c("SWIGFunction", class('NadamOptions_step_size_get'))
+
+# Start of NadamOptions_beta1_set
+
+`NadamOptions_beta1_set` = function(self, s_beta1)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NadamOptions_beta1_set', self, s_beta1, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_beta1_set`, 'returnType') = 'void'
+attr(`NadamOptions_beta1_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'numeric')
+class(`NadamOptions_beta1_set`) = c("SWIGFunction", class('NadamOptions_beta1_set'))
+
+# Start of NadamOptions_beta1_get
+
+`NadamOptions_beta1_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_beta1_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_beta1_get`, 'returnType') = 'numeric'
+attr(`NadamOptions_beta1_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_beta1_get`) = c("SWIGFunction", class('NadamOptions_beta1_get'))
+
+# Start of NadamOptions_beta2_set
+
+`NadamOptions_beta2_set` = function(self, s_beta2)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NadamOptions_beta2_set', self, s_beta2, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_beta2_set`, 'returnType') = 'void'
+attr(`NadamOptions_beta2_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'numeric')
+class(`NadamOptions_beta2_set`) = c("SWIGFunction", class('NadamOptions_beta2_set'))
+
+# Start of NadamOptions_beta2_get
+
+`NadamOptions_beta2_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_beta2_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_beta2_get`, 'returnType') = 'numeric'
+attr(`NadamOptions_beta2_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_beta2_get`) = c("SWIGFunction", class('NadamOptions_beta2_get'))
+
+# Start of NadamOptions_epsilon_set
+
+`NadamOptions_epsilon_set` = function(self, s_epsilon)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NadamOptions_epsilon_set', self, s_epsilon, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_epsilon_set`, 'returnType') = 'void'
+attr(`NadamOptions_epsilon_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'numeric')
+class(`NadamOptions_epsilon_set`) = c("SWIGFunction", class('NadamOptions_epsilon_set'))
+
+# Start of NadamOptions_epsilon_get
+
+`NadamOptions_epsilon_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_epsilon_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_epsilon_get`, 'returnType') = 'numeric'
+attr(`NadamOptions_epsilon_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_epsilon_get`) = c("SWIGFunction", class('NadamOptions_epsilon_get'))
+
+# Start of NadamOptions_max_iterations_set
+
+`NadamOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_NadamOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`NadamOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'integer')
+class(`NadamOptions_max_iterations_set`) = c("SWIGFunction", class('NadamOptions_max_iterations_set'))
+
+# Start of NadamOptions_max_iterations_get
+
+`NadamOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`NadamOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_max_iterations_get`) = c("SWIGFunction", class('NadamOptions_max_iterations_get'))
+
+# Start of NadamOptions_tolerance_set
+
+`NadamOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NadamOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_tolerance_set`, 'returnType') = 'void'
+attr(`NadamOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__NadamOptions', 'numeric')
+class(`NadamOptions_tolerance_set`) = c("SWIGFunction", class('NadamOptions_tolerance_set'))
+
+# Start of NadamOptions_tolerance_get
+
+`NadamOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NadamOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NadamOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`NadamOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`NadamOptions_tolerance_get`) = c("SWIGFunction", class('NadamOptions_tolerance_get'))
+
+# Start of new_NadamOptions
+
+`NadamOptions` = function()
+{
+  ;ans = .Call('R_swig_new_NadamOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NadamOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NadamOptions);
+  ans
+  
+}
+
+attr(`NadamOptions`, 'returnType') = '_p_datamunge__optim__NadamOptions'
+class(`NadamOptions`) = c("SWIGFunction", class('NadamOptions'))
+
+# Start of delete_NadamOptions
+
+`delete_NadamOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NadamOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NadamOptions`, 'returnType') = 'void'
+attr(`delete_NadamOptions`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`delete_NadamOptions`) = c("SWIGFunction", class('delete_NadamOptions'))
+
+# Start of accessor method for datamunge::optim::NadamOptions
+setMethod('$', '_p_datamunge__optim__NadamOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = NadamOptions_step_size_get, 'beta1' = NadamOptions_beta1_get, 'beta2' = NadamOptions_beta2_get, 'epsilon' = NadamOptions_epsilon_get, 'max_iterations' = NadamOptions_max_iterations_get, 'tolerance' = NadamOptions_tolerance_get);
+  vaccessors = c('step_size', 'beta1', 'beta2', 'epsilon', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::NadamOptions
+# Start of accessor method for datamunge::optim::NadamOptions
+setMethod('$<-', '_p_datamunge__optim__NadamOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = NadamOptions_step_size_set, 'beta1' = NadamOptions_beta1_set, 'beta2' = NadamOptions_beta2_set, 'epsilon' = NadamOptions_epsilon_set, 'max_iterations' = NadamOptions_max_iterations_set, 'tolerance' = NadamOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__NadamOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = NadamOptions_step_size_set, 'beta1' = NadamOptions_beta1_set, 'beta2' = NadamOptions_beta2_set, 'epsilon' = NadamOptions_epsilon_set, 'max_iterations' = NadamOptions_max_iterations_set, 'tolerance' = NadamOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::NadamOptions
+setMethod('delete', '_p_datamunge__optim__NadamOptions', function(obj) {delete_datamunge__optim__NadamOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::NadamOptions
+CopyToR_datamunge__optim__NadamOptions = function(value, obj = new("datamunge::optim::NadamOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@beta1 = value$beta1;
+  obj@beta2 = value$beta2;
+  obj@epsilon = value$epsilon;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__NadamOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$beta1 = value@beta1;
+  obj$beta2 = value@beta2;
+  obj$epsilon = value@epsilon;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::NadamOptions
+setMethod('copyToR', '_p_datamunge__optim__NadamOptions', CopyToR_datamunge__optim__NadamOptions);
+setMethod('copyToC', 'datamunge::optim::NadamOptions', CopyToC_datamunge__optim__NadamOptions);
+
+# End definition of copy methods for datamunge::optim::NadamOptions
+# End definition of copy functions & methods for datamunge::optim::NadamOptions
+# Start of new_Nadam
+
+`Nadam__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_Nadam__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__Nadam", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Nadam);
+  ans
+  
+}
+
+attr(`Nadam__SWIG_0`, 'returnType') = '_p_datamunge__optim__Nadam'
+attr(`Nadam__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__NadamOptions')
+class(`Nadam__SWIG_0`) = c("SWIGFunction", class('Nadam__SWIG_0'))
+
+# Start of new_Nadam
+
+`Nadam__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_Nadam__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__Nadam", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Nadam);
+  ans
+  
+}
+
+attr(`Nadam__SWIG_1`, 'returnType') = '_p_datamunge__optim__Nadam'
+class(`Nadam__SWIG_1`) = c("SWIGFunction", class('Nadam__SWIG_1'))
+
+`Nadam` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- Nadam__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__NadamOptions') && length(argv[[1]]) == 1 ) {
+      f <- Nadam__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Nadam with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Nadam_optimize
+
+`Nadam_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_Nadam_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Nadam_optimize`, 'returnType') = 'numeric'
+attr(`Nadam_optimize`, "inputTypes") = c('_p_datamunge__optim__Nadam', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`Nadam_optimize`) = c("SWIGFunction", class('Nadam_optimize'))
+
+# Start of delete_Nadam
+
+`delete_Nadam` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_Nadam', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_Nadam`, 'returnType') = 'void'
+attr(`delete_Nadam`, "inputTypes") = c('_p_datamunge__optim__Nadam')
+class(`delete_Nadam`) = c("SWIGFunction", class('delete_Nadam'))
+
+# Start of accessor method for datamunge::optim::Nadam
+setMethod('$', '_p_datamunge__optim__Nadam', function(x, name)
+
+{
+  accessorFuns = list('optimize' = Nadam_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::Nadam
+setMethod('delete', '_p_datamunge__optim__Nadam', function(obj) {delete_datamunge__optim__Nadam(obj)})
+# Start of RMSPropOptions_step_size_set
+
+`RMSPropOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RMSPropOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_step_size_set`, 'returnType') = 'void'
+attr(`RMSPropOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions', 'numeric')
+class(`RMSPropOptions_step_size_set`) = c("SWIGFunction", class('RMSPropOptions_step_size_set'))
+
+# Start of RMSPropOptions_step_size_get
+
+`RMSPropOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RMSPropOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`RMSPropOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSPropOptions_step_size_get`) = c("SWIGFunction", class('RMSPropOptions_step_size_get'))
+
+# Start of RMSPropOptions_decay_rate_set
+
+`RMSPropOptions_decay_rate_set` = function(self, s_decay_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RMSPropOptions_decay_rate_set', self, s_decay_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_decay_rate_set`, 'returnType') = 'void'
+attr(`RMSPropOptions_decay_rate_set`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions', 'numeric')
+class(`RMSPropOptions_decay_rate_set`) = c("SWIGFunction", class('RMSPropOptions_decay_rate_set'))
+
+# Start of RMSPropOptions_decay_rate_get
+
+`RMSPropOptions_decay_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RMSPropOptions_decay_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_decay_rate_get`, 'returnType') = 'numeric'
+attr(`RMSPropOptions_decay_rate_get`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSPropOptions_decay_rate_get`) = c("SWIGFunction", class('RMSPropOptions_decay_rate_get'))
+
+# Start of RMSPropOptions_epsilon_set
+
+`RMSPropOptions_epsilon_set` = function(self, s_epsilon)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RMSPropOptions_epsilon_set', self, s_epsilon, PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_epsilon_set`, 'returnType') = 'void'
+attr(`RMSPropOptions_epsilon_set`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions', 'numeric')
+class(`RMSPropOptions_epsilon_set`) = c("SWIGFunction", class('RMSPropOptions_epsilon_set'))
+
+# Start of RMSPropOptions_epsilon_get
+
+`RMSPropOptions_epsilon_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RMSPropOptions_epsilon_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_epsilon_get`, 'returnType') = 'numeric'
+attr(`RMSPropOptions_epsilon_get`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSPropOptions_epsilon_get`) = c("SWIGFunction", class('RMSPropOptions_epsilon_get'))
+
+# Start of RMSPropOptions_max_iterations_set
+
+`RMSPropOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_RMSPropOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`RMSPropOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions', 'integer')
+class(`RMSPropOptions_max_iterations_set`) = c("SWIGFunction", class('RMSPropOptions_max_iterations_set'))
+
+# Start of RMSPropOptions_max_iterations_get
+
+`RMSPropOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RMSPropOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`RMSPropOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSPropOptions_max_iterations_get`) = c("SWIGFunction", class('RMSPropOptions_max_iterations_get'))
+
+# Start of RMSPropOptions_tolerance_set
+
+`RMSPropOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RMSPropOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_tolerance_set`, 'returnType') = 'void'
+attr(`RMSPropOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions', 'numeric')
+class(`RMSPropOptions_tolerance_set`) = c("SWIGFunction", class('RMSPropOptions_tolerance_set'))
+
+# Start of RMSPropOptions_tolerance_get
+
+`RMSPropOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RMSPropOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSPropOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`RMSPropOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSPropOptions_tolerance_get`) = c("SWIGFunction", class('RMSPropOptions_tolerance_get'))
+
+# Start of new_RMSPropOptions
+
+`RMSPropOptions` = function()
+{
+  ;ans = .Call('R_swig_new_RMSPropOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RMSPropOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RMSPropOptions);
+  ans
+  
+}
+
+attr(`RMSPropOptions`, 'returnType') = '_p_datamunge__optim__RMSPropOptions'
+class(`RMSPropOptions`) = c("SWIGFunction", class('RMSPropOptions'))
+
+# Start of delete_RMSPropOptions
+
+`delete_RMSPropOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RMSPropOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RMSPropOptions`, 'returnType') = 'void'
+attr(`delete_RMSPropOptions`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`delete_RMSPropOptions`) = c("SWIGFunction", class('delete_RMSPropOptions'))
+
+# Start of accessor method for datamunge::optim::RMSPropOptions
+setMethod('$', '_p_datamunge__optim__RMSPropOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = RMSPropOptions_step_size_get, 'decay_rate' = RMSPropOptions_decay_rate_get, 'epsilon' = RMSPropOptions_epsilon_get, 'max_iterations' = RMSPropOptions_max_iterations_get, 'tolerance' = RMSPropOptions_tolerance_get);
+  vaccessors = c('step_size', 'decay_rate', 'epsilon', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::RMSPropOptions
+# Start of accessor method for datamunge::optim::RMSPropOptions
+setMethod('$<-', '_p_datamunge__optim__RMSPropOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = RMSPropOptions_step_size_set, 'decay_rate' = RMSPropOptions_decay_rate_set, 'epsilon' = RMSPropOptions_epsilon_set, 'max_iterations' = RMSPropOptions_max_iterations_set, 'tolerance' = RMSPropOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__RMSPropOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = RMSPropOptions_step_size_set, 'decay_rate' = RMSPropOptions_decay_rate_set, 'epsilon' = RMSPropOptions_epsilon_set, 'max_iterations' = RMSPropOptions_max_iterations_set, 'tolerance' = RMSPropOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::RMSPropOptions
+setMethod('delete', '_p_datamunge__optim__RMSPropOptions', function(obj) {delete_datamunge__optim__RMSPropOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::RMSPropOptions
+CopyToR_datamunge__optim__RMSPropOptions = function(value, obj = new("datamunge::optim::RMSPropOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@decay_rate = value$decay_rate;
+  obj@epsilon = value$epsilon;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__RMSPropOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$decay_rate = value@decay_rate;
+  obj$epsilon = value@epsilon;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::RMSPropOptions
+setMethod('copyToR', '_p_datamunge__optim__RMSPropOptions', CopyToR_datamunge__optim__RMSPropOptions);
+setMethod('copyToC', 'datamunge::optim::RMSPropOptions', CopyToC_datamunge__optim__RMSPropOptions);
+
+# End definition of copy methods for datamunge::optim::RMSPropOptions
+# End definition of copy functions & methods for datamunge::optim::RMSPropOptions
+# Start of new_RMSProp
+
+`RMSProp__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_RMSProp__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RMSProp", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RMSProp);
+  ans
+  
+}
+
+attr(`RMSProp__SWIG_0`, 'returnType') = '_p_datamunge__optim__RMSProp'
+attr(`RMSProp__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__RMSPropOptions')
+class(`RMSProp__SWIG_0`) = c("SWIGFunction", class('RMSProp__SWIG_0'))
+
+# Start of new_RMSProp
+
+`RMSProp__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_RMSProp__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RMSProp", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RMSProp);
+  ans
+  
+}
+
+attr(`RMSProp__SWIG_1`, 'returnType') = '_p_datamunge__optim__RMSProp'
+class(`RMSProp__SWIG_1`) = c("SWIGFunction", class('RMSProp__SWIG_1'))
+
+`RMSProp` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- RMSProp__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__RMSPropOptions') && length(argv[[1]]) == 1 ) {
+      f <- RMSProp__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RMSProp with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RMSProp_optimize
+
+`RMSProp_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_RMSProp_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RMSProp_optimize`, 'returnType') = 'numeric'
+attr(`RMSProp_optimize`, "inputTypes") = c('_p_datamunge__optim__RMSProp', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`RMSProp_optimize`) = c("SWIGFunction", class('RMSProp_optimize'))
+
+# Start of delete_RMSProp
+
+`delete_RMSProp` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RMSProp', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RMSProp`, 'returnType') = 'void'
+attr(`delete_RMSProp`, "inputTypes") = c('_p_datamunge__optim__RMSProp')
+class(`delete_RMSProp`) = c("SWIGFunction", class('delete_RMSProp'))
+
+# Start of accessor method for datamunge::optim::RMSProp
+setMethod('$', '_p_datamunge__optim__RMSProp', function(x, name)
+
+{
+  accessorFuns = list('optimize' = RMSProp_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::RMSProp
+setMethod('delete', '_p_datamunge__optim__RMSProp', function(obj) {delete_datamunge__optim__RMSProp(obj)})
 # Start of LBFGSOptions_max_iterations_set
 
 `LBFGSOptions_max_iterations_set` = function(self, s_max_iterations)
@@ -34814,6 +38464,414 @@ setMethod('$', '_p_datamunge__optim__LBFGS', function(x, name)
 );
 # end of accessor method for datamunge::optim::LBFGS
 setMethod('delete', '_p_datamunge__optim__LBFGS', function(obj) {delete_datamunge__optim__LBFGS(obj)})
+# Start of NelderMeadOptions_initial_simplex_scale_set
+
+`NelderMeadOptions_initial_simplex_scale_set` = function(self, s_initial_simplex_scale)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_initial_simplex_scale_set', self, s_initial_simplex_scale, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_initial_simplex_scale_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_initial_simplex_scale_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_initial_simplex_scale_set`) = c("SWIGFunction", class('NelderMeadOptions_initial_simplex_scale_set'))
+
+# Start of NelderMeadOptions_initial_simplex_scale_get
+
+`NelderMeadOptions_initial_simplex_scale_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_initial_simplex_scale_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_initial_simplex_scale_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_initial_simplex_scale_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_initial_simplex_scale_get`) = c("SWIGFunction", class('NelderMeadOptions_initial_simplex_scale_get'))
+
+# Start of NelderMeadOptions_reflection_set
+
+`NelderMeadOptions_reflection_set` = function(self, s_reflection)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_reflection_set', self, s_reflection, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_reflection_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_reflection_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_reflection_set`) = c("SWIGFunction", class('NelderMeadOptions_reflection_set'))
+
+# Start of NelderMeadOptions_reflection_get
+
+`NelderMeadOptions_reflection_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_reflection_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_reflection_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_reflection_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_reflection_get`) = c("SWIGFunction", class('NelderMeadOptions_reflection_get'))
+
+# Start of NelderMeadOptions_expansion_set
+
+`NelderMeadOptions_expansion_set` = function(self, s_expansion)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_expansion_set', self, s_expansion, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_expansion_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_expansion_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_expansion_set`) = c("SWIGFunction", class('NelderMeadOptions_expansion_set'))
+
+# Start of NelderMeadOptions_expansion_get
+
+`NelderMeadOptions_expansion_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_expansion_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_expansion_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_expansion_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_expansion_get`) = c("SWIGFunction", class('NelderMeadOptions_expansion_get'))
+
+# Start of NelderMeadOptions_contraction_set
+
+`NelderMeadOptions_contraction_set` = function(self, s_contraction)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_contraction_set', self, s_contraction, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_contraction_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_contraction_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_contraction_set`) = c("SWIGFunction", class('NelderMeadOptions_contraction_set'))
+
+# Start of NelderMeadOptions_contraction_get
+
+`NelderMeadOptions_contraction_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_contraction_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_contraction_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_contraction_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_contraction_get`) = c("SWIGFunction", class('NelderMeadOptions_contraction_get'))
+
+# Start of NelderMeadOptions_shrink_set
+
+`NelderMeadOptions_shrink_set` = function(self, s_shrink)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_shrink_set', self, s_shrink, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_shrink_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_shrink_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_shrink_set`) = c("SWIGFunction", class('NelderMeadOptions_shrink_set'))
+
+# Start of NelderMeadOptions_shrink_get
+
+`NelderMeadOptions_shrink_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_shrink_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_shrink_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_shrink_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_shrink_get`) = c("SWIGFunction", class('NelderMeadOptions_shrink_get'))
+
+# Start of NelderMeadOptions_max_iterations_set
+
+`NelderMeadOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_NelderMeadOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'integer')
+class(`NelderMeadOptions_max_iterations_set`) = c("SWIGFunction", class('NelderMeadOptions_max_iterations_set'))
+
+# Start of NelderMeadOptions_max_iterations_get
+
+`NelderMeadOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`NelderMeadOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_max_iterations_get`) = c("SWIGFunction", class('NelderMeadOptions_max_iterations_get'))
+
+# Start of NelderMeadOptions_tolerance_set
+
+`NelderMeadOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NelderMeadOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_tolerance_set`, 'returnType') = 'void'
+attr(`NelderMeadOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions', 'numeric')
+class(`NelderMeadOptions_tolerance_set`) = c("SWIGFunction", class('NelderMeadOptions_tolerance_set'))
+
+# Start of NelderMeadOptions_tolerance_get
+
+`NelderMeadOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NelderMeadOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMeadOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`NelderMeadOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMeadOptions_tolerance_get`) = c("SWIGFunction", class('NelderMeadOptions_tolerance_get'))
+
+# Start of new_NelderMeadOptions
+
+`NelderMeadOptions` = function()
+{
+  ;ans = .Call('R_swig_new_NelderMeadOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NelderMeadOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NelderMeadOptions);
+  ans
+  
+}
+
+attr(`NelderMeadOptions`, 'returnType') = '_p_datamunge__optim__NelderMeadOptions'
+class(`NelderMeadOptions`) = c("SWIGFunction", class('NelderMeadOptions'))
+
+# Start of delete_NelderMeadOptions
+
+`delete_NelderMeadOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NelderMeadOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NelderMeadOptions`, 'returnType') = 'void'
+attr(`delete_NelderMeadOptions`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`delete_NelderMeadOptions`) = c("SWIGFunction", class('delete_NelderMeadOptions'))
+
+# Start of accessor method for datamunge::optim::NelderMeadOptions
+setMethod('$', '_p_datamunge__optim__NelderMeadOptions', function(x, name)
+
+{
+  accessorFuns = list('initial_simplex_scale' = NelderMeadOptions_initial_simplex_scale_get, 'reflection' = NelderMeadOptions_reflection_get, 'expansion' = NelderMeadOptions_expansion_get, 'contraction' = NelderMeadOptions_contraction_get, 'shrink' = NelderMeadOptions_shrink_get, 'max_iterations' = NelderMeadOptions_max_iterations_get, 'tolerance' = NelderMeadOptions_tolerance_get);
+  vaccessors = c('initial_simplex_scale', 'reflection', 'expansion', 'contraction', 'shrink', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::NelderMeadOptions
+# Start of accessor method for datamunge::optim::NelderMeadOptions
+setMethod('$<-', '_p_datamunge__optim__NelderMeadOptions', function(x, name, value)
+
+{
+  accessorFuns = list('initial_simplex_scale' = NelderMeadOptions_initial_simplex_scale_set, 'reflection' = NelderMeadOptions_reflection_set, 'expansion' = NelderMeadOptions_expansion_set, 'contraction' = NelderMeadOptions_contraction_set, 'shrink' = NelderMeadOptions_shrink_set, 'max_iterations' = NelderMeadOptions_max_iterations_set, 'tolerance' = NelderMeadOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__NelderMeadOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('initial_simplex_scale' = NelderMeadOptions_initial_simplex_scale_set, 'reflection' = NelderMeadOptions_reflection_set, 'expansion' = NelderMeadOptions_expansion_set, 'contraction' = NelderMeadOptions_contraction_set, 'shrink' = NelderMeadOptions_shrink_set, 'max_iterations' = NelderMeadOptions_max_iterations_set, 'tolerance' = NelderMeadOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::NelderMeadOptions
+setMethod('delete', '_p_datamunge__optim__NelderMeadOptions', function(obj) {delete_datamunge__optim__NelderMeadOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::NelderMeadOptions
+CopyToR_datamunge__optim__NelderMeadOptions = function(value, obj = new("datamunge::optim::NelderMeadOptions"))
+{
+  obj@initial_simplex_scale = value$initial_simplex_scale;
+  obj@reflection = value$reflection;
+  obj@expansion = value$expansion;
+  obj@contraction = value$contraction;
+  obj@shrink = value$shrink;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__NelderMeadOptions = function(value, obj)
+{
+  obj$initial_simplex_scale = value@initial_simplex_scale;
+  obj$reflection = value@reflection;
+  obj$expansion = value@expansion;
+  obj$contraction = value@contraction;
+  obj$shrink = value@shrink;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::NelderMeadOptions
+setMethod('copyToR', '_p_datamunge__optim__NelderMeadOptions', CopyToR_datamunge__optim__NelderMeadOptions);
+setMethod('copyToC', 'datamunge::optim::NelderMeadOptions', CopyToC_datamunge__optim__NelderMeadOptions);
+
+# End definition of copy methods for datamunge::optim::NelderMeadOptions
+# End definition of copy functions & methods for datamunge::optim::NelderMeadOptions
+# Start of new_NelderMead
+
+`NelderMead__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_NelderMead__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NelderMead", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NelderMead);
+  ans
+  
+}
+
+attr(`NelderMead__SWIG_0`, 'returnType') = '_p_datamunge__optim__NelderMead'
+attr(`NelderMead__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__NelderMeadOptions')
+class(`NelderMead__SWIG_0`) = c("SWIGFunction", class('NelderMead__SWIG_0'))
+
+# Start of new_NelderMead
+
+`NelderMead__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_NelderMead__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NelderMead", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NelderMead);
+  ans
+  
+}
+
+attr(`NelderMead__SWIG_1`, 'returnType') = '_p_datamunge__optim__NelderMead'
+class(`NelderMead__SWIG_1`) = c("SWIGFunction", class('NelderMead__SWIG_1'))
+
+`NelderMead` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- NelderMead__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__NelderMeadOptions') && length(argv[[1]]) == 1 ) {
+      f <- NelderMead__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NelderMead with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NelderMead_optimize
+
+`NelderMead_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_NelderMead_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NelderMead_optimize`, 'returnType') = 'numeric'
+attr(`NelderMead_optimize`, "inputTypes") = c('_p_datamunge__optim__NelderMead', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
+class(`NelderMead_optimize`) = c("SWIGFunction", class('NelderMead_optimize'))
+
+# Start of delete_NelderMead
+
+`delete_NelderMead` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NelderMead', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NelderMead`, 'returnType') = 'void'
+attr(`delete_NelderMead`, "inputTypes") = c('_p_datamunge__optim__NelderMead')
+class(`delete_NelderMead`) = c("SWIGFunction", class('delete_NelderMead'))
+
+# Start of accessor method for datamunge::optim::NelderMead
+setMethod('$', '_p_datamunge__optim__NelderMead', function(x, name)
+
+{
+  accessorFuns = list('optimize' = NelderMead_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::NelderMead
+setMethod('delete', '_p_datamunge__optim__NelderMead', function(obj) {delete_datamunge__optim__NelderMead(obj)})
 # Start of SGDOptions_step_size_set
 
 `SGDOptions_step_size_set` = function(self, s_step_size)
@@ -35203,6 +39261,2564 @@ setMethod('$', '_p_datamunge__optim__SGD', function(x, name)
 );
 # end of accessor method for datamunge::optim::SGD
 setMethod('delete', '_p_datamunge__optim__SGD', function(obj) {delete_datamunge__optim__SGD(obj)})
+# Start of SVRGOptions_step_size_set
+
+`SVRGOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SVRGOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_step_size_set`, 'returnType') = 'void'
+attr(`SVRGOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions', 'numeric')
+class(`SVRGOptions_step_size_set`) = c("SWIGFunction", class('SVRGOptions_step_size_set'))
+
+# Start of SVRGOptions_step_size_get
+
+`SVRGOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVRGOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`SVRGOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRGOptions_step_size_get`) = c("SWIGFunction", class('SVRGOptions_step_size_get'))
+
+# Start of SVRGOptions_max_epochs_set
+
+`SVRGOptions_max_epochs_set` = function(self, s_max_epochs)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_epochs = as.integer(s_max_epochs);
+  
+  if(length(s_max_epochs) > 1) {
+    warning("using only the first element of s_max_epochs");
+  };
+  
+  ;.Call('R_swig_SVRGOptions_max_epochs_set', self, s_max_epochs, PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_max_epochs_set`, 'returnType') = 'void'
+attr(`SVRGOptions_max_epochs_set`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions', 'integer')
+class(`SVRGOptions_max_epochs_set`) = c("SWIGFunction", class('SVRGOptions_max_epochs_set'))
+
+# Start of SVRGOptions_max_epochs_get
+
+`SVRGOptions_max_epochs_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVRGOptions_max_epochs_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_max_epochs_get`, 'returnType') = 'integer'
+attr(`SVRGOptions_max_epochs_get`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRGOptions_max_epochs_get`) = c("SWIGFunction", class('SVRGOptions_max_epochs_get'))
+
+# Start of SVRGOptions_inner_iterations_set
+
+`SVRGOptions_inner_iterations_set` = function(self, s_inner_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_inner_iterations = as.integer(s_inner_iterations);
+  
+  if(length(s_inner_iterations) > 1) {
+    warning("using only the first element of s_inner_iterations");
+  };
+  
+  ;.Call('R_swig_SVRGOptions_inner_iterations_set', self, s_inner_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_inner_iterations_set`, 'returnType') = 'void'
+attr(`SVRGOptions_inner_iterations_set`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions', 'integer')
+class(`SVRGOptions_inner_iterations_set`) = c("SWIGFunction", class('SVRGOptions_inner_iterations_set'))
+
+# Start of SVRGOptions_inner_iterations_get
+
+`SVRGOptions_inner_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVRGOptions_inner_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_inner_iterations_get`, 'returnType') = 'integer'
+attr(`SVRGOptions_inner_iterations_get`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRGOptions_inner_iterations_get`) = c("SWIGFunction", class('SVRGOptions_inner_iterations_get'))
+
+# Start of SVRGOptions_tolerance_set
+
+`SVRGOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SVRGOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_tolerance_set`, 'returnType') = 'void'
+attr(`SVRGOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions', 'numeric')
+class(`SVRGOptions_tolerance_set`) = c("SWIGFunction", class('SVRGOptions_tolerance_set'))
+
+# Start of SVRGOptions_tolerance_get
+
+`SVRGOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVRGOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`SVRGOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRGOptions_tolerance_get`) = c("SWIGFunction", class('SVRGOptions_tolerance_get'))
+
+# Start of SVRGOptions_seed_set
+
+`SVRGOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_SVRGOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_seed_set`, 'returnType') = 'void'
+attr(`SVRGOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions', 'integer')
+class(`SVRGOptions_seed_set`) = c("SWIGFunction", class('SVRGOptions_seed_set'))
+
+# Start of SVRGOptions_seed_get
+
+`SVRGOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVRGOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRGOptions_seed_get`, 'returnType') = 'integer'
+attr(`SVRGOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRGOptions_seed_get`) = c("SWIGFunction", class('SVRGOptions_seed_get'))
+
+# Start of new_SVRGOptions
+
+`SVRGOptions` = function()
+{
+  ;ans = .Call('R_swig_new_SVRGOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SVRGOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVRGOptions);
+  ans
+  
+}
+
+attr(`SVRGOptions`, 'returnType') = '_p_datamunge__optim__SVRGOptions'
+class(`SVRGOptions`) = c("SWIGFunction", class('SVRGOptions'))
+
+# Start of delete_SVRGOptions
+
+`delete_SVRGOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SVRGOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SVRGOptions`, 'returnType') = 'void'
+attr(`delete_SVRGOptions`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`delete_SVRGOptions`) = c("SWIGFunction", class('delete_SVRGOptions'))
+
+# Start of accessor method for datamunge::optim::SVRGOptions
+setMethod('$', '_p_datamunge__optim__SVRGOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = SVRGOptions_step_size_get, 'max_epochs' = SVRGOptions_max_epochs_get, 'inner_iterations' = SVRGOptions_inner_iterations_get, 'tolerance' = SVRGOptions_tolerance_get, 'seed' = SVRGOptions_seed_get);
+  vaccessors = c('step_size', 'max_epochs', 'inner_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::SVRGOptions
+# Start of accessor method for datamunge::optim::SVRGOptions
+setMethod('$<-', '_p_datamunge__optim__SVRGOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = SVRGOptions_step_size_set, 'max_epochs' = SVRGOptions_max_epochs_set, 'inner_iterations' = SVRGOptions_inner_iterations_set, 'tolerance' = SVRGOptions_tolerance_set, 'seed' = SVRGOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__SVRGOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = SVRGOptions_step_size_set, 'max_epochs' = SVRGOptions_max_epochs_set, 'inner_iterations' = SVRGOptions_inner_iterations_set, 'tolerance' = SVRGOptions_tolerance_set, 'seed' = SVRGOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::SVRGOptions
+setMethod('delete', '_p_datamunge__optim__SVRGOptions', function(obj) {delete_datamunge__optim__SVRGOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::SVRGOptions
+CopyToR_datamunge__optim__SVRGOptions = function(value, obj = new("datamunge::optim::SVRGOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@max_epochs = value$max_epochs;
+  obj@inner_iterations = value$inner_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__SVRGOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$max_epochs = value@max_epochs;
+  obj$inner_iterations = value@inner_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::SVRGOptions
+setMethod('copyToR', '_p_datamunge__optim__SVRGOptions', CopyToR_datamunge__optim__SVRGOptions);
+setMethod('copyToC', 'datamunge::optim::SVRGOptions', CopyToC_datamunge__optim__SVRGOptions);
+
+# End definition of copy methods for datamunge::optim::SVRGOptions
+# End definition of copy functions & methods for datamunge::optim::SVRGOptions
+# Start of new_SVRG
+
+`SVRG__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_SVRG__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SVRG", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVRG);
+  ans
+  
+}
+
+attr(`SVRG__SWIG_0`, 'returnType') = '_p_datamunge__optim__SVRG'
+attr(`SVRG__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__SVRGOptions')
+class(`SVRG__SWIG_0`) = c("SWIGFunction", class('SVRG__SWIG_0'))
+
+# Start of new_SVRG
+
+`SVRG__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_SVRG__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SVRG", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVRG);
+  ans
+  
+}
+
+attr(`SVRG__SWIG_1`, 'returnType') = '_p_datamunge__optim__SVRG'
+class(`SVRG__SWIG_1`) = c("SWIGFunction", class('SVRG__SWIG_1'))
+
+`SVRG` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- SVRG__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__SVRGOptions') && length(argv[[1]]) == 1 ) {
+      f <- SVRG__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for SVRG with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SVRG_optimize
+
+`SVRG_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_SVRG_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVRG_optimize`, 'returnType') = 'numeric'
+attr(`SVRG_optimize`, "inputTypes") = c('_p_datamunge__optim__SVRG', '_p_datamunge__optim__DifferentiableSeparableFunction', '_p_std__vectorT_double_t')
+class(`SVRG_optimize`) = c("SWIGFunction", class('SVRG_optimize'))
+
+# Start of delete_SVRG
+
+`delete_SVRG` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SVRG', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SVRG`, 'returnType') = 'void'
+attr(`delete_SVRG`, "inputTypes") = c('_p_datamunge__optim__SVRG')
+class(`delete_SVRG`) = c("SWIGFunction", class('delete_SVRG'))
+
+# Start of accessor method for datamunge::optim::SVRG
+setMethod('$', '_p_datamunge__optim__SVRG', function(x, name)
+
+{
+  accessorFuns = list('optimize' = SVRG_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::SVRG
+setMethod('delete', '_p_datamunge__optim__SVRG', function(obj) {delete_datamunge__optim__SVRG(obj)})
+# Start of SAGAOptions_step_size_set
+
+`SAGAOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SAGAOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_step_size_set`, 'returnType') = 'void'
+attr(`SAGAOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions', 'numeric')
+class(`SAGAOptions_step_size_set`) = c("SWIGFunction", class('SAGAOptions_step_size_set'))
+
+# Start of SAGAOptions_step_size_get
+
+`SAGAOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SAGAOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`SAGAOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`SAGAOptions_step_size_get`) = c("SWIGFunction", class('SAGAOptions_step_size_get'))
+
+# Start of SAGAOptions_max_iterations_set
+
+`SAGAOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_SAGAOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`SAGAOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions', 'integer')
+class(`SAGAOptions_max_iterations_set`) = c("SWIGFunction", class('SAGAOptions_max_iterations_set'))
+
+# Start of SAGAOptions_max_iterations_get
+
+`SAGAOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SAGAOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`SAGAOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`SAGAOptions_max_iterations_get`) = c("SWIGFunction", class('SAGAOptions_max_iterations_get'))
+
+# Start of SAGAOptions_tolerance_set
+
+`SAGAOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SAGAOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_tolerance_set`, 'returnType') = 'void'
+attr(`SAGAOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions', 'numeric')
+class(`SAGAOptions_tolerance_set`) = c("SWIGFunction", class('SAGAOptions_tolerance_set'))
+
+# Start of SAGAOptions_tolerance_get
+
+`SAGAOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SAGAOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`SAGAOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`SAGAOptions_tolerance_get`) = c("SWIGFunction", class('SAGAOptions_tolerance_get'))
+
+# Start of SAGAOptions_seed_set
+
+`SAGAOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_SAGAOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_seed_set`, 'returnType') = 'void'
+attr(`SAGAOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions', 'integer')
+class(`SAGAOptions_seed_set`) = c("SWIGFunction", class('SAGAOptions_seed_set'))
+
+# Start of SAGAOptions_seed_get
+
+`SAGAOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SAGAOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SAGAOptions_seed_get`, 'returnType') = 'integer'
+attr(`SAGAOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`SAGAOptions_seed_get`) = c("SWIGFunction", class('SAGAOptions_seed_get'))
+
+# Start of new_SAGAOptions
+
+`SAGAOptions` = function()
+{
+  ;ans = .Call('R_swig_new_SAGAOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SAGAOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SAGAOptions);
+  ans
+  
+}
+
+attr(`SAGAOptions`, 'returnType') = '_p_datamunge__optim__SAGAOptions'
+class(`SAGAOptions`) = c("SWIGFunction", class('SAGAOptions'))
+
+# Start of delete_SAGAOptions
+
+`delete_SAGAOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SAGAOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SAGAOptions`, 'returnType') = 'void'
+attr(`delete_SAGAOptions`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`delete_SAGAOptions`) = c("SWIGFunction", class('delete_SAGAOptions'))
+
+# Start of accessor method for datamunge::optim::SAGAOptions
+setMethod('$', '_p_datamunge__optim__SAGAOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = SAGAOptions_step_size_get, 'max_iterations' = SAGAOptions_max_iterations_get, 'tolerance' = SAGAOptions_tolerance_get, 'seed' = SAGAOptions_seed_get);
+  vaccessors = c('step_size', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::SAGAOptions
+# Start of accessor method for datamunge::optim::SAGAOptions
+setMethod('$<-', '_p_datamunge__optim__SAGAOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = SAGAOptions_step_size_set, 'max_iterations' = SAGAOptions_max_iterations_set, 'tolerance' = SAGAOptions_tolerance_set, 'seed' = SAGAOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__SAGAOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = SAGAOptions_step_size_set, 'max_iterations' = SAGAOptions_max_iterations_set, 'tolerance' = SAGAOptions_tolerance_set, 'seed' = SAGAOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::SAGAOptions
+setMethod('delete', '_p_datamunge__optim__SAGAOptions', function(obj) {delete_datamunge__optim__SAGAOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::SAGAOptions
+CopyToR_datamunge__optim__SAGAOptions = function(value, obj = new("datamunge::optim::SAGAOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__SAGAOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::SAGAOptions
+setMethod('copyToR', '_p_datamunge__optim__SAGAOptions', CopyToR_datamunge__optim__SAGAOptions);
+setMethod('copyToC', 'datamunge::optim::SAGAOptions', CopyToC_datamunge__optim__SAGAOptions);
+
+# End definition of copy methods for datamunge::optim::SAGAOptions
+# End definition of copy functions & methods for datamunge::optim::SAGAOptions
+# Start of new_SAGA
+
+`SAGA__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_SAGA__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SAGA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SAGA);
+  ans
+  
+}
+
+attr(`SAGA__SWIG_0`, 'returnType') = '_p_datamunge__optim__SAGA'
+attr(`SAGA__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__SAGAOptions')
+class(`SAGA__SWIG_0`) = c("SWIGFunction", class('SAGA__SWIG_0'))
+
+# Start of new_SAGA
+
+`SAGA__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_SAGA__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SAGA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SAGA);
+  ans
+  
+}
+
+attr(`SAGA__SWIG_1`, 'returnType') = '_p_datamunge__optim__SAGA'
+class(`SAGA__SWIG_1`) = c("SWIGFunction", class('SAGA__SWIG_1'))
+
+`SAGA` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- SAGA__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__SAGAOptions') && length(argv[[1]]) == 1 ) {
+      f <- SAGA__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for SAGA with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SAGA_optimize
+
+`SAGA_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_SAGA_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SAGA_optimize`, 'returnType') = 'numeric'
+attr(`SAGA_optimize`, "inputTypes") = c('_p_datamunge__optim__SAGA', '_p_datamunge__optim__DifferentiableSeparableFunction', '_p_std__vectorT_double_t')
+class(`SAGA_optimize`) = c("SWIGFunction", class('SAGA_optimize'))
+
+# Start of delete_SAGA
+
+`delete_SAGA` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SAGA', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SAGA`, 'returnType') = 'void'
+attr(`delete_SAGA`, "inputTypes") = c('_p_datamunge__optim__SAGA')
+class(`delete_SAGA`) = c("SWIGFunction", class('delete_SAGA'))
+
+# Start of accessor method for datamunge::optim::SAGA
+setMethod('$', '_p_datamunge__optim__SAGA', function(x, name)
+
+{
+  accessorFuns = list('optimize' = SAGA_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::SAGA
+setMethod('delete', '_p_datamunge__optim__SAGA', function(obj) {delete_datamunge__optim__SAGA(obj)})
+# Start of CoordinateDescentOptions_step_size_set
+
+`CoordinateDescentOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CoordinateDescentOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_step_size_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'numeric')
+class(`CoordinateDescentOptions_step_size_set`) = c("SWIGFunction", class('CoordinateDescentOptions_step_size_set'))
+
+# Start of CoordinateDescentOptions_step_size_get
+
+`CoordinateDescentOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`CoordinateDescentOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_step_size_get`) = c("SWIGFunction", class('CoordinateDescentOptions_step_size_get'))
+
+# Start of CoordinateDescentOptions_max_iterations_set
+
+`CoordinateDescentOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_CoordinateDescentOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'integer')
+class(`CoordinateDescentOptions_max_iterations_set`) = c("SWIGFunction", class('CoordinateDescentOptions_max_iterations_set'))
+
+# Start of CoordinateDescentOptions_max_iterations_get
+
+`CoordinateDescentOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`CoordinateDescentOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_max_iterations_get`) = c("SWIGFunction", class('CoordinateDescentOptions_max_iterations_get'))
+
+# Start of CoordinateDescentOptions_tolerance_set
+
+`CoordinateDescentOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CoordinateDescentOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_tolerance_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'numeric')
+class(`CoordinateDescentOptions_tolerance_set`) = c("SWIGFunction", class('CoordinateDescentOptions_tolerance_set'))
+
+# Start of CoordinateDescentOptions_tolerance_get
+
+`CoordinateDescentOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`CoordinateDescentOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_tolerance_get`) = c("SWIGFunction", class('CoordinateDescentOptions_tolerance_get'))
+
+# Start of CoordinateDescentOptions_armijo_c1_set
+
+`CoordinateDescentOptions_armijo_c1_set` = function(self, s_armijo_c1)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CoordinateDescentOptions_armijo_c1_set', self, s_armijo_c1, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_armijo_c1_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_armijo_c1_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'numeric')
+class(`CoordinateDescentOptions_armijo_c1_set`) = c("SWIGFunction", class('CoordinateDescentOptions_armijo_c1_set'))
+
+# Start of CoordinateDescentOptions_armijo_c1_get
+
+`CoordinateDescentOptions_armijo_c1_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_armijo_c1_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_armijo_c1_get`, 'returnType') = 'numeric'
+attr(`CoordinateDescentOptions_armijo_c1_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_armijo_c1_get`) = c("SWIGFunction", class('CoordinateDescentOptions_armijo_c1_get'))
+
+# Start of CoordinateDescentOptions_backtracking_factor_set
+
+`CoordinateDescentOptions_backtracking_factor_set` = function(self, s_backtracking_factor)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CoordinateDescentOptions_backtracking_factor_set', self, s_backtracking_factor, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_backtracking_factor_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_backtracking_factor_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'numeric')
+class(`CoordinateDescentOptions_backtracking_factor_set`) = c("SWIGFunction", class('CoordinateDescentOptions_backtracking_factor_set'))
+
+# Start of CoordinateDescentOptions_backtracking_factor_get
+
+`CoordinateDescentOptions_backtracking_factor_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_backtracking_factor_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_backtracking_factor_get`, 'returnType') = 'numeric'
+attr(`CoordinateDescentOptions_backtracking_factor_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_backtracking_factor_get`) = c("SWIGFunction", class('CoordinateDescentOptions_backtracking_factor_get'))
+
+# Start of CoordinateDescentOptions_max_line_search_trials_set
+
+`CoordinateDescentOptions_max_line_search_trials_set` = function(self, s_max_line_search_trials)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_line_search_trials = as.integer(s_max_line_search_trials);
+  
+  if(length(s_max_line_search_trials) > 1) {
+    warning("using only the first element of s_max_line_search_trials");
+  };
+  
+  ;.Call('R_swig_CoordinateDescentOptions_max_line_search_trials_set', self, s_max_line_search_trials, PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_max_line_search_trials_set`, 'returnType') = 'void'
+attr(`CoordinateDescentOptions_max_line_search_trials_set`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions', 'integer')
+class(`CoordinateDescentOptions_max_line_search_trials_set`) = c("SWIGFunction", class('CoordinateDescentOptions_max_line_search_trials_set'))
+
+# Start of CoordinateDescentOptions_max_line_search_trials_get
+
+`CoordinateDescentOptions_max_line_search_trials_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CoordinateDescentOptions_max_line_search_trials_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescentOptions_max_line_search_trials_get`, 'returnType') = 'integer'
+attr(`CoordinateDescentOptions_max_line_search_trials_get`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescentOptions_max_line_search_trials_get`) = c("SWIGFunction", class('CoordinateDescentOptions_max_line_search_trials_get'))
+
+# Start of new_CoordinateDescentOptions
+
+`CoordinateDescentOptions` = function()
+{
+  ;ans = .Call('R_swig_new_CoordinateDescentOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CoordinateDescentOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CoordinateDescentOptions);
+  ans
+  
+}
+
+attr(`CoordinateDescentOptions`, 'returnType') = '_p_datamunge__optim__CoordinateDescentOptions'
+class(`CoordinateDescentOptions`) = c("SWIGFunction", class('CoordinateDescentOptions'))
+
+# Start of delete_CoordinateDescentOptions
+
+`delete_CoordinateDescentOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CoordinateDescentOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CoordinateDescentOptions`, 'returnType') = 'void'
+attr(`delete_CoordinateDescentOptions`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`delete_CoordinateDescentOptions`) = c("SWIGFunction", class('delete_CoordinateDescentOptions'))
+
+# Start of accessor method for datamunge::optim::CoordinateDescentOptions
+setMethod('$', '_p_datamunge__optim__CoordinateDescentOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = CoordinateDescentOptions_step_size_get, 'max_iterations' = CoordinateDescentOptions_max_iterations_get, 'tolerance' = CoordinateDescentOptions_tolerance_get, 'armijo_c1' = CoordinateDescentOptions_armijo_c1_get, 'backtracking_factor' = CoordinateDescentOptions_backtracking_factor_get, 'max_line_search_trials' = CoordinateDescentOptions_max_line_search_trials_get);
+  vaccessors = c('step_size', 'max_iterations', 'tolerance', 'armijo_c1', 'backtracking_factor', 'max_line_search_trials');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::CoordinateDescentOptions
+# Start of accessor method for datamunge::optim::CoordinateDescentOptions
+setMethod('$<-', '_p_datamunge__optim__CoordinateDescentOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = CoordinateDescentOptions_step_size_set, 'max_iterations' = CoordinateDescentOptions_max_iterations_set, 'tolerance' = CoordinateDescentOptions_tolerance_set, 'armijo_c1' = CoordinateDescentOptions_armijo_c1_set, 'backtracking_factor' = CoordinateDescentOptions_backtracking_factor_set, 'max_line_search_trials' = CoordinateDescentOptions_max_line_search_trials_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__CoordinateDescentOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = CoordinateDescentOptions_step_size_set, 'max_iterations' = CoordinateDescentOptions_max_iterations_set, 'tolerance' = CoordinateDescentOptions_tolerance_set, 'armijo_c1' = CoordinateDescentOptions_armijo_c1_set, 'backtracking_factor' = CoordinateDescentOptions_backtracking_factor_set, 'max_line_search_trials' = CoordinateDescentOptions_max_line_search_trials_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::CoordinateDescentOptions
+setMethod('delete', '_p_datamunge__optim__CoordinateDescentOptions', function(obj) {delete_datamunge__optim__CoordinateDescentOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::CoordinateDescentOptions
+CopyToR_datamunge__optim__CoordinateDescentOptions = function(value, obj = new("datamunge::optim::CoordinateDescentOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@armijo_c1 = value$armijo_c1;
+  obj@backtracking_factor = value$backtracking_factor;
+  obj@max_line_search_trials = value$max_line_search_trials;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__CoordinateDescentOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$armijo_c1 = value@armijo_c1;
+  obj$backtracking_factor = value@backtracking_factor;
+  obj$max_line_search_trials = value@max_line_search_trials;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::CoordinateDescentOptions
+setMethod('copyToR', '_p_datamunge__optim__CoordinateDescentOptions', CopyToR_datamunge__optim__CoordinateDescentOptions);
+setMethod('copyToC', 'datamunge::optim::CoordinateDescentOptions', CopyToC_datamunge__optim__CoordinateDescentOptions);
+
+# End definition of copy methods for datamunge::optim::CoordinateDescentOptions
+# End definition of copy functions & methods for datamunge::optim::CoordinateDescentOptions
+# Start of new_CoordinateDescent
+
+`CoordinateDescent__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_CoordinateDescent__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CoordinateDescent", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CoordinateDescent);
+  ans
+  
+}
+
+attr(`CoordinateDescent__SWIG_0`, 'returnType') = '_p_datamunge__optim__CoordinateDescent'
+attr(`CoordinateDescent__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescentOptions')
+class(`CoordinateDescent__SWIG_0`) = c("SWIGFunction", class('CoordinateDescent__SWIG_0'))
+
+# Start of new_CoordinateDescent
+
+`CoordinateDescent__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_CoordinateDescent__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CoordinateDescent", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CoordinateDescent);
+  ans
+  
+}
+
+attr(`CoordinateDescent__SWIG_1`, 'returnType') = '_p_datamunge__optim__CoordinateDescent'
+class(`CoordinateDescent__SWIG_1`) = c("SWIGFunction", class('CoordinateDescent__SWIG_1'))
+
+`CoordinateDescent` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- CoordinateDescent__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__CoordinateDescentOptions') && length(argv[[1]]) == 1 ) {
+      f <- CoordinateDescent__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CoordinateDescent with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CoordinateDescent_optimize
+
+`CoordinateDescent_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_CoordinateDescent_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CoordinateDescent_optimize`, 'returnType') = 'numeric'
+attr(`CoordinateDescent_optimize`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescent', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`CoordinateDescent_optimize`) = c("SWIGFunction", class('CoordinateDescent_optimize'))
+
+# Start of delete_CoordinateDescent
+
+`delete_CoordinateDescent` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CoordinateDescent', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CoordinateDescent`, 'returnType') = 'void'
+attr(`delete_CoordinateDescent`, "inputTypes") = c('_p_datamunge__optim__CoordinateDescent')
+class(`delete_CoordinateDescent`) = c("SWIGFunction", class('delete_CoordinateDescent'))
+
+# Start of accessor method for datamunge::optim::CoordinateDescent
+setMethod('$', '_p_datamunge__optim__CoordinateDescent', function(x, name)
+
+{
+  accessorFuns = list('optimize' = CoordinateDescent_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::CoordinateDescent
+setMethod('delete', '_p_datamunge__optim__CoordinateDescent', function(obj) {delete_datamunge__optim__CoordinateDescent(obj)})
+# Start of RandomizedBlockCoordinateDescentOptions_block_size_set
+
+`RandomizedBlockCoordinateDescentOptions_block_size_set` = function(self, s_block_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_block_size = as.integer(s_block_size);
+  
+  if(length(s_block_size) > 1) {
+    warning("using only the first element of s_block_size");
+  };
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_block_size_set', self, s_block_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_block_size_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_block_size_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'integer')
+class(`RandomizedBlockCoordinateDescentOptions_block_size_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_block_size_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_block_size_get
+
+`RandomizedBlockCoordinateDescentOptions_block_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_block_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_block_size_get`, 'returnType') = 'integer'
+attr(`RandomizedBlockCoordinateDescentOptions_block_size_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_block_size_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_block_size_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_step_size_set
+
+`RandomizedBlockCoordinateDescentOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_step_size_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'numeric')
+class(`RandomizedBlockCoordinateDescentOptions_step_size_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_step_size_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_step_size_get
+
+`RandomizedBlockCoordinateDescentOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`RandomizedBlockCoordinateDescentOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_step_size_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_step_size_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_max_iterations_set
+
+`RandomizedBlockCoordinateDescentOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'integer')
+class(`RandomizedBlockCoordinateDescentOptions_max_iterations_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_max_iterations_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_max_iterations_get
+
+`RandomizedBlockCoordinateDescentOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`RandomizedBlockCoordinateDescentOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_max_iterations_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_max_iterations_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_tolerance_set
+
+`RandomizedBlockCoordinateDescentOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_tolerance_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'numeric')
+class(`RandomizedBlockCoordinateDescentOptions_tolerance_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_tolerance_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_tolerance_get
+
+`RandomizedBlockCoordinateDescentOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`RandomizedBlockCoordinateDescentOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_tolerance_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_tolerance_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_armijo_c1_set
+
+`RandomizedBlockCoordinateDescentOptions_armijo_c1_set` = function(self, s_armijo_c1)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_armijo_c1_set', self, s_armijo_c1, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_armijo_c1_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_armijo_c1_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'numeric')
+class(`RandomizedBlockCoordinateDescentOptions_armijo_c1_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_armijo_c1_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_armijo_c1_get
+
+`RandomizedBlockCoordinateDescentOptions_armijo_c1_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_armijo_c1_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_armijo_c1_get`, 'returnType') = 'numeric'
+attr(`RandomizedBlockCoordinateDescentOptions_armijo_c1_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_armijo_c1_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_armijo_c1_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_backtracking_factor_set
+
+`RandomizedBlockCoordinateDescentOptions_backtracking_factor_set` = function(self, s_backtracking_factor)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_backtracking_factor_set', self, s_backtracking_factor, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'numeric')
+class(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_backtracking_factor_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_backtracking_factor_get
+
+`RandomizedBlockCoordinateDescentOptions_backtracking_factor_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_backtracking_factor_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_get`, 'returnType') = 'numeric'
+attr(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_backtracking_factor_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_backtracking_factor_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set
+
+`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set` = function(self, s_max_line_search_trials)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_line_search_trials = as.integer(s_max_line_search_trials);
+  
+  if(length(s_max_line_search_trials) > 1) {
+    warning("using only the first element of s_max_line_search_trials");
+  };
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set', self, s_max_line_search_trials, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'integer')
+class(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get
+
+`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get`, 'returnType') = 'integer'
+attr(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_seed_set
+
+`RandomizedBlockCoordinateDescentOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_seed_set`, 'returnType') = 'void'
+attr(`RandomizedBlockCoordinateDescentOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'integer')
+class(`RandomizedBlockCoordinateDescentOptions_seed_set`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_seed_set'))
+
+# Start of RandomizedBlockCoordinateDescentOptions_seed_get
+
+`RandomizedBlockCoordinateDescentOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RandomizedBlockCoordinateDescentOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions_seed_get`, 'returnType') = 'integer'
+attr(`RandomizedBlockCoordinateDescentOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescentOptions_seed_get`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions_seed_get'))
+
+# Start of new_RandomizedBlockCoordinateDescentOptions
+
+`RandomizedBlockCoordinateDescentOptions` = function()
+{
+  ;ans = .Call('R_swig_new_RandomizedBlockCoordinateDescentOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RandomizedBlockCoordinateDescentOptions);
+  ans
+  
+}
+
+attr(`RandomizedBlockCoordinateDescentOptions`, 'returnType') = '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions'
+class(`RandomizedBlockCoordinateDescentOptions`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescentOptions'))
+
+# Start of delete_RandomizedBlockCoordinateDescentOptions
+
+`delete_RandomizedBlockCoordinateDescentOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RandomizedBlockCoordinateDescentOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RandomizedBlockCoordinateDescentOptions`, 'returnType') = 'void'
+attr(`delete_RandomizedBlockCoordinateDescentOptions`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`delete_RandomizedBlockCoordinateDescentOptions`) = c("SWIGFunction", class('delete_RandomizedBlockCoordinateDescentOptions'))
+
+# Start of accessor method for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+setMethod('$', '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', function(x, name)
+
+{
+  accessorFuns = list('block_size' = RandomizedBlockCoordinateDescentOptions_block_size_get, 'step_size' = RandomizedBlockCoordinateDescentOptions_step_size_get, 'max_iterations' = RandomizedBlockCoordinateDescentOptions_max_iterations_get, 'tolerance' = RandomizedBlockCoordinateDescentOptions_tolerance_get, 'armijo_c1' = RandomizedBlockCoordinateDescentOptions_armijo_c1_get, 'backtracking_factor' = RandomizedBlockCoordinateDescentOptions_backtracking_factor_get, 'max_line_search_trials' = RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get, 'seed' = RandomizedBlockCoordinateDescentOptions_seed_get);
+  vaccessors = c('block_size', 'step_size', 'max_iterations', 'tolerance', 'armijo_c1', 'backtracking_factor', 'max_line_search_trials', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+# Start of accessor method for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+setMethod('$<-', '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', function(x, name, value)
+
+{
+  accessorFuns = list('block_size' = RandomizedBlockCoordinateDescentOptions_block_size_set, 'step_size' = RandomizedBlockCoordinateDescentOptions_step_size_set, 'max_iterations' = RandomizedBlockCoordinateDescentOptions_max_iterations_set, 'tolerance' = RandomizedBlockCoordinateDescentOptions_tolerance_set, 'armijo_c1' = RandomizedBlockCoordinateDescentOptions_armijo_c1_set, 'backtracking_factor' = RandomizedBlockCoordinateDescentOptions_backtracking_factor_set, 'max_line_search_trials' = RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set, 'seed' = RandomizedBlockCoordinateDescentOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('block_size' = RandomizedBlockCoordinateDescentOptions_block_size_set, 'step_size' = RandomizedBlockCoordinateDescentOptions_step_size_set, 'max_iterations' = RandomizedBlockCoordinateDescentOptions_max_iterations_set, 'tolerance' = RandomizedBlockCoordinateDescentOptions_tolerance_set, 'armijo_c1' = RandomizedBlockCoordinateDescentOptions_armijo_c1_set, 'backtracking_factor' = RandomizedBlockCoordinateDescentOptions_backtracking_factor_set, 'max_line_search_trials' = RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set, 'seed' = RandomizedBlockCoordinateDescentOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+setMethod('delete', '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', function(obj) {delete_datamunge__optim__RandomizedBlockCoordinateDescentOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+CopyToR_datamunge__optim__RandomizedBlockCoordinateDescentOptions = function(value, obj = new("datamunge::optim::RandomizedBlockCoordinateDescentOptions"))
+{
+  obj@block_size = value$block_size;
+  obj@step_size = value$step_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@armijo_c1 = value$armijo_c1;
+  obj@backtracking_factor = value$backtracking_factor;
+  obj@max_line_search_trials = value$max_line_search_trials;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__RandomizedBlockCoordinateDescentOptions = function(value, obj)
+{
+  obj$block_size = value@block_size;
+  obj$step_size = value@step_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$armijo_c1 = value@armijo_c1;
+  obj$backtracking_factor = value@backtracking_factor;
+  obj$max_line_search_trials = value@max_line_search_trials;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+setMethod('copyToR', '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions', CopyToR_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+setMethod('copyToC', 'datamunge::optim::RandomizedBlockCoordinateDescentOptions', CopyToC_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+
+# End definition of copy methods for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+# End definition of copy functions & methods for datamunge::optim::RandomizedBlockCoordinateDescentOptions
+# Start of new_RandomizedBlockCoordinateDescent
+
+`RandomizedBlockCoordinateDescent__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_RandomizedBlockCoordinateDescent__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RandomizedBlockCoordinateDescent", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RandomizedBlockCoordinateDescent);
+  ans
+  
+}
+
+attr(`RandomizedBlockCoordinateDescent__SWIG_0`, 'returnType') = '_p_datamunge__optim__RandomizedBlockCoordinateDescent'
+attr(`RandomizedBlockCoordinateDescent__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions')
+class(`RandomizedBlockCoordinateDescent__SWIG_0`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescent__SWIG_0'))
+
+# Start of new_RandomizedBlockCoordinateDescent
+
+`RandomizedBlockCoordinateDescent__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_RandomizedBlockCoordinateDescent__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RandomizedBlockCoordinateDescent", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RandomizedBlockCoordinateDescent);
+  ans
+  
+}
+
+attr(`RandomizedBlockCoordinateDescent__SWIG_1`, 'returnType') = '_p_datamunge__optim__RandomizedBlockCoordinateDescent'
+class(`RandomizedBlockCoordinateDescent__SWIG_1`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescent__SWIG_1'))
+
+`RandomizedBlockCoordinateDescent` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- RandomizedBlockCoordinateDescent__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions') && length(argv[[1]]) == 1 ) {
+      f <- RandomizedBlockCoordinateDescent__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RandomizedBlockCoordinateDescent with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RandomizedBlockCoordinateDescent_optimize
+
+`RandomizedBlockCoordinateDescent_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_RandomizedBlockCoordinateDescent_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RandomizedBlockCoordinateDescent_optimize`, 'returnType') = 'numeric'
+attr(`RandomizedBlockCoordinateDescent_optimize`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescent', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`RandomizedBlockCoordinateDescent_optimize`) = c("SWIGFunction", class('RandomizedBlockCoordinateDescent_optimize'))
+
+# Start of delete_RandomizedBlockCoordinateDescent
+
+`delete_RandomizedBlockCoordinateDescent` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RandomizedBlockCoordinateDescent', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RandomizedBlockCoordinateDescent`, 'returnType') = 'void'
+attr(`delete_RandomizedBlockCoordinateDescent`, "inputTypes") = c('_p_datamunge__optim__RandomizedBlockCoordinateDescent')
+class(`delete_RandomizedBlockCoordinateDescent`) = c("SWIGFunction", class('delete_RandomizedBlockCoordinateDescent'))
+
+# Start of accessor method for datamunge::optim::RandomizedBlockCoordinateDescent
+setMethod('$', '_p_datamunge__optim__RandomizedBlockCoordinateDescent', function(x, name)
+
+{
+  accessorFuns = list('optimize' = RandomizedBlockCoordinateDescent_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::RandomizedBlockCoordinateDescent
+setMethod('delete', '_p_datamunge__optim__RandomizedBlockCoordinateDescent', function(obj) {delete_datamunge__optim__RandomizedBlockCoordinateDescent(obj)})
+# Start of NesterovAcceleratedGradientOptions_step_size_set
+
+`NesterovAcceleratedGradientOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_step_size_set`, 'returnType') = 'void'
+attr(`NesterovAcceleratedGradientOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions', 'numeric')
+class(`NesterovAcceleratedGradientOptions_step_size_set`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_step_size_set'))
+
+# Start of NesterovAcceleratedGradientOptions_step_size_get
+
+`NesterovAcceleratedGradientOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`NesterovAcceleratedGradientOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`NesterovAcceleratedGradientOptions_step_size_get`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_step_size_get'))
+
+# Start of NesterovAcceleratedGradientOptions_momentum_set
+
+`NesterovAcceleratedGradientOptions_momentum_set` = function(self, s_momentum)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_momentum_set', self, s_momentum, PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_momentum_set`, 'returnType') = 'void'
+attr(`NesterovAcceleratedGradientOptions_momentum_set`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions', 'numeric')
+class(`NesterovAcceleratedGradientOptions_momentum_set`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_momentum_set'))
+
+# Start of NesterovAcceleratedGradientOptions_momentum_get
+
+`NesterovAcceleratedGradientOptions_momentum_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_momentum_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_momentum_get`, 'returnType') = 'numeric'
+attr(`NesterovAcceleratedGradientOptions_momentum_get`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`NesterovAcceleratedGradientOptions_momentum_get`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_momentum_get'))
+
+# Start of NesterovAcceleratedGradientOptions_max_iterations_set
+
+`NesterovAcceleratedGradientOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`NesterovAcceleratedGradientOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions', 'integer')
+class(`NesterovAcceleratedGradientOptions_max_iterations_set`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_max_iterations_set'))
+
+# Start of NesterovAcceleratedGradientOptions_max_iterations_get
+
+`NesterovAcceleratedGradientOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`NesterovAcceleratedGradientOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`NesterovAcceleratedGradientOptions_max_iterations_get`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_max_iterations_get'))
+
+# Start of NesterovAcceleratedGradientOptions_tolerance_set
+
+`NesterovAcceleratedGradientOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_tolerance_set`, 'returnType') = 'void'
+attr(`NesterovAcceleratedGradientOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions', 'numeric')
+class(`NesterovAcceleratedGradientOptions_tolerance_set`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_tolerance_set'))
+
+# Start of NesterovAcceleratedGradientOptions_tolerance_get
+
+`NesterovAcceleratedGradientOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NesterovAcceleratedGradientOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`NesterovAcceleratedGradientOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`NesterovAcceleratedGradientOptions_tolerance_get`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions_tolerance_get'))
+
+# Start of new_NesterovAcceleratedGradientOptions
+
+`NesterovAcceleratedGradientOptions` = function()
+{
+  ;ans = .Call('R_swig_new_NesterovAcceleratedGradientOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NesterovAcceleratedGradientOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NesterovAcceleratedGradientOptions);
+  ans
+  
+}
+
+attr(`NesterovAcceleratedGradientOptions`, 'returnType') = '_p_datamunge__optim__NesterovAcceleratedGradientOptions'
+class(`NesterovAcceleratedGradientOptions`) = c("SWIGFunction", class('NesterovAcceleratedGradientOptions'))
+
+# Start of delete_NesterovAcceleratedGradientOptions
+
+`delete_NesterovAcceleratedGradientOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NesterovAcceleratedGradientOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NesterovAcceleratedGradientOptions`, 'returnType') = 'void'
+attr(`delete_NesterovAcceleratedGradientOptions`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`delete_NesterovAcceleratedGradientOptions`) = c("SWIGFunction", class('delete_NesterovAcceleratedGradientOptions'))
+
+# Start of accessor method for datamunge::optim::NesterovAcceleratedGradientOptions
+setMethod('$', '_p_datamunge__optim__NesterovAcceleratedGradientOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = NesterovAcceleratedGradientOptions_step_size_get, 'momentum' = NesterovAcceleratedGradientOptions_momentum_get, 'max_iterations' = NesterovAcceleratedGradientOptions_max_iterations_get, 'tolerance' = NesterovAcceleratedGradientOptions_tolerance_get);
+  vaccessors = c('step_size', 'momentum', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::NesterovAcceleratedGradientOptions
+# Start of accessor method for datamunge::optim::NesterovAcceleratedGradientOptions
+setMethod('$<-', '_p_datamunge__optim__NesterovAcceleratedGradientOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = NesterovAcceleratedGradientOptions_step_size_set, 'momentum' = NesterovAcceleratedGradientOptions_momentum_set, 'max_iterations' = NesterovAcceleratedGradientOptions_max_iterations_set, 'tolerance' = NesterovAcceleratedGradientOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__NesterovAcceleratedGradientOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = NesterovAcceleratedGradientOptions_step_size_set, 'momentum' = NesterovAcceleratedGradientOptions_momentum_set, 'max_iterations' = NesterovAcceleratedGradientOptions_max_iterations_set, 'tolerance' = NesterovAcceleratedGradientOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::NesterovAcceleratedGradientOptions
+setMethod('delete', '_p_datamunge__optim__NesterovAcceleratedGradientOptions', function(obj) {delete_datamunge__optim__NesterovAcceleratedGradientOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::NesterovAcceleratedGradientOptions
+CopyToR_datamunge__optim__NesterovAcceleratedGradientOptions = function(value, obj = new("datamunge::optim::NesterovAcceleratedGradientOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@momentum = value$momentum;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__NesterovAcceleratedGradientOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$momentum = value@momentum;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::NesterovAcceleratedGradientOptions
+setMethod('copyToR', '_p_datamunge__optim__NesterovAcceleratedGradientOptions', CopyToR_datamunge__optim__NesterovAcceleratedGradientOptions);
+setMethod('copyToC', 'datamunge::optim::NesterovAcceleratedGradientOptions', CopyToC_datamunge__optim__NesterovAcceleratedGradientOptions);
+
+# End definition of copy methods for datamunge::optim::NesterovAcceleratedGradientOptions
+# End definition of copy functions & methods for datamunge::optim::NesterovAcceleratedGradientOptions
+# Start of new_NesterovAcceleratedGradient
+
+`NesterovAcceleratedGradient__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_NesterovAcceleratedGradient__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NesterovAcceleratedGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NesterovAcceleratedGradient);
+  ans
+  
+}
+
+attr(`NesterovAcceleratedGradient__SWIG_0`, 'returnType') = '_p_datamunge__optim__NesterovAcceleratedGradient'
+attr(`NesterovAcceleratedGradient__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradientOptions')
+class(`NesterovAcceleratedGradient__SWIG_0`) = c("SWIGFunction", class('NesterovAcceleratedGradient__SWIG_0'))
+
+# Start of new_NesterovAcceleratedGradient
+
+`NesterovAcceleratedGradient__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_NesterovAcceleratedGradient__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NesterovAcceleratedGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NesterovAcceleratedGradient);
+  ans
+  
+}
+
+attr(`NesterovAcceleratedGradient__SWIG_1`, 'returnType') = '_p_datamunge__optim__NesterovAcceleratedGradient'
+class(`NesterovAcceleratedGradient__SWIG_1`) = c("SWIGFunction", class('NesterovAcceleratedGradient__SWIG_1'))
+
+`NesterovAcceleratedGradient` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- NesterovAcceleratedGradient__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__NesterovAcceleratedGradientOptions') && length(argv[[1]]) == 1 ) {
+      f <- NesterovAcceleratedGradient__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NesterovAcceleratedGradient with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NesterovAcceleratedGradient_optimize
+
+`NesterovAcceleratedGradient_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_NesterovAcceleratedGradient_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NesterovAcceleratedGradient_optimize`, 'returnType') = 'numeric'
+attr(`NesterovAcceleratedGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradient', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`NesterovAcceleratedGradient_optimize`) = c("SWIGFunction", class('NesterovAcceleratedGradient_optimize'))
+
+# Start of delete_NesterovAcceleratedGradient
+
+`delete_NesterovAcceleratedGradient` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NesterovAcceleratedGradient', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NesterovAcceleratedGradient`, 'returnType') = 'void'
+attr(`delete_NesterovAcceleratedGradient`, "inputTypes") = c('_p_datamunge__optim__NesterovAcceleratedGradient')
+class(`delete_NesterovAcceleratedGradient`) = c("SWIGFunction", class('delete_NesterovAcceleratedGradient'))
+
+# Start of accessor method for datamunge::optim::NesterovAcceleratedGradient
+setMethod('$', '_p_datamunge__optim__NesterovAcceleratedGradient', function(x, name)
+
+{
+  accessorFuns = list('optimize' = NesterovAcceleratedGradient_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::NesterovAcceleratedGradient
+setMethod('delete', '_p_datamunge__optim__NesterovAcceleratedGradient', function(obj) {delete_datamunge__optim__NesterovAcceleratedGradient(obj)})
+# Start of ConjugateGradientOptions_max_iterations_set
+
+`ConjugateGradientOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_ConjugateGradientOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`ConjugateGradientOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions', 'integer')
+class(`ConjugateGradientOptions_max_iterations_set`) = c("SWIGFunction", class('ConjugateGradientOptions_max_iterations_set'))
+
+# Start of ConjugateGradientOptions_max_iterations_get
+
+`ConjugateGradientOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ConjugateGradientOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`ConjugateGradientOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradientOptions_max_iterations_get`) = c("SWIGFunction", class('ConjugateGradientOptions_max_iterations_get'))
+
+# Start of ConjugateGradientOptions_tolerance_set
+
+`ConjugateGradientOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ConjugateGradientOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_tolerance_set`, 'returnType') = 'void'
+attr(`ConjugateGradientOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions', 'numeric')
+class(`ConjugateGradientOptions_tolerance_set`) = c("SWIGFunction", class('ConjugateGradientOptions_tolerance_set'))
+
+# Start of ConjugateGradientOptions_tolerance_get
+
+`ConjugateGradientOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ConjugateGradientOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`ConjugateGradientOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradientOptions_tolerance_get`) = c("SWIGFunction", class('ConjugateGradientOptions_tolerance_get'))
+
+# Start of ConjugateGradientOptions_armijo_c1_set
+
+`ConjugateGradientOptions_armijo_c1_set` = function(self, s_armijo_c1)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ConjugateGradientOptions_armijo_c1_set', self, s_armijo_c1, PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_armijo_c1_set`, 'returnType') = 'void'
+attr(`ConjugateGradientOptions_armijo_c1_set`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions', 'numeric')
+class(`ConjugateGradientOptions_armijo_c1_set`) = c("SWIGFunction", class('ConjugateGradientOptions_armijo_c1_set'))
+
+# Start of ConjugateGradientOptions_armijo_c1_get
+
+`ConjugateGradientOptions_armijo_c1_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ConjugateGradientOptions_armijo_c1_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_armijo_c1_get`, 'returnType') = 'numeric'
+attr(`ConjugateGradientOptions_armijo_c1_get`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradientOptions_armijo_c1_get`) = c("SWIGFunction", class('ConjugateGradientOptions_armijo_c1_get'))
+
+# Start of ConjugateGradientOptions_backtracking_factor_set
+
+`ConjugateGradientOptions_backtracking_factor_set` = function(self, s_backtracking_factor)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ConjugateGradientOptions_backtracking_factor_set', self, s_backtracking_factor, PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_backtracking_factor_set`, 'returnType') = 'void'
+attr(`ConjugateGradientOptions_backtracking_factor_set`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions', 'numeric')
+class(`ConjugateGradientOptions_backtracking_factor_set`) = c("SWIGFunction", class('ConjugateGradientOptions_backtracking_factor_set'))
+
+# Start of ConjugateGradientOptions_backtracking_factor_get
+
+`ConjugateGradientOptions_backtracking_factor_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ConjugateGradientOptions_backtracking_factor_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_backtracking_factor_get`, 'returnType') = 'numeric'
+attr(`ConjugateGradientOptions_backtracking_factor_get`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradientOptions_backtracking_factor_get`) = c("SWIGFunction", class('ConjugateGradientOptions_backtracking_factor_get'))
+
+# Start of ConjugateGradientOptions_max_line_search_trials_set
+
+`ConjugateGradientOptions_max_line_search_trials_set` = function(self, s_max_line_search_trials)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_line_search_trials = as.integer(s_max_line_search_trials);
+  
+  if(length(s_max_line_search_trials) > 1) {
+    warning("using only the first element of s_max_line_search_trials");
+  };
+  
+  ;.Call('R_swig_ConjugateGradientOptions_max_line_search_trials_set', self, s_max_line_search_trials, PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_max_line_search_trials_set`, 'returnType') = 'void'
+attr(`ConjugateGradientOptions_max_line_search_trials_set`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions', 'integer')
+class(`ConjugateGradientOptions_max_line_search_trials_set`) = c("SWIGFunction", class('ConjugateGradientOptions_max_line_search_trials_set'))
+
+# Start of ConjugateGradientOptions_max_line_search_trials_get
+
+`ConjugateGradientOptions_max_line_search_trials_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ConjugateGradientOptions_max_line_search_trials_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradientOptions_max_line_search_trials_get`, 'returnType') = 'integer'
+attr(`ConjugateGradientOptions_max_line_search_trials_get`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradientOptions_max_line_search_trials_get`) = c("SWIGFunction", class('ConjugateGradientOptions_max_line_search_trials_get'))
+
+# Start of new_ConjugateGradientOptions
+
+`ConjugateGradientOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ConjugateGradientOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ConjugateGradientOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ConjugateGradientOptions);
+  ans
+  
+}
+
+attr(`ConjugateGradientOptions`, 'returnType') = '_p_datamunge__optim__ConjugateGradientOptions'
+class(`ConjugateGradientOptions`) = c("SWIGFunction", class('ConjugateGradientOptions'))
+
+# Start of delete_ConjugateGradientOptions
+
+`delete_ConjugateGradientOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ConjugateGradientOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ConjugateGradientOptions`, 'returnType') = 'void'
+attr(`delete_ConjugateGradientOptions`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`delete_ConjugateGradientOptions`) = c("SWIGFunction", class('delete_ConjugateGradientOptions'))
+
+# Start of accessor method for datamunge::optim::ConjugateGradientOptions
+setMethod('$', '_p_datamunge__optim__ConjugateGradientOptions', function(x, name)
+
+{
+  accessorFuns = list('max_iterations' = ConjugateGradientOptions_max_iterations_get, 'tolerance' = ConjugateGradientOptions_tolerance_get, 'armijo_c1' = ConjugateGradientOptions_armijo_c1_get, 'backtracking_factor' = ConjugateGradientOptions_backtracking_factor_get, 'max_line_search_trials' = ConjugateGradientOptions_max_line_search_trials_get);
+  vaccessors = c('max_iterations', 'tolerance', 'armijo_c1', 'backtracking_factor', 'max_line_search_trials');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::ConjugateGradientOptions
+# Start of accessor method for datamunge::optim::ConjugateGradientOptions
+setMethod('$<-', '_p_datamunge__optim__ConjugateGradientOptions', function(x, name, value)
+
+{
+  accessorFuns = list('max_iterations' = ConjugateGradientOptions_max_iterations_set, 'tolerance' = ConjugateGradientOptions_tolerance_set, 'armijo_c1' = ConjugateGradientOptions_armijo_c1_set, 'backtracking_factor' = ConjugateGradientOptions_backtracking_factor_set, 'max_line_search_trials' = ConjugateGradientOptions_max_line_search_trials_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__ConjugateGradientOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('max_iterations' = ConjugateGradientOptions_max_iterations_set, 'tolerance' = ConjugateGradientOptions_tolerance_set, 'armijo_c1' = ConjugateGradientOptions_armijo_c1_set, 'backtracking_factor' = ConjugateGradientOptions_backtracking_factor_set, 'max_line_search_trials' = ConjugateGradientOptions_max_line_search_trials_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::ConjugateGradientOptions
+setMethod('delete', '_p_datamunge__optim__ConjugateGradientOptions', function(obj) {delete_datamunge__optim__ConjugateGradientOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::ConjugateGradientOptions
+CopyToR_datamunge__optim__ConjugateGradientOptions = function(value, obj = new("datamunge::optim::ConjugateGradientOptions"))
+{
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@armijo_c1 = value$armijo_c1;
+  obj@backtracking_factor = value$backtracking_factor;
+  obj@max_line_search_trials = value$max_line_search_trials;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__ConjugateGradientOptions = function(value, obj)
+{
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$armijo_c1 = value@armijo_c1;
+  obj$backtracking_factor = value@backtracking_factor;
+  obj$max_line_search_trials = value@max_line_search_trials;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::ConjugateGradientOptions
+setMethod('copyToR', '_p_datamunge__optim__ConjugateGradientOptions', CopyToR_datamunge__optim__ConjugateGradientOptions);
+setMethod('copyToC', 'datamunge::optim::ConjugateGradientOptions', CopyToC_datamunge__optim__ConjugateGradientOptions);
+
+# End definition of copy methods for datamunge::optim::ConjugateGradientOptions
+# End definition of copy functions & methods for datamunge::optim::ConjugateGradientOptions
+# Start of new_ConjugateGradient
+
+`ConjugateGradient__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ConjugateGradient__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ConjugateGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ConjugateGradient);
+  ans
+  
+}
+
+attr(`ConjugateGradient__SWIG_0`, 'returnType') = '_p_datamunge__optim__ConjugateGradient'
+attr(`ConjugateGradient__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradientOptions')
+class(`ConjugateGradient__SWIG_0`) = c("SWIGFunction", class('ConjugateGradient__SWIG_0'))
+
+# Start of new_ConjugateGradient
+
+`ConjugateGradient__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ConjugateGradient__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ConjugateGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ConjugateGradient);
+  ans
+  
+}
+
+attr(`ConjugateGradient__SWIG_1`, 'returnType') = '_p_datamunge__optim__ConjugateGradient'
+class(`ConjugateGradient__SWIG_1`) = c("SWIGFunction", class('ConjugateGradient__SWIG_1'))
+
+`ConjugateGradient` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ConjugateGradient__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__ConjugateGradientOptions') && length(argv[[1]]) == 1 ) {
+      f <- ConjugateGradient__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ConjugateGradient with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ConjugateGradient_optimize
+
+`ConjugateGradient_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_ConjugateGradient_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ConjugateGradient_optimize`, 'returnType') = 'numeric'
+attr(`ConjugateGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradient', '_p_datamunge__optim__DifferentiableFunction', '_p_std__vectorT_double_t')
+class(`ConjugateGradient_optimize`) = c("SWIGFunction", class('ConjugateGradient_optimize'))
+
+# Start of delete_ConjugateGradient
+
+`delete_ConjugateGradient` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ConjugateGradient', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ConjugateGradient`, 'returnType') = 'void'
+attr(`delete_ConjugateGradient`, "inputTypes") = c('_p_datamunge__optim__ConjugateGradient')
+class(`delete_ConjugateGradient`) = c("SWIGFunction", class('delete_ConjugateGradient'))
+
+# Start of accessor method for datamunge::optim::ConjugateGradient
+setMethod('$', '_p_datamunge__optim__ConjugateGradient', function(x, name)
+
+{
+  accessorFuns = list('optimize' = ConjugateGradient_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ConjugateGradient
+setMethod('delete', '_p_datamunge__optim__ConjugateGradient', function(obj) {delete_datamunge__optim__ConjugateGradient(obj)})
+# Start of CMAESOptions_population_size_set
+
+`CMAESOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_CMAESOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_population_size_set`, 'returnType') = 'void'
+attr(`CMAESOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions', 'integer')
+class(`CMAESOptions_population_size_set`) = c("SWIGFunction", class('CMAESOptions_population_size_set'))
+
+# Start of CMAESOptions_population_size_get
+
+`CMAESOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CMAESOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_population_size_get`, 'returnType') = 'integer'
+attr(`CMAESOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAESOptions_population_size_get`) = c("SWIGFunction", class('CMAESOptions_population_size_get'))
+
+# Start of CMAESOptions_initial_step_size_set
+
+`CMAESOptions_initial_step_size_set` = function(self, s_initial_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CMAESOptions_initial_step_size_set', self, s_initial_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_initial_step_size_set`, 'returnType') = 'void'
+attr(`CMAESOptions_initial_step_size_set`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions', 'numeric')
+class(`CMAESOptions_initial_step_size_set`) = c("SWIGFunction", class('CMAESOptions_initial_step_size_set'))
+
+# Start of CMAESOptions_initial_step_size_get
+
+`CMAESOptions_initial_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CMAESOptions_initial_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_initial_step_size_get`, 'returnType') = 'numeric'
+attr(`CMAESOptions_initial_step_size_get`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAESOptions_initial_step_size_get`) = c("SWIGFunction", class('CMAESOptions_initial_step_size_get'))
+
+# Start of CMAESOptions_max_generations_set
+
+`CMAESOptions_max_generations_set` = function(self, s_max_generations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_generations = as.integer(s_max_generations);
+  
+  if(length(s_max_generations) > 1) {
+    warning("using only the first element of s_max_generations");
+  };
+  
+  ;.Call('R_swig_CMAESOptions_max_generations_set', self, s_max_generations, PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_max_generations_set`, 'returnType') = 'void'
+attr(`CMAESOptions_max_generations_set`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions', 'integer')
+class(`CMAESOptions_max_generations_set`) = c("SWIGFunction", class('CMAESOptions_max_generations_set'))
+
+# Start of CMAESOptions_max_generations_get
+
+`CMAESOptions_max_generations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CMAESOptions_max_generations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_max_generations_get`, 'returnType') = 'integer'
+attr(`CMAESOptions_max_generations_get`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAESOptions_max_generations_get`) = c("SWIGFunction", class('CMAESOptions_max_generations_get'))
+
+# Start of CMAESOptions_tolerance_set
+
+`CMAESOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CMAESOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_tolerance_set`, 'returnType') = 'void'
+attr(`CMAESOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions', 'numeric')
+class(`CMAESOptions_tolerance_set`) = c("SWIGFunction", class('CMAESOptions_tolerance_set'))
+
+# Start of CMAESOptions_tolerance_get
+
+`CMAESOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CMAESOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`CMAESOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAESOptions_tolerance_get`) = c("SWIGFunction", class('CMAESOptions_tolerance_get'))
+
+# Start of CMAESOptions_seed_set
+
+`CMAESOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_CMAESOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_seed_set`, 'returnType') = 'void'
+attr(`CMAESOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions', 'integer')
+class(`CMAESOptions_seed_set`) = c("SWIGFunction", class('CMAESOptions_seed_set'))
+
+# Start of CMAESOptions_seed_get
+
+`CMAESOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CMAESOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAESOptions_seed_get`, 'returnType') = 'integer'
+attr(`CMAESOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAESOptions_seed_get`) = c("SWIGFunction", class('CMAESOptions_seed_get'))
+
+# Start of new_CMAESOptions
+
+`CMAESOptions` = function()
+{
+  ;ans = .Call('R_swig_new_CMAESOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CMAESOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CMAESOptions);
+  ans
+  
+}
+
+attr(`CMAESOptions`, 'returnType') = '_p_datamunge__optim__CMAESOptions'
+class(`CMAESOptions`) = c("SWIGFunction", class('CMAESOptions'))
+
+# Start of delete_CMAESOptions
+
+`delete_CMAESOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CMAESOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CMAESOptions`, 'returnType') = 'void'
+attr(`delete_CMAESOptions`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`delete_CMAESOptions`) = c("SWIGFunction", class('delete_CMAESOptions'))
+
+# Start of accessor method for datamunge::optim::CMAESOptions
+setMethod('$', '_p_datamunge__optim__CMAESOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = CMAESOptions_population_size_get, 'initial_step_size' = CMAESOptions_initial_step_size_get, 'max_generations' = CMAESOptions_max_generations_get, 'tolerance' = CMAESOptions_tolerance_get, 'seed' = CMAESOptions_seed_get);
+  vaccessors = c('population_size', 'initial_step_size', 'max_generations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::CMAESOptions
+# Start of accessor method for datamunge::optim::CMAESOptions
+setMethod('$<-', '_p_datamunge__optim__CMAESOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = CMAESOptions_population_size_set, 'initial_step_size' = CMAESOptions_initial_step_size_set, 'max_generations' = CMAESOptions_max_generations_set, 'tolerance' = CMAESOptions_tolerance_set, 'seed' = CMAESOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__CMAESOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = CMAESOptions_population_size_set, 'initial_step_size' = CMAESOptions_initial_step_size_set, 'max_generations' = CMAESOptions_max_generations_set, 'tolerance' = CMAESOptions_tolerance_set, 'seed' = CMAESOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::CMAESOptions
+setMethod('delete', '_p_datamunge__optim__CMAESOptions', function(obj) {delete_datamunge__optim__CMAESOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::CMAESOptions
+CopyToR_datamunge__optim__CMAESOptions = function(value, obj = new("datamunge::optim::CMAESOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@initial_step_size = value$initial_step_size;
+  obj@max_generations = value$max_generations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__CMAESOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$initial_step_size = value@initial_step_size;
+  obj$max_generations = value@max_generations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::CMAESOptions
+setMethod('copyToR', '_p_datamunge__optim__CMAESOptions', CopyToR_datamunge__optim__CMAESOptions);
+setMethod('copyToC', 'datamunge::optim::CMAESOptions', CopyToC_datamunge__optim__CMAESOptions);
+
+# End definition of copy methods for datamunge::optim::CMAESOptions
+# End definition of copy functions & methods for datamunge::optim::CMAESOptions
+# Start of new_CMAES
+
+`CMAES__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_CMAES__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CMAES", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CMAES);
+  ans
+  
+}
+
+attr(`CMAES__SWIG_0`, 'returnType') = '_p_datamunge__optim__CMAES'
+attr(`CMAES__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__CMAESOptions')
+class(`CMAES__SWIG_0`) = c("SWIGFunction", class('CMAES__SWIG_0'))
+
+# Start of new_CMAES
+
+`CMAES__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_CMAES__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CMAES", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CMAES);
+  ans
+  
+}
+
+attr(`CMAES__SWIG_1`, 'returnType') = '_p_datamunge__optim__CMAES'
+class(`CMAES__SWIG_1`) = c("SWIGFunction", class('CMAES__SWIG_1'))
+
+`CMAES` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- CMAES__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__CMAESOptions') && length(argv[[1]]) == 1 ) {
+      f <- CMAES__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CMAES with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CMAES_optimize
+
+`CMAES_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_CMAES_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CMAES_optimize`, 'returnType') = 'numeric'
+attr(`CMAES_optimize`, "inputTypes") = c('_p_datamunge__optim__CMAES', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
+class(`CMAES_optimize`) = c("SWIGFunction", class('CMAES_optimize'))
+
+# Start of delete_CMAES
+
+`delete_CMAES` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CMAES', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CMAES`, 'returnType') = 'void'
+attr(`delete_CMAES`, "inputTypes") = c('_p_datamunge__optim__CMAES')
+class(`delete_CMAES`) = c("SWIGFunction", class('delete_CMAES'))
+
+# Start of accessor method for datamunge::optim::CMAES
+setMethod('$', '_p_datamunge__optim__CMAES', function(x, name)
+
+{
+  accessorFuns = list('optimize' = CMAES_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::CMAES
+setMethod('delete', '_p_datamunge__optim__CMAES', function(obj) {delete_datamunge__optim__CMAES(obj)})
 # Start of SimulatedAnnealingOptions_initial_temperature_set
 
 `SimulatedAnnealingOptions_initial_temperature_set` = function(self, s_initial_temperature)
@@ -37152,6 +43768,7491 @@ setMethod('$', '_p_datamunge__optim__GeneticAlgorithm', function(x, name)
 );
 # end of accessor method for datamunge::optim::GeneticAlgorithm
 setMethod('delete', '_p_datamunge__optim__GeneticAlgorithm', function(obj) {delete_datamunge__optim__GeneticAlgorithm(obj)})
+# Start of ACOROptions_archive_size_set
+
+`ACOROptions_archive_size_set` = function(self, s_archive_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_archive_size = as.integer(s_archive_size);
+  
+  if(length(s_archive_size) > 1) {
+    warning("using only the first element of s_archive_size");
+  };
+  
+  ;.Call('R_swig_ACOROptions_archive_size_set', self, s_archive_size, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_archive_size_set`, 'returnType') = 'void'
+attr(`ACOROptions_archive_size_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'integer')
+class(`ACOROptions_archive_size_set`) = c("SWIGFunction", class('ACOROptions_archive_size_set'))
+
+# Start of ACOROptions_archive_size_get
+
+`ACOROptions_archive_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_archive_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_archive_size_get`, 'returnType') = 'integer'
+attr(`ACOROptions_archive_size_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_archive_size_get`) = c("SWIGFunction", class('ACOROptions_archive_size_get'))
+
+# Start of ACOROptions_samples_per_iteration_set
+
+`ACOROptions_samples_per_iteration_set` = function(self, s_samples_per_iteration)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_samples_per_iteration = as.integer(s_samples_per_iteration);
+  
+  if(length(s_samples_per_iteration) > 1) {
+    warning("using only the first element of s_samples_per_iteration");
+  };
+  
+  ;.Call('R_swig_ACOROptions_samples_per_iteration_set', self, s_samples_per_iteration, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_samples_per_iteration_set`, 'returnType') = 'void'
+attr(`ACOROptions_samples_per_iteration_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'integer')
+class(`ACOROptions_samples_per_iteration_set`) = c("SWIGFunction", class('ACOROptions_samples_per_iteration_set'))
+
+# Start of ACOROptions_samples_per_iteration_get
+
+`ACOROptions_samples_per_iteration_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_samples_per_iteration_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_samples_per_iteration_get`, 'returnType') = 'integer'
+attr(`ACOROptions_samples_per_iteration_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_samples_per_iteration_get`) = c("SWIGFunction", class('ACOROptions_samples_per_iteration_get'))
+
+# Start of ACOROptions_locality_set
+
+`ACOROptions_locality_set` = function(self, s_locality)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ACOROptions_locality_set', self, s_locality, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_locality_set`, 'returnType') = 'void'
+attr(`ACOROptions_locality_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'numeric')
+class(`ACOROptions_locality_set`) = c("SWIGFunction", class('ACOROptions_locality_set'))
+
+# Start of ACOROptions_locality_get
+
+`ACOROptions_locality_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_locality_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_locality_get`, 'returnType') = 'numeric'
+attr(`ACOROptions_locality_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_locality_get`) = c("SWIGFunction", class('ACOROptions_locality_get'))
+
+# Start of ACOROptions_convergence_speed_set
+
+`ACOROptions_convergence_speed_set` = function(self, s_convergence_speed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ACOROptions_convergence_speed_set', self, s_convergence_speed, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_convergence_speed_set`, 'returnType') = 'void'
+attr(`ACOROptions_convergence_speed_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'numeric')
+class(`ACOROptions_convergence_speed_set`) = c("SWIGFunction", class('ACOROptions_convergence_speed_set'))
+
+# Start of ACOROptions_convergence_speed_get
+
+`ACOROptions_convergence_speed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_convergence_speed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_convergence_speed_get`, 'returnType') = 'numeric'
+attr(`ACOROptions_convergence_speed_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_convergence_speed_get`) = c("SWIGFunction", class('ACOROptions_convergence_speed_get'))
+
+# Start of ACOROptions_max_iterations_set
+
+`ACOROptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_ACOROptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_max_iterations_set`, 'returnType') = 'void'
+attr(`ACOROptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'integer')
+class(`ACOROptions_max_iterations_set`) = c("SWIGFunction", class('ACOROptions_max_iterations_set'))
+
+# Start of ACOROptions_max_iterations_get
+
+`ACOROptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`ACOROptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_max_iterations_get`) = c("SWIGFunction", class('ACOROptions_max_iterations_get'))
+
+# Start of ACOROptions_tolerance_set
+
+`ACOROptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ACOROptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_tolerance_set`, 'returnType') = 'void'
+attr(`ACOROptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'numeric')
+class(`ACOROptions_tolerance_set`) = c("SWIGFunction", class('ACOROptions_tolerance_set'))
+
+# Start of ACOROptions_tolerance_get
+
+`ACOROptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`ACOROptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_tolerance_get`) = c("SWIGFunction", class('ACOROptions_tolerance_get'))
+
+# Start of ACOROptions_seed_set
+
+`ACOROptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_ACOROptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_seed_set`, 'returnType') = 'void'
+attr(`ACOROptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__ACOROptions', 'integer')
+class(`ACOROptions_seed_set`) = c("SWIGFunction", class('ACOROptions_seed_set'))
+
+# Start of ACOROptions_seed_get
+
+`ACOROptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ACOROptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOROptions_seed_get`, 'returnType') = 'integer'
+attr(`ACOROptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOROptions_seed_get`) = c("SWIGFunction", class('ACOROptions_seed_get'))
+
+# Start of new_ACOROptions
+
+`ACOROptions` = function()
+{
+  ;ans = .Call('R_swig_new_ACOROptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ACOROptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ACOROptions);
+  ans
+  
+}
+
+attr(`ACOROptions`, 'returnType') = '_p_datamunge__optim__ACOROptions'
+class(`ACOROptions`) = c("SWIGFunction", class('ACOROptions'))
+
+# Start of delete_ACOROptions
+
+`delete_ACOROptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ACOROptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ACOROptions`, 'returnType') = 'void'
+attr(`delete_ACOROptions`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`delete_ACOROptions`) = c("SWIGFunction", class('delete_ACOROptions'))
+
+# Start of accessor method for datamunge::optim::ACOROptions
+setMethod('$', '_p_datamunge__optim__ACOROptions', function(x, name)
+
+{
+  accessorFuns = list('archive_size' = ACOROptions_archive_size_get, 'samples_per_iteration' = ACOROptions_samples_per_iteration_get, 'locality' = ACOROptions_locality_get, 'convergence_speed' = ACOROptions_convergence_speed_get, 'max_iterations' = ACOROptions_max_iterations_get, 'tolerance' = ACOROptions_tolerance_get, 'seed' = ACOROptions_seed_get);
+  vaccessors = c('archive_size', 'samples_per_iteration', 'locality', 'convergence_speed', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::ACOROptions
+# Start of accessor method for datamunge::optim::ACOROptions
+setMethod('$<-', '_p_datamunge__optim__ACOROptions', function(x, name, value)
+
+{
+  accessorFuns = list('archive_size' = ACOROptions_archive_size_set, 'samples_per_iteration' = ACOROptions_samples_per_iteration_set, 'locality' = ACOROptions_locality_set, 'convergence_speed' = ACOROptions_convergence_speed_set, 'max_iterations' = ACOROptions_max_iterations_set, 'tolerance' = ACOROptions_tolerance_set, 'seed' = ACOROptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__ACOROptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('archive_size' = ACOROptions_archive_size_set, 'samples_per_iteration' = ACOROptions_samples_per_iteration_set, 'locality' = ACOROptions_locality_set, 'convergence_speed' = ACOROptions_convergence_speed_set, 'max_iterations' = ACOROptions_max_iterations_set, 'tolerance' = ACOROptions_tolerance_set, 'seed' = ACOROptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::ACOROptions
+setMethod('delete', '_p_datamunge__optim__ACOROptions', function(obj) {delete_datamunge__optim__ACOROptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::ACOROptions
+CopyToR_datamunge__optim__ACOROptions = function(value, obj = new("datamunge::optim::ACOROptions"))
+{
+  obj@archive_size = value$archive_size;
+  obj@samples_per_iteration = value$samples_per_iteration;
+  obj@locality = value$locality;
+  obj@convergence_speed = value$convergence_speed;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__ACOROptions = function(value, obj)
+{
+  obj$archive_size = value@archive_size;
+  obj$samples_per_iteration = value@samples_per_iteration;
+  obj$locality = value@locality;
+  obj$convergence_speed = value@convergence_speed;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::ACOROptions
+setMethod('copyToR', '_p_datamunge__optim__ACOROptions', CopyToR_datamunge__optim__ACOROptions);
+setMethod('copyToC', 'datamunge::optim::ACOROptions', CopyToC_datamunge__optim__ACOROptions);
+
+# End definition of copy methods for datamunge::optim::ACOROptions
+# End definition of copy functions & methods for datamunge::optim::ACOROptions
+# Start of new_ACOR
+
+`ACOR__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ACOR__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ACOR", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ACOR);
+  ans
+  
+}
+
+attr(`ACOR__SWIG_0`, 'returnType') = '_p_datamunge__optim__ACOR'
+attr(`ACOR__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__ACOROptions')
+class(`ACOR__SWIG_0`) = c("SWIGFunction", class('ACOR__SWIG_0'))
+
+# Start of new_ACOR
+
+`ACOR__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ACOR__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ACOR", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ACOR);
+  ans
+  
+}
+
+attr(`ACOR__SWIG_1`, 'returnType') = '_p_datamunge__optim__ACOR'
+class(`ACOR__SWIG_1`) = c("SWIGFunction", class('ACOR__SWIG_1'))
+
+`ACOR` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ACOR__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__ACOROptions') && length(argv[[1]]) == 1 ) {
+      f <- ACOR__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ACOR with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ACOR_optimize
+
+`ACOR_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_ACOR_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ACOR_optimize`, 'returnType') = 'numeric'
+attr(`ACOR_optimize`, "inputTypes") = c('_p_datamunge__optim__ACOR', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`ACOR_optimize`) = c("SWIGFunction", class('ACOR_optimize'))
+
+# Start of delete_ACOR
+
+`delete_ACOR` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ACOR', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ACOR`, 'returnType') = 'void'
+attr(`delete_ACOR`, "inputTypes") = c('_p_datamunge__optim__ACOR')
+class(`delete_ACOR`) = c("SWIGFunction", class('delete_ACOR'))
+
+# Start of accessor method for datamunge::optim::ACOR
+setMethod('$', '_p_datamunge__optim__ACOR', function(x, name)
+
+{
+  accessorFuns = list('optimize' = ACOR_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ACOR
+setMethod('delete', '_p_datamunge__optim__ACOR', function(obj) {delete_datamunge__optim__ACOR(obj)})
+# Start of ArtificialBeeColonyOptions_population_size_set
+
+`ArtificialBeeColonyOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_ArtificialBeeColonyOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_population_size_set`, 'returnType') = 'void'
+attr(`ArtificialBeeColonyOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'integer')
+class(`ArtificialBeeColonyOptions_population_size_set`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_population_size_set'))
+
+# Start of ArtificialBeeColonyOptions_population_size_get
+
+`ArtificialBeeColonyOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ArtificialBeeColonyOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_population_size_get`, 'returnType') = 'integer'
+attr(`ArtificialBeeColonyOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColonyOptions_population_size_get`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_population_size_get'))
+
+# Start of ArtificialBeeColonyOptions_abandonment_limit_set
+
+`ArtificialBeeColonyOptions_abandonment_limit_set` = function(self, s_abandonment_limit)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_abandonment_limit = as.integer(s_abandonment_limit);
+  
+  if(length(s_abandonment_limit) > 1) {
+    warning("using only the first element of s_abandonment_limit");
+  };
+  
+  ;.Call('R_swig_ArtificialBeeColonyOptions_abandonment_limit_set', self, s_abandonment_limit, PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_abandonment_limit_set`, 'returnType') = 'void'
+attr(`ArtificialBeeColonyOptions_abandonment_limit_set`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'integer')
+class(`ArtificialBeeColonyOptions_abandonment_limit_set`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_abandonment_limit_set'))
+
+# Start of ArtificialBeeColonyOptions_abandonment_limit_get
+
+`ArtificialBeeColonyOptions_abandonment_limit_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ArtificialBeeColonyOptions_abandonment_limit_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_abandonment_limit_get`, 'returnType') = 'integer'
+attr(`ArtificialBeeColonyOptions_abandonment_limit_get`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColonyOptions_abandonment_limit_get`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_abandonment_limit_get'))
+
+# Start of ArtificialBeeColonyOptions_max_generations_set
+
+`ArtificialBeeColonyOptions_max_generations_set` = function(self, s_max_generations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_generations = as.integer(s_max_generations);
+  
+  if(length(s_max_generations) > 1) {
+    warning("using only the first element of s_max_generations");
+  };
+  
+  ;.Call('R_swig_ArtificialBeeColonyOptions_max_generations_set', self, s_max_generations, PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_max_generations_set`, 'returnType') = 'void'
+attr(`ArtificialBeeColonyOptions_max_generations_set`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'integer')
+class(`ArtificialBeeColonyOptions_max_generations_set`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_max_generations_set'))
+
+# Start of ArtificialBeeColonyOptions_max_generations_get
+
+`ArtificialBeeColonyOptions_max_generations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ArtificialBeeColonyOptions_max_generations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_max_generations_get`, 'returnType') = 'integer'
+attr(`ArtificialBeeColonyOptions_max_generations_get`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColonyOptions_max_generations_get`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_max_generations_get'))
+
+# Start of ArtificialBeeColonyOptions_tolerance_set
+
+`ArtificialBeeColonyOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ArtificialBeeColonyOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_tolerance_set`, 'returnType') = 'void'
+attr(`ArtificialBeeColonyOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'numeric')
+class(`ArtificialBeeColonyOptions_tolerance_set`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_tolerance_set'))
+
+# Start of ArtificialBeeColonyOptions_tolerance_get
+
+`ArtificialBeeColonyOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ArtificialBeeColonyOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`ArtificialBeeColonyOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColonyOptions_tolerance_get`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_tolerance_get'))
+
+# Start of ArtificialBeeColonyOptions_seed_set
+
+`ArtificialBeeColonyOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_ArtificialBeeColonyOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_seed_set`, 'returnType') = 'void'
+attr(`ArtificialBeeColonyOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'integer')
+class(`ArtificialBeeColonyOptions_seed_set`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_seed_set'))
+
+# Start of ArtificialBeeColonyOptions_seed_get
+
+`ArtificialBeeColonyOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ArtificialBeeColonyOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColonyOptions_seed_get`, 'returnType') = 'integer'
+attr(`ArtificialBeeColonyOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColonyOptions_seed_get`) = c("SWIGFunction", class('ArtificialBeeColonyOptions_seed_get'))
+
+# Start of new_ArtificialBeeColonyOptions
+
+`ArtificialBeeColonyOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ArtificialBeeColonyOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ArtificialBeeColonyOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ArtificialBeeColonyOptions);
+  ans
+  
+}
+
+attr(`ArtificialBeeColonyOptions`, 'returnType') = '_p_datamunge__optim__ArtificialBeeColonyOptions'
+class(`ArtificialBeeColonyOptions`) = c("SWIGFunction", class('ArtificialBeeColonyOptions'))
+
+# Start of delete_ArtificialBeeColonyOptions
+
+`delete_ArtificialBeeColonyOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ArtificialBeeColonyOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ArtificialBeeColonyOptions`, 'returnType') = 'void'
+attr(`delete_ArtificialBeeColonyOptions`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`delete_ArtificialBeeColonyOptions`) = c("SWIGFunction", class('delete_ArtificialBeeColonyOptions'))
+
+# Start of accessor method for datamunge::optim::ArtificialBeeColonyOptions
+setMethod('$', '_p_datamunge__optim__ArtificialBeeColonyOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = ArtificialBeeColonyOptions_population_size_get, 'abandonment_limit' = ArtificialBeeColonyOptions_abandonment_limit_get, 'max_generations' = ArtificialBeeColonyOptions_max_generations_get, 'tolerance' = ArtificialBeeColonyOptions_tolerance_get, 'seed' = ArtificialBeeColonyOptions_seed_get);
+  vaccessors = c('population_size', 'abandonment_limit', 'max_generations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::ArtificialBeeColonyOptions
+# Start of accessor method for datamunge::optim::ArtificialBeeColonyOptions
+setMethod('$<-', '_p_datamunge__optim__ArtificialBeeColonyOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = ArtificialBeeColonyOptions_population_size_set, 'abandonment_limit' = ArtificialBeeColonyOptions_abandonment_limit_set, 'max_generations' = ArtificialBeeColonyOptions_max_generations_set, 'tolerance' = ArtificialBeeColonyOptions_tolerance_set, 'seed' = ArtificialBeeColonyOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__ArtificialBeeColonyOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = ArtificialBeeColonyOptions_population_size_set, 'abandonment_limit' = ArtificialBeeColonyOptions_abandonment_limit_set, 'max_generations' = ArtificialBeeColonyOptions_max_generations_set, 'tolerance' = ArtificialBeeColonyOptions_tolerance_set, 'seed' = ArtificialBeeColonyOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::ArtificialBeeColonyOptions
+setMethod('delete', '_p_datamunge__optim__ArtificialBeeColonyOptions', function(obj) {delete_datamunge__optim__ArtificialBeeColonyOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::ArtificialBeeColonyOptions
+CopyToR_datamunge__optim__ArtificialBeeColonyOptions = function(value, obj = new("datamunge::optim::ArtificialBeeColonyOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@abandonment_limit = value$abandonment_limit;
+  obj@max_generations = value$max_generations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__ArtificialBeeColonyOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$abandonment_limit = value@abandonment_limit;
+  obj$max_generations = value@max_generations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::ArtificialBeeColonyOptions
+setMethod('copyToR', '_p_datamunge__optim__ArtificialBeeColonyOptions', CopyToR_datamunge__optim__ArtificialBeeColonyOptions);
+setMethod('copyToC', 'datamunge::optim::ArtificialBeeColonyOptions', CopyToC_datamunge__optim__ArtificialBeeColonyOptions);
+
+# End definition of copy methods for datamunge::optim::ArtificialBeeColonyOptions
+# End definition of copy functions & methods for datamunge::optim::ArtificialBeeColonyOptions
+# Start of new_ArtificialBeeColony
+
+`ArtificialBeeColony__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ArtificialBeeColony__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ArtificialBeeColony", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ArtificialBeeColony);
+  ans
+  
+}
+
+attr(`ArtificialBeeColony__SWIG_0`, 'returnType') = '_p_datamunge__optim__ArtificialBeeColony'
+attr(`ArtificialBeeColony__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColonyOptions')
+class(`ArtificialBeeColony__SWIG_0`) = c("SWIGFunction", class('ArtificialBeeColony__SWIG_0'))
+
+# Start of new_ArtificialBeeColony
+
+`ArtificialBeeColony__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ArtificialBeeColony__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ArtificialBeeColony", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ArtificialBeeColony);
+  ans
+  
+}
+
+attr(`ArtificialBeeColony__SWIG_1`, 'returnType') = '_p_datamunge__optim__ArtificialBeeColony'
+class(`ArtificialBeeColony__SWIG_1`) = c("SWIGFunction", class('ArtificialBeeColony__SWIG_1'))
+
+`ArtificialBeeColony` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ArtificialBeeColony__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__ArtificialBeeColonyOptions') && length(argv[[1]]) == 1 ) {
+      f <- ArtificialBeeColony__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ArtificialBeeColony with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ArtificialBeeColony_optimize
+
+`ArtificialBeeColony_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_ArtificialBeeColony_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ArtificialBeeColony_optimize`, 'returnType') = 'numeric'
+attr(`ArtificialBeeColony_optimize`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColony', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`ArtificialBeeColony_optimize`) = c("SWIGFunction", class('ArtificialBeeColony_optimize'))
+
+# Start of delete_ArtificialBeeColony
+
+`delete_ArtificialBeeColony` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ArtificialBeeColony', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ArtificialBeeColony`, 'returnType') = 'void'
+attr(`delete_ArtificialBeeColony`, "inputTypes") = c('_p_datamunge__optim__ArtificialBeeColony')
+class(`delete_ArtificialBeeColony`) = c("SWIGFunction", class('delete_ArtificialBeeColony'))
+
+# Start of accessor method for datamunge::optim::ArtificialBeeColony
+setMethod('$', '_p_datamunge__optim__ArtificialBeeColony', function(x, name)
+
+{
+  accessorFuns = list('optimize' = ArtificialBeeColony_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ArtificialBeeColony
+setMethod('delete', '_p_datamunge__optim__ArtificialBeeColony', function(obj) {delete_datamunge__optim__ArtificialBeeColony(obj)})
+# Start of CrossEntropyMethodOptions_population_size_set
+
+`CrossEntropyMethodOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_population_size_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'integer')
+class(`CrossEntropyMethodOptions_population_size_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_population_size_set'))
+
+# Start of CrossEntropyMethodOptions_population_size_get
+
+`CrossEntropyMethodOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_population_size_get`, 'returnType') = 'integer'
+attr(`CrossEntropyMethodOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_population_size_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_population_size_get'))
+
+# Start of CrossEntropyMethodOptions_elite_ratio_set
+
+`CrossEntropyMethodOptions_elite_ratio_set` = function(self, s_elite_ratio)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_elite_ratio_set', self, s_elite_ratio, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_elite_ratio_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_elite_ratio_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'numeric')
+class(`CrossEntropyMethodOptions_elite_ratio_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_elite_ratio_set'))
+
+# Start of CrossEntropyMethodOptions_elite_ratio_get
+
+`CrossEntropyMethodOptions_elite_ratio_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_elite_ratio_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_elite_ratio_get`, 'returnType') = 'numeric'
+attr(`CrossEntropyMethodOptions_elite_ratio_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_elite_ratio_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_elite_ratio_get'))
+
+# Start of CrossEntropyMethodOptions_initial_std_dev_set
+
+`CrossEntropyMethodOptions_initial_std_dev_set` = function(self, s_initial_std_dev)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_initial_std_dev_set', self, s_initial_std_dev, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_initial_std_dev_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_initial_std_dev_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'numeric')
+class(`CrossEntropyMethodOptions_initial_std_dev_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_initial_std_dev_set'))
+
+# Start of CrossEntropyMethodOptions_initial_std_dev_get
+
+`CrossEntropyMethodOptions_initial_std_dev_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_initial_std_dev_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_initial_std_dev_get`, 'returnType') = 'numeric'
+attr(`CrossEntropyMethodOptions_initial_std_dev_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_initial_std_dev_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_initial_std_dev_get'))
+
+# Start of CrossEntropyMethodOptions_smoothing_set
+
+`CrossEntropyMethodOptions_smoothing_set` = function(self, s_smoothing)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_smoothing_set', self, s_smoothing, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_smoothing_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_smoothing_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'numeric')
+class(`CrossEntropyMethodOptions_smoothing_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_smoothing_set'))
+
+# Start of CrossEntropyMethodOptions_smoothing_get
+
+`CrossEntropyMethodOptions_smoothing_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_smoothing_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_smoothing_get`, 'returnType') = 'numeric'
+attr(`CrossEntropyMethodOptions_smoothing_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_smoothing_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_smoothing_get'))
+
+# Start of CrossEntropyMethodOptions_max_iterations_set
+
+`CrossEntropyMethodOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'integer')
+class(`CrossEntropyMethodOptions_max_iterations_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_max_iterations_set'))
+
+# Start of CrossEntropyMethodOptions_max_iterations_get
+
+`CrossEntropyMethodOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`CrossEntropyMethodOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_max_iterations_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_max_iterations_get'))
+
+# Start of CrossEntropyMethodOptions_tolerance_set
+
+`CrossEntropyMethodOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_tolerance_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'numeric')
+class(`CrossEntropyMethodOptions_tolerance_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_tolerance_set'))
+
+# Start of CrossEntropyMethodOptions_tolerance_get
+
+`CrossEntropyMethodOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`CrossEntropyMethodOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_tolerance_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_tolerance_get'))
+
+# Start of CrossEntropyMethodOptions_seed_set
+
+`CrossEntropyMethodOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_CrossEntropyMethodOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_seed_set`, 'returnType') = 'void'
+attr(`CrossEntropyMethodOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions', 'integer')
+class(`CrossEntropyMethodOptions_seed_set`) = c("SWIGFunction", class('CrossEntropyMethodOptions_seed_set'))
+
+# Start of CrossEntropyMethodOptions_seed_get
+
+`CrossEntropyMethodOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CrossEntropyMethodOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethodOptions_seed_get`, 'returnType') = 'integer'
+attr(`CrossEntropyMethodOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethodOptions_seed_get`) = c("SWIGFunction", class('CrossEntropyMethodOptions_seed_get'))
+
+# Start of new_CrossEntropyMethodOptions
+
+`CrossEntropyMethodOptions` = function()
+{
+  ;ans = .Call('R_swig_new_CrossEntropyMethodOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CrossEntropyMethodOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CrossEntropyMethodOptions);
+  ans
+  
+}
+
+attr(`CrossEntropyMethodOptions`, 'returnType') = '_p_datamunge__optim__CrossEntropyMethodOptions'
+class(`CrossEntropyMethodOptions`) = c("SWIGFunction", class('CrossEntropyMethodOptions'))
+
+# Start of delete_CrossEntropyMethodOptions
+
+`delete_CrossEntropyMethodOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CrossEntropyMethodOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CrossEntropyMethodOptions`, 'returnType') = 'void'
+attr(`delete_CrossEntropyMethodOptions`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`delete_CrossEntropyMethodOptions`) = c("SWIGFunction", class('delete_CrossEntropyMethodOptions'))
+
+# Start of accessor method for datamunge::optim::CrossEntropyMethodOptions
+setMethod('$', '_p_datamunge__optim__CrossEntropyMethodOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = CrossEntropyMethodOptions_population_size_get, 'elite_ratio' = CrossEntropyMethodOptions_elite_ratio_get, 'initial_std_dev' = CrossEntropyMethodOptions_initial_std_dev_get, 'smoothing' = CrossEntropyMethodOptions_smoothing_get, 'max_iterations' = CrossEntropyMethodOptions_max_iterations_get, 'tolerance' = CrossEntropyMethodOptions_tolerance_get, 'seed' = CrossEntropyMethodOptions_seed_get);
+  vaccessors = c('population_size', 'elite_ratio', 'initial_std_dev', 'smoothing', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::CrossEntropyMethodOptions
+# Start of accessor method for datamunge::optim::CrossEntropyMethodOptions
+setMethod('$<-', '_p_datamunge__optim__CrossEntropyMethodOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = CrossEntropyMethodOptions_population_size_set, 'elite_ratio' = CrossEntropyMethodOptions_elite_ratio_set, 'initial_std_dev' = CrossEntropyMethodOptions_initial_std_dev_set, 'smoothing' = CrossEntropyMethodOptions_smoothing_set, 'max_iterations' = CrossEntropyMethodOptions_max_iterations_set, 'tolerance' = CrossEntropyMethodOptions_tolerance_set, 'seed' = CrossEntropyMethodOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__CrossEntropyMethodOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = CrossEntropyMethodOptions_population_size_set, 'elite_ratio' = CrossEntropyMethodOptions_elite_ratio_set, 'initial_std_dev' = CrossEntropyMethodOptions_initial_std_dev_set, 'smoothing' = CrossEntropyMethodOptions_smoothing_set, 'max_iterations' = CrossEntropyMethodOptions_max_iterations_set, 'tolerance' = CrossEntropyMethodOptions_tolerance_set, 'seed' = CrossEntropyMethodOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::CrossEntropyMethodOptions
+setMethod('delete', '_p_datamunge__optim__CrossEntropyMethodOptions', function(obj) {delete_datamunge__optim__CrossEntropyMethodOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::CrossEntropyMethodOptions
+CopyToR_datamunge__optim__CrossEntropyMethodOptions = function(value, obj = new("datamunge::optim::CrossEntropyMethodOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@elite_ratio = value$elite_ratio;
+  obj@initial_std_dev = value$initial_std_dev;
+  obj@smoothing = value$smoothing;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__CrossEntropyMethodOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$elite_ratio = value@elite_ratio;
+  obj$initial_std_dev = value@initial_std_dev;
+  obj$smoothing = value@smoothing;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::CrossEntropyMethodOptions
+setMethod('copyToR', '_p_datamunge__optim__CrossEntropyMethodOptions', CopyToR_datamunge__optim__CrossEntropyMethodOptions);
+setMethod('copyToC', 'datamunge::optim::CrossEntropyMethodOptions', CopyToC_datamunge__optim__CrossEntropyMethodOptions);
+
+# End definition of copy methods for datamunge::optim::CrossEntropyMethodOptions
+# End definition of copy functions & methods for datamunge::optim::CrossEntropyMethodOptions
+# Start of new_CrossEntropyMethod
+
+`CrossEntropyMethod__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_CrossEntropyMethod__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CrossEntropyMethod", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CrossEntropyMethod);
+  ans
+  
+}
+
+attr(`CrossEntropyMethod__SWIG_0`, 'returnType') = '_p_datamunge__optim__CrossEntropyMethod'
+attr(`CrossEntropyMethod__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethodOptions')
+class(`CrossEntropyMethod__SWIG_0`) = c("SWIGFunction", class('CrossEntropyMethod__SWIG_0'))
+
+# Start of new_CrossEntropyMethod
+
+`CrossEntropyMethod__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_CrossEntropyMethod__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CrossEntropyMethod", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CrossEntropyMethod);
+  ans
+  
+}
+
+attr(`CrossEntropyMethod__SWIG_1`, 'returnType') = '_p_datamunge__optim__CrossEntropyMethod'
+class(`CrossEntropyMethod__SWIG_1`) = c("SWIGFunction", class('CrossEntropyMethod__SWIG_1'))
+
+`CrossEntropyMethod` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- CrossEntropyMethod__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__CrossEntropyMethodOptions') && length(argv[[1]]) == 1 ) {
+      f <- CrossEntropyMethod__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CrossEntropyMethod with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CrossEntropyMethod_optimize
+
+`CrossEntropyMethod_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_CrossEntropyMethod_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CrossEntropyMethod_optimize`, 'returnType') = 'numeric'
+attr(`CrossEntropyMethod_optimize`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethod', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`CrossEntropyMethod_optimize`) = c("SWIGFunction", class('CrossEntropyMethod_optimize'))
+
+# Start of delete_CrossEntropyMethod
+
+`delete_CrossEntropyMethod` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CrossEntropyMethod', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CrossEntropyMethod`, 'returnType') = 'void'
+attr(`delete_CrossEntropyMethod`, "inputTypes") = c('_p_datamunge__optim__CrossEntropyMethod')
+class(`delete_CrossEntropyMethod`) = c("SWIGFunction", class('delete_CrossEntropyMethod'))
+
+# Start of accessor method for datamunge::optim::CrossEntropyMethod
+setMethod('$', '_p_datamunge__optim__CrossEntropyMethod', function(x, name)
+
+{
+  accessorFuns = list('optimize' = CrossEntropyMethod_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::CrossEntropyMethod
+setMethod('delete', '_p_datamunge__optim__CrossEntropyMethod', function(obj) {delete_datamunge__optim__CrossEntropyMethod(obj)})
+# Start of CuckooSearchOptions_population_size_set
+
+`CuckooSearchOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_CuckooSearchOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_population_size_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'integer')
+class(`CuckooSearchOptions_population_size_set`) = c("SWIGFunction", class('CuckooSearchOptions_population_size_set'))
+
+# Start of CuckooSearchOptions_population_size_get
+
+`CuckooSearchOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_population_size_get`, 'returnType') = 'integer'
+attr(`CuckooSearchOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_population_size_get`) = c("SWIGFunction", class('CuckooSearchOptions_population_size_get'))
+
+# Start of CuckooSearchOptions_discovery_rate_set
+
+`CuckooSearchOptions_discovery_rate_set` = function(self, s_discovery_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CuckooSearchOptions_discovery_rate_set', self, s_discovery_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_discovery_rate_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_discovery_rate_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'numeric')
+class(`CuckooSearchOptions_discovery_rate_set`) = c("SWIGFunction", class('CuckooSearchOptions_discovery_rate_set'))
+
+# Start of CuckooSearchOptions_discovery_rate_get
+
+`CuckooSearchOptions_discovery_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_discovery_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_discovery_rate_get`, 'returnType') = 'numeric'
+attr(`CuckooSearchOptions_discovery_rate_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_discovery_rate_get`) = c("SWIGFunction", class('CuckooSearchOptions_discovery_rate_get'))
+
+# Start of CuckooSearchOptions_levy_beta_set
+
+`CuckooSearchOptions_levy_beta_set` = function(self, s_levy_beta)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CuckooSearchOptions_levy_beta_set', self, s_levy_beta, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_levy_beta_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_levy_beta_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'numeric')
+class(`CuckooSearchOptions_levy_beta_set`) = c("SWIGFunction", class('CuckooSearchOptions_levy_beta_set'))
+
+# Start of CuckooSearchOptions_levy_beta_get
+
+`CuckooSearchOptions_levy_beta_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_levy_beta_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_levy_beta_get`, 'returnType') = 'numeric'
+attr(`CuckooSearchOptions_levy_beta_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_levy_beta_get`) = c("SWIGFunction", class('CuckooSearchOptions_levy_beta_get'))
+
+# Start of CuckooSearchOptions_step_scale_set
+
+`CuckooSearchOptions_step_scale_set` = function(self, s_step_scale)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CuckooSearchOptions_step_scale_set', self, s_step_scale, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_step_scale_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_step_scale_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'numeric')
+class(`CuckooSearchOptions_step_scale_set`) = c("SWIGFunction", class('CuckooSearchOptions_step_scale_set'))
+
+# Start of CuckooSearchOptions_step_scale_get
+
+`CuckooSearchOptions_step_scale_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_step_scale_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_step_scale_get`, 'returnType') = 'numeric'
+attr(`CuckooSearchOptions_step_scale_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_step_scale_get`) = c("SWIGFunction", class('CuckooSearchOptions_step_scale_get'))
+
+# Start of CuckooSearchOptions_max_iterations_set
+
+`CuckooSearchOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_CuckooSearchOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'integer')
+class(`CuckooSearchOptions_max_iterations_set`) = c("SWIGFunction", class('CuckooSearchOptions_max_iterations_set'))
+
+# Start of CuckooSearchOptions_max_iterations_get
+
+`CuckooSearchOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`CuckooSearchOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_max_iterations_get`) = c("SWIGFunction", class('CuckooSearchOptions_max_iterations_get'))
+
+# Start of CuckooSearchOptions_tolerance_set
+
+`CuckooSearchOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CuckooSearchOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_tolerance_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'numeric')
+class(`CuckooSearchOptions_tolerance_set`) = c("SWIGFunction", class('CuckooSearchOptions_tolerance_set'))
+
+# Start of CuckooSearchOptions_tolerance_get
+
+`CuckooSearchOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`CuckooSearchOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_tolerance_get`) = c("SWIGFunction", class('CuckooSearchOptions_tolerance_get'))
+
+# Start of CuckooSearchOptions_seed_set
+
+`CuckooSearchOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_CuckooSearchOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_seed_set`, 'returnType') = 'void'
+attr(`CuckooSearchOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions', 'integer')
+class(`CuckooSearchOptions_seed_set`) = c("SWIGFunction", class('CuckooSearchOptions_seed_set'))
+
+# Start of CuckooSearchOptions_seed_get
+
+`CuckooSearchOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CuckooSearchOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearchOptions_seed_get`, 'returnType') = 'integer'
+attr(`CuckooSearchOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearchOptions_seed_get`) = c("SWIGFunction", class('CuckooSearchOptions_seed_get'))
+
+# Start of new_CuckooSearchOptions
+
+`CuckooSearchOptions` = function()
+{
+  ;ans = .Call('R_swig_new_CuckooSearchOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CuckooSearchOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CuckooSearchOptions);
+  ans
+  
+}
+
+attr(`CuckooSearchOptions`, 'returnType') = '_p_datamunge__optim__CuckooSearchOptions'
+class(`CuckooSearchOptions`) = c("SWIGFunction", class('CuckooSearchOptions'))
+
+# Start of delete_CuckooSearchOptions
+
+`delete_CuckooSearchOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CuckooSearchOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CuckooSearchOptions`, 'returnType') = 'void'
+attr(`delete_CuckooSearchOptions`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`delete_CuckooSearchOptions`) = c("SWIGFunction", class('delete_CuckooSearchOptions'))
+
+# Start of accessor method for datamunge::optim::CuckooSearchOptions
+setMethod('$', '_p_datamunge__optim__CuckooSearchOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = CuckooSearchOptions_population_size_get, 'discovery_rate' = CuckooSearchOptions_discovery_rate_get, 'levy_beta' = CuckooSearchOptions_levy_beta_get, 'step_scale' = CuckooSearchOptions_step_scale_get, 'max_iterations' = CuckooSearchOptions_max_iterations_get, 'tolerance' = CuckooSearchOptions_tolerance_get, 'seed' = CuckooSearchOptions_seed_get);
+  vaccessors = c('population_size', 'discovery_rate', 'levy_beta', 'step_scale', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::CuckooSearchOptions
+# Start of accessor method for datamunge::optim::CuckooSearchOptions
+setMethod('$<-', '_p_datamunge__optim__CuckooSearchOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = CuckooSearchOptions_population_size_set, 'discovery_rate' = CuckooSearchOptions_discovery_rate_set, 'levy_beta' = CuckooSearchOptions_levy_beta_set, 'step_scale' = CuckooSearchOptions_step_scale_set, 'max_iterations' = CuckooSearchOptions_max_iterations_set, 'tolerance' = CuckooSearchOptions_tolerance_set, 'seed' = CuckooSearchOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__CuckooSearchOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = CuckooSearchOptions_population_size_set, 'discovery_rate' = CuckooSearchOptions_discovery_rate_set, 'levy_beta' = CuckooSearchOptions_levy_beta_set, 'step_scale' = CuckooSearchOptions_step_scale_set, 'max_iterations' = CuckooSearchOptions_max_iterations_set, 'tolerance' = CuckooSearchOptions_tolerance_set, 'seed' = CuckooSearchOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::CuckooSearchOptions
+setMethod('delete', '_p_datamunge__optim__CuckooSearchOptions', function(obj) {delete_datamunge__optim__CuckooSearchOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::CuckooSearchOptions
+CopyToR_datamunge__optim__CuckooSearchOptions = function(value, obj = new("datamunge::optim::CuckooSearchOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@discovery_rate = value$discovery_rate;
+  obj@levy_beta = value$levy_beta;
+  obj@step_scale = value$step_scale;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__CuckooSearchOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$discovery_rate = value@discovery_rate;
+  obj$levy_beta = value@levy_beta;
+  obj$step_scale = value@step_scale;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::CuckooSearchOptions
+setMethod('copyToR', '_p_datamunge__optim__CuckooSearchOptions', CopyToR_datamunge__optim__CuckooSearchOptions);
+setMethod('copyToC', 'datamunge::optim::CuckooSearchOptions', CopyToC_datamunge__optim__CuckooSearchOptions);
+
+# End definition of copy methods for datamunge::optim::CuckooSearchOptions
+# End definition of copy functions & methods for datamunge::optim::CuckooSearchOptions
+# Start of new_CuckooSearch
+
+`CuckooSearch__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_CuckooSearch__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CuckooSearch", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CuckooSearch);
+  ans
+  
+}
+
+attr(`CuckooSearch__SWIG_0`, 'returnType') = '_p_datamunge__optim__CuckooSearch'
+attr(`CuckooSearch__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__CuckooSearchOptions')
+class(`CuckooSearch__SWIG_0`) = c("SWIGFunction", class('CuckooSearch__SWIG_0'))
+
+# Start of new_CuckooSearch
+
+`CuckooSearch__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_CuckooSearch__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__CuckooSearch", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CuckooSearch);
+  ans
+  
+}
+
+attr(`CuckooSearch__SWIG_1`, 'returnType') = '_p_datamunge__optim__CuckooSearch'
+class(`CuckooSearch__SWIG_1`) = c("SWIGFunction", class('CuckooSearch__SWIG_1'))
+
+`CuckooSearch` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- CuckooSearch__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__CuckooSearchOptions') && length(argv[[1]]) == 1 ) {
+      f <- CuckooSearch__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CuckooSearch with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CuckooSearch_optimize
+
+`CuckooSearch_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_CuckooSearch_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CuckooSearch_optimize`, 'returnType') = 'numeric'
+attr(`CuckooSearch_optimize`, "inputTypes") = c('_p_datamunge__optim__CuckooSearch', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`CuckooSearch_optimize`) = c("SWIGFunction", class('CuckooSearch_optimize'))
+
+# Start of delete_CuckooSearch
+
+`delete_CuckooSearch` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CuckooSearch', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CuckooSearch`, 'returnType') = 'void'
+attr(`delete_CuckooSearch`, "inputTypes") = c('_p_datamunge__optim__CuckooSearch')
+class(`delete_CuckooSearch`) = c("SWIGFunction", class('delete_CuckooSearch'))
+
+# Start of accessor method for datamunge::optim::CuckooSearch
+setMethod('$', '_p_datamunge__optim__CuckooSearch', function(x, name)
+
+{
+  accessorFuns = list('optimize' = CuckooSearch_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::CuckooSearch
+setMethod('delete', '_p_datamunge__optim__CuckooSearch', function(obj) {delete_datamunge__optim__CuckooSearch(obj)})
+# Start of EstimationOfDistributionOptions_population_size_set
+
+`EstimationOfDistributionOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_population_size_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'integer')
+class(`EstimationOfDistributionOptions_population_size_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_population_size_set'))
+
+# Start of EstimationOfDistributionOptions_population_size_get
+
+`EstimationOfDistributionOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_population_size_get`, 'returnType') = 'integer'
+attr(`EstimationOfDistributionOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_population_size_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_population_size_get'))
+
+# Start of EstimationOfDistributionOptions_selection_ratio_set
+
+`EstimationOfDistributionOptions_selection_ratio_set` = function(self, s_selection_ratio)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_selection_ratio_set', self, s_selection_ratio, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_selection_ratio_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_selection_ratio_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'numeric')
+class(`EstimationOfDistributionOptions_selection_ratio_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_selection_ratio_set'))
+
+# Start of EstimationOfDistributionOptions_selection_ratio_get
+
+`EstimationOfDistributionOptions_selection_ratio_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_selection_ratio_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_selection_ratio_get`, 'returnType') = 'numeric'
+attr(`EstimationOfDistributionOptions_selection_ratio_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_selection_ratio_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_selection_ratio_get'))
+
+# Start of EstimationOfDistributionOptions_initial_std_dev_set
+
+`EstimationOfDistributionOptions_initial_std_dev_set` = function(self, s_initial_std_dev)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_initial_std_dev_set', self, s_initial_std_dev, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_initial_std_dev_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_initial_std_dev_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'numeric')
+class(`EstimationOfDistributionOptions_initial_std_dev_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_initial_std_dev_set'))
+
+# Start of EstimationOfDistributionOptions_initial_std_dev_get
+
+`EstimationOfDistributionOptions_initial_std_dev_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_initial_std_dev_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_initial_std_dev_get`, 'returnType') = 'numeric'
+attr(`EstimationOfDistributionOptions_initial_std_dev_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_initial_std_dev_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_initial_std_dev_get'))
+
+# Start of EstimationOfDistributionOptions_covariance_regularization_set
+
+`EstimationOfDistributionOptions_covariance_regularization_set` = function(self, s_covariance_regularization)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_covariance_regularization_set', self, s_covariance_regularization, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_covariance_regularization_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_covariance_regularization_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'numeric')
+class(`EstimationOfDistributionOptions_covariance_regularization_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_covariance_regularization_set'))
+
+# Start of EstimationOfDistributionOptions_covariance_regularization_get
+
+`EstimationOfDistributionOptions_covariance_regularization_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_covariance_regularization_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_covariance_regularization_get`, 'returnType') = 'numeric'
+attr(`EstimationOfDistributionOptions_covariance_regularization_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_covariance_regularization_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_covariance_regularization_get'))
+
+# Start of EstimationOfDistributionOptions_max_generations_set
+
+`EstimationOfDistributionOptions_max_generations_set` = function(self, s_max_generations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_generations = as.integer(s_max_generations);
+  
+  if(length(s_max_generations) > 1) {
+    warning("using only the first element of s_max_generations");
+  };
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_max_generations_set', self, s_max_generations, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_max_generations_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_max_generations_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'integer')
+class(`EstimationOfDistributionOptions_max_generations_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_max_generations_set'))
+
+# Start of EstimationOfDistributionOptions_max_generations_get
+
+`EstimationOfDistributionOptions_max_generations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_max_generations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_max_generations_get`, 'returnType') = 'integer'
+attr(`EstimationOfDistributionOptions_max_generations_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_max_generations_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_max_generations_get'))
+
+# Start of EstimationOfDistributionOptions_tolerance_set
+
+`EstimationOfDistributionOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_tolerance_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'numeric')
+class(`EstimationOfDistributionOptions_tolerance_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_tolerance_set'))
+
+# Start of EstimationOfDistributionOptions_tolerance_get
+
+`EstimationOfDistributionOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`EstimationOfDistributionOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_tolerance_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_tolerance_get'))
+
+# Start of EstimationOfDistributionOptions_seed_set
+
+`EstimationOfDistributionOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_EstimationOfDistributionOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_seed_set`, 'returnType') = 'void'
+attr(`EstimationOfDistributionOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions', 'integer')
+class(`EstimationOfDistributionOptions_seed_set`) = c("SWIGFunction", class('EstimationOfDistributionOptions_seed_set'))
+
+# Start of EstimationOfDistributionOptions_seed_get
+
+`EstimationOfDistributionOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EstimationOfDistributionOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistributionOptions_seed_get`, 'returnType') = 'integer'
+attr(`EstimationOfDistributionOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistributionOptions_seed_get`) = c("SWIGFunction", class('EstimationOfDistributionOptions_seed_get'))
+
+# Start of new_EstimationOfDistributionOptions
+
+`EstimationOfDistributionOptions` = function()
+{
+  ;ans = .Call('R_swig_new_EstimationOfDistributionOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EstimationOfDistributionOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EstimationOfDistributionOptions);
+  ans
+  
+}
+
+attr(`EstimationOfDistributionOptions`, 'returnType') = '_p_datamunge__optim__EstimationOfDistributionOptions'
+class(`EstimationOfDistributionOptions`) = c("SWIGFunction", class('EstimationOfDistributionOptions'))
+
+# Start of delete_EstimationOfDistributionOptions
+
+`delete_EstimationOfDistributionOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_EstimationOfDistributionOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_EstimationOfDistributionOptions`, 'returnType') = 'void'
+attr(`delete_EstimationOfDistributionOptions`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`delete_EstimationOfDistributionOptions`) = c("SWIGFunction", class('delete_EstimationOfDistributionOptions'))
+
+# Start of accessor method for datamunge::optim::EstimationOfDistributionOptions
+setMethod('$', '_p_datamunge__optim__EstimationOfDistributionOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = EstimationOfDistributionOptions_population_size_get, 'selection_ratio' = EstimationOfDistributionOptions_selection_ratio_get, 'initial_std_dev' = EstimationOfDistributionOptions_initial_std_dev_get, 'covariance_regularization' = EstimationOfDistributionOptions_covariance_regularization_get, 'max_generations' = EstimationOfDistributionOptions_max_generations_get, 'tolerance' = EstimationOfDistributionOptions_tolerance_get, 'seed' = EstimationOfDistributionOptions_seed_get);
+  vaccessors = c('population_size', 'selection_ratio', 'initial_std_dev', 'covariance_regularization', 'max_generations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::EstimationOfDistributionOptions
+# Start of accessor method for datamunge::optim::EstimationOfDistributionOptions
+setMethod('$<-', '_p_datamunge__optim__EstimationOfDistributionOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = EstimationOfDistributionOptions_population_size_set, 'selection_ratio' = EstimationOfDistributionOptions_selection_ratio_set, 'initial_std_dev' = EstimationOfDistributionOptions_initial_std_dev_set, 'covariance_regularization' = EstimationOfDistributionOptions_covariance_regularization_set, 'max_generations' = EstimationOfDistributionOptions_max_generations_set, 'tolerance' = EstimationOfDistributionOptions_tolerance_set, 'seed' = EstimationOfDistributionOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__EstimationOfDistributionOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = EstimationOfDistributionOptions_population_size_set, 'selection_ratio' = EstimationOfDistributionOptions_selection_ratio_set, 'initial_std_dev' = EstimationOfDistributionOptions_initial_std_dev_set, 'covariance_regularization' = EstimationOfDistributionOptions_covariance_regularization_set, 'max_generations' = EstimationOfDistributionOptions_max_generations_set, 'tolerance' = EstimationOfDistributionOptions_tolerance_set, 'seed' = EstimationOfDistributionOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::EstimationOfDistributionOptions
+setMethod('delete', '_p_datamunge__optim__EstimationOfDistributionOptions', function(obj) {delete_datamunge__optim__EstimationOfDistributionOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::EstimationOfDistributionOptions
+CopyToR_datamunge__optim__EstimationOfDistributionOptions = function(value, obj = new("datamunge::optim::EstimationOfDistributionOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@selection_ratio = value$selection_ratio;
+  obj@initial_std_dev = value$initial_std_dev;
+  obj@covariance_regularization = value$covariance_regularization;
+  obj@max_generations = value$max_generations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__EstimationOfDistributionOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$selection_ratio = value@selection_ratio;
+  obj$initial_std_dev = value@initial_std_dev;
+  obj$covariance_regularization = value@covariance_regularization;
+  obj$max_generations = value@max_generations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::EstimationOfDistributionOptions
+setMethod('copyToR', '_p_datamunge__optim__EstimationOfDistributionOptions', CopyToR_datamunge__optim__EstimationOfDistributionOptions);
+setMethod('copyToC', 'datamunge::optim::EstimationOfDistributionOptions', CopyToC_datamunge__optim__EstimationOfDistributionOptions);
+
+# End definition of copy methods for datamunge::optim::EstimationOfDistributionOptions
+# End definition of copy functions & methods for datamunge::optim::EstimationOfDistributionOptions
+# Start of new_EstimationOfDistribution
+
+`EstimationOfDistribution__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_EstimationOfDistribution__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EstimationOfDistribution", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EstimationOfDistribution);
+  ans
+  
+}
+
+attr(`EstimationOfDistribution__SWIG_0`, 'returnType') = '_p_datamunge__optim__EstimationOfDistribution'
+attr(`EstimationOfDistribution__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistributionOptions')
+class(`EstimationOfDistribution__SWIG_0`) = c("SWIGFunction", class('EstimationOfDistribution__SWIG_0'))
+
+# Start of new_EstimationOfDistribution
+
+`EstimationOfDistribution__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_EstimationOfDistribution__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EstimationOfDistribution", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EstimationOfDistribution);
+  ans
+  
+}
+
+attr(`EstimationOfDistribution__SWIG_1`, 'returnType') = '_p_datamunge__optim__EstimationOfDistribution'
+class(`EstimationOfDistribution__SWIG_1`) = c("SWIGFunction", class('EstimationOfDistribution__SWIG_1'))
+
+`EstimationOfDistribution` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- EstimationOfDistribution__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__EstimationOfDistributionOptions') && length(argv[[1]]) == 1 ) {
+      f <- EstimationOfDistribution__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for EstimationOfDistribution with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of EstimationOfDistribution_optimize
+
+`EstimationOfDistribution_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_EstimationOfDistribution_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EstimationOfDistribution_optimize`, 'returnType') = 'numeric'
+attr(`EstimationOfDistribution_optimize`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistribution', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`EstimationOfDistribution_optimize`) = c("SWIGFunction", class('EstimationOfDistribution_optimize'))
+
+# Start of delete_EstimationOfDistribution
+
+`delete_EstimationOfDistribution` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_EstimationOfDistribution', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_EstimationOfDistribution`, 'returnType') = 'void'
+attr(`delete_EstimationOfDistribution`, "inputTypes") = c('_p_datamunge__optim__EstimationOfDistribution')
+class(`delete_EstimationOfDistribution`) = c("SWIGFunction", class('delete_EstimationOfDistribution'))
+
+# Start of accessor method for datamunge::optim::EstimationOfDistribution
+setMethod('$', '_p_datamunge__optim__EstimationOfDistribution', function(x, name)
+
+{
+  accessorFuns = list('optimize' = EstimationOfDistribution_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::EstimationOfDistribution
+setMethod('delete', '_p_datamunge__optim__EstimationOfDistribution', function(obj) {delete_datamunge__optim__EstimationOfDistribution(obj)})
+# Start of EvolutionStrategyOptions_mu_set
+
+`EvolutionStrategyOptions_mu_set` = function(self, s_mu)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_mu = as.integer(s_mu);
+  
+  if(length(s_mu) > 1) {
+    warning("using only the first element of s_mu");
+  };
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_mu_set', self, s_mu, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_mu_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_mu_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'integer')
+class(`EvolutionStrategyOptions_mu_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_mu_set'))
+
+# Start of EvolutionStrategyOptions_mu_get
+
+`EvolutionStrategyOptions_mu_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_mu_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_mu_get`, 'returnType') = 'integer'
+attr(`EvolutionStrategyOptions_mu_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_mu_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_mu_get'))
+
+# Start of EvolutionStrategyOptions_offspring_size_set
+
+`EvolutionStrategyOptions_offspring_size_set` = function(self, s_offspring_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_offspring_size = as.integer(s_offspring_size);
+  
+  if(length(s_offspring_size) > 1) {
+    warning("using only the first element of s_offspring_size");
+  };
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_offspring_size_set', self, s_offspring_size, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_offspring_size_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_offspring_size_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'integer')
+class(`EvolutionStrategyOptions_offspring_size_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_offspring_size_set'))
+
+# Start of EvolutionStrategyOptions_offspring_size_get
+
+`EvolutionStrategyOptions_offspring_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_offspring_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_offspring_size_get`, 'returnType') = 'integer'
+attr(`EvolutionStrategyOptions_offspring_size_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_offspring_size_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_offspring_size_get'))
+
+# Start of EvolutionStrategyOptions_strategy_set
+
+`EvolutionStrategyOptions_strategy_set` = function(self, s_strategy)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_strategy = as(s_strategy, "character"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_strategy_set', self, s_strategy, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_strategy_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_strategy_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'character')
+class(`EvolutionStrategyOptions_strategy_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_strategy_set'))
+
+# Start of EvolutionStrategyOptions_strategy_get
+
+`EvolutionStrategyOptions_strategy_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_strategy_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_strategy_get`, 'returnType') = 'character'
+attr(`EvolutionStrategyOptions_strategy_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_strategy_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_strategy_get'))
+
+# Start of EvolutionStrategyOptions_initial_step_size_set
+
+`EvolutionStrategyOptions_initial_step_size_set` = function(self, s_initial_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_initial_step_size_set', self, s_initial_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_initial_step_size_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_initial_step_size_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'numeric')
+class(`EvolutionStrategyOptions_initial_step_size_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_initial_step_size_set'))
+
+# Start of EvolutionStrategyOptions_initial_step_size_get
+
+`EvolutionStrategyOptions_initial_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_initial_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_initial_step_size_get`, 'returnType') = 'numeric'
+attr(`EvolutionStrategyOptions_initial_step_size_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_initial_step_size_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_initial_step_size_get'))
+
+# Start of EvolutionStrategyOptions_max_generations_set
+
+`EvolutionStrategyOptions_max_generations_set` = function(self, s_max_generations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_generations = as.integer(s_max_generations);
+  
+  if(length(s_max_generations) > 1) {
+    warning("using only the first element of s_max_generations");
+  };
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_max_generations_set', self, s_max_generations, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_max_generations_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_max_generations_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'integer')
+class(`EvolutionStrategyOptions_max_generations_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_max_generations_set'))
+
+# Start of EvolutionStrategyOptions_max_generations_get
+
+`EvolutionStrategyOptions_max_generations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_max_generations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_max_generations_get`, 'returnType') = 'integer'
+attr(`EvolutionStrategyOptions_max_generations_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_max_generations_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_max_generations_get'))
+
+# Start of EvolutionStrategyOptions_tolerance_set
+
+`EvolutionStrategyOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_tolerance_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'numeric')
+class(`EvolutionStrategyOptions_tolerance_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_tolerance_set'))
+
+# Start of EvolutionStrategyOptions_tolerance_get
+
+`EvolutionStrategyOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`EvolutionStrategyOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_tolerance_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_tolerance_get'))
+
+# Start of EvolutionStrategyOptions_seed_set
+
+`EvolutionStrategyOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_EvolutionStrategyOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_seed_set`, 'returnType') = 'void'
+attr(`EvolutionStrategyOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions', 'integer')
+class(`EvolutionStrategyOptions_seed_set`) = c("SWIGFunction", class('EvolutionStrategyOptions_seed_set'))
+
+# Start of EvolutionStrategyOptions_seed_get
+
+`EvolutionStrategyOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_EvolutionStrategyOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategyOptions_seed_get`, 'returnType') = 'integer'
+attr(`EvolutionStrategyOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategyOptions_seed_get`) = c("SWIGFunction", class('EvolutionStrategyOptions_seed_get'))
+
+# Start of new_EvolutionStrategyOptions
+
+`EvolutionStrategyOptions` = function()
+{
+  ;ans = .Call('R_swig_new_EvolutionStrategyOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EvolutionStrategyOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EvolutionStrategyOptions);
+  ans
+  
+}
+
+attr(`EvolutionStrategyOptions`, 'returnType') = '_p_datamunge__optim__EvolutionStrategyOptions'
+class(`EvolutionStrategyOptions`) = c("SWIGFunction", class('EvolutionStrategyOptions'))
+
+# Start of delete_EvolutionStrategyOptions
+
+`delete_EvolutionStrategyOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_EvolutionStrategyOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_EvolutionStrategyOptions`, 'returnType') = 'void'
+attr(`delete_EvolutionStrategyOptions`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`delete_EvolutionStrategyOptions`) = c("SWIGFunction", class('delete_EvolutionStrategyOptions'))
+
+# Start of accessor method for datamunge::optim::EvolutionStrategyOptions
+setMethod('$', '_p_datamunge__optim__EvolutionStrategyOptions', function(x, name)
+
+{
+  accessorFuns = list('mu' = EvolutionStrategyOptions_mu_get, 'offspring_size' = EvolutionStrategyOptions_offspring_size_get, 'strategy' = EvolutionStrategyOptions_strategy_get, 'initial_step_size' = EvolutionStrategyOptions_initial_step_size_get, 'max_generations' = EvolutionStrategyOptions_max_generations_get, 'tolerance' = EvolutionStrategyOptions_tolerance_get, 'seed' = EvolutionStrategyOptions_seed_get);
+  vaccessors = c('mu', 'offspring_size', 'strategy', 'initial_step_size', 'max_generations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::EvolutionStrategyOptions
+# Start of accessor method for datamunge::optim::EvolutionStrategyOptions
+setMethod('$<-', '_p_datamunge__optim__EvolutionStrategyOptions', function(x, name, value)
+
+{
+  accessorFuns = list('mu' = EvolutionStrategyOptions_mu_set, 'offspring_size' = EvolutionStrategyOptions_offspring_size_set, 'strategy' = EvolutionStrategyOptions_strategy_set, 'initial_step_size' = EvolutionStrategyOptions_initial_step_size_set, 'max_generations' = EvolutionStrategyOptions_max_generations_set, 'tolerance' = EvolutionStrategyOptions_tolerance_set, 'seed' = EvolutionStrategyOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__EvolutionStrategyOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('mu' = EvolutionStrategyOptions_mu_set, 'offspring_size' = EvolutionStrategyOptions_offspring_size_set, 'strategy' = EvolutionStrategyOptions_strategy_set, 'initial_step_size' = EvolutionStrategyOptions_initial_step_size_set, 'max_generations' = EvolutionStrategyOptions_max_generations_set, 'tolerance' = EvolutionStrategyOptions_tolerance_set, 'seed' = EvolutionStrategyOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::EvolutionStrategyOptions
+setMethod('delete', '_p_datamunge__optim__EvolutionStrategyOptions', function(obj) {delete_datamunge__optim__EvolutionStrategyOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::EvolutionStrategyOptions
+CopyToR_datamunge__optim__EvolutionStrategyOptions = function(value, obj = new("datamunge::optim::EvolutionStrategyOptions"))
+{
+  obj@mu = value$mu;
+  obj@offspring_size = value$offspring_size;
+  obj@strategy = value$strategy;
+  obj@initial_step_size = value$initial_step_size;
+  obj@max_generations = value$max_generations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__EvolutionStrategyOptions = function(value, obj)
+{
+  obj$mu = value@mu;
+  obj$offspring_size = value@offspring_size;
+  obj$strategy = value@strategy;
+  obj$initial_step_size = value@initial_step_size;
+  obj$max_generations = value@max_generations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::EvolutionStrategyOptions
+setMethod('copyToR', '_p_datamunge__optim__EvolutionStrategyOptions', CopyToR_datamunge__optim__EvolutionStrategyOptions);
+setMethod('copyToC', 'datamunge::optim::EvolutionStrategyOptions', CopyToC_datamunge__optim__EvolutionStrategyOptions);
+
+# End definition of copy methods for datamunge::optim::EvolutionStrategyOptions
+# End definition of copy functions & methods for datamunge::optim::EvolutionStrategyOptions
+# Start of new_EvolutionStrategy
+
+`EvolutionStrategy__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_EvolutionStrategy__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EvolutionStrategy", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EvolutionStrategy);
+  ans
+  
+}
+
+attr(`EvolutionStrategy__SWIG_0`, 'returnType') = '_p_datamunge__optim__EvolutionStrategy'
+attr(`EvolutionStrategy__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategyOptions')
+class(`EvolutionStrategy__SWIG_0`) = c("SWIGFunction", class('EvolutionStrategy__SWIG_0'))
+
+# Start of new_EvolutionStrategy
+
+`EvolutionStrategy__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_EvolutionStrategy__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__EvolutionStrategy", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_EvolutionStrategy);
+  ans
+  
+}
+
+attr(`EvolutionStrategy__SWIG_1`, 'returnType') = '_p_datamunge__optim__EvolutionStrategy'
+class(`EvolutionStrategy__SWIG_1`) = c("SWIGFunction", class('EvolutionStrategy__SWIG_1'))
+
+`EvolutionStrategy` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- EvolutionStrategy__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__EvolutionStrategyOptions') && length(argv[[1]]) == 1 ) {
+      f <- EvolutionStrategy__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for EvolutionStrategy with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of EvolutionStrategy_optimize
+
+`EvolutionStrategy_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_EvolutionStrategy_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`EvolutionStrategy_optimize`, 'returnType') = 'numeric'
+attr(`EvolutionStrategy_optimize`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategy', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`EvolutionStrategy_optimize`) = c("SWIGFunction", class('EvolutionStrategy_optimize'))
+
+# Start of delete_EvolutionStrategy
+
+`delete_EvolutionStrategy` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_EvolutionStrategy', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_EvolutionStrategy`, 'returnType') = 'void'
+attr(`delete_EvolutionStrategy`, "inputTypes") = c('_p_datamunge__optim__EvolutionStrategy')
+class(`delete_EvolutionStrategy`) = c("SWIGFunction", class('delete_EvolutionStrategy'))
+
+# Start of accessor method for datamunge::optim::EvolutionStrategy
+setMethod('$', '_p_datamunge__optim__EvolutionStrategy', function(x, name)
+
+{
+  accessorFuns = list('optimize' = EvolutionStrategy_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::EvolutionStrategy
+setMethod('delete', '_p_datamunge__optim__EvolutionStrategy', function(obj) {delete_datamunge__optim__EvolutionStrategy(obj)})
+# Start of FireflyAlgorithmOptions_population_size_set
+
+`FireflyAlgorithmOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_population_size_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'integer')
+class(`FireflyAlgorithmOptions_population_size_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_population_size_set'))
+
+# Start of FireflyAlgorithmOptions_population_size_get
+
+`FireflyAlgorithmOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_population_size_get`, 'returnType') = 'integer'
+attr(`FireflyAlgorithmOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_population_size_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_population_size_get'))
+
+# Start of FireflyAlgorithmOptions_attractiveness_at_zero_set
+
+`FireflyAlgorithmOptions_attractiveness_at_zero_set` = function(self, s_attractiveness_at_zero)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_attractiveness_at_zero_set', self, s_attractiveness_at_zero, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_attractiveness_at_zero_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_attractiveness_at_zero_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'numeric')
+class(`FireflyAlgorithmOptions_attractiveness_at_zero_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_attractiveness_at_zero_set'))
+
+# Start of FireflyAlgorithmOptions_attractiveness_at_zero_get
+
+`FireflyAlgorithmOptions_attractiveness_at_zero_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_attractiveness_at_zero_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_attractiveness_at_zero_get`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithmOptions_attractiveness_at_zero_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_attractiveness_at_zero_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_attractiveness_at_zero_get'))
+
+# Start of FireflyAlgorithmOptions_light_absorption_set
+
+`FireflyAlgorithmOptions_light_absorption_set` = function(self, s_light_absorption)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_light_absorption_set', self, s_light_absorption, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_light_absorption_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_light_absorption_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'numeric')
+class(`FireflyAlgorithmOptions_light_absorption_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_light_absorption_set'))
+
+# Start of FireflyAlgorithmOptions_light_absorption_get
+
+`FireflyAlgorithmOptions_light_absorption_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_light_absorption_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_light_absorption_get`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithmOptions_light_absorption_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_light_absorption_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_light_absorption_get'))
+
+# Start of FireflyAlgorithmOptions_randomization_step_set
+
+`FireflyAlgorithmOptions_randomization_step_set` = function(self, s_randomization_step)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_randomization_step_set', self, s_randomization_step, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_randomization_step_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_randomization_step_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'numeric')
+class(`FireflyAlgorithmOptions_randomization_step_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_randomization_step_set'))
+
+# Start of FireflyAlgorithmOptions_randomization_step_get
+
+`FireflyAlgorithmOptions_randomization_step_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_randomization_step_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_randomization_step_get`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithmOptions_randomization_step_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_randomization_step_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_randomization_step_get'))
+
+# Start of FireflyAlgorithmOptions_randomization_decay_set
+
+`FireflyAlgorithmOptions_randomization_decay_set` = function(self, s_randomization_decay)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_randomization_decay_set', self, s_randomization_decay, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_randomization_decay_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_randomization_decay_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'numeric')
+class(`FireflyAlgorithmOptions_randomization_decay_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_randomization_decay_set'))
+
+# Start of FireflyAlgorithmOptions_randomization_decay_get
+
+`FireflyAlgorithmOptions_randomization_decay_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_randomization_decay_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_randomization_decay_get`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithmOptions_randomization_decay_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_randomization_decay_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_randomization_decay_get'))
+
+# Start of FireflyAlgorithmOptions_max_iterations_set
+
+`FireflyAlgorithmOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'integer')
+class(`FireflyAlgorithmOptions_max_iterations_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_max_iterations_set'))
+
+# Start of FireflyAlgorithmOptions_max_iterations_get
+
+`FireflyAlgorithmOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`FireflyAlgorithmOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_max_iterations_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_max_iterations_get'))
+
+# Start of FireflyAlgorithmOptions_tolerance_set
+
+`FireflyAlgorithmOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_tolerance_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'numeric')
+class(`FireflyAlgorithmOptions_tolerance_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_tolerance_set'))
+
+# Start of FireflyAlgorithmOptions_tolerance_get
+
+`FireflyAlgorithmOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithmOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_tolerance_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_tolerance_get'))
+
+# Start of FireflyAlgorithmOptions_seed_set
+
+`FireflyAlgorithmOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_FireflyAlgorithmOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_seed_set`, 'returnType') = 'void'
+attr(`FireflyAlgorithmOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions', 'integer')
+class(`FireflyAlgorithmOptions_seed_set`) = c("SWIGFunction", class('FireflyAlgorithmOptions_seed_set'))
+
+# Start of FireflyAlgorithmOptions_seed_get
+
+`FireflyAlgorithmOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FireflyAlgorithmOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithmOptions_seed_get`, 'returnType') = 'integer'
+attr(`FireflyAlgorithmOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithmOptions_seed_get`) = c("SWIGFunction", class('FireflyAlgorithmOptions_seed_get'))
+
+# Start of new_FireflyAlgorithmOptions
+
+`FireflyAlgorithmOptions` = function()
+{
+  ;ans = .Call('R_swig_new_FireflyAlgorithmOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FireflyAlgorithmOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FireflyAlgorithmOptions);
+  ans
+  
+}
+
+attr(`FireflyAlgorithmOptions`, 'returnType') = '_p_datamunge__optim__FireflyAlgorithmOptions'
+class(`FireflyAlgorithmOptions`) = c("SWIGFunction", class('FireflyAlgorithmOptions'))
+
+# Start of delete_FireflyAlgorithmOptions
+
+`delete_FireflyAlgorithmOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_FireflyAlgorithmOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_FireflyAlgorithmOptions`, 'returnType') = 'void'
+attr(`delete_FireflyAlgorithmOptions`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`delete_FireflyAlgorithmOptions`) = c("SWIGFunction", class('delete_FireflyAlgorithmOptions'))
+
+# Start of accessor method for datamunge::optim::FireflyAlgorithmOptions
+setMethod('$', '_p_datamunge__optim__FireflyAlgorithmOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = FireflyAlgorithmOptions_population_size_get, 'attractiveness_at_zero' = FireflyAlgorithmOptions_attractiveness_at_zero_get, 'light_absorption' = FireflyAlgorithmOptions_light_absorption_get, 'randomization_step' = FireflyAlgorithmOptions_randomization_step_get, 'randomization_decay' = FireflyAlgorithmOptions_randomization_decay_get, 'max_iterations' = FireflyAlgorithmOptions_max_iterations_get, 'tolerance' = FireflyAlgorithmOptions_tolerance_get, 'seed' = FireflyAlgorithmOptions_seed_get);
+  vaccessors = c('population_size', 'attractiveness_at_zero', 'light_absorption', 'randomization_step', 'randomization_decay', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::FireflyAlgorithmOptions
+# Start of accessor method for datamunge::optim::FireflyAlgorithmOptions
+setMethod('$<-', '_p_datamunge__optim__FireflyAlgorithmOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = FireflyAlgorithmOptions_population_size_set, 'attractiveness_at_zero' = FireflyAlgorithmOptions_attractiveness_at_zero_set, 'light_absorption' = FireflyAlgorithmOptions_light_absorption_set, 'randomization_step' = FireflyAlgorithmOptions_randomization_step_set, 'randomization_decay' = FireflyAlgorithmOptions_randomization_decay_set, 'max_iterations' = FireflyAlgorithmOptions_max_iterations_set, 'tolerance' = FireflyAlgorithmOptions_tolerance_set, 'seed' = FireflyAlgorithmOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__FireflyAlgorithmOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = FireflyAlgorithmOptions_population_size_set, 'attractiveness_at_zero' = FireflyAlgorithmOptions_attractiveness_at_zero_set, 'light_absorption' = FireflyAlgorithmOptions_light_absorption_set, 'randomization_step' = FireflyAlgorithmOptions_randomization_step_set, 'randomization_decay' = FireflyAlgorithmOptions_randomization_decay_set, 'max_iterations' = FireflyAlgorithmOptions_max_iterations_set, 'tolerance' = FireflyAlgorithmOptions_tolerance_set, 'seed' = FireflyAlgorithmOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::FireflyAlgorithmOptions
+setMethod('delete', '_p_datamunge__optim__FireflyAlgorithmOptions', function(obj) {delete_datamunge__optim__FireflyAlgorithmOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::FireflyAlgorithmOptions
+CopyToR_datamunge__optim__FireflyAlgorithmOptions = function(value, obj = new("datamunge::optim::FireflyAlgorithmOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@attractiveness_at_zero = value$attractiveness_at_zero;
+  obj@light_absorption = value$light_absorption;
+  obj@randomization_step = value$randomization_step;
+  obj@randomization_decay = value$randomization_decay;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__FireflyAlgorithmOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$attractiveness_at_zero = value@attractiveness_at_zero;
+  obj$light_absorption = value@light_absorption;
+  obj$randomization_step = value@randomization_step;
+  obj$randomization_decay = value@randomization_decay;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::FireflyAlgorithmOptions
+setMethod('copyToR', '_p_datamunge__optim__FireflyAlgorithmOptions', CopyToR_datamunge__optim__FireflyAlgorithmOptions);
+setMethod('copyToC', 'datamunge::optim::FireflyAlgorithmOptions', CopyToC_datamunge__optim__FireflyAlgorithmOptions);
+
+# End definition of copy methods for datamunge::optim::FireflyAlgorithmOptions
+# End definition of copy functions & methods for datamunge::optim::FireflyAlgorithmOptions
+# Start of new_FireflyAlgorithm
+
+`FireflyAlgorithm__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_FireflyAlgorithm__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FireflyAlgorithm", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FireflyAlgorithm);
+  ans
+  
+}
+
+attr(`FireflyAlgorithm__SWIG_0`, 'returnType') = '_p_datamunge__optim__FireflyAlgorithm'
+attr(`FireflyAlgorithm__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithmOptions')
+class(`FireflyAlgorithm__SWIG_0`) = c("SWIGFunction", class('FireflyAlgorithm__SWIG_0'))
+
+# Start of new_FireflyAlgorithm
+
+`FireflyAlgorithm__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_FireflyAlgorithm__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FireflyAlgorithm", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FireflyAlgorithm);
+  ans
+  
+}
+
+attr(`FireflyAlgorithm__SWIG_1`, 'returnType') = '_p_datamunge__optim__FireflyAlgorithm'
+class(`FireflyAlgorithm__SWIG_1`) = c("SWIGFunction", class('FireflyAlgorithm__SWIG_1'))
+
+`FireflyAlgorithm` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- FireflyAlgorithm__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__FireflyAlgorithmOptions') && length(argv[[1]]) == 1 ) {
+      f <- FireflyAlgorithm__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for FireflyAlgorithm with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of FireflyAlgorithm_optimize
+
+`FireflyAlgorithm_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_FireflyAlgorithm_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FireflyAlgorithm_optimize`, 'returnType') = 'numeric'
+attr(`FireflyAlgorithm_optimize`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithm', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`FireflyAlgorithm_optimize`) = c("SWIGFunction", class('FireflyAlgorithm_optimize'))
+
+# Start of delete_FireflyAlgorithm
+
+`delete_FireflyAlgorithm` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_FireflyAlgorithm', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_FireflyAlgorithm`, 'returnType') = 'void'
+attr(`delete_FireflyAlgorithm`, "inputTypes") = c('_p_datamunge__optim__FireflyAlgorithm')
+class(`delete_FireflyAlgorithm`) = c("SWIGFunction", class('delete_FireflyAlgorithm'))
+
+# Start of accessor method for datamunge::optim::FireflyAlgorithm
+setMethod('$', '_p_datamunge__optim__FireflyAlgorithm', function(x, name)
+
+{
+  accessorFuns = list('optimize' = FireflyAlgorithm_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::FireflyAlgorithm
+setMethod('delete', '_p_datamunge__optim__FireflyAlgorithm', function(obj) {delete_datamunge__optim__FireflyAlgorithm(obj)})
+# Start of GreyWolfOptimizerOptions_population_size_set
+
+`GreyWolfOptimizerOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_GreyWolfOptimizerOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_population_size_set`, 'returnType') = 'void'
+attr(`GreyWolfOptimizerOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions', 'integer')
+class(`GreyWolfOptimizerOptions_population_size_set`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_population_size_set'))
+
+# Start of GreyWolfOptimizerOptions_population_size_get
+
+`GreyWolfOptimizerOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GreyWolfOptimizerOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_population_size_get`, 'returnType') = 'integer'
+attr(`GreyWolfOptimizerOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`GreyWolfOptimizerOptions_population_size_get`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_population_size_get'))
+
+# Start of GreyWolfOptimizerOptions_max_iterations_set
+
+`GreyWolfOptimizerOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_GreyWolfOptimizerOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`GreyWolfOptimizerOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions', 'integer')
+class(`GreyWolfOptimizerOptions_max_iterations_set`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_max_iterations_set'))
+
+# Start of GreyWolfOptimizerOptions_max_iterations_get
+
+`GreyWolfOptimizerOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GreyWolfOptimizerOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`GreyWolfOptimizerOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`GreyWolfOptimizerOptions_max_iterations_get`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_max_iterations_get'))
+
+# Start of GreyWolfOptimizerOptions_tolerance_set
+
+`GreyWolfOptimizerOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_GreyWolfOptimizerOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_tolerance_set`, 'returnType') = 'void'
+attr(`GreyWolfOptimizerOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions', 'numeric')
+class(`GreyWolfOptimizerOptions_tolerance_set`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_tolerance_set'))
+
+# Start of GreyWolfOptimizerOptions_tolerance_get
+
+`GreyWolfOptimizerOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GreyWolfOptimizerOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`GreyWolfOptimizerOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`GreyWolfOptimizerOptions_tolerance_get`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_tolerance_get'))
+
+# Start of GreyWolfOptimizerOptions_seed_set
+
+`GreyWolfOptimizerOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_GreyWolfOptimizerOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_seed_set`, 'returnType') = 'void'
+attr(`GreyWolfOptimizerOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions', 'integer')
+class(`GreyWolfOptimizerOptions_seed_set`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_seed_set'))
+
+# Start of GreyWolfOptimizerOptions_seed_get
+
+`GreyWolfOptimizerOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GreyWolfOptimizerOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizerOptions_seed_get`, 'returnType') = 'integer'
+attr(`GreyWolfOptimizerOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`GreyWolfOptimizerOptions_seed_get`) = c("SWIGFunction", class('GreyWolfOptimizerOptions_seed_get'))
+
+# Start of new_GreyWolfOptimizerOptions
+
+`GreyWolfOptimizerOptions` = function()
+{
+  ;ans = .Call('R_swig_new_GreyWolfOptimizerOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GreyWolfOptimizerOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GreyWolfOptimizerOptions);
+  ans
+  
+}
+
+attr(`GreyWolfOptimizerOptions`, 'returnType') = '_p_datamunge__optim__GreyWolfOptimizerOptions'
+class(`GreyWolfOptimizerOptions`) = c("SWIGFunction", class('GreyWolfOptimizerOptions'))
+
+# Start of delete_GreyWolfOptimizerOptions
+
+`delete_GreyWolfOptimizerOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GreyWolfOptimizerOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GreyWolfOptimizerOptions`, 'returnType') = 'void'
+attr(`delete_GreyWolfOptimizerOptions`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`delete_GreyWolfOptimizerOptions`) = c("SWIGFunction", class('delete_GreyWolfOptimizerOptions'))
+
+# Start of accessor method for datamunge::optim::GreyWolfOptimizerOptions
+setMethod('$', '_p_datamunge__optim__GreyWolfOptimizerOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = GreyWolfOptimizerOptions_population_size_get, 'max_iterations' = GreyWolfOptimizerOptions_max_iterations_get, 'tolerance' = GreyWolfOptimizerOptions_tolerance_get, 'seed' = GreyWolfOptimizerOptions_seed_get);
+  vaccessors = c('population_size', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::GreyWolfOptimizerOptions
+# Start of accessor method for datamunge::optim::GreyWolfOptimizerOptions
+setMethod('$<-', '_p_datamunge__optim__GreyWolfOptimizerOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = GreyWolfOptimizerOptions_population_size_set, 'max_iterations' = GreyWolfOptimizerOptions_max_iterations_set, 'tolerance' = GreyWolfOptimizerOptions_tolerance_set, 'seed' = GreyWolfOptimizerOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__GreyWolfOptimizerOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = GreyWolfOptimizerOptions_population_size_set, 'max_iterations' = GreyWolfOptimizerOptions_max_iterations_set, 'tolerance' = GreyWolfOptimizerOptions_tolerance_set, 'seed' = GreyWolfOptimizerOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::GreyWolfOptimizerOptions
+setMethod('delete', '_p_datamunge__optim__GreyWolfOptimizerOptions', function(obj) {delete_datamunge__optim__GreyWolfOptimizerOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::GreyWolfOptimizerOptions
+CopyToR_datamunge__optim__GreyWolfOptimizerOptions = function(value, obj = new("datamunge::optim::GreyWolfOptimizerOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__GreyWolfOptimizerOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::GreyWolfOptimizerOptions
+setMethod('copyToR', '_p_datamunge__optim__GreyWolfOptimizerOptions', CopyToR_datamunge__optim__GreyWolfOptimizerOptions);
+setMethod('copyToC', 'datamunge::optim::GreyWolfOptimizerOptions', CopyToC_datamunge__optim__GreyWolfOptimizerOptions);
+
+# End definition of copy methods for datamunge::optim::GreyWolfOptimizerOptions
+# End definition of copy functions & methods for datamunge::optim::GreyWolfOptimizerOptions
+# Start of new_GreyWolfOptimizer
+
+`GreyWolfOptimizer__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_GreyWolfOptimizer__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GreyWolfOptimizer", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GreyWolfOptimizer);
+  ans
+  
+}
+
+attr(`GreyWolfOptimizer__SWIG_0`, 'returnType') = '_p_datamunge__optim__GreyWolfOptimizer'
+attr(`GreyWolfOptimizer__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizerOptions')
+class(`GreyWolfOptimizer__SWIG_0`) = c("SWIGFunction", class('GreyWolfOptimizer__SWIG_0'))
+
+# Start of new_GreyWolfOptimizer
+
+`GreyWolfOptimizer__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_GreyWolfOptimizer__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__GreyWolfOptimizer", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GreyWolfOptimizer);
+  ans
+  
+}
+
+attr(`GreyWolfOptimizer__SWIG_1`, 'returnType') = '_p_datamunge__optim__GreyWolfOptimizer'
+class(`GreyWolfOptimizer__SWIG_1`) = c("SWIGFunction", class('GreyWolfOptimizer__SWIG_1'))
+
+`GreyWolfOptimizer` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- GreyWolfOptimizer__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__GreyWolfOptimizerOptions') && length(argv[[1]]) == 1 ) {
+      f <- GreyWolfOptimizer__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for GreyWolfOptimizer with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of GreyWolfOptimizer_optimize
+
+`GreyWolfOptimizer_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_GreyWolfOptimizer_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GreyWolfOptimizer_optimize`, 'returnType') = 'numeric'
+attr(`GreyWolfOptimizer_optimize`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizer', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`GreyWolfOptimizer_optimize`) = c("SWIGFunction", class('GreyWolfOptimizer_optimize'))
+
+# Start of delete_GreyWolfOptimizer
+
+`delete_GreyWolfOptimizer` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GreyWolfOptimizer', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GreyWolfOptimizer`, 'returnType') = 'void'
+attr(`delete_GreyWolfOptimizer`, "inputTypes") = c('_p_datamunge__optim__GreyWolfOptimizer')
+class(`delete_GreyWolfOptimizer`) = c("SWIGFunction", class('delete_GreyWolfOptimizer'))
+
+# Start of accessor method for datamunge::optim::GreyWolfOptimizer
+setMethod('$', '_p_datamunge__optim__GreyWolfOptimizer', function(x, name)
+
+{
+  accessorFuns = list('optimize' = GreyWolfOptimizer_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::GreyWolfOptimizer
+setMethod('delete', '_p_datamunge__optim__GreyWolfOptimizer', function(obj) {delete_datamunge__optim__GreyWolfOptimizer(obj)})
+# Start of HarmonySearchOptions_population_size_set
+
+`HarmonySearchOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_HarmonySearchOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_population_size_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'integer')
+class(`HarmonySearchOptions_population_size_set`) = c("SWIGFunction", class('HarmonySearchOptions_population_size_set'))
+
+# Start of HarmonySearchOptions_population_size_get
+
+`HarmonySearchOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_population_size_get`, 'returnType') = 'integer'
+attr(`HarmonySearchOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_population_size_get`) = c("SWIGFunction", class('HarmonySearchOptions_population_size_get'))
+
+# Start of HarmonySearchOptions_memory_consideration_rate_set
+
+`HarmonySearchOptions_memory_consideration_rate_set` = function(self, s_memory_consideration_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_HarmonySearchOptions_memory_consideration_rate_set', self, s_memory_consideration_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_memory_consideration_rate_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_memory_consideration_rate_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'numeric')
+class(`HarmonySearchOptions_memory_consideration_rate_set`) = c("SWIGFunction", class('HarmonySearchOptions_memory_consideration_rate_set'))
+
+# Start of HarmonySearchOptions_memory_consideration_rate_get
+
+`HarmonySearchOptions_memory_consideration_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_memory_consideration_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_memory_consideration_rate_get`, 'returnType') = 'numeric'
+attr(`HarmonySearchOptions_memory_consideration_rate_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_memory_consideration_rate_get`) = c("SWIGFunction", class('HarmonySearchOptions_memory_consideration_rate_get'))
+
+# Start of HarmonySearchOptions_pitch_adjustment_rate_set
+
+`HarmonySearchOptions_pitch_adjustment_rate_set` = function(self, s_pitch_adjustment_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_HarmonySearchOptions_pitch_adjustment_rate_set', self, s_pitch_adjustment_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_pitch_adjustment_rate_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_pitch_adjustment_rate_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'numeric')
+class(`HarmonySearchOptions_pitch_adjustment_rate_set`) = c("SWIGFunction", class('HarmonySearchOptions_pitch_adjustment_rate_set'))
+
+# Start of HarmonySearchOptions_pitch_adjustment_rate_get
+
+`HarmonySearchOptions_pitch_adjustment_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_pitch_adjustment_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_pitch_adjustment_rate_get`, 'returnType') = 'numeric'
+attr(`HarmonySearchOptions_pitch_adjustment_rate_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_pitch_adjustment_rate_get`) = c("SWIGFunction", class('HarmonySearchOptions_pitch_adjustment_rate_get'))
+
+# Start of HarmonySearchOptions_bandwidth_fraction_set
+
+`HarmonySearchOptions_bandwidth_fraction_set` = function(self, s_bandwidth_fraction)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_HarmonySearchOptions_bandwidth_fraction_set', self, s_bandwidth_fraction, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_bandwidth_fraction_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_bandwidth_fraction_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'numeric')
+class(`HarmonySearchOptions_bandwidth_fraction_set`) = c("SWIGFunction", class('HarmonySearchOptions_bandwidth_fraction_set'))
+
+# Start of HarmonySearchOptions_bandwidth_fraction_get
+
+`HarmonySearchOptions_bandwidth_fraction_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_bandwidth_fraction_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_bandwidth_fraction_get`, 'returnType') = 'numeric'
+attr(`HarmonySearchOptions_bandwidth_fraction_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_bandwidth_fraction_get`) = c("SWIGFunction", class('HarmonySearchOptions_bandwidth_fraction_get'))
+
+# Start of HarmonySearchOptions_max_iterations_set
+
+`HarmonySearchOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_HarmonySearchOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'integer')
+class(`HarmonySearchOptions_max_iterations_set`) = c("SWIGFunction", class('HarmonySearchOptions_max_iterations_set'))
+
+# Start of HarmonySearchOptions_max_iterations_get
+
+`HarmonySearchOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`HarmonySearchOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_max_iterations_get`) = c("SWIGFunction", class('HarmonySearchOptions_max_iterations_get'))
+
+# Start of HarmonySearchOptions_tolerance_set
+
+`HarmonySearchOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_HarmonySearchOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_tolerance_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'numeric')
+class(`HarmonySearchOptions_tolerance_set`) = c("SWIGFunction", class('HarmonySearchOptions_tolerance_set'))
+
+# Start of HarmonySearchOptions_tolerance_get
+
+`HarmonySearchOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`HarmonySearchOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_tolerance_get`) = c("SWIGFunction", class('HarmonySearchOptions_tolerance_get'))
+
+# Start of HarmonySearchOptions_seed_set
+
+`HarmonySearchOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_HarmonySearchOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_seed_set`, 'returnType') = 'void'
+attr(`HarmonySearchOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions', 'integer')
+class(`HarmonySearchOptions_seed_set`) = c("SWIGFunction", class('HarmonySearchOptions_seed_set'))
+
+# Start of HarmonySearchOptions_seed_get
+
+`HarmonySearchOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HarmonySearchOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearchOptions_seed_get`, 'returnType') = 'integer'
+attr(`HarmonySearchOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearchOptions_seed_get`) = c("SWIGFunction", class('HarmonySearchOptions_seed_get'))
+
+# Start of new_HarmonySearchOptions
+
+`HarmonySearchOptions` = function()
+{
+  ;ans = .Call('R_swig_new_HarmonySearchOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__HarmonySearchOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_HarmonySearchOptions);
+  ans
+  
+}
+
+attr(`HarmonySearchOptions`, 'returnType') = '_p_datamunge__optim__HarmonySearchOptions'
+class(`HarmonySearchOptions`) = c("SWIGFunction", class('HarmonySearchOptions'))
+
+# Start of delete_HarmonySearchOptions
+
+`delete_HarmonySearchOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_HarmonySearchOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_HarmonySearchOptions`, 'returnType') = 'void'
+attr(`delete_HarmonySearchOptions`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`delete_HarmonySearchOptions`) = c("SWIGFunction", class('delete_HarmonySearchOptions'))
+
+# Start of accessor method for datamunge::optim::HarmonySearchOptions
+setMethod('$', '_p_datamunge__optim__HarmonySearchOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = HarmonySearchOptions_population_size_get, 'memory_consideration_rate' = HarmonySearchOptions_memory_consideration_rate_get, 'pitch_adjustment_rate' = HarmonySearchOptions_pitch_adjustment_rate_get, 'bandwidth_fraction' = HarmonySearchOptions_bandwidth_fraction_get, 'max_iterations' = HarmonySearchOptions_max_iterations_get, 'tolerance' = HarmonySearchOptions_tolerance_get, 'seed' = HarmonySearchOptions_seed_get);
+  vaccessors = c('population_size', 'memory_consideration_rate', 'pitch_adjustment_rate', 'bandwidth_fraction', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::HarmonySearchOptions
+# Start of accessor method for datamunge::optim::HarmonySearchOptions
+setMethod('$<-', '_p_datamunge__optim__HarmonySearchOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = HarmonySearchOptions_population_size_set, 'memory_consideration_rate' = HarmonySearchOptions_memory_consideration_rate_set, 'pitch_adjustment_rate' = HarmonySearchOptions_pitch_adjustment_rate_set, 'bandwidth_fraction' = HarmonySearchOptions_bandwidth_fraction_set, 'max_iterations' = HarmonySearchOptions_max_iterations_set, 'tolerance' = HarmonySearchOptions_tolerance_set, 'seed' = HarmonySearchOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__HarmonySearchOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = HarmonySearchOptions_population_size_set, 'memory_consideration_rate' = HarmonySearchOptions_memory_consideration_rate_set, 'pitch_adjustment_rate' = HarmonySearchOptions_pitch_adjustment_rate_set, 'bandwidth_fraction' = HarmonySearchOptions_bandwidth_fraction_set, 'max_iterations' = HarmonySearchOptions_max_iterations_set, 'tolerance' = HarmonySearchOptions_tolerance_set, 'seed' = HarmonySearchOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::HarmonySearchOptions
+setMethod('delete', '_p_datamunge__optim__HarmonySearchOptions', function(obj) {delete_datamunge__optim__HarmonySearchOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::HarmonySearchOptions
+CopyToR_datamunge__optim__HarmonySearchOptions = function(value, obj = new("datamunge::optim::HarmonySearchOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@memory_consideration_rate = value$memory_consideration_rate;
+  obj@pitch_adjustment_rate = value$pitch_adjustment_rate;
+  obj@bandwidth_fraction = value$bandwidth_fraction;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__HarmonySearchOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$memory_consideration_rate = value@memory_consideration_rate;
+  obj$pitch_adjustment_rate = value@pitch_adjustment_rate;
+  obj$bandwidth_fraction = value@bandwidth_fraction;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::HarmonySearchOptions
+setMethod('copyToR', '_p_datamunge__optim__HarmonySearchOptions', CopyToR_datamunge__optim__HarmonySearchOptions);
+setMethod('copyToC', 'datamunge::optim::HarmonySearchOptions', CopyToC_datamunge__optim__HarmonySearchOptions);
+
+# End definition of copy methods for datamunge::optim::HarmonySearchOptions
+# End definition of copy functions & methods for datamunge::optim::HarmonySearchOptions
+# Start of new_HarmonySearch
+
+`HarmonySearch__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_HarmonySearch__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__HarmonySearch", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_HarmonySearch);
+  ans
+  
+}
+
+attr(`HarmonySearch__SWIG_0`, 'returnType') = '_p_datamunge__optim__HarmonySearch'
+attr(`HarmonySearch__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__HarmonySearchOptions')
+class(`HarmonySearch__SWIG_0`) = c("SWIGFunction", class('HarmonySearch__SWIG_0'))
+
+# Start of new_HarmonySearch
+
+`HarmonySearch__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_HarmonySearch__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__HarmonySearch", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_HarmonySearch);
+  ans
+  
+}
+
+attr(`HarmonySearch__SWIG_1`, 'returnType') = '_p_datamunge__optim__HarmonySearch'
+class(`HarmonySearch__SWIG_1`) = c("SWIGFunction", class('HarmonySearch__SWIG_1'))
+
+`HarmonySearch` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- HarmonySearch__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__HarmonySearchOptions') && length(argv[[1]]) == 1 ) {
+      f <- HarmonySearch__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for HarmonySearch with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of HarmonySearch_optimize
+
+`HarmonySearch_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_HarmonySearch_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HarmonySearch_optimize`, 'returnType') = 'numeric'
+attr(`HarmonySearch_optimize`, "inputTypes") = c('_p_datamunge__optim__HarmonySearch', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`HarmonySearch_optimize`) = c("SWIGFunction", class('HarmonySearch_optimize'))
+
+# Start of delete_HarmonySearch
+
+`delete_HarmonySearch` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_HarmonySearch', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_HarmonySearch`, 'returnType') = 'void'
+attr(`delete_HarmonySearch`, "inputTypes") = c('_p_datamunge__optim__HarmonySearch')
+class(`delete_HarmonySearch`) = c("SWIGFunction", class('delete_HarmonySearch'))
+
+# Start of accessor method for datamunge::optim::HarmonySearch
+setMethod('$', '_p_datamunge__optim__HarmonySearch', function(x, name)
+
+{
+  accessorFuns = list('optimize' = HarmonySearch_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::HarmonySearch
+setMethod('delete', '_p_datamunge__optim__HarmonySearch', function(obj) {delete_datamunge__optim__HarmonySearch(obj)})
+# Start of ParallelTemperingOptions_num_replicas_set
+
+`ParallelTemperingOptions_num_replicas_set` = function(self, s_num_replicas)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_replicas = as.integer(s_num_replicas);
+  
+  if(length(s_num_replicas) > 1) {
+    warning("using only the first element of s_num_replicas");
+  };
+  
+  ;.Call('R_swig_ParallelTemperingOptions_num_replicas_set', self, s_num_replicas, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_num_replicas_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_num_replicas_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'integer')
+class(`ParallelTemperingOptions_num_replicas_set`) = c("SWIGFunction", class('ParallelTemperingOptions_num_replicas_set'))
+
+# Start of ParallelTemperingOptions_num_replicas_get
+
+`ParallelTemperingOptions_num_replicas_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_num_replicas_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_num_replicas_get`, 'returnType') = 'integer'
+attr(`ParallelTemperingOptions_num_replicas_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_num_replicas_get`) = c("SWIGFunction", class('ParallelTemperingOptions_num_replicas_get'))
+
+# Start of ParallelTemperingOptions_initial_temperature_set
+
+`ParallelTemperingOptions_initial_temperature_set` = function(self, s_initial_temperature)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ParallelTemperingOptions_initial_temperature_set', self, s_initial_temperature, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_initial_temperature_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_initial_temperature_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'numeric')
+class(`ParallelTemperingOptions_initial_temperature_set`) = c("SWIGFunction", class('ParallelTemperingOptions_initial_temperature_set'))
+
+# Start of ParallelTemperingOptions_initial_temperature_get
+
+`ParallelTemperingOptions_initial_temperature_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_initial_temperature_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_initial_temperature_get`, 'returnType') = 'numeric'
+attr(`ParallelTemperingOptions_initial_temperature_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_initial_temperature_get`) = c("SWIGFunction", class('ParallelTemperingOptions_initial_temperature_get'))
+
+# Start of ParallelTemperingOptions_final_temperature_set
+
+`ParallelTemperingOptions_final_temperature_set` = function(self, s_final_temperature)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ParallelTemperingOptions_final_temperature_set', self, s_final_temperature, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_final_temperature_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_final_temperature_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'numeric')
+class(`ParallelTemperingOptions_final_temperature_set`) = c("SWIGFunction", class('ParallelTemperingOptions_final_temperature_set'))
+
+# Start of ParallelTemperingOptions_final_temperature_get
+
+`ParallelTemperingOptions_final_temperature_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_final_temperature_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_final_temperature_get`, 'returnType') = 'numeric'
+attr(`ParallelTemperingOptions_final_temperature_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_final_temperature_get`) = c("SWIGFunction", class('ParallelTemperingOptions_final_temperature_get'))
+
+# Start of ParallelTemperingOptions_step_std_dev_set
+
+`ParallelTemperingOptions_step_std_dev_set` = function(self, s_step_std_dev)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ParallelTemperingOptions_step_std_dev_set', self, s_step_std_dev, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_step_std_dev_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_step_std_dev_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'numeric')
+class(`ParallelTemperingOptions_step_std_dev_set`) = c("SWIGFunction", class('ParallelTemperingOptions_step_std_dev_set'))
+
+# Start of ParallelTemperingOptions_step_std_dev_get
+
+`ParallelTemperingOptions_step_std_dev_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_step_std_dev_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_step_std_dev_get`, 'returnType') = 'numeric'
+attr(`ParallelTemperingOptions_step_std_dev_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_step_std_dev_get`) = c("SWIGFunction", class('ParallelTemperingOptions_step_std_dev_get'))
+
+# Start of ParallelTemperingOptions_swap_interval_set
+
+`ParallelTemperingOptions_swap_interval_set` = function(self, s_swap_interval)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_swap_interval = as.integer(s_swap_interval);
+  
+  if(length(s_swap_interval) > 1) {
+    warning("using only the first element of s_swap_interval");
+  };
+  
+  ;.Call('R_swig_ParallelTemperingOptions_swap_interval_set', self, s_swap_interval, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_swap_interval_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_swap_interval_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'integer')
+class(`ParallelTemperingOptions_swap_interval_set`) = c("SWIGFunction", class('ParallelTemperingOptions_swap_interval_set'))
+
+# Start of ParallelTemperingOptions_swap_interval_get
+
+`ParallelTemperingOptions_swap_interval_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_swap_interval_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_swap_interval_get`, 'returnType') = 'integer'
+attr(`ParallelTemperingOptions_swap_interval_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_swap_interval_get`) = c("SWIGFunction", class('ParallelTemperingOptions_swap_interval_get'))
+
+# Start of ParallelTemperingOptions_max_sweeps_set
+
+`ParallelTemperingOptions_max_sweeps_set` = function(self, s_max_sweeps)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_sweeps = as.integer(s_max_sweeps);
+  
+  if(length(s_max_sweeps) > 1) {
+    warning("using only the first element of s_max_sweeps");
+  };
+  
+  ;.Call('R_swig_ParallelTemperingOptions_max_sweeps_set', self, s_max_sweeps, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_max_sweeps_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_max_sweeps_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'integer')
+class(`ParallelTemperingOptions_max_sweeps_set`) = c("SWIGFunction", class('ParallelTemperingOptions_max_sweeps_set'))
+
+# Start of ParallelTemperingOptions_max_sweeps_get
+
+`ParallelTemperingOptions_max_sweeps_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_max_sweeps_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_max_sweeps_get`, 'returnType') = 'integer'
+attr(`ParallelTemperingOptions_max_sweeps_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_max_sweeps_get`) = c("SWIGFunction", class('ParallelTemperingOptions_max_sweeps_get'))
+
+# Start of ParallelTemperingOptions_seed_set
+
+`ParallelTemperingOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_ParallelTemperingOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_seed_set`, 'returnType') = 'void'
+attr(`ParallelTemperingOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions', 'integer')
+class(`ParallelTemperingOptions_seed_set`) = c("SWIGFunction", class('ParallelTemperingOptions_seed_set'))
+
+# Start of ParallelTemperingOptions_seed_get
+
+`ParallelTemperingOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ParallelTemperingOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTemperingOptions_seed_get`, 'returnType') = 'integer'
+attr(`ParallelTemperingOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTemperingOptions_seed_get`) = c("SWIGFunction", class('ParallelTemperingOptions_seed_get'))
+
+# Start of new_ParallelTemperingOptions
+
+`ParallelTemperingOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ParallelTemperingOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ParallelTemperingOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ParallelTemperingOptions);
+  ans
+  
+}
+
+attr(`ParallelTemperingOptions`, 'returnType') = '_p_datamunge__optim__ParallelTemperingOptions'
+class(`ParallelTemperingOptions`) = c("SWIGFunction", class('ParallelTemperingOptions'))
+
+# Start of delete_ParallelTemperingOptions
+
+`delete_ParallelTemperingOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ParallelTemperingOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ParallelTemperingOptions`, 'returnType') = 'void'
+attr(`delete_ParallelTemperingOptions`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`delete_ParallelTemperingOptions`) = c("SWIGFunction", class('delete_ParallelTemperingOptions'))
+
+# Start of accessor method for datamunge::optim::ParallelTemperingOptions
+setMethod('$', '_p_datamunge__optim__ParallelTemperingOptions', function(x, name)
+
+{
+  accessorFuns = list('num_replicas' = ParallelTemperingOptions_num_replicas_get, 'initial_temperature' = ParallelTemperingOptions_initial_temperature_get, 'final_temperature' = ParallelTemperingOptions_final_temperature_get, 'step_std_dev' = ParallelTemperingOptions_step_std_dev_get, 'swap_interval' = ParallelTemperingOptions_swap_interval_get, 'max_sweeps' = ParallelTemperingOptions_max_sweeps_get, 'seed' = ParallelTemperingOptions_seed_get);
+  vaccessors = c('num_replicas', 'initial_temperature', 'final_temperature', 'step_std_dev', 'swap_interval', 'max_sweeps', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::ParallelTemperingOptions
+# Start of accessor method for datamunge::optim::ParallelTemperingOptions
+setMethod('$<-', '_p_datamunge__optim__ParallelTemperingOptions', function(x, name, value)
+
+{
+  accessorFuns = list('num_replicas' = ParallelTemperingOptions_num_replicas_set, 'initial_temperature' = ParallelTemperingOptions_initial_temperature_set, 'final_temperature' = ParallelTemperingOptions_final_temperature_set, 'step_std_dev' = ParallelTemperingOptions_step_std_dev_set, 'swap_interval' = ParallelTemperingOptions_swap_interval_set, 'max_sweeps' = ParallelTemperingOptions_max_sweeps_set, 'seed' = ParallelTemperingOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__ParallelTemperingOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('num_replicas' = ParallelTemperingOptions_num_replicas_set, 'initial_temperature' = ParallelTemperingOptions_initial_temperature_set, 'final_temperature' = ParallelTemperingOptions_final_temperature_set, 'step_std_dev' = ParallelTemperingOptions_step_std_dev_set, 'swap_interval' = ParallelTemperingOptions_swap_interval_set, 'max_sweeps' = ParallelTemperingOptions_max_sweeps_set, 'seed' = ParallelTemperingOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::ParallelTemperingOptions
+setMethod('delete', '_p_datamunge__optim__ParallelTemperingOptions', function(obj) {delete_datamunge__optim__ParallelTemperingOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::ParallelTemperingOptions
+CopyToR_datamunge__optim__ParallelTemperingOptions = function(value, obj = new("datamunge::optim::ParallelTemperingOptions"))
+{
+  obj@num_replicas = value$num_replicas;
+  obj@initial_temperature = value$initial_temperature;
+  obj@final_temperature = value$final_temperature;
+  obj@step_std_dev = value$step_std_dev;
+  obj@swap_interval = value$swap_interval;
+  obj@max_sweeps = value$max_sweeps;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__ParallelTemperingOptions = function(value, obj)
+{
+  obj$num_replicas = value@num_replicas;
+  obj$initial_temperature = value@initial_temperature;
+  obj$final_temperature = value@final_temperature;
+  obj$step_std_dev = value@step_std_dev;
+  obj$swap_interval = value@swap_interval;
+  obj$max_sweeps = value@max_sweeps;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::ParallelTemperingOptions
+setMethod('copyToR', '_p_datamunge__optim__ParallelTemperingOptions', CopyToR_datamunge__optim__ParallelTemperingOptions);
+setMethod('copyToC', 'datamunge::optim::ParallelTemperingOptions', CopyToC_datamunge__optim__ParallelTemperingOptions);
+
+# End definition of copy methods for datamunge::optim::ParallelTemperingOptions
+# End definition of copy functions & methods for datamunge::optim::ParallelTemperingOptions
+# Start of new_ParallelTempering
+
+`ParallelTempering__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ParallelTempering__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ParallelTempering", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ParallelTempering);
+  ans
+  
+}
+
+attr(`ParallelTempering__SWIG_0`, 'returnType') = '_p_datamunge__optim__ParallelTempering'
+attr(`ParallelTempering__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__ParallelTemperingOptions')
+class(`ParallelTempering__SWIG_0`) = c("SWIGFunction", class('ParallelTempering__SWIG_0'))
+
+# Start of new_ParallelTempering
+
+`ParallelTempering__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ParallelTempering__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ParallelTempering", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ParallelTempering);
+  ans
+  
+}
+
+attr(`ParallelTempering__SWIG_1`, 'returnType') = '_p_datamunge__optim__ParallelTempering'
+class(`ParallelTempering__SWIG_1`) = c("SWIGFunction", class('ParallelTempering__SWIG_1'))
+
+`ParallelTempering` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ParallelTempering__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__ParallelTemperingOptions') && length(argv[[1]]) == 1 ) {
+      f <- ParallelTempering__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ParallelTempering with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ParallelTempering_optimize
+
+`ParallelTempering_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_ParallelTempering_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ParallelTempering_optimize`, 'returnType') = 'numeric'
+attr(`ParallelTempering_optimize`, "inputTypes") = c('_p_datamunge__optim__ParallelTempering', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
+class(`ParallelTempering_optimize`) = c("SWIGFunction", class('ParallelTempering_optimize'))
+
+# Start of delete_ParallelTempering
+
+`delete_ParallelTempering` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ParallelTempering', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ParallelTempering`, 'returnType') = 'void'
+attr(`delete_ParallelTempering`, "inputTypes") = c('_p_datamunge__optim__ParallelTempering')
+class(`delete_ParallelTempering`) = c("SWIGFunction", class('delete_ParallelTempering'))
+
+# Start of accessor method for datamunge::optim::ParallelTempering
+setMethod('$', '_p_datamunge__optim__ParallelTempering', function(x, name)
+
+{
+  accessorFuns = list('optimize' = ParallelTempering_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ParallelTempering
+setMethod('delete', '_p_datamunge__optim__ParallelTempering', function(obj) {delete_datamunge__optim__ParallelTempering(obj)})
+# Start of WhaleOptimizationOptions_population_size_set
+
+`WhaleOptimizationOptions_population_size_set` = function(self, s_population_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_population_size = as.integer(s_population_size);
+  
+  if(length(s_population_size) > 1) {
+    warning("using only the first element of s_population_size");
+  };
+  
+  ;.Call('R_swig_WhaleOptimizationOptions_population_size_set', self, s_population_size, PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_population_size_set`, 'returnType') = 'void'
+attr(`WhaleOptimizationOptions_population_size_set`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions', 'integer')
+class(`WhaleOptimizationOptions_population_size_set`) = c("SWIGFunction", class('WhaleOptimizationOptions_population_size_set'))
+
+# Start of WhaleOptimizationOptions_population_size_get
+
+`WhaleOptimizationOptions_population_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_WhaleOptimizationOptions_population_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_population_size_get`, 'returnType') = 'integer'
+attr(`WhaleOptimizationOptions_population_size_get`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimizationOptions_population_size_get`) = c("SWIGFunction", class('WhaleOptimizationOptions_population_size_get'))
+
+# Start of WhaleOptimizationOptions_spiral_constant_set
+
+`WhaleOptimizationOptions_spiral_constant_set` = function(self, s_spiral_constant)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_WhaleOptimizationOptions_spiral_constant_set', self, s_spiral_constant, PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_spiral_constant_set`, 'returnType') = 'void'
+attr(`WhaleOptimizationOptions_spiral_constant_set`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions', 'numeric')
+class(`WhaleOptimizationOptions_spiral_constant_set`) = c("SWIGFunction", class('WhaleOptimizationOptions_spiral_constant_set'))
+
+# Start of WhaleOptimizationOptions_spiral_constant_get
+
+`WhaleOptimizationOptions_spiral_constant_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_WhaleOptimizationOptions_spiral_constant_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_spiral_constant_get`, 'returnType') = 'numeric'
+attr(`WhaleOptimizationOptions_spiral_constant_get`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimizationOptions_spiral_constant_get`) = c("SWIGFunction", class('WhaleOptimizationOptions_spiral_constant_get'))
+
+# Start of WhaleOptimizationOptions_max_iterations_set
+
+`WhaleOptimizationOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_WhaleOptimizationOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`WhaleOptimizationOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions', 'integer')
+class(`WhaleOptimizationOptions_max_iterations_set`) = c("SWIGFunction", class('WhaleOptimizationOptions_max_iterations_set'))
+
+# Start of WhaleOptimizationOptions_max_iterations_get
+
+`WhaleOptimizationOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_WhaleOptimizationOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`WhaleOptimizationOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimizationOptions_max_iterations_get`) = c("SWIGFunction", class('WhaleOptimizationOptions_max_iterations_get'))
+
+# Start of WhaleOptimizationOptions_tolerance_set
+
+`WhaleOptimizationOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_WhaleOptimizationOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_tolerance_set`, 'returnType') = 'void'
+attr(`WhaleOptimizationOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions', 'numeric')
+class(`WhaleOptimizationOptions_tolerance_set`) = c("SWIGFunction", class('WhaleOptimizationOptions_tolerance_set'))
+
+# Start of WhaleOptimizationOptions_tolerance_get
+
+`WhaleOptimizationOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_WhaleOptimizationOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`WhaleOptimizationOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimizationOptions_tolerance_get`) = c("SWIGFunction", class('WhaleOptimizationOptions_tolerance_get'))
+
+# Start of WhaleOptimizationOptions_seed_set
+
+`WhaleOptimizationOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_WhaleOptimizationOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_seed_set`, 'returnType') = 'void'
+attr(`WhaleOptimizationOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions', 'integer')
+class(`WhaleOptimizationOptions_seed_set`) = c("SWIGFunction", class('WhaleOptimizationOptions_seed_set'))
+
+# Start of WhaleOptimizationOptions_seed_get
+
+`WhaleOptimizationOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_WhaleOptimizationOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimizationOptions_seed_get`, 'returnType') = 'integer'
+attr(`WhaleOptimizationOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimizationOptions_seed_get`) = c("SWIGFunction", class('WhaleOptimizationOptions_seed_get'))
+
+# Start of new_WhaleOptimizationOptions
+
+`WhaleOptimizationOptions` = function()
+{
+  ;ans = .Call('R_swig_new_WhaleOptimizationOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__WhaleOptimizationOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_WhaleOptimizationOptions);
+  ans
+  
+}
+
+attr(`WhaleOptimizationOptions`, 'returnType') = '_p_datamunge__optim__WhaleOptimizationOptions'
+class(`WhaleOptimizationOptions`) = c("SWIGFunction", class('WhaleOptimizationOptions'))
+
+# Start of delete_WhaleOptimizationOptions
+
+`delete_WhaleOptimizationOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_WhaleOptimizationOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_WhaleOptimizationOptions`, 'returnType') = 'void'
+attr(`delete_WhaleOptimizationOptions`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`delete_WhaleOptimizationOptions`) = c("SWIGFunction", class('delete_WhaleOptimizationOptions'))
+
+# Start of accessor method for datamunge::optim::WhaleOptimizationOptions
+setMethod('$', '_p_datamunge__optim__WhaleOptimizationOptions', function(x, name)
+
+{
+  accessorFuns = list('population_size' = WhaleOptimizationOptions_population_size_get, 'spiral_constant' = WhaleOptimizationOptions_spiral_constant_get, 'max_iterations' = WhaleOptimizationOptions_max_iterations_get, 'tolerance' = WhaleOptimizationOptions_tolerance_get, 'seed' = WhaleOptimizationOptions_seed_get);
+  vaccessors = c('population_size', 'spiral_constant', 'max_iterations', 'tolerance', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::WhaleOptimizationOptions
+# Start of accessor method for datamunge::optim::WhaleOptimizationOptions
+setMethod('$<-', '_p_datamunge__optim__WhaleOptimizationOptions', function(x, name, value)
+
+{
+  accessorFuns = list('population_size' = WhaleOptimizationOptions_population_size_set, 'spiral_constant' = WhaleOptimizationOptions_spiral_constant_set, 'max_iterations' = WhaleOptimizationOptions_max_iterations_set, 'tolerance' = WhaleOptimizationOptions_tolerance_set, 'seed' = WhaleOptimizationOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__WhaleOptimizationOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('population_size' = WhaleOptimizationOptions_population_size_set, 'spiral_constant' = WhaleOptimizationOptions_spiral_constant_set, 'max_iterations' = WhaleOptimizationOptions_max_iterations_set, 'tolerance' = WhaleOptimizationOptions_tolerance_set, 'seed' = WhaleOptimizationOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::WhaleOptimizationOptions
+setMethod('delete', '_p_datamunge__optim__WhaleOptimizationOptions', function(obj) {delete_datamunge__optim__WhaleOptimizationOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::WhaleOptimizationOptions
+CopyToR_datamunge__optim__WhaleOptimizationOptions = function(value, obj = new("datamunge::optim::WhaleOptimizationOptions"))
+{
+  obj@population_size = value$population_size;
+  obj@spiral_constant = value$spiral_constant;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__WhaleOptimizationOptions = function(value, obj)
+{
+  obj$population_size = value@population_size;
+  obj$spiral_constant = value@spiral_constant;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::WhaleOptimizationOptions
+setMethod('copyToR', '_p_datamunge__optim__WhaleOptimizationOptions', CopyToR_datamunge__optim__WhaleOptimizationOptions);
+setMethod('copyToC', 'datamunge::optim::WhaleOptimizationOptions', CopyToC_datamunge__optim__WhaleOptimizationOptions);
+
+# End definition of copy methods for datamunge::optim::WhaleOptimizationOptions
+# End definition of copy functions & methods for datamunge::optim::WhaleOptimizationOptions
+# Start of new_WhaleOptimization
+
+`WhaleOptimization__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_WhaleOptimization__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__WhaleOptimization", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_WhaleOptimization);
+  ans
+  
+}
+
+attr(`WhaleOptimization__SWIG_0`, 'returnType') = '_p_datamunge__optim__WhaleOptimization'
+attr(`WhaleOptimization__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimizationOptions')
+class(`WhaleOptimization__SWIG_0`) = c("SWIGFunction", class('WhaleOptimization__SWIG_0'))
+
+# Start of new_WhaleOptimization
+
+`WhaleOptimization__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_WhaleOptimization__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__WhaleOptimization", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_WhaleOptimization);
+  ans
+  
+}
+
+attr(`WhaleOptimization__SWIG_1`, 'returnType') = '_p_datamunge__optim__WhaleOptimization'
+class(`WhaleOptimization__SWIG_1`) = c("SWIGFunction", class('WhaleOptimization__SWIG_1'))
+
+`WhaleOptimization` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- WhaleOptimization__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__WhaleOptimizationOptions') && length(argv[[1]]) == 1 ) {
+      f <- WhaleOptimization__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for WhaleOptimization with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of WhaleOptimization_optimize
+
+`WhaleOptimization_optimize` = function(self, s_function, coordinates, lower_bound, upper_bound, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower_bound = as.numeric(lower_bound);
+  upper_bound = as.numeric(upper_bound);
+  ;.Call('R_swig_WhaleOptimization_optimize', self, s_function, coordinates, lower_bound, upper_bound, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`WhaleOptimization_optimize`, 'returnType') = 'numeric'
+attr(`WhaleOptimization_optimize`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimization', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`WhaleOptimization_optimize`) = c("SWIGFunction", class('WhaleOptimization_optimize'))
+
+# Start of delete_WhaleOptimization
+
+`delete_WhaleOptimization` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_WhaleOptimization', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_WhaleOptimization`, 'returnType') = 'void'
+attr(`delete_WhaleOptimization`, "inputTypes") = c('_p_datamunge__optim__WhaleOptimization')
+class(`delete_WhaleOptimization`) = c("SWIGFunction", class('delete_WhaleOptimization'))
+
+# Start of accessor method for datamunge::optim::WhaleOptimization
+setMethod('$', '_p_datamunge__optim__WhaleOptimization', function(x, name)
+
+{
+  accessorFuns = list('optimize' = WhaleOptimization_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::WhaleOptimization
+setMethod('delete', '_p_datamunge__optim__WhaleOptimization', function(obj) {delete_datamunge__optim__WhaleOptimization(obj)})
+# Start of FISTAOptions_step_size_set
+
+`FISTAOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FISTAOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_step_size_set`, 'returnType') = 'void'
+attr(`FISTAOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions', 'numeric')
+class(`FISTAOptions_step_size_set`) = c("SWIGFunction", class('FISTAOptions_step_size_set'))
+
+# Start of FISTAOptions_step_size_get
+
+`FISTAOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FISTAOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`FISTAOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions')
+class(`FISTAOptions_step_size_get`) = c("SWIGFunction", class('FISTAOptions_step_size_get'))
+
+# Start of FISTAOptions_max_iterations_set
+
+`FISTAOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_FISTAOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`FISTAOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions', 'integer')
+class(`FISTAOptions_max_iterations_set`) = c("SWIGFunction", class('FISTAOptions_max_iterations_set'))
+
+# Start of FISTAOptions_max_iterations_get
+
+`FISTAOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FISTAOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`FISTAOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions')
+class(`FISTAOptions_max_iterations_get`) = c("SWIGFunction", class('FISTAOptions_max_iterations_get'))
+
+# Start of FISTAOptions_tolerance_set
+
+`FISTAOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_FISTAOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_tolerance_set`, 'returnType') = 'void'
+attr(`FISTAOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions', 'numeric')
+class(`FISTAOptions_tolerance_set`) = c("SWIGFunction", class('FISTAOptions_tolerance_set'))
+
+# Start of FISTAOptions_tolerance_get
+
+`FISTAOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_FISTAOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FISTAOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`FISTAOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions')
+class(`FISTAOptions_tolerance_get`) = c("SWIGFunction", class('FISTAOptions_tolerance_get'))
+
+# Start of new_FISTAOptions
+
+`FISTAOptions` = function()
+{
+  ;ans = .Call('R_swig_new_FISTAOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FISTAOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FISTAOptions);
+  ans
+  
+}
+
+attr(`FISTAOptions`, 'returnType') = '_p_datamunge__optim__FISTAOptions'
+class(`FISTAOptions`) = c("SWIGFunction", class('FISTAOptions'))
+
+# Start of delete_FISTAOptions
+
+`delete_FISTAOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_FISTAOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_FISTAOptions`, 'returnType') = 'void'
+attr(`delete_FISTAOptions`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions')
+class(`delete_FISTAOptions`) = c("SWIGFunction", class('delete_FISTAOptions'))
+
+# Start of accessor method for datamunge::optim::FISTAOptions
+setMethod('$', '_p_datamunge__optim__FISTAOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = FISTAOptions_step_size_get, 'max_iterations' = FISTAOptions_max_iterations_get, 'tolerance' = FISTAOptions_tolerance_get);
+  vaccessors = c('step_size', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::FISTAOptions
+# Start of accessor method for datamunge::optim::FISTAOptions
+setMethod('$<-', '_p_datamunge__optim__FISTAOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = FISTAOptions_step_size_set, 'max_iterations' = FISTAOptions_max_iterations_set, 'tolerance' = FISTAOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__FISTAOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = FISTAOptions_step_size_set, 'max_iterations' = FISTAOptions_max_iterations_set, 'tolerance' = FISTAOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::FISTAOptions
+setMethod('delete', '_p_datamunge__optim__FISTAOptions', function(obj) {delete_datamunge__optim__FISTAOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::FISTAOptions
+CopyToR_datamunge__optim__FISTAOptions = function(value, obj = new("datamunge::optim::FISTAOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__FISTAOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::FISTAOptions
+setMethod('copyToR', '_p_datamunge__optim__FISTAOptions', CopyToR_datamunge__optim__FISTAOptions);
+setMethod('copyToC', 'datamunge::optim::FISTAOptions', CopyToC_datamunge__optim__FISTAOptions);
+
+# End definition of copy methods for datamunge::optim::FISTAOptions
+# End definition of copy functions & methods for datamunge::optim::FISTAOptions
+# Start of new_FISTA
+
+`FISTA__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_FISTA__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FISTA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FISTA);
+  ans
+  
+}
+
+attr(`FISTA__SWIG_0`, 'returnType') = '_p_datamunge__optim__FISTA'
+attr(`FISTA__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__FISTAOptions')
+class(`FISTA__SWIG_0`) = c("SWIGFunction", class('FISTA__SWIG_0'))
+
+# Start of new_FISTA
+
+`FISTA__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_FISTA__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__FISTA", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_FISTA);
+  ans
+  
+}
+
+attr(`FISTA__SWIG_1`, 'returnType') = '_p_datamunge__optim__FISTA'
+class(`FISTA__SWIG_1`) = c("SWIGFunction", class('FISTA__SWIG_1'))
+
+`FISTA` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- FISTA__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__FISTAOptions') && length(argv[[1]]) == 1 ) {
+      f <- FISTA__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for FISTA with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of FISTA_optimize
+
+`FISTA_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_FISTA_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`FISTA_optimize`, 'returnType') = 'numeric'
+attr(`FISTA_optimize`, "inputTypes") = c('_p_datamunge__optim__FISTA', '_p_datamunge__optim__ProximalFunction', '_p_std__vectorT_double_t')
+class(`FISTA_optimize`) = c("SWIGFunction", class('FISTA_optimize'))
+
+# Start of delete_FISTA
+
+`delete_FISTA` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_FISTA', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_FISTA`, 'returnType') = 'void'
+attr(`delete_FISTA`, "inputTypes") = c('_p_datamunge__optim__FISTA')
+class(`delete_FISTA`) = c("SWIGFunction", class('delete_FISTA'))
+
+# Start of accessor method for datamunge::optim::FISTA
+setMethod('$', '_p_datamunge__optim__FISTA', function(x, name)
+
+{
+  accessorFuns = list('optimize' = FISTA_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::FISTA
+setMethod('delete', '_p_datamunge__optim__FISTA', function(obj) {delete_datamunge__optim__FISTA(obj)})
+# Start of ProximalGradientOptions_step_size_set
+
+`ProximalGradientOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ProximalGradientOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_step_size_set`, 'returnType') = 'void'
+attr(`ProximalGradientOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions', 'numeric')
+class(`ProximalGradientOptions_step_size_set`) = c("SWIGFunction", class('ProximalGradientOptions_step_size_set'))
+
+# Start of ProximalGradientOptions_step_size_get
+
+`ProximalGradientOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ProximalGradientOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`ProximalGradientOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions')
+class(`ProximalGradientOptions_step_size_get`) = c("SWIGFunction", class('ProximalGradientOptions_step_size_get'))
+
+# Start of ProximalGradientOptions_max_iterations_set
+
+`ProximalGradientOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_ProximalGradientOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`ProximalGradientOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions', 'integer')
+class(`ProximalGradientOptions_max_iterations_set`) = c("SWIGFunction", class('ProximalGradientOptions_max_iterations_set'))
+
+# Start of ProximalGradientOptions_max_iterations_get
+
+`ProximalGradientOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ProximalGradientOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`ProximalGradientOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions')
+class(`ProximalGradientOptions_max_iterations_get`) = c("SWIGFunction", class('ProximalGradientOptions_max_iterations_get'))
+
+# Start of ProximalGradientOptions_tolerance_set
+
+`ProximalGradientOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ProximalGradientOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_tolerance_set`, 'returnType') = 'void'
+attr(`ProximalGradientOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions', 'numeric')
+class(`ProximalGradientOptions_tolerance_set`) = c("SWIGFunction", class('ProximalGradientOptions_tolerance_set'))
+
+# Start of ProximalGradientOptions_tolerance_get
+
+`ProximalGradientOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ProximalGradientOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradientOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`ProximalGradientOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions')
+class(`ProximalGradientOptions_tolerance_get`) = c("SWIGFunction", class('ProximalGradientOptions_tolerance_get'))
+
+# Start of new_ProximalGradientOptions
+
+`ProximalGradientOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ProximalGradientOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ProximalGradientOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ProximalGradientOptions);
+  ans
+  
+}
+
+attr(`ProximalGradientOptions`, 'returnType') = '_p_datamunge__optim__ProximalGradientOptions'
+class(`ProximalGradientOptions`) = c("SWIGFunction", class('ProximalGradientOptions'))
+
+# Start of delete_ProximalGradientOptions
+
+`delete_ProximalGradientOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ProximalGradientOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ProximalGradientOptions`, 'returnType') = 'void'
+attr(`delete_ProximalGradientOptions`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions')
+class(`delete_ProximalGradientOptions`) = c("SWIGFunction", class('delete_ProximalGradientOptions'))
+
+# Start of accessor method for datamunge::optim::ProximalGradientOptions
+setMethod('$', '_p_datamunge__optim__ProximalGradientOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = ProximalGradientOptions_step_size_get, 'max_iterations' = ProximalGradientOptions_max_iterations_get, 'tolerance' = ProximalGradientOptions_tolerance_get);
+  vaccessors = c('step_size', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::ProximalGradientOptions
+# Start of accessor method for datamunge::optim::ProximalGradientOptions
+setMethod('$<-', '_p_datamunge__optim__ProximalGradientOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = ProximalGradientOptions_step_size_set, 'max_iterations' = ProximalGradientOptions_max_iterations_set, 'tolerance' = ProximalGradientOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__ProximalGradientOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = ProximalGradientOptions_step_size_set, 'max_iterations' = ProximalGradientOptions_max_iterations_set, 'tolerance' = ProximalGradientOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::ProximalGradientOptions
+setMethod('delete', '_p_datamunge__optim__ProximalGradientOptions', function(obj) {delete_datamunge__optim__ProximalGradientOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::ProximalGradientOptions
+CopyToR_datamunge__optim__ProximalGradientOptions = function(value, obj = new("datamunge::optim::ProximalGradientOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__ProximalGradientOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::ProximalGradientOptions
+setMethod('copyToR', '_p_datamunge__optim__ProximalGradientOptions', CopyToR_datamunge__optim__ProximalGradientOptions);
+setMethod('copyToC', 'datamunge::optim::ProximalGradientOptions', CopyToC_datamunge__optim__ProximalGradientOptions);
+
+# End definition of copy methods for datamunge::optim::ProximalGradientOptions
+# End definition of copy functions & methods for datamunge::optim::ProximalGradientOptions
+# Start of new_ProximalGradient
+
+`ProximalGradient__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ProximalGradient__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ProximalGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ProximalGradient);
+  ans
+  
+}
+
+attr(`ProximalGradient__SWIG_0`, 'returnType') = '_p_datamunge__optim__ProximalGradient'
+attr(`ProximalGradient__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__ProximalGradientOptions')
+class(`ProximalGradient__SWIG_0`) = c("SWIGFunction", class('ProximalGradient__SWIG_0'))
+
+# Start of new_ProximalGradient
+
+`ProximalGradient__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ProximalGradient__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__ProximalGradient", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ProximalGradient);
+  ans
+  
+}
+
+attr(`ProximalGradient__SWIG_1`, 'returnType') = '_p_datamunge__optim__ProximalGradient'
+class(`ProximalGradient__SWIG_1`) = c("SWIGFunction", class('ProximalGradient__SWIG_1'))
+
+`ProximalGradient` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ProximalGradient__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__ProximalGradientOptions') && length(argv[[1]]) == 1 ) {
+      f <- ProximalGradient__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ProximalGradient with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ProximalGradient_optimize
+
+`ProximalGradient_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_ProximalGradient_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ProximalGradient_optimize`, 'returnType') = 'numeric'
+attr(`ProximalGradient_optimize`, "inputTypes") = c('_p_datamunge__optim__ProximalGradient', '_p_datamunge__optim__ProximalFunction', '_p_std__vectorT_double_t')
+class(`ProximalGradient_optimize`) = c("SWIGFunction", class('ProximalGradient_optimize'))
+
+# Start of delete_ProximalGradient
+
+`delete_ProximalGradient` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ProximalGradient', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ProximalGradient`, 'returnType') = 'void'
+attr(`delete_ProximalGradient`, "inputTypes") = c('_p_datamunge__optim__ProximalGradient')
+class(`delete_ProximalGradient`) = c("SWIGFunction", class('delete_ProximalGradient'))
+
+# Start of accessor method for datamunge::optim::ProximalGradient
+setMethod('$', '_p_datamunge__optim__ProximalGradient', function(x, name)
+
+{
+  accessorFuns = list('optimize' = ProximalGradient_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::ProximalGradient
+setMethod('delete', '_p_datamunge__optim__ProximalGradient', function(obj) {delete_datamunge__optim__ProximalGradient(obj)})
+# Start of LevenbergMarquardtOptions_initial_damping_set
+
+`LevenbergMarquardtOptions_initial_damping_set` = function(self, s_initial_damping)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_LevenbergMarquardtOptions_initial_damping_set', self, s_initial_damping, PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_initial_damping_set`, 'returnType') = 'void'
+attr(`LevenbergMarquardtOptions_initial_damping_set`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions', 'numeric')
+class(`LevenbergMarquardtOptions_initial_damping_set`) = c("SWIGFunction", class('LevenbergMarquardtOptions_initial_damping_set'))
+
+# Start of LevenbergMarquardtOptions_initial_damping_get
+
+`LevenbergMarquardtOptions_initial_damping_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LevenbergMarquardtOptions_initial_damping_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_initial_damping_get`, 'returnType') = 'numeric'
+attr(`LevenbergMarquardtOptions_initial_damping_get`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions')
+class(`LevenbergMarquardtOptions_initial_damping_get`) = c("SWIGFunction", class('LevenbergMarquardtOptions_initial_damping_get'))
+
+# Start of LevenbergMarquardtOptions_max_iterations_set
+
+`LevenbergMarquardtOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_LevenbergMarquardtOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`LevenbergMarquardtOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions', 'integer')
+class(`LevenbergMarquardtOptions_max_iterations_set`) = c("SWIGFunction", class('LevenbergMarquardtOptions_max_iterations_set'))
+
+# Start of LevenbergMarquardtOptions_max_iterations_get
+
+`LevenbergMarquardtOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LevenbergMarquardtOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`LevenbergMarquardtOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions')
+class(`LevenbergMarquardtOptions_max_iterations_get`) = c("SWIGFunction", class('LevenbergMarquardtOptions_max_iterations_get'))
+
+# Start of LevenbergMarquardtOptions_tolerance_set
+
+`LevenbergMarquardtOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_LevenbergMarquardtOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_tolerance_set`, 'returnType') = 'void'
+attr(`LevenbergMarquardtOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions', 'numeric')
+class(`LevenbergMarquardtOptions_tolerance_set`) = c("SWIGFunction", class('LevenbergMarquardtOptions_tolerance_set'))
+
+# Start of LevenbergMarquardtOptions_tolerance_get
+
+`LevenbergMarquardtOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LevenbergMarquardtOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardtOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`LevenbergMarquardtOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions')
+class(`LevenbergMarquardtOptions_tolerance_get`) = c("SWIGFunction", class('LevenbergMarquardtOptions_tolerance_get'))
+
+# Start of new_LevenbergMarquardtOptions
+
+`LevenbergMarquardtOptions` = function()
+{
+  ;ans = .Call('R_swig_new_LevenbergMarquardtOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__LevenbergMarquardtOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LevenbergMarquardtOptions);
+  ans
+  
+}
+
+attr(`LevenbergMarquardtOptions`, 'returnType') = '_p_datamunge__optim__LevenbergMarquardtOptions'
+class(`LevenbergMarquardtOptions`) = c("SWIGFunction", class('LevenbergMarquardtOptions'))
+
+# Start of delete_LevenbergMarquardtOptions
+
+`delete_LevenbergMarquardtOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_LevenbergMarquardtOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_LevenbergMarquardtOptions`, 'returnType') = 'void'
+attr(`delete_LevenbergMarquardtOptions`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions')
+class(`delete_LevenbergMarquardtOptions`) = c("SWIGFunction", class('delete_LevenbergMarquardtOptions'))
+
+# Start of accessor method for datamunge::optim::LevenbergMarquardtOptions
+setMethod('$', '_p_datamunge__optim__LevenbergMarquardtOptions', function(x, name)
+
+{
+  accessorFuns = list('initial_damping' = LevenbergMarquardtOptions_initial_damping_get, 'max_iterations' = LevenbergMarquardtOptions_max_iterations_get, 'tolerance' = LevenbergMarquardtOptions_tolerance_get);
+  vaccessors = c('initial_damping', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::LevenbergMarquardtOptions
+# Start of accessor method for datamunge::optim::LevenbergMarquardtOptions
+setMethod('$<-', '_p_datamunge__optim__LevenbergMarquardtOptions', function(x, name, value)
+
+{
+  accessorFuns = list('initial_damping' = LevenbergMarquardtOptions_initial_damping_set, 'max_iterations' = LevenbergMarquardtOptions_max_iterations_set, 'tolerance' = LevenbergMarquardtOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__LevenbergMarquardtOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('initial_damping' = LevenbergMarquardtOptions_initial_damping_set, 'max_iterations' = LevenbergMarquardtOptions_max_iterations_set, 'tolerance' = LevenbergMarquardtOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::LevenbergMarquardtOptions
+setMethod('delete', '_p_datamunge__optim__LevenbergMarquardtOptions', function(obj) {delete_datamunge__optim__LevenbergMarquardtOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::LevenbergMarquardtOptions
+CopyToR_datamunge__optim__LevenbergMarquardtOptions = function(value, obj = new("datamunge::optim::LevenbergMarquardtOptions"))
+{
+  obj@initial_damping = value$initial_damping;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__LevenbergMarquardtOptions = function(value, obj)
+{
+  obj$initial_damping = value@initial_damping;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::LevenbergMarquardtOptions
+setMethod('copyToR', '_p_datamunge__optim__LevenbergMarquardtOptions', CopyToR_datamunge__optim__LevenbergMarquardtOptions);
+setMethod('copyToC', 'datamunge::optim::LevenbergMarquardtOptions', CopyToC_datamunge__optim__LevenbergMarquardtOptions);
+
+# End definition of copy methods for datamunge::optim::LevenbergMarquardtOptions
+# End definition of copy functions & methods for datamunge::optim::LevenbergMarquardtOptions
+# Start of new_LevenbergMarquardt
+
+`LevenbergMarquardt__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_LevenbergMarquardt__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__LevenbergMarquardt", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LevenbergMarquardt);
+  ans
+  
+}
+
+attr(`LevenbergMarquardt__SWIG_0`, 'returnType') = '_p_datamunge__optim__LevenbergMarquardt'
+attr(`LevenbergMarquardt__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardtOptions')
+class(`LevenbergMarquardt__SWIG_0`) = c("SWIGFunction", class('LevenbergMarquardt__SWIG_0'))
+
+# Start of new_LevenbergMarquardt
+
+`LevenbergMarquardt__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_LevenbergMarquardt__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__LevenbergMarquardt", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LevenbergMarquardt);
+  ans
+  
+}
+
+attr(`LevenbergMarquardt__SWIG_1`, 'returnType') = '_p_datamunge__optim__LevenbergMarquardt'
+class(`LevenbergMarquardt__SWIG_1`) = c("SWIGFunction", class('LevenbergMarquardt__SWIG_1'))
+
+`LevenbergMarquardt` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- LevenbergMarquardt__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__LevenbergMarquardtOptions') && length(argv[[1]]) == 1 ) {
+      f <- LevenbergMarquardt__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LevenbergMarquardt with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LevenbergMarquardt_optimize
+
+`LevenbergMarquardt_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_LevenbergMarquardt_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LevenbergMarquardt_optimize`, 'returnType') = 'numeric'
+attr(`LevenbergMarquardt_optimize`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardt', '_p_datamunge__optim__ResidualFunction', '_p_std__vectorT_double_t')
+class(`LevenbergMarquardt_optimize`) = c("SWIGFunction", class('LevenbergMarquardt_optimize'))
+
+# Start of delete_LevenbergMarquardt
+
+`delete_LevenbergMarquardt` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_LevenbergMarquardt', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_LevenbergMarquardt`, 'returnType') = 'void'
+attr(`delete_LevenbergMarquardt`, "inputTypes") = c('_p_datamunge__optim__LevenbergMarquardt')
+class(`delete_LevenbergMarquardt`) = c("SWIGFunction", class('delete_LevenbergMarquardt'))
+
+# Start of accessor method for datamunge::optim::LevenbergMarquardt
+setMethod('$', '_p_datamunge__optim__LevenbergMarquardt', function(x, name)
+
+{
+  accessorFuns = list('optimize' = LevenbergMarquardt_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::LevenbergMarquardt
+setMethod('delete', '_p_datamunge__optim__LevenbergMarquardt', function(obj) {delete_datamunge__optim__LevenbergMarquardt(obj)})
+# Start of NewtonOptions_max_iterations_set
+
+`NewtonOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_NewtonOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`NewtonOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions', 'integer')
+class(`NewtonOptions_max_iterations_set`) = c("SWIGFunction", class('NewtonOptions_max_iterations_set'))
+
+# Start of NewtonOptions_max_iterations_get
+
+`NewtonOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NewtonOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`NewtonOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions')
+class(`NewtonOptions_max_iterations_get`) = c("SWIGFunction", class('NewtonOptions_max_iterations_get'))
+
+# Start of NewtonOptions_tolerance_set
+
+`NewtonOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NewtonOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_tolerance_set`, 'returnType') = 'void'
+attr(`NewtonOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions', 'numeric')
+class(`NewtonOptions_tolerance_set`) = c("SWIGFunction", class('NewtonOptions_tolerance_set'))
+
+# Start of NewtonOptions_tolerance_get
+
+`NewtonOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NewtonOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`NewtonOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions')
+class(`NewtonOptions_tolerance_get`) = c("SWIGFunction", class('NewtonOptions_tolerance_get'))
+
+# Start of NewtonOptions_damping_set
+
+`NewtonOptions_damping_set` = function(self, s_damping)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NewtonOptions_damping_set', self, s_damping, PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_damping_set`, 'returnType') = 'void'
+attr(`NewtonOptions_damping_set`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions', 'numeric')
+class(`NewtonOptions_damping_set`) = c("SWIGFunction", class('NewtonOptions_damping_set'))
+
+# Start of NewtonOptions_damping_get
+
+`NewtonOptions_damping_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NewtonOptions_damping_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NewtonOptions_damping_get`, 'returnType') = 'numeric'
+attr(`NewtonOptions_damping_get`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions')
+class(`NewtonOptions_damping_get`) = c("SWIGFunction", class('NewtonOptions_damping_get'))
+
+# Start of new_NewtonOptions
+
+`NewtonOptions` = function()
+{
+  ;ans = .Call('R_swig_new_NewtonOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__NewtonOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NewtonOptions);
+  ans
+  
+}
+
+attr(`NewtonOptions`, 'returnType') = '_p_datamunge__optim__NewtonOptions'
+class(`NewtonOptions`) = c("SWIGFunction", class('NewtonOptions'))
+
+# Start of delete_NewtonOptions
+
+`delete_NewtonOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NewtonOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NewtonOptions`, 'returnType') = 'void'
+attr(`delete_NewtonOptions`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions')
+class(`delete_NewtonOptions`) = c("SWIGFunction", class('delete_NewtonOptions'))
+
+# Start of accessor method for datamunge::optim::NewtonOptions
+setMethod('$', '_p_datamunge__optim__NewtonOptions', function(x, name)
+
+{
+  accessorFuns = list('max_iterations' = NewtonOptions_max_iterations_get, 'tolerance' = NewtonOptions_tolerance_get, 'damping' = NewtonOptions_damping_get);
+  vaccessors = c('max_iterations', 'tolerance', 'damping');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::NewtonOptions
+# Start of accessor method for datamunge::optim::NewtonOptions
+setMethod('$<-', '_p_datamunge__optim__NewtonOptions', function(x, name, value)
+
+{
+  accessorFuns = list('max_iterations' = NewtonOptions_max_iterations_set, 'tolerance' = NewtonOptions_tolerance_set, 'damping' = NewtonOptions_damping_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__NewtonOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('max_iterations' = NewtonOptions_max_iterations_set, 'tolerance' = NewtonOptions_tolerance_set, 'damping' = NewtonOptions_damping_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::NewtonOptions
+setMethod('delete', '_p_datamunge__optim__NewtonOptions', function(obj) {delete_datamunge__optim__NewtonOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::NewtonOptions
+CopyToR_datamunge__optim__NewtonOptions = function(value, obj = new("datamunge::optim::NewtonOptions"))
+{
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj@damping = value$damping;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__NewtonOptions = function(value, obj)
+{
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj$damping = value@damping;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::NewtonOptions
+setMethod('copyToR', '_p_datamunge__optim__NewtonOptions', CopyToR_datamunge__optim__NewtonOptions);
+setMethod('copyToC', 'datamunge::optim::NewtonOptions', CopyToC_datamunge__optim__NewtonOptions);
+
+# End definition of copy methods for datamunge::optim::NewtonOptions
+# End definition of copy functions & methods for datamunge::optim::NewtonOptions
+# Start of new_Newton
+
+`Newton__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_Newton__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__Newton", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Newton);
+  ans
+  
+}
+
+attr(`Newton__SWIG_0`, 'returnType') = '_p_datamunge__optim__Newton'
+attr(`Newton__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__NewtonOptions')
+class(`Newton__SWIG_0`) = c("SWIGFunction", class('Newton__SWIG_0'))
+
+# Start of new_Newton
+
+`Newton__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_Newton__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__Newton", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Newton);
+  ans
+  
+}
+
+attr(`Newton__SWIG_1`, 'returnType') = '_p_datamunge__optim__Newton'
+class(`Newton__SWIG_1`) = c("SWIGFunction", class('Newton__SWIG_1'))
+
+`Newton` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- Newton__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__NewtonOptions') && length(argv[[1]]) == 1 ) {
+      f <- Newton__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Newton with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Newton_optimize
+
+`Newton_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_Newton_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Newton_optimize`, 'returnType') = 'numeric'
+attr(`Newton_optimize`, "inputTypes") = c('_p_datamunge__optim__Newton', '_p_datamunge__optim__HessianFunction', '_p_std__vectorT_double_t')
+class(`Newton_optimize`) = c("SWIGFunction", class('Newton_optimize'))
+
+# Start of delete_Newton
+
+`delete_Newton` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_Newton', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_Newton`, 'returnType') = 'void'
+attr(`delete_Newton`, "inputTypes") = c('_p_datamunge__optim__Newton')
+class(`delete_Newton`) = c("SWIGFunction", class('delete_Newton'))
+
+# Start of accessor method for datamunge::optim::Newton
+setMethod('$', '_p_datamunge__optim__Newton', function(x, name)
+
+{
+  accessorFuns = list('optimize' = Newton_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::Newton
+setMethod('delete', '_p_datamunge__optim__Newton', function(obj) {delete_datamunge__optim__Newton(obj)})
+# Start of TrustRegionNewtonOptions_initial_radius_set
+
+`TrustRegionNewtonOptions_initial_radius_set` = function(self, s_initial_radius)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_TrustRegionNewtonOptions_initial_radius_set', self, s_initial_radius, PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_initial_radius_set`, 'returnType') = 'void'
+attr(`TrustRegionNewtonOptions_initial_radius_set`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions', 'numeric')
+class(`TrustRegionNewtonOptions_initial_radius_set`) = c("SWIGFunction", class('TrustRegionNewtonOptions_initial_radius_set'))
+
+# Start of TrustRegionNewtonOptions_initial_radius_get
+
+`TrustRegionNewtonOptions_initial_radius_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TrustRegionNewtonOptions_initial_radius_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_initial_radius_get`, 'returnType') = 'numeric'
+attr(`TrustRegionNewtonOptions_initial_radius_get`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`TrustRegionNewtonOptions_initial_radius_get`) = c("SWIGFunction", class('TrustRegionNewtonOptions_initial_radius_get'))
+
+# Start of TrustRegionNewtonOptions_max_radius_set
+
+`TrustRegionNewtonOptions_max_radius_set` = function(self, s_max_radius)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_TrustRegionNewtonOptions_max_radius_set', self, s_max_radius, PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_max_radius_set`, 'returnType') = 'void'
+attr(`TrustRegionNewtonOptions_max_radius_set`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions', 'numeric')
+class(`TrustRegionNewtonOptions_max_radius_set`) = c("SWIGFunction", class('TrustRegionNewtonOptions_max_radius_set'))
+
+# Start of TrustRegionNewtonOptions_max_radius_get
+
+`TrustRegionNewtonOptions_max_radius_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TrustRegionNewtonOptions_max_radius_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_max_radius_get`, 'returnType') = 'numeric'
+attr(`TrustRegionNewtonOptions_max_radius_get`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`TrustRegionNewtonOptions_max_radius_get`) = c("SWIGFunction", class('TrustRegionNewtonOptions_max_radius_get'))
+
+# Start of TrustRegionNewtonOptions_max_iterations_set
+
+`TrustRegionNewtonOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_TrustRegionNewtonOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`TrustRegionNewtonOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions', 'integer')
+class(`TrustRegionNewtonOptions_max_iterations_set`) = c("SWIGFunction", class('TrustRegionNewtonOptions_max_iterations_set'))
+
+# Start of TrustRegionNewtonOptions_max_iterations_get
+
+`TrustRegionNewtonOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TrustRegionNewtonOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`TrustRegionNewtonOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`TrustRegionNewtonOptions_max_iterations_get`) = c("SWIGFunction", class('TrustRegionNewtonOptions_max_iterations_get'))
+
+# Start of TrustRegionNewtonOptions_tolerance_set
+
+`TrustRegionNewtonOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_TrustRegionNewtonOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_tolerance_set`, 'returnType') = 'void'
+attr(`TrustRegionNewtonOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions', 'numeric')
+class(`TrustRegionNewtonOptions_tolerance_set`) = c("SWIGFunction", class('TrustRegionNewtonOptions_tolerance_set'))
+
+# Start of TrustRegionNewtonOptions_tolerance_get
+
+`TrustRegionNewtonOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TrustRegionNewtonOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewtonOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`TrustRegionNewtonOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`TrustRegionNewtonOptions_tolerance_get`) = c("SWIGFunction", class('TrustRegionNewtonOptions_tolerance_get'))
+
+# Start of new_TrustRegionNewtonOptions
+
+`TrustRegionNewtonOptions` = function()
+{
+  ;ans = .Call('R_swig_new_TrustRegionNewtonOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__TrustRegionNewtonOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TrustRegionNewtonOptions);
+  ans
+  
+}
+
+attr(`TrustRegionNewtonOptions`, 'returnType') = '_p_datamunge__optim__TrustRegionNewtonOptions'
+class(`TrustRegionNewtonOptions`) = c("SWIGFunction", class('TrustRegionNewtonOptions'))
+
+# Start of delete_TrustRegionNewtonOptions
+
+`delete_TrustRegionNewtonOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TrustRegionNewtonOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TrustRegionNewtonOptions`, 'returnType') = 'void'
+attr(`delete_TrustRegionNewtonOptions`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`delete_TrustRegionNewtonOptions`) = c("SWIGFunction", class('delete_TrustRegionNewtonOptions'))
+
+# Start of accessor method for datamunge::optim::TrustRegionNewtonOptions
+setMethod('$', '_p_datamunge__optim__TrustRegionNewtonOptions', function(x, name)
+
+{
+  accessorFuns = list('initial_radius' = TrustRegionNewtonOptions_initial_radius_get, 'max_radius' = TrustRegionNewtonOptions_max_radius_get, 'max_iterations' = TrustRegionNewtonOptions_max_iterations_get, 'tolerance' = TrustRegionNewtonOptions_tolerance_get);
+  vaccessors = c('initial_radius', 'max_radius', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::TrustRegionNewtonOptions
+# Start of accessor method for datamunge::optim::TrustRegionNewtonOptions
+setMethod('$<-', '_p_datamunge__optim__TrustRegionNewtonOptions', function(x, name, value)
+
+{
+  accessorFuns = list('initial_radius' = TrustRegionNewtonOptions_initial_radius_set, 'max_radius' = TrustRegionNewtonOptions_max_radius_set, 'max_iterations' = TrustRegionNewtonOptions_max_iterations_set, 'tolerance' = TrustRegionNewtonOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__TrustRegionNewtonOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('initial_radius' = TrustRegionNewtonOptions_initial_radius_set, 'max_radius' = TrustRegionNewtonOptions_max_radius_set, 'max_iterations' = TrustRegionNewtonOptions_max_iterations_set, 'tolerance' = TrustRegionNewtonOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::TrustRegionNewtonOptions
+setMethod('delete', '_p_datamunge__optim__TrustRegionNewtonOptions', function(obj) {delete_datamunge__optim__TrustRegionNewtonOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::TrustRegionNewtonOptions
+CopyToR_datamunge__optim__TrustRegionNewtonOptions = function(value, obj = new("datamunge::optim::TrustRegionNewtonOptions"))
+{
+  obj@initial_radius = value$initial_radius;
+  obj@max_radius = value$max_radius;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__TrustRegionNewtonOptions = function(value, obj)
+{
+  obj$initial_radius = value@initial_radius;
+  obj$max_radius = value@max_radius;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::TrustRegionNewtonOptions
+setMethod('copyToR', '_p_datamunge__optim__TrustRegionNewtonOptions', CopyToR_datamunge__optim__TrustRegionNewtonOptions);
+setMethod('copyToC', 'datamunge::optim::TrustRegionNewtonOptions', CopyToC_datamunge__optim__TrustRegionNewtonOptions);
+
+# End definition of copy methods for datamunge::optim::TrustRegionNewtonOptions
+# End definition of copy functions & methods for datamunge::optim::TrustRegionNewtonOptions
+# Start of new_TrustRegionNewton
+
+`TrustRegionNewton__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_TrustRegionNewton__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__TrustRegionNewton", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TrustRegionNewton);
+  ans
+  
+}
+
+attr(`TrustRegionNewton__SWIG_0`, 'returnType') = '_p_datamunge__optim__TrustRegionNewton'
+attr(`TrustRegionNewton__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewtonOptions')
+class(`TrustRegionNewton__SWIG_0`) = c("SWIGFunction", class('TrustRegionNewton__SWIG_0'))
+
+# Start of new_TrustRegionNewton
+
+`TrustRegionNewton__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_TrustRegionNewton__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__TrustRegionNewton", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TrustRegionNewton);
+  ans
+  
+}
+
+attr(`TrustRegionNewton__SWIG_1`, 'returnType') = '_p_datamunge__optim__TrustRegionNewton'
+class(`TrustRegionNewton__SWIG_1`) = c("SWIGFunction", class('TrustRegionNewton__SWIG_1'))
+
+`TrustRegionNewton` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- TrustRegionNewton__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__TrustRegionNewtonOptions') && length(argv[[1]]) == 1 ) {
+      f <- TrustRegionNewton__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TrustRegionNewton with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TrustRegionNewton_optimize
+
+`TrustRegionNewton_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_TrustRegionNewton_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TrustRegionNewton_optimize`, 'returnType') = 'numeric'
+attr(`TrustRegionNewton_optimize`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewton', '_p_datamunge__optim__HessianFunction', '_p_std__vectorT_double_t')
+class(`TrustRegionNewton_optimize`) = c("SWIGFunction", class('TrustRegionNewton_optimize'))
+
+# Start of delete_TrustRegionNewton
+
+`delete_TrustRegionNewton` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TrustRegionNewton', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TrustRegionNewton`, 'returnType') = 'void'
+attr(`delete_TrustRegionNewton`, "inputTypes") = c('_p_datamunge__optim__TrustRegionNewton')
+class(`delete_TrustRegionNewton`) = c("SWIGFunction", class('delete_TrustRegionNewton'))
+
+# Start of accessor method for datamunge::optim::TrustRegionNewton
+setMethod('$', '_p_datamunge__optim__TrustRegionNewton', function(x, name)
+
+{
+  accessorFuns = list('optimize' = TrustRegionNewton_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::TrustRegionNewton
+setMethod('delete', '_p_datamunge__optim__TrustRegionNewton', function(obj) {delete_datamunge__optim__TrustRegionNewton(obj)})
+# Start of AugmentedLagrangianOptions_step_size_set
+
+`AugmentedLagrangianOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AugmentedLagrangianOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_step_size_set`, 'returnType') = 'void'
+attr(`AugmentedLagrangianOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions', 'numeric')
+class(`AugmentedLagrangianOptions_step_size_set`) = c("SWIGFunction", class('AugmentedLagrangianOptions_step_size_set'))
+
+# Start of AugmentedLagrangianOptions_step_size_get
+
+`AugmentedLagrangianOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AugmentedLagrangianOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`AugmentedLagrangianOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangianOptions_step_size_get`) = c("SWIGFunction", class('AugmentedLagrangianOptions_step_size_get'))
+
+# Start of AugmentedLagrangianOptions_initial_penalty_set
+
+`AugmentedLagrangianOptions_initial_penalty_set` = function(self, s_initial_penalty)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AugmentedLagrangianOptions_initial_penalty_set', self, s_initial_penalty, PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_initial_penalty_set`, 'returnType') = 'void'
+attr(`AugmentedLagrangianOptions_initial_penalty_set`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions', 'numeric')
+class(`AugmentedLagrangianOptions_initial_penalty_set`) = c("SWIGFunction", class('AugmentedLagrangianOptions_initial_penalty_set'))
+
+# Start of AugmentedLagrangianOptions_initial_penalty_get
+
+`AugmentedLagrangianOptions_initial_penalty_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AugmentedLagrangianOptions_initial_penalty_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_initial_penalty_get`, 'returnType') = 'numeric'
+attr(`AugmentedLagrangianOptions_initial_penalty_get`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangianOptions_initial_penalty_get`) = c("SWIGFunction", class('AugmentedLagrangianOptions_initial_penalty_get'))
+
+# Start of AugmentedLagrangianOptions_max_outer_iterations_set
+
+`AugmentedLagrangianOptions_max_outer_iterations_set` = function(self, s_max_outer_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_outer_iterations = as.integer(s_max_outer_iterations);
+  
+  if(length(s_max_outer_iterations) > 1) {
+    warning("using only the first element of s_max_outer_iterations");
+  };
+  
+  ;.Call('R_swig_AugmentedLagrangianOptions_max_outer_iterations_set', self, s_max_outer_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_max_outer_iterations_set`, 'returnType') = 'void'
+attr(`AugmentedLagrangianOptions_max_outer_iterations_set`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions', 'integer')
+class(`AugmentedLagrangianOptions_max_outer_iterations_set`) = c("SWIGFunction", class('AugmentedLagrangianOptions_max_outer_iterations_set'))
+
+# Start of AugmentedLagrangianOptions_max_outer_iterations_get
+
+`AugmentedLagrangianOptions_max_outer_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AugmentedLagrangianOptions_max_outer_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_max_outer_iterations_get`, 'returnType') = 'integer'
+attr(`AugmentedLagrangianOptions_max_outer_iterations_get`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangianOptions_max_outer_iterations_get`) = c("SWIGFunction", class('AugmentedLagrangianOptions_max_outer_iterations_get'))
+
+# Start of AugmentedLagrangianOptions_inner_iterations_set
+
+`AugmentedLagrangianOptions_inner_iterations_set` = function(self, s_inner_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_inner_iterations = as.integer(s_inner_iterations);
+  
+  if(length(s_inner_iterations) > 1) {
+    warning("using only the first element of s_inner_iterations");
+  };
+  
+  ;.Call('R_swig_AugmentedLagrangianOptions_inner_iterations_set', self, s_inner_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_inner_iterations_set`, 'returnType') = 'void'
+attr(`AugmentedLagrangianOptions_inner_iterations_set`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions', 'integer')
+class(`AugmentedLagrangianOptions_inner_iterations_set`) = c("SWIGFunction", class('AugmentedLagrangianOptions_inner_iterations_set'))
+
+# Start of AugmentedLagrangianOptions_inner_iterations_get
+
+`AugmentedLagrangianOptions_inner_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AugmentedLagrangianOptions_inner_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_inner_iterations_get`, 'returnType') = 'integer'
+attr(`AugmentedLagrangianOptions_inner_iterations_get`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangianOptions_inner_iterations_get`) = c("SWIGFunction", class('AugmentedLagrangianOptions_inner_iterations_get'))
+
+# Start of AugmentedLagrangianOptions_tolerance_set
+
+`AugmentedLagrangianOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_AugmentedLagrangianOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_tolerance_set`, 'returnType') = 'void'
+attr(`AugmentedLagrangianOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions', 'numeric')
+class(`AugmentedLagrangianOptions_tolerance_set`) = c("SWIGFunction", class('AugmentedLagrangianOptions_tolerance_set'))
+
+# Start of AugmentedLagrangianOptions_tolerance_get
+
+`AugmentedLagrangianOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_AugmentedLagrangianOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangianOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`AugmentedLagrangianOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangianOptions_tolerance_get`) = c("SWIGFunction", class('AugmentedLagrangianOptions_tolerance_get'))
+
+# Start of new_AugmentedLagrangianOptions
+
+`AugmentedLagrangianOptions` = function()
+{
+  ;ans = .Call('R_swig_new_AugmentedLagrangianOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AugmentedLagrangianOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AugmentedLagrangianOptions);
+  ans
+  
+}
+
+attr(`AugmentedLagrangianOptions`, 'returnType') = '_p_datamunge__optim__AugmentedLagrangianOptions'
+class(`AugmentedLagrangianOptions`) = c("SWIGFunction", class('AugmentedLagrangianOptions'))
+
+# Start of delete_AugmentedLagrangianOptions
+
+`delete_AugmentedLagrangianOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AugmentedLagrangianOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AugmentedLagrangianOptions`, 'returnType') = 'void'
+attr(`delete_AugmentedLagrangianOptions`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`delete_AugmentedLagrangianOptions`) = c("SWIGFunction", class('delete_AugmentedLagrangianOptions'))
+
+# Start of accessor method for datamunge::optim::AugmentedLagrangianOptions
+setMethod('$', '_p_datamunge__optim__AugmentedLagrangianOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = AugmentedLagrangianOptions_step_size_get, 'initial_penalty' = AugmentedLagrangianOptions_initial_penalty_get, 'max_outer_iterations' = AugmentedLagrangianOptions_max_outer_iterations_get, 'inner_iterations' = AugmentedLagrangianOptions_inner_iterations_get, 'tolerance' = AugmentedLagrangianOptions_tolerance_get);
+  vaccessors = c('step_size', 'initial_penalty', 'max_outer_iterations', 'inner_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::AugmentedLagrangianOptions
+# Start of accessor method for datamunge::optim::AugmentedLagrangianOptions
+setMethod('$<-', '_p_datamunge__optim__AugmentedLagrangianOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = AugmentedLagrangianOptions_step_size_set, 'initial_penalty' = AugmentedLagrangianOptions_initial_penalty_set, 'max_outer_iterations' = AugmentedLagrangianOptions_max_outer_iterations_set, 'inner_iterations' = AugmentedLagrangianOptions_inner_iterations_set, 'tolerance' = AugmentedLagrangianOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__AugmentedLagrangianOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = AugmentedLagrangianOptions_step_size_set, 'initial_penalty' = AugmentedLagrangianOptions_initial_penalty_set, 'max_outer_iterations' = AugmentedLagrangianOptions_max_outer_iterations_set, 'inner_iterations' = AugmentedLagrangianOptions_inner_iterations_set, 'tolerance' = AugmentedLagrangianOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::AugmentedLagrangianOptions
+setMethod('delete', '_p_datamunge__optim__AugmentedLagrangianOptions', function(obj) {delete_datamunge__optim__AugmentedLagrangianOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::AugmentedLagrangianOptions
+CopyToR_datamunge__optim__AugmentedLagrangianOptions = function(value, obj = new("datamunge::optim::AugmentedLagrangianOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@initial_penalty = value$initial_penalty;
+  obj@max_outer_iterations = value$max_outer_iterations;
+  obj@inner_iterations = value$inner_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__AugmentedLagrangianOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$initial_penalty = value@initial_penalty;
+  obj$max_outer_iterations = value@max_outer_iterations;
+  obj$inner_iterations = value@inner_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::AugmentedLagrangianOptions
+setMethod('copyToR', '_p_datamunge__optim__AugmentedLagrangianOptions', CopyToR_datamunge__optim__AugmentedLagrangianOptions);
+setMethod('copyToC', 'datamunge::optim::AugmentedLagrangianOptions', CopyToC_datamunge__optim__AugmentedLagrangianOptions);
+
+# End definition of copy methods for datamunge::optim::AugmentedLagrangianOptions
+# End definition of copy functions & methods for datamunge::optim::AugmentedLagrangianOptions
+# Start of new_AugmentedLagrangian
+
+`AugmentedLagrangian__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_AugmentedLagrangian__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AugmentedLagrangian", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AugmentedLagrangian);
+  ans
+  
+}
+
+attr(`AugmentedLagrangian__SWIG_0`, 'returnType') = '_p_datamunge__optim__AugmentedLagrangian'
+attr(`AugmentedLagrangian__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangianOptions')
+class(`AugmentedLagrangian__SWIG_0`) = c("SWIGFunction", class('AugmentedLagrangian__SWIG_0'))
+
+# Start of new_AugmentedLagrangian
+
+`AugmentedLagrangian__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_AugmentedLagrangian__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__AugmentedLagrangian", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_AugmentedLagrangian);
+  ans
+  
+}
+
+attr(`AugmentedLagrangian__SWIG_1`, 'returnType') = '_p_datamunge__optim__AugmentedLagrangian'
+class(`AugmentedLagrangian__SWIG_1`) = c("SWIGFunction", class('AugmentedLagrangian__SWIG_1'))
+
+`AugmentedLagrangian` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- AugmentedLagrangian__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__AugmentedLagrangianOptions') && length(argv[[1]]) == 1 ) {
+      f <- AugmentedLagrangian__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for AugmentedLagrangian with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of AugmentedLagrangian_optimize
+
+`AugmentedLagrangian_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_AugmentedLagrangian_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`AugmentedLagrangian_optimize`, 'returnType') = 'numeric'
+attr(`AugmentedLagrangian_optimize`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangian', '_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`AugmentedLagrangian_optimize`) = c("SWIGFunction", class('AugmentedLagrangian_optimize'))
+
+# Start of delete_AugmentedLagrangian
+
+`delete_AugmentedLagrangian` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_AugmentedLagrangian', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_AugmentedLagrangian`, 'returnType') = 'void'
+attr(`delete_AugmentedLagrangian`, "inputTypes") = c('_p_datamunge__optim__AugmentedLagrangian')
+class(`delete_AugmentedLagrangian`) = c("SWIGFunction", class('delete_AugmentedLagrangian'))
+
+# Start of accessor method for datamunge::optim::AugmentedLagrangian
+setMethod('$', '_p_datamunge__optim__AugmentedLagrangian', function(x, name)
+
+{
+  accessorFuns = list('optimize' = AugmentedLagrangian_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::AugmentedLagrangian
+setMethod('delete', '_p_datamunge__optim__AugmentedLagrangian', function(obj) {delete_datamunge__optim__AugmentedLagrangian(obj)})
+# Start of SQPOptions_step_size_set
+
+`SQPOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SQPOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_step_size_set`, 'returnType') = 'void'
+attr(`SQPOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__SQPOptions', 'numeric')
+class(`SQPOptions_step_size_set`) = c("SWIGFunction", class('SQPOptions_step_size_set'))
+
+# Start of SQPOptions_step_size_get
+
+`SQPOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SQPOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`SQPOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`SQPOptions_step_size_get`) = c("SWIGFunction", class('SQPOptions_step_size_get'))
+
+# Start of SQPOptions_regularization_set
+
+`SQPOptions_regularization_set` = function(self, s_regularization)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SQPOptions_regularization_set', self, s_regularization, PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_regularization_set`, 'returnType') = 'void'
+attr(`SQPOptions_regularization_set`, "inputTypes") = c('_p_datamunge__optim__SQPOptions', 'numeric')
+class(`SQPOptions_regularization_set`) = c("SWIGFunction", class('SQPOptions_regularization_set'))
+
+# Start of SQPOptions_regularization_get
+
+`SQPOptions_regularization_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SQPOptions_regularization_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_regularization_get`, 'returnType') = 'numeric'
+attr(`SQPOptions_regularization_get`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`SQPOptions_regularization_get`) = c("SWIGFunction", class('SQPOptions_regularization_get'))
+
+# Start of SQPOptions_max_iterations_set
+
+`SQPOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_SQPOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`SQPOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__SQPOptions', 'integer')
+class(`SQPOptions_max_iterations_set`) = c("SWIGFunction", class('SQPOptions_max_iterations_set'))
+
+# Start of SQPOptions_max_iterations_get
+
+`SQPOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SQPOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`SQPOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`SQPOptions_max_iterations_get`) = c("SWIGFunction", class('SQPOptions_max_iterations_get'))
+
+# Start of SQPOptions_tolerance_set
+
+`SQPOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SQPOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_tolerance_set`, 'returnType') = 'void'
+attr(`SQPOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__optim__SQPOptions', 'numeric')
+class(`SQPOptions_tolerance_set`) = c("SWIGFunction", class('SQPOptions_tolerance_set'))
+
+# Start of SQPOptions_tolerance_get
+
+`SQPOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SQPOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SQPOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`SQPOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`SQPOptions_tolerance_get`) = c("SWIGFunction", class('SQPOptions_tolerance_get'))
+
+# Start of new_SQPOptions
+
+`SQPOptions` = function()
+{
+  ;ans = .Call('R_swig_new_SQPOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SQPOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SQPOptions);
+  ans
+  
+}
+
+attr(`SQPOptions`, 'returnType') = '_p_datamunge__optim__SQPOptions'
+class(`SQPOptions`) = c("SWIGFunction", class('SQPOptions'))
+
+# Start of delete_SQPOptions
+
+`delete_SQPOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SQPOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SQPOptions`, 'returnType') = 'void'
+attr(`delete_SQPOptions`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`delete_SQPOptions`) = c("SWIGFunction", class('delete_SQPOptions'))
+
+# Start of accessor method for datamunge::optim::SQPOptions
+setMethod('$', '_p_datamunge__optim__SQPOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = SQPOptions_step_size_get, 'regularization' = SQPOptions_regularization_get, 'max_iterations' = SQPOptions_max_iterations_get, 'tolerance' = SQPOptions_tolerance_get);
+  vaccessors = c('step_size', 'regularization', 'max_iterations', 'tolerance');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::SQPOptions
+# Start of accessor method for datamunge::optim::SQPOptions
+setMethod('$<-', '_p_datamunge__optim__SQPOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = SQPOptions_step_size_set, 'regularization' = SQPOptions_regularization_set, 'max_iterations' = SQPOptions_max_iterations_set, 'tolerance' = SQPOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__SQPOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = SQPOptions_step_size_set, 'regularization' = SQPOptions_regularization_set, 'max_iterations' = SQPOptions_max_iterations_set, 'tolerance' = SQPOptions_tolerance_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::SQPOptions
+setMethod('delete', '_p_datamunge__optim__SQPOptions', function(obj) {delete_datamunge__optim__SQPOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::SQPOptions
+CopyToR_datamunge__optim__SQPOptions = function(value, obj = new("datamunge::optim::SQPOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@regularization = value$regularization;
+  obj@max_iterations = value$max_iterations;
+  obj@tolerance = value$tolerance;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__SQPOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$regularization = value@regularization;
+  obj$max_iterations = value@max_iterations;
+  obj$tolerance = value@tolerance;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::SQPOptions
+setMethod('copyToR', '_p_datamunge__optim__SQPOptions', CopyToR_datamunge__optim__SQPOptions);
+setMethod('copyToC', 'datamunge::optim::SQPOptions', CopyToC_datamunge__optim__SQPOptions);
+
+# End definition of copy methods for datamunge::optim::SQPOptions
+# End definition of copy functions & methods for datamunge::optim::SQPOptions
+# Start of new_SQP
+
+`SQP__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_SQP__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SQP", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SQP);
+  ans
+  
+}
+
+attr(`SQP__SWIG_0`, 'returnType') = '_p_datamunge__optim__SQP'
+attr(`SQP__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__SQPOptions')
+class(`SQP__SWIG_0`) = c("SWIGFunction", class('SQP__SWIG_0'))
+
+# Start of new_SQP
+
+`SQP__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_SQP__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__SQP", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SQP);
+  ans
+  
+}
+
+attr(`SQP__SWIG_1`, 'returnType') = '_p_datamunge__optim__SQP'
+class(`SQP__SWIG_1`) = c("SWIGFunction", class('SQP__SWIG_1'))
+
+`SQP` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- SQP__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__SQPOptions') && length(argv[[1]]) == 1 ) {
+      f <- SQP__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for SQP with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SQP_optimize
+
+`SQP_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_SQP_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SQP_optimize`, 'returnType') = 'numeric'
+attr(`SQP_optimize`, "inputTypes") = c('_p_datamunge__optim__SQP', '_p_datamunge__optim__EqualityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`SQP_optimize`) = c("SWIGFunction", class('SQP_optimize'))
+
+# Start of delete_SQP
+
+`delete_SQP` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SQP', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SQP`, 'returnType') = 'void'
+attr(`delete_SQP`, "inputTypes") = c('_p_datamunge__optim__SQP')
+class(`delete_SQP`) = c("SWIGFunction", class('delete_SQP'))
+
+# Start of accessor method for datamunge::optim::SQP
+setMethod('$', '_p_datamunge__optim__SQP', function(x, name)
+
+{
+  accessorFuns = list('optimize' = SQP_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::SQP
+setMethod('delete', '_p_datamunge__optim__SQP', function(obj) {delete_datamunge__optim__SQP(obj)})
+# Start of InteriorPointOptions_step_size_set
+
+`InteriorPointOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_InteriorPointOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_step_size_set`, 'returnType') = 'void'
+attr(`InteriorPointOptions_step_size_set`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions', 'numeric')
+class(`InteriorPointOptions_step_size_set`) = c("SWIGFunction", class('InteriorPointOptions_step_size_set'))
+
+# Start of InteriorPointOptions_step_size_get
+
+`InteriorPointOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_InteriorPointOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`InteriorPointOptions_step_size_get`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPointOptions_step_size_get`) = c("SWIGFunction", class('InteriorPointOptions_step_size_get'))
+
+# Start of InteriorPointOptions_initial_barrier_set
+
+`InteriorPointOptions_initial_barrier_set` = function(self, s_initial_barrier)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_InteriorPointOptions_initial_barrier_set', self, s_initial_barrier, PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_initial_barrier_set`, 'returnType') = 'void'
+attr(`InteriorPointOptions_initial_barrier_set`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions', 'numeric')
+class(`InteriorPointOptions_initial_barrier_set`) = c("SWIGFunction", class('InteriorPointOptions_initial_barrier_set'))
+
+# Start of InteriorPointOptions_initial_barrier_get
+
+`InteriorPointOptions_initial_barrier_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_InteriorPointOptions_initial_barrier_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_initial_barrier_get`, 'returnType') = 'numeric'
+attr(`InteriorPointOptions_initial_barrier_get`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPointOptions_initial_barrier_get`) = c("SWIGFunction", class('InteriorPointOptions_initial_barrier_get'))
+
+# Start of InteriorPointOptions_barrier_decay_set
+
+`InteriorPointOptions_barrier_decay_set` = function(self, s_barrier_decay)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_InteriorPointOptions_barrier_decay_set', self, s_barrier_decay, PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_barrier_decay_set`, 'returnType') = 'void'
+attr(`InteriorPointOptions_barrier_decay_set`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions', 'numeric')
+class(`InteriorPointOptions_barrier_decay_set`) = c("SWIGFunction", class('InteriorPointOptions_barrier_decay_set'))
+
+# Start of InteriorPointOptions_barrier_decay_get
+
+`InteriorPointOptions_barrier_decay_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_InteriorPointOptions_barrier_decay_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_barrier_decay_get`, 'returnType') = 'numeric'
+attr(`InteriorPointOptions_barrier_decay_get`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPointOptions_barrier_decay_get`) = c("SWIGFunction", class('InteriorPointOptions_barrier_decay_get'))
+
+# Start of InteriorPointOptions_max_outer_iterations_set
+
+`InteriorPointOptions_max_outer_iterations_set` = function(self, s_max_outer_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_outer_iterations = as.integer(s_max_outer_iterations);
+  
+  if(length(s_max_outer_iterations) > 1) {
+    warning("using only the first element of s_max_outer_iterations");
+  };
+  
+  ;.Call('R_swig_InteriorPointOptions_max_outer_iterations_set', self, s_max_outer_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_max_outer_iterations_set`, 'returnType') = 'void'
+attr(`InteriorPointOptions_max_outer_iterations_set`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions', 'integer')
+class(`InteriorPointOptions_max_outer_iterations_set`) = c("SWIGFunction", class('InteriorPointOptions_max_outer_iterations_set'))
+
+# Start of InteriorPointOptions_max_outer_iterations_get
+
+`InteriorPointOptions_max_outer_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_InteriorPointOptions_max_outer_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_max_outer_iterations_get`, 'returnType') = 'integer'
+attr(`InteriorPointOptions_max_outer_iterations_get`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPointOptions_max_outer_iterations_get`) = c("SWIGFunction", class('InteriorPointOptions_max_outer_iterations_get'))
+
+# Start of InteriorPointOptions_inner_iterations_set
+
+`InteriorPointOptions_inner_iterations_set` = function(self, s_inner_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_inner_iterations = as.integer(s_inner_iterations);
+  
+  if(length(s_inner_iterations) > 1) {
+    warning("using only the first element of s_inner_iterations");
+  };
+  
+  ;.Call('R_swig_InteriorPointOptions_inner_iterations_set', self, s_inner_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_inner_iterations_set`, 'returnType') = 'void'
+attr(`InteriorPointOptions_inner_iterations_set`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions', 'integer')
+class(`InteriorPointOptions_inner_iterations_set`) = c("SWIGFunction", class('InteriorPointOptions_inner_iterations_set'))
+
+# Start of InteriorPointOptions_inner_iterations_get
+
+`InteriorPointOptions_inner_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_InteriorPointOptions_inner_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPointOptions_inner_iterations_get`, 'returnType') = 'integer'
+attr(`InteriorPointOptions_inner_iterations_get`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPointOptions_inner_iterations_get`) = c("SWIGFunction", class('InteriorPointOptions_inner_iterations_get'))
+
+# Start of new_InteriorPointOptions
+
+`InteriorPointOptions` = function()
+{
+  ;ans = .Call('R_swig_new_InteriorPointOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__InteriorPointOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_InteriorPointOptions);
+  ans
+  
+}
+
+attr(`InteriorPointOptions`, 'returnType') = '_p_datamunge__optim__InteriorPointOptions'
+class(`InteriorPointOptions`) = c("SWIGFunction", class('InteriorPointOptions'))
+
+# Start of delete_InteriorPointOptions
+
+`delete_InteriorPointOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_InteriorPointOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_InteriorPointOptions`, 'returnType') = 'void'
+attr(`delete_InteriorPointOptions`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`delete_InteriorPointOptions`) = c("SWIGFunction", class('delete_InteriorPointOptions'))
+
+# Start of accessor method for datamunge::optim::InteriorPointOptions
+setMethod('$', '_p_datamunge__optim__InteriorPointOptions', function(x, name)
+
+{
+  accessorFuns = list('step_size' = InteriorPointOptions_step_size_get, 'initial_barrier' = InteriorPointOptions_initial_barrier_get, 'barrier_decay' = InteriorPointOptions_barrier_decay_get, 'max_outer_iterations' = InteriorPointOptions_max_outer_iterations_get, 'inner_iterations' = InteriorPointOptions_inner_iterations_get);
+  vaccessors = c('step_size', 'initial_barrier', 'barrier_decay', 'max_outer_iterations', 'inner_iterations');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::InteriorPointOptions
+# Start of accessor method for datamunge::optim::InteriorPointOptions
+setMethod('$<-', '_p_datamunge__optim__InteriorPointOptions', function(x, name, value)
+
+{
+  accessorFuns = list('step_size' = InteriorPointOptions_step_size_set, 'initial_barrier' = InteriorPointOptions_initial_barrier_set, 'barrier_decay' = InteriorPointOptions_barrier_decay_set, 'max_outer_iterations' = InteriorPointOptions_max_outer_iterations_set, 'inner_iterations' = InteriorPointOptions_inner_iterations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__InteriorPointOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('step_size' = InteriorPointOptions_step_size_set, 'initial_barrier' = InteriorPointOptions_initial_barrier_set, 'barrier_decay' = InteriorPointOptions_barrier_decay_set, 'max_outer_iterations' = InteriorPointOptions_max_outer_iterations_set, 'inner_iterations' = InteriorPointOptions_inner_iterations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::InteriorPointOptions
+setMethod('delete', '_p_datamunge__optim__InteriorPointOptions', function(obj) {delete_datamunge__optim__InteriorPointOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::InteriorPointOptions
+CopyToR_datamunge__optim__InteriorPointOptions = function(value, obj = new("datamunge::optim::InteriorPointOptions"))
+{
+  obj@step_size = value$step_size;
+  obj@initial_barrier = value$initial_barrier;
+  obj@barrier_decay = value$barrier_decay;
+  obj@max_outer_iterations = value$max_outer_iterations;
+  obj@inner_iterations = value$inner_iterations;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__InteriorPointOptions = function(value, obj)
+{
+  obj$step_size = value@step_size;
+  obj$initial_barrier = value@initial_barrier;
+  obj$barrier_decay = value@barrier_decay;
+  obj$max_outer_iterations = value@max_outer_iterations;
+  obj$inner_iterations = value@inner_iterations;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::InteriorPointOptions
+setMethod('copyToR', '_p_datamunge__optim__InteriorPointOptions', CopyToR_datamunge__optim__InteriorPointOptions);
+setMethod('copyToC', 'datamunge::optim::InteriorPointOptions', CopyToC_datamunge__optim__InteriorPointOptions);
+
+# End definition of copy methods for datamunge::optim::InteriorPointOptions
+# End definition of copy functions & methods for datamunge::optim::InteriorPointOptions
+# Start of new_InteriorPoint
+
+`InteriorPoint__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_InteriorPoint__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__InteriorPoint", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_InteriorPoint);
+  ans
+  
+}
+
+attr(`InteriorPoint__SWIG_0`, 'returnType') = '_p_datamunge__optim__InteriorPoint'
+attr(`InteriorPoint__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__InteriorPointOptions')
+class(`InteriorPoint__SWIG_0`) = c("SWIGFunction", class('InteriorPoint__SWIG_0'))
+
+# Start of new_InteriorPoint
+
+`InteriorPoint__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_InteriorPoint__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__InteriorPoint", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_InteriorPoint);
+  ans
+  
+}
+
+attr(`InteriorPoint__SWIG_1`, 'returnType') = '_p_datamunge__optim__InteriorPoint'
+class(`InteriorPoint__SWIG_1`) = c("SWIGFunction", class('InteriorPoint__SWIG_1'))
+
+`InteriorPoint` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- InteriorPoint__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__InteriorPointOptions') && length(argv[[1]]) == 1 ) {
+      f <- InteriorPoint__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for InteriorPoint with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of InteriorPoint_optimize
+
+`InteriorPoint_optimize` = function(self, s_function, coordinates, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  ;.Call('R_swig_InteriorPoint_optimize', self, s_function, coordinates, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`InteriorPoint_optimize`, 'returnType') = 'numeric'
+attr(`InteriorPoint_optimize`, "inputTypes") = c('_p_datamunge__optim__InteriorPoint', '_p_datamunge__optim__InequalityConstrainedFunction', '_p_std__vectorT_double_t')
+class(`InteriorPoint_optimize`) = c("SWIGFunction", class('InteriorPoint_optimize'))
+
+# Start of delete_InteriorPoint
+
+`delete_InteriorPoint` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_InteriorPoint', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_InteriorPoint`, 'returnType') = 'void'
+attr(`delete_InteriorPoint`, "inputTypes") = c('_p_datamunge__optim__InteriorPoint')
+class(`delete_InteriorPoint`) = c("SWIGFunction", class('delete_InteriorPoint'))
+
+# Start of accessor method for datamunge::optim::InteriorPoint
+setMethod('$', '_p_datamunge__optim__InteriorPoint', function(x, name)
+
+{
+  accessorFuns = list('optimize' = InteriorPoint_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::InteriorPoint
+setMethod('delete', '_p_datamunge__optim__InteriorPoint', function(obj) {delete_datamunge__optim__InteriorPoint(obj)})
+# Start of delete_BayesianSurrogate
+
+`delete_BayesianSurrogate` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BayesianSurrogate', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BayesianSurrogate`, 'returnType') = 'void'
+attr(`delete_BayesianSurrogate`, "inputTypes") = c('_p_datamunge__optim__BayesianSurrogate')
+class(`delete_BayesianSurrogate`) = c("SWIGFunction", class('delete_BayesianSurrogate'))
+
+# Start of BayesianSurrogate_fit
+
+`BayesianSurrogate_fit` = function(self, points, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;.Call('R_swig_BayesianSurrogate_fit', self, points, values, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianSurrogate_fit`, 'returnType') = 'void'
+attr(`BayesianSurrogate_fit`, "inputTypes") = c('_p_datamunge__optim__BayesianSurrogate', 'list', '_p_std__vectorT_double_t')
+class(`BayesianSurrogate_fit`) = c("SWIGFunction", class('BayesianSurrogate_fit'))
+
+# Start of BayesianSurrogate_acquisition
+
+`BayesianSurrogate_acquisition` = function(self, point, incumbent, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  
+  ;.Call('R_swig_BayesianSurrogate_acquisition', self, point, incumbent, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianSurrogate_acquisition`, 'returnType') = 'numeric'
+attr(`BayesianSurrogate_acquisition`, "inputTypes") = c('_p_datamunge__optim__BayesianSurrogate', '_p_std__vectorT_double_t', 'numeric')
+class(`BayesianSurrogate_acquisition`) = c("SWIGFunction", class('BayesianSurrogate_acquisition'))
+
+# Start of accessor method for datamunge::optim::BayesianSurrogate
+setMethod('$', '_p_datamunge__optim__BayesianSurrogate', function(x, name)
+
+{
+  accessorFuns = list('fit' = BayesianSurrogate_fit, 'acquisition' = BayesianSurrogate_acquisition);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianSurrogate
+setMethod('delete', '_p_datamunge__optim__BayesianSurrogate', function(obj) {delete_datamunge__optim__BayesianSurrogate(obj)})
+# Start of BayesianOptimizationOptions_initial_samples_set
+
+`BayesianOptimizationOptions_initial_samples_set` = function(self, s_initial_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_initial_samples = as.integer(s_initial_samples);
+  
+  if(length(s_initial_samples) > 1) {
+    warning("using only the first element of s_initial_samples");
+  };
+  
+  ;.Call('R_swig_BayesianOptimizationOptions_initial_samples_set', self, s_initial_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_initial_samples_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationOptions_initial_samples_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions', 'integer')
+class(`BayesianOptimizationOptions_initial_samples_set`) = c("SWIGFunction", class('BayesianOptimizationOptions_initial_samples_set'))
+
+# Start of BayesianOptimizationOptions_initial_samples_get
+
+`BayesianOptimizationOptions_initial_samples_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationOptions_initial_samples_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_initial_samples_get`, 'returnType') = 'integer'
+attr(`BayesianOptimizationOptions_initial_samples_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimizationOptions_initial_samples_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_initial_samples_get'))
+
+# Start of BayesianOptimizationOptions_max_iterations_set
+
+`BayesianOptimizationOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_BayesianOptimizationOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions', 'integer')
+class(`BayesianOptimizationOptions_max_iterations_set`) = c("SWIGFunction", class('BayesianOptimizationOptions_max_iterations_set'))
+
+# Start of BayesianOptimizationOptions_max_iterations_get
+
+`BayesianOptimizationOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`BayesianOptimizationOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimizationOptions_max_iterations_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_max_iterations_get'))
+
+# Start of BayesianOptimizationOptions_seed_set
+
+`BayesianOptimizationOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_BayesianOptimizationOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_seed_set`, 'returnType') = 'void'
+attr(`BayesianOptimizationOptions_seed_set`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions', 'integer')
+class(`BayesianOptimizationOptions_seed_set`) = c("SWIGFunction", class('BayesianOptimizationOptions_seed_set'))
+
+# Start of BayesianOptimizationOptions_seed_get
+
+`BayesianOptimizationOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BayesianOptimizationOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimizationOptions_seed_get`, 'returnType') = 'integer'
+attr(`BayesianOptimizationOptions_seed_get`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimizationOptions_seed_get`) = c("SWIGFunction", class('BayesianOptimizationOptions_seed_get'))
+
+# Start of new_BayesianOptimizationOptions
+
+`BayesianOptimizationOptions` = function()
+{
+  ;ans = .Call('R_swig_new_BayesianOptimizationOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimizationOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BayesianOptimizationOptions);
+  ans
+  
+}
+
+attr(`BayesianOptimizationOptions`, 'returnType') = '_p_datamunge__optim__BayesianOptimizationOptions'
+class(`BayesianOptimizationOptions`) = c("SWIGFunction", class('BayesianOptimizationOptions'))
+
+# Start of delete_BayesianOptimizationOptions
+
+`delete_BayesianOptimizationOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BayesianOptimizationOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BayesianOptimizationOptions`, 'returnType') = 'void'
+attr(`delete_BayesianOptimizationOptions`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`delete_BayesianOptimizationOptions`) = c("SWIGFunction", class('delete_BayesianOptimizationOptions'))
+
+# Start of accessor method for datamunge::optim::BayesianOptimizationOptions
+setMethod('$', '_p_datamunge__optim__BayesianOptimizationOptions', function(x, name)
+
+{
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_get, 'max_iterations' = BayesianOptimizationOptions_max_iterations_get, 'seed' = BayesianOptimizationOptions_seed_get);
+  vaccessors = c('initial_samples', 'max_iterations', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianOptimizationOptions
+# Start of accessor method for datamunge::optim::BayesianOptimizationOptions
+setMethod('$<-', '_p_datamunge__optim__BayesianOptimizationOptions', function(x, name, value)
+
+{
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__optim__BayesianOptimizationOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('initial_samples' = BayesianOptimizationOptions_initial_samples_set, 'max_iterations' = BayesianOptimizationOptions_max_iterations_set, 'seed' = BayesianOptimizationOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianOptimizationOptions
+setMethod('delete', '_p_datamunge__optim__BayesianOptimizationOptions', function(obj) {delete_datamunge__optim__BayesianOptimizationOptions(obj)})
+# Start definition of copy functions & methods for datamunge::optim::BayesianOptimizationOptions
+CopyToR_datamunge__optim__BayesianOptimizationOptions = function(value, obj = new("datamunge::optim::BayesianOptimizationOptions"))
+{
+  obj@initial_samples = value$initial_samples;
+  obj@max_iterations = value$max_iterations;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__optim__BayesianOptimizationOptions = function(value, obj)
+{
+  obj$initial_samples = value@initial_samples;
+  obj$max_iterations = value@max_iterations;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::optim::BayesianOptimizationOptions
+setMethod('copyToR', '_p_datamunge__optim__BayesianOptimizationOptions', CopyToR_datamunge__optim__BayesianOptimizationOptions);
+setMethod('copyToC', 'datamunge::optim::BayesianOptimizationOptions', CopyToC_datamunge__optim__BayesianOptimizationOptions);
+
+# End definition of copy methods for datamunge::optim::BayesianOptimizationOptions
+# End definition of copy functions & methods for datamunge::optim::BayesianOptimizationOptions
+# Start of new_BayesianOptimization
+
+`BayesianOptimization__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_BayesianOptimization__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimization", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BayesianOptimization);
+  ans
+  
+}
+
+attr(`BayesianOptimization__SWIG_0`, 'returnType') = '_p_datamunge__optim__BayesianOptimization'
+attr(`BayesianOptimization__SWIG_0`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimizationOptions')
+class(`BayesianOptimization__SWIG_0`) = c("SWIGFunction", class('BayesianOptimization__SWIG_0'))
+
+# Start of new_BayesianOptimization
+
+`BayesianOptimization__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_BayesianOptimization__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__BayesianOptimization", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BayesianOptimization);
+  ans
+  
+}
+
+attr(`BayesianOptimization__SWIG_1`, 'returnType') = '_p_datamunge__optim__BayesianOptimization'
+class(`BayesianOptimization__SWIG_1`) = c("SWIGFunction", class('BayesianOptimization__SWIG_1'))
+
+`BayesianOptimization` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- BayesianOptimization__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__optim__BayesianOptimizationOptions') && length(argv[[1]]) == 1 ) {
+      f <- BayesianOptimization__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for BayesianOptimization with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of BayesianOptimization_optimize
+
+`BayesianOptimization_optimize` = function(self, s_function, coordinates, lower, upper, surrogate, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_function, "ExternalReference")) s_function = slot(s_function,"ref"); 
+  coordinates = as.numeric(coordinates);
+  lower = as.numeric(lower);
+  upper = as.numeric(upper);
+  if (inherits(surrogate, "ExternalReference")) surrogate = slot(surrogate,"ref"); 
+  ;.Call('R_swig_BayesianOptimization_optimize', self, s_function, coordinates, lower, upper, surrogate, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BayesianOptimization_optimize`, 'returnType') = 'numeric'
+attr(`BayesianOptimization_optimize`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimization', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', '_p_datamunge__optim__BayesianSurrogate')
+class(`BayesianOptimization_optimize`) = c("SWIGFunction", class('BayesianOptimization_optimize'))
+
+# Start of delete_BayesianOptimization
+
+`delete_BayesianOptimization` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BayesianOptimization', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BayesianOptimization`, 'returnType') = 'void'
+attr(`delete_BayesianOptimization`, "inputTypes") = c('_p_datamunge__optim__BayesianOptimization')
+class(`delete_BayesianOptimization`) = c("SWIGFunction", class('delete_BayesianOptimization'))
+
+# Start of accessor method for datamunge::optim::BayesianOptimization
+setMethod('$', '_p_datamunge__optim__BayesianOptimization', function(x, name)
+
+{
+  accessorFuns = list('optimize' = BayesianOptimization_optimize);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::BayesianOptimization
+setMethod('delete', '_p_datamunge__optim__BayesianOptimization', function(obj) {delete_datamunge__optim__BayesianOptimization(obj)})
+# Start of new_RBFGaussianProcessSurrogate
+
+`RBFGaussianProcessSurrogate__SWIG_0` = function(length_scale, noise)
+{
+  ;ans = .Call('R_swig_new_RBFGaussianProcessSurrogate__SWIG_0', length_scale, noise, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RBFGaussianProcessSurrogate", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RBFGaussianProcessSurrogate);
+  ans
+  
+}
+
+attr(`RBFGaussianProcessSurrogate__SWIG_0`, 'returnType') = '_p_datamunge__optim__RBFGaussianProcessSurrogate'
+attr(`RBFGaussianProcessSurrogate__SWIG_0`, "inputTypes") = c('numeric', 'numeric')
+class(`RBFGaussianProcessSurrogate__SWIG_0`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate__SWIG_0'))
+
+# Start of new_RBFGaussianProcessSurrogate
+
+`RBFGaussianProcessSurrogate__SWIG_1` = function(length_scale)
+{
+  ;ans = .Call('R_swig_new_RBFGaussianProcessSurrogate__SWIG_1', length_scale, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RBFGaussianProcessSurrogate", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RBFGaussianProcessSurrogate);
+  ans
+  
+}
+
+attr(`RBFGaussianProcessSurrogate__SWIG_1`, 'returnType') = '_p_datamunge__optim__RBFGaussianProcessSurrogate'
+attr(`RBFGaussianProcessSurrogate__SWIG_1`, "inputTypes") = c('numeric')
+class(`RBFGaussianProcessSurrogate__SWIG_1`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate__SWIG_1'))
+
+# Start of new_RBFGaussianProcessSurrogate
+
+`RBFGaussianProcessSurrogate__SWIG_2` = function()
+{
+  ;ans = .Call('R_swig_new_RBFGaussianProcessSurrogate__SWIG_2', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__optim__RBFGaussianProcessSurrogate", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RBFGaussianProcessSurrogate);
+  ans
+  
+}
+
+attr(`RBFGaussianProcessSurrogate__SWIG_2`, 'returnType') = '_p_datamunge__optim__RBFGaussianProcessSurrogate'
+class(`RBFGaussianProcessSurrogate__SWIG_2`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate__SWIG_2'))
+
+`RBFGaussianProcessSurrogate` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 0) {
+    f <- RBFGaussianProcessSurrogate__SWIG_2; 
+  } else if (argc == 1) {
+    if ( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- RBFGaussianProcessSurrogate__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RBFGaussianProcessSurrogate__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RBFGaussianProcessSurrogate with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RBFGaussianProcessSurrogate_fit
+
+`RBFGaussianProcessSurrogate_fit` = function(self, points, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_fit', self, points, values, PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_fit`, 'returnType') = 'void'
+attr(`RBFGaussianProcessSurrogate_fit`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate', 'list', '_p_std__vectorT_double_t')
+class(`RBFGaussianProcessSurrogate_fit`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_fit'))
+
+# Start of RBFGaussianProcessSurrogate_acquisition
+
+`RBFGaussianProcessSurrogate_acquisition` = function(self, point, incumbent, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  
+  ;.Call('R_swig_RBFGaussianProcessSurrogate_acquisition', self, point, incumbent, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RBFGaussianProcessSurrogate_acquisition`, 'returnType') = 'numeric'
+attr(`RBFGaussianProcessSurrogate_acquisition`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate', '_p_std__vectorT_double_t', 'numeric')
+class(`RBFGaussianProcessSurrogate_acquisition`) = c("SWIGFunction", class('RBFGaussianProcessSurrogate_acquisition'))
+
+# Start of delete_RBFGaussianProcessSurrogate
+
+`delete_RBFGaussianProcessSurrogate` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RBFGaussianProcessSurrogate', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RBFGaussianProcessSurrogate`, 'returnType') = 'void'
+attr(`delete_RBFGaussianProcessSurrogate`, "inputTypes") = c('_p_datamunge__optim__RBFGaussianProcessSurrogate')
+class(`delete_RBFGaussianProcessSurrogate`) = c("SWIGFunction", class('delete_RBFGaussianProcessSurrogate'))
+
+# Start of accessor method for datamunge::optim::RBFGaussianProcessSurrogate
+setMethod('$', '_p_datamunge__optim__RBFGaussianProcessSurrogate', function(x, name)
+
+{
+  accessorFuns = list('fit' = RBFGaussianProcessSurrogate_fit, 'acquisition' = RBFGaussianProcessSurrogate_acquisition);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::optim::RBFGaussianProcessSurrogate
+setMethod('delete', '_p_datamunge__optim__RBFGaussianProcessSurrogate', function(obj) {delete_datamunge__optim__RBFGaussianProcessSurrogate(obj)})
 # Start of MAPOptions_max_iterations_set
 
 `MAPOptions_max_iterations_set` = function(self, s_max_iterations)
@@ -40273,6 +54374,774 @@ setMethod('$', '_p_datamunge__bayes__ImportanceSampling', function(x, name)
 );
 # end of accessor method for datamunge::bayes::ImportanceSampling
 setMethod('delete', '_p_datamunge__bayes__ImportanceSampling', function(obj) {delete_datamunge__bayes__ImportanceSampling(obj)})
+# Start of delete_RHS
+
+`delete_RHS` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RHS', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RHS`, 'returnType') = 'void'
+attr(`delete_RHS`, "inputTypes") = c('_p_datamunge__ode__RHS')
+class(`delete_RHS`) = c("SWIGFunction", class('delete_RHS'))
+
+# Start of RHS_evaluate
+
+`RHS_evaluate` = function(self, t, y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  y = as.numeric(y);
+  ;.Call('R_swig_RHS_evaluate', self, t, y, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RHS_evaluate`, 'returnType') = 'numeric'
+attr(`RHS_evaluate`, "inputTypes") = c('_p_datamunge__ode__RHS', 'numeric', '_p_std__vectorT_double_t')
+class(`RHS_evaluate`) = c("SWIGFunction", class('RHS_evaluate'))
+
+# Start of accessor method for datamunge::ode::RHS
+setMethod('$', '_p_datamunge__ode__RHS', function(x, name)
+
+{
+  accessorFuns = list('evaluate' = RHS_evaluate);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::ode::RHS
+setMethod('delete', '_p_datamunge__ode__RHS', function(obj) {delete_datamunge__ode__RHS(obj)})
+# Start of StepMethod_StepMethod_Euler_get
+
+`StepMethod_StepMethod_Euler_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_Euler_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_Euler_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_Euler_get`) = c("SWIGFunction", class('StepMethod_StepMethod_Euler_get'))
+
+# Start of StepMethod_StepMethod_Midpoint_get
+
+`StepMethod_StepMethod_Midpoint_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_Midpoint_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_Midpoint_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_Midpoint_get`) = c("SWIGFunction", class('StepMethod_StepMethod_Midpoint_get'))
+
+# Start of StepMethod_StepMethod_RK4_get
+
+`StepMethod_StepMethod_RK4_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_RK4_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_RK4_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_RK4_get`) = c("SWIGFunction", class('StepMethod_StepMethod_RK4_get'))
+
+# Start of StepMethod_StepMethod_RK45_get
+
+`StepMethod_StepMethod_RK45_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_RK45_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_RK45_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_RK45_get`) = c("SWIGFunction", class('StepMethod_StepMethod_RK45_get'))
+
+# Start of StepMethod_StepMethod_AdamsBashforth_get
+
+`StepMethod_StepMethod_AdamsBashforth_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_AdamsBashforth_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_AdamsBashforth_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_AdamsBashforth_get`) = c("SWIGFunction", class('StepMethod_StepMethod_AdamsBashforth_get'))
+
+# Start of StepMethod_StepMethod_AdamsMoulton_get
+
+`StepMethod_StepMethod_AdamsMoulton_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_StepMethod_StepMethod_AdamsMoulton_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`StepMethod_StepMethod_AdamsMoulton_get`, 'returnType') = 'character'
+class(`StepMethod_StepMethod_AdamsMoulton_get`) = c("SWIGFunction", class('StepMethod_StepMethod_AdamsMoulton_get'))
+
+# Start of ODEOptions_method_set
+
+`ODEOptions_method_set` = function(self, s_method)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_method = enumToInteger(s_method, "_datamunge__ode__StepMethod"); 
+  
+  if(length(s_method) > 1) {
+    warning("using only the first element of s_method");
+  };
+  
+  ;.Call('R_swig_ODEOptions_method_set', self, s_method, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_method_set`, 'returnType') = 'void'
+attr(`ODEOptions_method_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'character')
+class(`ODEOptions_method_set`) = c("SWIGFunction", class('ODEOptions_method_set'))
+
+# Start of ODEOptions_method_get
+
+`ODEOptions_method_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_ODEOptions_method_get', self, as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__ode__StepMethod");
+  
+  ans
+  
+}
+
+attr(`ODEOptions_method_get`, 'returnType') = 'character'
+attr(`ODEOptions_method_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_method_get`) = c("SWIGFunction", class('ODEOptions_method_get'))
+
+# Start of ODEOptions_multistep_order_set
+
+`ODEOptions_multistep_order_set` = function(self, s_multistep_order)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_multistep_order = as.integer(s_multistep_order);
+  
+  if(length(s_multistep_order) > 1) {
+    warning("using only the first element of s_multistep_order");
+  };
+  
+  ;.Call('R_swig_ODEOptions_multistep_order_set', self, s_multistep_order, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_multistep_order_set`, 'returnType') = 'void'
+attr(`ODEOptions_multistep_order_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'integer')
+class(`ODEOptions_multistep_order_set`) = c("SWIGFunction", class('ODEOptions_multistep_order_set'))
+
+# Start of ODEOptions_multistep_order_get
+
+`ODEOptions_multistep_order_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODEOptions_multistep_order_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_multistep_order_get`, 'returnType') = 'integer'
+attr(`ODEOptions_multistep_order_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_multistep_order_get`) = c("SWIGFunction", class('ODEOptions_multistep_order_get'))
+
+# Start of ODEOptions_step_size_set
+
+`ODEOptions_step_size_set` = function(self, s_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ODEOptions_step_size_set', self, s_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_step_size_set`, 'returnType') = 'void'
+attr(`ODEOptions_step_size_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'numeric')
+class(`ODEOptions_step_size_set`) = c("SWIGFunction", class('ODEOptions_step_size_set'))
+
+# Start of ODEOptions_step_size_get
+
+`ODEOptions_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODEOptions_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_step_size_get`, 'returnType') = 'numeric'
+attr(`ODEOptions_step_size_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_step_size_get`) = c("SWIGFunction", class('ODEOptions_step_size_get'))
+
+# Start of ODEOptions_abs_tol_set
+
+`ODEOptions_abs_tol_set` = function(self, s_abs_tol)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ODEOptions_abs_tol_set', self, s_abs_tol, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_abs_tol_set`, 'returnType') = 'void'
+attr(`ODEOptions_abs_tol_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'numeric')
+class(`ODEOptions_abs_tol_set`) = c("SWIGFunction", class('ODEOptions_abs_tol_set'))
+
+# Start of ODEOptions_abs_tol_get
+
+`ODEOptions_abs_tol_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODEOptions_abs_tol_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_abs_tol_get`, 'returnType') = 'numeric'
+attr(`ODEOptions_abs_tol_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_abs_tol_get`) = c("SWIGFunction", class('ODEOptions_abs_tol_get'))
+
+# Start of ODEOptions_rel_tol_set
+
+`ODEOptions_rel_tol_set` = function(self, s_rel_tol)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ODEOptions_rel_tol_set', self, s_rel_tol, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_rel_tol_set`, 'returnType') = 'void'
+attr(`ODEOptions_rel_tol_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'numeric')
+class(`ODEOptions_rel_tol_set`) = c("SWIGFunction", class('ODEOptions_rel_tol_set'))
+
+# Start of ODEOptions_rel_tol_get
+
+`ODEOptions_rel_tol_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODEOptions_rel_tol_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_rel_tol_get`, 'returnType') = 'numeric'
+attr(`ODEOptions_rel_tol_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_rel_tol_get`) = c("SWIGFunction", class('ODEOptions_rel_tol_get'))
+
+# Start of ODEOptions_max_step_set
+
+`ODEOptions_max_step_set` = function(self, s_max_step)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ODEOptions_max_step_set', self, s_max_step, PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_max_step_set`, 'returnType') = 'void'
+attr(`ODEOptions_max_step_set`, "inputTypes") = c('_p_datamunge__ode__ODEOptions', 'numeric')
+class(`ODEOptions_max_step_set`) = c("SWIGFunction", class('ODEOptions_max_step_set'))
+
+# Start of ODEOptions_max_step_get
+
+`ODEOptions_max_step_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODEOptions_max_step_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODEOptions_max_step_get`, 'returnType') = 'numeric'
+attr(`ODEOptions_max_step_get`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODEOptions_max_step_get`) = c("SWIGFunction", class('ODEOptions_max_step_get'))
+
+# Start of new_ODEOptions
+
+`ODEOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ODEOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODEOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ODEOptions);
+  ans
+  
+}
+
+attr(`ODEOptions`, 'returnType') = '_p_datamunge__ode__ODEOptions'
+class(`ODEOptions`) = c("SWIGFunction", class('ODEOptions'))
+
+# Start of delete_ODEOptions
+
+`delete_ODEOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ODEOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ODEOptions`, 'returnType') = 'void'
+attr(`delete_ODEOptions`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`delete_ODEOptions`) = c("SWIGFunction", class('delete_ODEOptions'))
+
+# Start of accessor method for datamunge::ode::ODEOptions
+setMethod('$', '_p_datamunge__ode__ODEOptions', function(x, name)
+
+{
+  accessorFuns = list('method' = ODEOptions_method_get, 'multistep_order' = ODEOptions_multistep_order_get, 'step_size' = ODEOptions_step_size_get, 'abs_tol' = ODEOptions_abs_tol_get, 'rel_tol' = ODEOptions_rel_tol_get, 'max_step' = ODEOptions_max_step_get);
+  vaccessors = c('method', 'multistep_order', 'step_size', 'abs_tol', 'rel_tol', 'max_step');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::ode::ODEOptions
+# Start of accessor method for datamunge::ode::ODEOptions
+setMethod('$<-', '_p_datamunge__ode__ODEOptions', function(x, name, value)
+
+{
+  accessorFuns = list('method' = ODEOptions_method_set, 'multistep_order' = ODEOptions_multistep_order_set, 'step_size' = ODEOptions_step_size_set, 'abs_tol' = ODEOptions_abs_tol_set, 'rel_tol' = ODEOptions_rel_tol_set, 'max_step' = ODEOptions_max_step_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__ode__ODEOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('method' = ODEOptions_method_set, 'multistep_order' = ODEOptions_multistep_order_set, 'step_size' = ODEOptions_step_size_set, 'abs_tol' = ODEOptions_abs_tol_set, 'rel_tol' = ODEOptions_rel_tol_set, 'max_step' = ODEOptions_max_step_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::ode::ODEOptions
+setMethod('delete', '_p_datamunge__ode__ODEOptions', function(obj) {delete_datamunge__ode__ODEOptions(obj)})
+# Start definition of copy functions & methods for datamunge::ode::ODEOptions
+CopyToR_datamunge__ode__ODEOptions = function(value, obj = new("datamunge::ode::ODEOptions"))
+{
+  obj@method = value$method;
+  obj@multistep_order = value$multistep_order;
+  obj@step_size = value$step_size;
+  obj@abs_tol = value$abs_tol;
+  obj@rel_tol = value$rel_tol;
+  obj@max_step = value$max_step;
+  obj;
+}
+
+
+
+CopyToC_datamunge__ode__ODEOptions = function(value, obj)
+{
+  obj$method = value@method;
+  obj$multistep_order = value@multistep_order;
+  obj$step_size = value@step_size;
+  obj$abs_tol = value@abs_tol;
+  obj$rel_tol = value@rel_tol;
+  obj$max_step = value@max_step;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::ode::ODEOptions
+setMethod('copyToR', '_p_datamunge__ode__ODEOptions', CopyToR_datamunge__ode__ODEOptions);
+setMethod('copyToC', 'datamunge::ode::ODEOptions', CopyToC_datamunge__ode__ODEOptions);
+
+# End definition of copy methods for datamunge::ode::ODEOptions
+# End definition of copy functions & methods for datamunge::ode::ODEOptions
+# Start of ODESolution_steps_taken_set
+
+`ODESolution_steps_taken_set` = function(self, s_steps_taken)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_steps_taken = as.integer(s_steps_taken);
+  
+  if(length(s_steps_taken) > 1) {
+    warning("using only the first element of s_steps_taken");
+  };
+  
+  ;.Call('R_swig_ODESolution_steps_taken_set', self, s_steps_taken, PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_steps_taken_set`, 'returnType') = 'void'
+attr(`ODESolution_steps_taken_set`, "inputTypes") = c('_p_datamunge__ode__ODESolution', 'integer')
+class(`ODESolution_steps_taken_set`) = c("SWIGFunction", class('ODESolution_steps_taken_set'))
+
+# Start of ODESolution_steps_taken_get
+
+`ODESolution_steps_taken_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODESolution_steps_taken_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_steps_taken_get`, 'returnType') = 'integer'
+attr(`ODESolution_steps_taken_get`, "inputTypes") = c('_p_datamunge__ode__ODESolution')
+class(`ODESolution_steps_taken_get`) = c("SWIGFunction", class('ODESolution_steps_taken_get'))
+
+# Start of ODESolution_function_evaluations_set
+
+`ODESolution_function_evaluations_set` = function(self, s_function_evaluations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_function_evaluations = as.integer(s_function_evaluations);
+  
+  if(length(s_function_evaluations) > 1) {
+    warning("using only the first element of s_function_evaluations");
+  };
+  
+  ;.Call('R_swig_ODESolution_function_evaluations_set', self, s_function_evaluations, PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_function_evaluations_set`, 'returnType') = 'void'
+attr(`ODESolution_function_evaluations_set`, "inputTypes") = c('_p_datamunge__ode__ODESolution', 'integer')
+class(`ODESolution_function_evaluations_set`) = c("SWIGFunction", class('ODESolution_function_evaluations_set'))
+
+# Start of ODESolution_function_evaluations_get
+
+`ODESolution_function_evaluations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODESolution_function_evaluations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_function_evaluations_get`, 'returnType') = 'integer'
+attr(`ODESolution_function_evaluations_get`, "inputTypes") = c('_p_datamunge__ode__ODESolution')
+class(`ODESolution_function_evaluations_get`) = c("SWIGFunction", class('ODESolution_function_evaluations_get'))
+
+# Start of ODESolution_size
+
+`ODESolution_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ODESolution_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_size`, 'returnType') = 'integer'
+attr(`ODESolution_size`, "inputTypes") = c('_p_datamunge__ode__ODESolution')
+class(`ODESolution_size`) = c("SWIGFunction", class('ODESolution_size'))
+
+# Start of ODESolution_time_at
+
+`ODESolution_time_at` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  if(length(index) > 1) {
+    warning("using only the first element of index");
+  };
+  
+  ;.Call('R_swig_ODESolution_time_at', self, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_time_at`, 'returnType') = 'numeric'
+attr(`ODESolution_time_at`, "inputTypes") = c('_p_datamunge__ode__ODESolution', 'integer')
+class(`ODESolution_time_at`) = c("SWIGFunction", class('ODESolution_time_at'))
+
+# Start of ODESolution_state_at
+
+`ODESolution_state_at` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  if(length(index) > 1) {
+    warning("using only the first element of index");
+  };
+  
+  ;.Call('R_swig_ODESolution_state_at', self, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ODESolution_state_at`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`ODESolution_state_at`, "inputTypes") = c('_p_datamunge__ode__ODESolution', 'integer')
+class(`ODESolution_state_at`) = c("SWIGFunction", class('ODESolution_state_at'))
+
+# Start of new_ODESolution
+
+`ODESolution` = function()
+{
+  ;ans = .Call('R_swig_new_ODESolution', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODESolution", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ODESolution);
+  ans
+  
+}
+
+attr(`ODESolution`, 'returnType') = '_p_datamunge__ode__ODESolution'
+class(`ODESolution`) = c("SWIGFunction", class('ODESolution'))
+
+# Start of delete_ODESolution
+
+`delete_ODESolution` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ODESolution', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ODESolution`, 'returnType') = 'void'
+attr(`delete_ODESolution`, "inputTypes") = c('_p_datamunge__ode__ODESolution')
+class(`delete_ODESolution`) = c("SWIGFunction", class('delete_ODESolution'))
+
+# Start of accessor method for datamunge::ode::ODESolution
+setMethod('$', '_p_datamunge__ode__ODESolution', function(x, name)
+
+{
+  accessorFuns = list('steps_taken' = ODESolution_steps_taken_get, 'function_evaluations' = ODESolution_function_evaluations_get, 'size' = ODESolution_size, 'time_at' = ODESolution_time_at, 'state_at' = ODESolution_state_at);
+  vaccessors = c('steps_taken', 'function_evaluations');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::ode::ODESolution
+# Start of accessor method for datamunge::ode::ODESolution
+setMethod('$<-', '_p_datamunge__ode__ODESolution', function(x, name, value)
+
+{
+  accessorFuns = list('steps_taken' = ODESolution_steps_taken_set, 'function_evaluations' = ODESolution_function_evaluations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__ode__ODESolution', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('steps_taken' = ODESolution_steps_taken_set, 'function_evaluations' = ODESolution_function_evaluations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::ode::ODESolution
+setMethod('delete', '_p_datamunge__ode__ODESolution', function(obj) {delete_datamunge__ode__ODESolution(obj)})
+# Start definition of copy functions & methods for datamunge::ode::ODESolution
+CopyToR_datamunge__ode__ODESolution = function(value, obj = new("datamunge::ode::ODESolution"))
+{
+  obj@t = value$t;
+  obj@y = value$y;
+  obj@steps_taken = value$steps_taken;
+  obj@function_evaluations = value$function_evaluations;
+  obj;
+}
+
+
+
+CopyToC_datamunge__ode__ODESolution = function(value, obj)
+{
+  obj$t = value@t;
+  obj$y = value@y;
+  obj$steps_taken = value@steps_taken;
+  obj$function_evaluations = value@function_evaluations;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::ode::ODESolution
+setMethod('copyToR', '_p_datamunge__ode__ODESolution', CopyToR_datamunge__ode__ODESolution);
+setMethod('copyToC', 'datamunge::ode::ODESolution', CopyToC_datamunge__ode__ODESolution);
+
+# End definition of copy methods for datamunge::ode::ODESolution
+# End definition of copy functions & methods for datamunge::ode::ODESolution
+# Start of new_ODESolver
+
+`ODESolver__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ODESolver__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODESolver", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ODESolver);
+  ans
+  
+}
+
+attr(`ODESolver__SWIG_0`, 'returnType') = '_p_datamunge__ode__ODESolver'
+attr(`ODESolver__SWIG_0`, "inputTypes") = c('_p_datamunge__ode__ODEOptions')
+class(`ODESolver__SWIG_0`) = c("SWIGFunction", class('ODESolver__SWIG_0'))
+
+# Start of new_ODESolver
+
+`ODESolver__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ODESolver__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODESolver", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ODESolver);
+  ans
+  
+}
+
+attr(`ODESolver__SWIG_1`, 'returnType') = '_p_datamunge__ode__ODESolver'
+class(`ODESolver__SWIG_1`) = c("SWIGFunction", class('ODESolver__SWIG_1'))
+
+`ODESolver` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ODESolver__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__ode__ODEOptions') && length(argv[[1]]) == 1 ) {
+      f <- ODESolver__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ODESolver with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ODESolver_solve
+
+`ODESolver_solve` = function(self, rhs, y0, t_start, t_end, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(rhs, "ExternalReference")) rhs = slot(rhs,"ref"); 
+  y0 = as.numeric(y0);
+  
+  
+  ;ans = .Call('R_swig_ODESolver_solve', self, rhs, y0, t_start, t_end, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODESolution", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ODESolver_solve`, 'returnType') = '_p_datamunge__ode__ODESolution'
+attr(`ODESolver_solve`, "inputTypes") = c('_p_datamunge__ode__ODESolver', '_p_datamunge__ode__RHS', '_p_std__vectorT_double_t', 'numeric', 'numeric')
+class(`ODESolver_solve`) = c("SWIGFunction", class('ODESolver_solve'))
+
+# Start of ODESolver_solve_builtin
+
+`ODESolver_solve_builtin` = function(self, system, params, y0, t_start, t_end, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  system = as(system, "character"); 
+  params = as.numeric(params);
+  y0 = as.numeric(y0);
+  
+  
+  ;ans = .Call('R_swig_ODESolver_solve_builtin', self, system, params, y0, t_start, t_end, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__ode__ODESolution", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ODESolver_solve_builtin`, 'returnType') = '_p_datamunge__ode__ODESolution'
+attr(`ODESolver_solve_builtin`, "inputTypes") = c('_p_datamunge__ode__ODESolver', 'character', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'numeric', 'numeric')
+class(`ODESolver_solve_builtin`) = c("SWIGFunction", class('ODESolver_solve_builtin'))
+
+# Start of delete_ODESolver
+
+`delete_ODESolver` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ODESolver', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ODESolver`, 'returnType') = 'void'
+attr(`delete_ODESolver`, "inputTypes") = c('_p_datamunge__ode__ODESolver')
+class(`delete_ODESolver`) = c("SWIGFunction", class('delete_ODESolver'))
+
+# Start of accessor method for datamunge::ode::ODESolver
+setMethod('$', '_p_datamunge__ode__ODESolver', function(x, name)
+
+{
+  accessorFuns = list('solve' = ODESolver_solve, 'solve_builtin' = ODESolver_solve_builtin);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::ode::ODESolver
+setMethod('delete', '_p_datamunge__ode__ODESolver', function(obj) {delete_datamunge__ode__ODESolver(obj)})
 # Start of new_Polynomial
 
 `Polynomial__SWIG_0` = function()
@@ -44989,6 +59858,14 @@ defineEnumeration("_datamunge__stats__PAdjustMethod",
 "BH" = .Call('R_swig_PAdjustMethod_PAdjustMethod_BH_get',FALSE, PACKAGE='datamunger'),
 "BY" = .Call('R_swig_PAdjustMethod_PAdjustMethod_BY_get',FALSE, PACKAGE='datamunger'),
 "None" = .Call('R_swig_PAdjustMethod_PAdjustMethod_None_get',FALSE, PACKAGE='datamunger')))
+
+defineEnumeration("_datamunge__ode__StepMethod",
+ .values=c("Euler" = .Call('R_swig_StepMethod_StepMethod_Euler_get',FALSE, PACKAGE='datamunger'),
+"Midpoint" = .Call('R_swig_StepMethod_StepMethod_Midpoint_get',FALSE, PACKAGE='datamunger'),
+"RK4" = .Call('R_swig_StepMethod_StepMethod_RK4_get',FALSE, PACKAGE='datamunger'),
+"RK45" = .Call('R_swig_StepMethod_StepMethod_RK45_get',FALSE, PACKAGE='datamunger'),
+"AdamsBashforth" = .Call('R_swig_StepMethod_StepMethod_AdamsBashforth_get',FALSE, PACKAGE='datamunger'),
+"AdamsMoulton" = .Call('R_swig_StepMethod_StepMethod_AdamsMoulton_get',FALSE, PACKAGE='datamunger')))
 
 defineEnumeration("_datamunge__algebra__MonomialOrder",
  .values=c("Lex" = .Call('R_swig_MonomialOrder_MonomialOrder_Lex_get',FALSE, PACKAGE='datamunger'),

@@ -66,4 +66,70 @@ public:
 };
 
 
+class SwigDirector_ProximalFunction : public datamunge::optim::ProximalFunction, public Swig::Director {
+
+public:
+    SwigDirector_ProximalFunction(VALUE self);
+    virtual ~SwigDirector_ProximalFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > proximal(std::vector< double,std::allocator< double > > const &point,double step);
+};
+
+
+class SwigDirector_HessianFunction : public datamunge::optim::HessianFunction, public Swig::Director {
+
+public:
+    SwigDirector_HessianFunction(VALUE self);
+    virtual ~SwigDirector_HessianFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > hessian(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_EqualityConstrainedFunction : public datamunge::optim::EqualityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_EqualityConstrainedFunction(VALUE self);
+    virtual ~SwigDirector_EqualityConstrainedFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > constraints(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > constraint_jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_InequalityConstrainedFunction : public datamunge::optim::InequalityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_InequalityConstrainedFunction(VALUE self);
+    virtual ~SwigDirector_InequalityConstrainedFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > inequalities(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > inequality_jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_ResidualFunction : public datamunge::optim::ResidualFunction, public Swig::Director {
+
+public:
+    SwigDirector_ResidualFunction(VALUE self);
+    virtual ~SwigDirector_ResidualFunction();
+    virtual std::vector< double,std::allocator< double > > residuals(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_BayesianSurrogate : public datamunge::optim::BayesianSurrogate, public Swig::Director {
+
+public:
+    SwigDirector_BayesianSurrogate(VALUE self);
+    virtual ~SwigDirector_BayesianSurrogate();
+    virtual void fit(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &points,std::vector< double,std::allocator< double > > const &values);
+    virtual double acquisition(std::vector< double,std::allocator< double > > const &point,double incumbent);
+};
+
+
 #endif

@@ -115,6 +115,14 @@ public class DataSeries {
     return datamungeJNI.DataSeries_bar_width_get(swigCPtr, this);
   }
 
+  public void setFilled(boolean value) {
+    datamungeJNI.DataSeries_filled_set(swigCPtr, this, value);
+  }
+
+  public boolean getFilled() {
+    return datamungeJNI.DataSeries_filled_get(swigCPtr, this);
+  }
+
   public DataSeries() {
     this(datamungeJNI.new_DataSeries(), true);
   }
@@ -123,6 +131,10 @@ public class DataSeries {
     public final static DataSeries.Kind Scatter = new DataSeries.Kind("Scatter");
     public final static DataSeries.Kind Line = new DataSeries.Kind("Line");
     public final static DataSeries.Kind Bar = new DataSeries.Kind("Bar");
+    public final static DataSeries.Kind Box = new DataSeries.Kind("Box");
+    public final static DataSeries.Kind Polygon = new DataSeries.Kind("Polygon");
+    public final static DataSeries.Kind Text = new DataSeries.Kind("Text");
+    public final static DataSeries.Kind Segment = new DataSeries.Kind("Segment");
 
     public final int swigValue() {
       return swigValue;
@@ -158,7 +170,7 @@ public class DataSeries {
       swigNext = this.swigValue+1;
     }
 
-    private static Kind[] swigValues = { Scatter, Line, Bar };
+    private static Kind[] swigValues = { Scatter, Line, Bar, Box, Polygon, Text, Segment };
     private static int swigNext = 0;
     private final int swigValue;
     private final String swigName;

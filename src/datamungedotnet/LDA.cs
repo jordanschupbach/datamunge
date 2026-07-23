@@ -147,8 +147,8 @@ public class LDA : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_discriminants() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LDA_plot_discriminants(swigCPtr), true);
+  public RPlot plot_discriminants() {
+    RPlot ret = new RPlot(datamungePINVOKE.LDA_plot_discriminants(swigCPtr), true);
     return ret;
   }
 

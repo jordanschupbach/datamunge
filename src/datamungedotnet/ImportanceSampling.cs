@@ -65,8 +65,8 @@ public class ImportanceSampling : global::System.IDisposable {
   }
 
   /// <summary>``log_target`` need only be evaluable (optim::ArbitraryFunction), not        differentiable. ``proposal_covariance`` (a plain d x d nested vector, not        linalg::DenseMatrix -- matrices never cross the SWIG boundary as DenseMatrix        anywhere in this library, only as nested vectors) must be symmetric positive        definite.</summary>
-  public ImportanceSamplingResult sample(SWIGTYPE_p_datamunge__optim__ArbitraryFunction log_target, DVector proposal_mean, DVectorVector proposal_covariance) {
-    ImportanceSamplingResult ret = new ImportanceSamplingResult(datamungePINVOKE.ImportanceSampling_sample(swigCPtr, SWIGTYPE_p_datamunge__optim__ArbitraryFunction.getCPtr(log_target), DVector.getCPtr(proposal_mean), DVectorVector.getCPtr(proposal_covariance)), true);
+  public ImportanceSamplingResult sample(ArbitraryFunction log_target, DVector proposal_mean, DVectorVector proposal_covariance) {
+    ImportanceSamplingResult ret = new ImportanceSamplingResult(datamungePINVOKE.ImportanceSampling_sample(swigCPtr, ArbitraryFunction.getCPtr(log_target), DVector.getCPtr(proposal_mean), DVectorVector.getCPtr(proposal_covariance)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

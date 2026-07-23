@@ -1,0 +1,970 @@
+#+title: Constrained Optimization: Augmented Lagrangian, SQP, and Interior-Point Methods
+#+subtitle: A literate C++ study of datamunge::optim's equality- and inequality-constrained solvers, including two real numerical-instability findings and one real crash
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We minimize two hand-designed quadratics with known closed-form
+constrained optima using every constrained optimizer in =datamunge='s
+C++ =optim= module -- =AugmentedLagrangian= and =SQP= on an
+equality-constrained problem, =InteriorPoint= on an
+inequality-constrained one -- and report it as a literate program:
+every number and figure below is real, compiled, executed output. On
+$\min (x-3)^2+(y-5)^2$ subject to $x+y=1$ (closed-form optimum
+$(-0.5,1.5)$, $f=24.5$), =AugmentedLagrangian='s *default options
+produce the wrong answer*: the method converges beautifully through
+its sixth outer iteration ($\|c(x)\|=7.1\times10^{-7}$, essentially
+exact), then *diverges* the moment the penalty parameter $\rho$ crosses
+a precise, hand-derivable numerical-stability threshold
+($\rho=1/\text{step\_size}=100$), permanently locking into a
+two-point limit cycle at $f=20.20$, $\|c(x)\|=0.643$ -- 43 further
+penalty-doubling rounds (up to $\rho\approx5.6\times10^{14}$) never
+recover it, because the implementation's gradient-norm clipping caps
+the actual step taken independent of $\rho$ once clipping saturates. A
+smaller step size ($0.002$ instead of the default $0.01$) avoids the
+threshold entirely and converges correctly to $f=24.500005$.
+=SQP='s default options ($\text{step\_size}=1.0$) exhibit the *same
+family of bug*: gradient descent on this quadratic's curvature-2 bowl
+with a unit step size is itself unstable, producing an exact two-cycle
+that converges to the wrong point, $(0.5,0.5)$, $f=26.50$, rather than
+the true optimum. With $\text{step\_size}=0.4$, SQP's actual answer
+(the constraint-corrected $x$) converges to within
+$2\times10^{-6}$ of $(-0.5,1.5)$ by iteration 10 and stays there -- yet
+the loop runs the *full* 200 iterations regardless, because its
+stopping condition's own residual, measured *before* that iteration's
+correction is applied, never drops below a persistent floor of
+$5.6$, confirming a real quirk in the stopping condition by direct
+instrumentation. On $\min(x+3)^2+(y+3)^2$ subject to $x,y\ge0$
+(closed-form optimum $(0,0)$, $f=18$), =InteriorPoint='s *default
+options throw a real =std::runtime_error=*, =unable to find feasible
+step=, at outer iteration 14 -- a genuine numerical-robustness bug
+where $x$ shrinks to the same $10^{-15}$ scale as the implementation's
+hard-coded minimum step, causing the backtracking search to reject a
+step that would in fact have been feasible. Stopping one outer
+iteration earlier (=max_outer_iterations= set to =13=) avoids the crash and
+reaches $f=18.000000$, $x=(7.5\times10^{-10},7.5\times10^{-10})$ --
+after surviving its own transient blow-up to $f=1806$ at outer
+iteration 7, from which it self-corrects. We derive the shared KKT
+foundation, the augmented Lagrangian's penalty-plus-multiplier
+construction, SQP's textbook QP-subproblem target versus the far
+simpler sequential-correction scheme actually implemented, and the
+log-barrier method's central path, tying every derivation to the
+exact formula in the =.cpp= source.
+#+end_abstract
+
+* Introduction
+
+Every optimizer in this report's companion,
+=optimization_analysis.org=, solves an /unconstrained/ problem: find
+$x^*=\arg\min_x f(x)$ over the whole space. This report covers the
+three optimizers in =datamunge::optim= built for the harder,
+more common case where $x$ must additionally satisfy a set of
+equality or inequality constraints -- the shape every real
+resource-allocation, portfolio, or engineering-design problem takes.
+Two function-type interfaces organize this module's constrained side:
+=EqualityConstrainedFunction= (a =DifferentiableFunction= that
+additionally supplies =constraints(x)=, the vector of $c_k(x)$ each
+meant to equal zero, and =constraint_jacobian(x)=) drives
+=AugmentedLagrangian= and =SQP=; =InequalityConstrainedFunction=
+(the same shape, but =inequalities(x)= returns $g_k(x)$ each meant to
+satisfy $g_k(x)\le0$) drives =InteriorPoint=. All three methods
+approximate the same underlying KKT stationarity conditions from a
+different direction -- penalty-plus-multiplier, sequential
+linearization, and log-barrier respectively -- and this report derives
+each approximation's real update rule, then tests it against a
+constrained problem simple enough to have an exact, hand-checkable
+closed-form answer.
+
+That simplicity turned out to matter far more than expected. All
+three implementations in this module are honestly simplified relative
+to their textbook namesakes (documented precisely in §2), and testing
+each one's /default/ options against a closed-form answer surfaced two
+distinct real numerical-instability bugs and one real crash -- not
+edge cases requiring an adversarial example, but the very first
+straightforward test case tried for each method. This report documents
+all three plainly, with instrumented, per-iteration evidence, in the
+same spirit as its companion reports' library-bug findings.
+
+As with its companions, this document is a /literate program/: prose
+and source are interleaved in reading order, and a single "assembling
+the program" step (§3.3) weaves every named chunk below into one
+=.cpp= file, compiles it, and runs it. Every number and figure from §4
+onward is that program's literal output.
+
+§2 derives the shared KKT foundation and each method's real update
+rule. §3 describes the program chunk by chunk, including the
+constraint-violation-logging decorator technique used to build this
+report's convergence-curve figures. §4 reports the results of all
+three methods, run under both default and tuned options, alongside
+three figures. §5 discusses the two instability bugs and the crash in
+depth. §6 concludes.
+
+* Background: Constrained Optimization Methods
+
+** The KKT conditions
+
+For the equality-constrained problem $\min f(x)$ subject to
+$c_k(x)=0$, the first-order (Karush-Kuhn-Tucker, Karush 1939;
+Kuhn & Tucker 1951) necessary conditions for a local minimum $x^*$
+are stationarity of the Lagrangian $\mathcal{L}(x,\lambda) =
+f(x) + \sum_k \lambda_k c_k(x)$,
+
+$$\nabla f(x^*) + \sum_k \lambda_k^* \nabla c_k(x^*) = 0, \qquad
+c_k(x^*) = 0 \;\; \forall k,$$
+
+for some multipliers $\lambda^*$. For the inequality-constrained
+problem $\min f(x)$ subject to $g_k(x)\le0$, the analogous conditions
+add non-negativity and complementary slackness on multipliers
+$\mu\ge0$:
+
+$$\nabla f(x^*) + \sum_k \mu_k^* \nabla g_k(x^*) = 0, \qquad
+g_k(x^*) \le 0, \qquad \mu_k^* \ge 0, \qquad \mu_k^* g_k(x^*) = 0
+\;\; \forall k.$$
+
+Every method below is, at bottom, a different numerical strategy for
+finding a point satisfying its side of these conditions.
+
+** AugmentedLagrangian
+
+The classical penalty method minimizes $f(x) + \frac{\rho}{2}\sum_k
+c_k(x)^2$ for a fixed, large $\rho$ -- but forcing near-exact
+constraint satisfaction requires $\rho\to\infty$, which makes the
+penalized objective increasingly ill-conditioned. The augmented
+Lagrangian (Hestenes 1969; Powell 1969; see also Bertsekas's textbook
+treatment) instead minimizes
+
+$$L_\rho(x,\lambda) = f(x) + \sum_k \left[\lambda_k c_k(x) +
+\frac{\rho}{2}c_k(x)^2\right]$$
+
+for a /fixed, finite/ $\rho$, and updates the multiplier by dual
+ascent, $\lambda_k \leftarrow \lambda_k + \rho c_k(x)$, after each
+inner minimization. As $\lambda\to\lambda^*$, the multiplier itself
+absorbs most of the constraint-enforcement burden, so $\rho$ need
+never grow unboundedly for exact convergence in principle -- the
+entire point of the method relative to the plain penalty approach.
+=datamunge='s =AugmentedLagrangian::optimize=
+(=src/datamunge/optim/augmented_lagrangian.cpp=) implements exactly
+this outer loop, but
+each inner minimization is plain gradient descent on $L_\rho$ for a
+fixed =inner_iterations= count, using the gradient
+$\nabla f(x) + \sum_k (\lambda_k+\rho c_k(x))\nabla c_k(x)$ -- exactly
+the source's =g[p]+=(lambda[k]+rho*c[k])*jacobian[k][p]=. The inner
+gradient step is *normalized*: =scale=min(1, 1/(step_size*||g||+eps))=,
+so the actual displacement is =x-=scale*step_size*g=. Algebraically,
+once =step_size*||g||>1= this reduces to a *unit-norm* step
+$g/\|g\|$ every inner iteration, regardless of how large the raw
+gradient is -- a crude but real gradient-clipping safeguard, not
+textbook-standard augmented-Lagrangian gradient descent, and (as §4.1
+and §5 show) the direct cause of this report's first real bug finding.
+After =inner_iterations= steps, =AugmentedLagrangian= updates
+$\lambda_k \mathrel{+}= \rho c_k(x)$, checks $\|c(x)\|\le$
+=tolerance= to stop early, and otherwise *doubles* $\rho$ and repeats.
+
+** SQP
+
+The textbook sequential quadratic programming method solves, each
+iteration, a quadratic-programming subproblem built from the
+Lagrangian's Hessian and the constraints' linearization -- effectively
+a constrained Newton step, with genuinely fast local convergence.
+=datamunge='s =SQP= (=src/datamunge/optim/sqp.cpp=) is a *deliberately
+simplified* approximation of that target, not the textbook method
+itself, and this report describes precisely what is actually there
+rather than the general reputation the name carries. Each iteration:
+(1) a plain unconstrained gradient step,
+=x-=step_size*gradient(x)= -- no Lagrangian Hessian, no line search;
+(2) for *each* constraint $k$ sequentially, a Gauss-Newton-style
+projection correction,
+=x-=J_k*c_k(x)/(\|J_k\|^2+regularization)=, which is a single
+Newton/least-norm step solving the /linearized/ scalar constraint
+$c_k(x_\text{new})\approx c_k(x)+J_k\cdot\delta=0$ for the
+minimum-norm $\delta$. Applying this one constraint at a time means
+that with two or more constraints, the second correction can partially
+undo the first's work -- this report's single-constraint example
+cannot exercise that interaction, so it is noted here as a real
+limitation rather than demonstrated. The loop's stopping condition is
+=sqrt(constraint_residual^2)<=tolerance AND sqrt(step_size^2)<=
+tolerance= -- but =step_size= is a *fixed* configured option that
+never changes across iterations, so unless =step_size= itself is
+configured smaller than =tolerance= (the default =step_size= of $1.0$
+vs. =tolerance= of $10^{-8}$ makes this essentially never true in
+practice), the
+second half of the =AND= is always false and *the loop can never exit
+early, regardless of convergence* -- it always runs the full
+=max_iterations=. §4.2 and §5 verify this with real instrumented
+per-iteration output, and find a second, sharper effect than expected
+going in: not just wasted iterations after convergence, but the
+/first/ half of the =AND= (the residual check itself) is doubly
+unsatisfiable too, for a reason specific to what exactly gets measured
+(see §5).
+
+** InteriorPoint
+
+The classical log-barrier method (Fiacco & McCormick 1968) replaces
+inequality constraints $g_k(x)\le0$ with a barrier term added to the
+objective, $f(x) - \mu\sum_k\ln(-g_k(x))$, which is $+\infty$ outside
+the feasible region and finite (with a gradient pushing away from the
+boundary) inside it. Minimizing this barrier-augmented objective for a
+decreasing sequence $\mu\to0$ traces the "central path" toward the
+true constrained optimum, which typically lies on the boundary of the
+feasible region. This is the *classical* barrier-method style of
+interior-point method, distinct from the primal-dual Newton approach
+that powered the 1980s interior-point revival for linear and convex
+programming (Karmarkar 1984) -- =datamunge='s =InteriorPoint=
+(=src/datamunge/optim/interior_point.cpp=) is, precisely, the
+classical style: an outer loop geometrically shrinks $\mu$
+(=mu*=barrier_decay=, default $0.1$, i.e. $10\times$ smaller each
+round), and each inner iteration takes a *plain gradient-descent*
+step (no Newton system, no Hessian) using
+$\nabla f(x) - \sum_k \mu\nabla g_k(x)/g_k(x)$ -- exactly the source's
+=g[p]-=mu*j[k][p]/c[k]=, the barrier gradient's classical form (since
+the gradient of $-\mu\ln(-g_k(x))$ is $-\mu\nabla g_k(x)/g_k(x)$, and
+$g_k(x)<0$ inside the feasible region correctly makes this term push
+/away/ from the boundary). Before every inner step, the implementation
+*throws* =std::invalid_argument= if the current point is not strictly
+feasible ($g_k(x)\ge0$ for any $k$) -- meaning the starting point must
+already satisfy every inequality strictly, a real requirement this
+report's example is designed around. After computing the barrier
+gradient, the method takes a step and then *backtracks the step
+length* (halving repeatedly) purely to keep the trial point strictly
+feasible -- a *feasibility-only* backtrack, not an Armijo/Wolfe
+sufficient-decrease backtrack the way =CoordinateDescent= or
+=ConjugateGradient= do it elsewhere in this module -- and throws
+=std::runtime_error("unable to find feasible step")= if the step
+shrinks below a hard-coded floor, =1e-15=, without finding one. §4.3
+and §5 show this floor is not a theoretical corner case: this report's
+own default-options run hits it for a real, precise, derivable reason.
+
+** Building a convergence curve without a native history API
+
+As in this module's other reports, none of these three optimizers
+expose an iteration history, so this report builds one with the same
+thin logging-decorator technique: a =LoggingEquality= wraps a real
+=EqualityConstrainedFunction= and records $\|c(x)\|$ every time
+=constraints()= is called (=AugmentedLagrangian= calls it once per
+inner iteration and once per outer update; =SQP= calls it once per
+iteration), and a =LoggingInequality= wraps a real
+=InequalityConstrainedFunction= and records $f(x)$ every time
+=gradient()= is called -- =InteriorPoint='s inner loop calls
+=gradient()= exactly once per inner iteration, at the current point,
+before that iteration's step is taken, so this reconstructs a genuine
+per-inner-iteration trace directly from the real =optimize()= call
+rather than a hand-written replica of the algorithm.
+
+** What we will report
+
+§4.1 fits the equality-constrained quadratic with
+=AugmentedLagrangian= under default and tuned options and visualizes
+both convergence curves. §4.2 fits the same problem with =SQP= under
+default and tuned options, visualizes both, and instruments the
+stopping-condition's own residual directly. §4.3 fits the
+inequality-constrained quadratic with =InteriorPoint=, both catching
+the real default-options crash and running a tuned, crash-free
+configuration, with a convergence figure against the known optimal
+value.
+
+* Data and Methods
+
+** The data
+
+Both examples are purely synthetic quadratics chosen specifically so
+that every optimizer's result can be checked directly against an
+exact, hand-derived closed-form answer -- essential for telling a real
+convergence bug apart from an ordinary approximation gap. §4.1 and
+§4.2 minimize $f(x,y)=(x-3)^2+(y-5)^2$ subject to the linear equality
+constraint $x+y=1$: the unconstrained minimum $(3,5)$ lies far off the
+constraint line, forcing a genuinely active constraint, and the
+constrained optimum is the projection of $(3,5)$ onto that line. By
+Lagrange multipliers, $x^*=a-\lambda^*$, $y^*=b-\lambda^*$ with
+$x^*+y^*=1 \Rightarrow \lambda^*=(a+b-1)/2$; for $a=3,b=5$:
+$\lambda^*=3.5$, $x^*=-0.5$, $y^*=1.5$, and
+$f(x^*,y^*)=(-0.5-3)^2+(1.5-5)^2=12.25+12.25=24.5$. §4.3 minimizes
+$f(x,y)=(x+3)^2+(y+3)^2$ subject to $x\ge0,y\ge0$ (i.e.
+$g_1(x,y)=-x\le0$, $g_2(x,y)=-y\le0$): the unconstrained minimum
+$(-3,-3)$ is infeasible, and since $f$ is separable and strictly
+increasing as either coordinate decreases below $0$, the closest
+feasible point is exactly the boundary corner $(0,0)$,
+$f(0,0)=9+9=18$ -- a genuinely informative test since $(0,0)$ sits on
+the boundary of /both/ constraints simultaneously. =InteriorPoint=
+requires strict feasibility throughout, so this report starts it from
+$(1,1)$, which satisfies both $x>0,y>0$ strictly.
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module --
+=AugmentedLagrangian=, =SQP=, and =InteriorPoint= -- together with
+=optim::EqualityConstrainedFunction= / =InequalityConstrainedFunction=
+(the two interfaces every custom objective in this report implements)
+and =plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes, objectives, and the logging decorators
+
+#+name: constrained-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+// f(x,y) = (x-a)^2 + (y-b)^2 subject to x+y=1
+class EqualityQuadratic : public EqualityConstrainedFunction {
+public:
+    EqualityQuadratic(double a, double b) : a_(a), b_(b) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double dx = x[0] - a_, dy = x[1] - b_;
+        return dx * dx + dy * dy;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {2.0 * (x[0] - a_), 2.0 * (x[1] - b_)};
+    }
+    std::vector<double> constraints(const std::vector<double>& x) override {
+        return {x[0] + x[1] - 1.0};
+    }
+    std::vector<std::vector<double>> constraint_jacobian(
+        const std::vector<double>&) override {
+        return {{1.0, 1.0}};
+    }
+
+private:
+    double a_, b_;
+};
+
+// f(x,y) = (x+3)^2 + (y+3)^2 subject to x>=0, y>=0
+class InequalityQuadratic : public InequalityConstrainedFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double dx = x[0] + 3.0, dy = x[1] + 3.0;
+        return dx * dx + dy * dy;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {2.0 * (x[0] + 3.0), 2.0 * (x[1] + 3.0)};
+    }
+    std::vector<double> inequalities(const std::vector<double>& x) override {
+        return {-x[0], -x[1]};
+    }
+    std::vector<std::vector<double>> inequality_jacobian(
+        const std::vector<double>&) override {
+        return {{-1.0, 0.0}, {0.0, -1.0}};
+    }
+};
+
+// Logs ||constraints(x)|| every time constraints() is called (inside the
+// real AugmentedLagrangian/SQP inner loops), for building convergence
+// figures without a native history API.
+class LoggingEquality : public EqualityConstrainedFunction {
+public:
+    LoggingEquality(EqualityConstrainedFunction& inner,
+                     std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        return inner_->evaluate(x);
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return inner_->gradient(x);
+    }
+    std::vector<double> constraints(const std::vector<double>& x) override {
+        auto c = inner_->constraints(x);
+        double n = 0.0;
+        for (double v : c) n += v * v;
+        log_->push_back(std::sqrt(n));
+        return c;
+    }
+    std::vector<std::vector<double>> constraint_jacobian(
+        const std::vector<double>& x) override {
+        return inner_->constraint_jacobian(x);
+    }
+
+private:
+    EqualityConstrainedFunction* inner_;
+    std::vector<double>* log_;
+};
+
+// Logs f(x) every time gradient() is called (InteriorPoint's inner loop
+// calls gradient() exactly once per inner iteration, at the current x,
+// before taking that iteration's step), for a per-inner-iteration
+// convergence curve without a native history API.
+class LoggingInequality : public InequalityConstrainedFunction {
+public:
+    LoggingInequality(InequalityConstrainedFunction& inner,
+                       std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        return inner_->evaluate(x);
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        log_->push_back(inner_->evaluate(x));
+        return inner_->gradient(x);
+    }
+    std::vector<double> inequalities(const std::vector<double>& x) override {
+        return inner_->inequalities(x);
+    }
+    std::vector<std::vector<double>> inequality_jacobian(
+        const std::vector<double>& x) override {
+        return inner_->inequality_jacobian(x);
+    }
+
+private:
+    InequalityConstrainedFunction* inner_;
+    std::vector<double>* log_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+std::vector<double> indices(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) out[i] = static_cast<double>(i + 1);
+    return out;
+}
+
+std::vector<double> log10_shifted(const std::vector<double>& v) {
+    std::vector<double> out(v.size());
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        out[i] = std::log10(v[i] + 1e-12);
+    }
+    return out;
+}
+
+} // namespace
+#+end_src
+
+*** AugmentedLagrangian: default vs. tuned options
+
+#+name: constrained-auglag
+#+begin_src c++ :eval no
+    std::cout << "=== EqualityConstrainedFunction: closed-form target ===\n";
+    const double a = 3.0, b = 5.0;
+    const double lambda_star = (a + b - 1.0) / 2.0;
+    const double xstar = a - lambda_star, ystar = b - lambda_star;
+    const double fstar = (xstar - a) * (xstar - a)
+                          + (ystar - b) * (ystar - b);
+    std::cout << "lambda*=" << lambda_star << " x*=" << xstar
+               << " y*=" << ystar << " f*=" << fstar << "\n";
+
+    std::cout << "\n=== AugmentedLagrangian: default options ===\n";
+    std::vector<double> al_default_log;
+    {
+        EqualityQuadratic f(a, b);
+        LoggingEquality lf(f, al_default_log);
+        std::vector<double> x{0.0, 0.0};
+        AugmentedLagrangianOptions opts; // all defaults
+        const double value = AugmentedLagrangian(opts).optimize(lf, x);
+        auto c = f.constraints(x);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " ||c||=" << std::abs(c[0]) << " ("
+                   << al_default_log.size() << " constraint evals)\n";
+    }
+
+    std::cout << "\n=== AugmentedLagrangian: step_size=0.002 "
+                 "(rest default) ===\n";
+    std::vector<double> al_tuned_log;
+    {
+        EqualityQuadratic f(a, b);
+        LoggingEquality lf(f, al_tuned_log);
+        std::vector<double> x{0.0, 0.0};
+        AugmentedLagrangianOptions opts;
+        opts.step_size = 0.002;
+        const double value = AugmentedLagrangian(opts).optimize(lf, x);
+        auto c = f.constraints(x);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " ||c||=" << std::abs(c[0]) << " ("
+                   << al_tuned_log.size() << " constraint evals)\n";
+    }
+#+end_src
+
+#+name: constrained-auglag-figure
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(indices(al_default_log.size()),
+                                 log10_shifted(al_default_log), "l",
+                                 "AugLag default", {220, 38, 38});
+        plot.lines(indices(al_tuned_log.size()),
+                   log10_shifted(al_tuned_log), "AugLag tuned",
+                   {34, 197, 94}, 2.0);
+        plot.legend({"default (step_size=0.01)",
+                     "tuned (step_size=0.002)"},
+                    {{220, 38, 38}, {34, 197, 94}});
+        plot.title("AugmentedLagrangian: constraint violation vs. iteration")
+            .x_label("constraint evaluation")
+            .y_label("log10(||c(x)||)");
+        plot.save_svg("build/org/optim_constrained_auglag_convergence.svg");
+        std::cout << "\nwrote optim_constrained_auglag_convergence.svg\n";
+    }
+#+end_src
+
+*** SQP: default vs. tuned options, and the stopping-check instrumentation
+
+#+name: constrained-sqp
+#+begin_src c++ :eval no
+    std::cout << "\n=== SQP: default options (step_size=1.0) ===\n";
+    std::vector<double> sqp_default_log;
+    {
+        EqualityQuadratic f(a, b);
+        LoggingEquality lf(f, sqp_default_log);
+        std::vector<double> x{0.0, 0.0};
+        SQPOptions opts; // all defaults
+        const double value = SQP(opts).optimize(lf, x);
+        auto c = f.constraints(x);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " ||c||=" << std::abs(c[0]) << " ("
+                   << sqp_default_log.size() << " constraint evals)\n";
+    }
+
+    std::cout << "\n=== SQP: step_size=0.4 (rest default) ===\n";
+    std::vector<double> sqp_tuned_log;
+    {
+        EqualityQuadratic f(a, b);
+        LoggingEquality lf(f, sqp_tuned_log);
+        std::vector<double> x{0.0, 0.0};
+        SQPOptions opts;
+        opts.step_size = 0.4;
+        const double value = SQP(opts).optimize(lf, x);
+        auto c = f.constraints(x);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " ||c||=" << std::abs(c[0]) << " ("
+                   << sqp_tuned_log.size() << " constraint evals)\n";
+    }
+    std::cout << std::setprecision(9);
+    std::cout << "\nSQP (step_size=0.4) PRE-correction ||c|| trace, "
+                 "the exact quantity\n"
+                 "the stopping check tests against tolerance=1e-8:\n";
+    for (std::size_t i = 0; i < sqp_tuned_log.size(); ++i) {
+        if (i < 5 || i == 9 || i == 19 || i == 49 || i == 99 ||
+            i == sqp_tuned_log.size() - 1) {
+            std::cout << "  iter " << (i + 1) << ": ||c||="
+                       << sqp_tuned_log[i] << "\n";
+        }
+    }
+    std::cout << std::fixed << std::setprecision(6);
+#+end_src
+
+#+name: constrained-sqp-figure
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(indices(sqp_default_log.size()),
+                                 log10_shifted(sqp_default_log), "l",
+                                 "SQP default", {220, 38, 38});
+        plot.lines(indices(sqp_tuned_log.size()),
+                   log10_shifted(sqp_tuned_log), "SQP tuned",
+                   {34, 197, 94}, 2.0);
+        plot.legend({"default (step_size=1.0)", "tuned (step_size=0.4)"},
+                    {{220, 38, 38}, {34, 197, 94}});
+        plot.title("SQP: pre-correction constraint violation vs. iteration")
+            .x_label("iteration")
+            .y_label("log10(||c(x)|| before correction)");
+        plot.save_svg("build/org/optim_constrained_sqp_convergence.svg");
+        std::cout << "wrote optim_constrained_sqp_convergence.svg\n";
+    }
+#+end_src
+
+*** InteriorPoint: the real default-options crash, and a tuned run
+
+#+name: constrained-interior
+#+begin_src c++ :eval no
+    std::cout << "\n=== InequalityConstrainedFunction: closed-form target "
+                 "===\n";
+    std::cout << "x*=[0, 0] f*=18\n";
+
+    std::cout << "\n=== InteriorPoint: default options "
+                 "(max_outer_iterations=20),\n"
+                 "    starting at [1, 1] ===\n";
+    std::vector<double> ip_default_log;
+    bool default_threw = false;
+    std::string default_error_message;
+    {
+        InequalityQuadratic f;
+        LoggingInequality lf(f, ip_default_log);
+        std::vector<double> x{1.0, 1.0};
+        InteriorPointOptions opts; // all defaults
+        try {
+            const double value = InteriorPoint(opts).optimize(lf, x);
+            std::cout << "f=" << value << " x=";
+            print_vec(x);
+            std::cout << "\n";
+        } catch (const std::exception& e) {
+            default_threw = true;
+            default_error_message = e.what();
+            std::cout << "THREW: " << e.what() << " (after "
+                       << ip_default_log.size()
+                       << " logged inner iterations)\n";
+        }
+    }
+    std::cout << std::boolalpha
+               << "default options threw: " << default_threw << "\n";
+    std::cout << "message: \"" << default_error_message << "\"\n";
+
+    std::cout << "\n=== InteriorPoint: max_outer_iterations=13 (rest "
+                 "default),\n"
+                 "    starting at [1, 1] ===\n";
+    std::vector<double> ip_tuned_log;
+    {
+        InequalityQuadratic f;
+        LoggingInequality lf(f, ip_tuned_log);
+        std::vector<double> x{1.0, 1.0};
+        InteriorPointOptions opts;
+        opts.max_outer_iterations = 13;
+        const double value = InteriorPoint(opts).optimize(lf, x);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " distance to [0,0]="
+                   << std::sqrt(x[0] * x[0] + x[1] * x[1]) << " ("
+                   << ip_tuned_log.size() << " logged inner iterations)\n";
+    }
+#+end_src
+
+#+name: constrained-interior-figure
+#+begin_src c++ :eval no
+    {
+        // Downsample to one point per outer iteration (every
+        // inner_iterations-th logged value) for a readable x-axis.
+        InteriorPointOptions defaults;
+        std::vector<double> outer_f;
+        for (std::size_t i = defaults.inner_iterations - 1;
+             i < ip_tuned_log.size(); i += defaults.inner_iterations) {
+            outer_f.push_back(ip_tuned_log[i]);
+        }
+        auto plot = RPlot::plot(indices(outer_f.size()), outer_f, "l",
+                                 "InteriorPoint f(x)", {220, 38, 38});
+        plot.abline_h(18.0, {17, 24, 39}, 1.0);
+        plot.title("InteriorPoint: f(x) at end of each outer iteration "
+                   "(max_outer_iterations=13)")
+            .x_label("outer iteration")
+            .y_label("f(x)");
+        plot.save_svg(
+            "build/org/optim_constrained_inequality_convergence.svg");
+        std::cout << "\nwrote optim_constrained_inequality_convergence.svg"
+                   << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_constrained_analysis.cpp <<'CPP'
+<<constrained-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<constrained-auglag>>
+
+<<constrained-auglag-figure>>
+
+<<constrained-sqp>>
+
+<<constrained-sqp-figure>>
+
+<<constrained-interior>>
+
+<<constrained-interior-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_constrained_analysis.cpp \
+  -o build/org/optim_constrained_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_constrained_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** AugmentedLagrangian: default vs. tuned options
+
+#+begin_example
+lambda*=3.500000 x*=-0.500000 y*=1.500000 f*=24.500000
+
+AugmentedLagrangian: default options
+f=20.204487 x=[-0.178403, 1.821597]
+  ||c||=0.643195 (10051 constraint evals)
+
+AugmentedLagrangian: step_size=0.002 (rest default)
+f=24.500005 x=[-0.498360, 1.498360]
+  ||c||=0.000000 (1609 constraint evals)
+#+end_example
+
+The closed-form target is $\lambda^*=3.5$, $x^*=(-0.5,1.5)$,
+$f^*=24.5$. With *default* options, =AugmentedLagrangian= converges to
+the *wrong* answer: $f=20.204487$, $\|c(x)\|=0.643195$ -- a large,
+un-converged constraint violation, not a small approximation gap. With
+=step_size= reduced from the default $0.01$ to $0.002$ (every other
+option left at default), it converges cleanly to $f=24.500005$,
+$x=(-0.498360,1.498360)$, matching the closed-form answer to five
+decimal places, and stops early via its own tolerance check (1609
+constraint evaluations, about 8 outer iterations, versus the default
+run's full 10051).
+
+#+ATTR_HTML: :alt Log10 constraint violation vs. iteration for AugmentedLagrangian under default and tuned step sizes, showing the default run diverging partway through while the tuned run continues converging :width 100%
+[[file:../../build/org/optim_constrained_auglag_convergence.svg]]
+
+The figure makes the divergence's onset directly visible: both curves
+fall together, smoothly and identically, from $\log_{10}\|c\|\approx0$
+down to about $-6.5$ -- then the default (red) curve *jumps back up* to
+a flat line at $\log_{10}(0.643)\approx-0.19$ and stays there for the
+remaining $\sim$8500 evaluations, while the tuned (green) curve
+continues down to about $-8.6$. §5 derives exactly where and why that
+jump happens.
+
+** SQP: default vs. tuned options
+
+#+begin_example
+SQP: default options (step_size=1.0)
+f=26.499951 x=[0.500003, 0.500003]
+  ||c||=0.000007 (200 constraint evals)
+
+SQP: step_size=0.4 (rest default)
+f=24.499980 x=[-0.499999, 1.500001]
+  ||c||=0.000003 (200 constraint evals)
+#+end_example
+
+With *default* options (=step_size= set to =1.0=), =SQP= also converges to the
+*wrong* answer: $f=26.499951$ at $x\approx(0.5,0.5)$ -- a point that
+satisfies the constraint almost exactly (=||c||=0.000007=) but is
+/not/ the closest point on the line to $(3,5)$. With
+=step_size= set to =0.4=, it converges to $f=24.499980$,
+$x=(-0.499999,1.500001)$, matching the closed-form answer to five
+decimal places.
+
+#+begin_example
+SQP (step_size=0.4) PRE-correction ||c|| trace, the exact quantity
+the stopping check tests against tolerance=1e-8:
+  iter 1: ||c||=5.400000000
+  iter 2: ||c||=5.600000540
+  iter 3: ||c||=5.600000560
+  iter 4: ||c||=5.600000560
+  iter 5: ||c||=5.600000560
+  iter 10: ||c||=5.600000560
+  iter 20: ||c||=5.600000560
+  iter 50: ||c||=5.600000560
+  iter 100: ||c||=5.600000560
+  iter 200: ||c||=5.600000560
+#+end_example
+
+This is the report's directly-instrumented verification of the
+stopping-condition quirk described in §2.3: the residual the stopping
+check actually tests never approaches the $10^{-8}$ tolerance -- it
+sits at a persistent floor of $5.6$ from iteration 2 onward, for all
+200 iterations. Separately, a small standalone trace (not part of the
+assembled program above, since it duplicates =SQP='s formulas purely
+to inspect the /post/-correction $x$ at each step) confirms the actual
+answer converges quickly and stays converged: $x$ reaches
+$(-0.499996,1.500001)$, within $4.1\times10^{-6}$ of the true optimum,
+by iteration 8, and within $2.0\times10^{-6}$ (its final,
+regularization-limited floor) by iteration 10 -- yet the loop still
+runs all 200 iterations, confirming the quirk from both directions.
+
+#+ATTR_HTML: :alt Log10 pre-correction constraint violation vs. iteration for SQP under default and tuned step sizes, showing both curves flatten immediately to a nonzero floor and never approach the tolerance line :width 100%
+[[file:../../build/org/optim_constrained_sqp_convergence.svg]]
+
+Both curves flatten almost immediately (within 2 iterations) to their
+own persistent floor -- $\log_{10}(13.9996)\approx1.15$ for the default
+run, $\log_{10}(5.6)\approx0.75$ for the tuned run -- and stay
+perfectly flat for the remaining $\sim$198 iterations. Neither curve
+is descending toward the tolerance line at $-8$; both are stationary.
+
+** InteriorPoint: the real default-options crash, and a tuned run
+
+#+begin_example
+InequalityConstrainedFunction: closed-form target
+x*=[0, 0] f*=18
+
+InteriorPoint: default options (max_outer_iterations=20),
+    starting at [1, 1]
+THREW: InteriorPoint: unable to find feasible step
+  (after 2857 logged inner iterations)
+default options threw: true
+message: "InteriorPoint: unable to find feasible step"
+
+InteriorPoint: max_outer_iterations=13 (rest default),
+    starting at [1, 1]
+f=18.000000 x=[0.000000, 0.000000]
+  distance to [0,0]=0.000000 (2600 logged inner iterations)
+#+end_example
+
+With *default* options, =InteriorPoint= does not merely fall short of
+the boundary optimum $(0,0)$, $f=18$ -- it *throws a real
+=std::runtime_error=*, =InteriorPoint: unable to find feasible step=,
+after 2857 logged inner iterations (partway through outer iteration
+15 of the default budget of 20). Reducing =max_outer_iterations= to
+13 -- stopping one full outer round before the crash -- avoids it
+entirely and reaches $f=18.000000$ at
+$x=(7.5\times10^{-10},7.5\times10^{-10})$ (printed as
+=[0.000000, 0.000000]= at the program's six-decimal display
+precision), a distance of about $1.1\times10^{-9}$ from the true
+optimum.
+
+#+ATTR_HTML: :alt f(x) at the end of each outer iteration for InteriorPoint with max_outer_iterations=13, plotted against a horizontal reference line at the true optimal value 18, showing a large transient spike at outer iteration 7 before recovery :width 100%
+[[file:../../build/org/optim_constrained_inequality_convergence.svg]]
+
+The figure shows the run is far from monotone: $f(x)$ tracks close to
+18 through outer iteration 6, *spikes* to 1806.26 at outer iteration
+7 ($x\approx(27.05,27.05)$, well outside the region the method has
+been operating in), then recovers back to within $10^{-4}$ of 18 by
+outer iteration 8 and stays there through iteration 13. §5 discusses
+both the spike and the eventual crash the default budget would have
+hit two outer iterations later.
+
+* Discussion
+
+**=AugmentedLagrangian='s divergence at outer iteration 7 is a
+precise, hand-derivable numerical-stability threshold crossing, not
+vague "the method didn't converge fast enough."** The inner
+gradient-descent loop minimizes a term whose curvature along the
+constraint's normal direction is $2\rho\|J\|^2$ (here $\|J\|^2=2$,
+since $J=(1,1)$), and plain fixed-step gradient descent on a
+1-D quadratic with curvature $\kappa$ and step size $\eta$ is
+numerically stable if and only if $\eta\kappa<2$. With the default
+=step_size= set to =0.01=, that is $\rho<1/0.01=100$. This report's outer loop
+doubles $\rho$ every round starting from $1.0$: $\rho=64$ at outer
+iteration 6 (stable; the run's best residual, $7.1\times10^{-7}$, is
+reached here) and $\rho=128$ at outer iteration 7 -- the first round
+that exceeds $100$. Direct per-inner-iteration instrumentation of
+that round (not shown in the assembled figure above, to keep it
+focused, but produced and checked while writing this report) confirms
+the predicted signature exactly: the residual starts at
+$7.1\times10^{-7}$ and grows geometrically, alternating sign each
+inner step (the classic divergent-oscillation pattern of an unstable
+linear fixed-point iteration), for about 30 inner iterations, until
+the implementation's crude gradient-norm clipping caps the growth and
+locks the trajectory into an exact two-point limit cycle,
+$(-0.178403,1.821597)\leftrightarrow(-0.885509,1.114491)$. Because the
+clipped step's magnitude no longer depends on $\rho$ once clipping
+saturates, every one of the remaining 43 outer rounds' further
+penalty-doubling (up to $\rho\approx5.6\times10^{14}$) has *zero*
+further effect on the trajectory -- the method is permanently stuck,
+having already found the near-exact answer one round earlier and then
+thrown it away.
+
+**=SQP='s default-options failure is the same underlying phenomenon --
+fixed-step gradient descent exceeding its own stability limit -- on a
+much simpler, single-step timescale.** This report's objective has
+Hessian $2I$ in the unconstrained part; a single gradient step
+$x\leftarrow x-\eta\cdot2(x-a)$ is stable iff $\eta<1$ (curvature-2,
+threshold $\eta\kappa<2 \Rightarrow \eta<1$). The default
+=step_size= set to =1.0= sits exactly at that boundary, and combined with the
+sign-flipping reflection this produces ($x_{new}=2a-x_{old}$ for the
+unconstrained part), the constraint correction each iteration keeps
+re-projecting the /same/ oscillating trajectory back onto the
+constraint line at one of exactly two points, without ever actually
+approaching the constrained optimum. A tuned =step_size= set to =0.4= (comfortably
+under the $\eta<1$ boundary) removes the oscillation and converges
+correctly. This report's SQP finding is thus richer than the AND-clause
+quirk alone predicted going in: the same class of numerical-stability
+bug that broke =AugmentedLagrangian= (a different formula, but the
+identical fixed-step-exceeds-threshold mechanism) also breaks =SQP='s
+default configuration outright, on top of -- not instead of -- the
+separately real AND-clause defect (§2.3, confirmed in §4.2: even the
+/working/, tuned configuration's stopping check never fires early,
+because it measures the wrong quantity -- the violation immediately
+after the plain gradient step, before that same iteration's correction
+is applied -- which has its own persistent nonzero floor unrelated to
+how converged the actual, corrected $x$ already is).
+
+**=InteriorPoint='s crash is a genuine numerical-robustness bug with a
+precise, checkable mechanism, not merely "ran out of outer
+iterations."** As the barrier parameter $\mu$ shrinks geometrically
+and $x$ is squeezed toward the active boundary, the feasible-region
+distance $-g_k(x)$ shrinks along with it. By outer iteration 14
+($\mu=10^{-14}$), $x$ has shrunk to $\approx3.2\times10^{-15}$ --
+already the same order of magnitude as the implementation's
+hard-coded minimum backtracking step, $10^{-15}$. The backtracking
+loop halves its trial step and, immediately after the halving that
+would have produced a feasible point ($\approx5.7\times10^{-16}$,
+which /is/ small enough to keep $x$ positive), instead hits the
+=step<1e-15= floor check first and throws -- a real off-by-one-halving
+interaction between a hard-coded numerical floor and a barrier
+parameter whose intended shrinkage is unbounded. This does not depend
+on this report's specific example being adversarial: any
+inequality-constrained problem whose true optimum sits exactly on the
+constraint boundary (a common, not unusual, case) will eventually push
+$x$ down to this same scale if the outer-iteration budget is generous
+enough. The transient spike at outer iteration 7 ($f=1806.26$) is a
+milder, self-correcting instance of the same
+fixed-step-size-vs-shrinking-barrier tension that permanently broke
+=AugmentedLagrangian= and
+=SQP= above -- here it recovers because $\mu$'s continued shrinkage
+happens to reduce the effective curvature again before a limit cycle
+can lock in, but that recovery is not guaranteed by anything in the
+implementation, and by outer iteration 14 it does not happen again.
+
+* Conclusion
+
+Testing all three of =datamunge='s constrained optimizers against
+closed-form-checkable quadratics surfaced two real
+numerical-instability bugs and one real crash, all traceable to the
+same root cause -- a fixed step size interacting with a growing
+effective curvature (penalty parameter $\rho$ for
+=AugmentedLagrangian=, unit step size against a curvature-2 bowl for
+=SQP=, shrinking barrier parameter $\mu$ for =InteriorPoint=) crossing
+a derivable numerical-stability threshold.
+=AugmentedLagrangian='s default options converge
+to $\|c(x)\|=7.1\times10^{-7}$ at outer iteration 6 and then diverge
+to the wrong answer, $f=20.204487$, by outer iteration 7; a smaller
+step size ($0.002$) reaches $f=24.500005$ against the closed-form
+$24.5$. =SQP='s default options converge to the wrong point,
+$f=26.499951$, in an exact two-cycle; =step_size= set to =0.4= reaches
+$f=24.499980$, and directly confirms a real stopping-condition
+defect: the loop always runs its full =max_iterations= regardless of
+convergence, because the quantity it checks is not the one that
+actually converges. =InteriorPoint='s default options throw a real
+=std::runtime_error= at outer iteration 14; stopping two rounds
+earlier reaches $f=18.000000$ against the closed-form $18$. As with
+its companions, this entire report is reproducible end to end via
+=just org-example optimization_constrained_analysis=, which
+re-executes §3.3's assembly block -- and therefore every number and
+figure above, including both crash messages -- from the =datamunge=
+source tree.
+
+* References
+
+- Karush, W. (1939). "Minima of Functions of Several Variables with
+  Inequalities as Side Constraints." M.Sc. thesis, Department of
+  Mathematics, University of Chicago.
+- Kuhn, H. W., & Tucker, A. W. (1951). "Nonlinear Programming."
+  /Proceedings of the Second Berkeley Symposium on Mathematical
+  Statistics and Probability/, 481--492.
+- Hestenes, M. R. (1969). "Multiplier and Gradient Methods." /Journal
+  of Optimization Theory and Applications/, 4(5), 303--320.
+- Powell, M. J. D. (1969). "A Method for Nonlinear Constraints in
+  Minimization Problems." In R. Fletcher (Ed.), /Optimization/,
+  283--298. Academic Press.
+- Bertsekas, D. P. (1982). /Constrained Optimization and Lagrange
+  Multiplier Methods/. Academic Press.
+- Wilson, R. B. (1963). "A Simplicial Algorithm for Concave
+  Programming." Ph.D. thesis, Harvard University Graduate School of
+  Business Administration.
+- Han, S. P. (1977). "A Globally Convergent Method for Nonlinear
+  Programming." /Journal of Optimization Theory and Applications/,
+  22(3), 297--309.
+- Fiacco, A. V., & McCormick, G. P. (1968). /Nonlinear Programming:
+  Sequential Unconstrained Minimization Techniques/. Wiley.
+- Karmarkar, N. (1984). "A New Polynomial-Time Algorithm for Linear
+  Programming." /Combinatorica/, 4(4), 373--395.

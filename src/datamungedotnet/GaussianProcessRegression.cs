@@ -206,36 +206,36 @@ public class GaussianProcessRegression : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_fit(DataFrame data, uint grid_resolution, double level) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_0(swigCPtr, DataFrame.getCPtr(data), grid_resolution, level), true);
+  public RPlot plot_fit(DataFrame data, uint grid_resolution, double level) {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_0(swigCPtr, DataFrame.getCPtr(data), grid_resolution, level), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_fit(DataFrame data, uint grid_resolution) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_1(swigCPtr, DataFrame.getCPtr(data), grid_resolution), true);
+  public RPlot plot_fit(DataFrame data, uint grid_resolution) {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_1(swigCPtr, DataFrame.getCPtr(data), grid_resolution), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_fit(DataFrame data) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_2(swigCPtr, DataFrame.getCPtr(data)), true);
+  public RPlot plot_fit(DataFrame data) {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_fit__SWIG_2(swigCPtr, DataFrame.getCPtr(data)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_predicted_vs_actual(swigCPtr), true);
+  public RPlot plot_predicted_vs_actual() {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_predicted_vs_actual(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_residuals_vs_fitted(swigCPtr), true);
+  public RPlot plot_residuals_vs_fitted() {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_length_scale_profile() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GaussianProcessRegression_plot_length_scale_profile(swigCPtr), true);
+  public RPlot plot_length_scale_profile() {
+    RPlot ret = new RPlot(datamungePINVOKE.GaussianProcessRegression_plot_length_scale_profile(swigCPtr), true);
     return ret;
   }
 

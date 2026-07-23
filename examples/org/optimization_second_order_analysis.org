@@ -1,0 +1,856 @@
+#+title: Second-Order Methods: Newton's Method and Trust-Region Newton
+#+subtitle: A literate C++ study of Newton's method and Cauchy-point trust-region Newton on an exact Hessian, using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit two second-order optimizers -- =Newton= and
+=TrustRegionNewton= -- against objectives that supply an exact,
+analytic Hessian, and report it as a literate program: every fragment
+below is a real, compiled, executed chunk of the single C++ binary
+that produced every number and figure in this document. On the
+companion report's three-dimensional quadratic bowl, both methods
+reach the exact minimum $(4,-2,1)$ almost immediately -- =Newton= in 2
+iterations, =TrustRegionNewton= in 4 -- confirming that a single
+Newton step on an exactly-quadratic objective with an exact Hessian
+/is/ the exact minimizer. On the harder Rosenbrock function, started
+from the companion report's exact point $(-1.2, 1.0)$, the three-way
+comparison is stark: =LBFGS= needs 61 evaluations to reach $f=0$
+(self-verified here, matching the companion report exactly);
+=Newton= needs only 7 iterations to reach $f=0.000000$ at
+$(1.000000, 1.000000)$, its quadratic convergence winning decisively
+despite Rosenbrock's Hessian being indefinite over parts of the
+search space; but =TrustRegionNewton= exhausts its full 200-iteration
+budget and stalls at $f=0.074290$, $x=(0.728, 0.528)$, never reaching
+the minimum -- a direct, measured consequence of this implementation's
+Cauchy-point-only subproblem solve, which can only rescale the
+steepest-descent step's /length/, never bend its /direction/, along
+Rosenbrock's curved valley. We also demonstrate the implementation's
+real singular-Hessian failure modes: starting =Newton= exactly on the
+curve where Rosenbrock's Hessian is analytically singular
+($x{=}0,\,y{=}0.005$) does /not/ throw the documented
+=std::invalid_argument= -- the fixed $10^{-10}$ diagonal damping is
+just large enough to keep every pivot above the $10^{-15}$ throw
+threshold, so instead =Newton= takes a catastrophic step and diverges
+to $x\approx(2.0\times10^{10},\,4.0\times10^{20})$ silently; a second,
+deliberately engineered objective with a Hessian entry of exactly
+$-10^{-10}$ (canceling the damping to bit-exact zero) does trigger the
+real exception. We derive Newton's method from the second-order
+Taylor expansion, confirm its sign convention algebraically against
+the actual code, and derive the Cauchy-point step and trust-region
+accept/reject rule this implementation actually uses, contrasting it
+explicitly with the fuller dogleg/exact-subproblem methods it
+simplifies away from.
+#+end_abstract
+
+* Introduction
+
+Every method in the companion report (=optimization_analysis.org=)
+either ignores curvature entirely (=GradientDescent=, =Adam=) or
+approximates it indirectly from a history of gradients
+(=LBFGS='s limited-memory quasi-Newton update). This report covers
+the two optimizers in =datamunge::optim= that instead consume an
+/exact/, analytically-supplied Hessian: =Newton= and
+=TrustRegionNewton=, both built around the =HessianFunction=
+interface (=function_types.hpp=), which adds a single method,
+=hessian(coordinates)=, on top of =DifferentiableFunction='s
+evaluate+gradient pair. Exact second-order information is the most a
+smooth objective can offer an optimizer -- it is what makes Newton's
+method converge quadratically near a well-behaved minimum, far faster
+than any first-order method -- but it is also what makes Newton's
+method fail sharply, rather than gracefully, when the Hessian is not
+positive definite where it is evaluated, exactly the situation
+Rosenbrock's curved valley creates over parts of its domain. This
+report's central experiment restarts the companion report's LBFGS
+run on Rosenbrock from the identical point $(-1.2, 1.0)$ with both
+second-order methods, for a direct, three-way, same-start comparison,
+and deliberately provokes both a real silent-divergence failure and a
+real thrown-exception failure to show exactly where the line falls
+between them.
+
+As with its companions, this document is a /literate program/: prose
+and source are interleaved in reading order, and a single "assembling
+the program" step weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from the Results
+section onward is that program's literal output.
+
+§2 derives Newton's method and the Cauchy-point trust-region step,
+each tied to the exact formula in the =.cpp= source. §3 describes the
+program chunk by chunk, including the two different
+evaluate()/gradient()-hooking decorators this report needs (Newton's
+control flow defeats the companion report's original logging trick,
+a real, reportable quirk in its own right). §4 reports results from
+the bowl, the three-way Rosenbrock comparison and its convergence
+figure, and the two singular-Hessian demonstrations. §5 discusses
+what those results show. §6 concludes.
+
+* Background: Second-Order Optimization Methods
+
+** The function-type hierarchy: =HessianFunction=
+
+=datamunge::optim='s =HessianFunction= interface is
+=DifferentiableFunction= (evaluate + exact gradient) plus one further
+method:
+
+#+begin_src c++ :eval no
+class HessianFunction : public DifferentiableFunction {
+public:
+    virtual std::vector<std::vector<double>>
+    hessian(const std::vector<double>& coordinates) = 0;
+};
+#+end_src
+
+Both optimizers in this report require it. This report builds two
+custom =HessianFunction= subclasses: a re-implementation of the
+companion report's =QuadraticBowl= (Hessian exactly $2I$ everywhere,
+the trivial sanity check) and a new =RosenbrockHessianFn= supplying
+the Rosenbrock function's exact analytic Hessian, derived below.
+
+** Newton's method
+
+Expanding $f$ to second order around the current point $x_k$,
+
+$$f(x_k+\delta) \approx f(x_k) + g^\top\delta + \tfrac{1}{2}\delta^\top H \delta,$$
+
+where $g=\nabla f(x_k)$ and $H$ is the exact Hessian at $x_k$, and
+minimizing the right-hand side over $\delta$ (setting its gradient
+with respect to $\delta$ to zero, $g + H\delta = 0$) gives the Newton
+system $H\delta = -g$, i.e. the classic Newton step
+$\delta = -H^{-1}g$, $x_{k+1} = x_k + \delta = x_k - H^{-1}g$.
+
+=Newton::optimize= (=newton.hpp= / =.cpp=) computes this every
+iteration slightly differently on the page but identically in effect:
+each step, if $\lVert g\rVert \le$ =tolerance= it stops; otherwise it
+forms $H=$ =hessian(x)=, adds a small fixed =damping= to every
+diagonal entry ($H_{ii} \mathrel{+}= $ =damping=, =1e-10= by default
+-- purely a numerical-conditioning constant applied identically on
+every iteration, /not/ an adaptive trust-region-style damping that
+grows or shrinks, worth stating plainly since the name invites that
+comparison), solves $H\delta=g$ (note: =g=, not =-g=) for $\delta$ via
+hand-rolled Gaussian elimination with partial pivoting, and sets
+=x -= delta=. Algebraically this is exactly the standard step: solving
+$H\delta=g$ gives $\delta=H^{-1}g$, and =x -= delta= is
+$x_{k+1}=x_k-H^{-1}g$ -- identical to $x_k + (-H^{-1}g)$ above, just
+solved for the positive gradient and subtracted rather than solved
+for the negated gradient and added. The two formulations agree
+exactly; this is a real implementation choice to note, not a sign
+error.
+
+Because it forms and inverts (via elimination) the exact Hessian
+every iteration, Newton's method converges quadratically once close
+to a well-behaved (positive-definite-Hessian) minimum -- each
+iteration roughly squares the number of accurate digits, the source
+of its 7-iteration Rosenbrock result in §4.3, dramatically faster than
+any first-order method's linear convergence rate. The cost is
+fragility: if $H$ is not positive definite where it is evaluated (the
+classic failure mode on a saddle or an indefinite region, exactly
+what Rosenbrock's curved valley contains), the Newton step can point
+in an /ascent/ direction, overshoot arbitrarily far, or -- if a pivot
+during elimination is smaller than =1e-15= even after damping --
+throw =std::invalid_argument("Newton: singular Hessian")= outright.
+This fragility, not any deficiency specific to this implementation, is
+exactly what motivates trust-region methods generally, including
+=TrustRegionNewton= below.
+
+** Trust-region Newton and the Cauchy point
+
+A trust-region method restricts each step to a ball of radius $r$
+around $x_k$ and only trusts the local quadratic model
+$m(\delta)=f(x_k)+g^\top\delta+\tfrac12\delta^\top H\delta$ inside it,
+rather than solving the (possibly ill-behaved) Newton system directly.
+The textbook subproblem is $\min_{\lVert\delta\rVert\le r} m(\delta)$,
+solved either approximately via the dogleg method (blending the
+steepest-descent and Newton directions) or exactly via the
+Moré-Sorensen algorithm (Nocedal & Wright, ch. 4). =datamunge='s
+=TrustRegionNewton= (=trust_region_newton.hpp= / =.cpp=) solves
+neither:
+it uses only the *Cauchy point*, the exact minimizer of $m$ restricted
+to the ray $\delta(\alpha)=-\alpha g$, $\alpha\ge0$, clipped to the
+trust-region boundary.
+
+Substituting $\delta(\alpha)=-\alpha g$ into $m$ gives a scalar
+quadratic in $\alpha$,
+$m(\alpha) = f(x_k) - \alpha\,g^\top g + \tfrac12\alpha^2\,g^\top H g$,
+whose unconstrained minimizer (when $g^\top H g>0$, i.e. positive
+curvature along $-g$) is $\alpha^\star = g^\top g / g^\top H g$ --
+exactly the code's =a = gg/ghg=. If this unconstrained minimizer would
+leave the trust region ($\alpha^\star\lVert g\rVert > r$), or if
+$g^\top H g\le0$ (the model is flat or unbounded below along $-g$, so
+no interior minimizer exists), the Cauchy point instead sits exactly
+on the trust-region boundary: $\alpha=r/\lVert g\rVert$. The code's
+=a = ghg>0 ? std::min(gg/ghg, r/std::sqrt(gg)) : r/std::sqrt(gg)=
+implements exactly this case split. The trial point is
+$y = x_k - \alpha g$ -- note this is =-alpha \cdot g=, /not/
+$-\alpha H^{-1}g$: the Hessian here only ever chooses the step's
+*length* along the fixed steepest-descent *direction*, never a
+different direction. This is a real, significant simplification
+relative to a textbook trust-region-Newton method: it is
+length-adaptive gradient descent with second-order length selection,
+not a genuine change of search direction, and it is exactly what
+§4.3's Rosenbrock result exposes.
+
+The accept/reject rule is likewise simpler than the textbook's
+predicted-vs-actual-reduction ratio test (Nocedal & Wright's $\rho_k$
+with grow/shrink thresholds at, e.g., 0.25 and 0.75): this
+implementation accepts the trial step whenever it merely improves the
+objective at all ($f(y)<f(x_k)$), growing the radius
+($r\leftarrow\min(2r,$ =max_radius=$)$); otherwise it rejects the step
+(keeps $x_k$) and halves the radius. It stops when $\lVert g\rVert\le$
+=tolerance= or $r\le$ =tolerance=.
+
+** Deriving the Rosenbrock Hessian
+
+The companion report's Rosenbrock function is
+$f(x,y)=(1-x)^2+100(y-x^2)^2$, with gradient
+$\partial f/\partial x = -2(1-x)-400x(y-x^2)$,
+$\partial f/\partial y = 200(y-x^2)$. Differentiating again,
+
+$$\frac{\partial^2 f}{\partial x^2} = 2 - 400\big[(y-x^2) - 2x^2\big]
+  = 2 - 400y + 1200x^2, \qquad
+  \frac{\partial^2 f}{\partial x\,\partial y} = -400x, \qquad
+  \frac{\partial^2 f}{\partial y^2} = 200.$$
+
+This was verified against a central-difference numeric Hessian
+(step $10^{-4}$) at four points spanning the search space, including
+the report's own start point $(-1.2, 1.0)$, before being trusted for
+any number in this report; every analytic entry agreed with its
+numeric counterpart to within about $10^{-5}$, the expected
+finite-difference truncation error at that step size. The determinant
+$\det H = 400 H_{00}/2 \cdot 1 - H_{01}^2$ simplifies to
+$400 - 80000y + 80000x^2$, zero exactly along the parabola
+$y=x^2+0.005$ -- close to, but not on, Rosenbrock's own valley floor
+$y=x^2$ -- which §4.4 uses to construct a genuinely, analytically
+singular starting Hessian.
+
+** Building a convergence curve for iteration-driven methods
+
+The companion report's =LoggingDifferentiable= decorator logs every
+=evaluate()= call, which works because every method in that report
+calls =evaluate()= repeatedly inside a line search. =Newton::optimize=
+does not: reading its source shows it calls =gradient()= and
+=hessian()= every iteration but =evaluate()= exactly *once*, at the
+very end, to compute the value it returns. The direct
+=HessianFunction= analog of =LoggingDifferentiable=
+(=LoggingHessian=, forwarding =hessian()= as instructed) therefore
+produces a one-point log for Newton -- confirmed directly in §4.2, a
+real quirk of this implementation's control flow, not a bug in the
+decorator. Since both =Newton= and =TrustRegionNewton= call
+=gradient()= exactly once per iteration, this report instead uses a
+second decorator, =IterationLoggingHessian=, that hooks =gradient()=
+to additionally evaluate and log the objective at the start of every
+iteration -- an iteration-indexed convergence curve in place of the
+companion report's evaluation-indexed one, used consistently for both
+methods so §4.3's figure compares like with like.
+
+* Data and Methods
+
+** The data
+
+This report reuses the companion report's exact quadratic bowl
+(target $(4,-2,1)$) and exact Rosenbrock start point $(-1.2, 1.0)$,
+specifically so §4.3's three-way comparison against that report's
+already-published LBFGS result ($f=0.000000$ at $(1,1)$, 61
+evaluations) is a same-start, apples-to-apples comparison, and adds
+one further point, $(0, 0.005)$, chosen analytically (§2.4) to sit
+exactly on Rosenbrock's Hessian-singular curve.
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module -- =Newton=,
+=TrustRegionNewton=, and (for the three-way comparison) =LBFGS= --
+together with =optim::HessianFunction= / =DifferentiableFunction=,
+and =plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes, objectives, and the logging decorators
+
+#+name: optim2-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class QuadraticBowl : public HessianFunction {
+public:
+    explicit QuadraticBowl(std::vector<double> target)
+        : target_(std::move(target)) {}
+    double evaluate(const std::vector<double>& coordinates) override {
+        double total = 0.0;
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            const double d = coordinates[i] - target_[i];
+            total += d * d;
+        }
+        return total;
+    }
+    std::vector<double> gradient(
+        const std::vector<double>& coordinates) override {
+        std::vector<double> grad(coordinates.size());
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            grad[i] = 2.0 * (coordinates[i] - target_[i]);
+        }
+        return grad;
+    }
+    std::vector<std::vector<double>> hessian(
+        const std::vector<double>& coordinates) override {
+        std::size_t n = coordinates.size();
+        std::vector<std::vector<double>> h(n, std::vector<double>(n, 0.0));
+        for (std::size_t i = 0; i < n; ++i) h[i][i] = 2.0;
+        return h;
+    }
+private:
+    std::vector<double> target_;
+};
+
+class RosenbrockFn : public DifferentiableFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double a = 1.0 - x[0];
+        const double b = x[1] - x[0] * x[0];
+        return a * a + 100.0 * b * b;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {-2.0 * (1.0 - x[0]) - 400.0 * x[0] * (x[1] - x[0] * x[0]),
+                200.0 * (x[1] - x[0] * x[0])};
+    }
+};
+
+class RosenbrockHessianFn : public HessianFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double a = 1.0 - x[0];
+        const double b = x[1] - x[0] * x[0];
+        return a * a + 100.0 * b * b;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {-2.0 * (1.0 - x[0]) - 400.0 * x[0] * (x[1] - x[0] * x[0]),
+                200.0 * (x[1] - x[0] * x[0])};
+    }
+    std::vector<std::vector<double>> hessian(
+        const std::vector<double>& x) override {
+        const double h00 = 2.0 - 400.0 * x[1] + 1200.0 * x[0] * x[0];
+        const double h01 = -400.0 * x[0];
+        const double h11 = 200.0;
+        return {{h00, h01}, {h01, h11}};
+    }
+};
+
+// Engineered so that damping (+1e-10 on the diagonal) cancels H[0][0]
+// to bit-exact 0.0, deliberately triggering Newton's singular-Hessian
+// exception (see Section 4.4).
+class EngineeredSingularFn : public HessianFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        return x[0] - 5e-11 * x[0] * x[0] + x[1] + 0.5 * x[1] * x[1];
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {1.0 - 1e-10 * x[0], 1.0 + x[1]};
+    }
+    std::vector<std::vector<double>> hessian(
+        const std::vector<double>&) override {
+        return {{-1e-10, 0.0}, {0.0, 1.0}};
+    }
+};
+
+// The direct HessianFunction analog of the companion report's
+// LoggingDifferentiable: logs every evaluate() call, forwards
+// gradient() and hessian() untouched.
+class LoggingHessian : public HessianFunction {
+public:
+    LoggingHessian(HessianFunction& inner, std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        return v;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return inner_->gradient(x);
+    }
+    std::vector<std::vector<double>> hessian(
+        const std::vector<double>& x) override {
+        return inner_->hessian(x);
+    }
+private:
+    HessianFunction* inner_;
+    std::vector<double>* log_;
+};
+
+class LoggingDifferentiable : public DifferentiableFunction {
+public:
+    LoggingDifferentiable(DifferentiableFunction& inner,
+                           std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        return v;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return inner_->gradient(x);
+    }
+private:
+    DifferentiableFunction* inner_;
+    std::vector<double>* log_;
+};
+
+// Newton only calls evaluate() once, at the very end (see Section
+// 2.5), so LoggingHessian's evaluate()-hook is useless for its
+// convergence curve. Both Newton and TrustRegionNewton call
+// gradient() exactly once per iteration, so this decorator hooks
+// gradient() instead, evaluating and logging the objective at the
+// start of every iteration.
+class IterationLoggingHessian : public HessianFunction {
+public:
+    IterationLoggingHessian(HessianFunction& inner,
+                             std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        return inner_->evaluate(x);
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        log_->push_back(inner_->evaluate(x));
+        return inner_->gradient(x);
+    }
+    std::vector<std::vector<double>> hessian(
+        const std::vector<double>& x) override {
+        return inner_->hessian(x);
+    }
+private:
+    HessianFunction* inner_;
+    std::vector<double>* log_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+std::vector<double> indices(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) out[i] = static_cast<double>(i + 1);
+    return out;
+}
+
+} // namespace
+#+end_src
+
+This mirrors the reference example's =HessianFunction= usage, extended
+with the two logging decorators above and one =RPlot= visualization.
+
+*** Newton and TrustRegionNewton on the quadratic bowl
+
+#+name: optim2-bowl
+#+begin_src c++ :eval no
+    std::cout << "=== HessianFunction: Newton and TrustRegionNewton"
+                 " on the quadratic bowl ===\n";
+    {
+        QuadraticBowl f({4.0, -2.0, 1.0});
+        std::vector<double> log;
+        IterationLoggingHessian lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = Newton().optimize(lf, x);
+        std::cout << "Newton:            f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " iterations)\n";
+    }
+    {
+        QuadraticBowl f({4.0, -2.0, 1.0});
+        std::vector<double> log;
+        IterationLoggingHessian lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = TrustRegionNewton().optimize(lf, x);
+        std::cout << "TrustRegionNewton: f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " iterations)\n";
+    }
+#+end_src
+
+*** Newton's evaluate()-call quirk on Rosenbrock
+
+#+name: optim2-quirk
+#+begin_src c++ :eval no
+    std::cout << "\n=== Newton's evaluate()-call quirk on Rosenbrock"
+                 " ===\n";
+    {
+        RosenbrockHessianFn f;
+        std::vector<double> log;
+        LoggingHessian lf(f, log);
+        std::vector<double> x{-1.2, 1.0};
+        Newton().optimize(lf, x);
+        std::cout << "LoggingHessian (evaluate()-hook) log size for"
+                      " Newton: " << log.size() << "\n";
+    }
+#+end_src
+
+*** Three-way comparison on Rosenbrock, and its convergence figure
+
+#+name: optim2-rosenbrock
+#+begin_src c++ :eval no
+    std::cout << "\n=== Three-way comparison on Rosenbrock from"
+                 " (-1.2, 1.0) ===\n";
+    std::vector<double> lbfgs_log, newton_log, trn_log;
+    {
+        RosenbrockFn f;
+        LoggingDifferentiable lf(f, lbfgs_log);
+        std::vector<double> x{-1.2, 1.0};
+        const double value = LBFGS().optimize(lf, x);
+        std::cout << "LBFGS:             f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << lbfgs_log.size() << " evaluations)\n";
+    }
+    {
+        RosenbrockHessianFn f;
+        IterationLoggingHessian lf(f, newton_log);
+        std::vector<double> x{-1.2, 1.0};
+        try {
+            const double value = Newton().optimize(lf, x);
+            std::cout << "Newton:            f=" << value << " x=";
+            print_vec(x);
+            std::cout << " (" << newton_log.size() << " iterations)\n";
+        } catch (const std::exception& e) {
+            std::cout << "Newton:            THREW: " << e.what()
+                       << " x=";
+            print_vec(x);
+            std::cout << " (" << newton_log.size() << " iterations)\n";
+        }
+    }
+    {
+        RosenbrockHessianFn f;
+        IterationLoggingHessian lf(f, trn_log);
+        std::vector<double> x{-1.2, 1.0};
+        try {
+            const double value = TrustRegionNewton().optimize(lf, x);
+            std::cout << "TrustRegionNewton: f=" << value << " x=";
+            print_vec(x);
+            std::cout << " (" << trn_log.size() << " iterations)\n";
+        } catch (const std::exception& e) {
+            std::cout << "TrustRegionNewton: THREW: " << e.what()
+                       << " x=";
+            print_vec(x);
+            std::cout << " (" << trn_log.size() << " iterations)\n";
+        }
+    }
+#+end_src
+
+#+name: optim2-rosenbrock-figure
+#+begin_src c++ :eval no
+    {
+        auto log10_shifted = [](const std::vector<double>& v) {
+            std::vector<double> out(v.size());
+            for (std::size_t i = 0; i < v.size(); ++i) {
+                out[i] = std::log10(v[i] + 1e-12);
+            }
+            return out;
+        };
+        auto plot = RPlot::plot(indices(newton_log.size()),
+                                 log10_shifted(newton_log), "l",
+                                 "Newton", {220, 38, 38});
+        plot.lines(indices(trn_log.size()), log10_shifted(trn_log),
+                   "TrustRegionNewton", {96, 165, 250}, 2.0);
+        plot.legend({"Newton", "TrustRegionNewton"},
+                    {{220, 38, 38}, {96, 165, 250}});
+        plot.title("Newton vs. TrustRegionNewton on Rosenbrock")
+            .x_label("iteration")
+            .y_label("log10(f)");
+        plot.save_svg(
+            "build/org/optim_2ndorder_rosenbrock_convergence.svg");
+        std::cout << "wrote optim_2ndorder_rosenbrock_convergence.svg\n";
+    }
+#+end_src
+
+*** Singular and near-singular Hessian failure modes
+
+#+name: optim2-singular
+#+begin_src c++ :eval no
+    std::cout << "\n=== Singular / near-singular Hessian failure"
+                 " modes ===\n";
+    {
+        RosenbrockHessianFn f;
+        std::vector<double> x0{0.0, 0.005};
+        auto h = f.hessian(x0);
+        double det = h[0][0] * h[1][1] - h[0][1] * h[1][0];
+        auto g = f.gradient(x0);
+        std::cout << "At x=[0, 0.005]: H=[[" << h[0][0] << ","
+                   << h[0][1] << "],[" << h[1][0] << "," << h[1][1]
+                   << "]] det=" << det << " gradient=";
+        print_vec(g);
+        std::cout << "\n";
+        std::vector<double> x{0.0, 0.005};
+        try {
+            const double value = Newton().optimize(f, x);
+            std::cout << "Newton from exact-singular point: f=" << value
+                       << " x=";
+            print_vec(x);
+            std::cout << "\n";
+        } catch (const std::exception& e) {
+            std::cout << "Newton from exact-singular point THREW: "
+                       << e.what() << "\n";
+        }
+    }
+    {
+        EngineeredSingularFn f;
+        std::vector<double> x{0.0, 0.0};
+        try {
+            const double value = Newton().optimize(f, x);
+            std::cout << "Newton on engineered singular fn: f=" << value
+                       << " x=";
+            print_vec(x);
+            std::cout << "\n";
+        } catch (const std::exception& e) {
+            std::cout << "Newton on engineered singular fn THREW: "
+                       << e.what() << "\n";
+        }
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_2ndorder_analysis.cpp <<'CPP'
+<<optim2-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<optim2-bowl>>
+
+<<optim2-quirk>>
+
+<<optim2-rosenbrock>>
+
+<<optim2-rosenbrock-figure>>
+
+<<optim2-singular>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_2ndorder_analysis.cpp \
+  -o build/org/optim_2ndorder_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_2ndorder_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Newton and TrustRegionNewton on the quadratic bowl
+
+#+begin_example
+=== HessianFunction: Newton and TrustRegionNewton on the quadratic bowl ===
+Newton:            f=0.000000 x=[4.000000, -2.000000, 1.000000]
+  (2 iterations)
+TrustRegionNewton: f=0.000000 x=[4.000000, -2.000000, 1.000000]
+  (4 iterations)
+#+end_example
+
+Both methods reach the exact minimum $(4,-2,1)$. =Newton= needs only
+2 iterations: the first computes and takes the exact Newton step
+(which, on a function whose Hessian is exactly $2I$ everywhere, /is/
+the exact minimizer, modulo the negligible =1e-10= damping term), and
+the second iteration merely confirms $\lVert g\rVert\le$ =tolerance=
+and stops -- exactly the "one real step" behavior predicted going in.
+=TrustRegionNewton= needs a few more (4) because its first accepted
+Cauchy-point step is deliberately clipped to the trust region's
+initial radius ($1.0$ by default) rather than allowed to jump straight
+to the minimizer the way Newton's unclipped step does; each subsequent
+iteration both grows the radius and takes another step, converging
+fully within a handful of iterations once the radius exceeds the
+distance to the minimum.
+
+** Newton's evaluate()-call quirk
+
+#+begin_example
+=== Newton's evaluate()-call quirk on Rosenbrock ===
+LoggingHessian (evaluate()-hook) log size for Newton: 1
+#+end_example
+
+This confirms §2.5's prediction directly: wrapping =Newton='s
+objective in the companion report's exact =LoggingDifferentiable=
+pattern (extended to forward =hessian()=) produces a log with exactly
+one entry, because =Newton::optimize= calls =evaluate()= only once, to
+compute its return value, never during the iteration loop itself. This
+is a real, useful discovery about the implementation, not a flaw in
+the decorator -- the remaining figures in this report use the
+gradient()-hooked =IterationLoggingHessian= decorator instead (§2.5).
+
+** Three-way comparison on Rosenbrock
+
+#+begin_example
+=== Three-way comparison on Rosenbrock from (-1.2, 1.0) ===
+LBFGS:             f=0.000000 x=[1.000000, 1.000001]
+  (61 evaluations)
+Newton:            f=0.000000 x=[1.000000, 1.000000]
+  (7 iterations)
+TrustRegionNewton: f=0.074290 x=[0.727911, 0.528249]
+  (200 iterations)
+#+end_example
+
+=LBFGS='s own number reproduces the companion report's exactly (61
+evaluations, $f=0.000000$ at $(1.000000, 1.000001)$), confirming this
+program's Rosenbrock objective is identical and this comparison is a
+genuine same-start match. =Newton= reaches $f=0.000000$ at exactly
+$(1,1)$ in just 7 iterations -- its quadratic convergence dominates
+here despite Rosenbrock's Hessian being indefinite over parts of the
+search space, because the particular iterate path taken from
+$(-1.2,1.0)$ never actually lands on an indefinite or near-singular
+region (see §4.4 for a starting point deliberately chosen so it does).
+=TrustRegionNewton=, in sharp contrast, runs its entire 200-iteration
+budget (the default =max_iterations=) without ever satisfying either
+stopping condition, ending at $f=0.074290$, $(0.728, 0.528)$ -- close
+to, but nowhere near, the true minimum.
+
+#+ATTR_HTML: :alt Log10(f) convergence curves for Newton and TrustRegionNewton on the Rosenbrock function, iteration-indexed :width 100%
+[[file:../../build/org/optim_2ndorder_rosenbrock_convergence.svg]]
+
+The convergence figure makes the gap vivid: =Newton='s (red) curve
+plunges from $\log_{10}f\approx3$ to below $-13$ within its 7
+iterations (with a brief bump partway through, the same kind of
+line-less "correction" overshoot the companion report's LBFGS curve
+shows on this same landscape), while =TrustRegionNewton='s (blue)
+curve creeps down from just above $\log_{10}f\approx1$ to only
+slightly below $0$ across all 200 iterations, with a visible
+staircase pattern (short flat stretches where a step is rejected and
+the radius merely halves, punctuated by small drops when a step is
+accepted) and never gets anywhere near =Newton='s final level.
+
+** Singular and near-singular Hessian failure modes
+
+#+begin_example
+=== Singular / near-singular Hessian failure modes ===
+At x=[0, 0.005]: H=[[0.000000,-0.000000],[-0.000000,200.000000]]
+  det=0.000000 gradient=[-2.000000, 1.000000]
+Newton from exact-singular point: f=399999998982648168448.000000
+  x=[19999999975.566204, 399999999022648131584.000000]
+Newton on engineered singular fn THREW: Newton: singular Hessian
+#+end_example
+
+At $(0, 0.005)$ -- exactly on the curve §2.4 derived where
+Rosenbrock's Hessian is analytically singular -- the printed Hessian
+confirms $H_{00}=0$, $H_{01}=H_{10}=0$, $\det H=0$, with a genuinely
+nonzero gradient $(-2, 1)$: precisely the "nonzero gradient, singular
+Hessian" scenario the implementation's exception exists to guard
+against. It does /not/ fire here. Instead, =Newton= takes one
+catastrophic step (the damped pivot $H_{00}+\text{damping}=10^{-10}$
+survives the $10^{-15}$ throw threshold by five orders of magnitude,
+but is still far too small to safely invert) and diverges to
+$x\approx(2.0\times10^{10}, 4.0\times10^{20})$, silently returning an
+astronomical function value rather than erroring out. The second,
+deliberately engineered objective (Hessian entry exactly $-10^{-10}$,
+canceling the damping to bit-exact $0.0$ by IEEE-754 arithmetic) does
+trigger the real exception immediately on its first iteration,
+confirming the guard code path exists and works exactly as documented
+-- just not for every intuitively "singular" starting point, only for
+ones where the /damped/ pivot itself underflows the threshold.
+
+* Discussion
+
+**A fixed, always-on diagonal damping constant changes what "singular"
+means operationally, and this report caught the gap in practice, not
+just in the source.** The documented exception
+(=std::invalid_argument("Newton: singular Hessian")=) reads as a
+general safety net for ill-conditioned or singular Hessians, and the
+brief motivating this report speculated it might fire on a genuinely
+singular Rosenbrock point. It does not: §4.4 shows a real, analytically
+singular Hessian (determinant exactly zero, confirmed both
+symbolically in §2.4 and numerically in the program's own printed
+=det= field, set to =0.000000=) produces silent catastrophic
+divergence instead of an error, because the =1e-10= damping constant
+is exactly large enough to
+keep the damped pivot above the =1e-15= throw threshold. The exception
+only fires for the narrower case this report had to construct
+deliberately: a Hessian entry close enough to $-\text{damping}$ that
+the addition cancels to (near) bit-exact zero. A caller relying on the
+exception as a general "did my Hessian go singular" signal would be
+silently misled on Rosenbrock's own singular curve -- a real, useful
+finding about where this implementation's safety net does and does not
+catch.
+
+**=TrustRegionNewton='s Cauchy-point-only subproblem solve is not a
+minor simplification on a genuinely curved landscape -- it caps the
+method's achievable progress at whatever a rescaled steepest-descent
+direction alone can reach.** §4.3's comparison makes this concrete:
+=Newton=, given the same starting point and an equally exact Hessian,
+reaches machine-precision $f=0$ in 7 iterations, while
+=TrustRegionNewton= is still at $f=0.074$ after 200 -- nearly 30x more
+iterations for a dramatically worse answer. The bowl result in §4.1
+shows this is not intrinsic to trust-region methods generally: on an
+isotropic quadratic, $-g$ already points exactly at the minimum, so a
+Cauchy-point-only trust region loses nothing. Rosenbrock's valley is
+exactly the landscape where steepest descent's direction and the true
+Newton direction diverge sharply, and that is exactly where this
+implementation's simplification -- adapting step /length/ via the
+Hessian but never step /direction/ -- shows its cost most clearly.
+
+**Newton's evaluate()-call quirk is a small but genuine reminder that
+a decorator technique verified on one class of optimizer does not
+automatically generalize to another with different control flow.**
+The companion report's =LoggingDifferentiable= trick works because
+every method it wraps calls =evaluate()= repeatedly, inside a line
+search or a per-epoch loop. =Newton='s single end-of-run =evaluate()=
+call breaks that assumption outright (a one-point log, confirmed in
+§4.2), not because of any bug, but because Newton's whole iteration
+loop operates purely on =gradient()= and =hessian()= and never needs
+the raw objective value until it is ready to report a final answer.
+Building this report's actual convergence curve required hooking a
+different method (=gradient()=) entirely -- a concrete illustration
+that "no optimizer exposes an iteration history directly" (true of
+every method in this series so far) can still require a genuinely
+different decorator strategy per method, not one universal trick.
+
+* Conclusion
+
+Fitting the same quadratic bowl and the same Rosenbrock start point
+$(-1.2, 1.0)$ used in the companion report with exact-Hessian methods
+surfaces results the gradient-only comparison could not: =Newton=
+needs only 7 iterations to reach Rosenbrock's exact minimum, faster in
+iteration count than =LBFGS='s 61 evaluations even accounting for the
+extra per-iteration Hessian cost, while =TrustRegionNewton='s
+Cauchy-point-only subproblem solve leaves it stalled at $f=0.074$
+after its full 200-iteration budget on the identical problem. The two
+deliberately constructed singular-Hessian experiments show the
+documented exception is real but narrower than its name suggests --
+it catches deliberately engineered cancellation, not every
+analytically singular Hessian a caller might construct, a genuine,
+checkable limitation worth knowing before relying on it as a general
+safety net. As with its companions, this entire report is reproducible
+end to end via
+=just org-example optimization_second_order_analysis=, which
+re-executes §3.3.6's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Newton, I. (1687). /Philosophiae Naturalis Principia Mathematica/.
+  (Method of successive approximation; the root-finding iteration
+  generalized here to optimization.)
+- Raphson, J. (1690). /Analysis Aequationum Universalis/. (Independent
+  formulation of the same iteration, hence "Newton-Raphson.")
+- Nocedal, J., & Wright, S. J. (2006). /Numerical Optimization/ (2nd
+  ed.), chs. 3 (Newton's method) and 4 (trust-region methods).
+  Springer.
+- Rosenbrock, H. H. (1960). "An Automatic Method for Finding the
+  Greatest or Least Value of a Function." /The Computer Journal/, 3(3),
+  175--184.

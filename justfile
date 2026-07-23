@@ -142,6 +142,7 @@ prebuild-r:
   perl -0777 -pi -e "s/'R_swig_Alternative_(?!Alternative_)/'R_swig_Alternative_Alternative_/g" R/datamunger.R
   perl -0777 -pi -e "s/'R_swig_PAdjustMethod_(?!PAdjustMethod_)/'R_swig_PAdjustMethod_PAdjustMethod_/g" R/datamunger.R
   perl -0777 -pi -e "s/'R_swig_MonomialOrder_(?!MonomialOrder_)/'R_swig_MonomialOrder_MonomialOrder_/g" R/datamunger.R
+  perl -0777 -pi -e "s/'R_swig_StepMethod_(?!StepMethod_)/'R_swig_StepMethod_StepMethod_/g" R/datamunger.R
   # Work around a second swig-jse R-backend bug: std::vector<std::size_t> (used throughout
   # this codebase, vs. the bare std::vector<size_t> the SizeVector %template/%apply fix is
   # keyed to -- see the size_t %apply notes elsewhere in this file) gets its own, never-
@@ -226,6 +227,7 @@ prebuild-ocaml:
   perl -0777 -pi -e "s/= datamunge::stats::Multiplicative\b/= static_cast<int>(datamunge::stats::SeasonalType::Multiplicative)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
   perl -0777 -pi -e "s/= datamunge::stats::(TwoSided|Less|Greater)\b/= static_cast<int>(datamunge::stats::Alternative::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
   perl -0777 -pi -e "s/= datamunge::stats::(Bonferroni|Holm|Hochberg|Hommel|BH|BY)\b/= static_cast<int>(datamunge::stats::PAdjustMethod::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::ode::(Euler|Midpoint|RK4|RK45|AdamsBashforth|AdamsMoulton)\b/= static_cast<int>(datamunge::ode::StepMethod::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
 
 # }}} prebuild commands
 
@@ -419,7 +421,11 @@ test-python: prebuild-python
   rm -rf build/venv/pydatamunge
   {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge'
   {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge/bin/python -m pip install -e . --no-build-isolation'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge/bin/python -m pytest -q tests/python'
+  # PYTHONPATH=src is required despite the editable install: --system-site-packages pulls in
+  # the nix flake's own pinned pydatamunge build, which otherwise shadows this fresh local one
+  # on sys.path (the pinned build wins even though the venv's own editable install should take
+  # precedence, since it's older code without the changes just built above).
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'PYTHONPATH=src build/venv/pydatamunge/bin/python -m pytest -q tests/python'
 
 test-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command bash -lc 'R -q -e "testthat::test_local(\".\")"'

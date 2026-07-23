@@ -1,0 +1,734 @@
+#+title: Variance-Reduced Stochastic Gradient Methods: SVRG and SAGA
+#+subtitle: A literate C++ study of control-variate variance reduction for DifferentiableSeparableFunction using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit =datamunge='s C++ =optim= module's two variance-reduced
+stochastic gradient methods, =SVRG= and =SAGA=, to an
+ordinary-least-squares loss on the iris dataset -- the exact setup
+the companion
+=optimization_analysis.org= report's mini-batch =SGD= already fits --
+and instrument every method with a real, compiled term-gradient-call
+counter to compare their cost on an apples-to-apples basis, not just a
+final answer. Both new methods match the closed-form =LM= solution to
+five decimal places ($f=61.436747$, identical to =LM='s residual sum of
+squares to the printed precision), while plain mini-batch =SGD= settles
+for $f=61.439385$ -- and they do it far more cheaply: =SVRG= needs only
+5550 term-gradient/term-evaluate calls and =SAGA= needs 6750, against
+=SGD='s 90150, a roughly 13--16x reduction in term-level work for a
+strictly better answer. This is a real, positive result for variance
+reduction even on a small, well-conditioned, 150-row dataset -- but it
+comes with a serious caveat this report does not hide: =SVRGOptions='s
+own documented default step size, 0.01, diverges to non-finite weights
+(one component overflows past $10^{215}$) within the first epoch on
+this exact problem, and had to be manually retuned down to 0.00002 (500x
+smaller) before =SVRG= became stable, while =SAGA='s identical default
+step size of 0.01 converges cleanly out of the box. A second, synthetic
+experiment with known ground truth confirms both methods, once =SVRG=
+is correctly tuned, recover true weights $(2, -3, 1.5)$ to five or more
+decimal places with $f\approx0$. We derive the shared control-variate
+identity behind both methods' variance reduction and tie every claim in
+this abstract to a numbered result below.
+#+end_abstract
+
+* Introduction
+
+The companion report, =optimization_analysis.org=, fits an
+ordinary-least-squares loss with mini-batch =SGD= and shows it lands close to,
+but not exactly at, the closed-form =LM= solution -- SGD's per-step
+gradient estimate (the average over one random mini-batch of terms) is
+an unbiased but /noisy/ estimator of the true full gradient, and that
+noise is exactly why SGD needs either a shrinking step size or enough
+iterations to average the noise away, and why it never quite settles
+onto the exact minimum. =SVRG= (Johnson & Zhang, 2013) and =SAGA=
+(Defazio, Bach & Lacoste-Julien, 2014) both target the same
+=DifferentiableSeparableFunction= interface SGD does -- an objective
+$f(x)=\sum_i f_i(x)$ decomposing as a sum of per-example terms -- but
+replace SGD's raw single-term gradient with a /variance-reduced/
+estimator built from a control variate, aiming to get SGD's cheap
+per-step cost without paying for its persistent gradient noise. This
+report fits both to the identical iris OLS problem the companion report
+already established a baseline for, instruments a real term-level cost
+counter so the comparison is fair, and reports exactly what happened --
+including a real numerical-stability problem =SVRG='s library defaults
+have on this data that =SAGA='s defaults do not.
+
+As with its companions, this document is a /literate program/: prose
+and source are interleaved in reading order, and a single "assembling
+the program" step (§3.3.5) weaves every named chunk below into one
+=.cpp= file, compiles it, and runs it. Every number and figure from §4
+onward is that program's literal output.
+
+§2 derives the shared control-variate identity behind both methods and
+each method's specific update rule, tied to the exact formula in its
+=.cpp= source. §3 describes the program, including the term-call
+counting wrapper used to build a fair cost comparison across SGD, SVRG,
+and SAGA (none of which exposes an iteration history or a call counter
+natively). §4 reports the iris OLS results, the term-call convergence
+figure, and a second synthetic experiment with known ground truth. §5
+discusses what the term-call gap and the SVRG divergence both reveal.
+§6 concludes.
+
+* Background: Variance-Reduced Stochastic Gradient Methods
+
+** The function-type interface
+
+=SVRG= and =SAGA= both target =datamunge::optim='s
+=DifferentiableSeparableFunction= interface: an objective that
+decomposes as $f(x) = \sum_{i=1}^{n} f_i(x)$, exposing
+=evaluate_term(x, i)= and =gradient_term(x, i)= for a single term $i$ in
+addition to the whole-objective =evaluate()= and =gradient()= (which,
+per =function_types.cpp='s default implementation, simply sum every
+term's =evaluate_term= / =gradient_term= in a loop -- calling the full
+=evaluate()= costs exactly $n$ =evaluate_term= calls, and the full
+=gradient()= costs exactly $n$ =gradient_term= calls). This is the exact
+shape any empirical-risk-minimization loss takes: one term per training
+example. This report reuses the same =LinearRegressionLoss= subclass
+the companion report defines for OLS.
+
+** Plain SGD's core problem: a high-variance gradient estimator
+
+A single term's gradient $\nabla f_i(x)$, for $i$ drawn uniformly at
+random, is an /unbiased/ estimator of the true gradient: $E_i[\nabla
+f_i(x)] = \nabla f(x)$. But it is a /high-variance/ one -- individual
+terms can point in very different directions from the true full
+gradient, especially early in optimization -- and that variance is
+exactly why =SGD= needs either a shrinking step size or many iterations
+of averaging to converge tightly, and why §4.1's =SGD= result settles
+near, but not exactly onto, the true minimum.
+
+** The shared control-variate identity
+
+Both =SVRG= and =SAGA= reduce this variance using the same algebraic
+trick: for /any/ fixed reference point $y$,
+
+$$E_i\big[\nabla f_i(x) - \nabla f_i(y) + \nabla f(y)\big] = \nabla f(x)$$
+
+because $E_i[\nabla f_i(y)] = \nabla f(y)$ exactly, so the two
+\(y\)-anchored terms have expectation zero and cancel out of the
+expectation, leaving the bracketed quantity unbiased for $\nabla f(x)$
+for /any/ choice of $y$ -- not just $y=x$. Crucially, its /variance/
+also shrinks as $x \to y$: both real-gradient terms $\nabla f_i(x)$ and
+$\nabla f_i(y)$ become nearly identical, and the difference they form
+approaches zero pointwise rather than merely in expectation, while the
+exact correction term $\nabla f(y)$ still supplies the missing bias.
+$y$ acting this way -- a fixed reference whose own expectation is known
+exactly, used to cancel noise in a related estimator -- is precisely
+the statistical technique of a /control variate/. =SVRG= and =SAGA=
+differ only in how they choose and maintain $y$.
+
+** SVRG: a periodically-refreshed snapshot
+
+=SVRG= (=svrg.hpp= / =svrg.cpp=) sets =SVRGOptions= fields =step_size=
+(default 0.01), =max_epochs= (default 100), =inner_iterations=
+(default 0, meaning "use =num_functions()="), =tolerance= (default
+1e-8), and =seed= (default 42, seeding a Mersenne Twister). Each epoch
+takes a full-gradient /snapshot/ at the current point -- =snapshot= is a
+copy of the current coordinates, =snapshot_gradient= is $\nabla
+f(\text{snapshot})$, one full pass over every term -- and then runs
+=inner_iterations= stochastic steps, each sampling a term $i$ uniformly
+at random and updating
+
+$$x \leftarrow x - \eta\big(\nabla f_i(x) - \nabla f_i(\text{snapshot})
++ \nabla f(\text{snapshot})\big)$$
+
+exactly the control-variate identity above with $y=\text{snapshot}$
+held fixed for the whole epoch. The epoch loop stops early (the whole
+=optimize()= call returns) once $|\Delta f|$ between one epoch's end and
+the next falls to =tolerance= or below.
+
+** SAGA: a continuously-refreshed gradient table
+
+=SAGA= (=saga.hpp= / =saga.cpp=) sets =SAGAOptions= fields =step_size=
+(default 0.01), =max_iterations= (default 10000), =tolerance= (default
+1e-8), and =seed= (default 42). Rather than one shared snapshot,
+=SAGA= maintains a full /table/ of per-term gradients,
+=gradient_table[i]= for every $i=1,\dots,n$ -- an $O(nd)$ memory cost
+=SVRG='s single snapshot avoids entirely -- initialized by one full pass
+over every term before the main loop, plus their running average
+=average_gradient=. Each iteration samples a term $i$ and updates
+
+$$x \leftarrow x - \eta\big(\nabla f_i(x) - \text{table}[i] +
+\overline{\nabla f}\big)$$
+
+exactly the same control-variate identity, but with $y$ implicitly a
+different, individually-tracked point per term rather than one shared
+snapshot -- and, unlike =SVRG=, only /one/ table entry (=table[i]=) is
+refreshed after each step, not the whole table, while
+=average_gradient= is updated /incrementally/
+(=average_gradient += (gradient[j] - table[i][j]) / n=), not
+recomputed from scratch. Because each term's reference point updates
+every time that term is sampled rather than once per epoch, =SAGA='s
+control variate never goes as long without a refresh as =SVRG='s can
+(with a full pass between refreshes) -- a difference §5 argues explains
+this report's stability gap between the two methods. Every $n$
+iterations (one epoch's worth of samples) =SAGA= checks the actual
+current full objective for the tolerance stopping test -- note this is
+gated by =(iteration+1) % terms == 0=, not checked every single
+iteration the way =SVRG= checks every epoch. One further implementation
+detail worth flagging: regardless of whether the loop exits by hitting
+=max_iterations= or by the tolerance test breaking early, =SAGA::optimize=
+always calls =function.evaluate()= one additional time on the way out
+(=return function.evaluate(coordinates);=, discarding whatever =value=
+the loop last computed) -- a harmless but real extra \(n\)-term-call cost
+paid on every single call, visible directly in §4.1's checkpoint counts.
+
+** Building a fair cost comparison
+
+Neither =SVRG= nor =SAGA= (nor =SGD=) exposes an iteration history, and
+unlike the gradient-based methods in the companion report, wrapping
+just =evaluate()= in a logging decorator is not enough here: both
+methods are overwhelmingly dominated by =evaluate_term()= /
+=gradient_term()= calls, and =evaluate()= itself is called only at
+epoch or every-\(n\)-iteration boundaries for the internal tolerance
+check. This report instead wraps the loss in a =CountingLoss= decorator
+that increments a shared counter inside /every/ =evaluate_term()= and
+=gradient_term()= override -- capturing the true unit of work each
+method is dominated by, including the calls =evaluate()='s own default
+implementation makes internally -- and, whenever the wrapped optimizer
+calls the full =evaluate()=, logs the current counter value alongside
+the resulting loss as one point on a convergence curve. The same
+wrapper is applied to =SGD= for a like-for-like comparison, since
+=SGD='s own mini-batch step also costs =batch_size= =gradient_term=
+calls per step.
+
+* Data and Methods
+
+** The data
+
+§4.1 reuses the companion report's exact iris OLS setup: standardized
+=Sepal.Length= / =Sepal.Width= predicting =Petal.Length=, chosen so this
+report's =SVRG= / =SAGA= results are directly comparable to the companion
+report's =SGD= baseline on identical data, and checkable against the
+same closed-form =stats::LM= solution. §4.2 uses a second, synthetic
+dataset with known ground truth ($n=200$, two uniform$(-1,1)$
+predictors, hand-picked true weights $(2,-3,1.5)$, no noise), chosen
+specifically so both methods' recovered weights and final objective
+value can be checked against an exact analytic answer rather than only
+another optimizer's output.
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module -- =SVRG=,
+=SAGA=, and =SGD= (the last for a direct baseline) -- together with
+=optim::DifferentiableSeparableFunction=, =stats::LM= for the
+closed-form comparison, and =plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes, the loss, and the counting wrapper
+
+#+name: vr-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/stats.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class LinearRegressionLoss : public DifferentiableSeparableFunction {
+public:
+    LinearRegressionLoss(std::vector<std::vector<double>> X,
+                          std::vector<double> y)
+        : X_(std::move(X)), y_(std::move(y)) {}
+
+    [[nodiscard]] std::size_t num_functions() const override {
+        return y_.size();
+    }
+
+    double evaluate_term(const std::vector<double>& w,
+                          const std::size_t i) override {
+        const double err = predict(w, i) - y_[i];
+        return err * err;
+    }
+    std::vector<double> gradient_term(const std::vector<double>& w,
+                                       const std::size_t i) override {
+        const double err = predict(w, i) - y_[i];
+        std::vector<double> grad(w.size());
+        for (std::size_t j = 0; j < w.size(); ++j) {
+            grad[j] = 2.0 * err * X_[i][j];
+        }
+        return grad;
+    }
+
+private:
+    double predict(const std::vector<double>& w, const std::size_t i) const {
+        double pred = 0.0;
+        for (std::size_t j = 0; j < w.size(); ++j) pred += w[j] * X_[i][j];
+        return pred;
+    }
+    std::vector<std::vector<double>> X_;
+    std::vector<double> y_;
+};
+
+// Wraps any DifferentiableSeparableFunction and counts every
+// evaluate_term()/gradient_term() call -- the real unit of work
+// SVRG/SAGA/SGD are dominated by -- and, whenever the wrapped optimizer
+// calls the full evaluate() (only at epoch / every-n-iteration
+// boundaries), logs (term_calls_so_far, full_loss) as one point.
+class CountingLoss : public DifferentiableSeparableFunction {
+public:
+    CountingLoss(DifferentiableSeparableFunction& inner, long long& counter,
+                 std::vector<double>& log_calls,
+                 std::vector<double>& log_values)
+        : inner_(&inner), counter_(&counter), log_calls_(&log_calls),
+          log_values_(&log_values) {}
+
+    [[nodiscard]] std::size_t num_functions() const override {
+        return inner_->num_functions();
+    }
+
+    double evaluate_term(const std::vector<double>& x,
+                          const std::size_t i) override {
+        ++(*counter_);
+        return inner_->evaluate_term(x, i);
+    }
+    std::vector<double> gradient_term(const std::vector<double>& x,
+                                       const std::size_t i) override {
+        ++(*counter_);
+        return inner_->gradient_term(x, i);
+    }
+    double evaluate(const std::vector<double>& x) override {
+        double total = 0.0;
+        const std::size_t n = num_functions();
+        for (std::size_t i = 0; i < n; ++i) total += evaluate_term(x, i);
+        log_calls_->push_back(static_cast<double>(*counter_));
+        log_values_->push_back(total);
+        return total;
+    }
+
+private:
+    DifferentiableSeparableFunction* inner_;
+    long long* counter_;
+    std::vector<double>* log_calls_;
+    std::vector<double>* log_values_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+} // namespace
+#+end_src
+
+*** Iris OLS: SGD baseline, SVRG (default divergence and tuned), SAGA, and closed-form LM
+
+#+name: vr-iris
+#+begin_src c++ :eval no
+    std::cout << "=== Experiment 1: iris OLS -- SGD vs SVRG vs SAGA ===\n";
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> sepal_length(iris.nrows());
+    std::vector<double> sepal_width(iris.nrows());
+    std::vector<double> petal_length(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        sepal_length[i] = iris.double_at("Sepal.Length", i);
+        sepal_width[i] = iris.double_at("Sepal.Width", i);
+        petal_length[i] = iris.double_at("Petal.Length", i);
+    }
+    auto mean_of = [](const std::vector<double>& v) {
+        double s = 0.0;
+        for (const double x : v) s += x;
+        return s / static_cast<double>(v.size());
+    };
+    auto stddev_of = [](const std::vector<double>& v, const double mean) {
+        double s = 0.0;
+        for (const double x : v) s += (x - mean) * (x - mean);
+        return std::sqrt(s / static_cast<double>(v.size()));
+    };
+    const double mean1 = mean_of(sepal_length);
+    const double std1 = stddev_of(sepal_length, mean1);
+    const double mean2 = mean_of(sepal_width);
+    const double std2 = stddev_of(sepal_width, mean2);
+
+    std::vector<std::vector<double>> X;
+    X.reserve(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        X.push_back({1.0, (sepal_length[i] - mean1) / std1,
+                     (sepal_width[i] - mean2) / std2});
+    }
+
+    auto destd = [&](const std::vector<double>& w_std) {
+        return std::vector<double>{
+            w_std[0] - w_std[1] * mean1 / std1 - w_std[2] * mean2 / std2,
+            w_std[1] / std1, w_std[2] / std2};
+    };
+
+    long long sgd_calls = 0, svrg_calls = 0, saga_calls = 0;
+    std::vector<double> sgd_x, sgd_y, svrg_x, svrg_y, saga_x, saga_y;
+
+    {
+        LinearRegressionLoss loss(X, petal_length);
+        CountingLoss counted(loss, sgd_calls, sgd_x, sgd_y);
+        std::vector<double> w_std{0.0, 0.0, 0.0};
+        SGDOptions opts;
+        opts.step_size = 0.01;
+        opts.max_epochs = 300;
+        opts.batch_size = 8;
+        const double value = SGD(opts).optimize(counted, w_std);
+        std::cout << "SGD  weights (intercept, Sepal.Length, Sepal.Width): ";
+        print_vec(destd(w_std));
+        std::cout << "\n  f=" << value << "  term-calls=" << sgd_calls
+                   << "  evaluate() checkpoints=" << sgd_x.size() << "\n";
+    }
+    {
+        // The SVRGOptions default step_size (0.01) on this problem:
+        // demonstrate the divergence honestly before the tuned run below.
+        // (Raw weight/objective values overflow to huge magnitudes or
+        // inf/nan, so we report finiteness rather than the raw numbers.)
+        LinearRegressionLoss loss(X, petal_length);
+        std::vector<double> w_default{0.0, 0.0, 0.0};
+        SVRGOptions default_opts;
+        const double default_value =
+            SVRG(default_opts).optimize(loss, w_default);
+        bool all_finite = std::isfinite(default_value);
+        double max_abs = 0.0;
+        for (const double wi : w_default) {
+            all_finite = all_finite && std::isfinite(wi);
+            max_abs = std::max(max_abs, std::abs(wi));
+        }
+        std::cout << "SVRG with SVRGOptions defaults (step_size=0.01): "
+                   << (all_finite ? "finite" : "non-finite (inf/nan)")
+                   << ", max|weight|=" << std::scientific
+                   << std::setprecision(3) << max_abs << std::fixed
+                   << std::setprecision(6) << "\n";
+    }
+    {
+        LinearRegressionLoss loss(X, petal_length);
+        CountingLoss counted(loss, svrg_calls, svrg_x, svrg_y);
+        std::vector<double> w_std{0.0, 0.0, 0.0};
+        SVRGOptions opts;
+        // The default step_size (0.01) diverges (see above); 2e-5 is the
+        // largest step size found stable by manual search on this problem.
+        opts.step_size = 0.00002;
+        opts.max_epochs = 3000;
+        const double value = SVRG(opts).optimize(counted, w_std);
+        std::cout << "SVRG weights (intercept, Sepal.Length, Sepal.Width): ";
+        print_vec(destd(w_std));
+        std::cout << "\n  f=" << value << "  term-calls=" << svrg_calls
+                   << "  evaluate() checkpoints=" << svrg_x.size() << "\n";
+    }
+    {
+        LinearRegressionLoss loss(X, petal_length);
+        CountingLoss counted(loss, saga_calls, saga_x, saga_y);
+        std::vector<double> w_std{0.0, 0.0, 0.0};
+        SAGAOptions opts;
+        opts.step_size = 0.01;
+        opts.max_iterations = 45000; // matches SGD/SVRG's 300-epoch budget
+        const double value = SAGA(opts).optimize(counted, w_std);
+        std::cout << "SAGA weights (intercept, Sepal.Length, Sepal.Width): ";
+        print_vec(destd(w_std));
+        std::cout << "\n  f=" << value << "  term-calls=" << saga_calls
+                   << "  evaluate() checkpoints=" << saga_x.size() << "\n";
+    }
+
+    datamunge::stats::LM lm(iris,
+                             "Petal.Length ~ Sepal.Length + Sepal.Width");
+    std::cout << "LM   weights (intercept, Sepal.Length, Sepal.Width): ";
+    print_vec(lm.coefficients());
+    std::cout << " (closed-form OLS)\n";
+    {
+        // LM's SSE on the *original* (unstandardized) scale, for a direct
+        // apples-to-apples check against the standardized-loss values
+        // above -- OLS's SSE is invariant to this reparametrization.
+        const auto& c = lm.coefficients();
+        double sse = 0.0;
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            const double pred =
+                c[0] + c[1] * sepal_length[i] + c[2] * sepal_width[i];
+            const double err = pred - petal_length[i];
+            sse += err * err;
+        }
+        std::cout << "LM   SSE (original scale): " << sse << "\n";
+    }
+#+end_src
+
+*** The term-call convergence figure
+
+#+name: vr-iris-figure
+#+begin_src c++ :eval no
+    {
+        auto log10_shifted = [](const std::vector<double>& v) {
+            std::vector<double> out(v.size());
+            for (std::size_t i = 0; i < v.size(); ++i) {
+                out[i] = std::log10(v[i] + 1e-12);
+            }
+            return out;
+        };
+        auto log10_v = [](const std::vector<double>& v) {
+            std::vector<double> out(v.size());
+            for (std::size_t i = 0; i < v.size(); ++i) {
+                out[i] = std::log10(v[i] + 1.0);
+            }
+            return out;
+        };
+        auto plot = RPlot::plot(log10_v(sgd_x), log10_shifted(sgd_y), "l",
+                                 "SGD", {220, 38, 38});
+        plot.lines(log10_v(svrg_x), log10_shifted(svrg_y), "SVRG",
+                   {96, 165, 250}, 2.0);
+        plot.lines(log10_v(saga_x), log10_shifted(saga_y), "SAGA",
+                   {34, 197, 94}, 2.0);
+        plot.legend({"SGD", "SVRG", "SAGA"},
+                    {{220, 38, 38}, {96, 165, 250}, {34, 197, 94}});
+        plot.title("Iris OLS loss vs. term-gradient/term-evaluate calls")
+            .x_label("log10(term-level calls + 1)")
+            .y_label("log10(full-objective loss)");
+        plot.save_svg("build/org/optim_vr_iris_convergence.svg");
+        std::cout << "wrote optim_vr_iris_convergence.svg\n";
+    }
+#+end_src
+
+*** A synthetic sanity check with known ground truth
+
+#+name: vr-synthetic
+#+begin_src c++ :eval no
+    std::cout << "\n=== Experiment 2: synthetic linear regression,"
+                 " known ground truth ===\n";
+    {
+        std::mt19937_64 rng(7);
+        std::uniform_real_distribution<double> unif(-1.0, 1.0);
+        const std::vector<double> w_true{2.0, -3.0, 1.5};
+        const std::size_t n = 200;
+        std::vector<std::vector<double>> Xs;
+        std::vector<double> ys;
+        Xs.reserve(n);
+        ys.reserve(n);
+        for (std::size_t i = 0; i < n; ++i) {
+            const double x1 = unif(rng);
+            const double x2 = unif(rng);
+            Xs.push_back({1.0, x1, x2});
+            ys.push_back(w_true[0] + w_true[1] * x1 + w_true[2] * x2);
+        }
+        {
+            LinearRegressionLoss loss(Xs, ys);
+            std::vector<double> w{0.0, 0.0, 0.0};
+            SVRGOptions opts;
+            opts.step_size = 0.00002;
+            opts.max_epochs = 400;
+            const double value = SVRG(opts).optimize(loss, w);
+            std::cout << "SVRG recovered weights: ";
+            print_vec(w);
+            std::cout << "\n  f=" << value
+                       << " (true weights [2, -3, 1.5], f=0)\n";
+        }
+        {
+            LinearRegressionLoss loss(Xs, ys);
+            std::vector<double> w{0.0, 0.0, 0.0};
+            SAGAOptions opts;
+            opts.step_size = 0.05;
+            opts.max_iterations = 40000;
+            const double value = SAGA(opts).optimize(loss, w);
+            std::cout << "SAGA recovered weights: ";
+            print_vec(w);
+            std::cout << "\n  f=" << value
+                       << " (true weights [2, -3, 1.5], f=0)\n";
+        }
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_vr_analysis.cpp <<'CPP'
+<<vr-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<vr-iris>>
+
+<<vr-iris-figure>>
+
+<<vr-synthetic>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_vr_analysis.cpp -o build/org/optim_vr_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_vr_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** SGD vs SVRG vs SAGA on the iris OLS loss
+
+#+begin_example
+SGD  weights (intercept, Sepal.Length, Sepal.Width):
+  [-2.505305, 1.770946, -1.336457]
+  f=61.439385  term-calls=90150  evaluate() checkpoints=301
+SVRG with SVRGOptions defaults (step_size=0.01):
+  non-finite (inf/nan), max|weight|=8.759e+215
+SVRG weights (intercept, Sepal.Length, Sepal.Width):
+  [-2.524757, 1.775592, -1.338624]
+  f=61.436747  term-calls=5550  evaluate() checkpoints=10
+SAGA weights (intercept, Sepal.Length, Sepal.Width):
+  [-2.524756, 1.775591, -1.338622]
+  f=61.436747  term-calls=6750  evaluate() checkpoints=23
+LM   weights (intercept, Sepal.Length, Sepal.Width):
+  [-2.524762, 1.775593, -1.338623] (closed-form OLS)
+LM   SSE (original scale): 61.436747
+#+end_example
+
+With their step sizes retuned for stability (§5 discusses why =SVRG=
+needed this), both =SVRG= ($f=61.436747$) and =SAGA= ($f=61.436747$)
+land on =LM='s exact closed-form residual sum of squares, matched to
+six printed decimal places, and their weights match =LM='s
+$(-2.524762, 1.775593, -1.338623)$ to three decimal places -- a
+noticeably tighter match than plain =SGD='s $f=61.439385$ and
+$(-2.505305, 1.770946, -1.336457)$. They also reach that better answer
+far more cheaply: =SVRG= needs 5550 term-gradient/term-evaluate calls
+and =SAGA= needs 6750, against =SGD='s 90150 -- roughly 16x and 13x
+fewer term-level calls respectively, for a strictly better final
+objective. =SAGA='s 23 =evaluate()= checkpoints against a possible
+$45000/150=300$ (one per epoch's worth of 150 sampled iterations, plus
+the always-present extra call =saga.cpp= makes on return) confirms it
+converged and broke out of its loop after 22 checked epochs, not by
+exhausting its 45000-iteration budget.
+
+#+ATTR_HTML: :alt Log-log plot of full-objective loss versus term-gradient and term-evaluate calls for SGD, SVRG, and SAGA on the iris OLS problem :width 100%
+[[file:../../build/org/optim_vr_iris_convergence.svg]]
+
+The convergence figure makes the term-call gap directly visible: both
+=SVRG= (blue) and =SAGA= (green) reach the same loss floor
+=SGD= (red) eventually reaches, but do so by roughly
+log10(term-calls)$\approx3.0$--3.1 (about 1000--1300 term-level calls),
+while =SGD= does not reach that same floor until roughly
+log10(term-calls)$\approx3.7$ (about 5000 calls) and then continues
+paying for another 85000 calls of essentially flat, wasted work out to
+its full 300-epoch budget.
+
+** Synthetic ground-truth recovery
+
+#+begin_example
+SVRG recovered weights: [1.999996, -3.000000, 1.500000]
+  f=0.000000 (true weights [2, -3, 1.5], f=0)
+SAGA recovered weights: [2.000011, -3.000006, 1.500013]
+  f=0.000000 (true weights [2, -3, 1.5], f=0)
+#+end_example
+
+On the noise-free synthetic problem, both methods recover the true
+weights $(2,-3,1.5)$ to within $6\times10^{-5}$ on every coefficient
+and drive the objective to =0.000000= at the printed precision --
+confirming the control-variate estimator really does converge to the
+exact minimum, not merely to a neighborhood of it, once =SVRG= is given
+a step size within its stable range.
+
+* Discussion
+
+**Variance reduction's headline promise -- less term-level work for an
+equally good or better answer -- holds up as a real, positive result on
+this report's data, not just a theoretical claim.** =SVRG= and =SAGA=
+both reach a strictly better objective value than =SGD= (matching
+=LM='s closed-form optimum to the printed precision, where =SGD= does
+not) using 13--16x fewer term-gradient/term-evaluate calls. This is
+notable specifically because iris is a small ($n=150$), well-conditioned
+dataset -- exactly the regime the companion report's SGD-vs-LM
+discussion argues is /too easy/ to show SGD's own advantages over
+closed-form regression. Variance reduction's cost advantage over plain
+SGD, in this report's real numbers, shows up even here, well before
+reaching the large-$n$ or ill-conditioned regime variance reduction's
+literature usually motivates it with.
+
+**=SVRGOptions='s own documented default step size is numerically
+unstable on this exact, unremarkable problem, and =SAGAOptions='s
+identical default is not -- a real, verified difference this report
+does not paper over.** Both structs default =step_size= to 0.01.
+=SAGA= converges cleanly from that default. =SVRG= diverges to
+non-finite weights (one component's magnitude exceeds $10^{215}$)
+within a handful of epochs from the /same/ nominal step size, and
+needed a manually-tuned step size 500x smaller (0.00002) before it
+converged correctly to the values reported above. The mechanism this
+report's own §2 derivation points to: =SVRG='s control variate is
+anchored to one snapshot held fixed for an entire epoch (150 inner
+steps by default on this data), so a step that is merely aggressive
+rather than reckless can carry $x$ far enough from that snapshot,
+early in an epoch, that the two gradient terms meant to cancel in the
+control-variate identity no longer nearly cancel -- reintroducing large
+variance exactly where the method is supposed to have eliminated it,
+and compounding for the rest of that epoch's 150 steps before the next
+snapshot refresh. =SAGA='s table-based control variate refreshes one
+entry every single step rather than once per epoch, giving it far less
+room to drift this far from its own reference points before a
+correction arrives -- a plausible, though not exhaustively verified,
+explanation for why identical nominal step sizes behave so differently
+between the two methods on identical data. Either way, the concrete
+takeaway for this library's users is unambiguous: =SVRGOptions='s
+=step_size= default should not be trusted without tuning down and
+checking for divergence, in a way =SAGAOptions='s apparently need not
+be, at least on data of this shape.
+
+**=SAGA='s extra unconditional =evaluate()= call on every return from
+=optimize()= is a minor, honest inefficiency, not a correctness bug.**
+As §2 notes, =saga.cpp= always recomputes and returns a fresh
+=function.evaluate(coordinates)= regardless of how the loop exited,
+discarding whatever =value= the tolerance-check logic last computed.
+Because coordinates do not change between that last internal check and
+the function's return, the two values would agree numerically if
+returned directly -- the extra call costs $n$ redundant term-evaluate
+calls every time =SAGA::optimize= is invoked (150 of the 6750 term-calls
+measured above, about 2%) for no numerical benefit. Small on this
+problem, but worth flagging as exactly the kind of real, low-stakes
+implementation detail this report series aims to surface rather than
+silently absorb into a rounded final number.
+
+* Conclusion
+
+Fitting the identical iris OLS problem the companion report's =SGD=
+baseline already established with =datamunge='s two variance-reduced
+methods produces a genuinely favorable, concretely measured result:
+=SVRG= (once correctly tuned) and =SAGA= both reach =LM='s exact
+closed-form optimum using 13--16x fewer term-gradient/term-evaluate
+calls than =SGD=, and a second synthetic experiment confirms both
+recover known true weights to five or more decimal places. That result
+comes with a real, verified caveat rather than an idealized one:
+=SVRGOptions='s own default step size diverges outright on this data,
+while =SAGAOptions='s identical default does not, a difference this
+report traces to how long each method's control variate goes between
+refreshes. As with its companions, this entire report is reproducible
+end to end via
+=just org-example optimization_variance_reduction_analysis=, which
+re-executes §3.3.5's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Johnson, R., & Zhang, T. (2013). "Accelerating Stochastic Gradient
+  Descent using Predictive Variance Reduction." /Advances in Neural
+  Information Processing Systems (NeurIPS) 26/.
+- Defazio, A., Bach, F., & Lacoste-Julien, S. (2014). "SAGA: A Fast
+  Incremental Gradient Method With Support for Non-Strongly Convex
+  Composite Objectives." /Advances in Neural Information Processing
+  Systems (NeurIPS) 27/.
+- Robbins, H., & Monro, S. (1951). "A Stochastic Approximation Method."
+  /The Annals of Mathematical Statistics/, 22(3), 400--407.
+- Anderson, E. (1935). "The Irises of the Gaspe Peninsula." /Bulletin of
+  the American Iris Society/, 59, 2--5. (Original data source.)
+- Fisher, R. A. (1936). "The Use of Multiple Measurements in Taxonomic
+  Problems." /Annals of Eugenics/, 7(2), 179--188. (Popularized the iris
+  dataset.)

@@ -155,26 +155,26 @@ public class GBMClassifier : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GBMClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
+  public RPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.GBMClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GBMClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
+    RPlot ret = new RPlot(datamungePINVOKE.GBMClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GBMClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.GBMClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_training_deviance() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.GBMClassifier_plot_training_deviance(swigCPtr), true);
+  public RPlot plot_training_deviance() {
+    RPlot ret = new RPlot(datamungePINVOKE.GBMClassifier_plot_training_deviance(swigCPtr), true);
     return ret;
   }
 

@@ -1,0 +1,235 @@
+#+title: datamunge: Literate C++ Analysis Reports
+#+subtitle: An index of every worked example in examples/org/, by topic
+#+options: toc:nil num:nil
+
+Each report below is a literate C++ program: every number, table, and figure
+it shows comes from a single real, compiled, executed program built directly
+against =datamunge='s C++ library, not from hand-typed results. Click a title
+for the HTML version (with a link back here in the page header), or grab the
+typeset PDF alongside it.
+
+* Dimensionality Reduction & Manifold Learning
+
+** [[./pca_iris_analysis.html][Principal Component Analysis of the Iris Dataset]] ([[./pca_iris_analysis.pdf][PDF]])
+/A literate C++ study of eigendecomposition-based dimensionality reduction using datamunge/
+
+We fit Principal Component Analysis to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::PCA=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit; PCA never sees it.
+
+** [[./lda_iris_analysis.html][Linear Discriminant Analysis of Fisher's Iris Data]] ([[./lda_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a classical linear discriminant analysis (LDA) to Fisher's (1936) iris data -- 150 flowers, three species, four floral measurements -- using =datamunge='s C++ =stats::LDA= class, and report the resulting classifier as a literate program: every code fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./mds_iris_analysis.html][Multidimensional Scaling of the Iris Dataset]] ([[./mds_iris_analysis.pdf][PDF]])
+/A literate C++ study of distance-based embedding using datamunge/
+
+We fit classical (metric/Torgerson) multidimensional scaling to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::MDS=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit.
+
+** [[./isomap_iris_analysis.html][Isomap: Nonlinear Dimensionality Reduction via Geodesic Distances]] ([[./isomap_iris_analysis.pdf][PDF]])
+/A literate C++ study of manifold learning using datamunge/
+
+We fit Isomap (Tenenbaum, de Silva & Langford, 2000) to Fisher's (1936) iris measurements and to a synthetic Swiss-roll dataset using =datamunge='s C++ =stats::Isomap=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./lle_iris_analysis.html][Locally Linear Embedding: Manifold Learning from Local Reconstruction Weights]] ([[./lle_iris_analysis.pdf][PDF]])
+/A literate C++ study of local-neighborhood-preserving embedding using datamunge/
+
+We fit Locally Linear Embedding (Roweis & Saul, 2000) to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::LLE=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit.
+
+** [[./tsne_iris_analysis.html][t-SNE: Visualizing Local Structure via Probabilistic Neighbor Embedding]] ([[./tsne_iris_analysis.pdf][PDF]])
+/A literate C++ study of neighbor-embedding visualization using datamunge/
+
+We fit \(t\)-distributed Stochastic Neighbor Embedding (van der Maaten & Hinton, 2008) to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::TSNE=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit.
+
+** [[./umap_iris_analysis.html][UMAP: Manifold Learning via Fuzzy Simplicial Sets and Cross-Entropy Optimization]] ([[./umap_iris_analysis.pdf][PDF]])
+/A literate C++ study of neighbor-graph embedding using datamunge/
+
+We fit Uniform Manifold Approximation and Projection (McInnes, Healy & Melville, 2018) to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::UMAP=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit.
+
+** [[./diffusion_maps_iris_analysis.html][Diffusion Maps: Manifold Learning via a Density-Normalized Heat Kernel]] ([[./diffusion_maps_iris_analysis.pdf][PDF]])
+/A literate C++ study of Coifman-Lafon diffusion maps using datamunge/
+
+We fit Diffusion Maps (Coifman & Lafon, 2006) to Fisher's (1936) iris measurements and to a synthetic Swiss roll using =datamunge='s C++ =stats::DiffusionMaps=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Classification & Ensemble Methods
+
+** [[./dt_iris_analysis.html][A Decision Tree Classifier for Iris Species]] ([[./dt_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a CART-style binary decision tree to Fisher's (1936) iris data using =datamunge='s C++ =stats::DecisionTreeClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./rf_iris_analysis.html][A Random Forest Classifier for Iris Species]] ([[./rf_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a bagged ensemble of 100 CART decision trees -- a random forest -- to Fisher's (1936) iris data using =datamunge='s C++ =stats::RandomForestClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./gbm_iris_analysis.html][A Gradient Boosted Machine for Iris Species]] ([[./gbm_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a multinomial gradient boosting classifier -- 100 rounds of shallow regression trees, one per class per round -- to Fisher's (1936) iris data using =datamunge='s C++ =stats::GBMClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./xgb_iris_analysis.html][XGBoost for Iris Species]] ([[./xgb_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a regularized, second-order gradient boosting classifier -- the XGBoost algorithm (Chen & Guestrin, 2016) -- to Fisher's (1936) iris data using =datamunge='s C++ =stats::XGBoostClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./svm_iris_analysis.html][Support Vector Machines for Iris Species Classification]] ([[./svm_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a soft-margin, multi-class support vector machine to Fisher's (1936) iris data using =datamunge='s C++ =stats::SVM= class, and report it as a literate program: every code fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./knn_iris_analysis.html][K-Nearest-Neighbors Classification and Regression for Iris]] ([[./knn_iris_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit a k-nearest-neighbors classifier to Fisher's (1936) iris data using =datamunge='s C++ =stats::KNNClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./naive_bayes_penguins_analysis.html][Naive Bayes Classification of Palmer Penguins]] ([[./naive_bayes_penguins_analysis.pdf][PDF]])
+/A literate C++ study of mixed numeric and categorical predictors using datamunge/
+
+We fit a naive Bayes classifier to the Palmer Archipelago penguins data using =datamunge='s C++ =stats::NaiveBayesClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Regression
+
+** [[./lm_penguins_analysis.html][Ordinary Least Squares Regression of Penguin Body Mass]] ([[./lm_penguins_analysis.pdf][PDF]])
+/A literate C++ study using datamunge/
+
+We fit an ordinary-least-squares linear model predicting body mass from bill and flipper measurements in the Palmer Archipelago penguins data, using =datamunge='s C++ =stats::LM= class, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./glm_iris_analysis.html][Generalized Linear Models for Iris Classification and Counts]] ([[./glm_iris_analysis.pdf][PDF]])
+/A literate C++ study of logistic and Poisson regression using datamunge/
+
+We fit generalized linear models -- logistic (binomial, logit link) and Poisson (log link) regression -- to Fisher's (1936) iris data using =datamunge='s C++ =stats::GLM=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./elastic_net_iris_analysis.html][Regularized Regression for Iris Petal Length]] ([[./elastic_net_iris_analysis.pdf][PDF]])
+/A literate C++ study of Ridge, Lasso, and Elastic Net using datamunge/
+
+We fit Ridge, Lasso, and Elastic Net regression -- three penalized variants of ordinary least squares connected by a single mixing parameter $\alpha$ -- to a continuous prediction of iris petal length from the other three measurements plus one interaction term, using =datamunge='s C++ =stats::ElasticNet= (and its =Ridge= / =Lasso= convenience subclasses), and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./kernel_regression_iris_analysis.html][Kernel Regression for Iris Petal Length]] ([[./kernel_regression_iris_analysis.pdf][PDF]])
+/A literate C++ study of Nadaraya-Watson regression using datamunge/
+
+We fit Nadaraya-Watson kernel regression to predict iris petal length from petal width using =datamunge='s C++ =stats::KernelRegression=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./gaussian_process_regression_iris_analysis.html][Gaussian Process Regression for Iris Petal Length]] ([[./gaussian_process_regression_iris_analysis.pdf][PDF]])
+/A literate C++ study of Bayesian nonparametric regression using datamunge/
+
+We fit exact Gaussian process regression with an RBF kernel to predict iris petal length from petal width using =datamunge='s C++ =stats::GaussianProcessRegression=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Mixed & Hierarchical Models
+
+** [[./lmm_analysis.html][Linear Mixed Models for Grouped Data]] ([[./lmm_analysis.pdf][PDF]])
+/A literate C++ study of random intercepts and slopes using datamunge/
+
+We fit linear mixed models to grouped data using =datamunge='s C++ =stats::LMM=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./glmm_analysis.html][Generalized Linear Mixed Models for Grouped Non-Gaussian Data]] ([[./glmm_analysis.pdf][PDF]])
+/A literate C++ study of penalized quasi-likelihood using datamunge/
+
+We fit generalized linear mixed models to grouped binary and count data using =datamunge='s C++ =stats::GLMM=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./inla_analysis.html][Integrated Nested Laplace Approximation and Multiple-Comparison Correction]] ([[./inla_analysis.pdf][PDF]])
+/A literate C++ study of Bayesian mixed models via INLA and p-value adjustment using datamunge/
+
+We fit a Bayesian binomial mixed model to the Palmer penguins data using =datamunge='s C++ =stats::INLAMixedModel= -- Integrated Nested Laplace Approximation (Rue, Martino & Chopin 2009) applied to the same =sex ~ body_mass_g + (1 | island)= model the [[file:glmm_analysis.org][GLMM companion report]] fits by penalized quasi-likelihood -- and separately apply three multiple-comparison corrections to a set of ten p-values using =stats::p_adjust=, reporting both as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Clustering
+
+** [[./clustering_iris_analysis.html][Clustering the Iris Dataset]] ([[./clustering_iris_analysis.pdf][PDF]])
+/A literate C++ study of K-means, agglomerative, and density-based clustering using datamunge/
+
+We fit three unsupervised clustering algorithms -- K-means, agglomerative (hierarchical) clustering, and DBSCAN -- to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::KMeans=, =stats::AgglomerativeClustering=, and =stats::DBSCAN=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Time Series & State Estimation
+
+** [[./arima_analysis.html][Time Series Forecasting: SARIMA and Exponential Smoothing]] ([[./arima_analysis.pdf][PDF]])
+/A literate C++ study of Box-Jenkins and Holt-Winters methods using datamunge/
+
+We fit seasonal ARIMA and exponential smoothing models to simulated time series using =datamunge='s C++ =stats::ARIMA= and =stats::ExponentialSmoothing=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./kalman_filter_analysis.html][The Kalman Filter Family: Linear, Nonlinear, and Fixed-Gain State Estimation]] ([[./kalman_filter_analysis.pdf][PDF]])
+/A literate C++ study of KF, EKF, UKF, the Information Filter, EnKF, the particle filter, and alpha-beta trackers using datamunge/
+
+We track a simulated constant-velocity target using every member of =datamunge='s C++ =filter= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Bayesian Inference & Sampling
+
+** [[./bayesian_modeling_analysis.html][Bayesian Modeling: MAP, Hamiltonian Monte Carlo, and the No-U-Turn Sampler]] ([[./bayesian_modeling_analysis.pdf][PDF]])
+/A literate C++ study of gradient-based Bayesian inference using datamunge/
+
+We fit two Bayesian models with =datamunge='s C++ =bayes= module -- a Normal-Normal conjugate model with a known closed-form posterior, and a Bayesian logistic regression on iris with no closed form at all -- and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./bayesian_sampling_analysis.html][Gradient-Free Bayesian Sampling: Random-Walk Metropolis, Metropolis-within-Gibbs, and Importance Sampling]] ([[./bayesian_sampling_analysis.pdf][PDF]])
+/A literate C++ study of black-box MCMC and importance sampling using datamunge/
+
+We fit a correlated bivariate Gaussian target -- deliberately unnormalized, with a known true mean $(2,-1)$ and a known true log-normalizing constant $\approx1.6941$ -- using three gradient-free =datamunge= C++ =bayes= methods, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Classical Statistics
+
+** [[./hypothesis_tests_analysis.html][Classical Hypothesis Testing: Parametric, Nonparametric, and Exact Methods]] ([[./hypothesis_tests_analysis.pdf][PDF]])
+/A literate C++ study of thirteen inferential tests using datamunge/
+
+We apply thirteen classical hypothesis tests to the iris dataset using =datamunge='s C++ =stats= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+* Numerical Optimization
+
+** [[./optimization_analysis.html][Numerical Optimization: Gradient-Based, Stochastic, and Population-Based Methods]] ([[./optimization_analysis.pdf][PDF]])
+/A literate C++ study of GD, Adam, LBFGS, SGD, simulated annealing, PSO, differential evolution, and genetic algorithms using datamunge/
+
+We optimize five deliberately different objective landscapes using every method in =datamunge='s C++ =optim= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./optimization_adaptive_gradient_analysis.html][The AdaGrad Family: Per-Coordinate Adaptive Learning Rates]] ([[./optimization_adaptive_gradient_analysis.pdf][PDF]])
+/A literate C++ study of AdaGrad, RMSProp, AdaDelta, AMSGrad, and Nadam using datamunge/
+
+We fit five per-coordinate adaptive-learning-rate optimizers -- =AdaGrad=, =RMSProp=, =AdaDelta=, =AMSGrad=, and =Nadam= -- from =datamunge='s C++ =optim= module against two objectives, and report it as a literate program: every number and figure below comes from a single compiled, executed C++ binary.
+
+** [[./optimization_bayesian_analysis.html][Bayesian Optimization with a Gaussian Process Surrogate]] ([[./optimization_bayesian_analysis.pdf][PDF]])
+/A literate C++ study of BayesianOptimization and RBFGaussianProcessSurrogate using datamunge, benchmarked for sample efficiency against PSO/
+
+We fit =datamunge='s C++ =BayesianOptimization= class, driven by an exact =RBFGaussianProcessSurrogate= (Cholesky-factored Gaussian process regression plus closed-form Expected Improvement), against the =optimization_analysis.org= companion report's bumpy, non-convex =BumpyFunction= objective on $[-5,5]\times[-5,5]$, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./optimization_constrained_analysis.html][Constrained Optimization: Augmented Lagrangian, SQP, and Interior-Point Methods]] ([[./optimization_constrained_analysis.pdf][PDF]])
+/A literate C++ study of datamunge::optim's equality- and inequality-constrained solvers, including two real numerical-instability findings and one real crash/
+
+We minimize two hand-designed quadratics with known closed-form constrained optima using every constrained optimizer in =datamunge='s C++ =optim= module -- =AugmentedLagrangian= and =SQP= on an equality-constrained problem, =InteriorPoint= on an inequality-constrained one -- and report it as a literate program: every number and figure below is real, compiled, executed output.
+
+** [[./optimization_coordinate_cg_analysis.html][Beyond Plain Gradient Descent: Momentum Look-Ahead, Coordinate Descent, and Nonlinear Conjugate Gradient]] ([[./optimization_coordinate_cg_analysis.pdf][PDF]])
+/A literate C++ study of NesterovAcceleratedGradient, CoordinateDescent, RandomizedBlockCoordinateDescent, and ConjugateGradient using datamunge/
+
+We compare four gradient-based optimizers added to =datamunge='s C++ =optim= module -- =NesterovAcceleratedGradient=, =CoordinateDescent=, =RandomizedBlockCoordinateDescent=, and =ConjugateGradient= -- across four objective landscapes, as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./optimization_derivative_free_analysis.html][Local and Global Derivative-Free Search: Nelder-Mead and CMA-ES]] ([[./optimization_derivative_free_analysis.pdf][PDF]])
+/A literate C++ study of downhill simplex search and Covariance Matrix Adaptation Evolution Strategy using datamunge/
+
+We compare two derivative-free optimizers in =datamunge='s C++ =optim= module -- =NelderMead=, a strictly local downhill simplex search, and =CMAES=, the population-based Covariance Matrix Adaptation Evolution Strategy -- on the same two objectives and starting points as this project's companion report, =optimization_analysis.org=, as a literate program: every number and figure below comes from a single compiled, executed C++ binary.
+
+** [[./optimization_nonlinear_least_squares_analysis.html][Nonlinear Least Squares via Levenberg-Marquardt]] ([[./optimization_nonlinear_least_squares_analysis.pdf][PDF]])
+/A literate C++ study of datamunge's LevenbergMarquardt optimizer on synthetic curve-fitting problems with known ground truth/
+
+We fit two synthetic nonlinear curves -- exponential decay and logistic growth -- with =datamunge='s C++ =optim::LevenbergMarquardt= class, starting from deliberately bad initial guesses and checking recovery against known ground-truth parameters, reporting this as a literate program: every number and figure below comes from a single, real, compiled, and executed C++ binary.
+
+** [[./optimization_proximal_analysis.html][Proximal Gradient Descent and FISTA for Composite (Lasso-Style) Objectives]] ([[./optimization_proximal_analysis.pdf][PDF]])
+/A literate C++ study of ISTA and FISTA on =datamunge='s =ProximalFunction= interface, cross-checked against =stats::Lasso=/
+
+We fit an L1-regularized (lasso) linear regression of iris =Petal.Length= on three standardized predictors using =datamunge='s two proximal-gradient optimizers, =ProximalGradient= (ISTA) and =FISTA=, and cross-check every result against this project's own independently implemented coordinate-descent solver, =stats::Lasso=.
+
+** [[./optimization_second_order_analysis.html][Second-Order Methods: Newton's Method and Trust-Region Newton]] ([[./optimization_second_order_analysis.pdf][PDF]])
+/A literate C++ study of Newton's method and Cauchy-point trust-region Newton on an exact Hessian, using datamunge/
+
+We fit two second-order optimizers -- =Newton= and =TrustRegionNewton= -- against objectives that supply an exact, analytic Hessian, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./optimization_variance_reduction_analysis.html][Variance-Reduced Stochastic Gradient Methods: SVRG and SAGA]] ([[./optimization_variance_reduction_analysis.pdf][PDF]])
+/A literate C++ study of control-variate variance reduction for DifferentiableSeparableFunction using datamunge/
+
+We fit =datamunge='s C++ =optim= module's two variance-reduced stochastic gradient methods, =SVRG= and =SAGA=, to an ordinary-least-squares loss on the iris dataset -- the exact setup the companion =optimization_analysis.org= report's mini-batch =SGD= already fits -- and instrument every method with a real, compiled term-gradient-call counter to compare their cost on an apples-to-apples basis, not just a final answer.
+
+* Numerical Methods & Linear Algebra
+
+** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])
+/A minimal worked example against the raw DenseMatrix API/
+
+This example compiles and runs a small C++ program directly against =datamunge='s =linalg::DenseMatrix= headers -- addition, multiplication, and the Frobenius norm -- without going through any of the higher-level =stats= model layer used by the other reports.
+
+** [[./ode_solver_analysis.html][Numerical Solution of Ordinary Differential Equations]] ([[./ode_solver_analysis.pdf][PDF]])
+/A literate C++ study of Runge-Kutta and Adams linear multistep methods using datamunge/
+
+We solve initial-value ordinary differential equations with =datamunge='s C++ =ode::ODESolver=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+

@@ -124,22 +124,22 @@ public class NaiveBayesClassifier : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.NaiveBayesClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
+  public RPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.NaiveBayesClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   /// <summary>Background grid of predicted class regions; requires exactly two predictors, both numeric.</summary>
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.NaiveBayesClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
+    RPlot ret = new RPlot(datamungePINVOKE.NaiveBayesClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   /// <summary>Background grid of predicted class regions; requires exactly two predictors, both numeric.</summary>
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.NaiveBayesClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.NaiveBayesClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

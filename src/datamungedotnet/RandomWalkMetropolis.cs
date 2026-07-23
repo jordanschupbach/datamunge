@@ -64,8 +64,8 @@ public class RandomWalkMetropolis : global::System.IDisposable {
   public RandomWalkMetropolis() : this(datamungePINVOKE.new_RandomWalkMetropolis__SWIG_1(), true) {
   }
 
-  public RWMResult sample(SWIGTYPE_p_datamunge__optim__ArbitraryFunction log_posterior, DVector initial_params) {
-    RWMResult ret = new RWMResult(datamungePINVOKE.RandomWalkMetropolis_sample(swigCPtr, SWIGTYPE_p_datamunge__optim__ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
+  public RWMResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
+    RWMResult ret = new RWMResult(datamungePINVOKE.RandomWalkMetropolis_sample(swigCPtr, ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -117,6 +117,22 @@ public class Plot : global::System.IDisposable {
     return ret;
   }
 
+  public Plot hide_axes(bool enabled) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_hide_axes__SWIG_0(swigCPtr, enabled), false);
+    return ret;
+  }
+
+  public Plot hide_axes() {
+    Plot ret = new Plot(datamungePINVOKE.Plot_hide_axes__SWIG_1(swigCPtr), false);
+    return ret;
+  }
+
+  public Plot x_tick_labels(SVector labels) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_x_tick_labels(swigCPtr, SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public uint width() {
     uint ret = datamungePINVOKE.Plot_width(swigCPtr);
     return ret;
@@ -194,6 +210,26 @@ public class Plot : global::System.IDisposable {
 
   public double y_max() {
     double ret = datamungePINVOKE.Plot_y_max(swigCPtr);
+    return ret;
+  }
+
+  public bool axes_hidden() {
+    bool ret = datamungePINVOKE.Plot_axes_hidden(swigCPtr);
+    return ret;
+  }
+
+  public SVector x_tick_label_list() {
+    SVector ret = new SVector(datamungePINVOKE.Plot_x_tick_label_list(swigCPtr), false);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t reference_lines() {
+    SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t(datamungePINVOKE.Plot_reference_lines(swigCPtr), false);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t legend_entries() {
+    SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(datamungePINVOKE.Plot_legend_entries(swigCPtr), false);
     return ret;
   }
 

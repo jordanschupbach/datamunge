@@ -230,6 +230,312 @@ private:
 };
 
 
+class SwigDirector_ProximalFunction : public datamunge::optim::ProximalFunction, public Swig::Director {
+
+public:
+    SwigDirector_ProximalFunction(PyObject *self);
+    virtual ~SwigDirector_ProximalFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > proximal(std::vector< double,std::allocator< double > > const &point,double step);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class ProximalFunction doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[3];
+#endif
+
+};
+
+
+class SwigDirector_HessianFunction : public datamunge::optim::HessianFunction, public Swig::Director {
+
+public:
+    SwigDirector_HessianFunction(PyObject *self);
+    virtual ~SwigDirector_HessianFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > hessian(std::vector< double,std::allocator< double > > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class HessianFunction doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[3];
+#endif
+
+};
+
+
+class SwigDirector_EqualityConstrainedFunction : public datamunge::optim::EqualityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_EqualityConstrainedFunction(PyObject *self);
+    virtual ~SwigDirector_EqualityConstrainedFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > constraints(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > constraint_jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class EqualityConstrainedFunction doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[4];
+#endif
+
+};
+
+
+class SwigDirector_InequalityConstrainedFunction : public datamunge::optim::InequalityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_InequalityConstrainedFunction(PyObject *self);
+    virtual ~SwigDirector_InequalityConstrainedFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > inequalities(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > inequality_jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class InequalityConstrainedFunction doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[4];
+#endif
+
+};
+
+
+class SwigDirector_ResidualFunction : public datamunge::optim::ResidualFunction, public Swig::Director {
+
+public:
+    SwigDirector_ResidualFunction(PyObject *self);
+    virtual ~SwigDirector_ResidualFunction();
+    virtual std::vector< double,std::allocator< double > > residuals(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > jacobian(std::vector< double,std::allocator< double > > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class ResidualFunction doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[2];
+#endif
+
+};
+
+
+class SwigDirector_BayesianSurrogate : public datamunge::optim::BayesianSurrogate, public Swig::Director {
+
+public:
+    SwigDirector_BayesianSurrogate(PyObject *self);
+    virtual ~SwigDirector_BayesianSurrogate();
+    virtual void fit(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &points,std::vector< double,std::allocator< double > > const &values);
+    virtual double acquisition(std::vector< double,std::allocator< double > > const &point,double incumbent);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class BayesianSurrogate doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[2];
+#endif
+
+};
+
+
+class SwigDirector_RHS : public datamunge::ode::RHS, public Swig::Director {
+
+public:
+    SwigDirector_RHS(PyObject *self);
+    virtual ~SwigDirector_RHS();
+    virtual std::vector< double,std::allocator< double > > evaluate(double t,std::vector< double,std::allocator< double > > const &y);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+/* VTable implementation */
+    PyObject *swig_get_method(size_t method_index, const char *method_name) const {
+      PyObject *method = vtable[method_index];
+      if (!method) {
+        swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
+        method = PyObject_GetAttr(swig_get_self(), name);
+        if (!method) {
+          std::string msg = "Method in class RHS doesn't exist, undefined ";
+          msg += method_name;
+          Swig::DirectorMethodException::raise(msg.c_str());
+        }
+        vtable[method_index] = method;
+      }
+      return method;
+    }
+private:
+    mutable swig::SwigVar_PyObject vtable[1];
+#endif
+
+};
+
+
 class SwigDirector_VectorFunction : public datamunge::filter::VectorFunction, public Swig::Director {
 
 public:

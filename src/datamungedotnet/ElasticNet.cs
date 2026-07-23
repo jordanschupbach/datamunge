@@ -199,24 +199,24 @@ public class ElasticNet : global::System.IDisposable {
   }
 
   /// <summary>Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was        auto-selected.</summary>
-  public ScatterPlot plot_coefficient_path() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.ElasticNet_plot_coefficient_path(swigCPtr), true);
+  public RPlot plot_coefficient_path() {
+    RPlot ret = new RPlot(datamungePINVOKE.ElasticNet_plot_coefficient_path(swigCPtr), true);
     return ret;
   }
 
   /// <summary>Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda        was auto-selected.</summary>
-  public ScatterPlot plot_cv_curve() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.ElasticNet_plot_cv_curve(swigCPtr), true);
+  public RPlot plot_cv_curve() {
+    RPlot ret = new RPlot(datamungePINVOKE.ElasticNet_plot_cv_curve(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.ElasticNet_plot_predicted_vs_actual(swigCPtr), true);
+  public RPlot plot_predicted_vs_actual() {
+    RPlot ret = new RPlot(datamungePINVOKE.ElasticNet_plot_predicted_vs_actual(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.ElasticNet_plot_residuals_vs_fitted(swigCPtr), true);
+  public RPlot plot_residuals_vs_fitted() {
+    RPlot ret = new RPlot(datamungePINVOKE.ElasticNet_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 

@@ -1,0 +1,876 @@
+#+title: Proximal Gradient Descent and FISTA for Composite (Lasso-Style) Objectives
+#+subtitle: A literate C++ study of ISTA and FISTA on =datamunge='s =ProximalFunction= interface, cross-checked against =stats::Lasso=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit an L1-regularized (lasso) linear regression of iris
+=Petal.Length= on three standardized predictors using =datamunge='s two
+proximal-gradient optimizers, =ProximalGradient= (ISTA) and =FISTA=, and
+cross-check every result against this project's own independently
+implemented coordinate-descent solver, =stats::Lasso=. At a matched
+regularization strength ($\lambda=0.1$, both fits on identical
+standardized predictors / centered response, both minimizing the
+identical objective $(1/2n)\lVert y-Xw\rVert^2+\lambda\lVert w\rVert_1$),
+ISTA and FISTA converge to the *same* point, and that point matches
+=stats::Lasso='s coefficients to 5-6 decimal places
+($[0.598681,-0.425447,1.477261]$ vs. $[0.598681,-0.425447,1.477261]$,
+intercept $-0.211285$ vs. $-0.211286$) -- two independently implemented
+algorithms (proximal gradient vs. cyclic coordinate descent) finding the
+same minimum of the same convex objective. Sweeping $\lambda$ across nine
+values from 0 to 1 and re-running the cross-check at every point shows
+the same agreement everywhere, including the *exact* lambda range in
+which each predictor is shrunk to zero. A real, worth-flagging
+implementation quirk turned up along the way: neither optimizer calls
+=evaluate()= inside its iteration loop (only at the very end, to produce
+the returned double), so this report's usual evaluate()-logging trick
+for building convergence curves is silently useless here -- we log via
+=gradient()= instead, which both loops call exactly once per iteration.
+That log reveals a genuine surprise: measured by raw iterations to
+satisfy the same coordinate-change stopping tolerance, FISTA needs
+*more* iterations than ISTA (882 vs. 804) on this small, well-conditioned
+problem -- but measured by iterations needed to get within a fixed
+relative gap of the final objective value (the quantity FISTA's O(1/k^2)
+guarantee actually bounds), FISTA is dramatically faster: 21 iterations
+to reach within 0.01% of the converged objective, versus ISTA's 112 (a
+5.3x difference), because FISTA's Nesterov-style momentum keeps
+oscillating in the coordinates for a while after the objective value has
+effectively stopped improving.
+#+end_abstract
+
+* Introduction
+
+Every optimizer discussed elsewhere in this series assumes its objective
+is either fully smooth (=DifferentiableFunction=) or provides only
+zeroth-order information (=ArbitraryFunction=). Lasso-style regression --
+minimize a smooth squared-error loss *plus* a nonsmooth $\lambda\lVert
+w\rVert_1$ penalty that is exactly what induces the sparsity lasso is
+famous for -- fits neither assumption: the penalty is not differentiable
+at zero (where a coordinate is being driven to exactly zero, the whole
+point of using it), but it is not so unstructured that only a black-box
+=evaluate()= is available either. =datamunge::optim= handles this
+intermediate case with a fourth function-type interface,
+=ProximalFunction= (=function_types.hpp=), which extends
+=DifferentiableFunction= with one additional method,
+=proximal(point, step)=, implementing the nonsmooth term's *proximal
+operator* in closed form. This report covers the two optimizers built
+for that interface, =ProximalGradient= (the classic ISTA algorithm) and
+=FISTA= (its Nesterov-accelerated successor), and uses lasso regression
+-- the textbook =ProximalFunction= use case -- as the worked example
+throughout.
+
+This document is a /literate program/ like its companions: prose and
+source are interleaved in reading order, and a single assembly step
+(§3.4.6) weaves every named chunk below into one =.cpp= file, compiles
+it, and runs it. Every number and figure from §4 onward is that
+program's literal output. §2 derives the proximal operator, its
+closed-form soft-thresholding solution for the L1 penalty, and both
+optimizers' update rules, each tied to the exact formula in the real
+=.cpp= source. §3 describes the objective, the iris-based dataset, and
+the program itself, including a real, previously-undocumented
+implementation detail this report's convergence-curve figure required
+working around. §4 reports the ISTA/FISTA cross-check against
+=stats::Lasso=, both at one matched $\lambda$ and across a full
+$\lambda$ sweep, plus the convergence-curve comparison. §5 discusses what
+the iteration-count discrepancy and the lambda-sweep agreement each
+reveal. §6 concludes.
+
+* Background: Proximal Methods
+
+** The =ProximalFunction= interface
+
+A =ProximalFunction= (=function_types.hpp=) is a =DifferentiableFunction=
+-- it still supplies =evaluate()= and =gradient()= -- with one addition:
+
+#+begin_src c++ :eval no
+class ProximalFunction : public DifferentiableFunction {
+public:
+    virtual std::vector<double> proximal(
+        const std::vector<double>& point, double step) = 0;
+};
+#+end_src
+
+The contract is that =evaluate()= / =gradient()= describe only the *smooth*
+part of a composite objective $F(x)=f(x)+g(x)$ (for lasso, $f$ is the
+squared-error loss), while =proximal()= implicitly encodes the nonsmooth
+remainder $g$ (for lasso, $\lambda\lVert x\rVert_1$) via its /proximal
+operator/,
+
+$$\mathrm{prox}_{\lambda g}(v) = \arg\min_x \left\{ g(x) +
+\frac{1}{2\lambda}\lVert x-v\rVert^2 \right\}.$$
+
+This is the entire point of the abstraction: the optimizer never needs a
+subgradient of $g$ (which may not even exist everywhere $g$ is
+nonsmooth, e.g. at zero for $\lvert\cdot\rvert$), only the ability to
+evaluate this operator in closed form. For $g(x)=\lambda\lvert x\rvert$
+(scalar case; the vector case is separable coordinate-by-coordinate),
+the minimizer satisfies stationarity of the subdifferential
+$0\in\lambda\,\partial\lvert x\rvert + (x-v)$. Away from $x=0$,
+$\partial\lvert x\rvert=\{\mathrm{sign}(x)\}$, giving $x=v-\lambda\,
+\mathrm{sign}(x)$; checking each sign case shows this holds only when
+$\lvert v\rvert>\lambda$, giving $x=v-\lambda\,\mathrm{sign}(v)$. At
+$x=0$, $\partial\lvert 0\rvert=[-1,1]$, so $0$ is a valid minimizer
+whenever $v/\lambda\in[-1,1]$, i.e. $\lvert v\rvert\le\lambda$. Combining
+both cases gives the closed-form *soft-thresholding* operator,
+
+$$S_\lambda(v) = \mathrm{sign}(v)\max(\lvert v\rvert-\lambda, 0).$$
+
+Proximal-gradient's fixed-point iteration $x_{k+1}=\mathrm{prox}_{\eta
+g}(x_k-\eta\nabla f(x_k))$ minimizes $f+g$ because, for a small enough
+step $\eta$, it is exactly a forward (explicit) gradient step on $f$
+followed by a backward (implicit, via the prox) step on $g$ -- a
+generalized gradient step that reduces to plain gradient descent when
+$g\equiv 0$ and to the proximal-point method when $f\equiv0$, and is a
+descent method on the combined objective $f+g$ for any $\eta\le 1/L$
+where $L$ is $\nabla f$'s Lipschitz constant (Parikh & Boyd 2014).
+
+** =ProximalGradient= (ISTA)
+
+#+begin_src c++ :eval no
+struct ProximalGradientOptions {
+    double step_size{0.01};
+    std::size_t max_iterations{10000};
+    double tolerance{1e-8};
+};
+#+end_src
+
+Each iteration (=proximal_gradient.cpp=) computes a trial point via a
+plain gradient step on the smooth part alone, then applies
+=proximal()= to fold in the nonsmooth part:
+
+$$x_{\text{trial}} = x_k - \eta\,\nabla f(x_k), \qquad
+x_{k+1} = \mathrm{prox}_{\eta g}(x_{\text{trial}}).$$
+
+For lasso ($g(x)=\lambda\lVert x\rVert_1$), =proximal(point, step)= is
+exactly coordinate-wise soft-thresholding at threshold $\eta\lambda$ --
+this is the "ISTA" (Iterative Shrinkage-Thresholding Algorithm) update.
+The loop stops once $\lVert x_{k+1}-x_k\rVert\le$ =tolerance=. A real
+detail worth flagging up front: the return value is =function.evaluate=
+at the final point, which per =ProximalFunction='s contract is *only the
+smooth part* -- not the full composite objective. Reporting the true
+lasso objective $f(x)+\lambda\lVert x\rVert_1$ requires computing the L1
+term yourself, which §3.4.4 does explicitly.
+
+** =FISTA=
+
+#+begin_src c++ :eval no
+struct FISTAOptions {
+    double step_size{0.01};
+    std::size_t max_iterations{10000};
+    double tolerance{1e-8};
+};
+#+end_src
+
+FISTA (Beck & Teboulle 2009) applies the identical proximal-gradient step,
+but at an extrapolated point $y_k$ (initialized $y_0=x_0$, $t_0=1$)
+rather than at $x_k$ directly (=fista.cpp=):
+
+$$z_k = y_k - \eta\,\nabla f(y_k), \qquad x_{k+1} =
+\mathrm{prox}_{\eta g}(z_k)$$
+$$t_{k+1} = \frac{1+\sqrt{1+4t_k^2}}{2}, \qquad
+y_{k+1} = x_{k+1} + \frac{t_k-1}{t_{k+1}}(x_{k+1}-x_k)$$
+
+This is literally Nesterov-style momentum applied to ISTA -- the same
+extrapolation idea as this series' =NesterovAcceleratedGradient= report,
+just applied at the proximal-gradient step instead of a plain gradient
+step. Beck & Teboulle prove FISTA achieves $O(1/k^2)$ convergence of the
+objective value $F(x_k)-F^*$, versus ISTA's $O(1/k)$ -- an asymptotically
+faster rate that §4.1 sets out to observe directly, and (with an honest
+complication) does.
+
+* Data and Methods
+
+** The objective and data
+
+We fit =Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width= on the
+iris dataset (=datamunge::datasets::iris()=), the same dataset this
+series' regression reports already use, extended to three predictors
+(vs. the two the companion =optimization_analysis.org= report uses for
+its SGD example) so lasso's variable-selection behavior -- some
+coefficients reaching /exactly/ zero -- is visible on a low-dimensional
+problem simple enough to fit by hand in one screen of code. To make a
+fair, directly comparable cross-check against =stats::Lasso= possible
+(see below), every predictor is standardized to mean 0 and *population*
+variance 1 ($\text{scale}=\sqrt{(1/n)\sum(x_i-\bar x)^2}$, matching
+=ElasticNet::fit='s internal convention exactly, not the sample-variance
+convention `sd()` in R would use), and the response is centered
+($y\mathrel{-}=\bar y$) rather than including an explicit intercept
+column -- standard lasso practice, since penalizing the intercept would
+make the fit depend on an arbitrary origin choice for $y$.
+
+** Matching =stats::Lasso='s parameterization exactly
+
+=datamunge::stats::ElasticNet= (of which =Lasso= is an $\alpha=1$
+convenience wrapper) is a real, independently implemented lasso solver
+using cyclic coordinate descent (=elastic_net.cpp=), documented as
+minimizing
+
+$$\frac{1}{2n}\lVert y-Xw\rVert^2 + \lambda\alpha\lVert w\rVert_1 +
+\lambda\frac{1-\alpha}{2}\lVert w\rVert_2^2$$
+
+on internally standardized predictors, un-standardizing the reported
+=coefficients()= back to the original scale. Rather than picking an
+arbitrary raw sum-of-squared-error =LassoLoss= and separately working out
+a \(\lambda\)-rescaling factor between two different parameterizations,
+this report's custom =LassoLoss= (§3.4.1) uses the *identical*
+$(1/2n)\lVert y-Xw\rVert^2$ smooth part on the *identical* standardized
+predictors / centered response, with $\alpha$ fixed at 1 (pure lasso,
+matching =stats::Lasso=), and its =proximal()= applies soft-thresholding
+at $\eta\lambda$ exactly as §2 derives. The two solvers are then, by
+construction, minimizing the exact same convex function -- any
+disagreement in the result would indicate a real bug in one solver or
+the other, not a parameterization mismatch.
+
+** Software
+
+=datamunge::optim::ProximalGradient= and =FISTA=, together with
+=optim::ProximalFunction= (the custom =LassoLoss= objective this report
+defines), =stats::Lasso= for the independent cross-check, and
+=plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes and the =LassoLoss= objective
+
+#+name: proximal-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/stats.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+// Smooth part: (1/2n) * RSS on standardized predictors / centered
+// response, matching stats::ElasticNet's internal parameterization
+// exactly (see section 3.2). Nonsmooth part (lambda*||w||_1, alpha=1, pure
+// lasso) is handled implicitly via proximal().
+class LassoLoss : public ProximalFunction {
+public:
+    LassoLoss(std::vector<std::vector<double>> X, std::vector<double> y,
+              double lambda)
+        : X_(std::move(X)), y_(std::move(y)), lambda_(lambda) {}
+
+    double evaluate(const std::vector<double>& w) override {
+        const std::size_t n = y_.size();
+        double sse = 0.0;
+        for (std::size_t i = 0; i < n; ++i) {
+            const double err = predict(w, i) - y_[i];
+            sse += err * err;
+        }
+        return sse / (2.0 * static_cast<double>(n));
+    }
+    std::vector<double> gradient(const std::vector<double>& w) override {
+        const std::size_t n = y_.size();
+        std::vector<double> grad(w.size(), 0.0);
+        for (std::size_t i = 0; i < n; ++i) {
+            const double err = predict(w, i) - y_[i];
+            for (std::size_t j = 0; j < w.size(); ++j)
+                grad[j] += X_[i][j] * err;
+        }
+        for (double& g : grad) g /= static_cast<double>(n);
+        return grad;
+    }
+    std::vector<double> proximal(const std::vector<double>& point,
+                                  double step) override {
+        std::vector<double> out(point.size());
+        const double thresh = step * lambda_;
+        for (std::size_t j = 0; j < point.size(); ++j) {
+            const double v = point[j];
+            if (v > thresh) out[j] = v - thresh;
+            else if (v < -thresh) out[j] = v + thresh;
+            else out[j] = 0.0;
+        }
+        return out;
+    }
+
+private:
+    double predict(const std::vector<double>& w, std::size_t i) const {
+        double s = 0.0;
+        for (std::size_t j = 0; j < w.size(); ++j) s += w[j] * X_[i][j];
+        return s;
+    }
+    std::vector<std::vector<double>> X_;
+    std::vector<double> y_;
+    double lambda_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i)
+        std::cout << (i ? ", " : "") << v[i];
+    std::cout << "]";
+}
+
+std::vector<double> indices(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) out[i] = static_cast<double>(i + 1);
+    return out;
+}
+
+} // namespace
+#+end_src
+
+*** A real quirk: building a convergence curve here needs =gradient()=, not =evaluate()=
+
+Every earlier report in this series builds convergence-curve figures with
+a =LoggingDifferentiable= decorator that records every =evaluate()=
+call's return value. That trick was tried here first, and produced a
+convergence "curve" with exactly *one* point, every time, regardless of
+how many iterations ran. Reading =proximal_gradient.cpp= and
+=fista.cpp= directly explains why: neither loop calls
+=function.evaluate()= at all during iteration -- only
+=function.gradient(...)= and =function.proximal(...)=. =evaluate()= is
+called exactly once, after the loop exits, purely to produce the
+returned double. This is different from every gradient-based optimizer
+covered elsewhere in this series (=GradientDescent=, =Adam=, =LBFGS= all
+call =evaluate()= as part of their stopping check or line search), and
+is a real, previously-undocumented behavioral detail of this specific
+pair of optimizers.
+
+Both loops *do* call =gradient()= exactly once per iteration, so the
+logging decorator below hooks there instead, additionally computing and
+recording the full composite objective ($f(x)+\lambda\lVert x\rVert_1$,
+manually -- see §2.2's note on =evaluate()='s smooth-part-only contract) at
+the point =gradient()= is called with:
+
+#+name: proximal-logging
+#+begin_src c++ :eval no
+class LoggingProximal : public ProximalFunction {
+public:
+    LoggingProximal(ProximalFunction& inner, double lambda,
+                     std::vector<double>& log)
+        : inner_(&inner), lambda_(lambda), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        return inner_->evaluate(x);
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        double l1 = 0.0;
+        for (const double v : x) l1 += std::fabs(v);
+        log_->push_back(inner_->evaluate(x) + lambda_ * l1);
+        return inner_->gradient(x);
+    }
+    std::vector<double> proximal(const std::vector<double>& point,
+                                  double step) override {
+        return inner_->proximal(point, step);
+    }
+
+private:
+    ProximalFunction* inner_;
+    double lambda_;
+    std::vector<double>* log_;
+};
+#+end_src
+
+For =ProximalGradient=, =gradient()= is called on the actual current
+iterate $x_k$ each iteration, so the log is a true objective trace. For
+=FISTA=, =gradient()= is called on the extrapolated lookahead point
+$y_k$, not the accepted iterate $x_k$ -- a minor caveat worth stating
+plainly, though the two track closely enough in practice (§4.1) for the
+comparison to remain meaningful.
+
+*** Standardizing the iris predictors
+
+#+name: proximal-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    const std::size_t n = iris.nrows();
+    std::vector<double> sepal_length(n), sepal_width(n), petal_width(n),
+        petal_length(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        sepal_length[i] = iris.double_at("Sepal.Length", i);
+        sepal_width[i] = iris.double_at("Sepal.Width", i);
+        petal_width[i] = iris.double_at("Petal.Width", i);
+        petal_length[i] = iris.double_at("Petal.Length", i);
+    }
+
+    auto mean_of = [](const std::vector<double>& v) {
+        double s = 0.0;
+        for (const double x : v) s += x;
+        return s / static_cast<double>(v.size());
+    };
+    // population-variance scale, matching ElasticNet::fit exactly:
+    // scale = sqrt( (1/n) * sum((x-mean)^2) )
+    auto scale_of = [](const std::vector<double>& v, double mean) {
+        double ss = 0.0;
+        for (const double x : v) ss += (x - mean) * (x - mean);
+        return std::sqrt(ss / static_cast<double>(v.size()));
+    };
+
+    const double m1 = mean_of(sepal_length), s1 = scale_of(sepal_length, m1);
+    const double m2 = mean_of(sepal_width), s2 = scale_of(sepal_width, m2);
+    const double m3 = mean_of(petal_width), s3 = scale_of(petal_width, m3);
+    const double ym = mean_of(petal_length);
+
+    std::cout << "predictor means: [" << m1 << ", " << m2 << ", " << m3
+               << "]\n";
+    std::cout << "predictor scales: [" << s1 << ", " << s2 << ", " << s3
+               << "]\n";
+    std::cout << "y mean: " << ym << "\n\n";
+
+    std::vector<std::vector<double>> X(n, std::vector<double>(3));
+    std::vector<double> y(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        X[i] = {(sepal_length[i] - m1) / s1, (sepal_width[i] - m2) / s2,
+                 (petal_width[i] - m3) / s3};
+        y[i] = petal_length[i] - ym;
+    }
+
+    // Maps standardized-scale coefficients back to the original iris
+    // scale, the same convention ElasticNet::fit uses internally.
+    auto unstandardize = [&](const std::vector<double>& w_std) {
+        std::vector<double> w{w_std[0] / s1, w_std[1] / s2, w_std[2] / s3};
+        const double intercept = ym - (m1 * w[0] + m2 * w[1] + m3 * w[2]);
+        return std::make_pair(intercept, w);
+    };
+#+end_src
+
+*** ISTA vs FISTA at a matched lambda, and the convergence figure
+
+#+name: proximal-compare
+#+begin_src c++ :eval no
+    std::cout << "=== ProximalGradient vs FISTA convergence, lambda=0.1 ===\n";
+    const double lambda_cmp = 0.1;
+    const double step_size = 0.2;
+    std::vector<double> pg_log, fista_log;
+    std::vector<double> w_pg{0.0, 0.0, 0.0}, w_fista{0.0, 0.0, 0.0};
+    {
+        LassoLoss loss(X, y, lambda_cmp);
+        LoggingProximal lf(loss, lambda_cmp, pg_log);
+        ProximalGradientOptions opts;
+        opts.step_size = step_size;
+        opts.max_iterations = 20000;
+        opts.tolerance = 1e-12;
+        const double value = ProximalGradient(opts).optimize(lf, w_pg);
+        std::cout << "ISTA  f_smooth=" << value << " (" << pg_log.size()
+                   << " iterations)\n  w=";
+        print_vec(w_pg);
+        std::cout << "\n";
+    }
+    {
+        LassoLoss loss(X, y, lambda_cmp);
+        LoggingProximal lf(loss, lambda_cmp, fista_log);
+        FISTAOptions opts;
+        opts.step_size = step_size;
+        opts.max_iterations = 20000;
+        opts.tolerance = 1e-12;
+        const double value = FISTA(opts).optimize(lf, w_fista);
+        std::cout << "FISTA f_smooth=" << value << " (" << fista_log.size()
+                   << " iterations)\n  w=";
+        print_vec(w_fista);
+        std::cout << "\n";
+    }
+
+    // full composite objective, computed ourselves per section 2's note
+    auto composite = [&](const std::vector<double>& w_std) {
+        LassoLoss loss(X, y, lambda_cmp);
+        double l1 = 0.0;
+        for (double v : w_std) l1 += std::fabs(v);
+        return loss.evaluate(w_std) + lambda_cmp * l1;
+    };
+    std::cout << "ProximalGradient composite objective: " << composite(w_pg)
+               << "\n";
+    std::cout << "FISTA composite objective:            "
+               << composite(w_fista) << "\n";
+
+    // Iterations needed to first come within a relative gap of the best
+    // (smallest) logged composite objective -- a fairer speed comparison
+    // than raw stopping-triggered iteration counts, since both optimizers
+    // stop on a coordinate-change tolerance, not an objective tolerance.
+    auto iters_to_gap = [](const std::vector<double>& log, double rel_gap) {
+        double best = log.empty() ? 0.0 : log.back();
+        for (double v : log) best = std::min(best, v);
+        const double target = best + rel_gap * std::fabs(best);
+        for (std::size_t i = 0; i < log.size(); ++i)
+            if (log[i] <= target) return static_cast<long>(i + 1);
+        return static_cast<long>(-1);
+    };
+    std::cout << "iterations to reach relative gap of final objective:\n";
+    for (double gap : {1e-1, 1e-2, 1e-3, 1e-4}) {
+        std::cout << "  gap=" << std::scientific << std::setprecision(0)
+                   << gap << std::fixed << std::setprecision(6)
+                   << "  ISTA=" << iters_to_gap(pg_log, gap)
+                   << "  FISTA=" << iters_to_gap(fista_log, gap) << "\n";
+    }
+#+end_src
+
+#+name: proximal-figure
+#+begin_src c++ :eval no
+    {
+        auto log10_shifted = [](const std::vector<double>& v) {
+            std::vector<double> out(v.size());
+            for (std::size_t i = 0; i < v.size(); ++i)
+                out[i] = std::log10(v[i] + 1e-12);
+            return out;
+        };
+        auto log10_index = [](std::size_t n) {
+            std::vector<double> out(n);
+            for (std::size_t i = 0; i < n; ++i)
+                out[i] = std::log10(static_cast<double>(i + 1));
+            return out;
+        };
+        auto plot = RPlot::plot(log10_index(pg_log.size()),
+                                 log10_shifted(pg_log), "l",
+                                 "ProximalGradient", {220, 38, 38});
+        plot.lines(log10_index(fista_log.size()), log10_shifted(fista_log),
+                   "FISTA", {34, 197, 94}, 2.0);
+        plot.legend({"ProximalGradient (ISTA)", "FISTA"},
+                    {{220, 38, 38}, {34, 197, 94}});
+        plot.title("Convergence: ProximalGradient (ISTA) vs FISTA, "
+                    "lambda=0.1")
+            .x_label("log10(iteration)")
+            .y_label("log10(composite objective)");
+        plot.save_svg("build/org/optim_proximal_convergence.svg");
+        std::cout << "wrote optim_proximal_convergence.svg\n";
+    }
+#+end_src
+
+*** Cross-check against =stats::Lasso=, at one lambda and across a sweep
+
+#+name: proximal-crosscheck
+#+begin_src c++ :eval no
+    std::cout << "\n=== Cross-check against datamunge::stats::Lasso ===\n";
+    {
+        auto [intercept_pg, w_orig_pg] = unstandardize(w_pg);
+        auto [intercept_fista, w_orig_fista] = unstandardize(w_fista);
+        std::cout << "ISTA  intercept=" << intercept_pg << " coef=";
+        print_vec(w_orig_pg);
+        std::cout << "\n";
+        std::cout << "FISTA intercept=" << intercept_fista << " coef=";
+        print_vec(w_orig_fista);
+        std::cout << "\n";
+
+        datamunge::stats::LassoOptions lasso_opts;
+        lasso_opts.lambda = lambda_cmp;
+        lasso_opts.standardize = true;
+        datamunge::stats::Lasso lasso(
+            iris, "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width",
+            lasso_opts);
+        std::cout << "Lasso intercept=" << lasso.intercept() << " coef=";
+        print_vec(lasso.coefficients());
+        std::cout << "\n";
+    }
+
+    std::cout << "\n=== Lambda sweep: original-scale coefficients ===\n";
+    const std::vector<double> lambdas{0.0,  0.01, 0.05, 0.1, 0.2,
+                                       0.3,  0.5,  0.8,  1.0};
+    std::vector<double> coef0, coef1, coef2; // FISTA original-scale traces
+    for (const double lam : lambdas) {
+        LassoLoss loss(X, y, lam);
+        std::vector<double> w{0.0, 0.0, 0.0};
+        FISTAOptions opts;
+        opts.step_size = step_size;
+        opts.max_iterations = 20000;
+        opts.tolerance = 1e-12;
+        FISTA(opts).optimize(loss, w);
+        auto [icpt, w_orig] = unstandardize(w);
+        std::cout << "lambda=" << std::setprecision(2) << lam
+                   << std::setprecision(6) << " FISTA coef=";
+        print_vec(w_orig);
+        std::cout << "\n";
+
+        datamunge::stats::LassoOptions lopts;
+        lopts.lambda = (lam == 0.0) ? 1e-8 : lam;
+        lopts.standardize = true;
+        datamunge::stats::Lasso lasso(
+            iris, "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width",
+            lopts);
+        std::cout << "         Lasso coef=";
+        print_vec(lasso.coefficients());
+        std::cout << "\n";
+
+        coef0.push_back(w_orig[0]);
+        coef1.push_back(w_orig[1]);
+        coef2.push_back(w_orig[2]);
+    }
+#+end_src
+
+#+name: proximal-path-figure
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(lambdas, coef0, "l", "Sepal.Length",
+                                 {220, 38, 38});
+        plot.lines(lambdas, coef1, "Sepal.Width", {96, 165, 250}, 2.0);
+        plot.lines(lambdas, coef2, "Petal.Width", {34, 197, 94}, 2.0);
+        plot.legend({"Sepal.Length", "Sepal.Width", "Petal.Width"},
+                    {{220, 38, 38}, {96, 165, 250}, {34, 197, 94}});
+        plot.title("FISTA lasso path: original-scale coefficients vs "
+                    "lambda")
+            .x_label("lambda")
+            .y_label("coefficient (original iris scale)");
+        plot.save_svg("build/org/optim_proximal_lasso_path.svg");
+        std::cout << "wrote optim_proximal_lasso_path.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_proximal_analysis.cpp <<'CPP'
+<<proximal-includes>>
+
+<<proximal-logging>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<proximal-data>>
+
+<<proximal-compare>>
+
+<<proximal-figure>>
+
+<<proximal-crosscheck>>
+
+<<proximal-path-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_proximal_analysis.cpp \
+  -o build/org/optim_proximal_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_proximal_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** ISTA vs FISTA convergence at a matched lambda
+
+#+begin_example
+predictor means: [5.843333, 3.057333, 1.199333]
+predictor scales: [0.825301, 0.434411, 0.759693]
+y mean: 3.758000
+
+=== ProximalGradient vs FISTA convergence, lambda=0.1 ===
+ISTA  f_smooth=0.058527 (804 iterations)
+  w=[0.494092, -0.184819, 1.122264]
+FISTA f_smooth=0.058527 (882 iterations)
+  w=[0.494092, -0.184819, 1.122264]
+ProximalGradient composite objective: 0.238644
+FISTA composite objective:            0.238644
+iterations to reach relative gap of final objective:
+  gap=1e-01  ISTA=6  FISTA=5
+  gap=1e-02  ISTA=32  FISTA=13
+  gap=1e-03  ISTA=72  FISTA=18
+  gap=1e-04  ISTA=112  FISTA=21
+wrote optim_proximal_convergence.svg
+#+end_example
+
+Both optimizers converge to the identical point
+$w=[0.494092,-0.184819,1.122264]$ (standardized scale) and the identical
+composite objective, $0.238644$, from the same starting point $w_0=(0,0,0)$
+-- expected, since minimizing a strictly convex objective (squared error
+plus L1 has a unique minimizer whenever the Hessian of the smooth part is
+positive definite, true here with only 3, mildly correlated predictors)
+should not depend on which of two correct algorithms is used to reach
+it. The two iteration counts, however, tell an interesting and
+initially counterintuitive story: FISTA needs *more* raw iterations
+(882) than plain ISTA (804) to satisfy the same coordinate-change
+tolerance ($10^{-12}$). But the "iterations to reach a relative gap of
+the final objective" figures show the opposite and expected pattern:
+FISTA reaches within 0.01% of the converged objective in 21 iterations,
+versus ISTA's 112 -- 5.3x fewer -- and the gap widens at every looser
+threshold tested (2.5x fewer at 1%, 4x fewer at 0.1%). FISTA's momentum
+gets the *objective value* close to optimal far faster, exactly as
+Beck & Teboulle's $O(1/k^2)$ vs. $O(1/k)$ result predicts, but the same
+momentum keeps nudging the *coordinates* around for many further
+iterations after that, so a coordinate-change-based stopping rule (what
+both optimizers actually use) fires later for FISTA than for ISTA on
+this problem -- a real, observed instance of FISTA's well-documented
+non-monotonic behavior near the optimum (O'Donoghue & Candes 2015).
+
+#+ATTR_HTML: :alt Log-log convergence plot comparing ProximalGradient (ISTA) and FISTA on the lasso objective at lambda=0.1 :width 100%
+[[file:../../build/org/optim_proximal_convergence.svg]]
+
+The log-log convergence plot makes the same story visible directly:
+FISTA's curve (green) drops below ISTA's (red) within the first handful
+of iterations and stays below it through the fast-descent phase, before
+both flatten onto the same long, nearly indistinguishable tail as they
+approach the shared tolerance floor -- the tail being exactly where the
+raw iteration-count comparison above is dominated by tiny, slowly-decaying
+oscillations rather than by genuine further progress on the objective.
+
+** Cross-check against =stats::Lasso=
+
+#+begin_example
+=== Cross-check against datamunge::stats::Lasso ===
+ISTA  intercept=-0.211285 coef=[0.598681, -0.425447, 1.477261]
+FISTA intercept=-0.211285 coef=[0.598681, -0.425447, 1.477261]
+Lasso intercept=-0.211286 coef=[0.598681, -0.425447, 1.477261]
+#+end_example
+
+Unstandardized back to the original iris scale, ISTA and FISTA agree
+with each other to all six printed decimal places, and both agree with
+=stats::Lasso= -- an entirely independent coordinate-descent
+implementation -- to five or six decimal places on every coefficient and
+the intercept. This is a strong cross-check: two structurally different
+algorithms (proximal gradient with Nesterov extrapolation vs. cyclic
+coordinate descent), implemented independently elsewhere in this
+codebase, minimizing the identical convex objective and landing on the
+same answer to numerical precision.
+
+** Lambda sweep: agreement across the full regularization path
+
+#+begin_example
+=== Lambda sweep: original-scale coefficients ===
+lambda=0.00 FISTA coef=[0.729138, -0.646012, 1.446793]
+         Lasso coef=[0.729139, -0.646013, 1.446793]
+lambda=0.01 FISTA coef=[0.716093, -0.623956, 1.449840]
+         Lasso coef=[0.716093, -0.623956, 1.449840]
+lambda=0.05 FISTA coef=[0.663910, -0.535730, 1.462027]
+         Lasso coef=[0.663910, -0.535730, 1.462027]
+lambda=0.10 FISTA coef=[0.598681, -0.425447, 1.477261]
+         Lasso coef=[0.598681, -0.425447, 1.477261]
+lambda=0.20 FISTA coef=[0.468223, -0.204882, 1.507728]
+         Lasso coef=[0.468223, -0.204882, 1.507728]
+lambda=0.30 FISTA coef=[0.342302, 0.000000, 1.530881]
+         Lasso coef=[0.342302, 0.000000, 1.530881]
+lambda=0.50 FISTA coef=[0.209000, 0.000000, 1.386066]
+         Lasso coef=[0.209000, 0.000000, 1.386066]
+lambda=0.80 FISTA coef=[0.009046, 0.000000, 1.168845]
+         Lasso coef=[0.009047, 0.000000, 1.168844]
+lambda=1.00 FISTA coef=[0.000000, 0.000000, 0.913619]
+         Lasso coef=[0.000000, 0.000000, 0.913619]
+wrote optim_proximal_lasso_path.svg
+#+end_example
+
+Across nine $\lambda$ values spanning $[0,1]$, FISTA and =stats::Lasso=
+agree to at least five decimal places at every single point on the path,
+*including* the exact regularization strength at which each coefficient
+is driven to zero: =Sepal.Width= (the coefficient in the second
+position) crosses to exactly $0$ somewhere between $\lambda=0.20$ and
+$\lambda=0.30$ for both solvers, and =Sepal.Length= (first position)
+crosses to exactly $0$ between $\lambda=0.80$ and $\lambda=1.00$ for
+both -- =Petal.Width= remains the strongest, last-surviving predictor
+throughout the entire swept range.
+
+#+ATTR_HTML: :alt Lasso coefficient path: original-scale FISTA coefficients for three iris predictors as a function of lambda, showing Sepal.Width and Sepal.Length being shrunk to exactly zero at different regularization strengths :width 100%
+[[file:../../build/org/optim_proximal_lasso_path.svg]]
+
+The path figure shows the textbook lasso signature: every coefficient's
+magnitude shrinks monotonically (with one small exception -- see
+Discussion) as $\lambda$ grows, with =Sepal.Width= (blue) crossing zero
+first near $\lambda\approx0.25$ and =Sepal.Length= (red) crossing zero
+much later, near $\lambda\approx0.85$, while =Petal.Width= (green)
+remains comfortably positive across the entire swept range -- exactly
+the variable-selection behavior L1 regularization is used for.
+
+* Discussion
+
+**FISTA's real advantage here is in objective-value convergence speed,
+not in when its own built-in stopping rule fires.** The 5.3x
+iterations-to-0.01%-gap advantage over ISTA is a direct, measured
+instance of the $O(1/k^2)$ vs. $O(1/k)$ result Beck & Teboulle prove --
+but it would have been invisible, or even backwards-looking (882 vs. 804
+raw iterations, FISTA "losing"), from the optimizers' own reported
+iteration counts alone. Reading only the final iteration count without
+the underlying trajectory would have produced the wrong conclusion about
+which algorithm is actually faster on this problem; this is exactly the
+same lesson the companion =optimization_analysis.org= report's Rosenbrock
+convergence curve teaches from a different angle (§5 there) -- a
+convergence curve's shape carries information a single summary number
+does not.
+
+**Discovering that neither optimizer calls =evaluate()= during its loop
+was not a foregone conclusion, and changed how this report's figures had
+to be built.** Every other optimizer in this series' companion reports
+(=GradientDescent=, =Adam=, =LBFGS=, =SimulatedAnnealing=, the
+population-based methods) calls =evaluate()= as a natural part of its
+own stopping check or search procedure, so the =LoggingDifferentiable= /
+=LoggingArbitrary= decorator pattern "just works" there. =ProximalGradient=
+and =FISTA= are a genuine exception: their stopping criterion is a
+coordinate-change norm, which needs no objective evaluation at all, so
+=evaluate()= is reserved purely for the return value. Anyone reusing this
+series' logging-decorator technique on a new =ProximalFunction=-based
+optimizer should check which method the target optimizer's loop actually
+calls before assuming =evaluate()=-logging will produce a useful trace.
+
+**The cross-check against =stats::Lasso= is strong evidence both
+proximal-gradient methods are implemented correctly, precisely because
+the two solvers share nothing but the objective they minimize.**
+=stats::Lasso= reaches its answer via cyclic coordinate descent on a
+closed-form per-coordinate update derived directly from the elastic-net
+objective's structure; =ProximalGradient= / =FISTA= reach the same answer
+via generic proximal-gradient steps that know nothing about lasso
+specifically, only a smooth gradient and a proximal operator supplied by
+this report's own =LassoLoss= class. Five-to-six-decimal agreement across
+a full $\lambda$ path, including the precise zero-crossing points, is a
+much stronger correctness signal than either solver agreeing with itself
+across repeated runs would be.
+
+**One coefficient's magnitude does not shrink perfectly monotonically
+across the swept path, a small but real detail worth naming rather than
+smoothing over.** =Petal.Width='s coefficient rises slightly from
+$\lambda=0$ to $\lambda=0.2$ ($1.446793\to1.507728$) before beginning its
+overall decline -- both solvers agree this happens, so it is not a
+convergence artifact of either optimizer. This is a known, unsurprising
+property of lasso paths with correlated predictors (=Sepal.Length= and
+=Petal.Width= are correlated in the iris data): as the more-collinear
+=Sepal.Length= coefficient is shrunk, part of its explanatory role can be
+absorbed by the also-correlated =Petal.Width= coefficient before the
+penalty dominates it too, rather than every coefficient's path being
+individually monotone in $\lambda$.
+
+* Conclusion
+
+Fitting the same lasso objective with two different generic
+proximal-gradient optimizers and one purpose-built coordinate-descent
+solver produces the same answer to five-to-six decimal places at every
+tested regularization strength, including the exact points where
+=stats::Lasso='s own variable-selection behavior kicks in -- a real,
+independently-implemented ground-truth check of the kind this series
+relies on throughout. Along the way, this report found that the usual
+evaluate()-logging trick for building convergence curves silently fails
+for =ProximalGradient= / =FISTA= (neither calls =evaluate()= inside its
+loop) and, once worked around via =gradient()=-logging, that FISTA's real
+speed advantage over ISTA shows up clearly in iterations needed to reach
+a near-optimal objective (a 5.3x advantage at a 0.01% gap) even though it
+needs more raw iterations to satisfy an identical coordinate-change
+stopping tolerance (882 vs. 804) -- a genuine, observed instance of
+FISTA's known non-monotonic behavior near the optimum. As with its
+companions, this entire report is reproducible end to end via =just
+org-example optimization_proximal_analysis=, which re-executes §3.4.6's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Beck, A., & Teboulle, M. (2009). "A Fast Iterative Shrinkage-Thresholding
+  Algorithm for Linear Inverse Problems." /SIAM Journal on Imaging
+  Sciences/, 2(1), 183--202.
+- Parikh, N., & Boyd, S. (2014). "Proximal Algorithms." /Foundations and
+  Trends in Optimization/, 1(3), 127--239.
+- Tibshirani, R. (1996). "Regression Shrinkage and Selection via the
+  Lasso." /Journal of the Royal Statistical Society, Series B/, 58(1),
+  267--288.
+- O'Donoghue, B., & Candes, E. (2015). "Adaptive Restart for Accelerated
+  Gradient Schemes." /Foundations of Computational Mathematics/, 15(3),
+  715--732.
+- Zou, H., & Hastie, T. (2005). "Regularization and Variable Selection
+  via the Elastic Net." /Journal of the Royal Statistical Society, Series
+  B/, 67(2), 301--320.
+- Anderson, E. (1935). "The Irises of the Gaspe Peninsula." /Bulletin of
+  the American Iris Society/, 59, 2--5. (Original data source.)
+- Fisher, R. A. (1936). "The Use of Multiple Measurements in Taxonomic
+  Problems." /Annals of Eugenics/, 7(2), 179--188. (Popularized the iris
+  dataset.)

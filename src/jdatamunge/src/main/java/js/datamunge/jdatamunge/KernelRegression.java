@@ -148,27 +148,27 @@ public class KernelRegression {
   /**
    *  Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
    */
-  public ScatterPlot plot_fit(DataFrame data, long grid_resolution) {
-    return new ScatterPlot(datamungeJNI.KernelRegression_plot_fit__SWIG_0(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution), true);
+  public RPlot plot_fit(DataFrame data, long grid_resolution) {
+    return new RPlot(datamungeJNI.KernelRegression_plot_fit__SWIG_0(swigCPtr, this, DataFrame.getCPtr(data), data, grid_resolution), true);
   }
 
   /**
    *  Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
    */
-  public ScatterPlot plot_fit(DataFrame data) {
-    return new ScatterPlot(datamungeJNI.KernelRegression_plot_fit__SWIG_1(swigCPtr, this, DataFrame.getCPtr(data), data), true);
+  public RPlot plot_fit(DataFrame data) {
+    return new RPlot(datamungeJNI.KernelRegression_plot_fit__SWIG_1(swigCPtr, this, DataFrame.getCPtr(data), data), true);
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    return new ScatterPlot(datamungeJNI.KernelRegression_plot_predicted_vs_actual(swigCPtr, this), true);
+  public RPlot plot_predicted_vs_actual() {
+    return new RPlot(datamungeJNI.KernelRegression_plot_predicted_vs_actual(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.KernelRegression_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.KernelRegression_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_cv_curve() {
-    return new ScatterPlot(datamungeJNI.KernelRegression_plot_cv_curve(swigCPtr, this), true);
+  public RPlot plot_cv_curve() {
+    return new RPlot(datamungeJNI.KernelRegression_plot_cv_curve(swigCPtr, this), true);
   }
 
 }

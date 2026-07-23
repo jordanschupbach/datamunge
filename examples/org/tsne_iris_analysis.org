@@ -1,0 +1,1040 @@
+#+title: t-SNE: Visualizing Local Structure via Probabilistic Neighbor Embedding
+#+subtitle: A literate C++ study of neighbor-embedding visualization using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit \(t\)-distributed Stochastic Neighbor Embedding (van der Maaten &
+Hinton, 2008) to Fisher's (1936) iris measurements using =datamunge='s
+C++ =stats::TSNE=, and report it as a literate program: every fragment
+below is a real, compiled, executed chunk of the single C++ binary that
+produced every number and figure in this document. =Species= is
+withheld entirely from the fit. The per-point binary search that
+calibrates each point's Gaussian bandwidth to a target perplexity of
+30.0 converges tightly -- achieved perplexity ranges from 29.9998 to
+30.0002 across all 150 points, mean 30.0000. The resulting 2-dimensional
+embedding separates the three species dramatically: mean within-species
+embedded distance is 3.2820 against a mean between-species distance of
+46.4803, a ratio of 14.16, and the scatter itself resolves into three
+tight, visually disjoint blobs even though =Species= is never given to
+the fit. Refitting at perplexity 5 and 50 shows the well-documented
+sensitivity concretely: perplexity 5 fragments each species into several
+small sub-clusters (each achieving perplexity 5.0000 almost exactly),
+while perplexity 50 spreads and partially blends /versicolor/ and
+/virginica/ back together, both while still calibrating essentially
+perfectly (49.9997-50.0003). On a synthetic Swiss roll (\(n=400\),
+seeded per the shared batch formula), \(t\)-SNE does /not/ unroll the
+manifold into a smooth rectangle -- consistent with its design goal of
+preserving local neighborhoods rather than global geometry, it instead
+shatters the roll into roughly half a dozen disjoint, locally-coherent
+fragments scattered with no consistent global arrangement. Quantitatively
+this is a genuinely mixed result: \(t\)-SNE's best-axis correlation with
+the true \(t\) parametrization (0.4105) is actually /higher/ than plain
+PCA's or classical MDS's (0.2426 each, identical to four decimal places,
+as expected since Euclidean MDS and unscaled PCA are close cousins), even
+though \(t\)-SNE's picture looks far less like the true manifold than
+PCA/MDS's recognizable (if self-intersecting) spiral projection -- a
+concrete illustration that "looks unrolled" and "correlates linearly
+with ground truth" are not the same question. We derive the full
+pipeline -- perplexity-calibrated conditional similarities, symmetrization,
+the Student-\(t\) low-dimensional kernel and the crowding problem it
+solves, the KL-divergence gradient, and the early-exaggeration/momentum
+schedule -- tying each step to the exact formula =stats::TSNE= computes.
+#+end_abstract
+
+* Introduction
+
+Every other unsupervised report in this project -- the [[file:pca_iris_analysis.org][companion PCA
+report]] and the [[file:mds_iris_analysis.org][companion MDS report]] chief among them -- asks a
+/geometry-preserving/ question: find a low-dimensional coordinate system
+whose distances (PCA: variance-maximizing directions; MDS: pairwise
+Euclidean distances) reproduce the high-dimensional data's global
+structure as faithfully as possible. \(t\)-SNE asks a different kind of
+question entirely: forget reproducing distances faithfully everywhere,
+and instead find a low-dimensional layout in which points that were
+/close neighbors/ in the original space remain close neighbors, at the
+cost of systematically distorting (or simply not caring about) distances
+between points that were already far apart. This makes it, by design, a
+visualization tool rather than a distance- or variance-preserving
+embedding, and the trade-off has real, measurable consequences this
+report demonstrates directly: dramatically better class separation on
+iris than PCA or MDS produce, and a genuinely different (and, on one
+concrete metric, worse-looking) picture on a manifold -- the Swiss roll
+-- whose whole structure is about preserving smooth global geometry, the
+opposite of what \(t\)-SNE optimizes for.
+
+As with its companion reports, this document is a /literate program/:
+prose and source are interleaved in reading order, and a single
+"assembling the program" step (§3.3.13) weaves every named chunk below
+into one =.cpp= file, compiles it, and runs it. Every number and figure
+from §4 onward is that program's literal output.
+
+§2 derives the full \(t\)-SNE pipeline -- perplexity-calibrated
+conditional similarities and the binary search that finds them,
+symmetrization into a joint distribution, the Student-\(t\)
+low-dimensional kernel and the "crowding problem" it exists to solve, the
+Kullback-Leibler objective and its gradient, and the
+early-exaggeration/momentum optimization schedule -- each tied to the specific
+=stats::TSNE= computation that implements it. §3 describes the program
+chunk by chunk. §4 reports the fitted iris embedding, its
+achieved-perplexity convergence, the within-/between-species separation,
+a perplexity sensitivity sweep, and the Swiss-roll experiment (raw
+geometry, the fitted embeddings, and the ground-truth correlation
+check). §5 discusses what \(t\)-SNE's local-neighborhood focus does and
+does not buy over PCA/MDS. §6 concludes.
+
+* Background: \(t\)-Distributed Stochastic Neighbor Embedding
+
+** Setup and notation
+
+\(n\) observations \(x_1, \ldots, x_n \in \mathbb{R}^p\) -- for iris,
+\(n=150\), \(p=4\) (=Sepal.Length=, =Sepal.Width=, =Petal.Length=,
+=Petal.Width=); for the Swiss-roll experiment in §4.5-4.7, \(n=400\),
+\(p=3\) (the observed 3D coordinates =x=, =y=, =z=, with the true 1D
+manifold position \(t\) and the true "height" coordinate withheld). As
+in every companion report, no response/label column is ever passed to
+the =TSNE= constructor; it is retained separately for coloring figures
+and computing separation statistics afterward. =stats::TSNE= maps each
+\(x_i\) to a point \(y_i \in \mathbb{R}^k\) in a low-dimensional space
+(=TSNEOptions::n_components=, \(k=2\) throughout this report), chosen so
+that a probability distribution over neighbor pairs in the /embedded/
+space matches, as closely as possible, the corresponding distribution
+computed in the /original/ space.
+
+** Conditional similarities and perplexity calibration
+
+For each point \(i\), =TSNE::fit= first computes squared pairwise
+distances \(D^2_{ij}\) (Euclidean by default, =DistanceMetric::Manhattan=
+also supported) to every other point, then converts them into a
+conditional probability that \(i\) would pick \(j\) as its neighbor,
+
+\[
+p_{j \mid i} = \frac{\exp(-\beta_i D^2_{ij})}{\sum_{k \neq i} \exp(-\beta_i D^2_{ik})}, \qquad p_{i \mid i} = 0,
+\]
+
+a Gaussian kernel centered on \(x_i\) with precision (inverse variance)
+\(\beta_i = 1/(2\sigma_i^2)\) -- the exact quantity the implementation's
+binary search solves for, one \(\beta_i\) per point, so that nearby
+points in dense regions get a narrower Gaussian (small \(\sigma_i\)) and
+points in sparse regions get a wider one, equalizing the /effective/
+number of neighbors each point sees regardless of local density. That
+effective count is formalized as /perplexity/: the Shannon entropy (in
+bits) of the conditional distribution \(P_i = (p_{1|i}, \ldots,
+p_{n|i})\),
+
+\[
+H(P_i) = -\sum_{j \neq i} p_{j \mid i} \log_2 p_{j \mid i}, \qquad
+\mathrm{Perp}(P_i) = 2^{H(P_i)} .
+\]
+
+A distribution concentrated on a single neighbor has \(H=0\) bits and
+perplexity 1; a distribution spread uniformly over \(m\) neighbors has
+\(H = \log_2 m\) bits and perplexity exactly \(m\) -- so perplexity is
+literally interpretable as "the effective number of neighbors" \(i\)
+attends to, smoothly interpolating between integer neighbor counts for
+non-uniform distributions. =TSNEOptions::perplexity= (default 30.0) is
+the /target/; for each point =TSNE::fit= runs a binary search over
+\(\beta_i\) (implemented directly on \(\log_2\)-perplexity, i.e. entropy,
+since entropy is monotonic in \(\beta_i\) while perplexity is its
+exponential): start at \(\beta_i = 1\), and after each trial compute
+\(H(P_i)\) via the formula above; if it exceeds the target
+\(\log_2(\text{perplexity})\) (distribution too spread out) increase
+\(\beta_i\) (narrow the Gaussian), otherwise decrease it, halving the
+search interval each of up to 50 steps or stopping early once
+\(|H(P_i) - \log_2(\text{perplexity})| < 10^{-5}\). §4.2 and §4.6 report
+=achieved_perplexity()= -- \(2^{H(P_i)}\) at the search's stopping point
+for every point -- as the direct empirical check that this calibration
+actually converged.
+
+** Symmetrization into the joint distribution \(P\)
+
+\(p_{j|i}\) is not symmetric in general (\(i\)'s bandwidth \(\beta_i\)
+differs from \(j\)'s), so =TSNE::fit= symmetrizes the two conditional
+distributions into one joint distribution over unordered pairs,
+
+\[
+P_{ij} = \frac{p_{j \mid i} + p_{i \mid j}}{2n} ,
+\]
+
+dividing by \(2n\) (rather than just averaging) so that
+\(\sum_{i \neq j} P_{ij} = 1\) and every point contributes a reasonable
+amount of probability mass to the objective even if it is an outlier
+under one of the two conditional distributions alone.
+
+** The Student-\(t\) low-dimensional kernel and the crowding problem
+
+The low-dimensional similarities \(q_{ij}\) are /not/ computed with the
+same Gaussian form as \(p_{j|i}\) -- =TSNE::fit= instead uses a Student-\(t\)
+distribution with one degree of freedom (equivalently, a Cauchy
+distribution),
+
+\[
+q_{ij} = \frac{(1 + \lVert y_i - y_j \rVert^2)^{-1}}{\sum_{k \neq l} (1 + \lVert y_k - y_l \rVert^2)^{-1}} .
+\]
+
+The reason is what van der Maaten & Hinton (2008) call the /crowding
+problem/: in a high-dimensional space there is enough volume for a point
+to have many /moderately/ dissimilar neighbors simultaneously, all at
+roughly comparable distance; a 2-dimensional map simply does not have
+enough area to place that many points at moderate distance from a common
+center without either overlapping them or pushing the genuinely close
+neighbors unrealistically far apart to make room. A Gaussian
+low-dimensional kernel, whose tails decay as \(\exp(-d^2)\), would
+therefore be forced into a bad compromise: to keep near neighbors
+looking near, it would have to also keep moderately-dissimilar points
+crowded uncomfortably close, since its probability mass falls off too
+fast to distinguish "moderately far" from "very far." The Student-\(t\)
+kernel's heavy tail, falling off only as \(d^{-2}\), lets =TSNE::fit=
+assign moderately-dissimilar points a low \(q_{ij}\) at a much /larger/
+embedded distance than a Gaussian would require -- points that are
+moderately far apart can genuinely spread out in the map, relieving the
+crowding, while pairs with large \(p_{ij}\) (genuine near neighbors) are
+still pulled tightly together because the kernel's peak near \(d=0\) is
+even sharper than a Gaussian's.
+
+** The Kullback-Leibler objective and its gradient
+
+=TSNE::fit= optimizes the embedding \(Y = \{y_i\}\) to minimize the
+Kullback-Leibler divergence of \(Q\) (the low-dimensional joint
+distribution) from \(P\) (the high-dimensional joint distribution, held
+fixed once computed in §2.3),
+
+\[
+C(Y) = \mathrm{KL}(P \parallel Q) = \sum_{i \neq j} P_{ij} \log \frac{P_{ij}}{q_{ij}} .
+\]
+
+Differentiating with respect to a single embedded point \(y_i\) (van der
+Maaten & Hinton, 2008, eq. 5) gives a gradient with a clean physical
+reading -- a sum of pairwise "spring forces" along each \(y_i - y_j\)
+direction, attractive when \(P_{ij} > q_{ij}\) and repulsive when the
+reverse holds:
+
+\[
+\frac{\partial C}{\partial y_i} = 4 \sum_{j \neq i} (P_{ij} - q_{ij}) \, (1 + \lVert y_i - y_j \rVert^2)^{-1} (y_i - y_j) .
+\]
+
+This is exactly what the implementation's innermost loop computes: with
+=num(i,j)= holding the unnormalized Student-\(t\) affinity
+\((1+\lVert y_i - y_j \rVert^2)^{-1}\) and =q_ij= its normalized form,
+each pair contributes =coeff = 4.0 * (p_ij - q_ij) * num(i,j)= to
+=grad(i,c) += coeff * (Y(i,c) - Y(j,c))= for every embedded coordinate
+\(c\) -- the code is a direct, unsimplified transcription of the formula
+above (using \(q_{ij} \cdot Z = \) =num(i,j)=, where \(Z\) is the
+normalizer, to avoid recomputing the Student-\(t\) numerator twice).
+
+** Early exaggeration and the momentum schedule
+
+Two optimization devices, both tied directly to =TSNEOptions= fields,
+make the gradient descent above converge to well-separated clusters
+rather than a locally-optimal tangle:
+
+/Early exaggeration/ (=TSNEOptions::early_exaggeration=, default 12.0,
+applied for the first =TSNEOptions::early_exaggeration_iterations=
+iterations, default 250) multiplies every \(P_{ij}\) by 12 before
+computing the gradient, so \(P\) itself is not the objective's true
+target during this phase -- the optimizer instead pursues an artificially
+peaked distribution. Since the low-dimensional Student-\(t\) kernel
+cannot represent a target that concentrated without pulling genuinely
+similar points very tightly together and pushing dissimilar ones
+correspondingly far apart, this phase forces well-separated clusters to
+form early, before the algorithm spends its remaining iterations
+refining fine-grained structure /within/ those clusters -- without it,
+points can settle into a diffuse, moderately-separated configuration
+that is difficult to untangle later. /Momentum/ (=initial_momentum= 0.5
+before =momentum_switch_iteration= 250, =final_momentum= 0.8 after) adds
+a fraction of the previous step's update to the current one,
+\(\Delta y_i^{(t)} = \mu \, \Delta y_i^{(t-1)} - \eta \, \partial C /
+\partial y_i\), the standard classical-momentum device for accelerating
+gradient descent through shallow regions and damping oscillation; the
+switch from low to high momentum is timed to coincide with the end of
+early exaggeration (both default to iteration 250), matching the
+intuition that once clusters have formed, larger, more confident steps
+are safe. =TSNE::fit= re-centers each embedded coordinate to zero mean
+after every iteration -- a numerical bookkeeping detail (the objective
+is translation-invariant) rather than part of the derivation above.
+
+** What we will report
+
+Given the fit, we report the achieved-perplexity convergence check, the
+embedding scatter colored by the withheld =Species=, within-species
+versus between-species separation, a perplexity sensitivity sweep, and
+-- on a synthetic Swiss roll built to the shared batch formula -- the raw
+manifold geometry, the fitted \(t\)-SNE/PCA/MDS embeddings side by side,
+and a quantitative check of how well each recovers the true 1D
+parametrization \(t\).
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. All four measurements are used as
+=TSNE= features throughout; =Species= is withheld from the constructor
+and used only for the exploratory and embedding figures. §4.5-4.7 use a
+second, synthetic dataset -- a Swiss roll of \(n=400\) points generated
+from the exact formula and seed (=std::mt19937_64=, seed 42) specified
+for this report batch, so its figures and correlation numbers are
+directly comparable against any companion report using the same
+construction.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::TSNE= for the model (and, for
+the Swiss-roll comparison, =stats::PCA= and =stats::MDS=), and
+=plot::RPlot= for every figure. No external plotting or statistics
+package is used.
+
+** Program, presented as a literate whole
+
+*** Includes and usings
+
+#+name: tsne-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/mds.hpp>
+#include <datamunge/stats/pca.hpp>
+#include <datamunge/stats/tsne.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::DistanceMetric;
+using datamunge::stats::MDS;
+using datamunge::stats::MDSOptions;
+using datamunge::stats::PCA;
+using datamunge::stats::PCAOptions;
+using datamunge::stats::TSNE;
+using datamunge::stats::TSNEOptions;
+using namespace datamunge::plot;
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The true species, plotted purely for later visual comparison against
+\(t\)-SNE's own embedding -- never used as an input to the =TSNE=
+constructor below.
+
+#+name: tsne-load-data
+#+begin_src c++ :eval no
+    std::cout << std::fixed << std::setprecision(4);
+
+    const auto iris = datamunge::datasets::iris();
+    std::vector<std::string> species(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        species[i] = iris.string_at("Species", i);
+    const std::vector<std::string> features{
+        "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+#+end_src
+
+#+name: tsne-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> sp =
+            {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < sp.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == sp[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                            subset.numeric_column("Petal.Width").values(),
+                            sp[k], colors[k], 6.0);
+        }
+        scatter.title("True Species")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/tsne_iris_eda_true_species.svg");
+        std::cout << "wrote tsne_iris_eda_true_species.svg\n";
+    }
+#+end_src
+
+*** Fitting \(t\)-SNE on iris (default perplexity)
+
+#+name: tsne-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== t-SNE on iris (default options,"
+               << " perplexity=30) ===\n";
+    TSNE tsne(iris, features, TSNEOptions{});
+    tsne.print_summary();
+#+end_src
+
+*** Achieved-perplexity convergence check
+
+#+name: tsne-perplexity-convergence
+#+begin_src c++ :eval no
+    std::cout << "\n=== Achieved-perplexity convergence check ===\n";
+    {
+        const auto& ap = tsne.achieved_perplexity();
+        double mn = ap[0], mx = ap[0], sum = 0.0;
+        for (const double v : ap) {
+            mn = std::min(mn, v);
+            mx = std::max(mx, v);
+            sum += v;
+        }
+        std::cout << "Target perplexity: 30.0000\n";
+        std::cout << "Achieved: min=" << mn << " max=" << mx
+                   << " mean=" << sum / static_cast<double>(ap.size())
+                   << "\n";
+    }
+#+end_src
+
+*** Embedding scatter
+
+#+name: tsne-embedding-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> sx(3), sy(3);
+        const std::vector<std::string> sp =
+            {"setosa", "versicolor", "virginica"};
+        for (std::size_t i = 0; i < tsne.observations(); ++i) {
+            const auto& sname = species[tsne.kept_row_indices()[i]];
+            for (std::size_t k = 0; k < sp.size(); ++k) {
+                if (sname != sp[k]) continue;
+                sx[k].push_back(tsne.embedding()(i, 0));
+                sy[k].push_back(tsne.embedding()(i, 1));
+            }
+        }
+        for (std::size_t k = 0; k < sp.size(); ++k)
+            scatter.points(sx[k], sy[k], sp[k], colors[k], 6.0);
+        scatter.title("t-SNE Embedding (perplexity=30)")
+            .x_label("Dim1").y_label("Dim2")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/tsne_iris_embedding_scatter.svg");
+        std::cout << "\nwrote tsne_iris_embedding_scatter.svg\n";
+    }
+#+end_src
+
+*** Within- vs. between-species separation
+
+#+name: tsne-separation
+#+begin_src c++ :eval no
+    std::cout << "\n=== Within- vs. between-species embedded"
+               << " distance ===\n";
+    {
+        auto avg_dist = [&](const bool within) {
+            double sum = 0.0;
+            std::size_t cnt = 0;
+            for (std::size_t i = 0; i < tsne.observations(); ++i) {
+                for (std::size_t j = i + 1; j < tsne.observations(); ++j) {
+                    const bool same =
+                        species[tsne.kept_row_indices()[i]] ==
+                        species[tsne.kept_row_indices()[j]];
+                    if (same != within) continue;
+                    double d2 = 0.0;
+                    for (std::size_t c = 0; c < tsne.n_components(); ++c) {
+                        const double d =
+                            tsne.embedding()(i, c) - tsne.embedding()(j, c);
+                        d2 += d * d;
+                    }
+                    sum += std::sqrt(d2);
+                    ++cnt;
+                }
+            }
+            return sum / static_cast<double>(cnt);
+        };
+        const double within = avg_dist(true);
+        const double between = avg_dist(false);
+        std::cout << "Within-species mean distance:  " << within << "\n";
+        std::cout << "Between-species mean distance: " << between << "\n";
+        std::cout << "Ratio (between / within):      "
+                   << between / within << "\n";
+    }
+#+end_src
+
+*** Perplexity sensitivity
+
+#+name: tsne-perplexity-sweep
+#+begin_src c++ :eval no
+    std::cout << "\n=== Perplexity sensitivity ===\n";
+    std::cout << std::setw(12) << "perplexity" << std::setw(16)
+               << "achieved_mean" << std::setw(14) << "achieved_min"
+               << std::setw(14) << "achieved_max\n";
+    for (const double perp : {5.0, 30.0, 50.0}) {
+        TSNEOptions opt;
+        opt.perplexity = perp;
+        TSNE t(iris, features, opt);
+        const auto& ap = t.achieved_perplexity();
+        double mn = ap[0], mx = ap[0], sum = 0.0;
+        for (const double v : ap) {
+            mn = std::min(mn, v);
+            mx = std::max(mx, v);
+            sum += v;
+        }
+        std::cout << std::setw(12) << perp << std::setw(16)
+                   << sum / static_cast<double>(ap.size())
+                   << std::setw(14) << mn << std::setw(14) << mx << "\n";
+        if (perp != 30.0) {
+            const std::vector<RGB> colors =
+                {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+            auto scatter = RPlot::create();
+            std::vector<std::vector<double>> sx(3), sy(3);
+            const std::vector<std::string> sp =
+                {"setosa", "versicolor", "virginica"};
+            for (std::size_t i = 0; i < t.observations(); ++i) {
+                const auto& sname = species[t.kept_row_indices()[i]];
+                for (std::size_t k = 0; k < sp.size(); ++k) {
+                    if (sname != sp[k]) continue;
+                    sx[k].push_back(t.embedding()(i, 0));
+                    sy[k].push_back(t.embedding()(i, 1));
+                }
+            }
+            for (std::size_t k = 0; k < sp.size(); ++k)
+                scatter.points(sx[k], sy[k], sp[k], colors[k], 6.0);
+            scatter.title("t-SNE Embedding (perplexity=" +
+                           std::to_string(static_cast<int>(perp)) + ")")
+                .x_label("Dim1").y_label("Dim2")
+                .background({250, 250, 252});
+            scatter.save_svg("build/org/tsne_iris_perplexity_" +
+                              std::to_string(static_cast<int>(perp)) +
+                              ".svg");
+        }
+    }
+    std::cout << "wrote tsne_iris_perplexity_5.svg,"
+               << " tsne_iris_perplexity_50.svg\n";
+#+end_src
+
+*** The Swiss roll: construction
+
+Built to the exact formula and seed shared across this report batch, so
+that this figure and its correlation numbers are directly comparable to
+any companion report using the same synthetic dataset. \(t\) (the true
+1D position along the roll) and =height= (the true 2nd ground-truth
+coordinate) are generated here but withheld from every =TSNE= / =PCA= /
+=MDS= fit below -- used only afterward, exactly like =Species= above, to
+color figures and compute a real correlation.
+
+#+name: tsne-swissroll-data
+#+begin_src c++ :eval no
+    std::cout << "\n=== Swiss roll: construction ===\n";
+    const std::size_t n = 400;
+    std::mt19937_64 rng(42);
+    std::uniform_real_distribution<double> u(0.0, 1.0);
+    std::vector<double> t_true(n), height(n), x(n), y(n), z(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        t_true[i] = 1.5 * M_PI * (1.0 + 2.0 * u(rng));
+        height[i] = 21.0 * u(rng);
+        x[i] = t_true[i] * std::cos(t_true[i]);
+        y[i] = height[i];
+        z[i] = t_true[i] * std::sin(t_true[i]);
+    }
+    DataFrame roll;
+    roll.add_column("x", x);
+    roll.add_column("y", y);
+    roll.add_column("z", z);
+    const std::vector<std::string> roll_features{"x", "y", "z"};
+    std::cout << "n = " << n << " points generated\n";
+
+    constexpr int kBins = 6;
+    const std::vector<RGB> bin_colors = {
+        {37, 99, 235}, {8, 145, 178}, {22, 163, 74},
+        {217, 119, 6}, {220, 38, 38}, {124, 58, 237}};
+    const double tmin = *std::min_element(t_true.begin(), t_true.end());
+    const double tmax = *std::max_element(t_true.begin(), t_true.end());
+    auto t_bin = [&](const double tv) {
+        int bin = static_cast<int>((tv - tmin) / (tmax - tmin + 1e-12) *
+                                    kBins);
+        return std::min(bin, kBins - 1);
+    };
+#+end_src
+
+*** Swiss-roll raw-coordinate figure
+
+A top-down view of the roll's own \((x, z)\) coordinates, colored by
+\(t\)-bin, showing the coil that any Euclidean-distance-based method
+must contend with -- points at very different \(t\) (e.g. bin 1 and bin
+6) sit right next to each other in straight-line distance where the
+coils pass close together.
+
+#+name: tsne-swissroll-eda
+#+begin_src c++ :eval no
+    {
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> bx(kBins), bz(kBins);
+        for (std::size_t i = 0; i < n; ++i) {
+            const int b = t_bin(t_true[i]);
+            bx[b].push_back(x[i]);
+            bz[b].push_back(z[i]);
+        }
+        for (int b = 0; b < kBins; ++b)
+            scatter.points(bx[b], bz[b], "t bin " + std::to_string(b + 1),
+                            bin_colors[b], 5.0);
+        scatter.title("Swiss Roll: Raw (x, z) Coordinates (colored by t)")
+            .x_label("x").y_label("z")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/tsne_swissroll_raw.svg");
+        std::cout << "wrote tsne_swissroll_raw.svg\n";
+    }
+#+end_src
+
+*** Fitting \(t\)-SNE, PCA, and MDS on the Swiss roll
+
+#+name: tsne-swissroll-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== t-SNE on the Swiss roll (default options)"
+               << " ===\n";
+    TSNE tsne_roll(roll, roll_features, TSNEOptions{});
+    tsne_roll.print_summary();
+    {
+        const auto& ap = tsne_roll.achieved_perplexity();
+        double mn = ap[0], mx = ap[0], sum = 0.0;
+        for (const double v : ap) {
+            mn = std::min(mn, v);
+            mx = std::max(mx, v);
+            sum += v;
+        }
+        std::cout << "Achieved: min=" << mn << " max=" << mx
+                   << " mean=" << sum / static_cast<double>(ap.size())
+                   << "\n";
+    }
+
+    PCA pca_roll(roll, roll_features, PCAOptions{true, false});
+    MDS mds_roll(roll, roll_features, MDSOptions{2, DistanceMetric::Euclidean});
+#+end_src
+
+*** Recovering the true parametrization
+
+Pearson correlation between each embedded dimension and the withheld
+true \((t, \text{height})\) pair, allowing for the sign flips and
+axis swaps every one of these methods is invariant to (an eigenvector or
+a converged embedding is only ever recovered up to such symmetries).
+
+#+name: tsne-swissroll-correlation
+#+begin_src c++ :eval no
+    auto pearson = [](const std::vector<double>& a,
+                       const std::vector<double>& b) {
+        const std::size_t m = a.size();
+        double ma = 0.0, mb = 0.0;
+        for (std::size_t i = 0; i < m; ++i) {
+            ma += a[i];
+            mb += b[i];
+        }
+        ma /= static_cast<double>(m);
+        mb /= static_cast<double>(m);
+        double num = 0.0, na = 0.0, nb = 0.0;
+        for (std::size_t i = 0; i < m; ++i) {
+            const double da = a[i] - ma, db = b[i] - mb;
+            num += da * db;
+            na += da * da;
+            nb += db * db;
+        }
+        return num / std::sqrt(na * nb);
+    };
+
+    std::cout << "\n=== Recovery of the true (t, height) parametrization"
+               << " ===\n";
+    std::cout << std::setw(8) << "method" << std::setw(12) << "dim0_vs_t"
+               << std::setw(14) << "dim0_vs_hgt" << std::setw(12)
+               << "dim1_vs_t" << std::setw(14) << "dim1_vs_hgt"
+               << std::setw(12) << "best_t" << std::setw(12)
+               << "best_hgt\n";
+    auto report_corr = [&](const std::string& name,
+                            const datamunge::linalg::DenseMatrix<double>& emb) {
+        std::vector<double> d0(n), d1(n);
+        for (std::size_t i = 0; i < n; ++i) {
+            d0[i] = emb(i, 0);
+            d1[i] = emb(i, 1);
+        }
+        const double c_t0 = pearson(d0, t_true), c_h0 = pearson(d0, height);
+        const double c_t1 = pearson(d1, t_true), c_h1 = pearson(d1, height);
+        const double best_t = std::max(std::abs(c_t0), std::abs(c_t1));
+        const double best_h = std::max(std::abs(c_h0), std::abs(c_h1));
+        std::cout << std::setw(8) << name << std::setw(12) << c_t0
+                   << std::setw(14) << c_h0 << std::setw(12) << c_t1
+                   << std::setw(14) << c_h1 << std::setw(12) << best_t
+                   << std::setw(12) << best_h << "\n";
+    };
+    report_corr("t-SNE", tsne_roll.embedding());
+    report_corr("PCA", pca_roll.scores());
+    report_corr("MDS", mds_roll.embedding());
+#+end_src
+
+*** Swiss-roll embedding figures
+
+#+name: tsne-swissroll-scatter
+#+begin_src c++ :eval no
+    {
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> bx(kBins), by(kBins);
+        for (std::size_t i = 0; i < n; ++i) {
+            const int b = t_bin(t_true[i]);
+            bx[b].push_back(tsne_roll.embedding()(i, 0));
+            by[b].push_back(tsne_roll.embedding()(i, 1));
+        }
+        for (int b = 0; b < kBins; ++b)
+            scatter.points(bx[b], by[b], "t bin " + std::to_string(b + 1),
+                            bin_colors[b], 5.0);
+        scatter.title("t-SNE Embedding of Swiss Roll (colored by t)")
+            .x_label("Dim1").y_label("Dim2")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/tsne_swissroll_tsne.svg");
+        std::cout << "\nwrote tsne_swissroll_tsne.svg\n";
+    }
+    {
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> bx(kBins), by(kBins);
+        for (std::size_t i = 0; i < n; ++i) {
+            const int b = t_bin(t_true[i]);
+            bx[b].push_back(pca_roll.scores()(i, 0));
+            by[b].push_back(pca_roll.scores()(i, 1));
+        }
+        for (int b = 0; b < kBins; ++b)
+            scatter.points(bx[b], by[b], "t bin " + std::to_string(b + 1),
+                            bin_colors[b], 5.0);
+        scatter.title("PCA Embedding of Swiss Roll (colored by t)")
+            .x_label("PC1").y_label("PC2")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/tsne_swissroll_pca.svg");
+        std::cout << "wrote tsne_swissroll_pca.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/tsne_iris_analysis.cpp <<'CPP'
+<<tsne-includes>>
+
+int main() {
+<<tsne-load-data>>
+
+<<tsne-eda-scatter>>
+
+<<tsne-fit>>
+
+<<tsne-perplexity-convergence>>
+
+<<tsne-embedding-scatter>>
+
+<<tsne-separation>>
+
+<<tsne-perplexity-sweep>>
+
+<<tsne-swissroll-data>>
+
+<<tsne-swissroll-eda>>
+
+<<tsne-swissroll-fit>>
+
+<<tsne-swissroll-correlation>>
+
+<<tsne-swissroll-scatter>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/tsne_iris_analysis.cpp -o build/org/tsne_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tsne_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by true species :width 100%
+[[file:../../build/org/tsne_iris_eda_true_species.svg]]
+
+The same picture as every companion report's exploratory figure:
+/setosa/ fully separated, /versicolor/ and /virginica/ overlapping in a
+thin band. §4.2's embedding scatter should be read against this figure,
+since \(t\)-SNE itself never sees these color labels.
+
+** Fitted embedding and perplexity convergence
+
+#+begin_example
+t-Distributed Stochastic Neighbor Embedding
+Features: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
+Distance metric: euclidean
+Number of obs: 150, dimensions: 2
+Target perplexity: 30.0000, iterations: 1000
+Mean achieved perplexity: 30.0000
+
+Target perplexity: 30.0000
+Achieved: min=29.9998 max=30.0002 mean=30.0000
+#+end_example
+
+The per-point binary search over \(\beta_i\) described in §2.2
+converges essentially exactly: every one of the 150 points achieves a
+perplexity within 0.0002 of the 30.0 target, well inside the
+\(10^{-5}\)-bits-of-entropy tolerance =TSNE::fit= searches to (a
+perplexity error of 0.0002 near 30.0 corresponds to an entropy error far
+below that bound, since \(d(\log_2 x)/dx = 1/(x \ln 2)\) is small for
+\(x \approx 30\)). No point failed to calibrate.
+
+#+ATTR_HTML: :alt Scatter of t-SNE Dim1 vs Dim2 colored by true species :width 100%
+[[file:../../build/org/tsne_iris_embedding_scatter.svg]]
+
+Even though =Species= was never given to =TSNE::fit=, the embedding
+resolves into three visually disjoint blobs -- a materially /tighter/
+separation than either the [[file:pca_iris_analysis.org][PCA companion report]]'s or the
+[[file:mds_iris_analysis.org][MDS companion report]]'s own scores/embedding scatters, both of which
+show /versicolor/ and /virginica/ visibly overlapping. §4.3 quantifies
+this directly.
+
+** Species separation
+
+#+begin_example
+Within-species mean distance:  3.2820
+Between-species mean distance: 46.4803
+Ratio (between / within):      14.1623
+#+end_example
+
+A between-to-within distance ratio of 14.16 is a genuinely dramatic
+number, not an exaggerated one -- the average pair of flowers from
+/different/ species ends up over fourteen times farther apart in the
+2-dimensional embedding than the average pair from the /same/ species.
+This is \(t\)-SNE's signature real-world behavior: because the objective
+in §2.5 only rewards preserving /local/ neighbor relationships (a point's
+handful of nearest neighbors in feature space, weighted through the
+perplexity-calibrated \(P_{ij}\)) and pays no direct cost for how far
+apart already-dissimilar points end up, points from different,
+well-separated classes are free to be pushed arbitrarily far apart by
+the repulsive term in §2.5's gradient once their local neighborhoods no
+longer overlap -- a much stronger effect than PCA or MDS's global
+distance-preservation ever produces on this same data.
+
+** Perplexity sensitivity
+
+#+begin_example
+  perplexity   achieved_mean  achieved_min achieved_max
+      5.0000          5.0000        5.0000        5.0000
+     30.0000         30.0000       29.9998       30.0002
+     50.0000         50.0000       49.9997       50.0003
+#+end_example
+
+Calibration is essentially perfect at all three target perplexities --
+the binary search in §2.2 does not get harder or less accurate at the
+extremes tested here. What changes is the /embedding/, not the fit
+quality:
+
+#+ATTR_HTML: :alt Scatter of t-SNE embedding at perplexity 5 colored by true species :width 100%
+[[file:../../build/org/tsne_iris_perplexity_5.svg]]
+
+At perplexity 5 -- each point's Gaussian bandwidth calibrated to an
+effective neighborhood of only about 5 other points -- every species
+fragments into several small, tight sub-clusters rather than one blob
+per species: with such a narrow neighborhood, points that are close but
+not each other's very nearest neighbors are no longer guaranteed to end
+up in the same fragment, so the embedding reveals more fine-grained
+local sub-structure within each species at the cost of a messier overall
+picture.
+
+#+ATTR_HTML: :alt Scatter of t-SNE embedding at perplexity 50 colored by true species :width 100%
+[[file:../../build/org/tsne_iris_perplexity_50.svg]]
+
+At perplexity 50 -- roughly a third of the entire dataset treated as
+each point's effective neighborhood -- /versicolor/ and /virginica/
+partially blend back together along a shared boundary (mirroring §4.1's
+true-species figure, where these same two species overlap in the raw
+feature space), and a handful of points end up visibly misplaced (e.g. a
+few /setosa/ points pulled down near the other two species). Larger
+perplexity values push \(t\)-SNE's notion of "local" outward until it
+approaches global structure, at which point it necessarily converges
+toward something closer to what a global method like PCA or MDS would
+show, overlap included.
+
+** The Swiss roll: raw geometry
+
+#+ATTR_HTML: :alt Top-down view of the raw Swiss roll x-z coordinates colored by t :width 100%
+[[file:../../build/org/tsne_swissroll_raw.svg]]
+
+The classic Swiss-roll coil, viewed from above: a smooth spiral in
+\((t, \text{height})\)-space that self-intersects (in the Euclidean sense)
+when projected or measured naively in the ambient 3D space -- bin 1
+(dark blue) and bin 6 (purple) sit right next to each other near the
+plot's center-right even though they are at opposite ends of the true
+\(t\) range, exactly the property that makes straight-line distance
+misleading for this dataset.
+
+** The Swiss roll: \(t\)-SNE, PCA, and MDS embeddings
+
+#+begin_example
+t-Distributed Stochastic Neighbor Embedding
+Features: x, y, z
+Distance metric: euclidean
+Number of obs: 400, dimensions: 2
+Target perplexity: 30.0000, iterations: 1000
+Mean achieved perplexity: 30.0000
+Achieved: min=29.9998 max=30.0002 mean=30.0000
+#+end_example
+
+Calibration converges just as tightly on the Swiss roll as on iris
+(§4.2) -- the perplexity binary search itself is entirely agnostic to
+whether the underlying data is a real dataset or a synthetic manifold.
+
+#+ATTR_HTML: :alt t-SNE embedding of the Swiss roll colored by binned t :width 100%
+[[file:../../build/org/tsne_swissroll_tsne.svg]]
+
+This is the headline qualitative result: \(t\)-SNE does /not/ unroll the
+manifold into anything resembling a smooth rectangle. Instead it shatters
+the roll into roughly half a dozen small, elongated, internally-coherent
+fragments (each individual fragment shows a clean color gradient,
+meaning /local/ \(t\)-order is preserved within it) scattered around the
+embedding with no consistent global arrangement -- bin colors that are
+adjacent along the true manifold (e.g. bin 4/orange and bin 5/red) land
+in entirely different regions of the plot in some fragments and directly
+next to each other in others. This is exactly the qualitative failure
+mode the companion [[file:isomap_iris_analysis.org][Isomap report]] and [[file:lle_iris_analysis.org][LLE report]] describe
+avoiding for methods purpose-built to preserve global manifold geometry:
+\(t\)-SNE was never optimizing for a smooth global unrolling in the first
+place (§2.4-2.5), so this is confirmation of its design trade-off rather
+than a bug.
+
+#+ATTR_HTML: :alt PCA embedding of the Swiss roll colored by binned t :width 100%
+[[file:../../build/org/tsne_swissroll_pca.svg]]
+
+PCA (and, visually indistinguishably, classical Euclidean MDS -- see
+§4.7 and the [[file:mds_iris_analysis.org][MDS companion report]]'s own derivation of why the two
+methods agree on Euclidean-distance data) produces the textbook opposite
+failure: a recognizable, continuous spiral -- the roll viewed edge-on --
+rather than \(t\)-SNE's disconnected fragments. It is a smoother, more
+interpretable picture than \(t\)-SNE's, but it is still not an unrolling:
+the true \(t\)-order runs /around/ the spiral, not along a single
+straight axis, so no single embedded dimension tracks \(t\) monotonically
+either. §4.7 quantifies both pictures on the same footing.
+
+** Recovery of the true parametrization
+
+#+begin_example
+  method   dim0_vs_t   dim0_vs_hgt   dim1_vs_t   dim1_vs_hgt      best_t   best_hgt
+   t-SNE      0.4105        0.0673     -0.2218       -0.1454      0.4105      0.1454
+     PCA      0.2426        0.0864      0.0254        0.0022      0.2426      0.0864
+     MDS      0.2426        0.0864     -0.0254       -0.0022      0.2426      0.0864
+#+end_example
+
+A genuinely mixed, and worth-reporting-honestly, result. On this single
+linear-correlation metric, \(t\)-SNE's best embedded axis (0.4105
+against \(t\)) correlates with the true manifold parametrization
+/more/ strongly than either PCA's or classical MDS's best axis (0.2426
+each -- identical to four decimal places, precisely the
+Euclidean-MDS/PCA equivalence the [[file:mds_iris_analysis.org][MDS companion report]] derives and
+verifies on iris). None of the three methods recovers =height= well (best
+correlations of 0.1454, 0.0864, and 0.0864 respectively) -- unsurprising
+given =height= is the coordinate every one of these methods has the
+least structural reason to isolate on its own embedded axes. The
+apparent tension with §4.6's qualitative figures -- \(t\)-SNE's picture
+"looks" far more broken than PCA's recognizable spiral, yet scores higher
+numerically -- resolves once the two figures are read carefully together:
+PCA's global spiral, while visually coherent, wraps \(t\) /around/ a
+closed curve, so no straight line through the 2D plane tracks \(t\)
+monotonically over its full range (correlation is fundamentally a
+linear-trend statistic, and a spiral has none along either axis alone);
+\(t\)-SNE's fragments, though scattered with no consistent global
+arrangement, are individually elongated /along/ locally-monotonic
+stretches of \(t\), and by chance enough of that local ordering survives
+in aggregate to produce a stronger net linear trend along one embedded
+axis than PCA's globally coherent but circular one does. Neither number
+should be read as "\(t\)-SNE recovered the manifold better than PCA" in
+any structural sense -- §4.6's figures make clear it did not -- only that
+a single linear-correlation summary statistic can be misleading exactly
+when the true relationship (a spiral, or a shattered set of locally
+monotonic fragments) is not itself linear.
+
+* Discussion
+
+**A genuinely different objective, not a worse one.** §4.2-4.4's iris
+results and §4.6-4.7's Swiss-roll results are, read together, a direct
+empirical demonstration that \(t\)-SNE is solving a different problem
+than PCA or MDS, not a strictly better or worse version of the same
+problem. On iris -- a dataset whose classes are already reasonably
+separable in the raw feature space -- optimizing purely for local
+neighborhood preservation (§2.5) produces a dramatically cleaner
+visualization (14.16x separation ratio, §4.3) than either global method
+achieves. On the Swiss roll -- a dataset whose entire interesting
+structure /is/ its global, smoothly-varying geometry -- the same
+local-only objective actively destroys the thing a reader would want to
+see (§4.6), even while, by one narrow numeric measure, doing no worse
+than PCA/MDS (§4.7).
+
+**Perplexity is a real, consequential hyperparameter, not a
+technicality.** §4.4's three embeddings of the /same/ 150 flowers, /same/
+random seed, differing only in the target neighborhood size, produce
+visibly different pictures -- more fragmented sub-structure at
+perplexity 5, cleaner separation at 30, partial re-blending at 50 -- a
+concrete, first-hand version of the well-documented (van der Maaten &
+Hinton, 2008) sensitivity, not merely an assertion repeated from the
+literature.
+
+**A correlation number alone can mislead about "did this unroll the
+manifold."** §4.7's finding that \(t\)-SNE's best-axis correlation with
+\(t\) numerically exceeds PCA's/MDS's, despite \(t\)-SNE's embedding
+looking obviously more broken in §4.6's figure, is this report's most
+important methodological caution: whenever the true underlying
+relationship is nonlinear (a spiral, or a shattered set of locally-linear
+fragments), a single Pearson correlation is not a substitute for looking
+at the actual picture. The [[file:isomap_iris_analysis.org][Isomap]] and [[file:lle_iris_analysis.org][LLE]] companion reports,
+purpose-built to preserve exactly the geodesic/local-linear structure the
+Swiss roll needs, are the fairer comparison for "did a manifold-learning
+method recover this dataset's true structure" -- this report's honest
+answer for \(t\)-SNE specifically is no, not in the way those methods
+are designed to.
+
+* Conclusion
+
+Fitting \(t\)-SNE with =datamunge='s C++ =stats::TSNE= to Fisher's iris
+measurements -- with =Species= withheld throughout -- shows near-perfect
+perplexity calibration (achieved perplexity within 0.0002 of the 30.0
+target for every point) and a dramatic, quantified separation between
+species (a 14.16x between-to-within embedded distance ratio) that
+visibly exceeds what either companion PCA or MDS report produces on the
+same data, exactly matching \(t\)-SNE's design goal of preserving local
+neighborhood structure for visualization. A perplexity sweep (5, 30, 50)
+confirms this behavior is a real, tunable trade-off rather than a fixed
+property of the method. On a synthetic Swiss roll built to this report
+batch's shared formula, \(t\)-SNE honestly fails to unroll the manifold
+into a smooth rectangle -- shattering it into locally-coherent but
+globally scattered fragments -- while still, on one narrow
+linear-correlation metric, scoring numerically better than PCA or
+classical MDS's own (also-unsuccessful, differently-shaped) attempt at the same
+task, a genuinely informative null/mixed result rather than a forced
+success story. As with its companions, this entire report is
+reproducible end to end via =just org-example tsne_iris_analysis=, which
+re-executes §3.3.13's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- van der Maaten, L., & Hinton, G. (2008). "Visualizing data using
+  t-SNE." /Journal of Machine Learning Research/, 9, 2579-2605.
+- Hinton, G. E., & Roweis, S. T. (2002). "Stochastic Neighbor
+  Embedding." /Advances in Neural Information Processing Systems/, 15.
+- Cox, T. F., & Cox, M. A. A. (2001). /Multidimensional Scaling/, 2nd
+  ed. Chapman & Hall/CRC.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 14 ("Unsupervised Learning").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.
