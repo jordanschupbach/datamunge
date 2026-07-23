@@ -60,4 +60,16 @@ public:
     std::vector<double> gradient(const std::vector<double>& coordinates) override;
 };
 
+/// @brief Composite objective for proximal methods. gradient() is the gradient of the smooth
+/// component, and proximal() applies the non-smooth component's proximal operator.
+class ProximalFunction : public DifferentiableFunction {
+public:
+    virtual std::vector<double> proximal(const std::vector<double>& point, double step) = 0;
+};
+class HessianFunction : public DifferentiableFunction { public: virtual std::vector<std::vector<double>> hessian(const std::vector<double>& coordinates) = 0; };
+/// @brief Smooth equality-constrained objective for constrained optimizers.
+class EqualityConstrainedFunction : public DifferentiableFunction { public: virtual std::vector<double> constraints(const std::vector<double>& coordinates)=0; virtual std::vector<std::vector<double>> constraint_jacobian(const std::vector<double>& coordinates)=0; };
+class InequalityConstrainedFunction : public DifferentiableFunction { public: virtual std::vector<double> inequalities(const std::vector<double>& coordinates)=0; virtual std::vector<std::vector<double>> inequality_jacobian(const std::vector<double>& coordinates)=0; };
+class ResidualFunction { public: virtual ~ResidualFunction()=default; virtual std::vector<double> residuals(const std::vector<double>& coordinates)=0; virtual std::vector<std::vector<double>> jacobian(const std::vector<double>& coordinates)=0; };
+
 } // namespace datamunge::optim

@@ -10,4 +10,4 @@ set(EXAMPLES_ source/datamunge_ex.cpp source/linalg_ex.cpp source/dense_ex.cpp s
               source/timeseries_ex.cpp source/hypothesis_tests_ex.cpp source/graph_ex.cpp
               source/geometry_ex.cpp source/bayes_sampling_ex.cpp source/inla_ex.cpp source/image_ex.cpp
               source/cv_ex.cpp source/kalman_filter_ex.cpp source/rplot_ex.cpp source/ggplot_ex.cpp
-              source/bspline_ex.cpp source/gis_ex.cpp)
+              source/bspline_ex.cpp source/gis_ex.cpp source/pca_ex.cpp source/mds_ex.cpp source/ode_ex.cpp)

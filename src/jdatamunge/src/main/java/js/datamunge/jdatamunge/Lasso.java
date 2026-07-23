@@ -149,20 +149,20 @@ public class Lasso {
     return new DVector(datamungeJNI.Lasso_predict(swigCPtr, this, DataFrame.getCPtr(newdata), newdata), true);
   }
 
-  public ScatterPlot plot_coefficient_path() {
-    return new ScatterPlot(datamungeJNI.Lasso_plot_coefficient_path(swigCPtr, this), true);
+  public RPlot plot_coefficient_path() {
+    return new RPlot(datamungeJNI.Lasso_plot_coefficient_path(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_cv_curve() {
-    return new ScatterPlot(datamungeJNI.Lasso_plot_cv_curve(swigCPtr, this), true);
+  public RPlot plot_cv_curve() {
+    return new RPlot(datamungeJNI.Lasso_plot_cv_curve(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    return new ScatterPlot(datamungeJNI.Lasso_plot_predicted_vs_actual(swigCPtr, this), true);
+  public RPlot plot_predicted_vs_actual() {
+    return new RPlot(datamungeJNI.Lasso_plot_predicted_vs_actual(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.Lasso_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.Lasso_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
 }

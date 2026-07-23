@@ -114,22 +114,22 @@ public class NaiveBayesClassifier {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public ScatterPlot plot_classification(DataFrame data, String x_feature, String y_feature) {
-    return new ScatterPlot(datamungeJNI.NaiveBayesClassifier_plot_classification(swigCPtr, this, DataFrame.getCPtr(data), data, x_feature, y_feature), true);
+  public RPlot plot_classification(DataFrame data, String x_feature, String y_feature) {
+    return new RPlot(datamungeJNI.NaiveBayesClassifier_plot_classification(swigCPtr, this, DataFrame.getCPtr(data), data, x_feature, y_feature), true);
   }
 
   /**
    *  Background grid of predicted class regions; requires exactly two predictors, both numeric.
    */
-  public ScatterPlot plot_decision_regions(String x_feature, String y_feature, long grid_resolution) {
-    return new ScatterPlot(datamungeJNI.NaiveBayesClassifier_plot_decision_regions__SWIG_0(swigCPtr, this, x_feature, y_feature, grid_resolution), true);
+  public RPlot plot_decision_regions(String x_feature, String y_feature, long grid_resolution) {
+    return new RPlot(datamungeJNI.NaiveBayesClassifier_plot_decision_regions__SWIG_0(swigCPtr, this, x_feature, y_feature, grid_resolution), true);
   }
 
   /**
    *  Background grid of predicted class regions; requires exactly two predictors, both numeric.
    */
-  public ScatterPlot plot_decision_regions(String x_feature, String y_feature) {
-    return new ScatterPlot(datamungeJNI.NaiveBayesClassifier_plot_decision_regions__SWIG_1(swigCPtr, this, x_feature, y_feature), true);
+  public RPlot plot_decision_regions(String x_feature, String y_feature) {
+    return new RPlot(datamungeJNI.NaiveBayesClassifier_plot_decision_regions__SWIG_1(swigCPtr, this, x_feature, y_feature), true);
   }
 
 }

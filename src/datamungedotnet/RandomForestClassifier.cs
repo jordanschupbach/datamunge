@@ -183,22 +183,22 @@ public class RandomForestClassifier : global::System.IDisposable {
   }
 
   /// <summary>Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified        points overlaid in a distinct marker.</summary>
-  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.RandomForestClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
+  public RPlot plot_classification(DataFrame data, string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.RandomForestClassifier_plot_classification(swigCPtr, DataFrame.getCPtr(data), x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   /// <summary>Background grid of majority-vote predicted class regions plus training points; requires exactly 2        predictors.</summary>
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.RandomForestClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature, uint grid_resolution) {
+    RPlot ret = new RPlot(datamungePINVOKE.RandomForestClassifier_plot_decision_regions__SWIG_0(swigCPtr, x_feature, y_feature, grid_resolution), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   /// <summary>Background grid of majority-vote predicted class regions plus training points; requires exactly 2        predictors.</summary>
-  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.RandomForestClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
+  public RPlot plot_decision_regions(string x_feature, string y_feature) {
+    RPlot ret = new RPlot(datamungePINVOKE.RandomForestClassifier_plot_decision_regions__SWIG_1(swigCPtr, x_feature, y_feature), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -604,6 +604,7 @@
             datamungeguile
             datamungeoctave
             datamunged
+            swig-jse
             ;
 
           rename-datamunge = pkgs.writeShellApplication {

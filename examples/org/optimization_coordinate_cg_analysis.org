@@ -1,0 +1,944 @@
+#+title: Beyond Plain Gradient Descent: Momentum Look-Ahead, Coordinate Descent, and Nonlinear Conjugate Gradient
+#+subtitle: A literate C++ study of NesterovAcceleratedGradient, CoordinateDescent, RandomizedBlockCoordinateDescent, and ConjugateGradient using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We compare four gradient-based optimizers added to =datamunge='s C++
+=optim= module -- =NesterovAcceleratedGradient=, =CoordinateDescent=,
+=RandomizedBlockCoordinateDescent=, and =ConjugateGradient= -- across
+four objective landscapes, as a literate program: every fragment below
+is a real, compiled, executed chunk of the single C++ binary that
+produced every number and figure in this document. On a simple 3D
+quadratic bowl, =ConjugateGradient= needs only 3 evaluations,
+=CoordinateDescent= and =RandomizedBlockCoordinateDescent= need 7, and
+=NesterovAcceleratedGradient= needs 278. On the classic Rosenbrock
+function, =NesterovAcceleratedGradient='s library default step size
+(0.01) *diverges to NaN*; tuned down to 0.001, it converges cleanly in
+4180 evaluations, while =CoordinateDescent= and
+=RandomizedBlockCoordinateDescent= both exhaust their default 1000
+epoch budget without fully satisfying the gradient-norm tolerance,
+landing within about $4\times10^{-9}$ of the true minimum but not
+closer. On a hand-built, low-dimensional, off-axis elongated bowl
+constructed specifically to make coordinate descent struggle, the
+result is the *opposite* of the a priori expectation: cyclic
+=CoordinateDescent= (50 evaluations) and =RandomizedBlockCoordinateDescent=
+(79) both beat =ConjugateGradient= (130) and
+=NesterovAcceleratedGradient= (272). Only when we scale the same
+structural idea up -- an 8-dimensional bowl with strong
+nearest-neighbor coupling -- does the textbook effect appear
+dramatically: =ConjugateGradient= converges in 3 evaluations,
+=NesterovAcceleratedGradient= in 278, while =CoordinateDescent= needs
+6086 and =RandomizedBlockCoordinateDescent= needs 8096 -- roughly
+2000-2700x more than =ConjugateGradient= for the identical answer. We
+derive Nesterov's look-ahead momentum update, cyclic and randomized
+block coordinate descent's per-coordinate Armijo-backtracked partial
+steps, and nonlinear conjugate gradient's Polak-Ribiere+ direction
+update with periodic restart, tying every derivation to the exact
+library call that implements it -- and report, honestly, that our
+first attempt at a coordinate-descent-unfriendly objective did not
+show the effect we expected, and what we changed to actually observe
+it.
+#+end_abstract
+
+* Introduction
+
+Every optimizer in this report targets the same interface --
+=DifferentiableFunction=, exact-gradient access, no separability or
+Hessian assumed -- and therefore all four methods are directly
+comparable head to head on identical objectives, unlike the broader
+survey in =optimization_analysis.org= that spans derivative-free and
+population-based methods too. What differs between the four methods
+here is entirely /how/ each one uses that shared gradient information:
+=NesterovAcceleratedGradient= takes a fixed-size step from a
+momentum-extrapolated look-ahead point; =CoordinateDescent= and
+=RandomizedBlockCoordinateDescent= update one coordinate (or a small
+block of coordinates) at a time with a safety-net Armijo line search;
+=ConjugateGradient= builds a full-dimensional search direction that
+is repeatedly refined to stay approximately conjugate to previous
+directions, also protected by an Armijo line search. This report
+groups them together specifically to expose that design difference:
+which strategy for using $\nabla f(x)$ pays off depends on the
+objective's curvature structure, and this report finds a real,
+concrete case (§4.3) where the intuitive story is wrong before finding
+one (§4.4) where it holds dramatically.
+
+As with its companions, this document is a /literate program/: prose
+and source are interleaved in reading order, and a single "assembling
+the program" step (§3.3.6) weaves every named chunk below into one
+=.cpp= file, compiles it, and runs it. Every number and figure from §4
+onward is that program's literal output.
+
+§2 derives each method's update rule, tied to the specific library
+call that implements it, including two real implementation details
+worth flagging explicitly: =NesterovAcceleratedGradient='s fixed step
+size has no line-search safety net and can diverge outright on a
+harder landscape, and =ConjugateGradient='s Armijo-only (not Wolfe)
+line search restarts its trial step from 1.0 every iteration rather
+than remembering the previous iteration's accepted step. §3 describes
+the four test objectives and the program chunk by chunk, reusing the
+=LoggingDifferentiable= decorator technique from the original report
+to build convergence-curve figures. §4 reports results on all four
+objectives with two figures. §5 discusses what the sign flip between
+§4.3 and §4.4 reveals about when coordinate descent's structural
+weakness actually bites. §6 concludes.
+
+* Background: Optimization Methods
+
+** The shared interface: DifferentiableFunction
+
+All four methods in this report consume
+=datamunge::optim::DifferentiableFunction=: an object supplying
+=evaluate(coordinates)= and an exact =gradient(coordinates)=, with no
+further structure (no separability into per-example terms, no
+Hessian) assumed. This is the same interface =GradientDescent=,
+=Adam=, and =LBFGS= target in the original report -- the four methods
+here are best read as more options along that same axis, each trading
+off simplicity, per-step cost, and robustness to a different degree.
+
+** Nesterov accelerated gradient
+
+=NesterovAcceleratedGradient= (Nesterov, 1983) extends plain momentum
+with a /look-ahead/: rather than evaluating the gradient at the
+current point $x_k$, it first extrapolates in the direction of recent
+progress,
+
+$$y_k = x_k + \mu (x_k - x_{k-1}), \qquad
+x_{k+1} = y_k - \eta \nabla f(y_k)$$
+
+where $\mu$ is =NesterovAcceleratedGradientOptions::momentum=
+(default 0.9) and $\eta$ is =step_size= (default 0.01). Evaluating the
+gradient at the look-ahead point $y_k$ rather than $x_k$ is what
+distinguishes Nesterov's scheme from classical (Polyak) momentum, and
+is the source of its improved theoretical convergence rate on smooth
+convex problems. One implementation detail worth noting: $x_{-1}$ (the
+"previous" point before the first update) is initialized to $x_0$
+itself, so the very first step has zero look-ahead offset and is
+identical to a plain gradient step. Iteration stops once
+$\|\nabla f(y_k)\| \le$ =tolerance=. Unlike every other method in this
+report, =NesterovAcceleratedGradient= has *no line search and no
+safety net*: =step_size= is used exactly as configured every
+iteration, so a value tuned for one landscape can silently diverge on
+a harder one -- §4.2 demonstrates this concretely with the library's
+own default.
+
+** Cyclic coordinate descent
+
+=CoordinateDescent= updates one coordinate at a time. Each epoch
+visits $j = 0, \ldots, n-1$ in index order; for each $j$ it computes
+the partial derivative $\partial f/\partial x_j$ -- via a *full*
+=gradient()= call, using only component $j$ of the result, so the real
+per-coordinate cost is one full gradient evaluation, not a cheap
+scalar directional derivative -- skips the coordinate if
+$|\partial f/\partial x_j| \le$ =tolerance=, and otherwise backtracks a
+trial step from =step_size= (default 1.0): try
+$x_j \leftarrow x_j^{\text{orig}} - s \cdot \partial f/\partial x_j$,
+accept if the Armijo sufficient-decrease condition
+
+$$f(x') \le f(x) - c_1 \, s \, \left(\frac{\partial f}{\partial x_j}\right)^2$$
+
+holds (=armijo_c1=, default $10^{-4}$), else shrink
+$s \leftarrow s \cdot$ =backtracking_factor= (default 0.5) and retry,
+up to =max_line_search_trials= (default 30). If no trial is accepted
+the coordinate is left unchanged. The epoch loop stops once the full
+gradient norm falls below =tolerance=, or after =max_iterations=
+epochs (default 1000) regardless. Coordinate descent is, in effect,
+optimizing along the coordinate axes only -- it never takes a step
+with more than one nonzero component -- which is exactly why an
+objective whose Hessian has large off-diagonal terms (curvature that
+runs diagonally across the coordinate axes, not along them) is the
+textbook hard case for this family of methods: no single-axis step can
+move directly along that curvature, so many small corrective steps
+across coordinates are needed instead of one large step in the right
+combined direction.
+
+** Randomized block coordinate descent
+
+=RandomizedBlockCoordinateDescent= (Nesterov, 2012; Richtarik &
+Takac, 2014) generalizes cyclic coordinate descent two ways at once:
+each epoch draws a fresh random permutation of the coordinate indices
+(Mersenne Twister seeded by =seed=, default 42, so the whole run is
+reproducible) instead of visiting them in a fixed order, and
+partitions that permutation into contiguous blocks of =block_size=
+(default 1) rather than single coordinates. A block's update is
+/simultaneous/, not sequential: the full gradient is computed once,
+every index in the block is stepped at the same time
+($x_j \leftarrow x_j - s \, \nabla f(x)_j$ for every $j$ in the
+block), and the whole block is Armijo-backtracked together against
+the block's squared-gradient-norm sufficient-decrease condition. With
+=block_size= at its default of 1, this degenerates to randomized
+(rather than cyclic) single-coordinate descent -- the same
+per-coordinate mechanics as =CoordinateDescent=, differing only in
+visitation order, which makes the two a direct, controlled comparison
+point in every experiment below (both are run with default options,
+=block_size= set to =1=, throughout this report).
+
+** Nonlinear conjugate gradient
+
+For an exact quadratic $f(x) = \tfrac{1}{2}x^\top A x - b^\top x$ with
+an /exact/ line search at every step, linear conjugate gradient
+generates a sequence of mutually \(A\)-conjugate directions
+($d_i^\top A d_j = 0$ for $i \ne j$) and is guaranteed to reach the
+exact minimum in at most $n$ steps, $n$ the dimension -- the classical
+result that motivates using conjugate directions instead of plain
+steepest descent in the first place. =ConjugateGradient= extends this
+to general nonlinear, non-quadratic $f$ using the Polak-Ribiere+ (PR+)
+formula (Polak & Ribiere, 1969) to update the direction each step,
+since a fixed conjugacy relationship no longer holds once $f$ is not
+exactly quadratic:
+
+$$d_0 = -g_0, \qquad
+\beta_{k+1} = \max\!\left(0, \frac{g_{k+1}^\top (g_{k+1}-g_k)}
+{\|g_k\|^2}\right), \qquad
+d_{k+1} = -g_{k+1} + \beta_{k+1} d_k$$
+
+The $\max(0, \cdot)$ clip ("PR+") is a restart-safety mechanism: it
+prevents a negative $\beta$ from producing an ascent direction on a
+non-convex region of $f$ (Nocedal & Wright, *Numerical Optimization*,
+ch. 5). Two further, real implementation details separate this from
+the idealized linear-CG picture above. First, the line search is
+Armijo-only, *not* Wolfe: each iteration re-tries $s=1.0$ and
+backtracks by =backtracking_factor= until the sufficient-decrease
+condition holds, up to =max_line_search_trials=, with *no memory of
+the previous iteration's accepted step size* -- every iteration pays
+the same backtracking cost from scratch, which matters on any
+objective whose curvature scale is very different from 1 (§4.3 shows
+this concretely). Second, if the current direction is ever not a
+descent direction ($g_k^\top d_k \ge 0$, possible on a non-quadratic
+$f$ or from numerical drift), the direction is reset to $-g_k$; and
+independently of that check, the implementation *forces* a periodic
+restart every $n$ iterations
+(=(iteration+1) % direction.size() == 0=), setting $\beta=0$
+regardless of the PR+ formula -- standard nonlinear-CG practice to
+keep stale, no-longer-conjugate directions from accumulating. On a
+low-dimensional problem this restart is frequent: with $n=2$
+coordinates, every /other/ iteration is forced back to pure steepest
+descent, so genuinely conjugate-direction steps make up at most half
+of any run on a 2D objective in this report.
+
+** Building a convergence curve without a native history API
+
+None of the four optimizer classes in this report expose an iteration
+callback, a returned trace, or a verbose/logging option -- every
+=optimize()= call returns only the final objective value after
+mutating the caller's coordinates in place, exactly as in the original
+report. This report reuses that report's =LoggingDifferentiable=
+decorator verbatim: it wraps a real =DifferentiableFunction=, forwards
+=gradient()= calls unchanged, and records every =evaluate()= call's
+return value into an external vector before forwarding it -- building
+a convergence curve for any optimizer in this module without needing
+to modify the library itself. One consequence of this technique
+matters for reading the "evaluations" counts below: it only counts
+calls to =evaluate()=, not to =gradient()=. =CoordinateDescent= and
+=RandomizedBlockCoordinateDescent= each call =gradient()= once per
+coordinate (or block) visited -- a real, unlogged cost -- in addition
+to the logged =evaluate()= calls their line search performs, so the
+raw evaluation counts in §4 slightly understate those two methods'
+true computational cost relative to =NesterovAcceleratedGradient= and
+=ConjugateGradient=, which call =gradient()= only once per accepted
+step.
+
+** What we will report
+
+§4.1 fits the 3D quadratic bowl (target $(4,-2,1)$, reused from the
+original report for continuity) with all four methods. §4.2 fits the
+Rosenbrock function, where =NesterovAcceleratedGradient='s library
+default diverges. §4.3 fits a hand-built, low-dimensional, elongated,
+off-axis bowl chosen specifically to test whether coordinate descent
+struggles on cross-coupled curvature -- and finds the opposite of the
+expected result. §4.4 fits a higher-dimensional, more strongly coupled
+version of the same idea, where the expected result does appear, and
+visualizes both §4.3 and §4.4 as convergence-curve figures.
+
+* Data and Methods
+
+** The data
+
+§4.1 and §4.2 reuse the original report's synthetic objectives with
+known analytic minima (the 3D quadratic bowl centered at $(4,-2,1)$;
+the 2D Rosenbrock function, minimum $f=0$ at $(1,1)$), so results here
+are directly comparable to that report's =GradientDescent= / =Adam= /
+=LBFGS= numbers. §4.3 introduces a new hand-built objective,
+$f(x,y) = 10(x-3)^2 + (y+1)^2 + 3(x-3)(y+1)$: an elongated,
+non-axis-aligned quadratic bowl with Hessian $\begin{pmatrix}20 &
+3\\3 & 2\end{pmatrix}$ (determinant $40-9=31>0$, positive definite;
+eigenvalues approximately 20.49 and 1.51, condition number
+approximately 13.5), constructed to have curvature that runs
+diagonally across the coordinate axes rather than along them -- the
+textbook hard case for coordinate descent (§2.3). §4.4 scales the same
+idea to 8 dimensions with a strong nearest-neighbor coupling term,
+$f(x) = \sum_i x_i^2 + \rho \sum_i (x_i - x_{i+1})^2$ with $\rho=8$:
+every pair of adjacent coordinates is tightly coupled, so no
+single-coordinate step can move efficiently along the dominant
+curvature direction, and there are more coordinates for that
+structural weakness to compound across.
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module --
+=NesterovAcceleratedGradient=, =CoordinateDescent=,
+=RandomizedBlockCoordinateDescent=, and =ConjugateGradient= -- together
+with =optim::DifferentiableFunction= (the interface every custom
+objective in this report implements) and =plot::RPlot= for
+visualization.
+
+** Program, presented as a literate whole
+
+*** Includes, objectives, and the logging decorator
+
+#+name: coord-cg-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class QuadraticBowl : public DifferentiableFunction {
+public:
+    explicit QuadraticBowl(std::vector<double> target)
+        : target_(std::move(target)) {}
+    double evaluate(const std::vector<double>& coordinates) override {
+        double total = 0.0;
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            const double d = coordinates[i] - target_[i];
+            total += d * d;
+        }
+        return total;
+    }
+    std::vector<double> gradient(const std::vector<double>& coordinates)
+        override {
+        std::vector<double> grad(coordinates.size());
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            grad[i] = 2.0 * (coordinates[i] - target_[i]);
+        }
+        return grad;
+    }
+
+private:
+    std::vector<double> target_;
+};
+
+class RosenbrockFn : public DifferentiableFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double a = 1.0 - x[0];
+        const double b = x[1] - x[0] * x[0];
+        return a * a + 100.0 * b * b;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {-2.0 * (1.0 - x[0]) - 400.0 * x[0] * (x[1] - x[0] * x[0]),
+                200.0 * (x[1] - x[0] * x[0])};
+    }
+};
+
+// Elongated, non-axis-aligned bowl: f = 10(x-3)^2 + (y+1)^2 + 3(x-3)(y+1).
+// Hessian [[20,3],[3,2]], determinant 40-9=31>0 (positive definite),
+// eigenvalues approx 20.49 and 1.51 (condition number approx 13.5).
+class RotatedBowl : public DifferentiableFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double u = x[0] - 3.0;
+        const double v = x[1] + 1.0;
+        return 10.0 * u * u + v * v + 3.0 * u * v;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        const double u = x[0] - 3.0;
+        const double v = x[1] + 1.0;
+        return {20.0 * u + 3.0 * v, 2.0 * v + 3.0 * u};
+    }
+};
+
+// Higher-dimensional, strongly coupled bowl: n=8 coordinates each pulled
+// to 0, plus a strong nearest-neighbor coupling term -- the classic bad
+// case for coordinate descent, scaled up from RotatedBowl above.
+class CoupledBowl : public DifferentiableFunction {
+public:
+    CoupledBowl(std::size_t n, double rho) : n_(n), rho_(rho) {}
+    double evaluate(const std::vector<double>& x) override {
+        double total = 0.0;
+        for (std::size_t i = 0; i < n_; ++i) total += x[i] * x[i];
+        for (std::size_t i = 0; i + 1 < n_; ++i) {
+            const double d = x[i] - x[i + 1];
+            total += rho_ * d * d;
+        }
+        return total;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        std::vector<double> g(n_, 0.0);
+        for (std::size_t i = 0; i < n_; ++i) g[i] += 2.0 * x[i];
+        for (std::size_t i = 0; i + 1 < n_; ++i) {
+            const double d = x[i] - x[i + 1];
+            g[i] += 2.0 * rho_ * d;
+            g[i + 1] -= 2.0 * rho_ * d;
+        }
+        return g;
+    }
+
+private:
+    std::size_t n_;
+    double rho_;
+};
+
+// Logs every evaluate() call's objective value, for building a
+// convergence-curve figure.
+class LoggingDifferentiable : public DifferentiableFunction {
+public:
+    LoggingDifferentiable(DifferentiableFunction& inner,
+                           std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        return v;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return inner_->gradient(x);
+    }
+
+private:
+    DifferentiableFunction* inner_;
+    std::vector<double>* log_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+std::vector<double> indices(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) out[i] = static_cast<double>(i + 1);
+    return out;
+}
+
+std::vector<double> log10_shifted(const std::vector<double>& v) {
+    std::vector<double> out(v.size());
+    for (std::size_t i = 0; i < v.size(); ++i)
+        out[i] = std::log10(v[i] + 1e-12);
+    return out;
+}
+
+} // namespace
+#+end_src
+
+*** 3D quadratic bowl: four optimizers
+
+#+name: coord-cg-bowl
+#+begin_src c++ :eval no
+    std::cout << "=== 3D quadratic bowl, target (4,-2,1) ===\n";
+    const std::vector<double> target{4.0, -2.0, 1.0};
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = NesterovAcceleratedGradient().optimize(lf, x);
+        std::cout << "NAG:      f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = CoordinateDescent().optimize(lf, x);
+        std::cout << "CoordDesc: f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value =
+            RandomizedBlockCoordinateDescent().optimize(lf, x);
+        std::cout << "RandBCD:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = ConjugateGradient().optimize(lf, x);
+        std::cout << "CG:       f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+#+end_src
+
+*** Rosenbrock: four optimizers
+
+#+name: coord-cg-rosenbrock
+#+begin_src c++ :eval no
+    std::cout << "\n=== Rosenbrock function ===\n";
+    {
+        RosenbrockFn f;
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{-1.2, 1.0};
+        NesterovAcceleratedGradientOptions opts;
+        opts.step_size = 0.001; // default 0.01 diverges to NaN here
+        const double value =
+            NesterovAcceleratedGradient(opts).optimize(lf, x);
+        std::cout << "NAG:      f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size()
+                   << " evaluations, step_size=0.001)\n";
+    }
+    {
+        RosenbrockFn f;
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{-1.2, 1.0};
+        const double value = CoordinateDescent().optimize(lf, x);
+        std::cout << "CoordDesc: f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size()
+                   << " evaluations, hit max_iterations)\n";
+    }
+    {
+        RosenbrockFn f;
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{-1.2, 1.0};
+        const double value =
+            RandomizedBlockCoordinateDescent().optimize(lf, x);
+        std::cout << "RandBCD:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size()
+                   << " evaluations, hit max_iterations)\n";
+    }
+    {
+        RosenbrockFn f;
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{-1.2, 1.0};
+        const double value = ConjugateGradient().optimize(lf, x);
+        std::cout << "CG:       f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+#+end_src
+
+*** Rotated bowl and its convergence figure
+
+#+name: coord-cg-rotated
+#+begin_src c++ :eval no
+    std::cout << "\n=== Rotated bowl (elongated, off-axis valley) ===\n";
+    std::vector<double> nag_rot_log, cd_rot_log, rbcd_rot_log, cg_rot_log;
+    {
+        RotatedBowl f;
+        LoggingDifferentiable lf(f, nag_rot_log);
+        std::vector<double> x{0.0, 0.0};
+        const double value = NesterovAcceleratedGradient().optimize(lf, x);
+        std::cout << "NAG:      f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << nag_rot_log.size() << " evaluations)\n";
+    }
+    {
+        RotatedBowl f;
+        LoggingDifferentiable lf(f, cd_rot_log);
+        std::vector<double> x{0.0, 0.0};
+        const double value = CoordinateDescent().optimize(lf, x);
+        std::cout << "CoordDesc: f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << cd_rot_log.size() << " evaluations)\n";
+    }
+    {
+        RotatedBowl f;
+        LoggingDifferentiable lf(f, rbcd_rot_log);
+        std::vector<double> x{0.0, 0.0};
+        const double value =
+            RandomizedBlockCoordinateDescent().optimize(lf, x);
+        std::cout << "RandBCD:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << rbcd_rot_log.size() << " evaluations)\n";
+    }
+    {
+        RotatedBowl f;
+        LoggingDifferentiable lf(f, cg_rot_log);
+        std::vector<double> x{0.0, 0.0};
+        const double value = ConjugateGradient().optimize(lf, x);
+        std::cout << "CG:       f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << cg_rot_log.size() << " evaluations)\n";
+    }
+#+end_src
+
+#+name: coord-cg-rotated-figure
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(indices(nag_rot_log.size()),
+                                 log10_shifted(nag_rot_log), "l",
+                                 "NesterovAcceleratedGradient",
+                                 {220, 38, 38});
+        plot.lines(indices(cd_rot_log.size()), log10_shifted(cd_rot_log),
+                   "CoordinateDescent", {96, 165, 250}, 2.0);
+        plot.lines(indices(rbcd_rot_log.size()),
+                   log10_shifted(rbcd_rot_log),
+                   "RandomizedBlockCoordinateDescent", {234, 179, 8}, 2.0);
+        plot.lines(indices(cg_rot_log.size()), log10_shifted(cg_rot_log),
+                   "ConjugateGradient", {34, 197, 94}, 2.0);
+        plot.legend({"NAG", "CoordinateDescent", "RandBCD", "CG"},
+                    {{220, 38, 38}, {96, 165, 250}, {234, 179, 8},
+                     {34, 197, 94}});
+        plot.title("Rotated bowl: NAG vs. CD vs. RandBCD vs. CG")
+            .x_label("function evaluations")
+            .y_label("log10(f)");
+        plot.save_svg("build/org/optim_coord_rotated_convergence.svg");
+        std::cout << "\nwrote optim_coord_rotated_convergence.svg\n";
+    }
+#+end_src
+
+*** Coupled bowl and its convergence figure
+
+#+name: coord-cg-coupled
+#+begin_src c++ :eval no
+    std::cout << "\n=== Coupled bowl (n=8, rho=8, strong coupling) ===\n";
+    std::vector<double> nag_cb_log, cd_cb_log, rbcd_cb_log, cg_cb_log;
+    {
+        CoupledBowl f(8, 8.0);
+        LoggingDifferentiable lf(f, nag_cb_log);
+        std::vector<double> x(8, 5.0);
+        const double value = NesterovAcceleratedGradient().optimize(lf, x);
+        std::cout << "NAG:      f=" << value
+                   << " (" << nag_cb_log.size() << " evaluations)\n";
+    }
+    {
+        CoupledBowl f(8, 8.0);
+        LoggingDifferentiable lf(f, cd_cb_log);
+        std::vector<double> x(8, 5.0);
+        const double value = CoordinateDescent().optimize(lf, x);
+        std::cout << "CoordDesc: f=" << value
+                   << " (" << cd_cb_log.size() << " evaluations)\n";
+    }
+    {
+        CoupledBowl f(8, 8.0);
+        LoggingDifferentiable lf(f, rbcd_cb_log);
+        std::vector<double> x(8, 5.0);
+        const double value =
+            RandomizedBlockCoordinateDescent().optimize(lf, x);
+        std::cout << "RandBCD:  f=" << value
+                   << " (" << rbcd_cb_log.size() << " evaluations)\n";
+    }
+    {
+        CoupledBowl f(8, 8.0);
+        LoggingDifferentiable lf(f, cg_cb_log);
+        std::vector<double> x(8, 5.0);
+        const double value = ConjugateGradient().optimize(lf, x);
+        std::cout << "CG:       f=" << value
+                   << " (" << cg_cb_log.size() << " evaluations)\n";
+    }
+#+end_src
+
+#+name: coord-cg-coupled-figure
+#+begin_src c++ :eval no
+    {
+        auto log10_index = [](std::size_t n) {
+            std::vector<double> out(n);
+            for (std::size_t i = 0; i < n; ++i)
+                out[i] = std::log10(static_cast<double>(i + 1));
+            return out;
+        };
+        auto plot = RPlot::plot(log10_index(nag_cb_log.size()),
+                                 log10_shifted(nag_cb_log), "l",
+                                 "NesterovAcceleratedGradient",
+                                 {220, 38, 38});
+        plot.lines(log10_index(cd_cb_log.size()),
+                   log10_shifted(cd_cb_log),
+                   "CoordinateDescent", {96, 165, 250}, 2.0);
+        plot.lines(log10_index(rbcd_cb_log.size()),
+                   log10_shifted(rbcd_cb_log),
+                   "RandomizedBlockCoordinateDescent", {234, 179, 8}, 2.0);
+        plot.lines(log10_index(cg_cb_log.size()),
+                   log10_shifted(cg_cb_log),
+                   "ConjugateGradient", {34, 197, 94}, 2.0);
+        plot.legend({"NAG", "CoordinateDescent", "RandBCD", "CG"},
+                    {{220, 38, 38}, {96, 165, 250}, {234, 179, 8},
+                     {34, 197, 94}});
+        plot.title("Coupled bowl (n=8): NAG vs. CD vs. RandBCD vs. CG")
+            .x_label("log10(function evaluations)")
+            .y_label("log10(f)");
+        plot.save_svg("build/org/optim_coord_coupled_convergence.svg");
+        std::cout << "wrote optim_coord_coupled_convergence.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_coord_cg_analysis.cpp <<'CPP'
+<<coord-cg-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<coord-cg-bowl>>
+
+<<coord-cg-rosenbrock>>
+
+<<coord-cg-rotated>>
+
+<<coord-cg-rotated-figure>>
+
+<<coord-cg-coupled>>
+
+<<coord-cg-coupled-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_coord_cg_analysis.cpp \
+  -o build/org/optim_coord_cg_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_coord_cg_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** 3D quadratic bowl
+
+#+begin_example
+=== 3D quadratic bowl, target (4,-2,1) ===
+NAG:      f=0.000000 x=[4.000000, -2.000000, 1.000000] (278 evaluations)
+CoordDesc: f=0.000000 x=[4.000000, -2.000000, 1.000000] (7 evaluations)
+RandBCD:  f=0.000000 x=[4.000000, -2.000000, 1.000000] (7 evaluations)
+CG:       f=0.000000 x=[4.000000, -2.000000, 1.000000] (3 evaluations)
+#+end_example
+
+All four methods reach the true minimum $(4,-2,1)$ on this simple,
+axis-aligned, isotropic bowl, but the cost spans nearly two orders of
+magnitude: =ConjugateGradient= needs only 3 evaluations,
+=CoordinateDescent= and =RandomizedBlockCoordinateDescent= need 7
+(identical counts, differing only in visitation order on a problem
+where order does not matter), and
+=NesterovAcceleratedGradient= needs 278 -- its fixed, conservative
+default step size (0.01) taking many small steps where the other three
+methods' line searches jump most of the way there almost immediately.
+
+** Rosenbrock function
+
+#+begin_example
+=== Rosenbrock function ===
+NAG:      f=0.000000 x=[1.000000, 1.000000]
+  (4180 evaluations, step_size=0.001)
+CoordDesc: f=0.000000 x=[0.999938, 0.999877]
+  (17931 evaluations, hit max_iterations)
+RandBCD:  f=0.000108 x=[0.989594, 0.979323]
+  (17787 evaluations, hit max_iterations)
+CG:       f=0.000001 x=[1.000784, 1.001574] (10512 evaluations)
+#+end_example
+
+This is where the library's out-of-the-box defaults stop being
+uniformly safe. =NesterovAcceleratedGradient='s default =step_size=
+of 0.01 does not appear in this table at all -- running it with the
+library default produces =-nan= for every coordinate: the look-ahead
+extrapolation overshoots so far up Rosenbrock's steep walls that the
+next gradient explodes, and the fixed step size has no backtracking
+mechanism to catch it. Tuned down to 0.001, it converges cleanly to
+$(1,1)$ in 4180 evaluations. =CoordinateDescent= and
+=RandomizedBlockCoordinateDescent=, run with unmodified library
+defaults, both exhaust their 1000-epoch budget before their
+gradient-norm stopping criterion is satisfied: =CoordinateDescent=
+lands at $f \approx 3.8\times10^{-9}$ (rounds to 0.000000 at six
+decimal places) and =RandomizedBlockCoordinateDescent= at
+$f=0.000108$, both close to but not exactly at the minimum.
+=ConjugateGradient= reaches $f=0.000001$ in 10512 evaluations, between
+the other three in cost. Every method here is protected from outright
+divergence except =NesterovAcceleratedGradient=, whose Armijo-free
+fixed step is the one design in this report with no built-in safety
+net.
+
+** Rotated bowl: the unexpected result
+
+#+begin_example
+=== Rotated bowl (elongated, off-axis valley) ===
+NAG:      f=0.000000 x=[3.000000, -1.000000] (272 evaluations)
+CoordDesc: f=0.000000 x=[3.000000, -1.000000] (50 evaluations)
+RandBCD:  f=0.000000 x=[3.000000, -1.000000] (79 evaluations)
+CG:       f=0.000000 x=[3.000000, -1.000000] (130 evaluations)
+#+end_example
+
+This objective was built specifically to make coordinate descent
+struggle (§3.1): an elongated, off-axis valley whose curvature runs
+diagonally across the two coordinate axes. The actual result is the
+*opposite* of that expectation: cyclic =CoordinateDescent= (50
+evaluations) and =RandomizedBlockCoordinateDescent= (79) both beat
+=ConjugateGradient= (130) and =NesterovAcceleratedGradient= (272).
+
+#+ATTR_HTML: :alt Convergence curves for NesterovAcceleratedGradient, CoordinateDescent, RandomizedBlockCoordinateDescent, and ConjugateGradient on the rotated bowl :width 100%
+[[file:../../build/org/optim_coord_rotated_convergence.svg]]
+
+The figure shows why: =CoordinateDescent= (blue) and
+=RandomizedBlockCoordinateDescent= (yellow) drop almost straight down
+within the first 50-80 evaluations, while =ConjugateGradient= (green)
+takes a visibly bumpier, longer path, and
+=NesterovAcceleratedGradient= (red) descends the slowest of all,
+still visibly working at the right edge of the plot. §5 discusses why
+this particular objective did not expose coordinate descent's
+structural weakness -- in short, its condition number
+(approximately 13.5) and dimension ($n=2$) both turn out to be too
+small for the effect described in §2.3 to dominate the very different
+per-step cost of each method's own line search.
+
+** Coupled bowl: the expected result, at higher dimension
+
+#+begin_example
+=== Coupled bowl (n=8, rho=8, strong coupling) ===
+NAG:      f=0.000000 (278 evaluations)
+CoordDesc: f=0.000000 (6086 evaluations)
+RandBCD:  f=0.000000 (8096 evaluations)
+CG:       f=0.000000 (3 evaluations)
+#+end_example
+
+Scaling the same idea up to 8 dimensions with strong nearest-neighbor
+coupling reverses the previous section's finding decisively.
+=ConjugateGradient= converges in just 3 evaluations -- fewer than the
+dimension of the problem -- while =NesterovAcceleratedGradient= needs
+278 (identical to its cost on the isotropic 3D bowl in §4.1, since its
+fixed step size does not adapt to curvature either way), and
+=CoordinateDescent= and =RandomizedBlockCoordinateDescent= need 6086
+and 8096 respectively: roughly 2000-2700x more than =ConjugateGradient=
+for the identical answer.
+
+#+ATTR_HTML: :alt Log-log convergence curves for NesterovAcceleratedGradient, CoordinateDescent, RandomizedBlockCoordinateDescent, and ConjugateGradient on the coupled bowl :width 100%
+[[file:../../build/org/optim_coord_coupled_convergence.svg]]
+
+On this log-log plot, =ConjugateGradient='s (green) curve is a nearly
+vertical line at the far left -- converged before the other three
+methods have made any visible progress. =NesterovAcceleratedGradient=
+(red) descends steadily across the middle of the plot.
+=CoordinateDescent= (blue) and =RandomizedBlockCoordinateDescent=
+(yellow) both spend the bulk of their evaluation budget oscillating in
+a wide, ragged band before finally beginning to descend far to the
+right -- the coupling term forcing many small back-and-forth
+corrections between adjacent coordinates before the search direction
+can align with the dominant, cross-coordinate curvature.
+
+* Discussion
+
+**A single low-dimensional counterexample does not overturn the
+general theory -- it identifies its boundary.** §4.3's rotated bowl
+was constructed to be the textbook hard case for coordinate descent
+(§2.3's diagonal-curvature argument), and the fact that
+=CoordinateDescent= actually won there is a genuine, verified result,
+not a mistake in this report's method. The most likely explanation,
+given §4.4's reversal at higher dimension and stronger coupling, is
+that the rotated bowl's condition number (approximately 13.5) and
+dimension ($n=2$) are simply too modest for the structural
+cross-coordinate weakness to outweigh a confound this report did not
+originally control for: each method's own line-search overhead is
+very different. =CoordinateDescent= and
+=RandomizedBlockCoordinateDescent='s per-coordinate Armijo search
+adapts its step size automatically every single coordinate update,
+while =NesterovAcceleratedGradient='s fixed step size (even a
+carefully chosen one) cannot adapt at all, and =ConjugateGradient='s
+step-from-1.0-every-time Armijo search (§2.5) pays a real, repeated
+backtracking cost when the objective's curvature scale is far from 1.
+On a 2-coordinate problem, "many small per-axis corrections" and "a
+few well-adapted per-axis corrections" are not that different in
+total cost -- the gap the theory predicts needs more coordinates and
+more coupling to actually show up in raw evaluation counts, exactly
+what §4.4 supplies.
+
+**The =ConjugateGradient= implementation's Armijo-only, step-reset-to-1.0
+line search is a real, specific departure from the idealized linear-CG
+picture, and it costs measurably more on ill-conditioned problems.**
+§2.5 derives that linear CG with an /exact/ line search reaches a
+quadratic's minimum in at most $n$ steps; §4.4's coupled bowl gets
+remarkably close to that ideal (3 evaluations, fewer than $n=8$) because
+its curvature, while strongly coupled, is not far from unit scale, so
+a step of 1.0 is already close to optimal most iterations. §4.3's
+rotated bowl, whose Hessian's larger eigenvalue is approximately 20.49,
+is the opposite case: every iteration's line search starts from a step
+of 1.0 that is roughly 20x too large for that direction and must
+repeatedly halve before being accepted, a cost re-paid every single
+iteration since the implementation carries no memory of the previous
+iteration's accepted step size. This is a specific, verifiable
+consequence of the real =.cpp= source (§2.5), not a general property
+of nonlinear conjugate gradient methods -- an implementation that
+initialized each iteration's trial step from the previous iteration's
+accepted step, or used a Wolfe rather than Armijo-only line search,
+would likely close much of this gap.
+
+**=NesterovAcceleratedGradient='s complete absence of a line-search
+safety net is the report's clearest cautionary finding.** Every other
+method here degrades gracefully under a poorly chosen setting: an
+Armijo-backtracked step that starts too large simply gets rejected and
+shrunk automatically. §4.2 shows =NesterovAcceleratedGradient= has no
+such protection -- its own library default (=step_size= 0.01) produces
+outright numerical divergence (=-nan=) on the Rosenbrock function,
+not merely slow convergence, because the look-ahead extrapolation can
+carry the trial point into a region where the gradient is far larger
+than at the current point, and a fixed step size sized for the
+current point's local curvature has no mechanism to notice. This is
+worth surfacing explicitly for anyone reusing this library's defaults
+outside the well-behaved, roughly-isotropic bowl those defaults happen
+to work for.
+
+* Conclusion
+
+Comparing four gradient-based optimizers head to head on four
+objectives, all sharing the same =DifferentiableFunction= interface,
+surfaces a genuine, non-obvious result this report did not expect
+going in: a hand-built low-dimensional objective designed specifically
+to expose coordinate descent's structural weakness instead showed
+=CoordinateDescent= (50 evaluations) and
+=RandomizedBlockCoordinateDescent= (79) both beating
+=ConjugateGradient= (130) and =NesterovAcceleratedGradient= (272), and
+only scaling the same idea to 8 dimensions with stronger coupling
+produced the textbook result (=ConjugateGradient= at 3 evaluations
+versus =CoordinateDescent='s 6086 and =RandomizedBlockCoordinateDescent='s
+8096). Along the way, =NesterovAcceleratedGradient='s own library
+default was found to diverge to =-nan= on the Rosenbrock function, a
+real instability with no line-search safety net to catch it, unlike
+every other method in this report. As with its companions, this
+entire report is reproducible end to end via
+=just org-example optimization_coordinate_cg_analysis=, which
+re-executes §3.3.6's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Nesterov, Y. (1983). "A Method for Solving the Convex Programming
+  Problem with Convergence Rate $O(1/k^2)$." /Doklady Akademii Nauk
+  SSSR/, 269, 543--547.
+- Nesterov, Y. (2012). "Efficiency of Coordinate Descent Methods on
+  Huge-Scale Optimization Problems." /SIAM Journal on Optimization/,
+  22(2), 341--362.
+- Richtarik, P., & Takac, M. (2014). "Iteration Complexity of
+  Randomized Block-Coordinate Descent Methods for Minimizing a
+  Composite Function." /Mathematical Programming/, 144(1-2), 1--38.
+- Polak, E., & Ribiere, G. (1969). "Note sur la convergence de
+  methodes de directions conjuguees." /Revue Francaise d'Informatique
+  et de Recherche Operationnelle/, 3(16), 35--43.
+- Nocedal, J., & Wright, S. J. (2006). /Numerical Optimization/ (2nd
+  ed.), ch. 5. Springer.
+- Rosenbrock, H. H. (1960). "An Automatic Method for Finding the
+  Greatest or Least Value of a Function." /The Computer Journal/, 3(3),
+  175--184.

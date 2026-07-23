@@ -14,6 +14,7 @@ type c_enum_type = [
 | `SeasonalType
 | `Alternative
 | `PAdjustMethod
+| `StepMethod
 ]
 type c_enum_value = [ 
   `Int of int
@@ -37,6 +38,12 @@ type c_enum_value = [
 | `Hommel
 | `BH
 | `BY
+| `Euler
+| `Midpoint
+| `RK4
+| `RK45
+| `AdamsBashforth
+| `AdamsMoulton
 ]
 
 type c_obj = c_enum_value c_obj_t
@@ -604,6 +611,30 @@ let _DataFrame_fill_null_string arg = match _DataFrame_fill_null_string_f ((fnhe
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _DataFrame_mutate_numeric_f : c_obj list -> c_obj list = "_wrap_DataFrame_mutate_numericdatamunge" ;;
+let _DataFrame_mutate_numeric arg = match _DataFrame_mutate_numeric_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_mutate_string_f : c_obj list -> c_obj list = "_wrap_DataFrame_mutate_stringdatamunge" ;;
+let _DataFrame_mutate_string arg = match _DataFrame_mutate_string_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_mutate_string_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_mutate_string_encodeddatamunge" ;;
+let _DataFrame_mutate_string_encoded arg = match _DataFrame_mutate_string_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_rename_f : c_obj list -> c_obj list = "_wrap_DataFrame_renamedatamunge" ;;
+let _DataFrame_rename arg = match _DataFrame_rename_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _DataFrame_select_f : c_obj list -> c_obj list = "_wrap_DataFrame_selectdatamunge" ;;
 let _DataFrame_select arg = match _DataFrame_select_f ((fnhelper arg)) with
   [] -> C_void
@@ -616,8 +647,32 @@ let _DataFrame_select_encoded arg = match _DataFrame_select_encoded_f ((fnhelper
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _DataFrame_relocate_f : c_obj list -> c_obj list = "_wrap_DataFrame_relocatedatamunge" ;;
+let _DataFrame_relocate arg = match _DataFrame_relocate_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_relocate_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_relocate_encodeddatamunge" ;;
+let _DataFrame_relocate_encoded arg = match _DataFrame_relocate_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _DataFrame_sort_by_f : c_obj list -> c_obj list = "_wrap_DataFrame_sort_bydatamunge" ;;
 let _DataFrame_sort_by arg = match _DataFrame_sort_by_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_arrange_f : c_obj list -> c_obj list = "_wrap_DataFrame_arrangedatamunge" ;;
+let _DataFrame_arrange arg = match _DataFrame_arrange_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_arrange_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_arrange_encodeddatamunge" ;;
+let _DataFrame_arrange_encoded arg = match _DataFrame_arrange_encoded_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -634,6 +689,48 @@ let _DataFrame_drop_duplicates_encoded arg = match _DataFrame_drop_duplicates_en
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _DataFrame_distinct_f : c_obj list -> c_obj list = "_wrap_DataFrame_distinctdatamunge" ;;
+let _DataFrame_distinct arg = match _DataFrame_distinct_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_distinct_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_distinct_encodeddatamunge" ;;
+let _DataFrame_distinct_encoded arg = match _DataFrame_distinct_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pull_numeric_f : c_obj list -> c_obj list = "_wrap_DataFrame_pull_numericdatamunge" ;;
+let _DataFrame_pull_numeric arg = match _DataFrame_pull_numeric_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pull_numeric_valid_f : c_obj list -> c_obj list = "_wrap_DataFrame_pull_numeric_validdatamunge" ;;
+let _DataFrame_pull_numeric_valid arg = match _DataFrame_pull_numeric_valid_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pull_string_f : c_obj list -> c_obj list = "_wrap_DataFrame_pull_stringdatamunge" ;;
+let _DataFrame_pull_string arg = match _DataFrame_pull_string_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pull_string_valid_f : c_obj list -> c_obj list = "_wrap_DataFrame_pull_string_validdatamunge" ;;
+let _DataFrame_pull_string_valid arg = match _DataFrame_pull_string_valid_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_n_distinct_f : c_obj list -> c_obj list = "_wrap_DataFrame_n_distinctdatamunge" ;;
+let _DataFrame_n_distinct arg = match _DataFrame_n_distinct_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _DataFrame_group_by_sum_f : c_obj list -> c_obj list = "_wrap_DataFrame_group_by_sumdatamunge" ;;
 let _DataFrame_group_by_sum arg = match _DataFrame_group_by_sum_f ((fnhelper arg)) with
   [] -> C_void
@@ -642,6 +739,66 @@ let _DataFrame_group_by_sum arg = match _DataFrame_group_by_sum_f ((fnhelper arg
 | lst -> C_list lst ;;
 external _DataFrame_group_by_sum_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_group_by_sum_encodeddatamunge" ;;
 let _DataFrame_group_by_sum_encoded arg = match _DataFrame_group_by_sum_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_count_f : c_obj list -> c_obj list = "_wrap_DataFrame_countdatamunge" ;;
+let _DataFrame_count arg = match _DataFrame_count_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_count_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_count_encodeddatamunge" ;;
+let _DataFrame_count_encoded arg = match _DataFrame_count_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_summarise_f : c_obj list -> c_obj list = "_wrap_DataFrame_summarisedatamunge" ;;
+let _DataFrame_summarise arg = match _DataFrame_summarise_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_summarise_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_summarise_encodeddatamunge" ;;
+let _DataFrame_summarise_encoded arg = match _DataFrame_summarise_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pivot_longer_f : c_obj list -> c_obj list = "_wrap_DataFrame_pivot_longerdatamunge" ;;
+let _DataFrame_pivot_longer arg = match _DataFrame_pivot_longer_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pivot_longer_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_pivot_longer_encodeddatamunge" ;;
+let _DataFrame_pivot_longer_encoded arg = match _DataFrame_pivot_longer_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pivot_wider_f : c_obj list -> c_obj list = "_wrap_DataFrame_pivot_widerdatamunge" ;;
+let _DataFrame_pivot_wider arg = match _DataFrame_pivot_wider_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_pivot_wider_encoded_f : c_obj list -> c_obj list = "_wrap_DataFrame_pivot_wider_encodeddatamunge" ;;
+let _DataFrame_pivot_wider_encoded arg = match _DataFrame_pivot_wider_encoded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_bind_rows_f : c_obj list -> c_obj list = "_wrap_DataFrame_bind_rowsdatamunge" ;;
+let _DataFrame_bind_rows arg = match _DataFrame_bind_rows_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _DataFrame_bind_cols_f : c_obj list -> c_obj list = "_wrap_DataFrame_bind_colsdatamunge" ;;
+let _DataFrame_bind_cols arg = match _DataFrame_bind_cols_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -732,6 +889,84 @@ let _DataFrame_penguins arg = match _DataFrame_penguins_f ((fnhelper arg)) with
 | lst -> C_list lst ;;
 external _delete_DataFrame_f : c_obj list -> c_obj list = "_wrap_delete_DataFramedatamunge" ;;
 let _delete_DataFrame arg = match _delete_DataFrame_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_read_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_readdatamunge" ;;
+let _ShapeLayer_read arg = match _ShapeLayer_read_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_size_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_sizedatamunge" ;;
+let _ShapeLayer_size arg = match _ShapeLayer_size_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_shape_type_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_shape_typedatamunge" ;;
+let _ShapeLayer_shape_type arg = match _ShapeLayer_shape_type_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_bounds_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_boundsdatamunge" ;;
+let _ShapeLayer_bounds arg = match _ShapeLayer_bounds_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_attributes_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_attributesdatamunge" ;;
+let _ShapeLayer_attributes arg = match _ShapeLayer_attributes_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_shape_kind_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_shape_kinddatamunge" ;;
+let _ShapeLayer_shape_kind arg = match _ShapeLayer_shape_kind_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_num_parts_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_num_partsdatamunge" ;;
+let _ShapeLayer_num_parts arg = match _ShapeLayer_num_parts_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_part_x_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_part_xdatamunge" ;;
+let _ShapeLayer_part_x arg = match _ShapeLayer_part_x_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_part_y_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_part_ydatamunge" ;;
+let _ShapeLayer_part_y arg = match _ShapeLayer_part_y_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_point_x_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_point_xdatamunge" ;;
+let _ShapeLayer_point_x arg = match _ShapeLayer_point_x_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_point_y_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_point_ydatamunge" ;;
+let _ShapeLayer_point_y arg = match _ShapeLayer_point_y_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ShapeLayer_plot_f : c_obj list -> c_obj list = "_wrap_ShapeLayer_plotdatamunge" ;;
+let _ShapeLayer_plot arg = match _ShapeLayer_plot_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ShapeLayer_f : c_obj list -> c_obj list = "_wrap_delete_ShapeLayerdatamunge" ;;
+let _delete_ShapeLayer arg = match _delete_ShapeLayer_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -2778,6 +3013,198 @@ let _KMeans_print_summary arg = match _KMeans_print_summary_f ((fnhelper arg)) w
 | lst -> C_list lst ;;
 external _delete_KMeans_f : c_obj list -> c_obj list = "_wrap_delete_KMeansdatamunge" ;;
 let _delete_KMeans arg = match _delete_KMeans_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_PCA_f : c_obj list -> c_obj list = "_wrap_new_PCAdatamunge" ;;
+let _new_PCA arg = match _new_PCA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_feature_names_f : c_obj list -> c_obj list = "_wrap_PCA_feature_namesdatamunge" ;;
+let _PCA_feature_names arg = match _PCA_feature_names_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_observations_f : c_obj list -> c_obj list = "_wrap_PCA_observationsdatamunge" ;;
+let _PCA_observations arg = match _PCA_observations_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_num_components_f : c_obj list -> c_obj list = "_wrap_PCA_num_componentsdatamunge" ;;
+let _PCA_num_components arg = match _PCA_num_components_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_kept_row_indices_f : c_obj list -> c_obj list = "_wrap_PCA_kept_row_indicesdatamunge" ;;
+let _PCA_kept_row_indices arg = match _PCA_kept_row_indices_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_explained_variance_f : c_obj list -> c_obj list = "_wrap_PCA_explained_variancedatamunge" ;;
+let _PCA_explained_variance arg = match _PCA_explained_variance_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_explained_variance_ratio_f : c_obj list -> c_obj list = "_wrap_PCA_explained_variance_ratiodatamunge" ;;
+let _PCA_explained_variance_ratio arg = match _PCA_explained_variance_ratio_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_cumulative_explained_variance_ratio_f : c_obj list -> c_obj list = "_wrap_PCA_cumulative_explained_variance_ratiodatamunge" ;;
+let _PCA_cumulative_explained_variance_ratio arg = match _PCA_cumulative_explained_variance_ratio_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_component_loadings_f : c_obj list -> c_obj list = "_wrap_PCA_component_loadingsdatamunge" ;;
+let _PCA_component_loadings arg = match _PCA_component_loadings_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_component_scores_f : c_obj list -> c_obj list = "_wrap_PCA_component_scoresdatamunge" ;;
+let _PCA_component_scores arg = match _PCA_component_scores_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_scores_frame_f : c_obj list -> c_obj list = "_wrap_PCA_scores_framedatamunge" ;;
+let _PCA_scores_frame arg = match _PCA_scores_frame_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_transform_f : c_obj list -> c_obj list = "_wrap_PCA_transformdatamunge" ;;
+let _PCA_transform arg = match _PCA_transform_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_summary_f : c_obj list -> c_obj list = "_wrap_PCA_summarydatamunge" ;;
+let _PCA_summary arg = match _PCA_summary_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_print_summary_f : c_obj list -> c_obj list = "_wrap_PCA_print_summarydatamunge" ;;
+let _PCA_print_summary arg = match _PCA_print_summary_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_plot_scores_f : c_obj list -> c_obj list = "_wrap_PCA_plot_scoresdatamunge" ;;
+let _PCA_plot_scores arg = match _PCA_plot_scores_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_plot_scores_grouped_f : c_obj list -> c_obj list = "_wrap_PCA_plot_scores_groupeddatamunge" ;;
+let _PCA_plot_scores_grouped arg = match _PCA_plot_scores_grouped_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _PCA_plot_scree_f : c_obj list -> c_obj list = "_wrap_PCA_plot_screedatamunge" ;;
+let _PCA_plot_scree arg = match _PCA_plot_scree_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_PCA_f : c_obj list -> c_obj list = "_wrap_delete_PCAdatamunge" ;;
+let _delete_PCA arg = match _delete_PCA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_MDS_f : c_obj list -> c_obj list = "_wrap_new_MDSdatamunge" ;;
+let _new_MDS arg = match _new_MDS_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_feature_names_f : c_obj list -> c_obj list = "_wrap_MDS_feature_namesdatamunge" ;;
+let _MDS_feature_names arg = match _MDS_feature_names_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_observations_f : c_obj list -> c_obj list = "_wrap_MDS_observationsdatamunge" ;;
+let _MDS_observations arg = match _MDS_observations_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_n_components_f : c_obj list -> c_obj list = "_wrap_MDS_n_componentsdatamunge" ;;
+let _MDS_n_components arg = match _MDS_n_components_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_kept_row_indices_f : c_obj list -> c_obj list = "_wrap_MDS_kept_row_indicesdatamunge" ;;
+let _MDS_kept_row_indices arg = match _MDS_kept_row_indices_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_eigenvalues_f : c_obj list -> c_obj list = "_wrap_MDS_eigenvaluesdatamunge" ;;
+let _MDS_eigenvalues arg = match _MDS_eigenvalues_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_goodness_of_fit_f : c_obj list -> c_obj list = "_wrap_MDS_goodness_of_fitdatamunge" ;;
+let _MDS_goodness_of_fit arg = match _MDS_goodness_of_fit_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_dimension_f : c_obj list -> c_obj list = "_wrap_MDS_dimensiondatamunge" ;;
+let _MDS_dimension arg = match _MDS_dimension_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_embedding_frame_f : c_obj list -> c_obj list = "_wrap_MDS_embedding_framedatamunge" ;;
+let _MDS_embedding_frame arg = match _MDS_embedding_frame_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_summary_f : c_obj list -> c_obj list = "_wrap_MDS_summarydatamunge" ;;
+let _MDS_summary arg = match _MDS_summary_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_print_summary_f : c_obj list -> c_obj list = "_wrap_MDS_print_summarydatamunge" ;;
+let _MDS_print_summary arg = match _MDS_print_summary_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_plot_embedding_f : c_obj list -> c_obj list = "_wrap_MDS_plot_embeddingdatamunge" ;;
+let _MDS_plot_embedding arg = match _MDS_plot_embedding_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _MDS_plot_embedding_grouped_f : c_obj list -> c_obj list = "_wrap_MDS_plot_embedding_groupeddatamunge" ;;
+let _MDS_plot_embedding_grouped arg = match _MDS_plot_embedding_grouped_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_MDS_f : c_obj list -> c_obj list = "_wrap_delete_MDSdatamunge" ;;
+let _delete_MDS arg = match _delete_MDS_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -6371,6 +6798,144 @@ let _disown_DifferentiableSeparableFunction arg = match _disown_DifferentiableSe
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _ProximalFunction_proximal_f : c_obj list -> c_obj list = "_wrap_ProximalFunction_proximaldatamunge" ;;
+let _ProximalFunction_proximal arg = match _ProximalFunction_proximal_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ProximalFunction_f : c_obj list -> c_obj list = "_wrap_new_ProximalFunctiondatamunge" ;;
+let _new_ProximalFunction arg = match _new_ProximalFunction_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ProximalFunction_f : c_obj list -> c_obj list = "_wrap_delete_ProximalFunctiondatamunge" ;;
+let _delete_ProximalFunction arg = match _delete_ProximalFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_ProximalFunction_f : c_obj list -> c_obj list = "_wrap_disown_ProximalFunctiondatamunge" ;;
+let _disown_ProximalFunction arg = match _disown_ProximalFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HessianFunction_hessian_f : c_obj list -> c_obj list = "_wrap_HessianFunction_hessiandatamunge" ;;
+let _HessianFunction_hessian arg = match _HessianFunction_hessian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_HessianFunction_f : c_obj list -> c_obj list = "_wrap_new_HessianFunctiondatamunge" ;;
+let _new_HessianFunction arg = match _new_HessianFunction_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_HessianFunction_f : c_obj list -> c_obj list = "_wrap_delete_HessianFunctiondatamunge" ;;
+let _delete_HessianFunction arg = match _delete_HessianFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_HessianFunction_f : c_obj list -> c_obj list = "_wrap_disown_HessianFunctiondatamunge" ;;
+let _disown_HessianFunction arg = match _disown_HessianFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EqualityConstrainedFunction_constraints_f : c_obj list -> c_obj list = "_wrap_EqualityConstrainedFunction_constraintsdatamunge" ;;
+let _EqualityConstrainedFunction_constraints arg = match _EqualityConstrainedFunction_constraints_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EqualityConstrainedFunction_constraint_jacobian_f : c_obj list -> c_obj list = "_wrap_EqualityConstrainedFunction_constraint_jacobiandatamunge" ;;
+let _EqualityConstrainedFunction_constraint_jacobian arg = match _EqualityConstrainedFunction_constraint_jacobian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_EqualityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_new_EqualityConstrainedFunctiondatamunge" ;;
+let _new_EqualityConstrainedFunction arg = match _new_EqualityConstrainedFunction_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_EqualityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_delete_EqualityConstrainedFunctiondatamunge" ;;
+let _delete_EqualityConstrainedFunction arg = match _delete_EqualityConstrainedFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_EqualityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_disown_EqualityConstrainedFunctiondatamunge" ;;
+let _disown_EqualityConstrainedFunction arg = match _disown_EqualityConstrainedFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InequalityConstrainedFunction_inequalities_f : c_obj list -> c_obj list = "_wrap_InequalityConstrainedFunction_inequalitiesdatamunge" ;;
+let _InequalityConstrainedFunction_inequalities arg = match _InequalityConstrainedFunction_inequalities_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InequalityConstrainedFunction_inequality_jacobian_f : c_obj list -> c_obj list = "_wrap_InequalityConstrainedFunction_inequality_jacobiandatamunge" ;;
+let _InequalityConstrainedFunction_inequality_jacobian arg = match _InequalityConstrainedFunction_inequality_jacobian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_InequalityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_new_InequalityConstrainedFunctiondatamunge" ;;
+let _new_InequalityConstrainedFunction arg = match _new_InequalityConstrainedFunction_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_InequalityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_delete_InequalityConstrainedFunctiondatamunge" ;;
+let _delete_InequalityConstrainedFunction arg = match _delete_InequalityConstrainedFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_InequalityConstrainedFunction_f : c_obj list -> c_obj list = "_wrap_disown_InequalityConstrainedFunctiondatamunge" ;;
+let _disown_InequalityConstrainedFunction arg = match _disown_InequalityConstrainedFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ResidualFunction_f : c_obj list -> c_obj list = "_wrap_delete_ResidualFunctiondatamunge" ;;
+let _delete_ResidualFunction arg = match _delete_ResidualFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ResidualFunction_residuals_f : c_obj list -> c_obj list = "_wrap_ResidualFunction_residualsdatamunge" ;;
+let _ResidualFunction_residuals arg = match _ResidualFunction_residuals_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ResidualFunction_jacobian_f : c_obj list -> c_obj list = "_wrap_ResidualFunction_jacobiandatamunge" ;;
+let _ResidualFunction_jacobian arg = match _ResidualFunction_jacobian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ResidualFunction_f : c_obj list -> c_obj list = "_wrap_new_ResidualFunctiondatamunge" ;;
+let _new_ResidualFunction arg = match _new_ResidualFunction_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_ResidualFunction_f : c_obj list -> c_obj list = "_wrap_disown_ResidualFunctiondatamunge" ;;
+let _disown_ResidualFunction arg = match _disown_ResidualFunction_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _GradientDescentOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_GradientDescentOptions_step_size_setdatamunge" ;;
 let _GradientDescentOptions_step_size_set arg = match _GradientDescentOptions_step_size_set_f ((fnhelper arg)) with
   [] -> C_void
@@ -6551,6 +7116,456 @@ let _delete_Adam arg = match _delete_Adam_f ((fnhelper arg)) with
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _AdaGradOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_step_size_setdatamunge" ;;
+let _AdaGradOptions_step_size_set arg = match _AdaGradOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_step_size_getdatamunge" ;;
+let _AdaGradOptions_step_size_get arg = match _AdaGradOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_epsilon_set_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_epsilon_setdatamunge" ;;
+let _AdaGradOptions_epsilon_set arg = match _AdaGradOptions_epsilon_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_epsilon_get_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_epsilon_getdatamunge" ;;
+let _AdaGradOptions_epsilon_get arg = match _AdaGradOptions_epsilon_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_max_iterations_setdatamunge" ;;
+let _AdaGradOptions_max_iterations_set arg = match _AdaGradOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_max_iterations_getdatamunge" ;;
+let _AdaGradOptions_max_iterations_get arg = match _AdaGradOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_tolerance_setdatamunge" ;;
+let _AdaGradOptions_tolerance_set arg = match _AdaGradOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGradOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_AdaGradOptions_tolerance_getdatamunge" ;;
+let _AdaGradOptions_tolerance_get arg = match _AdaGradOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AdaGradOptions_f : c_obj list -> c_obj list = "_wrap_new_AdaGradOptionsdatamunge" ;;
+let _new_AdaGradOptions arg = match _new_AdaGradOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AdaGradOptions_f : c_obj list -> c_obj list = "_wrap_delete_AdaGradOptionsdatamunge" ;;
+let _delete_AdaGradOptions arg = match _delete_AdaGradOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AdaGrad_f : c_obj list -> c_obj list = "_wrap_new_AdaGraddatamunge" ;;
+let _new_AdaGrad arg = match _new_AdaGrad_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaGrad_optimize_f : c_obj list -> c_obj list = "_wrap_AdaGrad_optimizedatamunge" ;;
+let _AdaGrad_optimize arg = match _AdaGrad_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AdaGrad_f : c_obj list -> c_obj list = "_wrap_delete_AdaGraddatamunge" ;;
+let _delete_AdaGrad arg = match _delete_AdaGrad_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_decay_rate_set_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_decay_rate_setdatamunge" ;;
+let _AdaDeltaOptions_decay_rate_set arg = match _AdaDeltaOptions_decay_rate_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_decay_rate_get_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_decay_rate_getdatamunge" ;;
+let _AdaDeltaOptions_decay_rate_get arg = match _AdaDeltaOptions_decay_rate_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_epsilon_set_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_epsilon_setdatamunge" ;;
+let _AdaDeltaOptions_epsilon_set arg = match _AdaDeltaOptions_epsilon_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_epsilon_get_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_epsilon_getdatamunge" ;;
+let _AdaDeltaOptions_epsilon_get arg = match _AdaDeltaOptions_epsilon_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_max_iterations_setdatamunge" ;;
+let _AdaDeltaOptions_max_iterations_set arg = match _AdaDeltaOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_max_iterations_getdatamunge" ;;
+let _AdaDeltaOptions_max_iterations_get arg = match _AdaDeltaOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_tolerance_setdatamunge" ;;
+let _AdaDeltaOptions_tolerance_set arg = match _AdaDeltaOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDeltaOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_AdaDeltaOptions_tolerance_getdatamunge" ;;
+let _AdaDeltaOptions_tolerance_get arg = match _AdaDeltaOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AdaDeltaOptions_f : c_obj list -> c_obj list = "_wrap_new_AdaDeltaOptionsdatamunge" ;;
+let _new_AdaDeltaOptions arg = match _new_AdaDeltaOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AdaDeltaOptions_f : c_obj list -> c_obj list = "_wrap_delete_AdaDeltaOptionsdatamunge" ;;
+let _delete_AdaDeltaOptions arg = match _delete_AdaDeltaOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AdaDelta_f : c_obj list -> c_obj list = "_wrap_new_AdaDeltadatamunge" ;;
+let _new_AdaDelta arg = match _new_AdaDelta_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AdaDelta_optimize_f : c_obj list -> c_obj list = "_wrap_AdaDelta_optimizedatamunge" ;;
+let _AdaDelta_optimize arg = match _AdaDelta_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AdaDelta_f : c_obj list -> c_obj list = "_wrap_delete_AdaDeltadatamunge" ;;
+let _delete_AdaDelta arg = match _delete_AdaDelta_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_step_size_setdatamunge" ;;
+let _AMSGradOptions_step_size_set arg = match _AMSGradOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_step_size_getdatamunge" ;;
+let _AMSGradOptions_step_size_get arg = match _AMSGradOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_beta1_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_beta1_setdatamunge" ;;
+let _AMSGradOptions_beta1_set arg = match _AMSGradOptions_beta1_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_beta1_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_beta1_getdatamunge" ;;
+let _AMSGradOptions_beta1_get arg = match _AMSGradOptions_beta1_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_beta2_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_beta2_setdatamunge" ;;
+let _AMSGradOptions_beta2_set arg = match _AMSGradOptions_beta2_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_beta2_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_beta2_getdatamunge" ;;
+let _AMSGradOptions_beta2_get arg = match _AMSGradOptions_beta2_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_epsilon_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_epsilon_setdatamunge" ;;
+let _AMSGradOptions_epsilon_set arg = match _AMSGradOptions_epsilon_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_epsilon_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_epsilon_getdatamunge" ;;
+let _AMSGradOptions_epsilon_get arg = match _AMSGradOptions_epsilon_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_max_iterations_setdatamunge" ;;
+let _AMSGradOptions_max_iterations_set arg = match _AMSGradOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_max_iterations_getdatamunge" ;;
+let _AMSGradOptions_max_iterations_get arg = match _AMSGradOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_tolerance_setdatamunge" ;;
+let _AMSGradOptions_tolerance_set arg = match _AMSGradOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGradOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_AMSGradOptions_tolerance_getdatamunge" ;;
+let _AMSGradOptions_tolerance_get arg = match _AMSGradOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AMSGradOptions_f : c_obj list -> c_obj list = "_wrap_new_AMSGradOptionsdatamunge" ;;
+let _new_AMSGradOptions arg = match _new_AMSGradOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AMSGradOptions_f : c_obj list -> c_obj list = "_wrap_delete_AMSGradOptionsdatamunge" ;;
+let _delete_AMSGradOptions arg = match _delete_AMSGradOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AMSGrad_f : c_obj list -> c_obj list = "_wrap_new_AMSGraddatamunge" ;;
+let _new_AMSGrad arg = match _new_AMSGrad_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AMSGrad_optimize_f : c_obj list -> c_obj list = "_wrap_AMSGrad_optimizedatamunge" ;;
+let _AMSGrad_optimize arg = match _AMSGrad_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AMSGrad_f : c_obj list -> c_obj list = "_wrap_delete_AMSGraddatamunge" ;;
+let _delete_AMSGrad arg = match _delete_AMSGrad_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_step_size_setdatamunge" ;;
+let _NadamOptions_step_size_set arg = match _NadamOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_step_size_getdatamunge" ;;
+let _NadamOptions_step_size_get arg = match _NadamOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_beta1_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_beta1_setdatamunge" ;;
+let _NadamOptions_beta1_set arg = match _NadamOptions_beta1_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_beta1_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_beta1_getdatamunge" ;;
+let _NadamOptions_beta1_get arg = match _NadamOptions_beta1_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_beta2_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_beta2_setdatamunge" ;;
+let _NadamOptions_beta2_set arg = match _NadamOptions_beta2_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_beta2_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_beta2_getdatamunge" ;;
+let _NadamOptions_beta2_get arg = match _NadamOptions_beta2_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_epsilon_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_epsilon_setdatamunge" ;;
+let _NadamOptions_epsilon_set arg = match _NadamOptions_epsilon_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_epsilon_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_epsilon_getdatamunge" ;;
+let _NadamOptions_epsilon_get arg = match _NadamOptions_epsilon_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_max_iterations_setdatamunge" ;;
+let _NadamOptions_max_iterations_set arg = match _NadamOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_max_iterations_getdatamunge" ;;
+let _NadamOptions_max_iterations_get arg = match _NadamOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_NadamOptions_tolerance_setdatamunge" ;;
+let _NadamOptions_tolerance_set arg = match _NadamOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NadamOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_NadamOptions_tolerance_getdatamunge" ;;
+let _NadamOptions_tolerance_get arg = match _NadamOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NadamOptions_f : c_obj list -> c_obj list = "_wrap_new_NadamOptionsdatamunge" ;;
+let _new_NadamOptions arg = match _new_NadamOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NadamOptions_f : c_obj list -> c_obj list = "_wrap_delete_NadamOptionsdatamunge" ;;
+let _delete_NadamOptions arg = match _delete_NadamOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_Nadam_f : c_obj list -> c_obj list = "_wrap_new_Nadamdatamunge" ;;
+let _new_Nadam arg = match _new_Nadam_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _Nadam_optimize_f : c_obj list -> c_obj list = "_wrap_Nadam_optimizedatamunge" ;;
+let _Nadam_optimize arg = match _Nadam_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_Nadam_f : c_obj list -> c_obj list = "_wrap_delete_Nadamdatamunge" ;;
+let _delete_Nadam arg = match _delete_Nadam_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_step_size_setdatamunge" ;;
+let _RMSPropOptions_step_size_set arg = match _RMSPropOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_step_size_getdatamunge" ;;
+let _RMSPropOptions_step_size_get arg = match _RMSPropOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_decay_rate_set_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_decay_rate_setdatamunge" ;;
+let _RMSPropOptions_decay_rate_set arg = match _RMSPropOptions_decay_rate_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_decay_rate_get_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_decay_rate_getdatamunge" ;;
+let _RMSPropOptions_decay_rate_get arg = match _RMSPropOptions_decay_rate_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_epsilon_set_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_epsilon_setdatamunge" ;;
+let _RMSPropOptions_epsilon_set arg = match _RMSPropOptions_epsilon_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_epsilon_get_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_epsilon_getdatamunge" ;;
+let _RMSPropOptions_epsilon_get arg = match _RMSPropOptions_epsilon_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_max_iterations_setdatamunge" ;;
+let _RMSPropOptions_max_iterations_set arg = match _RMSPropOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_max_iterations_getdatamunge" ;;
+let _RMSPropOptions_max_iterations_get arg = match _RMSPropOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_tolerance_setdatamunge" ;;
+let _RMSPropOptions_tolerance_set arg = match _RMSPropOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSPropOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_RMSPropOptions_tolerance_getdatamunge" ;;
+let _RMSPropOptions_tolerance_get arg = match _RMSPropOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_RMSPropOptions_f : c_obj list -> c_obj list = "_wrap_new_RMSPropOptionsdatamunge" ;;
+let _new_RMSPropOptions arg = match _new_RMSPropOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_RMSPropOptions_f : c_obj list -> c_obj list = "_wrap_delete_RMSPropOptionsdatamunge" ;;
+let _delete_RMSPropOptions arg = match _delete_RMSPropOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_RMSProp_f : c_obj list -> c_obj list = "_wrap_new_RMSPropdatamunge" ;;
+let _new_RMSProp arg = match _new_RMSProp_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RMSProp_optimize_f : c_obj list -> c_obj list = "_wrap_RMSProp_optimizedatamunge" ;;
+let _RMSProp_optimize arg = match _RMSProp_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_RMSProp_f : c_obj list -> c_obj list = "_wrap_delete_RMSPropdatamunge" ;;
+let _delete_RMSProp arg = match _delete_RMSProp_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _LBFGSOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_LBFGSOptions_max_iterations_setdatamunge" ;;
 let _LBFGSOptions_max_iterations_set arg = match _LBFGSOptions_max_iterations_set_f ((fnhelper arg)) with
   [] -> C_void
@@ -6653,6 +7668,120 @@ let _delete_LBFGS arg = match _delete_LBFGS_f ((fnhelper arg)) with
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _NelderMeadOptions_initial_simplex_scale_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_initial_simplex_scale_setdatamunge" ;;
+let _NelderMeadOptions_initial_simplex_scale_set arg = match _NelderMeadOptions_initial_simplex_scale_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_initial_simplex_scale_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_initial_simplex_scale_getdatamunge" ;;
+let _NelderMeadOptions_initial_simplex_scale_get arg = match _NelderMeadOptions_initial_simplex_scale_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_reflection_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_reflection_setdatamunge" ;;
+let _NelderMeadOptions_reflection_set arg = match _NelderMeadOptions_reflection_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_reflection_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_reflection_getdatamunge" ;;
+let _NelderMeadOptions_reflection_get arg = match _NelderMeadOptions_reflection_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_expansion_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_expansion_setdatamunge" ;;
+let _NelderMeadOptions_expansion_set arg = match _NelderMeadOptions_expansion_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_expansion_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_expansion_getdatamunge" ;;
+let _NelderMeadOptions_expansion_get arg = match _NelderMeadOptions_expansion_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_contraction_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_contraction_setdatamunge" ;;
+let _NelderMeadOptions_contraction_set arg = match _NelderMeadOptions_contraction_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_contraction_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_contraction_getdatamunge" ;;
+let _NelderMeadOptions_contraction_get arg = match _NelderMeadOptions_contraction_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_shrink_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_shrink_setdatamunge" ;;
+let _NelderMeadOptions_shrink_set arg = match _NelderMeadOptions_shrink_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_shrink_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_shrink_getdatamunge" ;;
+let _NelderMeadOptions_shrink_get arg = match _NelderMeadOptions_shrink_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_max_iterations_setdatamunge" ;;
+let _NelderMeadOptions_max_iterations_set arg = match _NelderMeadOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_max_iterations_getdatamunge" ;;
+let _NelderMeadOptions_max_iterations_get arg = match _NelderMeadOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_tolerance_setdatamunge" ;;
+let _NelderMeadOptions_tolerance_set arg = match _NelderMeadOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMeadOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_NelderMeadOptions_tolerance_getdatamunge" ;;
+let _NelderMeadOptions_tolerance_get arg = match _NelderMeadOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NelderMeadOptions_f : c_obj list -> c_obj list = "_wrap_new_NelderMeadOptionsdatamunge" ;;
+let _new_NelderMeadOptions arg = match _new_NelderMeadOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NelderMeadOptions_f : c_obj list -> c_obj list = "_wrap_delete_NelderMeadOptionsdatamunge" ;;
+let _delete_NelderMeadOptions arg = match _delete_NelderMeadOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NelderMead_f : c_obj list -> c_obj list = "_wrap_new_NelderMeaddatamunge" ;;
+let _new_NelderMead arg = match _new_NelderMead_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NelderMead_optimize_f : c_obj list -> c_obj list = "_wrap_NelderMead_optimizedatamunge" ;;
+let _NelderMead_optimize arg = match _NelderMead_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NelderMead_f : c_obj list -> c_obj list = "_wrap_delete_NelderMeaddatamunge" ;;
+let _delete_NelderMead arg = match _delete_NelderMead_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _SGDOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_SGDOptions_step_size_setdatamunge" ;;
 let _SGDOptions_step_size_set arg = match _SGDOptions_step_size_set_f ((fnhelper arg)) with
   [] -> C_void
@@ -6751,6 +7880,660 @@ let _SGD_optimize arg = match _SGD_optimize_f ((fnhelper arg)) with
 | lst -> C_list lst ;;
 external _delete_SGD_f : c_obj list -> c_obj list = "_wrap_delete_SGDdatamunge" ;;
 let _delete_SGD arg = match _delete_SGD_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_step_size_setdatamunge" ;;
+let _SVRGOptions_step_size_set arg = match _SVRGOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_step_size_getdatamunge" ;;
+let _SVRGOptions_step_size_get arg = match _SVRGOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_max_epochs_set_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_max_epochs_setdatamunge" ;;
+let _SVRGOptions_max_epochs_set arg = match _SVRGOptions_max_epochs_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_max_epochs_get_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_max_epochs_getdatamunge" ;;
+let _SVRGOptions_max_epochs_get arg = match _SVRGOptions_max_epochs_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_inner_iterations_set_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_inner_iterations_setdatamunge" ;;
+let _SVRGOptions_inner_iterations_set arg = match _SVRGOptions_inner_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_inner_iterations_get_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_inner_iterations_getdatamunge" ;;
+let _SVRGOptions_inner_iterations_get arg = match _SVRGOptions_inner_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_tolerance_setdatamunge" ;;
+let _SVRGOptions_tolerance_set arg = match _SVRGOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_tolerance_getdatamunge" ;;
+let _SVRGOptions_tolerance_get arg = match _SVRGOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_seed_setdatamunge" ;;
+let _SVRGOptions_seed_set arg = match _SVRGOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRGOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_SVRGOptions_seed_getdatamunge" ;;
+let _SVRGOptions_seed_get arg = match _SVRGOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SVRGOptions_f : c_obj list -> c_obj list = "_wrap_new_SVRGOptionsdatamunge" ;;
+let _new_SVRGOptions arg = match _new_SVRGOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SVRGOptions_f : c_obj list -> c_obj list = "_wrap_delete_SVRGOptionsdatamunge" ;;
+let _delete_SVRGOptions arg = match _delete_SVRGOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SVRG_f : c_obj list -> c_obj list = "_wrap_new_SVRGdatamunge" ;;
+let _new_SVRG arg = match _new_SVRG_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SVRG_optimize_f : c_obj list -> c_obj list = "_wrap_SVRG_optimizedatamunge" ;;
+let _SVRG_optimize arg = match _SVRG_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SVRG_f : c_obj list -> c_obj list = "_wrap_delete_SVRGdatamunge" ;;
+let _delete_SVRG arg = match _delete_SVRG_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_step_size_setdatamunge" ;;
+let _SAGAOptions_step_size_set arg = match _SAGAOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_step_size_getdatamunge" ;;
+let _SAGAOptions_step_size_get arg = match _SAGAOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_max_iterations_setdatamunge" ;;
+let _SAGAOptions_max_iterations_set arg = match _SAGAOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_max_iterations_getdatamunge" ;;
+let _SAGAOptions_max_iterations_get arg = match _SAGAOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_tolerance_setdatamunge" ;;
+let _SAGAOptions_tolerance_set arg = match _SAGAOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_tolerance_getdatamunge" ;;
+let _SAGAOptions_tolerance_get arg = match _SAGAOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_seed_setdatamunge" ;;
+let _SAGAOptions_seed_set arg = match _SAGAOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGAOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_SAGAOptions_seed_getdatamunge" ;;
+let _SAGAOptions_seed_get arg = match _SAGAOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SAGAOptions_f : c_obj list -> c_obj list = "_wrap_new_SAGAOptionsdatamunge" ;;
+let _new_SAGAOptions arg = match _new_SAGAOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SAGAOptions_f : c_obj list -> c_obj list = "_wrap_delete_SAGAOptionsdatamunge" ;;
+let _delete_SAGAOptions arg = match _delete_SAGAOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SAGA_f : c_obj list -> c_obj list = "_wrap_new_SAGAdatamunge" ;;
+let _new_SAGA arg = match _new_SAGA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SAGA_optimize_f : c_obj list -> c_obj list = "_wrap_SAGA_optimizedatamunge" ;;
+let _SAGA_optimize arg = match _SAGA_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SAGA_f : c_obj list -> c_obj list = "_wrap_delete_SAGAdatamunge" ;;
+let _delete_SAGA arg = match _delete_SAGA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_step_size_setdatamunge" ;;
+let _CoordinateDescentOptions_step_size_set arg = match _CoordinateDescentOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_step_size_getdatamunge" ;;
+let _CoordinateDescentOptions_step_size_get arg = match _CoordinateDescentOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_max_iterations_setdatamunge" ;;
+let _CoordinateDescentOptions_max_iterations_set arg = match _CoordinateDescentOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_max_iterations_getdatamunge" ;;
+let _CoordinateDescentOptions_max_iterations_get arg = match _CoordinateDescentOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_tolerance_setdatamunge" ;;
+let _CoordinateDescentOptions_tolerance_set arg = match _CoordinateDescentOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_tolerance_getdatamunge" ;;
+let _CoordinateDescentOptions_tolerance_get arg = match _CoordinateDescentOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_armijo_c1_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_armijo_c1_setdatamunge" ;;
+let _CoordinateDescentOptions_armijo_c1_set arg = match _CoordinateDescentOptions_armijo_c1_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_armijo_c1_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_armijo_c1_getdatamunge" ;;
+let _CoordinateDescentOptions_armijo_c1_get arg = match _CoordinateDescentOptions_armijo_c1_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_backtracking_factor_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_backtracking_factor_setdatamunge" ;;
+let _CoordinateDescentOptions_backtracking_factor_set arg = match _CoordinateDescentOptions_backtracking_factor_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_backtracking_factor_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_backtracking_factor_getdatamunge" ;;
+let _CoordinateDescentOptions_backtracking_factor_get arg = match _CoordinateDescentOptions_backtracking_factor_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_max_line_search_trials_set_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_max_line_search_trials_setdatamunge" ;;
+let _CoordinateDescentOptions_max_line_search_trials_set arg = match _CoordinateDescentOptions_max_line_search_trials_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescentOptions_max_line_search_trials_get_f : c_obj list -> c_obj list = "_wrap_CoordinateDescentOptions_max_line_search_trials_getdatamunge" ;;
+let _CoordinateDescentOptions_max_line_search_trials_get arg = match _CoordinateDescentOptions_max_line_search_trials_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CoordinateDescentOptions_f : c_obj list -> c_obj list = "_wrap_new_CoordinateDescentOptionsdatamunge" ;;
+let _new_CoordinateDescentOptions arg = match _new_CoordinateDescentOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CoordinateDescentOptions_f : c_obj list -> c_obj list = "_wrap_delete_CoordinateDescentOptionsdatamunge" ;;
+let _delete_CoordinateDescentOptions arg = match _delete_CoordinateDescentOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CoordinateDescent_f : c_obj list -> c_obj list = "_wrap_new_CoordinateDescentdatamunge" ;;
+let _new_CoordinateDescent arg = match _new_CoordinateDescent_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CoordinateDescent_optimize_f : c_obj list -> c_obj list = "_wrap_CoordinateDescent_optimizedatamunge" ;;
+let _CoordinateDescent_optimize arg = match _CoordinateDescent_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CoordinateDescent_f : c_obj list -> c_obj list = "_wrap_delete_CoordinateDescentdatamunge" ;;
+let _delete_CoordinateDescent arg = match _delete_CoordinateDescent_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_block_size_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_block_size_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_block_size_set arg = match _RandomizedBlockCoordinateDescentOptions_block_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_block_size_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_block_size_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_block_size_get arg = match _RandomizedBlockCoordinateDescentOptions_block_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_step_size_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_step_size_set arg = match _RandomizedBlockCoordinateDescentOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_step_size_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_step_size_get arg = match _RandomizedBlockCoordinateDescentOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_max_iterations_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_max_iterations_set arg = match _RandomizedBlockCoordinateDescentOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_max_iterations_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_max_iterations_get arg = match _RandomizedBlockCoordinateDescentOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_tolerance_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_tolerance_set arg = match _RandomizedBlockCoordinateDescentOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_tolerance_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_tolerance_get arg = match _RandomizedBlockCoordinateDescentOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_armijo_c1_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_armijo_c1_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_armijo_c1_set arg = match _RandomizedBlockCoordinateDescentOptions_armijo_c1_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_armijo_c1_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_armijo_c1_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_armijo_c1_get arg = match _RandomizedBlockCoordinateDescentOptions_armijo_c1_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_backtracking_factor_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_backtracking_factor_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_backtracking_factor_set arg = match _RandomizedBlockCoordinateDescentOptions_backtracking_factor_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_backtracking_factor_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_backtracking_factor_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_backtracking_factor_get arg = match _RandomizedBlockCoordinateDescentOptions_backtracking_factor_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set arg = match _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get arg = match _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_seed_setdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_seed_set arg = match _RandomizedBlockCoordinateDescentOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescentOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescentOptions_seed_getdatamunge" ;;
+let _RandomizedBlockCoordinateDescentOptions_seed_get arg = match _RandomizedBlockCoordinateDescentOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_RandomizedBlockCoordinateDescentOptions_f : c_obj list -> c_obj list = "_wrap_new_RandomizedBlockCoordinateDescentOptionsdatamunge" ;;
+let _new_RandomizedBlockCoordinateDescentOptions arg = match _new_RandomizedBlockCoordinateDescentOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_RandomizedBlockCoordinateDescentOptions_f : c_obj list -> c_obj list = "_wrap_delete_RandomizedBlockCoordinateDescentOptionsdatamunge" ;;
+let _delete_RandomizedBlockCoordinateDescentOptions arg = match _delete_RandomizedBlockCoordinateDescentOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_RandomizedBlockCoordinateDescent_f : c_obj list -> c_obj list = "_wrap_new_RandomizedBlockCoordinateDescentdatamunge" ;;
+let _new_RandomizedBlockCoordinateDescent arg = match _new_RandomizedBlockCoordinateDescent_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RandomizedBlockCoordinateDescent_optimize_f : c_obj list -> c_obj list = "_wrap_RandomizedBlockCoordinateDescent_optimizedatamunge" ;;
+let _RandomizedBlockCoordinateDescent_optimize arg = match _RandomizedBlockCoordinateDescent_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_RandomizedBlockCoordinateDescent_f : c_obj list -> c_obj list = "_wrap_delete_RandomizedBlockCoordinateDescentdatamunge" ;;
+let _delete_RandomizedBlockCoordinateDescent arg = match _delete_RandomizedBlockCoordinateDescent_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_step_size_setdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_step_size_set arg = match _NesterovAcceleratedGradientOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_step_size_getdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_step_size_get arg = match _NesterovAcceleratedGradientOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_momentum_set_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_momentum_setdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_momentum_set arg = match _NesterovAcceleratedGradientOptions_momentum_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_momentum_get_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_momentum_getdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_momentum_get arg = match _NesterovAcceleratedGradientOptions_momentum_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_max_iterations_setdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_max_iterations_set arg = match _NesterovAcceleratedGradientOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_max_iterations_getdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_max_iterations_get arg = match _NesterovAcceleratedGradientOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_tolerance_setdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_tolerance_set arg = match _NesterovAcceleratedGradientOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradientOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradientOptions_tolerance_getdatamunge" ;;
+let _NesterovAcceleratedGradientOptions_tolerance_get arg = match _NesterovAcceleratedGradientOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NesterovAcceleratedGradientOptions_f : c_obj list -> c_obj list = "_wrap_new_NesterovAcceleratedGradientOptionsdatamunge" ;;
+let _new_NesterovAcceleratedGradientOptions arg = match _new_NesterovAcceleratedGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NesterovAcceleratedGradientOptions_f : c_obj list -> c_obj list = "_wrap_delete_NesterovAcceleratedGradientOptionsdatamunge" ;;
+let _delete_NesterovAcceleratedGradientOptions arg = match _delete_NesterovAcceleratedGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NesterovAcceleratedGradient_f : c_obj list -> c_obj list = "_wrap_new_NesterovAcceleratedGradientdatamunge" ;;
+let _new_NesterovAcceleratedGradient arg = match _new_NesterovAcceleratedGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NesterovAcceleratedGradient_optimize_f : c_obj list -> c_obj list = "_wrap_NesterovAcceleratedGradient_optimizedatamunge" ;;
+let _NesterovAcceleratedGradient_optimize arg = match _NesterovAcceleratedGradient_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NesterovAcceleratedGradient_f : c_obj list -> c_obj list = "_wrap_delete_NesterovAcceleratedGradientdatamunge" ;;
+let _delete_NesterovAcceleratedGradient arg = match _delete_NesterovAcceleratedGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_max_iterations_setdatamunge" ;;
+let _ConjugateGradientOptions_max_iterations_set arg = match _ConjugateGradientOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_max_iterations_getdatamunge" ;;
+let _ConjugateGradientOptions_max_iterations_get arg = match _ConjugateGradientOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_tolerance_setdatamunge" ;;
+let _ConjugateGradientOptions_tolerance_set arg = match _ConjugateGradientOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_tolerance_getdatamunge" ;;
+let _ConjugateGradientOptions_tolerance_get arg = match _ConjugateGradientOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_armijo_c1_set_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_armijo_c1_setdatamunge" ;;
+let _ConjugateGradientOptions_armijo_c1_set arg = match _ConjugateGradientOptions_armijo_c1_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_armijo_c1_get_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_armijo_c1_getdatamunge" ;;
+let _ConjugateGradientOptions_armijo_c1_get arg = match _ConjugateGradientOptions_armijo_c1_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_backtracking_factor_set_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_backtracking_factor_setdatamunge" ;;
+let _ConjugateGradientOptions_backtracking_factor_set arg = match _ConjugateGradientOptions_backtracking_factor_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_backtracking_factor_get_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_backtracking_factor_getdatamunge" ;;
+let _ConjugateGradientOptions_backtracking_factor_get arg = match _ConjugateGradientOptions_backtracking_factor_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_max_line_search_trials_set_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_max_line_search_trials_setdatamunge" ;;
+let _ConjugateGradientOptions_max_line_search_trials_set arg = match _ConjugateGradientOptions_max_line_search_trials_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradientOptions_max_line_search_trials_get_f : c_obj list -> c_obj list = "_wrap_ConjugateGradientOptions_max_line_search_trials_getdatamunge" ;;
+let _ConjugateGradientOptions_max_line_search_trials_get arg = match _ConjugateGradientOptions_max_line_search_trials_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ConjugateGradientOptions_f : c_obj list -> c_obj list = "_wrap_new_ConjugateGradientOptionsdatamunge" ;;
+let _new_ConjugateGradientOptions arg = match _new_ConjugateGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ConjugateGradientOptions_f : c_obj list -> c_obj list = "_wrap_delete_ConjugateGradientOptionsdatamunge" ;;
+let _delete_ConjugateGradientOptions arg = match _delete_ConjugateGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ConjugateGradient_f : c_obj list -> c_obj list = "_wrap_new_ConjugateGradientdatamunge" ;;
+let _new_ConjugateGradient arg = match _new_ConjugateGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ConjugateGradient_optimize_f : c_obj list -> c_obj list = "_wrap_ConjugateGradient_optimizedatamunge" ;;
+let _ConjugateGradient_optimize arg = match _ConjugateGradient_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ConjugateGradient_f : c_obj list -> c_obj list = "_wrap_delete_ConjugateGradientdatamunge" ;;
+let _delete_ConjugateGradient arg = match _delete_ConjugateGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_population_size_setdatamunge" ;;
+let _CMAESOptions_population_size_set arg = match _CMAESOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_population_size_getdatamunge" ;;
+let _CMAESOptions_population_size_get arg = match _CMAESOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_initial_step_size_set_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_initial_step_size_setdatamunge" ;;
+let _CMAESOptions_initial_step_size_set arg = match _CMAESOptions_initial_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_initial_step_size_get_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_initial_step_size_getdatamunge" ;;
+let _CMAESOptions_initial_step_size_get arg = match _CMAESOptions_initial_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_max_generations_set_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_max_generations_setdatamunge" ;;
+let _CMAESOptions_max_generations_set arg = match _CMAESOptions_max_generations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_max_generations_get_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_max_generations_getdatamunge" ;;
+let _CMAESOptions_max_generations_get arg = match _CMAESOptions_max_generations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_tolerance_setdatamunge" ;;
+let _CMAESOptions_tolerance_set arg = match _CMAESOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_tolerance_getdatamunge" ;;
+let _CMAESOptions_tolerance_get arg = match _CMAESOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_seed_setdatamunge" ;;
+let _CMAESOptions_seed_set arg = match _CMAESOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAESOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_CMAESOptions_seed_getdatamunge" ;;
+let _CMAESOptions_seed_get arg = match _CMAESOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CMAESOptions_f : c_obj list -> c_obj list = "_wrap_new_CMAESOptionsdatamunge" ;;
+let _new_CMAESOptions arg = match _new_CMAESOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CMAESOptions_f : c_obj list -> c_obj list = "_wrap_delete_CMAESOptionsdatamunge" ;;
+let _delete_CMAESOptions arg = match _delete_CMAESOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CMAES_f : c_obj list -> c_obj list = "_wrap_new_CMAESdatamunge" ;;
+let _new_CMAES arg = match _new_CMAES_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CMAES_optimize_f : c_obj list -> c_obj list = "_wrap_CMAES_optimizedatamunge" ;;
+let _CMAES_optimize arg = match _CMAES_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CMAES_f : c_obj list -> c_obj list = "_wrap_delete_CMAESdatamunge" ;;
+let _delete_CMAES arg = match _delete_CMAES_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -7315,6 +9098,1908 @@ let _GeneticAlgorithm_optimize arg = match _GeneticAlgorithm_optimize_f ((fnhelp
 | lst -> C_list lst ;;
 external _delete_GeneticAlgorithm_f : c_obj list -> c_obj list = "_wrap_delete_GeneticAlgorithmdatamunge" ;;
 let _delete_GeneticAlgorithm arg = match _delete_GeneticAlgorithm_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_archive_size_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_archive_size_setdatamunge" ;;
+let _ACOROptions_archive_size_set arg = match _ACOROptions_archive_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_archive_size_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_archive_size_getdatamunge" ;;
+let _ACOROptions_archive_size_get arg = match _ACOROptions_archive_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_samples_per_iteration_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_samples_per_iteration_setdatamunge" ;;
+let _ACOROptions_samples_per_iteration_set arg = match _ACOROptions_samples_per_iteration_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_samples_per_iteration_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_samples_per_iteration_getdatamunge" ;;
+let _ACOROptions_samples_per_iteration_get arg = match _ACOROptions_samples_per_iteration_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_locality_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_locality_setdatamunge" ;;
+let _ACOROptions_locality_set arg = match _ACOROptions_locality_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_locality_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_locality_getdatamunge" ;;
+let _ACOROptions_locality_get arg = match _ACOROptions_locality_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_convergence_speed_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_convergence_speed_setdatamunge" ;;
+let _ACOROptions_convergence_speed_set arg = match _ACOROptions_convergence_speed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_convergence_speed_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_convergence_speed_getdatamunge" ;;
+let _ACOROptions_convergence_speed_get arg = match _ACOROptions_convergence_speed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_max_iterations_setdatamunge" ;;
+let _ACOROptions_max_iterations_set arg = match _ACOROptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_max_iterations_getdatamunge" ;;
+let _ACOROptions_max_iterations_get arg = match _ACOROptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_tolerance_setdatamunge" ;;
+let _ACOROptions_tolerance_set arg = match _ACOROptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_tolerance_getdatamunge" ;;
+let _ACOROptions_tolerance_get arg = match _ACOROptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_seed_set_f : c_obj list -> c_obj list = "_wrap_ACOROptions_seed_setdatamunge" ;;
+let _ACOROptions_seed_set arg = match _ACOROptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOROptions_seed_get_f : c_obj list -> c_obj list = "_wrap_ACOROptions_seed_getdatamunge" ;;
+let _ACOROptions_seed_get arg = match _ACOROptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ACOROptions_f : c_obj list -> c_obj list = "_wrap_new_ACOROptionsdatamunge" ;;
+let _new_ACOROptions arg = match _new_ACOROptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ACOROptions_f : c_obj list -> c_obj list = "_wrap_delete_ACOROptionsdatamunge" ;;
+let _delete_ACOROptions arg = match _delete_ACOROptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ACOR_f : c_obj list -> c_obj list = "_wrap_new_ACORdatamunge" ;;
+let _new_ACOR arg = match _new_ACOR_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ACOR_optimize_f : c_obj list -> c_obj list = "_wrap_ACOR_optimizedatamunge" ;;
+let _ACOR_optimize arg = match _ACOR_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ACOR_f : c_obj list -> c_obj list = "_wrap_delete_ACORdatamunge" ;;
+let _delete_ACOR arg = match _delete_ACOR_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_population_size_setdatamunge" ;;
+let _ArtificialBeeColonyOptions_population_size_set arg = match _ArtificialBeeColonyOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_population_size_getdatamunge" ;;
+let _ArtificialBeeColonyOptions_population_size_get arg = match _ArtificialBeeColonyOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_abandonment_limit_set_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_abandonment_limit_setdatamunge" ;;
+let _ArtificialBeeColonyOptions_abandonment_limit_set arg = match _ArtificialBeeColonyOptions_abandonment_limit_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_abandonment_limit_get_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_abandonment_limit_getdatamunge" ;;
+let _ArtificialBeeColonyOptions_abandonment_limit_get arg = match _ArtificialBeeColonyOptions_abandonment_limit_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_max_generations_set_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_max_generations_setdatamunge" ;;
+let _ArtificialBeeColonyOptions_max_generations_set arg = match _ArtificialBeeColonyOptions_max_generations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_max_generations_get_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_max_generations_getdatamunge" ;;
+let _ArtificialBeeColonyOptions_max_generations_get arg = match _ArtificialBeeColonyOptions_max_generations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_tolerance_setdatamunge" ;;
+let _ArtificialBeeColonyOptions_tolerance_set arg = match _ArtificialBeeColonyOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_tolerance_getdatamunge" ;;
+let _ArtificialBeeColonyOptions_tolerance_get arg = match _ArtificialBeeColonyOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_seed_setdatamunge" ;;
+let _ArtificialBeeColonyOptions_seed_set arg = match _ArtificialBeeColonyOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColonyOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColonyOptions_seed_getdatamunge" ;;
+let _ArtificialBeeColonyOptions_seed_get arg = match _ArtificialBeeColonyOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ArtificialBeeColonyOptions_f : c_obj list -> c_obj list = "_wrap_new_ArtificialBeeColonyOptionsdatamunge" ;;
+let _new_ArtificialBeeColonyOptions arg = match _new_ArtificialBeeColonyOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ArtificialBeeColonyOptions_f : c_obj list -> c_obj list = "_wrap_delete_ArtificialBeeColonyOptionsdatamunge" ;;
+let _delete_ArtificialBeeColonyOptions arg = match _delete_ArtificialBeeColonyOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ArtificialBeeColony_f : c_obj list -> c_obj list = "_wrap_new_ArtificialBeeColonydatamunge" ;;
+let _new_ArtificialBeeColony arg = match _new_ArtificialBeeColony_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ArtificialBeeColony_optimize_f : c_obj list -> c_obj list = "_wrap_ArtificialBeeColony_optimizedatamunge" ;;
+let _ArtificialBeeColony_optimize arg = match _ArtificialBeeColony_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ArtificialBeeColony_f : c_obj list -> c_obj list = "_wrap_delete_ArtificialBeeColonydatamunge" ;;
+let _delete_ArtificialBeeColony arg = match _delete_ArtificialBeeColony_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_population_size_setdatamunge" ;;
+let _CrossEntropyMethodOptions_population_size_set arg = match _CrossEntropyMethodOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_population_size_getdatamunge" ;;
+let _CrossEntropyMethodOptions_population_size_get arg = match _CrossEntropyMethodOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_elite_ratio_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_elite_ratio_setdatamunge" ;;
+let _CrossEntropyMethodOptions_elite_ratio_set arg = match _CrossEntropyMethodOptions_elite_ratio_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_elite_ratio_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_elite_ratio_getdatamunge" ;;
+let _CrossEntropyMethodOptions_elite_ratio_get arg = match _CrossEntropyMethodOptions_elite_ratio_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_initial_std_dev_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_initial_std_dev_setdatamunge" ;;
+let _CrossEntropyMethodOptions_initial_std_dev_set arg = match _CrossEntropyMethodOptions_initial_std_dev_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_initial_std_dev_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_initial_std_dev_getdatamunge" ;;
+let _CrossEntropyMethodOptions_initial_std_dev_get arg = match _CrossEntropyMethodOptions_initial_std_dev_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_smoothing_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_smoothing_setdatamunge" ;;
+let _CrossEntropyMethodOptions_smoothing_set arg = match _CrossEntropyMethodOptions_smoothing_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_smoothing_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_smoothing_getdatamunge" ;;
+let _CrossEntropyMethodOptions_smoothing_get arg = match _CrossEntropyMethodOptions_smoothing_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_max_iterations_setdatamunge" ;;
+let _CrossEntropyMethodOptions_max_iterations_set arg = match _CrossEntropyMethodOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_max_iterations_getdatamunge" ;;
+let _CrossEntropyMethodOptions_max_iterations_get arg = match _CrossEntropyMethodOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_tolerance_setdatamunge" ;;
+let _CrossEntropyMethodOptions_tolerance_set arg = match _CrossEntropyMethodOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_tolerance_getdatamunge" ;;
+let _CrossEntropyMethodOptions_tolerance_get arg = match _CrossEntropyMethodOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_seed_setdatamunge" ;;
+let _CrossEntropyMethodOptions_seed_set arg = match _CrossEntropyMethodOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethodOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethodOptions_seed_getdatamunge" ;;
+let _CrossEntropyMethodOptions_seed_get arg = match _CrossEntropyMethodOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CrossEntropyMethodOptions_f : c_obj list -> c_obj list = "_wrap_new_CrossEntropyMethodOptionsdatamunge" ;;
+let _new_CrossEntropyMethodOptions arg = match _new_CrossEntropyMethodOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CrossEntropyMethodOptions_f : c_obj list -> c_obj list = "_wrap_delete_CrossEntropyMethodOptionsdatamunge" ;;
+let _delete_CrossEntropyMethodOptions arg = match _delete_CrossEntropyMethodOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CrossEntropyMethod_f : c_obj list -> c_obj list = "_wrap_new_CrossEntropyMethoddatamunge" ;;
+let _new_CrossEntropyMethod arg = match _new_CrossEntropyMethod_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CrossEntropyMethod_optimize_f : c_obj list -> c_obj list = "_wrap_CrossEntropyMethod_optimizedatamunge" ;;
+let _CrossEntropyMethod_optimize arg = match _CrossEntropyMethod_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CrossEntropyMethod_f : c_obj list -> c_obj list = "_wrap_delete_CrossEntropyMethoddatamunge" ;;
+let _delete_CrossEntropyMethod arg = match _delete_CrossEntropyMethod_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_population_size_setdatamunge" ;;
+let _CuckooSearchOptions_population_size_set arg = match _CuckooSearchOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_population_size_getdatamunge" ;;
+let _CuckooSearchOptions_population_size_get arg = match _CuckooSearchOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_discovery_rate_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_discovery_rate_setdatamunge" ;;
+let _CuckooSearchOptions_discovery_rate_set arg = match _CuckooSearchOptions_discovery_rate_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_discovery_rate_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_discovery_rate_getdatamunge" ;;
+let _CuckooSearchOptions_discovery_rate_get arg = match _CuckooSearchOptions_discovery_rate_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_levy_beta_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_levy_beta_setdatamunge" ;;
+let _CuckooSearchOptions_levy_beta_set arg = match _CuckooSearchOptions_levy_beta_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_levy_beta_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_levy_beta_getdatamunge" ;;
+let _CuckooSearchOptions_levy_beta_get arg = match _CuckooSearchOptions_levy_beta_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_step_scale_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_step_scale_setdatamunge" ;;
+let _CuckooSearchOptions_step_scale_set arg = match _CuckooSearchOptions_step_scale_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_step_scale_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_step_scale_getdatamunge" ;;
+let _CuckooSearchOptions_step_scale_get arg = match _CuckooSearchOptions_step_scale_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_max_iterations_setdatamunge" ;;
+let _CuckooSearchOptions_max_iterations_set arg = match _CuckooSearchOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_max_iterations_getdatamunge" ;;
+let _CuckooSearchOptions_max_iterations_get arg = match _CuckooSearchOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_tolerance_setdatamunge" ;;
+let _CuckooSearchOptions_tolerance_set arg = match _CuckooSearchOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_tolerance_getdatamunge" ;;
+let _CuckooSearchOptions_tolerance_get arg = match _CuckooSearchOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_seed_setdatamunge" ;;
+let _CuckooSearchOptions_seed_set arg = match _CuckooSearchOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearchOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_CuckooSearchOptions_seed_getdatamunge" ;;
+let _CuckooSearchOptions_seed_get arg = match _CuckooSearchOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CuckooSearchOptions_f : c_obj list -> c_obj list = "_wrap_new_CuckooSearchOptionsdatamunge" ;;
+let _new_CuckooSearchOptions arg = match _new_CuckooSearchOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CuckooSearchOptions_f : c_obj list -> c_obj list = "_wrap_delete_CuckooSearchOptionsdatamunge" ;;
+let _delete_CuckooSearchOptions arg = match _delete_CuckooSearchOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_CuckooSearch_f : c_obj list -> c_obj list = "_wrap_new_CuckooSearchdatamunge" ;;
+let _new_CuckooSearch arg = match _new_CuckooSearch_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _CuckooSearch_optimize_f : c_obj list -> c_obj list = "_wrap_CuckooSearch_optimizedatamunge" ;;
+let _CuckooSearch_optimize arg = match _CuckooSearch_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_CuckooSearch_f : c_obj list -> c_obj list = "_wrap_delete_CuckooSearchdatamunge" ;;
+let _delete_CuckooSearch arg = match _delete_CuckooSearch_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_population_size_setdatamunge" ;;
+let _EstimationOfDistributionOptions_population_size_set arg = match _EstimationOfDistributionOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_population_size_getdatamunge" ;;
+let _EstimationOfDistributionOptions_population_size_get arg = match _EstimationOfDistributionOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_selection_ratio_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_selection_ratio_setdatamunge" ;;
+let _EstimationOfDistributionOptions_selection_ratio_set arg = match _EstimationOfDistributionOptions_selection_ratio_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_selection_ratio_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_selection_ratio_getdatamunge" ;;
+let _EstimationOfDistributionOptions_selection_ratio_get arg = match _EstimationOfDistributionOptions_selection_ratio_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_initial_std_dev_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_initial_std_dev_setdatamunge" ;;
+let _EstimationOfDistributionOptions_initial_std_dev_set arg = match _EstimationOfDistributionOptions_initial_std_dev_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_initial_std_dev_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_initial_std_dev_getdatamunge" ;;
+let _EstimationOfDistributionOptions_initial_std_dev_get arg = match _EstimationOfDistributionOptions_initial_std_dev_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_covariance_regularization_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_covariance_regularization_setdatamunge" ;;
+let _EstimationOfDistributionOptions_covariance_regularization_set arg = match _EstimationOfDistributionOptions_covariance_regularization_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_covariance_regularization_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_covariance_regularization_getdatamunge" ;;
+let _EstimationOfDistributionOptions_covariance_regularization_get arg = match _EstimationOfDistributionOptions_covariance_regularization_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_max_generations_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_max_generations_setdatamunge" ;;
+let _EstimationOfDistributionOptions_max_generations_set arg = match _EstimationOfDistributionOptions_max_generations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_max_generations_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_max_generations_getdatamunge" ;;
+let _EstimationOfDistributionOptions_max_generations_get arg = match _EstimationOfDistributionOptions_max_generations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_tolerance_setdatamunge" ;;
+let _EstimationOfDistributionOptions_tolerance_set arg = match _EstimationOfDistributionOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_tolerance_getdatamunge" ;;
+let _EstimationOfDistributionOptions_tolerance_get arg = match _EstimationOfDistributionOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_seed_setdatamunge" ;;
+let _EstimationOfDistributionOptions_seed_set arg = match _EstimationOfDistributionOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistributionOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistributionOptions_seed_getdatamunge" ;;
+let _EstimationOfDistributionOptions_seed_get arg = match _EstimationOfDistributionOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_EstimationOfDistributionOptions_f : c_obj list -> c_obj list = "_wrap_new_EstimationOfDistributionOptionsdatamunge" ;;
+let _new_EstimationOfDistributionOptions arg = match _new_EstimationOfDistributionOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_EstimationOfDistributionOptions_f : c_obj list -> c_obj list = "_wrap_delete_EstimationOfDistributionOptionsdatamunge" ;;
+let _delete_EstimationOfDistributionOptions arg = match _delete_EstimationOfDistributionOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_EstimationOfDistribution_f : c_obj list -> c_obj list = "_wrap_new_EstimationOfDistributiondatamunge" ;;
+let _new_EstimationOfDistribution arg = match _new_EstimationOfDistribution_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EstimationOfDistribution_optimize_f : c_obj list -> c_obj list = "_wrap_EstimationOfDistribution_optimizedatamunge" ;;
+let _EstimationOfDistribution_optimize arg = match _EstimationOfDistribution_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_EstimationOfDistribution_f : c_obj list -> c_obj list = "_wrap_delete_EstimationOfDistributiondatamunge" ;;
+let _delete_EstimationOfDistribution arg = match _delete_EstimationOfDistribution_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_mu_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_mu_setdatamunge" ;;
+let _EvolutionStrategyOptions_mu_set arg = match _EvolutionStrategyOptions_mu_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_mu_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_mu_getdatamunge" ;;
+let _EvolutionStrategyOptions_mu_get arg = match _EvolutionStrategyOptions_mu_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_offspring_size_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_offspring_size_setdatamunge" ;;
+let _EvolutionStrategyOptions_offspring_size_set arg = match _EvolutionStrategyOptions_offspring_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_offspring_size_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_offspring_size_getdatamunge" ;;
+let _EvolutionStrategyOptions_offspring_size_get arg = match _EvolutionStrategyOptions_offspring_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_strategy_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_strategy_setdatamunge" ;;
+let _EvolutionStrategyOptions_strategy_set arg = match _EvolutionStrategyOptions_strategy_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_strategy_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_strategy_getdatamunge" ;;
+let _EvolutionStrategyOptions_strategy_get arg = match _EvolutionStrategyOptions_strategy_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_initial_step_size_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_initial_step_size_setdatamunge" ;;
+let _EvolutionStrategyOptions_initial_step_size_set arg = match _EvolutionStrategyOptions_initial_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_initial_step_size_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_initial_step_size_getdatamunge" ;;
+let _EvolutionStrategyOptions_initial_step_size_get arg = match _EvolutionStrategyOptions_initial_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_max_generations_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_max_generations_setdatamunge" ;;
+let _EvolutionStrategyOptions_max_generations_set arg = match _EvolutionStrategyOptions_max_generations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_max_generations_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_max_generations_getdatamunge" ;;
+let _EvolutionStrategyOptions_max_generations_get arg = match _EvolutionStrategyOptions_max_generations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_tolerance_setdatamunge" ;;
+let _EvolutionStrategyOptions_tolerance_set arg = match _EvolutionStrategyOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_tolerance_getdatamunge" ;;
+let _EvolutionStrategyOptions_tolerance_get arg = match _EvolutionStrategyOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_seed_setdatamunge" ;;
+let _EvolutionStrategyOptions_seed_set arg = match _EvolutionStrategyOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategyOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategyOptions_seed_getdatamunge" ;;
+let _EvolutionStrategyOptions_seed_get arg = match _EvolutionStrategyOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_EvolutionStrategyOptions_f : c_obj list -> c_obj list = "_wrap_new_EvolutionStrategyOptionsdatamunge" ;;
+let _new_EvolutionStrategyOptions arg = match _new_EvolutionStrategyOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_EvolutionStrategyOptions_f : c_obj list -> c_obj list = "_wrap_delete_EvolutionStrategyOptionsdatamunge" ;;
+let _delete_EvolutionStrategyOptions arg = match _delete_EvolutionStrategyOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_EvolutionStrategy_f : c_obj list -> c_obj list = "_wrap_new_EvolutionStrategydatamunge" ;;
+let _new_EvolutionStrategy arg = match _new_EvolutionStrategy_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _EvolutionStrategy_optimize_f : c_obj list -> c_obj list = "_wrap_EvolutionStrategy_optimizedatamunge" ;;
+let _EvolutionStrategy_optimize arg = match _EvolutionStrategy_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_EvolutionStrategy_f : c_obj list -> c_obj list = "_wrap_delete_EvolutionStrategydatamunge" ;;
+let _delete_EvolutionStrategy arg = match _delete_EvolutionStrategy_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_population_size_setdatamunge" ;;
+let _FireflyAlgorithmOptions_population_size_set arg = match _FireflyAlgorithmOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_population_size_getdatamunge" ;;
+let _FireflyAlgorithmOptions_population_size_get arg = match _FireflyAlgorithmOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_attractiveness_at_zero_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_attractiveness_at_zero_setdatamunge" ;;
+let _FireflyAlgorithmOptions_attractiveness_at_zero_set arg = match _FireflyAlgorithmOptions_attractiveness_at_zero_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_attractiveness_at_zero_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_attractiveness_at_zero_getdatamunge" ;;
+let _FireflyAlgorithmOptions_attractiveness_at_zero_get arg = match _FireflyAlgorithmOptions_attractiveness_at_zero_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_light_absorption_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_light_absorption_setdatamunge" ;;
+let _FireflyAlgorithmOptions_light_absorption_set arg = match _FireflyAlgorithmOptions_light_absorption_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_light_absorption_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_light_absorption_getdatamunge" ;;
+let _FireflyAlgorithmOptions_light_absorption_get arg = match _FireflyAlgorithmOptions_light_absorption_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_randomization_step_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_randomization_step_setdatamunge" ;;
+let _FireflyAlgorithmOptions_randomization_step_set arg = match _FireflyAlgorithmOptions_randomization_step_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_randomization_step_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_randomization_step_getdatamunge" ;;
+let _FireflyAlgorithmOptions_randomization_step_get arg = match _FireflyAlgorithmOptions_randomization_step_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_randomization_decay_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_randomization_decay_setdatamunge" ;;
+let _FireflyAlgorithmOptions_randomization_decay_set arg = match _FireflyAlgorithmOptions_randomization_decay_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_randomization_decay_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_randomization_decay_getdatamunge" ;;
+let _FireflyAlgorithmOptions_randomization_decay_get arg = match _FireflyAlgorithmOptions_randomization_decay_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_max_iterations_setdatamunge" ;;
+let _FireflyAlgorithmOptions_max_iterations_set arg = match _FireflyAlgorithmOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_max_iterations_getdatamunge" ;;
+let _FireflyAlgorithmOptions_max_iterations_get arg = match _FireflyAlgorithmOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_tolerance_setdatamunge" ;;
+let _FireflyAlgorithmOptions_tolerance_set arg = match _FireflyAlgorithmOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_tolerance_getdatamunge" ;;
+let _FireflyAlgorithmOptions_tolerance_get arg = match _FireflyAlgorithmOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_seed_setdatamunge" ;;
+let _FireflyAlgorithmOptions_seed_set arg = match _FireflyAlgorithmOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithmOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithmOptions_seed_getdatamunge" ;;
+let _FireflyAlgorithmOptions_seed_get arg = match _FireflyAlgorithmOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_FireflyAlgorithmOptions_f : c_obj list -> c_obj list = "_wrap_new_FireflyAlgorithmOptionsdatamunge" ;;
+let _new_FireflyAlgorithmOptions arg = match _new_FireflyAlgorithmOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_FireflyAlgorithmOptions_f : c_obj list -> c_obj list = "_wrap_delete_FireflyAlgorithmOptionsdatamunge" ;;
+let _delete_FireflyAlgorithmOptions arg = match _delete_FireflyAlgorithmOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_FireflyAlgorithm_f : c_obj list -> c_obj list = "_wrap_new_FireflyAlgorithmdatamunge" ;;
+let _new_FireflyAlgorithm arg = match _new_FireflyAlgorithm_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FireflyAlgorithm_optimize_f : c_obj list -> c_obj list = "_wrap_FireflyAlgorithm_optimizedatamunge" ;;
+let _FireflyAlgorithm_optimize arg = match _FireflyAlgorithm_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_FireflyAlgorithm_f : c_obj list -> c_obj list = "_wrap_delete_FireflyAlgorithmdatamunge" ;;
+let _delete_FireflyAlgorithm arg = match _delete_FireflyAlgorithm_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_population_size_setdatamunge" ;;
+let _GreyWolfOptimizerOptions_population_size_set arg = match _GreyWolfOptimizerOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_population_size_getdatamunge" ;;
+let _GreyWolfOptimizerOptions_population_size_get arg = match _GreyWolfOptimizerOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_max_iterations_setdatamunge" ;;
+let _GreyWolfOptimizerOptions_max_iterations_set arg = match _GreyWolfOptimizerOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_max_iterations_getdatamunge" ;;
+let _GreyWolfOptimizerOptions_max_iterations_get arg = match _GreyWolfOptimizerOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_tolerance_setdatamunge" ;;
+let _GreyWolfOptimizerOptions_tolerance_set arg = match _GreyWolfOptimizerOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_tolerance_getdatamunge" ;;
+let _GreyWolfOptimizerOptions_tolerance_get arg = match _GreyWolfOptimizerOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_seed_setdatamunge" ;;
+let _GreyWolfOptimizerOptions_seed_set arg = match _GreyWolfOptimizerOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizerOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizerOptions_seed_getdatamunge" ;;
+let _GreyWolfOptimizerOptions_seed_get arg = match _GreyWolfOptimizerOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_GreyWolfOptimizerOptions_f : c_obj list -> c_obj list = "_wrap_new_GreyWolfOptimizerOptionsdatamunge" ;;
+let _new_GreyWolfOptimizerOptions arg = match _new_GreyWolfOptimizerOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_GreyWolfOptimizerOptions_f : c_obj list -> c_obj list = "_wrap_delete_GreyWolfOptimizerOptionsdatamunge" ;;
+let _delete_GreyWolfOptimizerOptions arg = match _delete_GreyWolfOptimizerOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_GreyWolfOptimizer_f : c_obj list -> c_obj list = "_wrap_new_GreyWolfOptimizerdatamunge" ;;
+let _new_GreyWolfOptimizer arg = match _new_GreyWolfOptimizer_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _GreyWolfOptimizer_optimize_f : c_obj list -> c_obj list = "_wrap_GreyWolfOptimizer_optimizedatamunge" ;;
+let _GreyWolfOptimizer_optimize arg = match _GreyWolfOptimizer_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_GreyWolfOptimizer_f : c_obj list -> c_obj list = "_wrap_delete_GreyWolfOptimizerdatamunge" ;;
+let _delete_GreyWolfOptimizer arg = match _delete_GreyWolfOptimizer_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_population_size_setdatamunge" ;;
+let _HarmonySearchOptions_population_size_set arg = match _HarmonySearchOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_population_size_getdatamunge" ;;
+let _HarmonySearchOptions_population_size_get arg = match _HarmonySearchOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_memory_consideration_rate_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_memory_consideration_rate_setdatamunge" ;;
+let _HarmonySearchOptions_memory_consideration_rate_set arg = match _HarmonySearchOptions_memory_consideration_rate_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_memory_consideration_rate_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_memory_consideration_rate_getdatamunge" ;;
+let _HarmonySearchOptions_memory_consideration_rate_get arg = match _HarmonySearchOptions_memory_consideration_rate_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_pitch_adjustment_rate_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_pitch_adjustment_rate_setdatamunge" ;;
+let _HarmonySearchOptions_pitch_adjustment_rate_set arg = match _HarmonySearchOptions_pitch_adjustment_rate_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_pitch_adjustment_rate_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_pitch_adjustment_rate_getdatamunge" ;;
+let _HarmonySearchOptions_pitch_adjustment_rate_get arg = match _HarmonySearchOptions_pitch_adjustment_rate_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_bandwidth_fraction_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_bandwidth_fraction_setdatamunge" ;;
+let _HarmonySearchOptions_bandwidth_fraction_set arg = match _HarmonySearchOptions_bandwidth_fraction_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_bandwidth_fraction_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_bandwidth_fraction_getdatamunge" ;;
+let _HarmonySearchOptions_bandwidth_fraction_get arg = match _HarmonySearchOptions_bandwidth_fraction_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_max_iterations_setdatamunge" ;;
+let _HarmonySearchOptions_max_iterations_set arg = match _HarmonySearchOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_max_iterations_getdatamunge" ;;
+let _HarmonySearchOptions_max_iterations_get arg = match _HarmonySearchOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_tolerance_setdatamunge" ;;
+let _HarmonySearchOptions_tolerance_set arg = match _HarmonySearchOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_tolerance_getdatamunge" ;;
+let _HarmonySearchOptions_tolerance_get arg = match _HarmonySearchOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_seed_setdatamunge" ;;
+let _HarmonySearchOptions_seed_set arg = match _HarmonySearchOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearchOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_HarmonySearchOptions_seed_getdatamunge" ;;
+let _HarmonySearchOptions_seed_get arg = match _HarmonySearchOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_HarmonySearchOptions_f : c_obj list -> c_obj list = "_wrap_new_HarmonySearchOptionsdatamunge" ;;
+let _new_HarmonySearchOptions arg = match _new_HarmonySearchOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_HarmonySearchOptions_f : c_obj list -> c_obj list = "_wrap_delete_HarmonySearchOptionsdatamunge" ;;
+let _delete_HarmonySearchOptions arg = match _delete_HarmonySearchOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_HarmonySearch_f : c_obj list -> c_obj list = "_wrap_new_HarmonySearchdatamunge" ;;
+let _new_HarmonySearch arg = match _new_HarmonySearch_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _HarmonySearch_optimize_f : c_obj list -> c_obj list = "_wrap_HarmonySearch_optimizedatamunge" ;;
+let _HarmonySearch_optimize arg = match _HarmonySearch_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_HarmonySearch_f : c_obj list -> c_obj list = "_wrap_delete_HarmonySearchdatamunge" ;;
+let _delete_HarmonySearch arg = match _delete_HarmonySearch_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_num_replicas_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_num_replicas_setdatamunge" ;;
+let _ParallelTemperingOptions_num_replicas_set arg = match _ParallelTemperingOptions_num_replicas_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_num_replicas_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_num_replicas_getdatamunge" ;;
+let _ParallelTemperingOptions_num_replicas_get arg = match _ParallelTemperingOptions_num_replicas_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_initial_temperature_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_initial_temperature_setdatamunge" ;;
+let _ParallelTemperingOptions_initial_temperature_set arg = match _ParallelTemperingOptions_initial_temperature_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_initial_temperature_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_initial_temperature_getdatamunge" ;;
+let _ParallelTemperingOptions_initial_temperature_get arg = match _ParallelTemperingOptions_initial_temperature_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_final_temperature_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_final_temperature_setdatamunge" ;;
+let _ParallelTemperingOptions_final_temperature_set arg = match _ParallelTemperingOptions_final_temperature_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_final_temperature_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_final_temperature_getdatamunge" ;;
+let _ParallelTemperingOptions_final_temperature_get arg = match _ParallelTemperingOptions_final_temperature_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_step_std_dev_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_step_std_dev_setdatamunge" ;;
+let _ParallelTemperingOptions_step_std_dev_set arg = match _ParallelTemperingOptions_step_std_dev_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_step_std_dev_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_step_std_dev_getdatamunge" ;;
+let _ParallelTemperingOptions_step_std_dev_get arg = match _ParallelTemperingOptions_step_std_dev_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_swap_interval_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_swap_interval_setdatamunge" ;;
+let _ParallelTemperingOptions_swap_interval_set arg = match _ParallelTemperingOptions_swap_interval_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_swap_interval_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_swap_interval_getdatamunge" ;;
+let _ParallelTemperingOptions_swap_interval_get arg = match _ParallelTemperingOptions_swap_interval_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_max_sweeps_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_max_sweeps_setdatamunge" ;;
+let _ParallelTemperingOptions_max_sweeps_set arg = match _ParallelTemperingOptions_max_sweeps_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_max_sweeps_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_max_sweeps_getdatamunge" ;;
+let _ParallelTemperingOptions_max_sweeps_get arg = match _ParallelTemperingOptions_max_sweeps_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_seed_setdatamunge" ;;
+let _ParallelTemperingOptions_seed_set arg = match _ParallelTemperingOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTemperingOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_ParallelTemperingOptions_seed_getdatamunge" ;;
+let _ParallelTemperingOptions_seed_get arg = match _ParallelTemperingOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ParallelTemperingOptions_f : c_obj list -> c_obj list = "_wrap_new_ParallelTemperingOptionsdatamunge" ;;
+let _new_ParallelTemperingOptions arg = match _new_ParallelTemperingOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ParallelTemperingOptions_f : c_obj list -> c_obj list = "_wrap_delete_ParallelTemperingOptionsdatamunge" ;;
+let _delete_ParallelTemperingOptions arg = match _delete_ParallelTemperingOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ParallelTempering_f : c_obj list -> c_obj list = "_wrap_new_ParallelTemperingdatamunge" ;;
+let _new_ParallelTempering arg = match _new_ParallelTempering_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ParallelTempering_optimize_f : c_obj list -> c_obj list = "_wrap_ParallelTempering_optimizedatamunge" ;;
+let _ParallelTempering_optimize arg = match _ParallelTempering_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ParallelTempering_f : c_obj list -> c_obj list = "_wrap_delete_ParallelTemperingdatamunge" ;;
+let _delete_ParallelTempering arg = match _delete_ParallelTempering_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_population_size_set_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_population_size_setdatamunge" ;;
+let _WhaleOptimizationOptions_population_size_set arg = match _WhaleOptimizationOptions_population_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_population_size_get_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_population_size_getdatamunge" ;;
+let _WhaleOptimizationOptions_population_size_get arg = match _WhaleOptimizationOptions_population_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_spiral_constant_set_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_spiral_constant_setdatamunge" ;;
+let _WhaleOptimizationOptions_spiral_constant_set arg = match _WhaleOptimizationOptions_spiral_constant_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_spiral_constant_get_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_spiral_constant_getdatamunge" ;;
+let _WhaleOptimizationOptions_spiral_constant_get arg = match _WhaleOptimizationOptions_spiral_constant_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_max_iterations_setdatamunge" ;;
+let _WhaleOptimizationOptions_max_iterations_set arg = match _WhaleOptimizationOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_max_iterations_getdatamunge" ;;
+let _WhaleOptimizationOptions_max_iterations_get arg = match _WhaleOptimizationOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_tolerance_setdatamunge" ;;
+let _WhaleOptimizationOptions_tolerance_set arg = match _WhaleOptimizationOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_tolerance_getdatamunge" ;;
+let _WhaleOptimizationOptions_tolerance_get arg = match _WhaleOptimizationOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_seed_setdatamunge" ;;
+let _WhaleOptimizationOptions_seed_set arg = match _WhaleOptimizationOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimizationOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_WhaleOptimizationOptions_seed_getdatamunge" ;;
+let _WhaleOptimizationOptions_seed_get arg = match _WhaleOptimizationOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_WhaleOptimizationOptions_f : c_obj list -> c_obj list = "_wrap_new_WhaleOptimizationOptionsdatamunge" ;;
+let _new_WhaleOptimizationOptions arg = match _new_WhaleOptimizationOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_WhaleOptimizationOptions_f : c_obj list -> c_obj list = "_wrap_delete_WhaleOptimizationOptionsdatamunge" ;;
+let _delete_WhaleOptimizationOptions arg = match _delete_WhaleOptimizationOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_WhaleOptimization_f : c_obj list -> c_obj list = "_wrap_new_WhaleOptimizationdatamunge" ;;
+let _new_WhaleOptimization arg = match _new_WhaleOptimization_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _WhaleOptimization_optimize_f : c_obj list -> c_obj list = "_wrap_WhaleOptimization_optimizedatamunge" ;;
+let _WhaleOptimization_optimize arg = match _WhaleOptimization_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_WhaleOptimization_f : c_obj list -> c_obj list = "_wrap_delete_WhaleOptimizationdatamunge" ;;
+let _delete_WhaleOptimization arg = match _delete_WhaleOptimization_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_step_size_setdatamunge" ;;
+let _FISTAOptions_step_size_set arg = match _FISTAOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_step_size_getdatamunge" ;;
+let _FISTAOptions_step_size_get arg = match _FISTAOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_max_iterations_setdatamunge" ;;
+let _FISTAOptions_max_iterations_set arg = match _FISTAOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_max_iterations_getdatamunge" ;;
+let _FISTAOptions_max_iterations_get arg = match _FISTAOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_tolerance_setdatamunge" ;;
+let _FISTAOptions_tolerance_set arg = match _FISTAOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTAOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_FISTAOptions_tolerance_getdatamunge" ;;
+let _FISTAOptions_tolerance_get arg = match _FISTAOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_FISTAOptions_f : c_obj list -> c_obj list = "_wrap_new_FISTAOptionsdatamunge" ;;
+let _new_FISTAOptions arg = match _new_FISTAOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_FISTAOptions_f : c_obj list -> c_obj list = "_wrap_delete_FISTAOptionsdatamunge" ;;
+let _delete_FISTAOptions arg = match _delete_FISTAOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_FISTA_f : c_obj list -> c_obj list = "_wrap_new_FISTAdatamunge" ;;
+let _new_FISTA arg = match _new_FISTA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _FISTA_optimize_f : c_obj list -> c_obj list = "_wrap_FISTA_optimizedatamunge" ;;
+let _FISTA_optimize arg = match _FISTA_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_FISTA_f : c_obj list -> c_obj list = "_wrap_delete_FISTAdatamunge" ;;
+let _delete_FISTA arg = match _delete_FISTA_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_step_size_setdatamunge" ;;
+let _ProximalGradientOptions_step_size_set arg = match _ProximalGradientOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_step_size_getdatamunge" ;;
+let _ProximalGradientOptions_step_size_get arg = match _ProximalGradientOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_max_iterations_setdatamunge" ;;
+let _ProximalGradientOptions_max_iterations_set arg = match _ProximalGradientOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_max_iterations_getdatamunge" ;;
+let _ProximalGradientOptions_max_iterations_get arg = match _ProximalGradientOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_tolerance_setdatamunge" ;;
+let _ProximalGradientOptions_tolerance_set arg = match _ProximalGradientOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradientOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_ProximalGradientOptions_tolerance_getdatamunge" ;;
+let _ProximalGradientOptions_tolerance_get arg = match _ProximalGradientOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ProximalGradientOptions_f : c_obj list -> c_obj list = "_wrap_new_ProximalGradientOptionsdatamunge" ;;
+let _new_ProximalGradientOptions arg = match _new_ProximalGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ProximalGradientOptions_f : c_obj list -> c_obj list = "_wrap_delete_ProximalGradientOptionsdatamunge" ;;
+let _delete_ProximalGradientOptions arg = match _delete_ProximalGradientOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ProximalGradient_f : c_obj list -> c_obj list = "_wrap_new_ProximalGradientdatamunge" ;;
+let _new_ProximalGradient arg = match _new_ProximalGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ProximalGradient_optimize_f : c_obj list -> c_obj list = "_wrap_ProximalGradient_optimizedatamunge" ;;
+let _ProximalGradient_optimize arg = match _ProximalGradient_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ProximalGradient_f : c_obj list -> c_obj list = "_wrap_delete_ProximalGradientdatamunge" ;;
+let _delete_ProximalGradient arg = match _delete_ProximalGradient_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_initial_damping_set_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_initial_damping_setdatamunge" ;;
+let _LevenbergMarquardtOptions_initial_damping_set arg = match _LevenbergMarquardtOptions_initial_damping_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_initial_damping_get_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_initial_damping_getdatamunge" ;;
+let _LevenbergMarquardtOptions_initial_damping_get arg = match _LevenbergMarquardtOptions_initial_damping_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_max_iterations_setdatamunge" ;;
+let _LevenbergMarquardtOptions_max_iterations_set arg = match _LevenbergMarquardtOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_max_iterations_getdatamunge" ;;
+let _LevenbergMarquardtOptions_max_iterations_get arg = match _LevenbergMarquardtOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_tolerance_setdatamunge" ;;
+let _LevenbergMarquardtOptions_tolerance_set arg = match _LevenbergMarquardtOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardtOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardtOptions_tolerance_getdatamunge" ;;
+let _LevenbergMarquardtOptions_tolerance_get arg = match _LevenbergMarquardtOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_LevenbergMarquardtOptions_f : c_obj list -> c_obj list = "_wrap_new_LevenbergMarquardtOptionsdatamunge" ;;
+let _new_LevenbergMarquardtOptions arg = match _new_LevenbergMarquardtOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_LevenbergMarquardtOptions_f : c_obj list -> c_obj list = "_wrap_delete_LevenbergMarquardtOptionsdatamunge" ;;
+let _delete_LevenbergMarquardtOptions arg = match _delete_LevenbergMarquardtOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_LevenbergMarquardt_f : c_obj list -> c_obj list = "_wrap_new_LevenbergMarquardtdatamunge" ;;
+let _new_LevenbergMarquardt arg = match _new_LevenbergMarquardt_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _LevenbergMarquardt_optimize_f : c_obj list -> c_obj list = "_wrap_LevenbergMarquardt_optimizedatamunge" ;;
+let _LevenbergMarquardt_optimize arg = match _LevenbergMarquardt_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_LevenbergMarquardt_f : c_obj list -> c_obj list = "_wrap_delete_LevenbergMarquardtdatamunge" ;;
+let _delete_LevenbergMarquardt arg = match _delete_LevenbergMarquardt_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_max_iterations_setdatamunge" ;;
+let _NewtonOptions_max_iterations_set arg = match _NewtonOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_max_iterations_getdatamunge" ;;
+let _NewtonOptions_max_iterations_get arg = match _NewtonOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_tolerance_setdatamunge" ;;
+let _NewtonOptions_tolerance_set arg = match _NewtonOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_tolerance_getdatamunge" ;;
+let _NewtonOptions_tolerance_get arg = match _NewtonOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_damping_set_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_damping_setdatamunge" ;;
+let _NewtonOptions_damping_set arg = match _NewtonOptions_damping_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _NewtonOptions_damping_get_f : c_obj list -> c_obj list = "_wrap_NewtonOptions_damping_getdatamunge" ;;
+let _NewtonOptions_damping_get arg = match _NewtonOptions_damping_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_NewtonOptions_f : c_obj list -> c_obj list = "_wrap_new_NewtonOptionsdatamunge" ;;
+let _new_NewtonOptions arg = match _new_NewtonOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_NewtonOptions_f : c_obj list -> c_obj list = "_wrap_delete_NewtonOptionsdatamunge" ;;
+let _delete_NewtonOptions arg = match _delete_NewtonOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_Newton_f : c_obj list -> c_obj list = "_wrap_new_Newtondatamunge" ;;
+let _new_Newton arg = match _new_Newton_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _Newton_optimize_f : c_obj list -> c_obj list = "_wrap_Newton_optimizedatamunge" ;;
+let _Newton_optimize arg = match _Newton_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_Newton_f : c_obj list -> c_obj list = "_wrap_delete_Newtondatamunge" ;;
+let _delete_Newton arg = match _delete_Newton_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_initial_radius_set_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_initial_radius_setdatamunge" ;;
+let _TrustRegionNewtonOptions_initial_radius_set arg = match _TrustRegionNewtonOptions_initial_radius_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_initial_radius_get_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_initial_radius_getdatamunge" ;;
+let _TrustRegionNewtonOptions_initial_radius_get arg = match _TrustRegionNewtonOptions_initial_radius_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_max_radius_set_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_max_radius_setdatamunge" ;;
+let _TrustRegionNewtonOptions_max_radius_set arg = match _TrustRegionNewtonOptions_max_radius_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_max_radius_get_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_max_radius_getdatamunge" ;;
+let _TrustRegionNewtonOptions_max_radius_get arg = match _TrustRegionNewtonOptions_max_radius_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_max_iterations_setdatamunge" ;;
+let _TrustRegionNewtonOptions_max_iterations_set arg = match _TrustRegionNewtonOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_max_iterations_getdatamunge" ;;
+let _TrustRegionNewtonOptions_max_iterations_get arg = match _TrustRegionNewtonOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_tolerance_setdatamunge" ;;
+let _TrustRegionNewtonOptions_tolerance_set arg = match _TrustRegionNewtonOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewtonOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewtonOptions_tolerance_getdatamunge" ;;
+let _TrustRegionNewtonOptions_tolerance_get arg = match _TrustRegionNewtonOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_TrustRegionNewtonOptions_f : c_obj list -> c_obj list = "_wrap_new_TrustRegionNewtonOptionsdatamunge" ;;
+let _new_TrustRegionNewtonOptions arg = match _new_TrustRegionNewtonOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_TrustRegionNewtonOptions_f : c_obj list -> c_obj list = "_wrap_delete_TrustRegionNewtonOptionsdatamunge" ;;
+let _delete_TrustRegionNewtonOptions arg = match _delete_TrustRegionNewtonOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_TrustRegionNewton_f : c_obj list -> c_obj list = "_wrap_new_TrustRegionNewtondatamunge" ;;
+let _new_TrustRegionNewton arg = match _new_TrustRegionNewton_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _TrustRegionNewton_optimize_f : c_obj list -> c_obj list = "_wrap_TrustRegionNewton_optimizedatamunge" ;;
+let _TrustRegionNewton_optimize arg = match _TrustRegionNewton_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_TrustRegionNewton_f : c_obj list -> c_obj list = "_wrap_delete_TrustRegionNewtondatamunge" ;;
+let _delete_TrustRegionNewton arg = match _delete_TrustRegionNewton_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_step_size_setdatamunge" ;;
+let _AugmentedLagrangianOptions_step_size_set arg = match _AugmentedLagrangianOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_step_size_getdatamunge" ;;
+let _AugmentedLagrangianOptions_step_size_get arg = match _AugmentedLagrangianOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_initial_penalty_set_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_initial_penalty_setdatamunge" ;;
+let _AugmentedLagrangianOptions_initial_penalty_set arg = match _AugmentedLagrangianOptions_initial_penalty_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_initial_penalty_get_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_initial_penalty_getdatamunge" ;;
+let _AugmentedLagrangianOptions_initial_penalty_get arg = match _AugmentedLagrangianOptions_initial_penalty_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_max_outer_iterations_set_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_max_outer_iterations_setdatamunge" ;;
+let _AugmentedLagrangianOptions_max_outer_iterations_set arg = match _AugmentedLagrangianOptions_max_outer_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_max_outer_iterations_get_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_max_outer_iterations_getdatamunge" ;;
+let _AugmentedLagrangianOptions_max_outer_iterations_get arg = match _AugmentedLagrangianOptions_max_outer_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_inner_iterations_set_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_inner_iterations_setdatamunge" ;;
+let _AugmentedLagrangianOptions_inner_iterations_set arg = match _AugmentedLagrangianOptions_inner_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_inner_iterations_get_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_inner_iterations_getdatamunge" ;;
+let _AugmentedLagrangianOptions_inner_iterations_get arg = match _AugmentedLagrangianOptions_inner_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_tolerance_setdatamunge" ;;
+let _AugmentedLagrangianOptions_tolerance_set arg = match _AugmentedLagrangianOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangianOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangianOptions_tolerance_getdatamunge" ;;
+let _AugmentedLagrangianOptions_tolerance_get arg = match _AugmentedLagrangianOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AugmentedLagrangianOptions_f : c_obj list -> c_obj list = "_wrap_new_AugmentedLagrangianOptionsdatamunge" ;;
+let _new_AugmentedLagrangianOptions arg = match _new_AugmentedLagrangianOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AugmentedLagrangianOptions_f : c_obj list -> c_obj list = "_wrap_delete_AugmentedLagrangianOptionsdatamunge" ;;
+let _delete_AugmentedLagrangianOptions arg = match _delete_AugmentedLagrangianOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_AugmentedLagrangian_f : c_obj list -> c_obj list = "_wrap_new_AugmentedLagrangiandatamunge" ;;
+let _new_AugmentedLagrangian arg = match _new_AugmentedLagrangian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _AugmentedLagrangian_optimize_f : c_obj list -> c_obj list = "_wrap_AugmentedLagrangian_optimizedatamunge" ;;
+let _AugmentedLagrangian_optimize arg = match _AugmentedLagrangian_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_AugmentedLagrangian_f : c_obj list -> c_obj list = "_wrap_delete_AugmentedLagrangiandatamunge" ;;
+let _delete_AugmentedLagrangian arg = match _delete_AugmentedLagrangian_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_SQPOptions_step_size_setdatamunge" ;;
+let _SQPOptions_step_size_set arg = match _SQPOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_SQPOptions_step_size_getdatamunge" ;;
+let _SQPOptions_step_size_get arg = match _SQPOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_regularization_set_f : c_obj list -> c_obj list = "_wrap_SQPOptions_regularization_setdatamunge" ;;
+let _SQPOptions_regularization_set arg = match _SQPOptions_regularization_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_regularization_get_f : c_obj list -> c_obj list = "_wrap_SQPOptions_regularization_getdatamunge" ;;
+let _SQPOptions_regularization_get arg = match _SQPOptions_regularization_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_SQPOptions_max_iterations_setdatamunge" ;;
+let _SQPOptions_max_iterations_set arg = match _SQPOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_SQPOptions_max_iterations_getdatamunge" ;;
+let _SQPOptions_max_iterations_get arg = match _SQPOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_tolerance_set_f : c_obj list -> c_obj list = "_wrap_SQPOptions_tolerance_setdatamunge" ;;
+let _SQPOptions_tolerance_set arg = match _SQPOptions_tolerance_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQPOptions_tolerance_get_f : c_obj list -> c_obj list = "_wrap_SQPOptions_tolerance_getdatamunge" ;;
+let _SQPOptions_tolerance_get arg = match _SQPOptions_tolerance_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SQPOptions_f : c_obj list -> c_obj list = "_wrap_new_SQPOptionsdatamunge" ;;
+let _new_SQPOptions arg = match _new_SQPOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SQPOptions_f : c_obj list -> c_obj list = "_wrap_delete_SQPOptionsdatamunge" ;;
+let _delete_SQPOptions arg = match _delete_SQPOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_SQP_f : c_obj list -> c_obj list = "_wrap_new_SQPdatamunge" ;;
+let _new_SQP arg = match _new_SQP_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _SQP_optimize_f : c_obj list -> c_obj list = "_wrap_SQP_optimizedatamunge" ;;
+let _SQP_optimize arg = match _SQP_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_SQP_f : c_obj list -> c_obj list = "_wrap_delete_SQPdatamunge" ;;
+let _delete_SQP arg = match _delete_SQP_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_step_size_setdatamunge" ;;
+let _InteriorPointOptions_step_size_set arg = match _InteriorPointOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_step_size_getdatamunge" ;;
+let _InteriorPointOptions_step_size_get arg = match _InteriorPointOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_initial_barrier_set_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_initial_barrier_setdatamunge" ;;
+let _InteriorPointOptions_initial_barrier_set arg = match _InteriorPointOptions_initial_barrier_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_initial_barrier_get_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_initial_barrier_getdatamunge" ;;
+let _InteriorPointOptions_initial_barrier_get arg = match _InteriorPointOptions_initial_barrier_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_barrier_decay_set_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_barrier_decay_setdatamunge" ;;
+let _InteriorPointOptions_barrier_decay_set arg = match _InteriorPointOptions_barrier_decay_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_barrier_decay_get_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_barrier_decay_getdatamunge" ;;
+let _InteriorPointOptions_barrier_decay_get arg = match _InteriorPointOptions_barrier_decay_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_max_outer_iterations_set_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_max_outer_iterations_setdatamunge" ;;
+let _InteriorPointOptions_max_outer_iterations_set arg = match _InteriorPointOptions_max_outer_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_max_outer_iterations_get_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_max_outer_iterations_getdatamunge" ;;
+let _InteriorPointOptions_max_outer_iterations_get arg = match _InteriorPointOptions_max_outer_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_inner_iterations_set_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_inner_iterations_setdatamunge" ;;
+let _InteriorPointOptions_inner_iterations_set arg = match _InteriorPointOptions_inner_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPointOptions_inner_iterations_get_f : c_obj list -> c_obj list = "_wrap_InteriorPointOptions_inner_iterations_getdatamunge" ;;
+let _InteriorPointOptions_inner_iterations_get arg = match _InteriorPointOptions_inner_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_InteriorPointOptions_f : c_obj list -> c_obj list = "_wrap_new_InteriorPointOptionsdatamunge" ;;
+let _new_InteriorPointOptions arg = match _new_InteriorPointOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_InteriorPointOptions_f : c_obj list -> c_obj list = "_wrap_delete_InteriorPointOptionsdatamunge" ;;
+let _delete_InteriorPointOptions arg = match _delete_InteriorPointOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_InteriorPoint_f : c_obj list -> c_obj list = "_wrap_new_InteriorPointdatamunge" ;;
+let _new_InteriorPoint arg = match _new_InteriorPoint_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _InteriorPoint_optimize_f : c_obj list -> c_obj list = "_wrap_InteriorPoint_optimizedatamunge" ;;
+let _InteriorPoint_optimize arg = match _InteriorPoint_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_InteriorPoint_f : c_obj list -> c_obj list = "_wrap_delete_InteriorPointdatamunge" ;;
+let _delete_InteriorPoint arg = match _delete_InteriorPoint_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_BayesianSurrogate_f : c_obj list -> c_obj list = "_wrap_delete_BayesianSurrogatedatamunge" ;;
+let _delete_BayesianSurrogate arg = match _delete_BayesianSurrogate_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianSurrogate_fit_f : c_obj list -> c_obj list = "_wrap_BayesianSurrogate_fitdatamunge" ;;
+let _BayesianSurrogate_fit arg = match _BayesianSurrogate_fit_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianSurrogate_acquisition_f : c_obj list -> c_obj list = "_wrap_BayesianSurrogate_acquisitiondatamunge" ;;
+let _BayesianSurrogate_acquisition arg = match _BayesianSurrogate_acquisition_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_BayesianSurrogate_f : c_obj list -> c_obj list = "_wrap_new_BayesianSurrogatedatamunge" ;;
+let _new_BayesianSurrogate arg = match _new_BayesianSurrogate_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_BayesianSurrogate_f : c_obj list -> c_obj list = "_wrap_disown_BayesianSurrogatedatamunge" ;;
+let _disown_BayesianSurrogate arg = match _disown_BayesianSurrogate_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_initial_samples_set_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_initial_samples_setdatamunge" ;;
+let _BayesianOptimizationOptions_initial_samples_set arg = match _BayesianOptimizationOptions_initial_samples_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_initial_samples_get_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_initial_samples_getdatamunge" ;;
+let _BayesianOptimizationOptions_initial_samples_get arg = match _BayesianOptimizationOptions_initial_samples_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_max_iterations_set_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_max_iterations_setdatamunge" ;;
+let _BayesianOptimizationOptions_max_iterations_set arg = match _BayesianOptimizationOptions_max_iterations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_max_iterations_get_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_max_iterations_getdatamunge" ;;
+let _BayesianOptimizationOptions_max_iterations_get arg = match _BayesianOptimizationOptions_max_iterations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_seed_set_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_seed_setdatamunge" ;;
+let _BayesianOptimizationOptions_seed_set arg = match _BayesianOptimizationOptions_seed_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimizationOptions_seed_get_f : c_obj list -> c_obj list = "_wrap_BayesianOptimizationOptions_seed_getdatamunge" ;;
+let _BayesianOptimizationOptions_seed_get arg = match _BayesianOptimizationOptions_seed_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_BayesianOptimizationOptions_f : c_obj list -> c_obj list = "_wrap_new_BayesianOptimizationOptionsdatamunge" ;;
+let _new_BayesianOptimizationOptions arg = match _new_BayesianOptimizationOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_BayesianOptimizationOptions_f : c_obj list -> c_obj list = "_wrap_delete_BayesianOptimizationOptionsdatamunge" ;;
+let _delete_BayesianOptimizationOptions arg = match _delete_BayesianOptimizationOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_BayesianOptimization_f : c_obj list -> c_obj list = "_wrap_new_BayesianOptimizationdatamunge" ;;
+let _new_BayesianOptimization arg = match _new_BayesianOptimization_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _BayesianOptimization_optimize_f : c_obj list -> c_obj list = "_wrap_BayesianOptimization_optimizedatamunge" ;;
+let _BayesianOptimization_optimize arg = match _BayesianOptimization_optimize_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_BayesianOptimization_f : c_obj list -> c_obj list = "_wrap_delete_BayesianOptimizationdatamunge" ;;
+let _delete_BayesianOptimization arg = match _delete_BayesianOptimization_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_RBFGaussianProcessSurrogate_f : c_obj list -> c_obj list = "_wrap_new_RBFGaussianProcessSurrogatedatamunge" ;;
+let _new_RBFGaussianProcessSurrogate arg = match _new_RBFGaussianProcessSurrogate_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RBFGaussianProcessSurrogate_fit_f : c_obj list -> c_obj list = "_wrap_RBFGaussianProcessSurrogate_fitdatamunge" ;;
+let _RBFGaussianProcessSurrogate_fit arg = match _RBFGaussianProcessSurrogate_fit_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RBFGaussianProcessSurrogate_acquisition_f : c_obj list -> c_obj list = "_wrap_RBFGaussianProcessSurrogate_acquisitiondatamunge" ;;
+let _RBFGaussianProcessSurrogate_acquisition arg = match _RBFGaussianProcessSurrogate_acquisition_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_RBFGaussianProcessSurrogate_f : c_obj list -> c_obj list = "_wrap_delete_RBFGaussianProcessSurrogatedatamunge" ;;
+let _delete_RBFGaussianProcessSurrogate arg = match _delete_RBFGaussianProcessSurrogate_f ((fnhelper arg)) with
   [] -> C_void
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
@@ -8099,6 +11784,187 @@ let _delete_ImportanceSampling arg = match _delete_ImportanceSampling_f ((fnhelp
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _delete_RHS_f : c_obj list -> c_obj list = "_wrap_delete_RHSdatamunge" ;;
+let _delete_RHS arg = match _delete_RHS_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _RHS_evaluate_f : c_obj list -> c_obj list = "_wrap_RHS_evaluatedatamunge" ;;
+let _RHS_evaluate arg = match _RHS_evaluate_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+let _ = Callback.register "datamunge::ode::StepMethod_marker" (`StepMethod)
+external _Euler : c_obj -> Swig.c_obj = "_wrap_Euler" 
+external _Midpoint : c_obj -> Swig.c_obj = "_wrap_Midpoint" 
+external _RK4 : c_obj -> Swig.c_obj = "_wrap_RK4" 
+external _RK45 : c_obj -> Swig.c_obj = "_wrap_RK45" 
+external _AdamsBashforth : c_obj -> Swig.c_obj = "_wrap_AdamsBashforth" 
+external _AdamsMoulton : c_obj -> Swig.c_obj = "_wrap_AdamsMoulton" 
+external _ODEOptions_method_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_method_setdatamunge" ;;
+let _ODEOptions_method_set arg = match _ODEOptions_method_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_method_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_method_getdatamunge" ;;
+let _ODEOptions_method_get arg = match _ODEOptions_method_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_multistep_order_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_multistep_order_setdatamunge" ;;
+let _ODEOptions_multistep_order_set arg = match _ODEOptions_multistep_order_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_multistep_order_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_multistep_order_getdatamunge" ;;
+let _ODEOptions_multistep_order_get arg = match _ODEOptions_multistep_order_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_step_size_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_step_size_setdatamunge" ;;
+let _ODEOptions_step_size_set arg = match _ODEOptions_step_size_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_step_size_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_step_size_getdatamunge" ;;
+let _ODEOptions_step_size_get arg = match _ODEOptions_step_size_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_abs_tol_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_abs_tol_setdatamunge" ;;
+let _ODEOptions_abs_tol_set arg = match _ODEOptions_abs_tol_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_abs_tol_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_abs_tol_getdatamunge" ;;
+let _ODEOptions_abs_tol_get arg = match _ODEOptions_abs_tol_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_rel_tol_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_rel_tol_setdatamunge" ;;
+let _ODEOptions_rel_tol_set arg = match _ODEOptions_rel_tol_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_rel_tol_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_rel_tol_getdatamunge" ;;
+let _ODEOptions_rel_tol_get arg = match _ODEOptions_rel_tol_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_max_step_set_f : c_obj list -> c_obj list = "_wrap_ODEOptions_max_step_setdatamunge" ;;
+let _ODEOptions_max_step_set arg = match _ODEOptions_max_step_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODEOptions_max_step_get_f : c_obj list -> c_obj list = "_wrap_ODEOptions_max_step_getdatamunge" ;;
+let _ODEOptions_max_step_get arg = match _ODEOptions_max_step_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ODEOptions_f : c_obj list -> c_obj list = "_wrap_new_ODEOptionsdatamunge" ;;
+let _new_ODEOptions arg = match _new_ODEOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ODEOptions_f : c_obj list -> c_obj list = "_wrap_delete_ODEOptionsdatamunge" ;;
+let _delete_ODEOptions arg = match _delete_ODEOptions_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_steps_taken_set_f : c_obj list -> c_obj list = "_wrap_ODESolution_steps_taken_setdatamunge" ;;
+let _ODESolution_steps_taken_set arg = match _ODESolution_steps_taken_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_steps_taken_get_f : c_obj list -> c_obj list = "_wrap_ODESolution_steps_taken_getdatamunge" ;;
+let _ODESolution_steps_taken_get arg = match _ODESolution_steps_taken_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_function_evaluations_set_f : c_obj list -> c_obj list = "_wrap_ODESolution_function_evaluations_setdatamunge" ;;
+let _ODESolution_function_evaluations_set arg = match _ODESolution_function_evaluations_set_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_function_evaluations_get_f : c_obj list -> c_obj list = "_wrap_ODESolution_function_evaluations_getdatamunge" ;;
+let _ODESolution_function_evaluations_get arg = match _ODESolution_function_evaluations_get_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_size_f : c_obj list -> c_obj list = "_wrap_ODESolution_sizedatamunge" ;;
+let _ODESolution_size arg = match _ODESolution_size_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_time_at_f : c_obj list -> c_obj list = "_wrap_ODESolution_time_atdatamunge" ;;
+let _ODESolution_time_at arg = match _ODESolution_time_at_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolution_state_at_f : c_obj list -> c_obj list = "_wrap_ODESolution_state_atdatamunge" ;;
+let _ODESolution_state_at arg = match _ODESolution_state_at_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ODESolution_f : c_obj list -> c_obj list = "_wrap_new_ODESolutiondatamunge" ;;
+let _new_ODESolution arg = match _new_ODESolution_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ODESolution_f : c_obj list -> c_obj list = "_wrap_delete_ODESolutiondatamunge" ;;
+let _delete_ODESolution arg = match _delete_ODESolution_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_ODESolver_f : c_obj list -> c_obj list = "_wrap_new_ODESolverdatamunge" ;;
+let _new_ODESolver arg = match _new_ODESolver_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolver_solve_f : c_obj list -> c_obj list = "_wrap_ODESolver_solvedatamunge" ;;
+let _ODESolver_solve arg = match _ODESolver_solve_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _ODESolver_solve_builtin_f : c_obj list -> c_obj list = "_wrap_ODESolver_solve_builtindatamunge" ;;
+let _ODESolver_solve_builtin arg = match _ODESolver_solve_builtin_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _delete_ODESolver_f : c_obj list -> c_obj list = "_wrap_delete_ODESolverdatamunge" ;;
+let _delete_ODESolver arg = match _delete_ODESolver_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external f_init : unit -> unit = "f_datamunge_init" ;;
 let _ = f_init ()
 let enum_to_int x (v : c_obj) =
@@ -8143,6 +12009,15 @@ let enum_to_int x (v : c_obj) =
  | `BY -> _BY C_void
 | `Int x -> Swig.C_int x
 | _ -> raise (LabelNotFromThisEnum v))
+| `StepMethod -> (match y with
+ | `Euler -> _Euler C_void
+ | `Midpoint -> _Midpoint C_void
+ | `RK4 -> _RK4 C_void
+ | `RK45 -> _RK45 C_void
+ | `AdamsBashforth -> _AdamsBashforth C_void
+ | `AdamsMoulton -> _AdamsMoulton C_void
+| `Int x -> Swig.C_int x
+| _ -> raise (LabelNotFromThisEnum v))
 ) | _ -> (C_int (get_int v))
 let _ = Callback.register "datamunge_enum_to_int" enum_to_int
 let int_to_enum x y =
@@ -8177,6 +12052,14 @@ let int_to_enum x y =
  if y = (get_int (_Hommel C_void)) then `Hommel else
  if y = (get_int (_BH C_void)) then `BH else
  if y = (get_int (_BY C_void)) then `BY else
+`Int y)
+| `StepMethod -> C_enum (
+ if y = (get_int (_Euler C_void)) then `Euler else
+ if y = (get_int (_Midpoint C_void)) then `Midpoint else
+ if y = (get_int (_RK4 C_void)) then `RK4 else
+ if y = (get_int (_RK45 C_void)) then `RK45 else
+ if y = (get_int (_AdamsBashforth C_void)) then `AdamsBashforth else
+ if y = (get_int (_AdamsMoulton C_void)) then `AdamsMoulton else
 `Int y)
 let _ = Callback.register "datamunge_int_to_enum" int_to_enum
 
@@ -8828,13 +12711,38 @@ begin
     "add_string_column_encoded", _DataFrame_add_string_column_encoded ;
     "fill_null_numeric", _DataFrame_fill_null_numeric ;
     "fill_null_string", _DataFrame_fill_null_string ;
+    "mutate_numeric", _DataFrame_mutate_numeric ;
+    "mutate_string", _DataFrame_mutate_string ;
+    "mutate_string_encoded", _DataFrame_mutate_string_encoded ;
+    "rename", _DataFrame_rename ;
     "select", _DataFrame_select ;
     "select_encoded", _DataFrame_select_encoded ;
+    "relocate", _DataFrame_relocate ;
+    "relocate_encoded", _DataFrame_relocate_encoded ;
     "sort_by", _DataFrame_sort_by ;
+    "arrange", _DataFrame_arrange ;
+    "arrange_encoded", _DataFrame_arrange_encoded ;
     "drop_duplicates", _DataFrame_drop_duplicates ;
     "drop_duplicates_encoded", _DataFrame_drop_duplicates_encoded ;
+    "distinct", _DataFrame_distinct ;
+    "distinct_encoded", _DataFrame_distinct_encoded ;
+    "pull_numeric", _DataFrame_pull_numeric ;
+    "pull_numeric_valid", _DataFrame_pull_numeric_valid ;
+    "pull_string", _DataFrame_pull_string ;
+    "pull_string_valid", _DataFrame_pull_string_valid ;
+    "n_distinct", _DataFrame_n_distinct ;
     "group_by_sum", _DataFrame_group_by_sum ;
     "group_by_sum_encoded", _DataFrame_group_by_sum_encoded ;
+    "count", _DataFrame_count ;
+    "count_encoded", _DataFrame_count_encoded ;
+    "summarise", _DataFrame_summarise ;
+    "summarise_encoded", _DataFrame_summarise_encoded ;
+    "pivot_longer", _DataFrame_pivot_longer ;
+    "pivot_longer_encoded", _DataFrame_pivot_longer_encoded ;
+    "pivot_wider", _DataFrame_pivot_wider ;
+    "pivot_wider_encoded", _DataFrame_pivot_wider_encoded ;
+    "bind_rows", _DataFrame_bind_rows ;
+    "bind_cols", _DataFrame_bind_cols ;
     "join", _DataFrame_join ;
     "numeric_count", _DataFrame_numeric_count ;
     "numeric_null_count", _DataFrame_numeric_null_count ;
@@ -8903,6 +12811,82 @@ let _ = register_class_byname "datamunge::DataFrame" create_datamunge_xxDataFram
 let _ = Callback.register 
           "create_datamunge::DataFrame_from_ptr"
           create_datamunge_xxDataFrame_from_ptr
+
+
+
+let create_datamunge_xxShapeLayer_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "size", _ShapeLayer_size ;
+    "shape_type", _ShapeLayer_shape_type ;
+    "bounds", _ShapeLayer_bounds ;
+    "attributes", _ShapeLayer_attributes ;
+    "shape_kind", _ShapeLayer_shape_kind ;
+    "num_parts", _ShapeLayer_num_parts ;
+    "part_x", _ShapeLayer_part_x ;
+    "part_y", _ShapeLayer_part_y ;
+    "point_x", _ShapeLayer_point_x ;
+    "point_y", _ShapeLayer_point_y ;
+    "plot", _ShapeLayer_plot ;
+    "~", _delete_ShapeLayer ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::ShapeLayer") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::ShapeLayer"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::ShapeLayer" create_datamunge_xxShapeLayer_from_ptr
+let _ = Callback.register 
+          "create_datamunge::ShapeLayer_from_ptr"
+          create_datamunge_xxShapeLayer_from_ptr
 
 
 
@@ -10315,6 +14299,164 @@ let _ = register_class_byname "datamunge::KMeans" create_datamunge_xxKMeans_from
 let _ = Callback.register 
           "create_datamunge::KMeans_from_ptr"
           create_datamunge_xxKMeans_from_ptr
+
+
+
+let create_datamunge_xxPCA_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "feature_names", _PCA_feature_names ;
+    "observations", _PCA_observations ;
+    "num_components", _PCA_num_components ;
+    "kept_row_indices", _PCA_kept_row_indices ;
+    "explained_variance", _PCA_explained_variance ;
+    "explained_variance_ratio", _PCA_explained_variance_ratio ;
+    "cumulative_explained_variance_ratio", _PCA_cumulative_explained_variance_ratio ;
+    "component_loadings", _PCA_component_loadings ;
+    "component_scores", _PCA_component_scores ;
+    "scores_frame", _PCA_scores_frame ;
+    "transform", _PCA_transform ;
+    "summary", _PCA_summary ;
+    "print_summary", _PCA_print_summary ;
+    "plot_scores", _PCA_plot_scores ;
+    "plot_scores_grouped", _PCA_plot_scores_grouped ;
+    "plot_scree", _PCA_plot_scree ;
+    "~", _delete_PCA ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::PCA") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::PCA"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::PCA" create_datamunge_xxPCA_from_ptr
+let _ = Callback.register 
+          "create_datamunge::PCA_from_ptr"
+          create_datamunge_xxPCA_from_ptr
+
+
+
+let create_datamunge_xxMDS_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "feature_names", _MDS_feature_names ;
+    "observations", _MDS_observations ;
+    "n_components", _MDS_n_components ;
+    "kept_row_indices", _MDS_kept_row_indices ;
+    "eigenvalues", _MDS_eigenvalues ;
+    "goodness_of_fit", _MDS_goodness_of_fit ;
+    "dimension", _MDS_dimension ;
+    "embedding_frame", _MDS_embedding_frame ;
+    "summary", _MDS_summary ;
+    "print_summary", _MDS_print_summary ;
+    "plot_embedding", _MDS_plot_embedding ;
+    "plot_embedding_grouped", _MDS_plot_embedding_grouped ;
+    "~", _delete_MDS ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::MDS") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::MDS"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::MDS" create_datamunge_xxMDS_from_ptr
+let _ = Callback.register 
+          "create_datamunge::MDS_from_ptr"
+          create_datamunge_xxMDS_from_ptr
 
 
 
@@ -12778,6 +16920,352 @@ let _ = Callback.register
 
 
 
+let create_datamunge_xxoptim_xxProximalFunction_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "proximal", _ProximalFunction_proximal ;
+    "~", _delete_ProximalFunction ;
+    "", _disown_ProximalFunction ;
+   "::datamunge::optim::DifferentiableFunction", (fun args -> (create_class "datamunge::optim::DifferentiableFunction") args) ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ProximalFunction") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    (create_class "datamunge::optim::DifferentiableFunction") ;
+
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ProximalFunction"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ProximalFunction" create_datamunge_xxoptim_xxProximalFunction_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ProximalFunction_from_ptr"
+          create_datamunge_xxoptim_xxProximalFunction_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxHessianFunction_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "hessian", _HessianFunction_hessian ;
+    "~", _delete_HessianFunction ;
+    "", _disown_HessianFunction ;
+   "::datamunge::optim::DifferentiableFunction", (fun args -> (create_class "datamunge::optim::DifferentiableFunction") args) ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::HessianFunction") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    (create_class "datamunge::optim::DifferentiableFunction") ;
+
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::HessianFunction"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::HessianFunction" create_datamunge_xxoptim_xxHessianFunction_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::HessianFunction_from_ptr"
+          create_datamunge_xxoptim_xxHessianFunction_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxEqualityConstrainedFunction_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "constraints", _EqualityConstrainedFunction_constraints ;
+    "constraint_jacobian", _EqualityConstrainedFunction_constraint_jacobian ;
+    "~", _delete_EqualityConstrainedFunction ;
+    "", _disown_EqualityConstrainedFunction ;
+   "::datamunge::optim::DifferentiableFunction", (fun args -> (create_class "datamunge::optim::DifferentiableFunction") args) ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::EqualityConstrainedFunction") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    (create_class "datamunge::optim::DifferentiableFunction") ;
+
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::EqualityConstrainedFunction"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::EqualityConstrainedFunction" create_datamunge_xxoptim_xxEqualityConstrainedFunction_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::EqualityConstrainedFunction_from_ptr"
+          create_datamunge_xxoptim_xxEqualityConstrainedFunction_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxInequalityConstrainedFunction_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "inequalities", _InequalityConstrainedFunction_inequalities ;
+    "inequality_jacobian", _InequalityConstrainedFunction_inequality_jacobian ;
+    "~", _delete_InequalityConstrainedFunction ;
+    "", _disown_InequalityConstrainedFunction ;
+   "::datamunge::optim::DifferentiableFunction", (fun args -> (create_class "datamunge::optim::DifferentiableFunction") args) ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::InequalityConstrainedFunction") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    (create_class "datamunge::optim::DifferentiableFunction") ;
+
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::InequalityConstrainedFunction"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::InequalityConstrainedFunction" create_datamunge_xxoptim_xxInequalityConstrainedFunction_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::InequalityConstrainedFunction_from_ptr"
+          create_datamunge_xxoptim_xxInequalityConstrainedFunction_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxResidualFunction_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "~", _delete_ResidualFunction ;
+    "residuals", _ResidualFunction_residuals ;
+    "jacobian", _ResidualFunction_jacobian ;
+    "", _disown_ResidualFunction ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ResidualFunction") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ResidualFunction"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ResidualFunction" create_datamunge_xxoptim_xxResidualFunction_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ResidualFunction_from_ptr"
+          create_datamunge_xxoptim_xxResidualFunction_from_ptr
+
+
+
 let create_datamunge_xxoptim_xxGradientDescentOptions_from_ptr raw_ptr =
   C_obj 
 begin
@@ -13050,6 +17538,686 @@ let _ = Callback.register
 
 
 
+let create_datamunge_xxoptim_xxAdaGradOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaGradOptions_step_size_get args else _AdaGradOptions_step_size_set args) ;
+    "[epsilon]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaGradOptions_epsilon_get args else _AdaGradOptions_epsilon_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaGradOptions_max_iterations_get args else _AdaGradOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaGradOptions_tolerance_get args else _AdaGradOptions_tolerance_set args) ;
+    "~", _delete_AdaGradOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AdaGradOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AdaGradOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AdaGradOptions" create_datamunge_xxoptim_xxAdaGradOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AdaGradOptions_from_ptr"
+          create_datamunge_xxoptim_xxAdaGradOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAdaGrad_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _AdaGrad_optimize ;
+    "~", _delete_AdaGrad ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AdaGrad") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AdaGrad"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AdaGrad" create_datamunge_xxoptim_xxAdaGrad_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AdaGrad_from_ptr"
+          create_datamunge_xxoptim_xxAdaGrad_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAdaDeltaOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[decay_rate]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaDeltaOptions_decay_rate_get args else _AdaDeltaOptions_decay_rate_set args) ;
+    "[epsilon]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaDeltaOptions_epsilon_get args else _AdaDeltaOptions_epsilon_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaDeltaOptions_max_iterations_get args else _AdaDeltaOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _AdaDeltaOptions_tolerance_get args else _AdaDeltaOptions_tolerance_set args) ;
+    "~", _delete_AdaDeltaOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AdaDeltaOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AdaDeltaOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AdaDeltaOptions" create_datamunge_xxoptim_xxAdaDeltaOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AdaDeltaOptions_from_ptr"
+          create_datamunge_xxoptim_xxAdaDeltaOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAdaDelta_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _AdaDelta_optimize ;
+    "~", _delete_AdaDelta ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AdaDelta") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AdaDelta"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AdaDelta" create_datamunge_xxoptim_xxAdaDelta_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AdaDelta_from_ptr"
+          create_datamunge_xxoptim_xxAdaDelta_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAMSGradOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_step_size_get args else _AMSGradOptions_step_size_set args) ;
+    "[beta1]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_beta1_get args else _AMSGradOptions_beta1_set args) ;
+    "[beta2]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_beta2_get args else _AMSGradOptions_beta2_set args) ;
+    "[epsilon]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_epsilon_get args else _AMSGradOptions_epsilon_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_max_iterations_get args else _AMSGradOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _AMSGradOptions_tolerance_get args else _AMSGradOptions_tolerance_set args) ;
+    "~", _delete_AMSGradOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AMSGradOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AMSGradOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AMSGradOptions" create_datamunge_xxoptim_xxAMSGradOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AMSGradOptions_from_ptr"
+          create_datamunge_xxoptim_xxAMSGradOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAMSGrad_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _AMSGrad_optimize ;
+    "~", _delete_AMSGrad ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AMSGrad") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AMSGrad"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AMSGrad" create_datamunge_xxoptim_xxAMSGrad_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AMSGrad_from_ptr"
+          create_datamunge_xxoptim_xxAMSGrad_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNadamOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_step_size_get args else _NadamOptions_step_size_set args) ;
+    "[beta1]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_beta1_get args else _NadamOptions_beta1_set args) ;
+    "[beta2]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_beta2_get args else _NadamOptions_beta2_set args) ;
+    "[epsilon]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_epsilon_get args else _NadamOptions_epsilon_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_max_iterations_get args else _NadamOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _NadamOptions_tolerance_get args else _NadamOptions_tolerance_set args) ;
+    "~", _delete_NadamOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NadamOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NadamOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NadamOptions" create_datamunge_xxoptim_xxNadamOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NadamOptions_from_ptr"
+          create_datamunge_xxoptim_xxNadamOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNadam_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _Nadam_optimize ;
+    "~", _delete_Nadam ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::Nadam") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::Nadam"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::Nadam" create_datamunge_xxoptim_xxNadam_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::Nadam_from_ptr"
+          create_datamunge_xxoptim_xxNadam_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxRMSPropOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _RMSPropOptions_step_size_get args else _RMSPropOptions_step_size_set args) ;
+    "[decay_rate]", (fun args -> if args = (C_list [ raw_ptr ]) then _RMSPropOptions_decay_rate_get args else _RMSPropOptions_decay_rate_set args) ;
+    "[epsilon]", (fun args -> if args = (C_list [ raw_ptr ]) then _RMSPropOptions_epsilon_get args else _RMSPropOptions_epsilon_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _RMSPropOptions_max_iterations_get args else _RMSPropOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _RMSPropOptions_tolerance_get args else _RMSPropOptions_tolerance_set args) ;
+    "~", _delete_RMSPropOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::RMSPropOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::RMSPropOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::RMSPropOptions" create_datamunge_xxoptim_xxRMSPropOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::RMSPropOptions_from_ptr"
+          create_datamunge_xxoptim_xxRMSPropOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxRMSProp_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _RMSProp_optimize ;
+    "~", _delete_RMSProp ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::RMSProp") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::RMSProp"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::RMSProp" create_datamunge_xxoptim_xxRMSProp_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::RMSProp_from_ptr"
+          create_datamunge_xxoptim_xxRMSProp_from_ptr
+
+
+
 let create_datamunge_xxoptim_xxLBFGSOptions_from_ptr raw_ptr =
   C_obj 
 begin
@@ -13187,6 +18355,144 @@ let _ = Callback.register
 
 
 
+let create_datamunge_xxoptim_xxNelderMeadOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[initial_simplex_scale]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_initial_simplex_scale_get args else _NelderMeadOptions_initial_simplex_scale_set args) ;
+    "[reflection]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_reflection_get args else _NelderMeadOptions_reflection_set args) ;
+    "[expansion]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_expansion_get args else _NelderMeadOptions_expansion_set args) ;
+    "[contraction]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_contraction_get args else _NelderMeadOptions_contraction_set args) ;
+    "[shrink]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_shrink_get args else _NelderMeadOptions_shrink_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_max_iterations_get args else _NelderMeadOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _NelderMeadOptions_tolerance_get args else _NelderMeadOptions_tolerance_set args) ;
+    "~", _delete_NelderMeadOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NelderMeadOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NelderMeadOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NelderMeadOptions" create_datamunge_xxoptim_xxNelderMeadOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NelderMeadOptions_from_ptr"
+          create_datamunge_xxoptim_xxNelderMeadOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNelderMead_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _NelderMead_optimize ;
+    "~", _delete_NelderMead ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NelderMead") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NelderMead"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NelderMead" create_datamunge_xxoptim_xxNelderMead_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NelderMead_from_ptr"
+          create_datamunge_xxoptim_xxNelderMead_from_ptr
+
+
+
 let create_datamunge_xxoptim_xxSGDOptions_from_ptr raw_ptr =
   C_obj 
 begin
@@ -13321,6 +18627,960 @@ let _ = register_class_byname "datamunge::optim::SGD" create_datamunge_xxoptim_x
 let _ = Callback.register 
           "create_datamunge::optim::SGD_from_ptr"
           create_datamunge_xxoptim_xxSGD_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSVRGOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _SVRGOptions_step_size_get args else _SVRGOptions_step_size_set args) ;
+    "[max_epochs]", (fun args -> if args = (C_list [ raw_ptr ]) then _SVRGOptions_max_epochs_get args else _SVRGOptions_max_epochs_set args) ;
+    "[inner_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _SVRGOptions_inner_iterations_get args else _SVRGOptions_inner_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _SVRGOptions_tolerance_get args else _SVRGOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _SVRGOptions_seed_get args else _SVRGOptions_seed_set args) ;
+    "~", _delete_SVRGOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SVRGOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SVRGOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SVRGOptions" create_datamunge_xxoptim_xxSVRGOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SVRGOptions_from_ptr"
+          create_datamunge_xxoptim_xxSVRGOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSVRG_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _SVRG_optimize ;
+    "~", _delete_SVRG ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SVRG") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SVRG"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SVRG" create_datamunge_xxoptim_xxSVRG_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SVRG_from_ptr"
+          create_datamunge_xxoptim_xxSVRG_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSAGAOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _SAGAOptions_step_size_get args else _SAGAOptions_step_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _SAGAOptions_max_iterations_get args else _SAGAOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _SAGAOptions_tolerance_get args else _SAGAOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _SAGAOptions_seed_get args else _SAGAOptions_seed_set args) ;
+    "~", _delete_SAGAOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SAGAOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SAGAOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SAGAOptions" create_datamunge_xxoptim_xxSAGAOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SAGAOptions_from_ptr"
+          create_datamunge_xxoptim_xxSAGAOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSAGA_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _SAGA_optimize ;
+    "~", _delete_SAGA ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SAGA") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SAGA"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SAGA" create_datamunge_xxoptim_xxSAGA_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SAGA_from_ptr"
+          create_datamunge_xxoptim_xxSAGA_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCoordinateDescentOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_step_size_get args else _CoordinateDescentOptions_step_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_max_iterations_get args else _CoordinateDescentOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_tolerance_get args else _CoordinateDescentOptions_tolerance_set args) ;
+    "[armijo_c1]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_armijo_c1_get args else _CoordinateDescentOptions_armijo_c1_set args) ;
+    "[backtracking_factor]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_backtracking_factor_get args else _CoordinateDescentOptions_backtracking_factor_set args) ;
+    "[max_line_search_trials]", (fun args -> if args = (C_list [ raw_ptr ]) then _CoordinateDescentOptions_max_line_search_trials_get args else _CoordinateDescentOptions_max_line_search_trials_set args) ;
+    "~", _delete_CoordinateDescentOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CoordinateDescentOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CoordinateDescentOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CoordinateDescentOptions" create_datamunge_xxoptim_xxCoordinateDescentOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CoordinateDescentOptions_from_ptr"
+          create_datamunge_xxoptim_xxCoordinateDescentOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCoordinateDescent_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _CoordinateDescent_optimize ;
+    "~", _delete_CoordinateDescent ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CoordinateDescent") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CoordinateDescent"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CoordinateDescent" create_datamunge_xxoptim_xxCoordinateDescent_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CoordinateDescent_from_ptr"
+          create_datamunge_xxoptim_xxCoordinateDescent_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescentOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[block_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_block_size_get args else _RandomizedBlockCoordinateDescentOptions_block_size_set args) ;
+    "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_step_size_get args else _RandomizedBlockCoordinateDescentOptions_step_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_max_iterations_get args else _RandomizedBlockCoordinateDescentOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_tolerance_get args else _RandomizedBlockCoordinateDescentOptions_tolerance_set args) ;
+    "[armijo_c1]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_armijo_c1_get args else _RandomizedBlockCoordinateDescentOptions_armijo_c1_set args) ;
+    "[backtracking_factor]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_backtracking_factor_get args else _RandomizedBlockCoordinateDescentOptions_backtracking_factor_set args) ;
+    "[max_line_search_trials]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get args else _RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _RandomizedBlockCoordinateDescentOptions_seed_get args else _RandomizedBlockCoordinateDescentOptions_seed_set args) ;
+    "~", _delete_RandomizedBlockCoordinateDescentOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::RandomizedBlockCoordinateDescentOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::RandomizedBlockCoordinateDescentOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::RandomizedBlockCoordinateDescentOptions" create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescentOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::RandomizedBlockCoordinateDescentOptions_from_ptr"
+          create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescentOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescent_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _RandomizedBlockCoordinateDescent_optimize ;
+    "~", _delete_RandomizedBlockCoordinateDescent ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::RandomizedBlockCoordinateDescent") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::RandomizedBlockCoordinateDescent"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::RandomizedBlockCoordinateDescent" create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescent_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::RandomizedBlockCoordinateDescent_from_ptr"
+          create_datamunge_xxoptim_xxRandomizedBlockCoordinateDescent_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNesterovAcceleratedGradientOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _NesterovAcceleratedGradientOptions_step_size_get args else _NesterovAcceleratedGradientOptions_step_size_set args) ;
+    "[momentum]", (fun args -> if args = (C_list [ raw_ptr ]) then _NesterovAcceleratedGradientOptions_momentum_get args else _NesterovAcceleratedGradientOptions_momentum_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _NesterovAcceleratedGradientOptions_max_iterations_get args else _NesterovAcceleratedGradientOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _NesterovAcceleratedGradientOptions_tolerance_get args else _NesterovAcceleratedGradientOptions_tolerance_set args) ;
+    "~", _delete_NesterovAcceleratedGradientOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NesterovAcceleratedGradientOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NesterovAcceleratedGradientOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NesterovAcceleratedGradientOptions" create_datamunge_xxoptim_xxNesterovAcceleratedGradientOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NesterovAcceleratedGradientOptions_from_ptr"
+          create_datamunge_xxoptim_xxNesterovAcceleratedGradientOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNesterovAcceleratedGradient_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _NesterovAcceleratedGradient_optimize ;
+    "~", _delete_NesterovAcceleratedGradient ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NesterovAcceleratedGradient") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NesterovAcceleratedGradient"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NesterovAcceleratedGradient" create_datamunge_xxoptim_xxNesterovAcceleratedGradient_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NesterovAcceleratedGradient_from_ptr"
+          create_datamunge_xxoptim_xxNesterovAcceleratedGradient_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxConjugateGradientOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _ConjugateGradientOptions_max_iterations_get args else _ConjugateGradientOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _ConjugateGradientOptions_tolerance_get args else _ConjugateGradientOptions_tolerance_set args) ;
+    "[armijo_c1]", (fun args -> if args = (C_list [ raw_ptr ]) then _ConjugateGradientOptions_armijo_c1_get args else _ConjugateGradientOptions_armijo_c1_set args) ;
+    "[backtracking_factor]", (fun args -> if args = (C_list [ raw_ptr ]) then _ConjugateGradientOptions_backtracking_factor_get args else _ConjugateGradientOptions_backtracking_factor_set args) ;
+    "[max_line_search_trials]", (fun args -> if args = (C_list [ raw_ptr ]) then _ConjugateGradientOptions_max_line_search_trials_get args else _ConjugateGradientOptions_max_line_search_trials_set args) ;
+    "~", _delete_ConjugateGradientOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ConjugateGradientOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ConjugateGradientOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ConjugateGradientOptions" create_datamunge_xxoptim_xxConjugateGradientOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ConjugateGradientOptions_from_ptr"
+          create_datamunge_xxoptim_xxConjugateGradientOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxConjugateGradient_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _ConjugateGradient_optimize ;
+    "~", _delete_ConjugateGradient ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ConjugateGradient") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ConjugateGradient"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ConjugateGradient" create_datamunge_xxoptim_xxConjugateGradient_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ConjugateGradient_from_ptr"
+          create_datamunge_xxoptim_xxConjugateGradient_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCMAESOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _CMAESOptions_population_size_get args else _CMAESOptions_population_size_set args) ;
+    "[initial_step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _CMAESOptions_initial_step_size_get args else _CMAESOptions_initial_step_size_set args) ;
+    "[max_generations]", (fun args -> if args = (C_list [ raw_ptr ]) then _CMAESOptions_max_generations_get args else _CMAESOptions_max_generations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _CMAESOptions_tolerance_get args else _CMAESOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _CMAESOptions_seed_get args else _CMAESOptions_seed_set args) ;
+    "~", _delete_CMAESOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CMAESOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CMAESOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CMAESOptions" create_datamunge_xxoptim_xxCMAESOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CMAESOptions_from_ptr"
+          create_datamunge_xxoptim_xxCMAESOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCMAES_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _CMAES_optimize ;
+    "~", _delete_CMAES ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CMAES") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CMAES"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CMAES" create_datamunge_xxoptim_xxCMAES_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CMAES_from_ptr"
+          create_datamunge_xxoptim_xxCMAES_from_ptr
 
 
 
@@ -13882,6 +20142,2867 @@ let _ = register_class_byname "datamunge::optim::GeneticAlgorithm" create_datamu
 let _ = Callback.register 
           "create_datamunge::optim::GeneticAlgorithm_from_ptr"
           create_datamunge_xxoptim_xxGeneticAlgorithm_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxACOROptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[archive_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_archive_size_get args else _ACOROptions_archive_size_set args) ;
+    "[samples_per_iteration]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_samples_per_iteration_get args else _ACOROptions_samples_per_iteration_set args) ;
+    "[locality]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_locality_get args else _ACOROptions_locality_set args) ;
+    "[convergence_speed]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_convergence_speed_get args else _ACOROptions_convergence_speed_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_max_iterations_get args else _ACOROptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_tolerance_get args else _ACOROptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _ACOROptions_seed_get args else _ACOROptions_seed_set args) ;
+    "~", _delete_ACOROptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ACOROptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ACOROptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ACOROptions" create_datamunge_xxoptim_xxACOROptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ACOROptions_from_ptr"
+          create_datamunge_xxoptim_xxACOROptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxACOR_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _ACOR_optimize ;
+    "~", _delete_ACOR ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ACOR") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ACOR"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ACOR" create_datamunge_xxoptim_xxACOR_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ACOR_from_ptr"
+          create_datamunge_xxoptim_xxACOR_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxArtificialBeeColonyOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _ArtificialBeeColonyOptions_population_size_get args else _ArtificialBeeColonyOptions_population_size_set args) ;
+    "[abandonment_limit]", (fun args -> if args = (C_list [ raw_ptr ]) then _ArtificialBeeColonyOptions_abandonment_limit_get args else _ArtificialBeeColonyOptions_abandonment_limit_set args) ;
+    "[max_generations]", (fun args -> if args = (C_list [ raw_ptr ]) then _ArtificialBeeColonyOptions_max_generations_get args else _ArtificialBeeColonyOptions_max_generations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _ArtificialBeeColonyOptions_tolerance_get args else _ArtificialBeeColonyOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _ArtificialBeeColonyOptions_seed_get args else _ArtificialBeeColonyOptions_seed_set args) ;
+    "~", _delete_ArtificialBeeColonyOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ArtificialBeeColonyOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ArtificialBeeColonyOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ArtificialBeeColonyOptions" create_datamunge_xxoptim_xxArtificialBeeColonyOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ArtificialBeeColonyOptions_from_ptr"
+          create_datamunge_xxoptim_xxArtificialBeeColonyOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxArtificialBeeColony_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _ArtificialBeeColony_optimize ;
+    "~", _delete_ArtificialBeeColony ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ArtificialBeeColony") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ArtificialBeeColony"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ArtificialBeeColony" create_datamunge_xxoptim_xxArtificialBeeColony_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ArtificialBeeColony_from_ptr"
+          create_datamunge_xxoptim_xxArtificialBeeColony_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCrossEntropyMethodOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_population_size_get args else _CrossEntropyMethodOptions_population_size_set args) ;
+    "[elite_ratio]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_elite_ratio_get args else _CrossEntropyMethodOptions_elite_ratio_set args) ;
+    "[initial_std_dev]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_initial_std_dev_get args else _CrossEntropyMethodOptions_initial_std_dev_set args) ;
+    "[smoothing]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_smoothing_get args else _CrossEntropyMethodOptions_smoothing_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_max_iterations_get args else _CrossEntropyMethodOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_tolerance_get args else _CrossEntropyMethodOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _CrossEntropyMethodOptions_seed_get args else _CrossEntropyMethodOptions_seed_set args) ;
+    "~", _delete_CrossEntropyMethodOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CrossEntropyMethodOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CrossEntropyMethodOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CrossEntropyMethodOptions" create_datamunge_xxoptim_xxCrossEntropyMethodOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CrossEntropyMethodOptions_from_ptr"
+          create_datamunge_xxoptim_xxCrossEntropyMethodOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCrossEntropyMethod_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _CrossEntropyMethod_optimize ;
+    "~", _delete_CrossEntropyMethod ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CrossEntropyMethod") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CrossEntropyMethod"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CrossEntropyMethod" create_datamunge_xxoptim_xxCrossEntropyMethod_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CrossEntropyMethod_from_ptr"
+          create_datamunge_xxoptim_xxCrossEntropyMethod_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCuckooSearchOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_population_size_get args else _CuckooSearchOptions_population_size_set args) ;
+    "[discovery_rate]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_discovery_rate_get args else _CuckooSearchOptions_discovery_rate_set args) ;
+    "[levy_beta]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_levy_beta_get args else _CuckooSearchOptions_levy_beta_set args) ;
+    "[step_scale]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_step_scale_get args else _CuckooSearchOptions_step_scale_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_max_iterations_get args else _CuckooSearchOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_tolerance_get args else _CuckooSearchOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _CuckooSearchOptions_seed_get args else _CuckooSearchOptions_seed_set args) ;
+    "~", _delete_CuckooSearchOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CuckooSearchOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CuckooSearchOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CuckooSearchOptions" create_datamunge_xxoptim_xxCuckooSearchOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CuckooSearchOptions_from_ptr"
+          create_datamunge_xxoptim_xxCuckooSearchOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxCuckooSearch_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _CuckooSearch_optimize ;
+    "~", _delete_CuckooSearch ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::CuckooSearch") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::CuckooSearch"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::CuckooSearch" create_datamunge_xxoptim_xxCuckooSearch_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::CuckooSearch_from_ptr"
+          create_datamunge_xxoptim_xxCuckooSearch_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxEstimationOfDistributionOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_population_size_get args else _EstimationOfDistributionOptions_population_size_set args) ;
+    "[selection_ratio]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_selection_ratio_get args else _EstimationOfDistributionOptions_selection_ratio_set args) ;
+    "[initial_std_dev]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_initial_std_dev_get args else _EstimationOfDistributionOptions_initial_std_dev_set args) ;
+    "[covariance_regularization]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_covariance_regularization_get args else _EstimationOfDistributionOptions_covariance_regularization_set args) ;
+    "[max_generations]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_max_generations_get args else _EstimationOfDistributionOptions_max_generations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_tolerance_get args else _EstimationOfDistributionOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _EstimationOfDistributionOptions_seed_get args else _EstimationOfDistributionOptions_seed_set args) ;
+    "~", _delete_EstimationOfDistributionOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::EstimationOfDistributionOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::EstimationOfDistributionOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::EstimationOfDistributionOptions" create_datamunge_xxoptim_xxEstimationOfDistributionOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::EstimationOfDistributionOptions_from_ptr"
+          create_datamunge_xxoptim_xxEstimationOfDistributionOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxEstimationOfDistribution_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _EstimationOfDistribution_optimize ;
+    "~", _delete_EstimationOfDistribution ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::EstimationOfDistribution") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::EstimationOfDistribution"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::EstimationOfDistribution" create_datamunge_xxoptim_xxEstimationOfDistribution_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::EstimationOfDistribution_from_ptr"
+          create_datamunge_xxoptim_xxEstimationOfDistribution_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxEvolutionStrategyOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[mu]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_mu_get args else _EvolutionStrategyOptions_mu_set args) ;
+    "[offspring_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_offspring_size_get args else _EvolutionStrategyOptions_offspring_size_set args) ;
+    "[strategy]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_strategy_get args else _EvolutionStrategyOptions_strategy_set args) ;
+    "[initial_step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_initial_step_size_get args else _EvolutionStrategyOptions_initial_step_size_set args) ;
+    "[max_generations]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_max_generations_get args else _EvolutionStrategyOptions_max_generations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_tolerance_get args else _EvolutionStrategyOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _EvolutionStrategyOptions_seed_get args else _EvolutionStrategyOptions_seed_set args) ;
+    "~", _delete_EvolutionStrategyOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::EvolutionStrategyOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::EvolutionStrategyOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::EvolutionStrategyOptions" create_datamunge_xxoptim_xxEvolutionStrategyOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::EvolutionStrategyOptions_from_ptr"
+          create_datamunge_xxoptim_xxEvolutionStrategyOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxEvolutionStrategy_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _EvolutionStrategy_optimize ;
+    "~", _delete_EvolutionStrategy ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::EvolutionStrategy") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::EvolutionStrategy"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::EvolutionStrategy" create_datamunge_xxoptim_xxEvolutionStrategy_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::EvolutionStrategy_from_ptr"
+          create_datamunge_xxoptim_xxEvolutionStrategy_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxFireflyAlgorithmOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_population_size_get args else _FireflyAlgorithmOptions_population_size_set args) ;
+    "[attractiveness_at_zero]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_attractiveness_at_zero_get args else _FireflyAlgorithmOptions_attractiveness_at_zero_set args) ;
+    "[light_absorption]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_light_absorption_get args else _FireflyAlgorithmOptions_light_absorption_set args) ;
+    "[randomization_step]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_randomization_step_get args else _FireflyAlgorithmOptions_randomization_step_set args) ;
+    "[randomization_decay]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_randomization_decay_get args else _FireflyAlgorithmOptions_randomization_decay_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_max_iterations_get args else _FireflyAlgorithmOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_tolerance_get args else _FireflyAlgorithmOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _FireflyAlgorithmOptions_seed_get args else _FireflyAlgorithmOptions_seed_set args) ;
+    "~", _delete_FireflyAlgorithmOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::FireflyAlgorithmOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::FireflyAlgorithmOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::FireflyAlgorithmOptions" create_datamunge_xxoptim_xxFireflyAlgorithmOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::FireflyAlgorithmOptions_from_ptr"
+          create_datamunge_xxoptim_xxFireflyAlgorithmOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxFireflyAlgorithm_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _FireflyAlgorithm_optimize ;
+    "~", _delete_FireflyAlgorithm ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::FireflyAlgorithm") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::FireflyAlgorithm"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::FireflyAlgorithm" create_datamunge_xxoptim_xxFireflyAlgorithm_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::FireflyAlgorithm_from_ptr"
+          create_datamunge_xxoptim_xxFireflyAlgorithm_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxGreyWolfOptimizerOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _GreyWolfOptimizerOptions_population_size_get args else _GreyWolfOptimizerOptions_population_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _GreyWolfOptimizerOptions_max_iterations_get args else _GreyWolfOptimizerOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _GreyWolfOptimizerOptions_tolerance_get args else _GreyWolfOptimizerOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _GreyWolfOptimizerOptions_seed_get args else _GreyWolfOptimizerOptions_seed_set args) ;
+    "~", _delete_GreyWolfOptimizerOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::GreyWolfOptimizerOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::GreyWolfOptimizerOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::GreyWolfOptimizerOptions" create_datamunge_xxoptim_xxGreyWolfOptimizerOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::GreyWolfOptimizerOptions_from_ptr"
+          create_datamunge_xxoptim_xxGreyWolfOptimizerOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxGreyWolfOptimizer_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _GreyWolfOptimizer_optimize ;
+    "~", _delete_GreyWolfOptimizer ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::GreyWolfOptimizer") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::GreyWolfOptimizer"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::GreyWolfOptimizer" create_datamunge_xxoptim_xxGreyWolfOptimizer_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::GreyWolfOptimizer_from_ptr"
+          create_datamunge_xxoptim_xxGreyWolfOptimizer_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxHarmonySearchOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_population_size_get args else _HarmonySearchOptions_population_size_set args) ;
+    "[memory_consideration_rate]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_memory_consideration_rate_get args else _HarmonySearchOptions_memory_consideration_rate_set args) ;
+    "[pitch_adjustment_rate]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_pitch_adjustment_rate_get args else _HarmonySearchOptions_pitch_adjustment_rate_set args) ;
+    "[bandwidth_fraction]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_bandwidth_fraction_get args else _HarmonySearchOptions_bandwidth_fraction_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_max_iterations_get args else _HarmonySearchOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_tolerance_get args else _HarmonySearchOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _HarmonySearchOptions_seed_get args else _HarmonySearchOptions_seed_set args) ;
+    "~", _delete_HarmonySearchOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::HarmonySearchOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::HarmonySearchOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::HarmonySearchOptions" create_datamunge_xxoptim_xxHarmonySearchOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::HarmonySearchOptions_from_ptr"
+          create_datamunge_xxoptim_xxHarmonySearchOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxHarmonySearch_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _HarmonySearch_optimize ;
+    "~", _delete_HarmonySearch ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::HarmonySearch") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::HarmonySearch"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::HarmonySearch" create_datamunge_xxoptim_xxHarmonySearch_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::HarmonySearch_from_ptr"
+          create_datamunge_xxoptim_xxHarmonySearch_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxParallelTemperingOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[num_replicas]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_num_replicas_get args else _ParallelTemperingOptions_num_replicas_set args) ;
+    "[initial_temperature]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_initial_temperature_get args else _ParallelTemperingOptions_initial_temperature_set args) ;
+    "[final_temperature]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_final_temperature_get args else _ParallelTemperingOptions_final_temperature_set args) ;
+    "[step_std_dev]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_step_std_dev_get args else _ParallelTemperingOptions_step_std_dev_set args) ;
+    "[swap_interval]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_swap_interval_get args else _ParallelTemperingOptions_swap_interval_set args) ;
+    "[max_sweeps]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_max_sweeps_get args else _ParallelTemperingOptions_max_sweeps_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _ParallelTemperingOptions_seed_get args else _ParallelTemperingOptions_seed_set args) ;
+    "~", _delete_ParallelTemperingOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ParallelTemperingOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ParallelTemperingOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ParallelTemperingOptions" create_datamunge_xxoptim_xxParallelTemperingOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ParallelTemperingOptions_from_ptr"
+          create_datamunge_xxoptim_xxParallelTemperingOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxParallelTempering_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _ParallelTempering_optimize ;
+    "~", _delete_ParallelTempering ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ParallelTempering") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ParallelTempering"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ParallelTempering" create_datamunge_xxoptim_xxParallelTempering_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ParallelTempering_from_ptr"
+          create_datamunge_xxoptim_xxParallelTempering_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxWhaleOptimizationOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[population_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _WhaleOptimizationOptions_population_size_get args else _WhaleOptimizationOptions_population_size_set args) ;
+    "[spiral_constant]", (fun args -> if args = (C_list [ raw_ptr ]) then _WhaleOptimizationOptions_spiral_constant_get args else _WhaleOptimizationOptions_spiral_constant_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _WhaleOptimizationOptions_max_iterations_get args else _WhaleOptimizationOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _WhaleOptimizationOptions_tolerance_get args else _WhaleOptimizationOptions_tolerance_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _WhaleOptimizationOptions_seed_get args else _WhaleOptimizationOptions_seed_set args) ;
+    "~", _delete_WhaleOptimizationOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::WhaleOptimizationOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::WhaleOptimizationOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::WhaleOptimizationOptions" create_datamunge_xxoptim_xxWhaleOptimizationOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::WhaleOptimizationOptions_from_ptr"
+          create_datamunge_xxoptim_xxWhaleOptimizationOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxWhaleOptimization_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _WhaleOptimization_optimize ;
+    "~", _delete_WhaleOptimization ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::WhaleOptimization") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::WhaleOptimization"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::WhaleOptimization" create_datamunge_xxoptim_xxWhaleOptimization_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::WhaleOptimization_from_ptr"
+          create_datamunge_xxoptim_xxWhaleOptimization_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxFISTAOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _FISTAOptions_step_size_get args else _FISTAOptions_step_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _FISTAOptions_max_iterations_get args else _FISTAOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _FISTAOptions_tolerance_get args else _FISTAOptions_tolerance_set args) ;
+    "~", _delete_FISTAOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::FISTAOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::FISTAOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::FISTAOptions" create_datamunge_xxoptim_xxFISTAOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::FISTAOptions_from_ptr"
+          create_datamunge_xxoptim_xxFISTAOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxFISTA_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _FISTA_optimize ;
+    "~", _delete_FISTA ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::FISTA") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::FISTA"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::FISTA" create_datamunge_xxoptim_xxFISTA_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::FISTA_from_ptr"
+          create_datamunge_xxoptim_xxFISTA_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxProximalGradientOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _ProximalGradientOptions_step_size_get args else _ProximalGradientOptions_step_size_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _ProximalGradientOptions_max_iterations_get args else _ProximalGradientOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _ProximalGradientOptions_tolerance_get args else _ProximalGradientOptions_tolerance_set args) ;
+    "~", _delete_ProximalGradientOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ProximalGradientOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ProximalGradientOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ProximalGradientOptions" create_datamunge_xxoptim_xxProximalGradientOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ProximalGradientOptions_from_ptr"
+          create_datamunge_xxoptim_xxProximalGradientOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxProximalGradient_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _ProximalGradient_optimize ;
+    "~", _delete_ProximalGradient ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::ProximalGradient") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::ProximalGradient"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::ProximalGradient" create_datamunge_xxoptim_xxProximalGradient_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::ProximalGradient_from_ptr"
+          create_datamunge_xxoptim_xxProximalGradient_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxLevenbergMarquardtOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[initial_damping]", (fun args -> if args = (C_list [ raw_ptr ]) then _LevenbergMarquardtOptions_initial_damping_get args else _LevenbergMarquardtOptions_initial_damping_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _LevenbergMarquardtOptions_max_iterations_get args else _LevenbergMarquardtOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _LevenbergMarquardtOptions_tolerance_get args else _LevenbergMarquardtOptions_tolerance_set args) ;
+    "~", _delete_LevenbergMarquardtOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::LevenbergMarquardtOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::LevenbergMarquardtOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::LevenbergMarquardtOptions" create_datamunge_xxoptim_xxLevenbergMarquardtOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::LevenbergMarquardtOptions_from_ptr"
+          create_datamunge_xxoptim_xxLevenbergMarquardtOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxLevenbergMarquardt_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _LevenbergMarquardt_optimize ;
+    "~", _delete_LevenbergMarquardt ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::LevenbergMarquardt") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::LevenbergMarquardt"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::LevenbergMarquardt" create_datamunge_xxoptim_xxLevenbergMarquardt_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::LevenbergMarquardt_from_ptr"
+          create_datamunge_xxoptim_xxLevenbergMarquardt_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNewtonOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _NewtonOptions_max_iterations_get args else _NewtonOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _NewtonOptions_tolerance_get args else _NewtonOptions_tolerance_set args) ;
+    "[damping]", (fun args -> if args = (C_list [ raw_ptr ]) then _NewtonOptions_damping_get args else _NewtonOptions_damping_set args) ;
+    "~", _delete_NewtonOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::NewtonOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::NewtonOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::NewtonOptions" create_datamunge_xxoptim_xxNewtonOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::NewtonOptions_from_ptr"
+          create_datamunge_xxoptim_xxNewtonOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxNewton_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _Newton_optimize ;
+    "~", _delete_Newton ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::Newton") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::Newton"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::Newton" create_datamunge_xxoptim_xxNewton_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::Newton_from_ptr"
+          create_datamunge_xxoptim_xxNewton_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxTrustRegionNewtonOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[initial_radius]", (fun args -> if args = (C_list [ raw_ptr ]) then _TrustRegionNewtonOptions_initial_radius_get args else _TrustRegionNewtonOptions_initial_radius_set args) ;
+    "[max_radius]", (fun args -> if args = (C_list [ raw_ptr ]) then _TrustRegionNewtonOptions_max_radius_get args else _TrustRegionNewtonOptions_max_radius_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _TrustRegionNewtonOptions_max_iterations_get args else _TrustRegionNewtonOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _TrustRegionNewtonOptions_tolerance_get args else _TrustRegionNewtonOptions_tolerance_set args) ;
+    "~", _delete_TrustRegionNewtonOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::TrustRegionNewtonOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::TrustRegionNewtonOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::TrustRegionNewtonOptions" create_datamunge_xxoptim_xxTrustRegionNewtonOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::TrustRegionNewtonOptions_from_ptr"
+          create_datamunge_xxoptim_xxTrustRegionNewtonOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxTrustRegionNewton_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _TrustRegionNewton_optimize ;
+    "~", _delete_TrustRegionNewton ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::TrustRegionNewton") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::TrustRegionNewton"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::TrustRegionNewton" create_datamunge_xxoptim_xxTrustRegionNewton_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::TrustRegionNewton_from_ptr"
+          create_datamunge_xxoptim_xxTrustRegionNewton_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAugmentedLagrangianOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _AugmentedLagrangianOptions_step_size_get args else _AugmentedLagrangianOptions_step_size_set args) ;
+    "[initial_penalty]", (fun args -> if args = (C_list [ raw_ptr ]) then _AugmentedLagrangianOptions_initial_penalty_get args else _AugmentedLagrangianOptions_initial_penalty_set args) ;
+    "[max_outer_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _AugmentedLagrangianOptions_max_outer_iterations_get args else _AugmentedLagrangianOptions_max_outer_iterations_set args) ;
+    "[inner_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _AugmentedLagrangianOptions_inner_iterations_get args else _AugmentedLagrangianOptions_inner_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _AugmentedLagrangianOptions_tolerance_get args else _AugmentedLagrangianOptions_tolerance_set args) ;
+    "~", _delete_AugmentedLagrangianOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AugmentedLagrangianOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AugmentedLagrangianOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AugmentedLagrangianOptions" create_datamunge_xxoptim_xxAugmentedLagrangianOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AugmentedLagrangianOptions_from_ptr"
+          create_datamunge_xxoptim_xxAugmentedLagrangianOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxAugmentedLagrangian_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _AugmentedLagrangian_optimize ;
+    "~", _delete_AugmentedLagrangian ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::AugmentedLagrangian") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::AugmentedLagrangian"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::AugmentedLagrangian" create_datamunge_xxoptim_xxAugmentedLagrangian_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::AugmentedLagrangian_from_ptr"
+          create_datamunge_xxoptim_xxAugmentedLagrangian_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSQPOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _SQPOptions_step_size_get args else _SQPOptions_step_size_set args) ;
+    "[regularization]", (fun args -> if args = (C_list [ raw_ptr ]) then _SQPOptions_regularization_get args else _SQPOptions_regularization_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _SQPOptions_max_iterations_get args else _SQPOptions_max_iterations_set args) ;
+    "[tolerance]", (fun args -> if args = (C_list [ raw_ptr ]) then _SQPOptions_tolerance_get args else _SQPOptions_tolerance_set args) ;
+    "~", _delete_SQPOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SQPOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SQPOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SQPOptions" create_datamunge_xxoptim_xxSQPOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SQPOptions_from_ptr"
+          create_datamunge_xxoptim_xxSQPOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxSQP_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _SQP_optimize ;
+    "~", _delete_SQP ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::SQP") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::SQP"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::SQP" create_datamunge_xxoptim_xxSQP_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::SQP_from_ptr"
+          create_datamunge_xxoptim_xxSQP_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxInteriorPointOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _InteriorPointOptions_step_size_get args else _InteriorPointOptions_step_size_set args) ;
+    "[initial_barrier]", (fun args -> if args = (C_list [ raw_ptr ]) then _InteriorPointOptions_initial_barrier_get args else _InteriorPointOptions_initial_barrier_set args) ;
+    "[barrier_decay]", (fun args -> if args = (C_list [ raw_ptr ]) then _InteriorPointOptions_barrier_decay_get args else _InteriorPointOptions_barrier_decay_set args) ;
+    "[max_outer_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _InteriorPointOptions_max_outer_iterations_get args else _InteriorPointOptions_max_outer_iterations_set args) ;
+    "[inner_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _InteriorPointOptions_inner_iterations_get args else _InteriorPointOptions_inner_iterations_set args) ;
+    "~", _delete_InteriorPointOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::InteriorPointOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::InteriorPointOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::InteriorPointOptions" create_datamunge_xxoptim_xxInteriorPointOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::InteriorPointOptions_from_ptr"
+          create_datamunge_xxoptim_xxInteriorPointOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxInteriorPoint_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _InteriorPoint_optimize ;
+    "~", _delete_InteriorPoint ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::InteriorPoint") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::InteriorPoint"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::InteriorPoint" create_datamunge_xxoptim_xxInteriorPoint_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::InteriorPoint_from_ptr"
+          create_datamunge_xxoptim_xxInteriorPoint_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxBayesianSurrogate_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "~", _delete_BayesianSurrogate ;
+    "fit", _BayesianSurrogate_fit ;
+    "acquisition", _BayesianSurrogate_acquisition ;
+    "", _disown_BayesianSurrogate ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::BayesianSurrogate") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::BayesianSurrogate"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::BayesianSurrogate" create_datamunge_xxoptim_xxBayesianSurrogate_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::BayesianSurrogate_from_ptr"
+          create_datamunge_xxoptim_xxBayesianSurrogate_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxBayesianOptimizationOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[initial_samples]", (fun args -> if args = (C_list [ raw_ptr ]) then _BayesianOptimizationOptions_initial_samples_get args else _BayesianOptimizationOptions_initial_samples_set args) ;
+    "[max_iterations]", (fun args -> if args = (C_list [ raw_ptr ]) then _BayesianOptimizationOptions_max_iterations_get args else _BayesianOptimizationOptions_max_iterations_set args) ;
+    "[seed]", (fun args -> if args = (C_list [ raw_ptr ]) then _BayesianOptimizationOptions_seed_get args else _BayesianOptimizationOptions_seed_set args) ;
+    "~", _delete_BayesianOptimizationOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::BayesianOptimizationOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::BayesianOptimizationOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::BayesianOptimizationOptions" create_datamunge_xxoptim_xxBayesianOptimizationOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::BayesianOptimizationOptions_from_ptr"
+          create_datamunge_xxoptim_xxBayesianOptimizationOptions_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxBayesianOptimization_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "optimize", _BayesianOptimization_optimize ;
+    "~", _delete_BayesianOptimization ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::BayesianOptimization") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::BayesianOptimization"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::BayesianOptimization" create_datamunge_xxoptim_xxBayesianOptimization_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::BayesianOptimization_from_ptr"
+          create_datamunge_xxoptim_xxBayesianOptimization_from_ptr
+
+
+
+let create_datamunge_xxoptim_xxRBFGaussianProcessSurrogate_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "fit", _RBFGaussianProcessSurrogate_fit ;
+    "acquisition", _RBFGaussianProcessSurrogate_acquisition ;
+    "~", _delete_RBFGaussianProcessSurrogate ;
+   "::datamunge::optim::BayesianSurrogate", (fun args -> (create_class "datamunge::optim::BayesianSurrogate") args) ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::optim::RBFGaussianProcessSurrogate") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    (create_class "datamunge::optim::BayesianSurrogate") ;
+
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::optim::RBFGaussianProcessSurrogate"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::optim::RBFGaussianProcessSurrogate" create_datamunge_xxoptim_xxRBFGaussianProcessSurrogate_from_ptr
+let _ = Callback.register 
+          "create_datamunge::optim::RBFGaussianProcessSurrogate_from_ptr"
+          create_datamunge_xxoptim_xxRBFGaussianProcessSurrogate_from_ptr
 
 
 
@@ -15040,6 +24161,280 @@ let _ = Callback.register
           create_datamunge_xxbayes_xxImportanceSampling_from_ptr
 
 
+
+let create_datamunge_xxode_xxRHS_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "~", _delete_RHS ;
+    "evaluate", _RHS_evaluate ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::ode::RHS") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::ode::RHS"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::ode::RHS" create_datamunge_xxode_xxRHS_from_ptr
+let _ = Callback.register 
+          "create_datamunge::ode::RHS_from_ptr"
+          create_datamunge_xxode_xxRHS_from_ptr
+
+
+
+let create_datamunge_xxode_xxODEOptions_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[method]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_method_get args else _ODEOptions_method_set args) ;
+    "[multistep_order]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_multistep_order_get args else _ODEOptions_multistep_order_set args) ;
+    "[step_size]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_step_size_get args else _ODEOptions_step_size_set args) ;
+    "[abs_tol]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_abs_tol_get args else _ODEOptions_abs_tol_set args) ;
+    "[rel_tol]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_rel_tol_get args else _ODEOptions_rel_tol_set args) ;
+    "[max_step]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODEOptions_max_step_get args else _ODEOptions_max_step_set args) ;
+    "~", _delete_ODEOptions ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::ode::ODEOptions") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::ode::ODEOptions"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::ode::ODEOptions" create_datamunge_xxode_xxODEOptions_from_ptr
+let _ = Callback.register 
+          "create_datamunge::ode::ODEOptions_from_ptr"
+          create_datamunge_xxode_xxODEOptions_from_ptr
+
+
+
+let create_datamunge_xxode_xxODESolution_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "[steps_taken]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODESolution_steps_taken_get args else _ODESolution_steps_taken_set args) ;
+    "[function_evaluations]", (fun args -> if args = (C_list [ raw_ptr ]) then _ODESolution_function_evaluations_get args else _ODESolution_function_evaluations_set args) ;
+    "size", _ODESolution_size ;
+    "time_at", _ODESolution_time_at ;
+    "state_at", _ODESolution_state_at ;
+    "~", _delete_ODESolution ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::ode::ODESolution") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::ode::ODESolution"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::ode::ODESolution" create_datamunge_xxode_xxODESolution_from_ptr
+let _ = Callback.register 
+          "create_datamunge::ode::ODESolution_from_ptr"
+          create_datamunge_xxode_xxODESolution_from_ptr
+
+
+
+let create_datamunge_xxode_xxODESolver_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "solve", _ODESolver_solve ;
+    "solve_builtin", _ODESolver_solve_builtin ;
+    "~", _delete_ODESolver ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "datamunge::ode::ODESolver") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"datamunge::ode::ODESolver"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "datamunge::ode::ODESolver" create_datamunge_xxode_xxODESolver_from_ptr
+let _ = Callback.register 
+          "create_datamunge::ode::ODESolver_from_ptr"
+          create_datamunge_xxode_xxODESolver_from_ptr
+
+
 let new_DPair clst = _new_DPair clst
 let new_IPair clst = _new_IPair clst
 let new_DVectorPair clst = _new_DVectorPair clst
@@ -15067,6 +24462,8 @@ let new_Lasso clst = _new_Lasso clst
 let new_KNNClassifier clst = _new_KNNClassifier clst
 let new_KNNRegressor clst = _new_KNNRegressor clst
 let new_KMeans clst = _new_KMeans clst
+let new_PCA clst = _new_PCA clst
+let new_MDS clst = _new_MDS clst
 let new_AgglomerativeClustering clst = _new_AgglomerativeClustering clst
 let new_DBSCAN clst = _new_DBSCAN clst
 let new_GBMClassifier clst = _new_GBMClassifier clst
@@ -15098,14 +24495,45 @@ let new_ArbitraryFunction clst = _new_ArbitraryFunction clst
 let new_DifferentiableFunction clst = _new_DifferentiableFunction clst
 let new_SeparableFunction clst = _new_SeparableFunction clst
 let new_DifferentiableSeparableFunction clst = _new_DifferentiableSeparableFunction clst
+let new_ProximalFunction clst = _new_ProximalFunction clst
+let new_HessianFunction clst = _new_HessianFunction clst
+let new_EqualityConstrainedFunction clst = _new_EqualityConstrainedFunction clst
+let new_InequalityConstrainedFunction clst = _new_InequalityConstrainedFunction clst
+let new_ResidualFunction clst = _new_ResidualFunction clst
 let new_GradientDescentOptions clst = _new_GradientDescentOptions clst
 let new_GradientDescent clst = _new_GradientDescent clst
 let new_AdamOptions clst = _new_AdamOptions clst
 let new_Adam clst = _new_Adam clst
+let new_AdaGradOptions clst = _new_AdaGradOptions clst
+let new_AdaGrad clst = _new_AdaGrad clst
+let new_AdaDeltaOptions clst = _new_AdaDeltaOptions clst
+let new_AdaDelta clst = _new_AdaDelta clst
+let new_AMSGradOptions clst = _new_AMSGradOptions clst
+let new_AMSGrad clst = _new_AMSGrad clst
+let new_NadamOptions clst = _new_NadamOptions clst
+let new_Nadam clst = _new_Nadam clst
+let new_RMSPropOptions clst = _new_RMSPropOptions clst
+let new_RMSProp clst = _new_RMSProp clst
 let new_LBFGSOptions clst = _new_LBFGSOptions clst
 let new_LBFGS clst = _new_LBFGS clst
+let new_NelderMeadOptions clst = _new_NelderMeadOptions clst
+let new_NelderMead clst = _new_NelderMead clst
 let new_SGDOptions clst = _new_SGDOptions clst
 let new_SGD clst = _new_SGD clst
+let new_SVRGOptions clst = _new_SVRGOptions clst
+let new_SVRG clst = _new_SVRG clst
+let new_SAGAOptions clst = _new_SAGAOptions clst
+let new_SAGA clst = _new_SAGA clst
+let new_CoordinateDescentOptions clst = _new_CoordinateDescentOptions clst
+let new_CoordinateDescent clst = _new_CoordinateDescent clst
+let new_RandomizedBlockCoordinateDescentOptions clst = _new_RandomizedBlockCoordinateDescentOptions clst
+let new_RandomizedBlockCoordinateDescent clst = _new_RandomizedBlockCoordinateDescent clst
+let new_NesterovAcceleratedGradientOptions clst = _new_NesterovAcceleratedGradientOptions clst
+let new_NesterovAcceleratedGradient clst = _new_NesterovAcceleratedGradient clst
+let new_ConjugateGradientOptions clst = _new_ConjugateGradientOptions clst
+let new_ConjugateGradient clst = _new_ConjugateGradient clst
+let new_CMAESOptions clst = _new_CMAESOptions clst
+let new_CMAES clst = _new_CMAES clst
 let new_SimulatedAnnealingOptions clst = _new_SimulatedAnnealingOptions clst
 let new_SimulatedAnnealing clst = _new_SimulatedAnnealing clst
 let new_PSOOptions clst = _new_PSOOptions clst
@@ -15114,6 +24542,48 @@ let new_DEOptions clst = _new_DEOptions clst
 let new_DifferentialEvolution clst = _new_DifferentialEvolution clst
 let new_GAOptions clst = _new_GAOptions clst
 let new_GeneticAlgorithm clst = _new_GeneticAlgorithm clst
+let new_ACOROptions clst = _new_ACOROptions clst
+let new_ACOR clst = _new_ACOR clst
+let new_ArtificialBeeColonyOptions clst = _new_ArtificialBeeColonyOptions clst
+let new_ArtificialBeeColony clst = _new_ArtificialBeeColony clst
+let new_CrossEntropyMethodOptions clst = _new_CrossEntropyMethodOptions clst
+let new_CrossEntropyMethod clst = _new_CrossEntropyMethod clst
+let new_CuckooSearchOptions clst = _new_CuckooSearchOptions clst
+let new_CuckooSearch clst = _new_CuckooSearch clst
+let new_EstimationOfDistributionOptions clst = _new_EstimationOfDistributionOptions clst
+let new_EstimationOfDistribution clst = _new_EstimationOfDistribution clst
+let new_EvolutionStrategyOptions clst = _new_EvolutionStrategyOptions clst
+let new_EvolutionStrategy clst = _new_EvolutionStrategy clst
+let new_FireflyAlgorithmOptions clst = _new_FireflyAlgorithmOptions clst
+let new_FireflyAlgorithm clst = _new_FireflyAlgorithm clst
+let new_GreyWolfOptimizerOptions clst = _new_GreyWolfOptimizerOptions clst
+let new_GreyWolfOptimizer clst = _new_GreyWolfOptimizer clst
+let new_HarmonySearchOptions clst = _new_HarmonySearchOptions clst
+let new_HarmonySearch clst = _new_HarmonySearch clst
+let new_ParallelTemperingOptions clst = _new_ParallelTemperingOptions clst
+let new_ParallelTempering clst = _new_ParallelTempering clst
+let new_WhaleOptimizationOptions clst = _new_WhaleOptimizationOptions clst
+let new_WhaleOptimization clst = _new_WhaleOptimization clst
+let new_FISTAOptions clst = _new_FISTAOptions clst
+let new_FISTA clst = _new_FISTA clst
+let new_ProximalGradientOptions clst = _new_ProximalGradientOptions clst
+let new_ProximalGradient clst = _new_ProximalGradient clst
+let new_LevenbergMarquardtOptions clst = _new_LevenbergMarquardtOptions clst
+let new_LevenbergMarquardt clst = _new_LevenbergMarquardt clst
+let new_NewtonOptions clst = _new_NewtonOptions clst
+let new_Newton clst = _new_Newton clst
+let new_TrustRegionNewtonOptions clst = _new_TrustRegionNewtonOptions clst
+let new_TrustRegionNewton clst = _new_TrustRegionNewton clst
+let new_AugmentedLagrangianOptions clst = _new_AugmentedLagrangianOptions clst
+let new_AugmentedLagrangian clst = _new_AugmentedLagrangian clst
+let new_SQPOptions clst = _new_SQPOptions clst
+let new_SQP clst = _new_SQP clst
+let new_InteriorPointOptions clst = _new_InteriorPointOptions clst
+let new_InteriorPoint clst = _new_InteriorPoint clst
+let new_BayesianSurrogate clst = _new_BayesianSurrogate clst
+let new_BayesianOptimizationOptions clst = _new_BayesianOptimizationOptions clst
+let new_BayesianOptimization clst = _new_BayesianOptimization clst
+let new_RBFGaussianProcessSurrogate clst = _new_RBFGaussianProcessSurrogate clst
 let new_MAPOptions clst = _new_MAPOptions clst
 let new_MAP clst = _new_MAP clst
 let new_HMCOptions clst = _new_HMCOptions clst
@@ -15131,6 +24601,9 @@ let new_GibbsSampler clst = _new_GibbsSampler clst
 let new_ImportanceSamplingOptions clst = _new_ImportanceSamplingOptions clst
 let new_ImportanceSamplingResult clst = _new_ImportanceSamplingResult clst
 let new_ImportanceSampling clst = _new_ImportanceSampling clst
+let new_ODEOptions clst = _new_ODEOptions clst
+let new_ODESolution clst = _new_ODESolution clst
+let new_ODESolver clst = _new_ODESolver clst
 
   let rec swig_val t v = 
     match v with

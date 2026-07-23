@@ -8,6 +8,7 @@
 #include <datamunge/gis/gis.hpp>
 #include <datamunge/image/imaging.hpp>
 #include <datamunge/linalg/tensor.hpp>
+#include <datamunge/ode/ode.hpp>
 #include <datamunge/optim/optim.hpp>
 #include <datamunge/plot/ggplot.hpp>
 #include <datamunge/plot/plot.hpp>
@@ -248,6 +249,16 @@ class DataFrame {
   friend class GLMM;
   friend class INLAMixedModel;
   friend class ShapeLayer;
+  friend class PCA;
+  friend class MDS;
+  friend class Isomap;
+  friend class LLE;
+  friend class TSNE;
+  friend class LaplacianEigenmaps;
+  friend class DiffusionMaps;
+  friend class KernelPCA;
+  friend class SammonMapping;
+  friend class UMAP;
 
   explicit DataFrame(dstruct::DataFrame frame);
 
@@ -986,6 +997,418 @@ class KMeans {
 
  private:
   stats::KMeans kmeans_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::PCA — principal component analysis fit
+///        from a DataFrame and a list of numeric feature columns via eigendecomposition of the
+///        correlation (default) or covariance matrix.
+class PCA {
+ public:
+  /// @param center Mean-center each feature before fitting; almost always left true.
+  /// @param scale Standardize each feature to unit variance before fitting (i.e. fit on the
+  ///              correlation matrix rather than the covariance matrix); recommended whenever
+  ///              features are on different scales, and the default here.
+  PCA(const DataFrame& data, const std::vector<std::string>& feature_columns, bool center = true, bool scale = true);
+
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  PCA(const DataFrame& data, const std::string& encoded_feature_columns, bool center = true, bool scale = true);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              num_components() const;
+  /// @brief Row indices (into the DataFrame passed to the constructor) that survived
+  ///        null-dropping, in fitted order -- use to align an external label vector for
+  ///        plot_scores_grouped().
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> explained_variance() const;
+  [[nodiscard]] std::vector<double> explained_variance_ratio() const;
+  [[nodiscard]] std::vector<double> cumulative_explained_variance_ratio() const;
+
+  [[nodiscard]] std::vector<double> component_loadings(std::size_t component_index) const;
+  [[nodiscard]] std::vector<double> component_scores(std::size_t component_index) const;
+
+  /// @brief The fitted training scores as a DataFrame ("PC1", "PC2", ... columns), one row per
+  ///        kept observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+  [[nodiscard]] DataFrame* scores_frame() const;
+  /// @brief Projects new data onto the already-fitted components, as a DataFrame with the same
+  ///        "PC1", "PC2", ... columns as scores_frame().
+  [[nodiscard]] DataFrame* transform(const DataFrame& newdata) const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  /// @brief Scatter of scores in the (component_x, component_y) plane, single series.
+  [[nodiscard]] datamunge::plot::RPlot plot_scores(std::size_t component_x = 0, std::size_t component_y = 1) const;
+  /// @brief Same, colored by an external grouping vector (e.g. a withheld response column);
+  ///        `group_labels` must have one entry per kept_row_indices() entry.
+  [[nodiscard]] datamunge::plot::RPlot plot_scores_grouped(const std::vector<std::string>& group_labels,
+                                                            std::size_t component_x = 0,
+                                                            std::size_t component_y = 1) const;
+  /// @brief Scree plot: percent of variance explained by each component, as a bar chart.
+  [[nodiscard]] datamunge::plot::RPlot plot_scree() const;
+
+ private:
+  stats::PCA pca_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::MDS — classical (metric/Torgerson)
+///        multidimensional scaling fit from a DataFrame and a list of numeric feature columns:
+///        embeds the rows in a low-dimensional space that best reproduces their original
+///        pairwise distances.
+class MDS {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  MDS(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+      const std::string& metric = "euclidean");
+
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  MDS(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+      const std::string& metric = "euclidean");
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  /// @brief Row indices (into the DataFrame passed to the constructor) that survived
+  ///        null-dropping, in fitted order -- use to align an external label vector for
+  ///        plot_embedding_grouped().
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+  [[nodiscard]] double              goodness_of_fit() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  /// @brief The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+  ///        observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+  [[nodiscard]] DataFrame* embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  /// @brief Scatter of the embedding in the (dimension_x, dimension_y) plane, single series.
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const;
+  /// @brief Same, colored by an external grouping vector (e.g. a withheld response column);
+  ///        `group_labels` must have one entry per kept_row_indices() entry.
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::MDS mds_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::Isomap — nonlinear manifold learning via
+///        geodesic (shortest-path, over a k-nearest-neighbor graph) distances embedded with
+///        classical MDS. Throws if the k-nearest-neighbor graph is disconnected.
+class Isomap {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  Isomap(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+         std::size_t n_neighbors = 10, const std::string& metric = "euclidean");
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  Isomap(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+         std::size_t n_neighbors = 10, const std::string& metric = "euclidean");
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+  [[nodiscard]] double              goodness_of_fit() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  /// @brief The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+  ///        observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+  [[nodiscard]] DataFrame* embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::Isomap isomap_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::LLE — locally linear embedding: preserves
+///        each point's local reconstruction weights from its k nearest neighbors rather than
+///        global distances, letting it unfold nonlinear manifolds PCA/MDS cannot.
+class LLE {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  LLE(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+      std::size_t n_neighbors = 10, double regularization = 1e-3, const std::string& metric = "euclidean");
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  LLE(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+      std::size_t n_neighbors = 10, double regularization = 1e-3, const std::string& metric = "euclidean");
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::LLE lle_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::TSNE — t-distributed Stochastic Neighbor
+///        Embedding, a nonlinear method that preserves local neighborhood structure (via a
+///        perplexity-calibrated probability distribution) primarily for 2D/3D visualization.
+class TSNE {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  TSNE(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+       double perplexity = 30.0, std::size_t max_iterations = 1000, double learning_rate = 200.0,
+       double early_exaggeration = 12.0, std::size_t early_exaggeration_iterations = 250,
+       double initial_momentum = 0.5, double final_momentum = 0.8, std::size_t momentum_switch_iteration = 250,
+       const std::string& metric = "euclidean", std::uint64_t seed = 42);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  TSNE(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+       double perplexity = 30.0, std::size_t max_iterations = 1000, double learning_rate = 200.0,
+       double early_exaggeration = 12.0, std::size_t early_exaggeration_iterations = 250,
+       double initial_momentum = 0.5, double final_momentum = 0.8, std::size_t momentum_switch_iteration = 250,
+       const std::string& metric = "euclidean", std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  /// @brief The achieved perplexity for each fitted point after the per-point binary search --
+  ///        should be close to the constructor's perplexity argument if calibration converged.
+  [[nodiscard]] std::vector<double> achieved_perplexity() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::TSNE tsne_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::LaplacianEigenmaps — embeds points via the
+///        smallest non-trivial eigenvectors of a heat-kernel-weighted, sparse k-nearest-neighbor
+///        graph Laplacian. Distinct from DiffusionMaps (also heat-kernel-based, but dense and
+///        alpha-normalized).
+class LaplacianEigenmaps {
+ public:
+  LaplacianEigenmaps(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                     std::size_t n_components = 2, std::size_t n_neighbors = 10, double heat_kernel_t = 1.0);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  LaplacianEigenmaps(const DataFrame& data, const std::string& encoded_feature_columns,
+                     std::size_t n_components = 2, std::size_t n_neighbors = 10, double heat_kernel_t = 1.0);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::LaplacianEigenmaps laplacian_eigenmaps_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::DiffusionMaps — embeds points via the
+///        leading eigenvectors of a dense, alpha-normalized heat-kernel Markov transition matrix,
+///        scaled by eigenvalue^diffusion_time. Distinct from LaplacianEigenmaps (sparse k-NN
+///        graph Laplacian, no density normalization).
+class DiffusionMaps {
+ public:
+  DiffusionMaps(const DataFrame& data, const std::vector<std::string>& feature_columns,
+               std::size_t n_components = 2, double heat_kernel_epsilon = 1.0, double alpha = 0.5,
+               double diffusion_time = 1.0);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  DiffusionMaps(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+               double heat_kernel_epsilon = 1.0, double alpha = 0.5, double diffusion_time = 1.0);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::DiffusionMaps diffusion_maps_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::KernelPCA — principal component analysis
+///        generalized to a nonlinear feature space via the kernel trick. With a linear kernel it
+///        reproduces plain unscaled PCA's scores (up to a sign flip per component).
+class KernelPCA {
+ public:
+  /// @param kernel One of "linear", "rbf" (default), "polynomial".
+  KernelPCA(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+            const std::string& kernel = "rbf", double gamma = 1.0, double degree = 3.0, double coef0 = 1.0);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  KernelPCA(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+            const std::string& kernel = "rbf", double gamma = 1.0, double degree = 3.0, double coef0 = 1.0);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> eigenvalues() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::KernelPCA kernel_pca_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::SammonMapping — iteratively minimizes a
+///        weighted distance-preservation "stress" (small high-dimensional distances weighted much
+///        more heavily than large ones) via Sammon's original pseudo-Newton update.
+class SammonMapping {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  SammonMapping(const DataFrame& data, const std::vector<std::string>& feature_columns,
+               std::size_t n_components = 2, double learning_rate = 0.3, std::size_t max_iterations = 500,
+               double tolerance = 1e-9, const std::string& metric = "euclidean", std::uint64_t seed = 42);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  SammonMapping(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+               double learning_rate = 0.3, std::size_t max_iterations = 500, double tolerance = 1e-9,
+               const std::string& metric = "euclidean", std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  /// @brief Final Sammon stress -- lower is better, 0 is a perfect distance-preserving embedding.
+  [[nodiscard]] double      stress() const;
+  [[nodiscard]] std::size_t iterations_run() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::SammonMapping sammon_mapping_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::UMAP — builds a fuzzy simplicial set (a
+///        smoothly-calibrated, fuzzy-union-symmetrized k-nearest-neighbor graph) and optimizes a
+///        low-dimensional embedding via cross-entropy minimization (attractive + negative-sampled
+///        repulsive forces). A deliberately simplified but honest implementation -- see the real
+///        class's own documentation for the two named simplifications.
+class UMAP {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  UMAP(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_components = 2,
+       std::size_t n_neighbors = 15, double min_dist = 0.1, std::size_t max_iterations = 500,
+       double learning_rate = 1.0, double negative_sample_rate = 5.0, const std::string& metric = "euclidean",
+       std::uint64_t seed = 42);
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  UMAP(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_components = 2,
+       std::size_t n_neighbors = 15, double min_dist = 0.1, std::size_t max_iterations = 500,
+       double learning_rate = 1.0, double negative_sample_rate = 5.0, const std::string& metric = "euclidean",
+       std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_components() const;
+  [[nodiscard]] std::vector<std::size_t> kept_row_indices() const;
+
+  [[nodiscard]] std::vector<double> dimension(std::size_t index) const;
+  [[nodiscard]] DataFrame*          embedding_frame() const;
+
+  /// @brief Per-point sigma_i / rho_i from the smooth k-NN calibration -- mainly for diagnostics.
+  [[nodiscard]] std::vector<double> sigmas() const;
+  [[nodiscard]] std::vector<double> rhos() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding(std::size_t dimension_x = 0,
+                                                       std::size_t dimension_y = 1) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                               std::size_t dimension_x = 0,
+                                                               std::size_t dimension_y = 1) const;
+
+ private:
+  stats::UMAP umap_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up

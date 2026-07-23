@@ -138,8 +138,8 @@ public class LDA {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public ScatterPlot plot_discriminants() {
-    return new ScatterPlot(datamungeJNI.LDA_plot_discriminants(swigCPtr, this), true);
+  public RPlot plot_discriminants() {
+    return new RPlot(datamungeJNI.LDA_plot_discriminants(swigCPtr, this), true);
   }
 
   public void save_discriminant_plot(String path) {

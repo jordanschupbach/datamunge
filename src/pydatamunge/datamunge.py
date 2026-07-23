@@ -3263,6 +3263,961 @@ class KMeans(object):
 
 # Register KMeans in _datamunge:
 _datamunge.KMeans_swigregister(KMeans)
+class PCA(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::PCA — principal component analysis fit
+           from a DataFrame and a list of numeric feature columns via eigendecomposition of the
+           correlation (default) or covariance matrix.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type center: boolean, optional
+        :param center: Mean-center each feature before fitting; almost always left true.
+        :type scale: boolean, optional
+        :param scale: Standardize each feature to unit variance before fitting (i.e. fit on the
+                         correlation matrix rather than the covariance matrix); recommended whenever
+                         features are on different scales, and the default here.
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.PCA_swiginit(self, _datamunge.new_PCA(*args))
+
+    def feature_names(self):
+        return _datamunge.PCA_feature_names(self)
+
+    def observations(self):
+        return _datamunge.PCA_observations(self)
+
+    def num_components(self):
+        return _datamunge.PCA_num_components(self)
+
+    def kept_row_indices(self):
+        r"""
+        Row indices (into the DataFrame passed to the constructor) that survived
+               null-dropping, in fitted order -- use to align an external label vector for
+               plot_scores_grouped().
+        """
+        return _datamunge.PCA_kept_row_indices(self)
+
+    def explained_variance(self):
+        return _datamunge.PCA_explained_variance(self)
+
+    def explained_variance_ratio(self):
+        return _datamunge.PCA_explained_variance_ratio(self)
+
+    def cumulative_explained_variance_ratio(self):
+        return _datamunge.PCA_cumulative_explained_variance_ratio(self)
+
+    def component_loadings(self, component_index):
+        return _datamunge.PCA_component_loadings(self, component_index)
+
+    def component_scores(self, component_index):
+        return _datamunge.PCA_component_scores(self, component_index)
+
+    def scores_frame(self):
+        r"""
+        The fitted training scores as a DataFrame ("PC1", "PC2", ... columns), one row per
+               kept observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+        """
+        return _datamunge.PCA_scores_frame(self)
+
+    def transform(self, newdata):
+        r"""
+        Projects new data onto the already-fitted components, as a DataFrame with the same
+               "PC1", "PC2", ... columns as scores_frame().
+        """
+        return _datamunge.PCA_transform(self, newdata)
+
+    def summary(self):
+        return _datamunge.PCA_summary(self)
+
+    def print_summary(self):
+        return _datamunge.PCA_print_summary(self)
+
+    def plot_scores(self, component_x=0, component_y=1):
+        r"""Scatter of scores in the (component_x, component_y) plane, single series."""
+        return _datamunge.PCA_plot_scores(self, component_x, component_y)
+
+    def plot_scores_grouped(self, group_labels, component_x=0, component_y=1):
+        r"""
+        Same, colored by an external grouping vector (e.g. a withheld response column);
+               `group_labels` must have one entry per kept_row_indices() entry.
+        """
+        return _datamunge.PCA_plot_scores_grouped(self, group_labels, component_x, component_y)
+
+    def plot_scree(self):
+        r"""Scree plot: percent of variance explained by each component, as a bar chart."""
+        return _datamunge.PCA_plot_scree(self)
+    __swig_destroy__ = _datamunge.delete_PCA
+
+# Register PCA in _datamunge:
+_datamunge.PCA_swigregister(PCA)
+class MDS(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::MDS — classical (metric/Torgerson)
+           multidimensional scaling fit from a DataFrame and a list of numeric feature columns:
+           embeds the rows in a low-dimensional space that best reproduces their original
+           pairwise distances.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.MDS_swiginit(self, _datamunge.new_MDS(*args))
+
+    def feature_names(self):
+        return _datamunge.MDS_feature_names(self)
+
+    def observations(self):
+        return _datamunge.MDS_observations(self)
+
+    def n_components(self):
+        return _datamunge.MDS_n_components(self)
+
+    def kept_row_indices(self):
+        r"""
+        Row indices (into the DataFrame passed to the constructor) that survived
+               null-dropping, in fitted order -- use to align an external label vector for
+               plot_embedding_grouped().
+        """
+        return _datamunge.MDS_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.MDS_eigenvalues(self)
+
+    def goodness_of_fit(self):
+        return _datamunge.MDS_goodness_of_fit(self)
+
+    def dimension(self, index):
+        return _datamunge.MDS_dimension(self, index)
+
+    def embedding_frame(self):
+        r"""
+        The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+               observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+        """
+        return _datamunge.MDS_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.MDS_summary(self)
+
+    def print_summary(self):
+        return _datamunge.MDS_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        r"""Scatter of the embedding in the (dimension_x, dimension_y) plane, single series."""
+        return _datamunge.MDS_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        r"""
+        Same, colored by an external grouping vector (e.g. a withheld response column);
+               `group_labels` must have one entry per kept_row_indices() entry.
+        """
+        return _datamunge.MDS_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_MDS
+
+# Register MDS in _datamunge:
+_datamunge.MDS_swigregister(MDS)
+class Isomap(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::Isomap — nonlinear manifold learning via
+           geodesic (shortest-path, over a k-nearest-neighbor graph) distances embedded with
+           classical MDS. Throws if the k-nearest-neighbor graph is disconnected.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.Isomap_swiginit(self, _datamunge.new_Isomap(*args))
+
+    def feature_names(self):
+        return _datamunge.Isomap_feature_names(self)
+
+    def observations(self):
+        return _datamunge.Isomap_observations(self)
+
+    def n_components(self):
+        return _datamunge.Isomap_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.Isomap_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.Isomap_eigenvalues(self)
+
+    def goodness_of_fit(self):
+        return _datamunge.Isomap_goodness_of_fit(self)
+
+    def dimension(self, index):
+        return _datamunge.Isomap_dimension(self, index)
+
+    def embedding_frame(self):
+        r"""
+        The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+               observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+        """
+        return _datamunge.Isomap_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.Isomap_summary(self)
+
+    def print_summary(self):
+        return _datamunge.Isomap_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.Isomap_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.Isomap_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_Isomap
+
+# Register Isomap in _datamunge:
+_datamunge.Isomap_swigregister(Isomap)
+class LLE(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::LLE — locally linear embedding: preserves
+           each point's local reconstruction weights from its k nearest neighbors rather than
+           global distances, letting it unfold nonlinear manifolds PCA/MDS cannot.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.LLE_swiginit(self, _datamunge.new_LLE(*args))
+
+    def feature_names(self):
+        return _datamunge.LLE_feature_names(self)
+
+    def observations(self):
+        return _datamunge.LLE_observations(self)
+
+    def n_components(self):
+        return _datamunge.LLE_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.LLE_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.LLE_eigenvalues(self)
+
+    def dimension(self, index):
+        return _datamunge.LLE_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.LLE_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.LLE_summary(self)
+
+    def print_summary(self):
+        return _datamunge.LLE_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.LLE_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.LLE_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_LLE
+
+# Register LLE in _datamunge:
+_datamunge.LLE_swigregister(LLE)
+class TSNE(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::TSNE — t-distributed Stochastic Neighbor
+           Embedding, a nonlinear method that preserves local neighborhood structure (via a
+           perplexity-calibrated probability distribution) primarily for 2D/3D visualization.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 7:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 8:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 9:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 10:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 11:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 12:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 13:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.TSNE_swiginit(self, _datamunge.new_TSNE(*args))
+
+    def feature_names(self):
+        return _datamunge.TSNE_feature_names(self)
+
+    def observations(self):
+        return _datamunge.TSNE_observations(self)
+
+    def n_components(self):
+        return _datamunge.TSNE_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.TSNE_kept_row_indices(self)
+
+    def achieved_perplexity(self):
+        r"""
+        The achieved perplexity for each fitted point after the per-point binary search --
+               should be close to the constructor's perplexity argument if calibration converged.
+        """
+        return _datamunge.TSNE_achieved_perplexity(self)
+
+    def dimension(self, index):
+        return _datamunge.TSNE_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.TSNE_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.TSNE_summary(self)
+
+    def print_summary(self):
+        return _datamunge.TSNE_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.TSNE_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.TSNE_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_TSNE
+
+# Register TSNE in _datamunge:
+_datamunge.TSNE_swigregister(TSNE)
+class LaplacianEigenmaps(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::LaplacianEigenmaps — embeds points via the
+           smallest non-trivial eigenvectors of a heat-kernel-weighted, sparse k-nearest-neighbor
+           graph Laplacian. Distinct from DiffusionMaps (also heat-kernel-based, but dense and
+           alpha-normalized).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.LaplacianEigenmaps_swiginit(self, _datamunge.new_LaplacianEigenmaps(*args))
+
+    def feature_names(self):
+        return _datamunge.LaplacianEigenmaps_feature_names(self)
+
+    def observations(self):
+        return _datamunge.LaplacianEigenmaps_observations(self)
+
+    def n_components(self):
+        return _datamunge.LaplacianEigenmaps_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.LaplacianEigenmaps_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.LaplacianEigenmaps_eigenvalues(self)
+
+    def dimension(self, index):
+        return _datamunge.LaplacianEigenmaps_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.LaplacianEigenmaps_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.LaplacianEigenmaps_summary(self)
+
+    def print_summary(self):
+        return _datamunge.LaplacianEigenmaps_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.LaplacianEigenmaps_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.LaplacianEigenmaps_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_LaplacianEigenmaps
+
+# Register LaplacianEigenmaps in _datamunge:
+_datamunge.LaplacianEigenmaps_swigregister(LaplacianEigenmaps)
+class DiffusionMaps(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::DiffusionMaps — embeds points via the
+           leading eigenvectors of a dense, alpha-normalized heat-kernel Markov transition matrix,
+           scaled by eigenvalue^diffusion_time. Distinct from LaplacianEigenmaps (sparse k-NN
+           graph Laplacian, no density normalization).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.DiffusionMaps_swiginit(self, _datamunge.new_DiffusionMaps(*args))
+
+    def feature_names(self):
+        return _datamunge.DiffusionMaps_feature_names(self)
+
+    def observations(self):
+        return _datamunge.DiffusionMaps_observations(self)
+
+    def n_components(self):
+        return _datamunge.DiffusionMaps_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.DiffusionMaps_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.DiffusionMaps_eigenvalues(self)
+
+    def dimension(self, index):
+        return _datamunge.DiffusionMaps_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.DiffusionMaps_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.DiffusionMaps_summary(self)
+
+    def print_summary(self):
+        return _datamunge.DiffusionMaps_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.DiffusionMaps_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.DiffusionMaps_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_DiffusionMaps
+
+# Register DiffusionMaps in _datamunge:
+_datamunge.DiffusionMaps_swigregister(DiffusionMaps)
+class KernelPCA(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::KernelPCA — principal component analysis
+           generalized to a nonlinear feature space via the kernel trick. With a linear kernel it
+           reproduces plain unscaled PCA's scores (up to a sign flip per component).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type kernel: string, optional
+        :param kernel: One of "linear", "rbf" (default), "polynomial".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 7:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.KernelPCA_swiginit(self, _datamunge.new_KernelPCA(*args))
+
+    def feature_names(self):
+        return _datamunge.KernelPCA_feature_names(self)
+
+    def observations(self):
+        return _datamunge.KernelPCA_observations(self)
+
+    def n_components(self):
+        return _datamunge.KernelPCA_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.KernelPCA_kept_row_indices(self)
+
+    def eigenvalues(self):
+        return _datamunge.KernelPCA_eigenvalues(self)
+
+    def dimension(self, index):
+        return _datamunge.KernelPCA_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.KernelPCA_embedding_frame(self)
+
+    def summary(self):
+        return _datamunge.KernelPCA_summary(self)
+
+    def print_summary(self):
+        return _datamunge.KernelPCA_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.KernelPCA_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.KernelPCA_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_KernelPCA
+
+# Register KernelPCA in _datamunge:
+_datamunge.KernelPCA_swigregister(KernelPCA)
+class SammonMapping(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::SammonMapping — iteratively minimizes a
+           weighted distance-preservation "stress" (small high-dimensional distances weighted much
+           more heavily than large ones) via Sammon's original pseudo-Newton update.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 7:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 8:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.SammonMapping_swiginit(self, _datamunge.new_SammonMapping(*args))
+
+    def feature_names(self):
+        return _datamunge.SammonMapping_feature_names(self)
+
+    def observations(self):
+        return _datamunge.SammonMapping_observations(self)
+
+    def n_components(self):
+        return _datamunge.SammonMapping_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.SammonMapping_kept_row_indices(self)
+
+    def dimension(self, index):
+        return _datamunge.SammonMapping_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.SammonMapping_embedding_frame(self)
+
+    def stress(self):
+        r"""Final Sammon stress -- lower is better, 0 is a perfect distance-preserving embedding."""
+        return _datamunge.SammonMapping_stress(self)
+
+    def iterations_run(self):
+        return _datamunge.SammonMapping_iterations_run(self)
+
+    def summary(self):
+        return _datamunge.SammonMapping_summary(self)
+
+    def print_summary(self):
+        return _datamunge.SammonMapping_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.SammonMapping_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.SammonMapping_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_SammonMapping
+
+# Register SammonMapping in _datamunge:
+_datamunge.SammonMapping_swigregister(SammonMapping)
+class UMAP(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::UMAP — builds a fuzzy simplicial set (a
+           smoothly-calibrated, fuzzy-union-symmetrized k-nearest-neighbor graph) and optimizes a
+           low-dimensional embedding via cross-entropy minimization (attractive + negative-sampled
+           repulsive forces). A deliberately simplified but honest implementation -- see the real
+           class's own documentation for the two named simplifications.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 7:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 8:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 9:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 10:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.UMAP_swiginit(self, _datamunge.new_UMAP(*args))
+
+    def feature_names(self):
+        return _datamunge.UMAP_feature_names(self)
+
+    def observations(self):
+        return _datamunge.UMAP_observations(self)
+
+    def n_components(self):
+        return _datamunge.UMAP_n_components(self)
+
+    def kept_row_indices(self):
+        return _datamunge.UMAP_kept_row_indices(self)
+
+    def dimension(self, index):
+        return _datamunge.UMAP_dimension(self, index)
+
+    def embedding_frame(self):
+        return _datamunge.UMAP_embedding_frame(self)
+
+    def sigmas(self):
+        r"""Per-point sigma_i / rho_i from the smooth k-NN calibration -- mainly for diagnostics."""
+        return _datamunge.UMAP_sigmas(self)
+
+    def rhos(self):
+        return _datamunge.UMAP_rhos(self)
+
+    def summary(self):
+        return _datamunge.UMAP_summary(self)
+
+    def print_summary(self):
+        return _datamunge.UMAP_print_summary(self)
+
+    def plot_embedding(self, dimension_x=0, dimension_y=1):
+        return _datamunge.UMAP_plot_embedding(self, dimension_x, dimension_y)
+
+    def plot_embedding_grouped(self, group_labels, dimension_x=0, dimension_y=1):
+        return _datamunge.UMAP_plot_embedding_grouped(self, group_labels, dimension_x, dimension_y)
+    __swig_destroy__ = _datamunge.delete_UMAP
+
+# Register UMAP in _datamunge:
+_datamunge.UMAP_swigregister(UMAP)
 class AgglomerativeClustering(object):
     r"""
     SWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up
@@ -5168,6 +6123,127 @@ class DifferentiableSeparableFunction(DifferentiableFunction):
 
 # Register DifferentiableSeparableFunction in _datamunge:
 _datamunge.DifferentiableSeparableFunction_swigregister(DifferentiableSeparableFunction)
+class ProximalFunction(DifferentiableFunction):
+    r"""
+    Composite objective for proximal methods. gradient() is the gradient of the smooth
+    component, and proximal() applies the non-smooth component's proximal operator.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def proximal(self, point, step):
+        return _datamunge.ProximalFunction_proximal(self, point, step)
+
+    def __init__(self):
+        if self.__class__ == ProximalFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.ProximalFunction_swiginit(self, _datamunge.new_ProximalFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_ProximalFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_ProximalFunction(self)
+        return weakref.proxy(self)
+
+# Register ProximalFunction in _datamunge:
+_datamunge.ProximalFunction_swigregister(ProximalFunction)
+class HessianFunction(DifferentiableFunction):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def hessian(self, coordinates):
+        return _datamunge.HessianFunction_hessian(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == HessianFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.HessianFunction_swiginit(self, _datamunge.new_HessianFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_HessianFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_HessianFunction(self)
+        return weakref.proxy(self)
+
+# Register HessianFunction in _datamunge:
+_datamunge.HessianFunction_swigregister(HessianFunction)
+class EqualityConstrainedFunction(DifferentiableFunction):
+    r"""Smooth equality-constrained objective for constrained optimizers."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def constraints(self, coordinates):
+        return _datamunge.EqualityConstrainedFunction_constraints(self, coordinates)
+
+    def constraint_jacobian(self, coordinates):
+        return _datamunge.EqualityConstrainedFunction_constraint_jacobian(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == EqualityConstrainedFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.EqualityConstrainedFunction_swiginit(self, _datamunge.new_EqualityConstrainedFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_EqualityConstrainedFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_EqualityConstrainedFunction(self)
+        return weakref.proxy(self)
+
+# Register EqualityConstrainedFunction in _datamunge:
+_datamunge.EqualityConstrainedFunction_swigregister(EqualityConstrainedFunction)
+class InequalityConstrainedFunction(DifferentiableFunction):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def inequalities(self, coordinates):
+        return _datamunge.InequalityConstrainedFunction_inequalities(self, coordinates)
+
+    def inequality_jacobian(self, coordinates):
+        return _datamunge.InequalityConstrainedFunction_inequality_jacobian(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == InequalityConstrainedFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.InequalityConstrainedFunction_swiginit(self, _datamunge.new_InequalityConstrainedFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_InequalityConstrainedFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_InequalityConstrainedFunction(self)
+        return weakref.proxy(self)
+
+# Register InequalityConstrainedFunction in _datamunge:
+_datamunge.InequalityConstrainedFunction_swigregister(InequalityConstrainedFunction)
+class ResidualFunction(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_ResidualFunction
+
+    def residuals(self, coordinates):
+        return _datamunge.ResidualFunction_residuals(self, coordinates)
+
+    def jacobian(self, coordinates):
+        return _datamunge.ResidualFunction_jacobian(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == ResidualFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.ResidualFunction_swiginit(self, _datamunge.new_ResidualFunction(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_ResidualFunction(self)
+        return weakref.proxy(self)
+
+# Register ResidualFunction in _datamunge:
+_datamunge.ResidualFunction_swigregister(ResidualFunction)
 class GradientDescentOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -5232,6 +6308,175 @@ class Adam(object):
 
 # Register Adam in _datamunge:
 _datamunge.Adam_swigregister(Adam)
+class AdaGradOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.AdaGradOptions_step_size_get, _datamunge.AdaGradOptions_step_size_set)
+    epsilon = property(_datamunge.AdaGradOptions_epsilon_get, _datamunge.AdaGradOptions_epsilon_set, doc=r"""Added inside the square root to keep early and zero-gradient updates finite.""")
+    max_iterations = property(_datamunge.AdaGradOptions_max_iterations_get, _datamunge.AdaGradOptions_max_iterations_set)
+    tolerance = property(_datamunge.AdaGradOptions_tolerance_get, _datamunge.AdaGradOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.AdaGradOptions_swiginit(self, _datamunge.new_AdaGradOptions())
+    __swig_destroy__ = _datamunge.delete_AdaGradOptions
+
+# Register AdaGradOptions in _datamunge:
+_datamunge.AdaGradOptions_swigregister(AdaGradOptions)
+class AdaGrad(object):
+    r"""
+    Full-batch AdaGrad (Duchi, Hazan, Singer 2011) on a DifferentiableFunction.  AdaGrad
+           scales each coordinate's step by the inverse root of its accumulated squared gradient,
+           making it useful when gradient magnitudes differ substantially by coordinate.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.AdaGrad_swiginit(self, _datamunge.new_AdaGrad(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.AdaGrad_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_AdaGrad
+
+# Register AdaGrad in _datamunge:
+_datamunge.AdaGrad_swigregister(AdaGrad)
+class AdaDeltaOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    decay_rate = property(_datamunge.AdaDeltaOptions_decay_rate_get, _datamunge.AdaDeltaOptions_decay_rate_set)
+    epsilon = property(_datamunge.AdaDeltaOptions_epsilon_get, _datamunge.AdaDeltaOptions_epsilon_set)
+    max_iterations = property(_datamunge.AdaDeltaOptions_max_iterations_get, _datamunge.AdaDeltaOptions_max_iterations_set)
+    tolerance = property(_datamunge.AdaDeltaOptions_tolerance_get, _datamunge.AdaDeltaOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.AdaDeltaOptions_swiginit(self, _datamunge.new_AdaDeltaOptions())
+    __swig_destroy__ = _datamunge.delete_AdaDeltaOptions
+
+# Register AdaDeltaOptions in _datamunge:
+_datamunge.AdaDeltaOptions_swigregister(AdaDeltaOptions)
+class AdaDelta(object):
+    r"""
+    Full-batch AdaDelta (Zeiler 2012) on a DifferentiableFunction.  AdaDelta rescales
+           gradients by the ratio of running RMS parameter updates to running RMS gradients,
+           avoiding a separate global learning-rate parameter.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.AdaDelta_swiginit(self, _datamunge.new_AdaDelta(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.AdaDelta_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_AdaDelta
+
+# Register AdaDelta in _datamunge:
+_datamunge.AdaDelta_swigregister(AdaDelta)
+class AMSGradOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.AMSGradOptions_step_size_get, _datamunge.AMSGradOptions_step_size_set)
+    beta1 = property(_datamunge.AMSGradOptions_beta1_get, _datamunge.AMSGradOptions_beta1_set)
+    beta2 = property(_datamunge.AMSGradOptions_beta2_get, _datamunge.AMSGradOptions_beta2_set)
+    epsilon = property(_datamunge.AMSGradOptions_epsilon_get, _datamunge.AMSGradOptions_epsilon_set)
+    max_iterations = property(_datamunge.AMSGradOptions_max_iterations_get, _datamunge.AMSGradOptions_max_iterations_set)
+    tolerance = property(_datamunge.AMSGradOptions_tolerance_get, _datamunge.AMSGradOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.AMSGradOptions_swiginit(self, _datamunge.new_AMSGradOptions())
+    __swig_destroy__ = _datamunge.delete_AMSGradOptions
+
+# Register AMSGradOptions in _datamunge:
+_datamunge.AMSGradOptions_swigregister(AMSGradOptions)
+class AMSGrad(object):
+    r"""
+    Full-batch AMSGrad (Reddi et al. 2018) on a DifferentiableFunction.  AMSGrad is Adam
+           with a non-decreasing per-coordinate second-moment estimate, giving it a more stable
+           effective learning-rate schedule.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.AMSGrad_swiginit(self, _datamunge.new_AMSGrad(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.AMSGrad_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_AMSGrad
+
+# Register AMSGrad in _datamunge:
+_datamunge.AMSGrad_swigregister(AMSGrad)
+class NadamOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.NadamOptions_step_size_get, _datamunge.NadamOptions_step_size_set)
+    beta1 = property(_datamunge.NadamOptions_beta1_get, _datamunge.NadamOptions_beta1_set)
+    beta2 = property(_datamunge.NadamOptions_beta2_get, _datamunge.NadamOptions_beta2_set)
+    epsilon = property(_datamunge.NadamOptions_epsilon_get, _datamunge.NadamOptions_epsilon_set)
+    max_iterations = property(_datamunge.NadamOptions_max_iterations_get, _datamunge.NadamOptions_max_iterations_set)
+    tolerance = property(_datamunge.NadamOptions_tolerance_get, _datamunge.NadamOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.NadamOptions_swiginit(self, _datamunge.new_NadamOptions())
+    __swig_destroy__ = _datamunge.delete_NadamOptions
+
+# Register NadamOptions in _datamunge:
+_datamunge.NadamOptions_swigregister(NadamOptions)
+class Nadam(object):
+    r"""
+    Full-batch Nadam (Dozat 2016) on a DifferentiableFunction: Adam's adaptive second
+           moment combined with a Nesterov-style, bias-corrected first-moment direction.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.Nadam_swiginit(self, _datamunge.new_Nadam(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.Nadam_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_Nadam
+
+# Register Nadam in _datamunge:
+_datamunge.Nadam_swigregister(Nadam)
+class RMSPropOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.RMSPropOptions_step_size_get, _datamunge.RMSPropOptions_step_size_set)
+    decay_rate = property(_datamunge.RMSPropOptions_decay_rate_get, _datamunge.RMSPropOptions_decay_rate_set, doc=r"""Exponential decay of the per-coordinate squared-gradient average.""")
+    epsilon = property(_datamunge.RMSPropOptions_epsilon_get, _datamunge.RMSPropOptions_epsilon_set)
+    max_iterations = property(_datamunge.RMSPropOptions_max_iterations_get, _datamunge.RMSPropOptions_max_iterations_set)
+    tolerance = property(_datamunge.RMSPropOptions_tolerance_get, _datamunge.RMSPropOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.RMSPropOptions_swiginit(self, _datamunge.new_RMSPropOptions())
+    __swig_destroy__ = _datamunge.delete_RMSPropOptions
+
+# Register RMSPropOptions in _datamunge:
+_datamunge.RMSPropOptions_swigregister(RMSPropOptions)
+class RMSProp(object):
+    r"""
+    Full-batch RMSProp on a DifferentiableFunction.  RMSProp normalizes every coordinate
+           by a moving average of its recent squared gradients, unlike AdaGrad whose accumulator
+           grows indefinitely.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.RMSProp_swiginit(self, _datamunge.new_RMSProp(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.RMSProp_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_RMSProp
+
+# Register RMSProp in _datamunge:
+_datamunge.RMSProp_swigregister(RMSProp)
 class LBFGSOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -5267,6 +6512,42 @@ class LBFGS(object):
 
 # Register LBFGS in _datamunge:
 _datamunge.LBFGS_swigregister(LBFGS)
+class NelderMeadOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_simplex_scale = property(_datamunge.NelderMeadOptions_initial_simplex_scale_get, _datamunge.NelderMeadOptions_initial_simplex_scale_set, doc=r"""Per-coordinate displacement used to construct the initial simplex.""")
+    reflection = property(_datamunge.NelderMeadOptions_reflection_get, _datamunge.NelderMeadOptions_reflection_set)
+    expansion = property(_datamunge.NelderMeadOptions_expansion_get, _datamunge.NelderMeadOptions_expansion_set)
+    contraction = property(_datamunge.NelderMeadOptions_contraction_get, _datamunge.NelderMeadOptions_contraction_set)
+    shrink = property(_datamunge.NelderMeadOptions_shrink_get, _datamunge.NelderMeadOptions_shrink_set)
+    max_iterations = property(_datamunge.NelderMeadOptions_max_iterations_get, _datamunge.NelderMeadOptions_max_iterations_set)
+    tolerance = property(_datamunge.NelderMeadOptions_tolerance_get, _datamunge.NelderMeadOptions_tolerance_set, doc=r"""Stops when both the simplex diameter and its objective spread are below this.""")
+
+    def __init__(self):
+        _datamunge.NelderMeadOptions_swiginit(self, _datamunge.new_NelderMeadOptions())
+    __swig_destroy__ = _datamunge.delete_NelderMeadOptions
+
+# Register NelderMeadOptions in _datamunge:
+_datamunge.NelderMeadOptions_swigregister(NelderMeadOptions)
+class NelderMead(object):
+    r"""
+    Nelder-Mead downhill simplex search for an ArbitraryFunction.  This local,
+           derivative-free method is suitable when gradients are unavailable but repeated
+           objective evaluations are affordable.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.NelderMead_swiginit(self, _datamunge.new_NelderMead(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.NelderMead_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_NelderMead
+
+# Register NelderMead in _datamunge:
+_datamunge.NelderMead_swigregister(NelderMead)
 class SGDOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -5302,6 +6583,239 @@ class SGD(object):
 
 # Register SGD in _datamunge:
 _datamunge.SGD_swigregister(SGD)
+class SVRGOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.SVRGOptions_step_size_get, _datamunge.SVRGOptions_step_size_set)
+    max_epochs = property(_datamunge.SVRGOptions_max_epochs_get, _datamunge.SVRGOptions_max_epochs_set)
+    inner_iterations = property(_datamunge.SVRGOptions_inner_iterations_get, _datamunge.SVRGOptions_inner_iterations_set, doc=r"""Stochastic updates per epoch; zero uses the number of component functions.""")
+    tolerance = property(_datamunge.SVRGOptions_tolerance_get, _datamunge.SVRGOptions_tolerance_set)
+    seed = property(_datamunge.SVRGOptions_seed_get, _datamunge.SVRGOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.SVRGOptions_swiginit(self, _datamunge.new_SVRGOptions())
+    __swig_destroy__ = _datamunge.delete_SVRGOptions
+
+# Register SVRGOptions in _datamunge:
+_datamunge.SVRGOptions_swigregister(SVRGOptions)
+class SVRG(object):
+    r"""
+    Stochastic Variance Reduced Gradient (Johnson & Zhang 2013) on a
+           DifferentiableSeparableFunction.  Each epoch uses a full-gradient snapshot as a
+           control variate, reducing the noise of individual component-gradient updates.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.SVRG_swiginit(self, _datamunge.new_SVRG(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.SVRG_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_SVRG
+
+# Register SVRG in _datamunge:
+_datamunge.SVRG_swigregister(SVRG)
+class SAGAOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.SAGAOptions_step_size_get, _datamunge.SAGAOptions_step_size_set)
+    max_iterations = property(_datamunge.SAGAOptions_max_iterations_get, _datamunge.SAGAOptions_max_iterations_set)
+    tolerance = property(_datamunge.SAGAOptions_tolerance_get, _datamunge.SAGAOptions_tolerance_set)
+    seed = property(_datamunge.SAGAOptions_seed_get, _datamunge.SAGAOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.SAGAOptions_swiginit(self, _datamunge.new_SAGAOptions())
+    __swig_destroy__ = _datamunge.delete_SAGAOptions
+
+# Register SAGAOptions in _datamunge:
+_datamunge.SAGAOptions_swigregister(SAGAOptions)
+class SAGA(object):
+    r"""
+    SAGA (Defazio, Bach, Lacoste-Julien 2014) on a DifferentiableSeparableFunction.
+           SAGA maintains one stored gradient per component and updates from a variance-reduced
+           estimator formed from the sampled gradient, its stored value, and their running mean.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.SAGA_swiginit(self, _datamunge.new_SAGA(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.SAGA_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_SAGA
+
+# Register SAGA in _datamunge:
+_datamunge.SAGA_swigregister(SAGA)
+class CoordinateDescentOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.CoordinateDescentOptions_step_size_get, _datamunge.CoordinateDescentOptions_step_size_set, doc=r"""Initial step considered for each one-dimensional update.""")
+    max_iterations = property(_datamunge.CoordinateDescentOptions_max_iterations_get, _datamunge.CoordinateDescentOptions_max_iterations_set)
+    tolerance = property(_datamunge.CoordinateDescentOptions_tolerance_get, _datamunge.CoordinateDescentOptions_tolerance_set)
+    armijo_c1 = property(_datamunge.CoordinateDescentOptions_armijo_c1_get, _datamunge.CoordinateDescentOptions_armijo_c1_set, doc=r"""Armijo sufficient-decrease constant used by the per-coordinate line search.""")
+    backtracking_factor = property(_datamunge.CoordinateDescentOptions_backtracking_factor_get, _datamunge.CoordinateDescentOptions_backtracking_factor_set)
+    max_line_search_trials = property(_datamunge.CoordinateDescentOptions_max_line_search_trials_get, _datamunge.CoordinateDescentOptions_max_line_search_trials_set)
+
+    def __init__(self):
+        _datamunge.CoordinateDescentOptions_swiginit(self, _datamunge.new_CoordinateDescentOptions())
+    __swig_destroy__ = _datamunge.delete_CoordinateDescentOptions
+
+# Register CoordinateDescentOptions in _datamunge:
+_datamunge.CoordinateDescentOptions_swigregister(CoordinateDescentOptions)
+class CoordinateDescent(object):
+    r"""
+    Cyclic coordinate descent on a DifferentiableFunction.  Each epoch visits every
+           coordinate in index order and performs an Armijo-backtracked partial-gradient step.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.CoordinateDescent_swiginit(self, _datamunge.new_CoordinateDescent(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.CoordinateDescent_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_CoordinateDescent
+
+# Register CoordinateDescent in _datamunge:
+_datamunge.CoordinateDescent_swigregister(CoordinateDescent)
+class RandomizedBlockCoordinateDescentOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    block_size = property(_datamunge.RandomizedBlockCoordinateDescentOptions_block_size_get, _datamunge.RandomizedBlockCoordinateDescentOptions_block_size_set, doc=r"""Number of coordinates updated together in each block.""")
+    step_size = property(_datamunge.RandomizedBlockCoordinateDescentOptions_step_size_get, _datamunge.RandomizedBlockCoordinateDescentOptions_step_size_set)
+    max_iterations = property(_datamunge.RandomizedBlockCoordinateDescentOptions_max_iterations_get, _datamunge.RandomizedBlockCoordinateDescentOptions_max_iterations_set)
+    tolerance = property(_datamunge.RandomizedBlockCoordinateDescentOptions_tolerance_get, _datamunge.RandomizedBlockCoordinateDescentOptions_tolerance_set)
+    armijo_c1 = property(_datamunge.RandomizedBlockCoordinateDescentOptions_armijo_c1_get, _datamunge.RandomizedBlockCoordinateDescentOptions_armijo_c1_set)
+    backtracking_factor = property(_datamunge.RandomizedBlockCoordinateDescentOptions_backtracking_factor_get, _datamunge.RandomizedBlockCoordinateDescentOptions_backtracking_factor_set)
+    max_line_search_trials = property(_datamunge.RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get, _datamunge.RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set)
+    seed = property(_datamunge.RandomizedBlockCoordinateDescentOptions_seed_get, _datamunge.RandomizedBlockCoordinateDescentOptions_seed_set, doc=r"""Seed for the reproducible random coordinate permutation generated each epoch.""")
+
+    def __init__(self):
+        _datamunge.RandomizedBlockCoordinateDescentOptions_swiginit(self, _datamunge.new_RandomizedBlockCoordinateDescentOptions())
+    __swig_destroy__ = _datamunge.delete_RandomizedBlockCoordinateDescentOptions
+
+# Register RandomizedBlockCoordinateDescentOptions in _datamunge:
+_datamunge.RandomizedBlockCoordinateDescentOptions_swigregister(RandomizedBlockCoordinateDescentOptions)
+class RandomizedBlockCoordinateDescent(object):
+    r"""
+    Randomized cyclic block coordinate descent on a DifferentiableFunction.  Every epoch
+           randomly permutes the coordinates, partitions that permutation into blocks, and visits
+           each block exactly once.  A block uses a simultaneous partial-gradient step with an
+           Armijo backtracking line search.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.RandomizedBlockCoordinateDescent_swiginit(self, _datamunge.new_RandomizedBlockCoordinateDescent(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.RandomizedBlockCoordinateDescent_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_RandomizedBlockCoordinateDescent
+
+# Register RandomizedBlockCoordinateDescent in _datamunge:
+_datamunge.RandomizedBlockCoordinateDescent_swigregister(RandomizedBlockCoordinateDescent)
+class NesterovAcceleratedGradientOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.NesterovAcceleratedGradientOptions_step_size_get, _datamunge.NesterovAcceleratedGradientOptions_step_size_set)
+    momentum = property(_datamunge.NesterovAcceleratedGradientOptions_momentum_get, _datamunge.NesterovAcceleratedGradientOptions_momentum_set, doc=r"""Momentum coefficient in [0, 1), typically 0.9.""")
+    max_iterations = property(_datamunge.NesterovAcceleratedGradientOptions_max_iterations_get, _datamunge.NesterovAcceleratedGradientOptions_max_iterations_set)
+    tolerance = property(_datamunge.NesterovAcceleratedGradientOptions_tolerance_get, _datamunge.NesterovAcceleratedGradientOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.NesterovAcceleratedGradientOptions_swiginit(self, _datamunge.new_NesterovAcceleratedGradientOptions())
+    __swig_destroy__ = _datamunge.delete_NesterovAcceleratedGradientOptions
+
+# Register NesterovAcceleratedGradientOptions in _datamunge:
+_datamunge.NesterovAcceleratedGradientOptions_swigregister(NesterovAcceleratedGradientOptions)
+class NesterovAcceleratedGradient(object):
+    r"""Nesterov accelerated gradient (look-ahead momentum) on a DifferentiableFunction."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.NesterovAcceleratedGradient_swiginit(self, _datamunge.new_NesterovAcceleratedGradient(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.NesterovAcceleratedGradient_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_NesterovAcceleratedGradient
+
+# Register NesterovAcceleratedGradient in _datamunge:
+_datamunge.NesterovAcceleratedGradient_swigregister(NesterovAcceleratedGradient)
+class ConjugateGradientOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    max_iterations = property(_datamunge.ConjugateGradientOptions_max_iterations_get, _datamunge.ConjugateGradientOptions_max_iterations_set)
+    tolerance = property(_datamunge.ConjugateGradientOptions_tolerance_get, _datamunge.ConjugateGradientOptions_tolerance_set)
+    armijo_c1 = property(_datamunge.ConjugateGradientOptions_armijo_c1_get, _datamunge.ConjugateGradientOptions_armijo_c1_set)
+    backtracking_factor = property(_datamunge.ConjugateGradientOptions_backtracking_factor_get, _datamunge.ConjugateGradientOptions_backtracking_factor_set)
+    max_line_search_trials = property(_datamunge.ConjugateGradientOptions_max_line_search_trials_get, _datamunge.ConjugateGradientOptions_max_line_search_trials_set)
+
+    def __init__(self):
+        _datamunge.ConjugateGradientOptions_swiginit(self, _datamunge.new_ConjugateGradientOptions())
+    __swig_destroy__ = _datamunge.delete_ConjugateGradientOptions
+
+# Register ConjugateGradientOptions in _datamunge:
+_datamunge.ConjugateGradientOptions_swigregister(ConjugateGradientOptions)
+class ConjugateGradient(object):
+    r"""Nonlinear conjugate gradient with the Polak-Ribiere+ update and an Armijo line search."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ConjugateGradient_swiginit(self, _datamunge.new_ConjugateGradient(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.ConjugateGradient_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_ConjugateGradient
+
+# Register ConjugateGradient in _datamunge:
+_datamunge.ConjugateGradient_swigregister(ConjugateGradient)
+class CMAESOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.CMAESOptions_population_size_get, _datamunge.CMAESOptions_population_size_set, doc=r"""Offspring sampled per generation; zero selects the standard 4 + floor(3 log(n)).""")
+    initial_step_size = property(_datamunge.CMAESOptions_initial_step_size_get, _datamunge.CMAESOptions_initial_step_size_set, doc=r"""Initial global search standard deviation.""")
+    max_generations = property(_datamunge.CMAESOptions_max_generations_get, _datamunge.CMAESOptions_max_generations_set)
+    tolerance = property(_datamunge.CMAESOptions_tolerance_get, _datamunge.CMAESOptions_tolerance_set, doc=r"""Stops when the global step size times the largest covariance axis is below this.""")
+    seed = property(_datamunge.CMAESOptions_seed_get, _datamunge.CMAESOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.CMAESOptions_swiginit(self, _datamunge.new_CMAESOptions())
+    __swig_destroy__ = _datamunge.delete_CMAESOptions
+
+# Register CMAESOptions in _datamunge:
+_datamunge.CMAESOptions_swigregister(CMAESOptions)
+class CMAES(object):
+    r"""
+    Covariance Matrix Adaptation Evolution Strategy (CMA-ES) for unconstrained continuous
+           derivative-free optimization.  CMA-ES adapts a full Gaussian covariance matrix from
+           the best sampled candidates each generation, making it effective on rotated and
+           ill-conditioned objectives.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.CMAES_swiginit(self, _datamunge.new_CMAES(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.CMAES_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_CMAES
+
+# Register CMAES in _datamunge:
+_datamunge.CMAES_swigregister(CMAES)
 class SimulatedAnnealingOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -5487,6 +7001,829 @@ class GeneticAlgorithm(object):
 
 # Register GeneticAlgorithm in _datamunge:
 _datamunge.GeneticAlgorithm_swigregister(GeneticAlgorithm)
+class ACOROptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    archive_size = property(_datamunge.ACOROptions_archive_size_get, _datamunge.ACOROptions_archive_size_set, doc=r"""k: number of solutions kept in the archive.""")
+    samples_per_iteration = property(_datamunge.ACOROptions_samples_per_iteration_get, _datamunge.ACOROptions_samples_per_iteration_set, doc=r"""m: new ants generated each iteration.""")
+    locality = property(_datamunge.ACOROptions_locality_get, _datamunge.ACOROptions_locality_set, doc=r"""
+    q: locality of the search; smaller values concentrate sampling more tightly
+           around the best-ranked archive solutions.
+    """)
+    convergence_speed = property(_datamunge.ACOROptions_convergence_speed_get, _datamunge.ACOROptions_convergence_speed_set, doc=r"""
+    xi (ξ): convergence speed; larger values widen sampling around each archive
+           solution, slowing convergence.
+    """)
+    max_iterations = property(_datamunge.ACOROptions_max_iterations_get, _datamunge.ACOROptions_max_iterations_set)
+    tolerance = property(_datamunge.ACOROptions_tolerance_get, _datamunge.ACOROptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20 consecutive
+           iterations.
+    """)
+    seed = property(_datamunge.ACOROptions_seed_get, _datamunge.ACOROptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ACOROptions_swiginit(self, _datamunge.new_ACOROptions())
+    __swig_destroy__ = _datamunge.delete_ACOROptions
+
+# Register ACOROptions in _datamunge:
+_datamunge.ACOROptions_swigregister(ACOROptions)
+class ACOR(object):
+    r"""
+    Ant Colony Optimization for continuous domains (ACOR), Socha & Dorigo (2008). A
+           solution archive of size k is maintained; each iteration, new ants are sampled from a
+           Gaussian kernel mixture built from the archive (ranked by quality, so better solutions
+           attract denser sampling), then the archive is truncated back to its k best members
+           merged with the new ants. Derivative-free, box-constrained.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ACOR_swiginit(self, _datamunge.new_ACOR(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one member of the archive.
+        """
+        return _datamunge.ACOR_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_ACOR
+
+# Register ACOR in _datamunge:
+_datamunge.ACOR_swigregister(ACOR)
+class ArtificialBeeColonyOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.ArtificialBeeColonyOptions_population_size_get, _datamunge.ArtificialBeeColonyOptions_population_size_set, doc=r"""
+    Number of food sources; also the number of employed bees and the number of
+           onlooker bees.
+    """)
+    abandonment_limit = property(_datamunge.ArtificialBeeColonyOptions_abandonment_limit_get, _datamunge.ArtificialBeeColonyOptions_abandonment_limit_set, doc=r"""
+    A food source that fails to improve for this many consecutive trials is
+           abandoned and replaced with a fresh random point. Zero selects the standard
+           heuristic default of population_size * dimension.
+    """)
+    max_generations = property(_datamunge.ArtificialBeeColonyOptions_max_generations_get, _datamunge.ArtificialBeeColonyOptions_max_generations_set, doc=r"""One cycle == one employed-bee phase + one onlooker-bee phase (+ scout phase).""")
+    tolerance = property(_datamunge.ArtificialBeeColonyOptions_tolerance_get, _datamunge.ArtificialBeeColonyOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20
+           consecutive generations.
+    """)
+    seed = property(_datamunge.ArtificialBeeColonyOptions_seed_get, _datamunge.ArtificialBeeColonyOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ArtificialBeeColonyOptions_swiginit(self, _datamunge.new_ArtificialBeeColonyOptions())
+    __swig_destroy__ = _datamunge.delete_ArtificialBeeColonyOptions
+
+# Register ArtificialBeeColonyOptions in _datamunge:
+_datamunge.ArtificialBeeColonyOptions_swigregister(ArtificialBeeColonyOptions)
+class ArtificialBeeColony(object):
+    r"""
+    Artificial Bee Colony (Karaboga, 2005): a swarm-intelligence method inspired by
+           honey bee foraging. Employed bees exploit known food sources, onlooker bees
+           probabilistically favor the fitter sources, and scout bees replace sources that
+           have stagnated for too long. Derivative-free, box-constrained.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ArtificialBeeColony_swiginit(self, _datamunge.new_ArtificialBeeColony(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one food source.
+        """
+        return _datamunge.ArtificialBeeColony_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_ArtificialBeeColony
+
+# Register ArtificialBeeColony in _datamunge:
+_datamunge.ArtificialBeeColony_swigregister(ArtificialBeeColony)
+class CrossEntropyMethodOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.CrossEntropyMethodOptions_population_size_get, _datamunge.CrossEntropyMethodOptions_population_size_set, doc=r"""Candidates sampled from the search distribution each iteration.""")
+    elite_ratio = property(_datamunge.CrossEntropyMethodOptions_elite_ratio_get, _datamunge.CrossEntropyMethodOptions_elite_ratio_set, doc=r"""
+    Fraction of population_size kept as the elite set;
+           elite_count = max(2, ceil(population_size * elite_ratio)).
+    """)
+    initial_std_dev = property(_datamunge.CrossEntropyMethodOptions_initial_std_dev_get, _datamunge.CrossEntropyMethodOptions_initial_std_dev_set, doc=r"""Per-dimension standard deviation of the initial sampling distribution.""")
+    smoothing = property(_datamunge.CrossEntropyMethodOptions_smoothing_get, _datamunge.CrossEntropyMethodOptions_smoothing_set, doc=r"""
+    Exponential smoothing factor in (0, 1] blending the new elite statistics with the
+           previous generation's: new = smoothing * elite_stat + (1 - smoothing) * old.
+           smoothing == 1 means full replacement each iteration (no smoothing at all).
+    """)
+    max_iterations = property(_datamunge.CrossEntropyMethodOptions_max_iterations_get, _datamunge.CrossEntropyMethodOptions_max_iterations_set)
+    tolerance = property(_datamunge.CrossEntropyMethodOptions_tolerance_get, _datamunge.CrossEntropyMethodOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20 consecutive
+           iterations, or once every per-dimension standard deviation has collapsed below it.
+    """)
+    seed = property(_datamunge.CrossEntropyMethodOptions_seed_get, _datamunge.CrossEntropyMethodOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.CrossEntropyMethodOptions_swiginit(self, _datamunge.new_CrossEntropyMethodOptions())
+    __swig_destroy__ = _datamunge.delete_CrossEntropyMethodOptions
+
+# Register CrossEntropyMethodOptions in _datamunge:
+_datamunge.CrossEntropyMethodOptions_swigregister(CrossEntropyMethodOptions)
+class CrossEntropyMethod(object):
+    r"""
+    The Cross-Entropy Method (CEM) for derivative-free continuous optimization on an
+           ArbitraryFunction within a box constraint. A diagonal-covariance Gaussian search
+           distribution is repeatedly refit from the best ("elite") fraction of each generation's
+           samples, with the new distribution parameters exponentially smoothed against the
+           previous generation's for stability (Rubinstein 1997; Rubinstein & Kroese 2004).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.CrossEntropyMethod_swiginit(self, _datamunge.new_CrossEntropyMethod(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed the initial distribution mean.
+        """
+        return _datamunge.CrossEntropyMethod_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_CrossEntropyMethod
+
+# Register CrossEntropyMethod in _datamunge:
+_datamunge.CrossEntropyMethod_swigregister(CrossEntropyMethod)
+class CuckooSearchOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.CuckooSearchOptions_population_size_get, _datamunge.CuckooSearchOptions_population_size_set, doc=r"""Number of nests (candidate solutions) in the population.""")
+    discovery_rate = property(_datamunge.CuckooSearchOptions_discovery_rate_get, _datamunge.CuckooSearchOptions_discovery_rate_set, doc=r"""
+    pa: fraction of the worst nests discovered/abandoned each iteration. Yang & Deb's
+           original paper headlines 0.25, but this implementation's "replace a randomly
+           chosen comparison nest" Levy-flight rule (faithful to the paper) homogenizes the
+           population fast enough at pa=0.25 that convergence quality becomes sharply
+           seed-dependent on smooth objectives (verified: only 6/30 seeds converged well at
+           pa=0.25, population_size=25 on a simple 3D sphere). 0.4 -- still within the
+           commonly-used literature range -- injects enough fresh diversity each iteration to
+           fix this at the default population size (verified: 30/30 seeds).
+    """)
+    levy_beta = property(_datamunge.CuckooSearchOptions_levy_beta_get, _datamunge.CuckooSearchOptions_levy_beta_set, doc=r"""
+    Levy flight stability index, in (0, 2]; 1.5 is the standard choice in the
+           original paper.
+    """)
+    step_scale = property(_datamunge.CuckooSearchOptions_step_scale_get, _datamunge.CuckooSearchOptions_step_scale_set, doc=r"""alpha: overall Levy step-size multiplier.""")
+    max_iterations = property(_datamunge.CuckooSearchOptions_max_iterations_get, _datamunge.CuckooSearchOptions_max_iterations_set)
+    tolerance = property(_datamunge.CuckooSearchOptions_tolerance_get, _datamunge.CuckooSearchOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20
+           consecutive iterations.
+    """)
+    seed = property(_datamunge.CuckooSearchOptions_seed_get, _datamunge.CuckooSearchOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.CuckooSearchOptions_swiginit(self, _datamunge.new_CuckooSearchOptions())
+    __swig_destroy__ = _datamunge.delete_CuckooSearchOptions
+
+# Register CuckooSearchOptions in _datamunge:
+_datamunge.CuckooSearchOptions_swigregister(CuckooSearchOptions)
+class CuckooSearch(object):
+    r"""
+    Cuckoo Search (Yang & Deb, 2009) on an ArbitraryFunction within a box constraint: a
+           population of nests is perturbed by heavy-tailed Levy flights (via Mantegna's
+           algorithm) and a fraction of the worst nests is abandoned and rebuilt each
+           iteration, mimicking brood parasitism. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.CuckooSearch_swiginit(self, _datamunge.new_CuckooSearch(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one nest of the population.
+        """
+        return _datamunge.CuckooSearch_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_CuckooSearch
+
+# Register CuckooSearch in _datamunge:
+_datamunge.CuckooSearch_swigregister(CuckooSearch)
+class EstimationOfDistributionOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.EstimationOfDistributionOptions_population_size_get, _datamunge.EstimationOfDistributionOptions_population_size_set, doc=r"""Lambda: candidates sampled from the Gaussian model each generation.""")
+    selection_ratio = property(_datamunge.EstimationOfDistributionOptions_selection_ratio_get, _datamunge.EstimationOfDistributionOptions_selection_ratio_set, doc=r"""
+    Fraction of population_size kept as "elite" each generation to re-estimate the
+           Gaussian from; mu = max(2, ceil(population_size * selection_ratio)).
+    """)
+    initial_std_dev = property(_datamunge.EstimationOfDistributionOptions_initial_std_dev_get, _datamunge.EstimationOfDistributionOptions_initial_std_dev_set, doc=r"""Per-dimension standard deviation of the initial diagonal covariance.""")
+    covariance_regularization = property(_datamunge.EstimationOfDistributionOptions_covariance_regularization_get, _datamunge.EstimationOfDistributionOptions_covariance_regularization_set, doc=r"""
+    Diagonal regularization added to the re-estimated covariance every generation, to
+           keep it numerically well-conditioned (needed whenever mu <= dimension, or whenever
+           the elite set happens to be nearly coplanar).
+    """)
+    max_generations = property(_datamunge.EstimationOfDistributionOptions_max_generations_get, _datamunge.EstimationOfDistributionOptions_max_generations_set)
+    tolerance = property(_datamunge.EstimationOfDistributionOptions_tolerance_get, _datamunge.EstimationOfDistributionOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20 consecutive
+           generations, or once the covariance has collapsed to near-zero.
+    """)
+    seed = property(_datamunge.EstimationOfDistributionOptions_seed_get, _datamunge.EstimationOfDistributionOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.EstimationOfDistributionOptions_swiginit(self, _datamunge.new_EstimationOfDistributionOptions())
+    __swig_destroy__ = _datamunge.delete_EstimationOfDistributionOptions
+
+# Register EstimationOfDistributionOptions in _datamunge:
+_datamunge.EstimationOfDistributionOptions_swigregister(EstimationOfDistributionOptions)
+class EstimationOfDistribution(object):
+    r"""
+    Estimation of Distribution Algorithm (EMNA-style, full-covariance Gaussian) on an
+           ArbitraryFunction within a box constraint. Unlike explicit-operator methods (GA, DE)
+           or covariance-adapting methods (CMA-ES), EMNA builds an explicit multivariate Gaussian
+           model of where the good solutions are each generation -- re-estimating its mean and
+           covariance from scratch as the empirical mean/covariance of the current generation's
+           elite, with no smoothing or evolution paths -- and samples the next generation directly
+           from that model. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.EstimationOfDistribution_swiginit(self, _datamunge.new_EstimationOfDistribution(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed the initial Gaussian mean.
+        """
+        return _datamunge.EstimationOfDistribution_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_EstimationOfDistribution
+
+# Register EstimationOfDistribution in _datamunge:
+_datamunge.EstimationOfDistribution_swigregister(EstimationOfDistribution)
+class EvolutionStrategyOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_datamunge.EvolutionStrategyOptions_mu_get, _datamunge.EvolutionStrategyOptions_mu_set, doc=r"""mu: number of parents.""")
+    offspring_size = property(_datamunge.EvolutionStrategyOptions_offspring_size_get, _datamunge.EvolutionStrategyOptions_offspring_size_set, doc=r"""lambda: number of offspring generated per generation.""")
+    strategy = property(_datamunge.EvolutionStrategyOptions_strategy_get, _datamunge.EvolutionStrategyOptions_strategy_set, doc=r"""
+    One of "comma" (next generation's parents are the best mu of the offspring only --
+           the literature-recommended default, since it avoids getting stuck on a
+           lucky-but-misleading step size) or "plus" (next generation's parents are the best
+           mu of parents union offspring).
+    """)
+    initial_step_size = property(_datamunge.EvolutionStrategyOptions_initial_step_size_get, _datamunge.EvolutionStrategyOptions_initial_step_size_set, doc=r"""Initial global self-adapting mutation step size (sigma).""")
+    max_generations = property(_datamunge.EvolutionStrategyOptions_max_generations_get, _datamunge.EvolutionStrategyOptions_max_generations_set)
+    tolerance = property(_datamunge.EvolutionStrategyOptions_tolerance_get, _datamunge.EvolutionStrategyOptions_tolerance_set, doc=r"""Stops after the best-ever value has improved by less than this for 20 consecutive generations.""")
+    seed = property(_datamunge.EvolutionStrategyOptions_seed_get, _datamunge.EvolutionStrategyOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.EvolutionStrategyOptions_swiginit(self, _datamunge.new_EvolutionStrategyOptions())
+    __swig_destroy__ = _datamunge.delete_EvolutionStrategyOptions
+
+# Register EvolutionStrategyOptions in _datamunge:
+_datamunge.EvolutionStrategyOptions_swigregister(EvolutionStrategyOptions)
+class EvolutionStrategy(object):
+    r"""
+    Classic self-adaptive (mu, lambda) / (mu+lambda) Evolution Strategy with a single
+           global step size mutated log-normally each generation (Rechenberg 1973, Schwefel
+           1981). This is the pre-CMA-ES form -- no covariance matrix adaptation -- and is the
+           foundational lineage CMAES (also in this module) descends from. Derivative-free,
+           box-constrained.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.EvolutionStrategy_swiginit(self, _datamunge.new_EvolutionStrategy(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one parent of the population.
+        """
+        return _datamunge.EvolutionStrategy_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_EvolutionStrategy
+
+# Register EvolutionStrategy in _datamunge:
+_datamunge.EvolutionStrategy_swigregister(EvolutionStrategy)
+class FireflyAlgorithmOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.FireflyAlgorithmOptions_population_size_get, _datamunge.FireflyAlgorithmOptions_population_size_set)
+    attractiveness_at_zero = property(_datamunge.FireflyAlgorithmOptions_attractiveness_at_zero_get, _datamunge.FireflyAlgorithmOptions_attractiveness_at_zero_set, doc=r"""beta0: attractiveness at distance 0.""")
+    light_absorption = property(_datamunge.FireflyAlgorithmOptions_light_absorption_get, _datamunge.FireflyAlgorithmOptions_light_absorption_set, doc=r"""gamma: controls how fast attractiveness decays with distance.""")
+    randomization_step = property(_datamunge.FireflyAlgorithmOptions_randomization_step_get, _datamunge.FireflyAlgorithmOptions_randomization_step_set, doc=r"""alpha: scale of the per-move random walk term.""")
+    randomization_decay = property(_datamunge.FireflyAlgorithmOptions_randomization_decay_get, _datamunge.FireflyAlgorithmOptions_randomization_decay_set, doc=r"""
+    alpha is multiplied by this every iteration (geometric decay -- exploration
+           shrinks over time).
+    """)
+    max_iterations = property(_datamunge.FireflyAlgorithmOptions_max_iterations_get, _datamunge.FireflyAlgorithmOptions_max_iterations_set)
+    tolerance = property(_datamunge.FireflyAlgorithmOptions_tolerance_get, _datamunge.FireflyAlgorithmOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for 20
+           consecutive iterations.
+    """)
+    seed = property(_datamunge.FireflyAlgorithmOptions_seed_get, _datamunge.FireflyAlgorithmOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.FireflyAlgorithmOptions_swiginit(self, _datamunge.new_FireflyAlgorithmOptions())
+    __swig_destroy__ = _datamunge.delete_FireflyAlgorithmOptions
+
+# Register FireflyAlgorithmOptions in _datamunge:
+_datamunge.FireflyAlgorithmOptions_swigregister(FireflyAlgorithmOptions)
+class FireflyAlgorithm(object):
+    r"""
+    The Firefly Algorithm (Yang, 2008/2009): a population of fireflies is pairwise
+           attracted toward brighter (better) neighbors, with attractiveness decaying with
+           squared distance and a shrinking random-walk term for exploration. Derivative-free,
+           O(n^2) per iteration in the population size.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.FireflyAlgorithm_swiginit(self, _datamunge.new_FireflyAlgorithm(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one member of the population.
+        """
+        return _datamunge.FireflyAlgorithm_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_FireflyAlgorithm
+
+# Register FireflyAlgorithm in _datamunge:
+_datamunge.FireflyAlgorithm_swigregister(FireflyAlgorithm)
+class GreyWolfOptimizerOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.GreyWolfOptimizerOptions_population_size_get, _datamunge.GreyWolfOptimizerOptions_population_size_set)
+    max_iterations = property(_datamunge.GreyWolfOptimizerOptions_max_iterations_get, _datamunge.GreyWolfOptimizerOptions_max_iterations_set)
+    tolerance = property(_datamunge.GreyWolfOptimizerOptions_tolerance_get, _datamunge.GreyWolfOptimizerOptions_tolerance_set, doc=r"""Stops after the best-ever value has improved by less than this for 20 consecutive iterations.""")
+    seed = property(_datamunge.GreyWolfOptimizerOptions_seed_get, _datamunge.GreyWolfOptimizerOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.GreyWolfOptimizerOptions_swiginit(self, _datamunge.new_GreyWolfOptimizerOptions())
+    __swig_destroy__ = _datamunge.delete_GreyWolfOptimizerOptions
+
+# Register GreyWolfOptimizerOptions in _datamunge:
+_datamunge.GreyWolfOptimizerOptions_swigregister(GreyWolfOptimizerOptions)
+class GreyWolfOptimizer(object):
+    r"""
+    Grey Wolf Optimizer (GWO) on an ArbitraryFunction within a box constraint: a
+           population of wolves is guided each iteration by its three best members (alpha,
+           beta, delta), moving every wolf to the elementwise average of three independently
+           randomized pulls toward those leaders. Derivative-free. Mirjalili, Mirjalili
+           Lewis (2014), "Grey wolf optimizer", Advances in Engineering Software, 69, 46-61.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.GreyWolfOptimizer_swiginit(self, _datamunge.new_GreyWolfOptimizer(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one wolf of the population.
+        """
+        return _datamunge.GreyWolfOptimizer_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_GreyWolfOptimizer
+
+# Register GreyWolfOptimizer in _datamunge:
+_datamunge.GreyWolfOptimizer_swigregister(GreyWolfOptimizer)
+class HarmonySearchOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.HarmonySearchOptions_population_size_get, _datamunge.HarmonySearchOptions_population_size_set, doc=r"""HMS: harmony memory size.""")
+    memory_consideration_rate = property(_datamunge.HarmonySearchOptions_memory_consideration_rate_get, _datamunge.HarmonySearchOptions_memory_consideration_rate_set, doc=r"""
+    HMCR: probability a dimension is drawn from the harmony memory rather than
+           uniformly at random, in (0, 1).
+    """)
+    pitch_adjustment_rate = property(_datamunge.HarmonySearchOptions_pitch_adjustment_rate_get, _datamunge.HarmonySearchOptions_pitch_adjustment_rate_set, doc=r"""PAR: probability a memory-considered dimension is further pitch-adjusted, in [0, 1].""")
+    bandwidth_fraction = property(_datamunge.HarmonySearchOptions_bandwidth_fraction_get, _datamunge.HarmonySearchOptions_bandwidth_fraction_set, doc=r"""Pitch adjustment bandwidth, as a fraction of each dimension's [lower, upper] range.""")
+    max_iterations = property(_datamunge.HarmonySearchOptions_max_iterations_get, _datamunge.HarmonySearchOptions_max_iterations_set, doc=r"""
+    HS improvises exactly one new candidate per iteration (unlike generational methods
+           that evaluate population_size candidates per generation), so it typically needs a
+           much larger iteration budget for a comparable total evaluation count.
+    """)
+    tolerance = property(_datamunge.HarmonySearchOptions_tolerance_get, _datamunge.HarmonySearchOptions_tolerance_set, doc=r"""
+    Stops after the best-ever value has improved by less than this for
+           20 * population_size consecutive iterations.
+    """)
+    seed = property(_datamunge.HarmonySearchOptions_seed_get, _datamunge.HarmonySearchOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.HarmonySearchOptions_swiginit(self, _datamunge.new_HarmonySearchOptions())
+    __swig_destroy__ = _datamunge.delete_HarmonySearchOptions
+
+# Register HarmonySearchOptions in _datamunge:
+_datamunge.HarmonySearchOptions_swigregister(HarmonySearchOptions)
+class HarmonySearch(object):
+    r"""
+    Harmony search on an ArbitraryFunction within a box constraint: a fixed-size harmony
+           memory of candidate solutions is improvised one new vector at a time, mixing memory
+           consideration, pitch adjustment, and random selection per dimension, with greedy
+           replacement of the worst memory member. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.HarmonySearch_swiginit(self, _datamunge.new_HarmonySearch(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one member of the harmony memory.
+        """
+        return _datamunge.HarmonySearch_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_HarmonySearch
+
+# Register HarmonySearch in _datamunge:
+_datamunge.HarmonySearch_swigregister(HarmonySearch)
+class ParallelTemperingOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_replicas = property(_datamunge.ParallelTemperingOptions_num_replicas_get, _datamunge.ParallelTemperingOptions_num_replicas_set)
+    initial_temperature = property(_datamunge.ParallelTemperingOptions_initial_temperature_get, _datamunge.ParallelTemperingOptions_initial_temperature_set, doc=r"""T_max, the hottest replica's fixed temperature.""")
+    final_temperature = property(_datamunge.ParallelTemperingOptions_final_temperature_get, _datamunge.ParallelTemperingOptions_final_temperature_set, doc=r"""T_min, the coldest replica's fixed temperature.""")
+    step_std_dev = property(_datamunge.ParallelTemperingOptions_step_std_dev_get, _datamunge.ParallelTemperingOptions_step_std_dev_set, doc=r"""
+    Base standard deviation of each replica's Gaussian proposal; scaled per-replica by
+           sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory steps.
+    """)
+    swap_interval = property(_datamunge.ParallelTemperingOptions_swap_interval_get, _datamunge.ParallelTemperingOptions_swap_interval_set, doc=r"""Attempt a replica-exchange swap sweep every this many single-replica update sweeps.""")
+    max_sweeps = property(_datamunge.ParallelTemperingOptions_max_sweeps_get, _datamunge.ParallelTemperingOptions_max_sweeps_set)
+    seed = property(_datamunge.ParallelTemperingOptions_seed_get, _datamunge.ParallelTemperingOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ParallelTemperingOptions_swiginit(self, _datamunge.new_ParallelTemperingOptions())
+    __swig_destroy__ = _datamunge.delete_ParallelTemperingOptions
+
+# Register ParallelTemperingOptions in _datamunge:
+_datamunge.ParallelTemperingOptions_swigregister(ParallelTemperingOptions)
+class ParallelTempering(object):
+    r"""
+    Parallel tempering (replica exchange Monte Carlo): the population-based generalization
+           of SimulatedAnnealing. Runs num_replicas Metropolis chains simultaneously, each held at
+           its own fixed temperature on a geometric ladder, and periodically proposes swapping
+           adjacent-temperature replicas' states so hot chains help cold chains escape local
+           minima. Derivative-free, unconstrained, suitable for non-differentiable/black-box
+           objectives -- like SimulatedAnnealing, requires nothing beyond evaluate().
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ParallelTempering_swiginit(self, _datamunge.new_ParallelTempering(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.ParallelTempering_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_ParallelTempering
+
+# Register ParallelTempering in _datamunge:
+_datamunge.ParallelTempering_swigregister(ParallelTempering)
+class WhaleOptimizationOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.WhaleOptimizationOptions_population_size_get, _datamunge.WhaleOptimizationOptions_population_size_set)
+    spiral_constant = property(_datamunge.WhaleOptimizationOptions_spiral_constant_get, _datamunge.WhaleOptimizationOptions_spiral_constant_set, doc=r"""b: shape constant of the logarithmic bubble-net spiral.""")
+    max_iterations = property(_datamunge.WhaleOptimizationOptions_max_iterations_get, _datamunge.WhaleOptimizationOptions_max_iterations_set)
+    tolerance = property(_datamunge.WhaleOptimizationOptions_tolerance_get, _datamunge.WhaleOptimizationOptions_tolerance_set, doc=r"""Stops after the best-ever value has improved by less than this for 20 consecutive iterations.""")
+    seed = property(_datamunge.WhaleOptimizationOptions_seed_get, _datamunge.WhaleOptimizationOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.WhaleOptimizationOptions_swiginit(self, _datamunge.new_WhaleOptimizationOptions())
+    __swig_destroy__ = _datamunge.delete_WhaleOptimizationOptions
+
+# Register WhaleOptimizationOptions in _datamunge:
+_datamunge.WhaleOptimizationOptions_swigregister(WhaleOptimizationOptions)
+class WhaleOptimization(object):
+    r"""
+    Whale Optimization Algorithm (Mirjalili & Lewis, 2016): a population of whales
+           alternates between encircling prey, random search, and a logarithmic bubble-net
+           spiral to home in on the best point found so far. Derivative-free, box-constrained.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.WhaleOptimization_swiginit(self, _datamunge.new_WhaleOptimization(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one whale of the population.
+        """
+        return _datamunge.WhaleOptimization_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_WhaleOptimization
+
+# Register WhaleOptimization in _datamunge:
+_datamunge.WhaleOptimization_swigregister(WhaleOptimization)
+class FISTAOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.FISTAOptions_step_size_get, _datamunge.FISTAOptions_step_size_set)
+    max_iterations = property(_datamunge.FISTAOptions_max_iterations_get, _datamunge.FISTAOptions_max_iterations_set)
+    tolerance = property(_datamunge.FISTAOptions_tolerance_get, _datamunge.FISTAOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.FISTAOptions_swiginit(self, _datamunge.new_FISTAOptions())
+    __swig_destroy__ = _datamunge.delete_FISTAOptions
+
+# Register FISTAOptions in _datamunge:
+_datamunge.FISTAOptions_swigregister(FISTAOptions)
+class FISTA(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.FISTA_swiginit(self, _datamunge.new_FISTA(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.FISTA_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_FISTA
+
+# Register FISTA in _datamunge:
+_datamunge.FISTA_swigregister(FISTA)
+class ProximalGradientOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.ProximalGradientOptions_step_size_get, _datamunge.ProximalGradientOptions_step_size_set)
+    max_iterations = property(_datamunge.ProximalGradientOptions_max_iterations_get, _datamunge.ProximalGradientOptions_max_iterations_set)
+    tolerance = property(_datamunge.ProximalGradientOptions_tolerance_get, _datamunge.ProximalGradientOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.ProximalGradientOptions_swiginit(self, _datamunge.new_ProximalGradientOptions())
+    __swig_destroy__ = _datamunge.delete_ProximalGradientOptions
+
+# Register ProximalGradientOptions in _datamunge:
+_datamunge.ProximalGradientOptions_swigregister(ProximalGradientOptions)
+class ProximalGradient(object):
+    r"""Proximal gradient descent for composite objectives such as lasso."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ProximalGradient_swiginit(self, _datamunge.new_ProximalGradient(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.ProximalGradient_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_ProximalGradient
+
+# Register ProximalGradient in _datamunge:
+_datamunge.ProximalGradient_swigregister(ProximalGradient)
+class LevenbergMarquardtOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_damping = property(_datamunge.LevenbergMarquardtOptions_initial_damping_get, _datamunge.LevenbergMarquardtOptions_initial_damping_set)
+    max_iterations = property(_datamunge.LevenbergMarquardtOptions_max_iterations_get, _datamunge.LevenbergMarquardtOptions_max_iterations_set)
+    tolerance = property(_datamunge.LevenbergMarquardtOptions_tolerance_get, _datamunge.LevenbergMarquardtOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.LevenbergMarquardtOptions_swiginit(self, _datamunge.new_LevenbergMarquardtOptions())
+    __swig_destroy__ = _datamunge.delete_LevenbergMarquardtOptions
+
+# Register LevenbergMarquardtOptions in _datamunge:
+_datamunge.LevenbergMarquardtOptions_swigregister(LevenbergMarquardtOptions)
+class LevenbergMarquardt(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.LevenbergMarquardt_swiginit(self, _datamunge.new_LevenbergMarquardt(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.LevenbergMarquardt_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_LevenbergMarquardt
+
+# Register LevenbergMarquardt in _datamunge:
+_datamunge.LevenbergMarquardt_swigregister(LevenbergMarquardt)
+class NewtonOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    max_iterations = property(_datamunge.NewtonOptions_max_iterations_get, _datamunge.NewtonOptions_max_iterations_set)
+    tolerance = property(_datamunge.NewtonOptions_tolerance_get, _datamunge.NewtonOptions_tolerance_set)
+    damping = property(_datamunge.NewtonOptions_damping_get, _datamunge.NewtonOptions_damping_set)
+
+    def __init__(self):
+        _datamunge.NewtonOptions_swiginit(self, _datamunge.new_NewtonOptions())
+    __swig_destroy__ = _datamunge.delete_NewtonOptions
+
+# Register NewtonOptions in _datamunge:
+_datamunge.NewtonOptions_swigregister(NewtonOptions)
+class Newton(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.Newton_swiginit(self, _datamunge.new_Newton(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.Newton_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_Newton
+
+# Register Newton in _datamunge:
+_datamunge.Newton_swigregister(Newton)
+class TrustRegionNewtonOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_radius = property(_datamunge.TrustRegionNewtonOptions_initial_radius_get, _datamunge.TrustRegionNewtonOptions_initial_radius_set)
+    max_radius = property(_datamunge.TrustRegionNewtonOptions_max_radius_get, _datamunge.TrustRegionNewtonOptions_max_radius_set)
+    max_iterations = property(_datamunge.TrustRegionNewtonOptions_max_iterations_get, _datamunge.TrustRegionNewtonOptions_max_iterations_set)
+    tolerance = property(_datamunge.TrustRegionNewtonOptions_tolerance_get, _datamunge.TrustRegionNewtonOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.TrustRegionNewtonOptions_swiginit(self, _datamunge.new_TrustRegionNewtonOptions())
+    __swig_destroy__ = _datamunge.delete_TrustRegionNewtonOptions
+
+# Register TrustRegionNewtonOptions in _datamunge:
+_datamunge.TrustRegionNewtonOptions_swigregister(TrustRegionNewtonOptions)
+class TrustRegionNewton(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.TrustRegionNewton_swiginit(self, _datamunge.new_TrustRegionNewton(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.TrustRegionNewton_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_TrustRegionNewton
+
+# Register TrustRegionNewton in _datamunge:
+_datamunge.TrustRegionNewton_swigregister(TrustRegionNewton)
+class AugmentedLagrangianOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.AugmentedLagrangianOptions_step_size_get, _datamunge.AugmentedLagrangianOptions_step_size_set)
+    initial_penalty = property(_datamunge.AugmentedLagrangianOptions_initial_penalty_get, _datamunge.AugmentedLagrangianOptions_initial_penalty_set)
+    max_outer_iterations = property(_datamunge.AugmentedLagrangianOptions_max_outer_iterations_get, _datamunge.AugmentedLagrangianOptions_max_outer_iterations_set)
+    inner_iterations = property(_datamunge.AugmentedLagrangianOptions_inner_iterations_get, _datamunge.AugmentedLagrangianOptions_inner_iterations_set)
+    tolerance = property(_datamunge.AugmentedLagrangianOptions_tolerance_get, _datamunge.AugmentedLagrangianOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.AugmentedLagrangianOptions_swiginit(self, _datamunge.new_AugmentedLagrangianOptions())
+    __swig_destroy__ = _datamunge.delete_AugmentedLagrangianOptions
+
+# Register AugmentedLagrangianOptions in _datamunge:
+_datamunge.AugmentedLagrangianOptions_swigregister(AugmentedLagrangianOptions)
+class AugmentedLagrangian(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.AugmentedLagrangian_swiginit(self, _datamunge.new_AugmentedLagrangian(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.AugmentedLagrangian_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_AugmentedLagrangian
+
+# Register AugmentedLagrangian in _datamunge:
+_datamunge.AugmentedLagrangian_swigregister(AugmentedLagrangian)
+class SQPOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.SQPOptions_step_size_get, _datamunge.SQPOptions_step_size_set)
+    regularization = property(_datamunge.SQPOptions_regularization_get, _datamunge.SQPOptions_regularization_set)
+    max_iterations = property(_datamunge.SQPOptions_max_iterations_get, _datamunge.SQPOptions_max_iterations_set)
+    tolerance = property(_datamunge.SQPOptions_tolerance_get, _datamunge.SQPOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.SQPOptions_swiginit(self, _datamunge.new_SQPOptions())
+    __swig_destroy__ = _datamunge.delete_SQPOptions
+
+# Register SQPOptions in _datamunge:
+_datamunge.SQPOptions_swigregister(SQPOptions)
+class SQP(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.SQP_swiginit(self, _datamunge.new_SQP(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.SQP_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_SQP
+
+# Register SQP in _datamunge:
+_datamunge.SQP_swigregister(SQP)
+class InteriorPointOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.InteriorPointOptions_step_size_get, _datamunge.InteriorPointOptions_step_size_set)
+    initial_barrier = property(_datamunge.InteriorPointOptions_initial_barrier_get, _datamunge.InteriorPointOptions_initial_barrier_set)
+    barrier_decay = property(_datamunge.InteriorPointOptions_barrier_decay_get, _datamunge.InteriorPointOptions_barrier_decay_set)
+    max_outer_iterations = property(_datamunge.InteriorPointOptions_max_outer_iterations_get, _datamunge.InteriorPointOptions_max_outer_iterations_set)
+    inner_iterations = property(_datamunge.InteriorPointOptions_inner_iterations_get, _datamunge.InteriorPointOptions_inner_iterations_set)
+
+    def __init__(self):
+        _datamunge.InteriorPointOptions_swiginit(self, _datamunge.new_InteriorPointOptions())
+    __swig_destroy__ = _datamunge.delete_InteriorPointOptions
+
+# Register InteriorPointOptions in _datamunge:
+_datamunge.InteriorPointOptions_swigregister(InteriorPointOptions)
+class InteriorPoint(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.InteriorPoint_swiginit(self, _datamunge.new_InteriorPoint(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.InteriorPoint_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_InteriorPoint
+
+# Register InteriorPoint in _datamunge:
+_datamunge.InteriorPoint_swigregister(InteriorPoint)
+class BayesianSurrogate(object):
+    r"""Surrogate/acquisition extension point for bounded Bayesian optimization."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_BayesianSurrogate
+
+    def fit(self, points, values):
+        return _datamunge.BayesianSurrogate_fit(self, points, values)
+
+    def acquisition(self, point, incumbent):
+        return _datamunge.BayesianSurrogate_acquisition(self, point, incumbent)
+
+    def __init__(self):
+        if self.__class__ == BayesianSurrogate:
+            _self = None
+        else:
+            _self = self
+        _datamunge.BayesianSurrogate_swiginit(self, _datamunge.new_BayesianSurrogate(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_BayesianSurrogate(self)
+        return weakref.proxy(self)
+
+# Register BayesianSurrogate in _datamunge:
+_datamunge.BayesianSurrogate_swigregister(BayesianSurrogate)
+class BayesianOptimizationOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_samples = property(_datamunge.BayesianOptimizationOptions_initial_samples_get, _datamunge.BayesianOptimizationOptions_initial_samples_set)
+    max_iterations = property(_datamunge.BayesianOptimizationOptions_max_iterations_get, _datamunge.BayesianOptimizationOptions_max_iterations_set)
+    seed = property(_datamunge.BayesianOptimizationOptions_seed_get, _datamunge.BayesianOptimizationOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.BayesianOptimizationOptions_swiginit(self, _datamunge.new_BayesianOptimizationOptions())
+    __swig_destroy__ = _datamunge.delete_BayesianOptimizationOptions
+
+# Register BayesianOptimizationOptions in _datamunge:
+_datamunge.BayesianOptimizationOptions_swigregister(BayesianOptimizationOptions)
+class BayesianOptimization(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.BayesianOptimization_swiginit(self, _datamunge.new_BayesianOptimization(*args))
+
+    def optimize(self, function, coordinates, lower, upper, surrogate):
+        return _datamunge.BayesianOptimization_optimize(self, function, coordinates, lower, upper, surrogate)
+    __swig_destroy__ = _datamunge.delete_BayesianOptimization
+
+# Register BayesianOptimization in _datamunge:
+_datamunge.BayesianOptimization_swigregister(BayesianOptimization)
+class RBFGaussianProcessSurrogate(BayesianSurrogate):
+    r"""Vector-native RBF Gaussian-process surrogate with expected-improvement acquisition."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, length_scale=1.0, noise=1e-6):
+        _datamunge.RBFGaussianProcessSurrogate_swiginit(self, _datamunge.new_RBFGaussianProcessSurrogate(length_scale, noise))
+
+    def fit(self, points, values):
+        return _datamunge.RBFGaussianProcessSurrogate_fit(self, points, values)
+
+    def acquisition(self, point, incumbent):
+        return _datamunge.RBFGaussianProcessSurrogate_acquisition(self, point, incumbent)
+    __swig_destroy__ = _datamunge.delete_RBFGaussianProcessSurrogate
+
+# Register RBFGaussianProcessSurrogate in _datamunge:
+_datamunge.RBFGaussianProcessSurrogate_swigregister(RBFGaussianProcessSurrogate)
 class MAPOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -5822,6 +8159,135 @@ class ImportanceSampling(object):
 
 # Register ImportanceSampling in _datamunge:
 _datamunge.ImportanceSampling_swigregister(ImportanceSampling)
+class RHS(object):
+    r"""
+    Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.
+           Director-enabled only in the Python binding, matching datamunge::filter::VectorFunction
+           (the closest existing precedent -- a vector<double>-returning pure-virtual director):
+           every other SWIG backend either has no director support at all, or -- confirmed by a
+           real compile failure while wiring this class up in R -- cannot generate a working
+           director wrapper for a virtual method that returns std::vector<double>. Every other
+           binding can only use ODESolver::solve_builtin()'s fixed set of named systems, since a
+           live user-supplied RHS requires exactly that subclassing.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_RHS
+
+    def evaluate(self, t, y):
+        return _datamunge.RHS_evaluate(self, t, y)
+
+    def __init__(self):
+        if self.__class__ == RHS:
+            _self = None
+        else:
+            _self = self
+        _datamunge.RHS_swiginit(self, _datamunge.new_RHS(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_RHS(self)
+        return weakref.proxy(self)
+
+# Register RHS in _datamunge:
+_datamunge.RHS_swigregister(RHS)
+StepMethod_Euler = _datamunge.StepMethod_Euler
+StepMethod_Midpoint = _datamunge.StepMethod_Midpoint
+StepMethod_RK4 = _datamunge.StepMethod_RK4
+StepMethod_RK45 = _datamunge.StepMethod_RK45
+StepMethod_AdamsBashforth = _datamunge.StepMethod_AdamsBashforth
+StepMethod_AdamsMoulton = _datamunge.StepMethod_AdamsMoulton
+class ODEOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    method = property(_datamunge.ODEOptions_method_get, _datamunge.ODEOptions_method_set)
+    multistep_order = property(_datamunge.ODEOptions_multistep_order_get, _datamunge.ODEOptions_multistep_order_set, doc=r"""Order (2-4) for AdamsBashforth/AdamsMoulton; ignored by every other method.""")
+    step_size = property(_datamunge.ODEOptions_step_size_get, _datamunge.ODEOptions_step_size_set, doc=r"""
+    Fixed step size for every method except RK45, where it is only the *initial* step
+           (subsequent steps are chosen adaptively).
+    """)
+    abs_tol = property(_datamunge.ODEOptions_abs_tol_get, _datamunge.ODEOptions_abs_tol_set, doc=r"""RK45-only: local error tolerances driving adaptive step-size control.""")
+    rel_tol = property(_datamunge.ODEOptions_rel_tol_get, _datamunge.ODEOptions_rel_tol_set)
+    max_step = property(_datamunge.ODEOptions_max_step_get, _datamunge.ODEOptions_max_step_set, doc=r"""RK45-only: hard cap on step size; 0 means unbounded (capped only by t_end - t_start).""")
+
+    def __init__(self):
+        _datamunge.ODEOptions_swiginit(self, _datamunge.new_ODEOptions())
+    __swig_destroy__ = _datamunge.delete_ODEOptions
+
+# Register ODEOptions in _datamunge:
+_datamunge.ODEOptions_swigregister(ODEOptions)
+class ODESolution(object):
+    r"""
+    One numerically integrated trajectory: t[i] paired with y[i] (the full state vector
+           at that time), in increasing-time order, always including both endpoints. `t` and `y`
+           are public fields for direct C++ use, but are not exposed to language bindings (a
+           container-typed struct *field getter* -- even a plain vector<double>, not just a
+           nested vector<vector<double>> -- hits a swig-jse R-backend codegen bug that a
+           same-shaped plain *method* return does not) -- time_at()/state_at()/size() are the
+           cross-language-safe way to read it.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    steps_taken = property(_datamunge.ODESolution_steps_taken_get, _datamunge.ODESolution_steps_taken_set)
+    function_evaluations = property(_datamunge.ODESolution_function_evaluations_get, _datamunge.ODESolution_function_evaluations_set)
+
+    def size(self):
+        return _datamunge.ODESolution_size(self)
+
+    def time_at(self, index):
+        return _datamunge.ODESolution_time_at(self, index)
+
+    def state_at(self, index):
+        r"""The full state vector at t[index]."""
+        return _datamunge.ODESolution_state_at(self, index)
+
+    def __init__(self):
+        _datamunge.ODESolution_swiginit(self, _datamunge.new_ODESolution())
+    __swig_destroy__ = _datamunge.delete_ODESolution
+
+# Register ODESolution in _datamunge:
+_datamunge.ODESolution_swigregister(ODESolution)
+class ODESolver(object):
+    r"""
+    Numerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be
+           greater than t_start; this project's "basic" ODE support does not handle backward
+           integration) given an initial state y0, via one of: explicit Euler, the explicit
+           midpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince
+           Runge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or
+           Adams-Bashforth-Moulton predictor-corrector (order 2-4 -- the "implicit" linear
+           multistep option; this project uses a PECE predictor-corrector rather than a full
+           Newton-iteration implicit solve, avoiding the need for a Jacobian). Every multistep
+           method self-starts using classical RK4 for its first few steps.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ODESolver_swiginit(self, _datamunge.new_ODESolver(*args))
+
+    def solve(self, rhs, y0, t_start, t_end):
+        return _datamunge.ODESolver_solve(self, rhs, y0, t_start, t_end)
+
+    def solve_builtin(self, system, params, y0, t_start, t_end):
+        r"""
+        Same as solve(), but the RHS is one of a fixed set of named systems instead of a
+               live user-supplied one -- the only way every language binding (not just the ones
+               with SWIG director support) can use this solver. `params` is interpreted
+               positionally per system (missing entries fall back to the defaults below):
+                 - "exponential_decay": dy/dt = -k y.                     params = {k=1}, y0 size 1.
+                 - "logistic_growth":   dy/dt = r y (1 - y/K).            params = {r=1, K=1}, y0 size 1.
+                 - "harmonic_oscillator": (x,v), dx/dt=v, dv/dt=-omega^2 x. params = {omega=1}, y0 size 2.
+                 - "van_der_pol":       (x,v), dx/dt=v, dv/dt=mu(1-x^2)v-x. params = {mu=1}, y0 size 2.
+                 - "lorenz": (x,y,z), the classic chaotic system.         params = {sigma=10, rho=28, beta=8/3}, y0 size 3.
+               Throws std::invalid_argument for an unknown system name.
+        """
+        return _datamunge.ODESolver_solve_builtin(self, system, params, y0, t_start, t_end)
+    __swig_destroy__ = _datamunge.delete_ODESolver
+
+# Register ODESolver in _datamunge:
+_datamunge.ODESolver_swigregister(ODESolver)
 class Point2D(object):
     r"""A point (or free vector) in the plane."""
 

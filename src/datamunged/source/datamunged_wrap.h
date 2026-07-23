@@ -110,5 +110,137 @@ private:
     SWIG_Callback4_t swig_callback_gradient_term;
 };
 
+class SwigDirector_ProximalFunction : public datamunge::optim::ProximalFunction, public Swig::Director {
+
+public:
+    SwigDirector_ProximalFunction();
+    virtual ~SwigDirector_ProximalFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > proximal(std::vector< double > const &point,double step);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback2_t)(void *dobj, void *, double);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient, SWIG_Callback2_t callbackproximal);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+    SWIG_Callback2_t swig_callback_proximal;
+};
+
+class SwigDirector_HessianFunction : public datamunge::optim::HessianFunction, public Swig::Director {
+
+public:
+    SwigDirector_HessianFunction();
+    virtual ~SwigDirector_HessianFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > hessian(std::vector< double > const &coordinates);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback2_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient, SWIG_Callback2_t callbackhessian);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+    SWIG_Callback2_t swig_callback_hessian;
+};
+
+class SwigDirector_EqualityConstrainedFunction : public datamunge::optim::EqualityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_EqualityConstrainedFunction();
+    virtual ~SwigDirector_EqualityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > constraints(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > constraint_jacobian(std::vector< double > const &coordinates);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback2_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback3_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient, SWIG_Callback2_t callbackconstraints, SWIG_Callback3_t callbackconstraint_jacobian);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+    SWIG_Callback2_t swig_callback_constraints;
+    SWIG_Callback3_t swig_callback_constraint_jacobian;
+};
+
+class SwigDirector_InequalityConstrainedFunction : public datamunge::optim::InequalityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_InequalityConstrainedFunction();
+    virtual ~SwigDirector_InequalityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > inequalities(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > inequality_jacobian(std::vector< double > const &coordinates);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback2_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback3_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient, SWIG_Callback2_t callbackinequalities, SWIG_Callback3_t callbackinequality_jacobian);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+    SWIG_Callback2_t swig_callback_inequalities;
+    SWIG_Callback3_t swig_callback_inequality_jacobian;
+};
+
+class SwigDirector_ResidualFunction : public datamunge::optim::ResidualFunction, public Swig::Director {
+
+public:
+    SwigDirector_ResidualFunction();
+    virtual ~SwigDirector_ResidualFunction();
+    virtual std::vector< double > residuals(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > jacobian(std::vector< double > const &coordinates);
+
+    typedef void * (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackresiduals, SWIG_Callback1_t callbackjacobian);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_residuals;
+    SWIG_Callback1_t swig_callback_jacobian;
+};
+
+class SwigDirector_BayesianSurrogate : public datamunge::optim::BayesianSurrogate, public Swig::Director {
+
+public:
+    SwigDirector_BayesianSurrogate();
+    virtual ~SwigDirector_BayesianSurrogate();
+    virtual void fit(std::vector< std::vector< double > > const &points,std::vector< double > const &values);
+    virtual double acquisition(std::vector< double > const &point,double incumbent);
+
+    typedef void (* SWIG_Callback0_t)(void *dobj, void *, void *);
+    typedef double (* SWIG_Callback1_t)(void *dobj, void *, double);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackfit, SWIG_Callback1_t callbackacquisition);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_fit;
+    SWIG_Callback1_t swig_callback_acquisition;
+};
+
 
 #endif

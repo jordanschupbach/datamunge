@@ -1,0 +1,4 @@
+#include <datamunge/optim/fista.hpp>
+#include <cmath>
+#include <stdexcept>
+namespace datamunge::optim { FISTA::FISTA(FISTAOptions o):options_(o){} double FISTA::optimize(ProximalFunction& f,std::vector<double>& x)const{if(options_.step_size<=0)throw std::invalid_argument("FISTA: step_size must be positive");std::vector<double> y=x;double t=1;for(std::size_t i=0;i<options_.max_iterations;++i){auto g=f.gradient(y);std::vector<double> z(y.size());for(std::size_t j=0;j<z.size();++j)z[j]=y[j]-options_.step_size*g[j];auto next=f.proximal(z,options_.step_size);double d=0;for(std::size_t j=0;j<x.size();++j){double q=next[j]-x[j];d+=q*q;}double nt=.5*(1+std::sqrt(1+4*t*t));for(std::size_t j=0;j<x.size();++j)y[j]=next[j]+(t-1)/nt*(next[j]-x[j]);x=std::move(next);t=nt;if(std::sqrt(d)<=options_.tolerance)break;}return f.evaluate(x);}}

@@ -127,6 +127,58 @@ public class DataFrame : global::System.IDisposable {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if        present. Always returns a new DataFrame, so it composes into a pipe.</summary>
+  public DataFrame mutate_numeric(string column_name, DVector values, IVector valid_mask) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_numeric__SWIG_0(swigCPtr, column_name, DVector.getCPtr(values), IVector.getCPtr(valid_mask));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if        present. Always returns a new DataFrame, so it composes into a pipe.</summary>
+  public DataFrame mutate_numeric(string column_name, DVector values) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_numeric__SWIG_1(swigCPtr, column_name, DVector.getCPtr(values));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame mutate_string(string column_name, SVector values, IVector valid_mask) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_string__SWIG_0(swigCPtr, column_name, SVector.getCPtr(values), IVector.getCPtr(valid_mask));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame mutate_string(string column_name, SVector values) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_string__SWIG_1(swigCPtr, column_name, SVector.getCPtr(values));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame mutate_string_encoded(string column_name, string encoded_values, IVector valid_mask) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_string_encoded__SWIG_0(swigCPtr, column_name, encoded_values, IVector.getCPtr(valid_mask));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame mutate_string_encoded(string column_name, string encoded_values) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_mutate_string_encoded__SWIG_1(swigCPtr, column_name, encoded_values);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Non-mutating, chainable single-pair rename.</summary>
+  public DataFrame rename(string old_name, string new_name) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_rename(swigCPtr, old_name, new_name);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public DataFrame select(SVector selected_columns) {
     global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_select(swigCPtr, SVector.getCPtr(selected_columns));
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
@@ -141,6 +193,36 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>dplyr::relocate()-style column reorder: moves `columns` to the front (default) or        immediately after the column named `after`.</summary>
+  public DataFrame relocate(SVector columns, string after) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_relocate__SWIG_0(swigCPtr, SVector.getCPtr(columns), after);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::relocate()-style column reorder: moves `columns` to the front (default) or        immediately after the column named `after`.</summary>
+  public DataFrame relocate(SVector columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_relocate__SWIG_1(swigCPtr, SVector.getCPtr(columns));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame relocate_encoded(string encoded_columns, string after) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_relocate_encoded__SWIG_0(swigCPtr, encoded_columns, after);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame relocate_encoded(string encoded_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_relocate_encoded__SWIG_1(swigCPtr, encoded_columns);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public DataFrame sort_by(string column_name, bool ascending) {
     global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_sort_by__SWIG_0(swigCPtr, column_name, ascending);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
@@ -150,6 +232,36 @@ public class DataFrame : global::System.IDisposable {
 
   public DataFrame sort_by(string column_name) {
     global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_sort_by__SWIG_1(swigCPtr, column_name);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when        provided it must have the same length as `columns`.</summary>
+  public DataFrame arrange(SVector columns, IVector ascending) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_arrange__SWIG_0(swigCPtr, SVector.getCPtr(columns), IVector.getCPtr(ascending));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when        provided it must have the same length as `columns`.</summary>
+  public DataFrame arrange(SVector columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_arrange__SWIG_1(swigCPtr, SVector.getCPtr(columns));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame arrange_encoded(string encoded_columns, IVector ascending) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_arrange_encoded__SWIG_0(swigCPtr, encoded_columns, IVector.getCPtr(ascending));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame arrange_encoded(string encoded_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_arrange_encoded__SWIG_1(swigCPtr, encoded_columns);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
@@ -175,6 +287,60 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>dplyr::distinct() alias for drop_duplicates().</summary>
+  public DataFrame distinct(SVector subset) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_distinct__SWIG_0(swigCPtr, SVector.getCPtr(subset));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::distinct() alias for drop_duplicates().</summary>
+  public DataFrame distinct() {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_distinct__SWIG_1(swigCPtr);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DataFrame distinct_encoded(string encoded_subset) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_distinct_encoded(swigCPtr, encoded_subset);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)        in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =        null, same convention as add_numeric_column's valid_mask) if nulls matter.</summary>
+  public DVector pull_numeric(string column_name) {
+    DVector ret = new DVector(datamungePINVOKE.DataFrame_pull_numeric(swigCPtr, column_name), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public IVector pull_numeric_valid(string column_name) {
+    IVector ret = new IVector(datamungePINVOKE.DataFrame_pull_numeric_valid(swigCPtr, column_name), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public SVector pull_string(string column_name) {
+    SVector ret = new SVector(datamungePINVOKE.DataFrame_pull_string(swigCPtr, column_name), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public IVector pull_string_valid(string column_name) {
+    IVector ret = new IVector(datamungePINVOKE.DataFrame_pull_string_valid(swigCPtr, column_name), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Number of distinct values in column_name; a null counts as one additional distinct        value if present.</summary>
+  public uint n_distinct(string column_name) {
+    uint ret = datamungePINVOKE.DataFrame_n_distinct(swigCPtr, column_name);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public DataFrame group_by_sum(SVector key_columns, SVector value_columns) {
     global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_group_by_sum(swigCPtr, SVector.getCPtr(key_columns), SVector.getCPtr(value_columns));
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
@@ -189,15 +355,168 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
-  public DataFrame join(DataFrame right, string left_key, string right_key, bool left_join) {
-    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_0(swigCPtr, DataFrame.getCPtr(right), left_key, right_key, left_join);
+  /// <summary>dplyr::count()-style grouped row counts, default result column name "n".</summary>
+  public DataFrame count(SVector key_columns, string count_column_name) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_count__SWIG_0(swigCPtr, SVector.getCPtr(key_columns), count_column_name);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>dplyr::count()-style grouped row counts, default result column name "n".</summary>
+  public DataFrame count(SVector key_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_count__SWIG_1(swigCPtr, SVector.getCPtr(key_columns));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame count_encoded(string encoded_key_columns, string count_column_name) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_count_encoded__SWIG_0(swigCPtr, encoded_key_columns, count_column_name);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame count_encoded(string encoded_key_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_count_encoded__SWIG_1(swigCPtr, encoded_key_columns);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>General dplyr::summarise()-style aggregation: one output row per distinct        combination of `key_columns`, with one output column per (agg_columns[i],        agg_funcs[i], result_names[i]) triple -- all three arrays must have the same length.        agg_funcs entries are one of "sum", "mean", "min", "max", "median", "stddev",        "count", "n_distinct" ("count" ignores the corresponding agg_columns entry, which may        be ""); a "" result_names entry defaults to the agg_columns entry (or "n" for count).</summary>
+  public DataFrame summarise(SVector key_columns, SVector agg_columns, SVector agg_funcs, SVector result_names) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_summarise(swigCPtr, SVector.getCPtr(key_columns), SVector.getCPtr(agg_columns), SVector.getCPtr(agg_funcs), SVector.getCPtr(result_names));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame summarise_encoded(string encoded_key_columns, string encoded_agg_columns, string encoded_agg_funcs, string encoded_result_names) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_summarise_encoded(swigCPtr, encoded_key_columns, encoded_agg_columns, encoded_agg_funcs, encoded_result_names);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns        (`names_to` holding the source column name, `values_to` holding its value).</summary>
+  public DataFrame pivot_longer(SVector value_columns, string names_to, string values_to) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer__SWIG_0(swigCPtr, SVector.getCPtr(value_columns), names_to, values_to);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns        (`names_to` holding the source column name, `values_to` holding its value).</summary>
+  public DataFrame pivot_longer(SVector value_columns, string names_to) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer__SWIG_1(swigCPtr, SVector.getCPtr(value_columns), names_to);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns        (`names_to` holding the source column name, `values_to` holding its value).</summary>
+  public DataFrame pivot_longer(SVector value_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer__SWIG_2(swigCPtr, SVector.getCPtr(value_columns));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame pivot_longer_encoded(string encoded_value_columns, string names_to, string values_to) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer_encoded__SWIG_0(swigCPtr, encoded_value_columns, names_to, values_to);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame pivot_longer_encoded(string encoded_value_columns, string names_to) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer_encoded__SWIG_1(swigCPtr, encoded_value_columns, names_to);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame pivot_longer_encoded(string encoded_value_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_longer_encoded__SWIG_2(swigCPtr, encoded_value_columns);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new        column names, `values_from` supplies their values; `id_columns` defaults to every        other column.</summary>
+  public DataFrame pivot_wider(string names_from, string values_from, SVector id_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_wider__SWIG_0(swigCPtr, names_from, values_from, SVector.getCPtr(id_columns));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new        column names, `values_from` supplies their values; `id_columns` defaults to every        other column.</summary>
+  public DataFrame pivot_wider(string names_from, string values_from) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_wider__SWIG_1(swigCPtr, names_from, values_from);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public DataFrame pivot_wider_encoded(string names_from, string values_from, string encoded_id_columns) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_pivot_wider_encoded(swigCPtr, names_from, values_from, encoded_id_columns);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,        which isn't exposed here), null-filling any column present in only one frame.</summary>
+  public DataFrame bind_rows(DataFrame other) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_bind_rows(swigCPtr, DataFrame.getCPtr(other));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>dplyr::bind_cols()-style column union: both frames must have the same row count and        disjoint column names.</summary>
+  public DataFrame bind_cols(DataFrame other) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_bind_cols(swigCPtr, DataFrame.getCPtr(other));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <param name="join_type"> One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+  ///             column name present in both frames (other than the key column when left_key ==
+  ///             right_key) is suffixed on both sides so the result never has duplicate names.</param>
+  public DataFrame join(DataFrame right, string left_key, string right_key, string join_type, string left_suffix, string right_suffix) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_0(swigCPtr, DataFrame.getCPtr(right), left_key, right_key, join_type, left_suffix, right_suffix);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <param name="join_type"> One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+  ///             column name present in both frames (other than the key column when left_key ==
+  ///             right_key) is suffixed on both sides so the result never has duplicate names.</param>
+  public DataFrame join(DataFrame right, string left_key, string right_key, string join_type, string left_suffix) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_1(swigCPtr, DataFrame.getCPtr(right), left_key, right_key, join_type, left_suffix);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <param name="join_type"> One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+  ///             column name present in both frames (other than the key column when left_key ==
+  ///             right_key) is suffixed on both sides so the result never has duplicate names.</param>
+  public DataFrame join(DataFrame right, string left_key, string right_key, string join_type) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_2(swigCPtr, DataFrame.getCPtr(right), left_key, right_key, join_type);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// 
   public DataFrame join(DataFrame right, string left_key, string right_key) {
-    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_1(swigCPtr, DataFrame.getCPtr(right), left_key, right_key);
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_join__SWIG_3(swigCPtr, DataFrame.getCPtr(right), left_key, right_key);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;

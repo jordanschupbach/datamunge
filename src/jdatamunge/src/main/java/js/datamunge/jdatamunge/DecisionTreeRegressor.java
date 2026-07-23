@@ -115,12 +115,12 @@ public class DecisionTreeRegressor {
     return new DVector(datamungeJNI.DecisionTreeRegressor_predict(swigCPtr, this, DataFrame.getCPtr(newdata), newdata), true);
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    return new ScatterPlot(datamungeJNI.DecisionTreeRegressor_plot_predicted_vs_actual(swigCPtr, this), true);
+  public RPlot plot_predicted_vs_actual() {
+    return new RPlot(datamungeJNI.DecisionTreeRegressor_plot_predicted_vs_actual(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.DecisionTreeRegressor_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.DecisionTreeRegressor_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
 }

@@ -1,0 +1,613 @@
+#+title: Principal Component Analysis of the Iris Dataset
+#+subtitle: A literate C++ study of eigendecomposition-based dimensionality reduction using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit Principal Component Analysis to Fisher's (1936) iris measurements
+using =datamunge='s C++ =stats::PCA=, and report it as a literate
+program: every fragment below is a real, compiled, executed chunk of the
+single C++ binary that produced every number and figure in this
+document. =Species= is withheld entirely from the fit; PCA never sees it.
+On the correlation matrix (each feature standardized to unit variance),
+the first two components already explain 95.81% of total variance
+(72.96% and 22.85% respectively), and a scatter of the first two scores
+recovers the same qualitative structure every other report in this
+project finds: /setosa/ cleanly separated, /versicolor/ and /virginica/
+overlapping. PC1's loadings (0.52, -0.27, 0.58, 0.56 across
+=Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=) show it is
+essentially a general "flower size" axis, dominated by the petal
+measurements with sepal width pulling the opposite direction. A
+reconstruction-error sweep shows RMSE falling from 0.52 standardized
+units at one retained component to 0.07 at three, reaching exactly zero
+at four (the full, lossless rank), a direct empirical demonstration of
+the Eckart-Young theorem. Running PCA again without standardizing first
+changes the answer substantially: PC1 alone then explains 92.46% of
+variance, because =Sepal.Length='s much larger raw scale dominates the
+unscaled covariance matrix -- a concrete illustration of why scaling is
+usually the right default. We derive the eigendecomposition of the
+covariance/correlation matrix, loadings, scores, explained variance, and
+the reconstruction identity, tying each to the corresponding library
+call.
+#+end_abstract
+
+* Introduction
+
+Every clustering, classification, and regression report in this project
+asks "what does =Species= (or some other response) depend on?" This
+report asks a different kind of question entirely: given only the four
+numeric measurements and /no/ response at all, what are the directions
+of greatest variation in the data, and how many of them do we actually
+need to describe it well? =stats::PCA= answers this by eigendecomposing
+the covariance (or correlation) matrix of the centered (and, by default,
+standardized) features, producing an ordered set of orthogonal axes --
+principal components -- each capturing as much of the remaining variance
+as possible given the axes already chosen.
+
+As with its companion reports, this document is a /literate program/:
+prose and source are interleaved in reading order, and a single
+"assembling the program" step (§3.3.8) weaves every named chunk below
+into one =.cpp= file, compiles it, and runs it. Every number and figure
+from §4 onward is that program's literal output.
+
+§2 derives the covariance/correlation eigendecomposition, loadings,
+scores, explained variance, and the truncated-reconstruction identity,
+each tied to the specific =PCA= method that implements it. §3 describes
+the program chunk by chunk. §4 reports the fitted components, their
+loadings, a scores scatter colored by the (withheld) true species, a
+scree plot, a reconstruction-error sweep, and a comparison against
+unscaled PCA. §5 discusses what "explains variance" does and does not
+mean for this data, and connects the reconstruction sweep back to the
+scree plot. §6 concludes.
+
+* Background: Principal Component Analysis
+
+** Setup and notation
+
+\(n = 150\) flowers, \(p = 4\) predictors (\(x_i \in \mathbb{R}^4\):
+=Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=) -- and, as
+in the [[file:clustering_iris_analysis.org][clustering companion
+report]], no response variable at all during fitting. =Species= is
+retained separately in this report's own code and used only afterward to
+color the scores scatter, never passed to the =PCA= constructor.
+
+** Centering, scaling, and the covariance/correlation matrix
+
+Write \(X \in \mathbb{R}^{n \times p}\) for the raw feature matrix.
+=PCA= first centers every column to zero mean (=PCAOptions::center=,
+default true):
+
+\[
+X^c_{ij} = X_{ij} - \bar{x}_j, \qquad \bar{x}_j = \frac{1}{n}\sum_{i=1}^n X_{ij} .
+\]
+
+If =PCAOptions::scale= is also true (the default here, though R's own
+=prcomp= defaults it to false while documenting true as generally
+recommended), each centered column is further divided by its sample
+standard deviation, so every feature contributes on a comparable scale
+regardless of its original units:
+
+\[
+X^s_{ij} = X^c_{ij} \, / \, s_j, \qquad s_j = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (X^c_{ij})^2} .
+\]
+
+The \(p \times p\) covariance matrix of the (centered, optionally scaled)
+data,
+
+\[
+C = \frac{1}{n-1} (X^s)^\top X^s ,
+\]
+
+is exactly the /correlation/ matrix of the raw features when scaling is
+on, and the raw /covariance/ matrix when it is off -- §4.5 fits both and
+shows they give a materially different answer for this data.
+
+** Eigendecomposition, loadings, and scores
+
+\(C\) is symmetric and positive semi-definite by construction, so it
+admits a real eigendecomposition \(C = V \Lambda V^\top\) with
+orthonormal eigenvectors \(V = [v_1, \ldots, v_p]\) (the /loadings/,
+returned by =loadings()=/=component_loadings(c)=, one unit-length column
+per component) and non-negative eigenvalues
+\(\lambda_1 \geq \cdots \geq \lambda_p \geq 0\) (=explained_variance()=,
+sorted descending). =PCA::fit= computes this via
+=linalg::jacobi_eigen=, the same classical cyclic-Jacobi symmetric
+eigensolver this project's =LDA= report already uses for its own
+(differently-shaped) generalized eigenproblem. Each observation's
+/scores/ -- its coordinates in principal-component space -- are its
+centered/scaled feature vector re-expressed in the eigenvector basis,
+
+\[
+\text{scores} = X^s V ,
+\]
+
+matching =scores()=/=component_scores(c)= directly; a single row's
+\(c\)-th score is the \(c\)-th principal component's numeric summary of
+that flower.
+
+** Explained variance and the scree plot
+
+Each eigenvalue is the variance /along/ its corresponding principal
+axis, so the proportion of total variance the \(c\)-th component
+explains is simply
+
+\[
+\text{ratio}_c = \lambda_c \, / \, \sum_{k=1}^p \lambda_k ,
+\]
+
+matching =explained_variance_ratio()= directly, with
+=cumulative_explained_variance_ratio()= its running sum. A /scree plot/
+(=plot_scree()=, §4.4's figure) is just this ratio plotted as a bar per
+component -- the traditional (if informal, much like the clustering
+report's own elbow method) way to eyeball how many components "matter."
+
+** Reconstruction and the Eckart-Young theorem
+
+Because \(V\) is orthonormal (\(V V^\top = I\)), the original centered/
+scaled data can be recovered /exactly/ from the full set of \(p\) scores,
+\(X^s = (\text{scores}) V^\top\). Truncating to only the first \(k < p\)
+components,
+
+\[
+\hat{X}^s_{(k)} = (\text{scores}_{:,1:k}) \, V_{:,1:k}^\top ,
+\]
+
+gives the /best possible/ rank-\(k\) approximation to \(X^s\) in the
+least-squares sense (the Eckart-Young theorem) -- no other rank-\(k\)
+matrix achieves lower reconstruction error. §4.5's sweep computes this
+reconstruction directly from =scores()= and =component_loadings()= for
+\(k = 1, \ldots, 4\) and reports the root-mean-square error against the
+true (\(k=4\), lossless) reconstruction.
+
+** What we will report
+
+Given the fit, we report exploratory data (true species, for later
+visual comparison), the fitted components' explained variance and
+loadings, a scores scatter, a scree plot, a reconstruction-error sweep,
+and a comparison against PCA fit without scaling.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. All four measurements are used as PCA
+features throughout; =Species= is withheld from the constructor and used
+only for the exploratory and scores figures.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::PCA= for the model, and
+=plot::RPlot= for every figure. No external plotting or statistics
+package is used.
+
+** Program, presented as a literate whole
+
+*** Includes and usings
+
+#+name: pca-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/pca.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::PCA;
+using datamunge::stats::PCAOptions;
+using namespace datamunge::plot;
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The true species, plotted purely for later visual comparison against
+PCA's own scores -- never used as an input to the =PCA= constructor
+below.
+
+#+name: pca-load-data
+#+begin_src c++ :eval no
+    std::cout << std::fixed << std::setprecision(4);
+
+    const auto iris = datamunge::datasets::iris();
+    std::vector<std::string> species(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        species[i] = iris.string_at("Species", i);
+    const std::vector<std::string> features{
+        "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+#+end_src
+
+#+name: pca-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> sp =
+            {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < sp.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == sp[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                            subset.numeric_column("Petal.Width").values(),
+                            sp[k], colors[k], 6.0);
+        }
+        scatter.title("True Species")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/pca_iris_eda_true_species.svg");
+        std::cout << "wrote pca_iris_eda_true_species.svg\n";
+    }
+#+end_src
+
+*** Fitting PCA (scaled)
+
+#+name: pca-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== PCA on iris (scaled, i.e. correlation matrix)"
+               << " ===\n";
+    PCA pca(iris, features, PCAOptions{true, true});
+    pca.print_summary(std::cout);
+#+end_src
+
+*** Loadings table
+
+#+name: pca-loadings-table
+#+begin_src c++ :eval no
+    std::cout << "\nLoadings (rotation matrix):\n";
+    std::cout << std::setw(14) << "" << std::setw(10) << "PC1"
+               << std::setw(10) << "PC2" << std::setw(10) << "PC3"
+               << std::setw(10) << "PC4\n";
+    for (std::size_t j = 0; j < features.size(); ++j) {
+        std::cout << std::setw(14) << features[j];
+        for (std::size_t c = 0; c < 4; ++c)
+            std::cout << std::setw(10) << pca.component_loadings(c)[j];
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Scores scatter
+
+#+name: pca-scores-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> sx(3), sy(3);
+        const std::vector<std::string> sp =
+            {"setosa", "versicolor", "virginica"};
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            for (std::size_t k = 0; k < sp.size(); ++k) {
+                if (species[i] != sp[k]) continue;
+                sx[k].push_back(pca.scores()(i, 0));
+                sy[k].push_back(pca.scores()(i, 1));
+            }
+        }
+        for (std::size_t k = 0; k < sp.size(); ++k)
+            scatter.points(sx[k], sy[k], sp[k], colors[k], 6.0);
+        const auto ratio = pca.explained_variance_ratio();
+        scatter.title("PCA Scores")
+            .x_label("PC1 (" +
+                std::to_string(static_cast<int>(ratio[0] * 100 + 0.5)) +
+                "%)")
+            .y_label("PC2 (" +
+                std::to_string(static_cast<int>(ratio[1] * 100 + 0.5)) +
+                "%)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/pca_iris_scores_scatter.svg");
+        std::cout << "\nwrote pca_iris_scores_scatter.svg\n";
+    }
+#+end_src
+
+*** Scree plot
+
+#+name: pca-scree
+#+begin_src c++ :eval no
+    {
+        auto scree = pca.plot_scree();
+        scree.background({250, 250, 252});
+        scree.save_svg("build/org/pca_iris_scree.svg");
+        std::cout << "wrote pca_iris_scree.svg\n";
+    }
+#+end_src
+
+*** Reconstruction-error sweep
+
+#+name: pca-reconstruction-sweep
+#+begin_src c++ :eval no
+    std::cout << "\n=== Reconstruction error vs. number of retained"
+               << " components ===\n";
+    {
+        std::vector<double> ks, rmse_values;
+        std::cout << std::setw(6) << "k" << std::setw(16) << "RMSE\n";
+        for (std::size_t k = 1; k <= 4; ++k) {
+            double sum_sq = 0.0;
+            std::size_t count = 0;
+            for (std::size_t i = 0; i < pca.observations(); ++i) {
+                for (std::size_t j = 0; j < features.size(); ++j) {
+                    double reconstructed = 0.0;
+                    for (std::size_t c = 0; c < k; ++c)
+                        reconstructed +=
+                            pca.scores()(i, c) * pca.component_loadings(c)[j];
+                    double original = 0.0;
+                    for (std::size_t c = 0; c < features.size(); ++c)
+                        original +=
+                            pca.scores()(i, c) * pca.component_loadings(c)[j];
+                    const double diff = original - reconstructed;
+                    sum_sq += diff * diff;
+                    ++count;
+                }
+            }
+            const double rmse =
+                std::sqrt(sum_sq / static_cast<double>(count));
+            ks.push_back(static_cast<double>(k));
+            rmse_values.push_back(rmse);
+            std::cout << std::setw(6) << k << std::setw(16) << rmse << "\n";
+        }
+        auto recon_plot = RPlot::plot(ks, rmse_values, "b", "RMSE",
+                                       {37, 99, 235});
+        recon_plot.title("Reconstruction Error vs. Retained Components")
+            .x_label("components retained (k)")
+            .y_label("RMSE (standardized units)")
+            .background({250, 250, 252});
+        recon_plot.save_svg("build/org/pca_iris_reconstruction.svg");
+        std::cout << "wrote pca_iris_reconstruction.svg\n";
+    }
+#+end_src
+
+*** PCA without scaling
+
+#+name: pca-unscaled
+#+begin_src c++ :eval no
+    std::cout << "\n=== PCA on iris (unscaled, i.e. covariance matrix)"
+               << " ===\n";
+    PCA unscaled(iris, features, PCAOptions{true, false});
+    const auto scaled_ratio = pca.explained_variance_ratio();
+    const auto unscaled_ratio = unscaled.explained_variance_ratio();
+    std::cout << "PC1 explains " << unscaled_ratio[0] * 100.0
+               << "% of variance (scaled: " << scaled_ratio[0] * 100.0
+               << "%)\n";
+    std::cout << "PC1 loadings (unscaled): ";
+    for (const auto v : unscaled.component_loadings(0))
+        std::cout << v << " ";
+    std::cout << "\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/pca_iris_analysis.cpp <<'CPP'
+<<pca-includes>>
+
+int main() {
+<<pca-load-data>>
+
+<<pca-eda-scatter>>
+
+<<pca-fit>>
+
+<<pca-loadings-table>>
+
+<<pca-scores-scatter>>
+
+<<pca-scree>>
+
+<<pca-reconstruction-sweep>>
+
+<<pca-unscaled>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/pca_iris_analysis.cpp -o build/org/pca_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pca_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by true species :width 100%
+[[file:../../build/org/pca_iris_eda_true_species.svg]]
+
+The same picture as every companion report's exploratory figure:
+/setosa/ fully separated, /versicolor/ and /virginica/ overlapping in a
+thin band. §4.3's scores scatter should be read against this figure,
+since PCA itself never sees these color labels.
+
+** Fitted components and loadings
+
+#+begin_example
+Principal Component Analysis
+Features: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
+Number of obs: 150, components: 4
+Scaled (correlation matrix)
+
+Component   Std.Dev.        Prop.Variance       Cum.Variance
+PC1         1.7084          0.7296              0.7296
+PC2         0.9560          0.2285              0.9581
+PC3         0.3831          0.0367              0.9948
+PC4         0.1439          0.0052              1.0000
+
+Loadings (rotation matrix):
+              PC1       PC2       PC3       PC4
+Sepal.Length  0.5211    0.3774    -0.7196   -0.2613
+Sepal.Width   -0.2693   0.9233    0.2444    0.1235
+Petal.Length  0.5804    0.0245    0.1421    0.8014
+Petal.Width   0.5649    0.0669    0.6343    -0.5236
+#+end_example
+
+The first two components already explain 95.81% of total variance
+(72.96% + 22.85%), matching §2.4's =explained_variance_ratio()=/
+=cumulative_explained_variance_ratio()= directly. PC1's loadings are all
+positive except =Sepal.Width= (0.52, -0.27, 0.58, 0.56): it is
+essentially a general "flower size" axis, weighted most heavily toward
+the two petal measurements, with sepal width pulling the opposite
+direction -- consistent with the well-known fact that iris sepal width
+is only weakly, and sometimes negatively, correlated with the other
+three measurements. PC2 is dominated almost entirely by =Sepal.Width=
+(loading 0.92), capturing the variation PC1 largely ignores.
+
+** Scores scatter
+
+#+ATTR_HTML: :alt Scatter of PC1 vs PC2 scores colored by true species :width 100%
+[[file:../../build/org/pca_iris_scores_scatter.svg]]
+
+Even though =Species= was never given to =PCA::fit=, the first two
+scores alone recover the same structure §4.1's true-species figure
+shows: /setosa/ isolated at one extreme of PC1, /versicolor/ and
+/virginica/ overlapping at the other, mirroring every clustering and
+classification report in this project's shared finding about these two
+species. Since PC1 is dominated by petal size (§4.2), this is
+essentially the same separation the clustering report's own
+petal-length-vs-width figure shows, just rotated into an
+uncorrelated basis and combined with a smaller sepal-width contribution
+from PC2.
+
+** Scree plot
+
+#+ATTR_HTML: :alt Bar chart of percent variance explained per component :width 100%
+[[file:../../build/org/pca_iris_scree.svg]]
+
+A steep drop after the first two bars, exactly matching §4.2's
+cumulative-variance numbers: PC1 and PC2 together already capture the
+overwhelming majority of the data's variation, and PC3/PC4 contribute a
+combined 5.19% -- for most downstream purposes (e.g. the scores scatter
+above), retaining only the first two components loses very little.
+
+** Reconstruction error
+
+#+ATTR_HTML: :alt Line plot of reconstruction RMSE against retained components :width 100%
+[[file:../../build/org/pca_iris_reconstruction.svg]]
+
+| k | RMSE (standardized units) |
+|---+----------------------------|
+| 1 | 0.5182 |
+| 2 | 0.2039 |
+| 3 | 0.0717 |
+| 4 | 0.0000 |
+
+RMSE falls monotonically and reaches exactly zero at \(k=4\), the full
+rank -- the Eckart-Young identity from §2.5 made concrete: with all four
+orthonormal loadings available, =scores() \(\times\) loadings()^\top=
+recovers the centered/scaled data exactly, no approximation involved.
+The steepest single drop, from \(k=1\) to \(k=2\) (0.52 to 0.20, a 61%
+reduction), matches §4.2's own observation that PC2 alone adds another
+22.85 percentage points of explained variance -- the two views (variance
+explained, reconstruction error) are two sides of the same
+eigendecomposition and necessarily agree.
+
+** PCA without scaling
+
+#+begin_example
+PC1 explains 92.4619% of variance (scaled: 72.9624%)
+PC1 loadings (unscaled): 0.3614 -0.0845 0.8567 0.3583
+#+end_example
+
+Fit on the raw covariance matrix instead of the correlation matrix, PC1
+alone explains 92.46% of variance -- nearly all of it -- because
+=Sepal.Length='s substantially larger raw numeric spread dominates the
+unscaled covariance matrix regardless of whether it is actually the
+"most informative" feature in any deeper sense. The unscaled PC1
+loadings (0.36, -0.08, 0.86, 0.36) are also visibly different from the
+scaled ones (0.52, -0.27, 0.58, 0.56): =Petal.Length= alone now
+dominates (0.86), since it happens to have the largest raw variance
+among the four features. This is the standard cautionary example for why
+=PCAOptions::scale= defaults to true here: without it, PCA silently
+answers "which feature has the largest numeric range" rather than "which
+directions capture the most /shape/ variation," and the two questions
+happen to have different answers for this dataset.
+
+* Discussion
+
+**"Explains variance" is not the same as "is biologically important."**
+PC1's loadings are large for the petal measurements not because petal
+size is inherently more biologically meaningful than sepal width, but
+because petal measurements happen to /covary more/ across these 150
+flowers. §4.5's unscaled-vs-scaled comparison makes this concrete in a
+different way: change only the units-handling convention, and the same
+mathematical procedure assigns "most important" to a completely
+different feature (=Sepal.Length='s raw scale versus =Petal.Length='s
+raw variance). Explained variance is a purely geometric, data-relative
+quantity, not a domain-knowledge judgment.
+
+**The scree plot and the reconstruction sweep are the same information,
+twice.** §4.4's bar chart and §4.5's RMSE curve are computed from
+entirely separate code paths in this report (one from
+=explained_variance_ratio()=, one from a manual =scores() \(\times\)
+loadings()^\top= reconstruction), yet they agree exactly, as §2.6's
+derivation guarantees they must -- a useful sanity check when
+implementing either quantity from scratch, and a reminder that "how many
+components should I keep" has (at least) two equivalent framings:
+variance retained, or reconstruction error tolerated.
+
+**Two components already capture almost everything.** 95.81% cumulative
+variance at \(k=2\) (§4.2) is unusually high for a "real" (if small and
+well-behaved) dataset -- a direct consequence of iris's four measurements
+being highly correlated with each other (all four are, after all,
+different measures of the same flower's overall size and proportions),
+leaving little truly independent variation for PC3 and PC4 to capture.
+
+* Conclusion
+
+Fitting PCA with =datamunge='s C++ =stats::PCA= to Fisher's iris
+measurements -- with =Species= withheld throughout -- shows that two
+components already explain 95.81% of total variance, that the first
+component is essentially a general flower-size axis dominated by petal
+measurements, and that a PC1-vs-PC2 scores scatter recovers the same
+/setosa/-versus-overlapping-pair structure every other report in this
+project finds, without ever seeing the species labels during fitting.
+The reconstruction-error sweep gives a second, numerically consistent
+view of the same conclusion, reaching exactly zero error at full rank as
+the Eckart-Young theorem requires. Fitting again without standardizing
+first changes the answer meaningfully, a concrete demonstration of why
+=PCAOptions::scale= defaults to true. As with its companions, this
+entire report is reproducible end to end via
+=just org-example pca_iris_analysis=, which re-executes §3.3.8's
+assembly block -- and therefore every number and figure above -- from
+the =datamunge= source tree.
+
+* References
+
+- Pearson, K. (1901). "On lines and planes of closest fit to systems of
+  points in space." /Philosophical Magazine/, 2(11), 559--572.
+- Hotelling, H. (1933). "Analysis of a complex of statistical variables
+  into principal components." /Journal of Educational Psychology/,
+  24(6), 417--441.
+- Eckart, C., & Young, G. (1936). "The approximation of one matrix by
+  another of lower rank." /Psychometrika/, 1(3), 211--218.
+- Jolliffe, I. T. (2002). /Principal Component Analysis/, 2nd ed.
+  Springer Series in Statistics.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 14 ("Unsupervised Learning").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

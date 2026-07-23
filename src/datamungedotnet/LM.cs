@@ -240,23 +240,23 @@ public class LM : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_fitted(swigCPtr), true);
+  public RPlot plot_residuals_vs_fitted() {
+    RPlot ret = new RPlot(datamungePINVOKE.LM_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_normal_qq() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_normal_qq(swigCPtr), true);
+  public RPlot plot_normal_qq() {
+    RPlot ret = new RPlot(datamungePINVOKE.LM_plot_normal_qq(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_scale_location() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_scale_location(swigCPtr), true);
+  public RPlot plot_scale_location() {
+    RPlot ret = new RPlot(datamungePINVOKE.LM_plot_scale_location(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_leverage() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_leverage(swigCPtr), true);
+  public RPlot plot_residuals_vs_leverage() {
+    RPlot ret = new RPlot(datamungePINVOKE.LM_plot_residuals_vs_leverage(swigCPtr), true);
     return ret;
   }
 

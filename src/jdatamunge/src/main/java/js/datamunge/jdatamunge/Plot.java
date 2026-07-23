@@ -92,6 +92,18 @@ public class Plot {
     return new Plot(datamungeJNI.Plot_y_limits(swigCPtr, this, min_y, max_y), false);
   }
 
+  public Plot hide_axes(boolean enabled) {
+    return new Plot(datamungeJNI.Plot_hide_axes__SWIG_0(swigCPtr, this, enabled), false);
+  }
+
+  public Plot hide_axes() {
+    return new Plot(datamungeJNI.Plot_hide_axes__SWIG_1(swigCPtr, this), false);
+  }
+
+  public Plot x_tick_labels(SVector labels) {
+    return new Plot(datamungeJNI.Plot_x_tick_labels(swigCPtr, this, SVector.getCPtr(labels), labels), false);
+  }
+
   public long width() {
     return datamungeJNI.Plot_width(swigCPtr, this);
   }
@@ -154,6 +166,22 @@ public class Plot {
 
   public double y_max() {
     return datamungeJNI.Plot_y_max(swigCPtr, this);
+  }
+
+  public boolean axes_hidden() {
+    return datamungeJNI.Plot_axes_hidden(swigCPtr, this);
+  }
+
+  public SVector x_tick_label_list() {
+    return new SVector(datamungeJNI.Plot_x_tick_label_list(swigCPtr, this), false);
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t reference_lines() {
+    return new SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t(datamungeJNI.Plot_reference_lines(swigCPtr, this), false);
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t legend_entries() {
+    return new SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(datamungeJNI.Plot_legend_entries(swigCPtr, this), false);
   }
 
   public void save(String path) {

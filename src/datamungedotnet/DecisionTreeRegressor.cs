@@ -133,13 +133,13 @@ public class DecisionTreeRegressor : global::System.IDisposable {
     return ret;
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.DecisionTreeRegressor_plot_predicted_vs_actual(swigCPtr), true);
+  public RPlot plot_predicted_vs_actual() {
+    RPlot ret = new RPlot(datamungePINVOKE.DecisionTreeRegressor_plot_predicted_vs_actual(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.DecisionTreeRegressor_plot_residuals_vs_fitted(swigCPtr), true);
+  public RPlot plot_residuals_vs_fitted() {
+    RPlot ret = new RPlot(datamungePINVOKE.DecisionTreeRegressor_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 

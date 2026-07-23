@@ -1569,6 +1569,428 @@ std::string KMeans::summary() const { return kmeans_.summary(); }
 
 void KMeans::print_summary() const { kmeans_.print_summary(); }
 
+PCA::PCA(const DataFrame& data, const std::vector<std::string>& feature_columns, const bool center, const bool scale)
+    : pca_(data.frame_, feature_columns, [&] {
+        stats::PCAOptions options;
+        options.center = center;
+        options.scale  = scale;
+        return options;
+      }()) {}
+
+PCA::PCA(const DataFrame& data, const std::string& encoded_feature_columns, const bool center, const bool scale)
+    : PCA(data, DataFrame::split_encoded_strings(encoded_feature_columns), center, scale) {}
+
+std::vector<std::string> PCA::feature_names() const { return pca_.feature_names(); }
+
+std::size_t PCA::observations() const { return pca_.observations(); }
+
+std::size_t PCA::num_components() const { return pca_.num_components(); }
+
+std::vector<std::size_t> PCA::kept_row_indices() const { return pca_.kept_row_indices(); }
+
+std::vector<double> PCA::explained_variance() const { return pca_.explained_variance(); }
+
+std::vector<double> PCA::explained_variance_ratio() const { return pca_.explained_variance_ratio(); }
+
+std::vector<double> PCA::cumulative_explained_variance_ratio() const { return pca_.cumulative_explained_variance_ratio(); }
+
+std::vector<double> PCA::component_loadings(const std::size_t component_index) const {
+  return pca_.component_loadings(component_index);
+}
+
+std::vector<double> PCA::component_scores(const std::size_t component_index) const {
+  return pca_.component_scores(component_index);
+}
+
+namespace {
+
+dstruct::DataFrame matrix_to_component_frame(const linalg::DenseMatrix<double>& matrix, const std::string& prefix) {
+  dstruct::DataFrame frame;
+  for (std::size_t c = 0; c < matrix.cols(); ++c) {
+    frame.add_column(prefix + std::to_string(c + 1), matrix.col(c));
+  }
+  return frame;
+}
+
+} // namespace
+
+DataFrame* PCA::scores_frame() const { return new DataFrame(matrix_to_component_frame(pca_.scores(), "PC")); }
+
+DataFrame* PCA::transform(const DataFrame& newdata) const {
+  return new DataFrame(matrix_to_component_frame(pca_.transform(newdata.frame_), "PC"));
+}
+
+std::string PCA::summary() const { return pca_.summary(); }
+
+void PCA::print_summary() const { pca_.print_summary(); }
+
+datamunge::plot::RPlot PCA::plot_scores(const std::size_t component_x, const std::size_t component_y) const {
+  return pca_.plot_scores(component_x, component_y);
+}
+
+datamunge::plot::RPlot PCA::plot_scores_grouped(const std::vector<std::string>& group_labels, const std::size_t component_x,
+                                                const std::size_t component_y) const {
+  return pca_.plot_scores(group_labels, component_x, component_y);
+}
+
+datamunge::plot::RPlot PCA::plot_scree() const { return pca_.plot_scree(); }
+
+MDS::MDS(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_components,
+        const std::string& metric)
+    : mds_(data.frame_, feature_columns, [&] {
+        stats::MDSOptions options;
+        options.n_components = n_components;
+        options.metric        = parse_distance_metric(metric);
+        return options;
+      }()) {}
+
+MDS::MDS(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+        const std::string& metric)
+    : MDS(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, metric) {}
+
+std::vector<std::string> MDS::feature_names() const { return mds_.feature_names(); }
+
+std::size_t MDS::observations() const { return mds_.observations(); }
+
+std::size_t MDS::n_components() const { return mds_.n_components(); }
+
+std::vector<std::size_t> MDS::kept_row_indices() const { return mds_.kept_row_indices(); }
+
+std::vector<double> MDS::eigenvalues() const { return mds_.eigenvalues(); }
+
+double MDS::goodness_of_fit() const { return mds_.goodness_of_fit(); }
+
+std::vector<double> MDS::dimension(const std::size_t index) const { return mds_.dimension(index); }
+
+DataFrame* MDS::embedding_frame() const { return new DataFrame(matrix_to_component_frame(mds_.embedding(), "Dim")); }
+
+std::string MDS::summary() const { return mds_.summary(); }
+
+void MDS::print_summary() const { mds_.print_summary(); }
+
+datamunge::plot::RPlot MDS::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return mds_.plot_embedding(dimension_x, dimension_y);
+}
+
+datamunge::plot::RPlot MDS::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                   const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return mds_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+Isomap::Isomap(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_components,
+              const std::size_t n_neighbors, const std::string& metric)
+    : isomap_(data.frame_, feature_columns, [&] {
+        stats::IsomapOptions options;
+        options.n_components = n_components;
+        options.n_neighbors  = n_neighbors;
+        options.metric        = parse_distance_metric(metric);
+        return options;
+      }()) {}
+
+Isomap::Isomap(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+              const std::size_t n_neighbors, const std::string& metric)
+    : Isomap(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, n_neighbors, metric) {}
+
+std::vector<std::string> Isomap::feature_names() const { return isomap_.feature_names(); }
+std::size_t Isomap::observations() const { return isomap_.observations(); }
+std::size_t Isomap::n_components() const { return isomap_.n_components(); }
+std::vector<std::size_t> Isomap::kept_row_indices() const { return isomap_.kept_row_indices(); }
+std::vector<double> Isomap::eigenvalues() const { return isomap_.eigenvalues(); }
+double Isomap::goodness_of_fit() const { return isomap_.goodness_of_fit(); }
+std::vector<double> Isomap::dimension(const std::size_t index) const { return isomap_.dimension(index); }
+DataFrame* Isomap::embedding_frame() const { return new DataFrame(matrix_to_component_frame(isomap_.embedding(), "Dim")); }
+std::string Isomap::summary() const { return isomap_.summary(); }
+void Isomap::print_summary() const { isomap_.print_summary(); }
+datamunge::plot::RPlot Isomap::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return isomap_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot Isomap::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                      const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return isomap_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+LLE::LLE(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_components,
+        const std::size_t n_neighbors, const double regularization, const std::string& metric)
+    : lle_(data.frame_, feature_columns, [&] {
+        stats::LLEOptions options;
+        options.n_components  = n_components;
+        options.n_neighbors   = n_neighbors;
+        options.regularization = regularization;
+        options.metric          = parse_distance_metric(metric);
+        return options;
+      }()) {}
+
+LLE::LLE(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+        const std::size_t n_neighbors, const double regularization, const std::string& metric)
+    : LLE(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, n_neighbors, regularization,
+          metric) {}
+
+std::vector<std::string> LLE::feature_names() const { return lle_.feature_names(); }
+std::size_t LLE::observations() const { return lle_.observations(); }
+std::size_t LLE::n_components() const { return lle_.n_components(); }
+std::vector<std::size_t> LLE::kept_row_indices() const { return lle_.kept_row_indices(); }
+std::vector<double> LLE::eigenvalues() const { return lle_.eigenvalues(); }
+std::vector<double> LLE::dimension(const std::size_t index) const { return lle_.dimension(index); }
+DataFrame* LLE::embedding_frame() const { return new DataFrame(matrix_to_component_frame(lle_.embedding(), "Dim")); }
+std::string LLE::summary() const { return lle_.summary(); }
+void LLE::print_summary() const { lle_.print_summary(); }
+datamunge::plot::RPlot LLE::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return lle_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot LLE::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                   const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return lle_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+TSNE::TSNE(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_components,
+          const double perplexity, const std::size_t max_iterations, const double learning_rate,
+          const double early_exaggeration, const std::size_t early_exaggeration_iterations,
+          const double initial_momentum, const double final_momentum, const std::size_t momentum_switch_iteration,
+          const std::string& metric, const std::uint64_t seed)
+    : tsne_(data.frame_, feature_columns, [&] {
+        stats::TSNEOptions options;
+        options.n_components                 = n_components;
+        options.perplexity                    = perplexity;
+        options.max_iterations                = max_iterations;
+        options.learning_rate                 = learning_rate;
+        options.early_exaggeration            = early_exaggeration;
+        options.early_exaggeration_iterations = early_exaggeration_iterations;
+        options.initial_momentum              = initial_momentum;
+        options.final_momentum                = final_momentum;
+        options.momentum_switch_iteration     = momentum_switch_iteration;
+        options.metric                         = parse_distance_metric(metric);
+        options.seed                           = seed;
+        return options;
+      }()) {}
+
+TSNE::TSNE(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+          const double perplexity, const std::size_t max_iterations, const double learning_rate,
+          const double early_exaggeration, const std::size_t early_exaggeration_iterations,
+          const double initial_momentum, const double final_momentum, const std::size_t momentum_switch_iteration,
+          const std::string& metric, const std::uint64_t seed)
+    : TSNE(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, perplexity, max_iterations,
+           learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum,
+           momentum_switch_iteration, metric, seed) {}
+
+std::vector<std::string> TSNE::feature_names() const { return tsne_.feature_names(); }
+std::size_t TSNE::observations() const { return tsne_.observations(); }
+std::size_t TSNE::n_components() const { return tsne_.n_components(); }
+std::vector<std::size_t> TSNE::kept_row_indices() const { return tsne_.kept_row_indices(); }
+std::vector<double> TSNE::achieved_perplexity() const { return tsne_.achieved_perplexity(); }
+std::vector<double> TSNE::dimension(const std::size_t index) const { return tsne_.dimension(index); }
+DataFrame* TSNE::embedding_frame() const { return new DataFrame(matrix_to_component_frame(tsne_.embedding(), "Dim")); }
+std::string TSNE::summary() const { return tsne_.summary(); }
+void TSNE::print_summary() const { tsne_.print_summary(); }
+datamunge::plot::RPlot TSNE::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return tsne_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot TSNE::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                    const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return tsne_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+LaplacianEigenmaps::LaplacianEigenmaps(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                                       const std::size_t n_components, const std::size_t n_neighbors,
+                                       const double heat_kernel_t)
+    : laplacian_eigenmaps_(data.frame_, feature_columns, [&] {
+        stats::LaplacianEigenmapsOptions options;
+        options.n_components  = n_components;
+        options.n_neighbors   = n_neighbors;
+        options.heat_kernel_t = heat_kernel_t;
+        return options;
+      }()) {}
+
+LaplacianEigenmaps::LaplacianEigenmaps(const DataFrame& data, const std::string& encoded_feature_columns,
+                                       const std::size_t n_components, const std::size_t n_neighbors,
+                                       const double heat_kernel_t)
+    : LaplacianEigenmaps(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, n_neighbors,
+                         heat_kernel_t) {}
+
+std::vector<std::string> LaplacianEigenmaps::feature_names() const { return laplacian_eigenmaps_.feature_names(); }
+std::size_t LaplacianEigenmaps::observations() const { return laplacian_eigenmaps_.observations(); }
+std::size_t LaplacianEigenmaps::n_components() const { return laplacian_eigenmaps_.n_components(); }
+std::vector<std::size_t> LaplacianEigenmaps::kept_row_indices() const { return laplacian_eigenmaps_.kept_row_indices(); }
+std::vector<double> LaplacianEigenmaps::eigenvalues() const { return laplacian_eigenmaps_.eigenvalues(); }
+std::vector<double> LaplacianEigenmaps::dimension(const std::size_t index) const { return laplacian_eigenmaps_.dimension(index); }
+DataFrame* LaplacianEigenmaps::embedding_frame() const {
+  return new DataFrame(matrix_to_component_frame(laplacian_eigenmaps_.embedding(), "Dim"));
+}
+std::string LaplacianEigenmaps::summary() const { return laplacian_eigenmaps_.summary(); }
+void LaplacianEigenmaps::print_summary() const { laplacian_eigenmaps_.print_summary(); }
+datamunge::plot::RPlot LaplacianEigenmaps::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return laplacian_eigenmaps_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot LaplacianEigenmaps::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                                  const std::size_t dimension_x,
+                                                                  const std::size_t dimension_y) const {
+  return laplacian_eigenmaps_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+DiffusionMaps::DiffusionMaps(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                             const std::size_t n_components, const double heat_kernel_epsilon, const double alpha,
+                             const double diffusion_time)
+    : diffusion_maps_(data.frame_, feature_columns, [&] {
+        stats::DiffusionMapsOptions options;
+        options.n_components       = n_components;
+        options.heat_kernel_epsilon = heat_kernel_epsilon;
+        options.alpha                = alpha;
+        options.diffusion_time       = diffusion_time;
+        return options;
+      }()) {}
+
+DiffusionMaps::DiffusionMaps(const DataFrame& data, const std::string& encoded_feature_columns,
+                             const std::size_t n_components, const double heat_kernel_epsilon, const double alpha,
+                             const double diffusion_time)
+    : DiffusionMaps(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components,
+                    heat_kernel_epsilon, alpha, diffusion_time) {}
+
+std::vector<std::string> DiffusionMaps::feature_names() const { return diffusion_maps_.feature_names(); }
+std::size_t DiffusionMaps::observations() const { return diffusion_maps_.observations(); }
+std::size_t DiffusionMaps::n_components() const { return diffusion_maps_.n_components(); }
+std::vector<std::size_t> DiffusionMaps::kept_row_indices() const { return diffusion_maps_.kept_row_indices(); }
+std::vector<double> DiffusionMaps::eigenvalues() const { return diffusion_maps_.eigenvalues(); }
+std::vector<double> DiffusionMaps::dimension(const std::size_t index) const { return diffusion_maps_.dimension(index); }
+DataFrame* DiffusionMaps::embedding_frame() const {
+  return new DataFrame(matrix_to_component_frame(diffusion_maps_.embedding(), "Dim"));
+}
+std::string DiffusionMaps::summary() const { return diffusion_maps_.summary(); }
+void DiffusionMaps::print_summary() const { diffusion_maps_.print_summary(); }
+datamunge::plot::RPlot DiffusionMaps::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return diffusion_maps_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot DiffusionMaps::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                              const std::size_t dimension_x,
+                                                              const std::size_t dimension_y) const {
+  return diffusion_maps_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+namespace {
+
+stats::KernelPCAOptions parse_kernel_pca_options(const std::size_t n_components, const std::string& kernel,
+                                                 const double gamma, const double degree, const double coef0) {
+  stats::KernelPCAOptions options;
+  options.n_components = n_components;
+  options.kernel         = kernel;
+  options.gamma           = gamma;
+  options.degree          = degree;
+  options.coef0           = coef0;
+  return options;
+}
+
+} // namespace
+
+KernelPCA::KernelPCA(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                     const std::size_t n_components, const std::string& kernel, const double gamma,
+                     const double degree, const double coef0)
+    : kernel_pca_(data.frame_, feature_columns, parse_kernel_pca_options(n_components, kernel, gamma, degree, coef0)) {}
+
+KernelPCA::KernelPCA(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+                     const std::string& kernel, const double gamma, const double degree, const double coef0)
+    : KernelPCA(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, kernel, gamma, degree,
+               coef0) {}
+
+std::vector<std::string> KernelPCA::feature_names() const { return kernel_pca_.feature_names(); }
+std::size_t KernelPCA::observations() const { return kernel_pca_.observations(); }
+std::size_t KernelPCA::n_components() const { return kernel_pca_.n_components(); }
+std::vector<std::size_t> KernelPCA::kept_row_indices() const { return kernel_pca_.kept_row_indices(); }
+std::vector<double> KernelPCA::eigenvalues() const { return kernel_pca_.eigenvalues(); }
+std::vector<double> KernelPCA::dimension(const std::size_t index) const { return kernel_pca_.dimension(index); }
+DataFrame* KernelPCA::embedding_frame() const { return new DataFrame(matrix_to_component_frame(kernel_pca_.embedding(), "Dim")); }
+std::string KernelPCA::summary() const { return kernel_pca_.summary(); }
+void KernelPCA::print_summary() const { kernel_pca_.print_summary(); }
+datamunge::plot::RPlot KernelPCA::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return kernel_pca_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot KernelPCA::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                         const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return kernel_pca_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+SammonMapping::SammonMapping(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                             const std::size_t n_components, const double learning_rate,
+                             const std::size_t max_iterations, const double tolerance, const std::string& metric,
+                             const std::uint64_t seed)
+    : sammon_mapping_(data.frame_, feature_columns, [&] {
+        stats::SammonMappingOptions options;
+        options.n_components  = n_components;
+        options.learning_rate  = learning_rate;
+        options.max_iterations = max_iterations;
+        options.tolerance       = tolerance;
+        options.metric           = parse_distance_metric(metric);
+        options.seed             = seed;
+        return options;
+      }()) {}
+
+SammonMapping::SammonMapping(const DataFrame& data, const std::string& encoded_feature_columns,
+                             const std::size_t n_components, const double learning_rate,
+                             const std::size_t max_iterations, const double tolerance, const std::string& metric,
+                             const std::uint64_t seed)
+    : SammonMapping(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, learning_rate,
+                    max_iterations, tolerance, metric, seed) {}
+
+std::vector<std::string> SammonMapping::feature_names() const { return sammon_mapping_.feature_names(); }
+std::size_t SammonMapping::observations() const { return sammon_mapping_.observations(); }
+std::size_t SammonMapping::n_components() const { return sammon_mapping_.n_components(); }
+std::vector<std::size_t> SammonMapping::kept_row_indices() const { return sammon_mapping_.kept_row_indices(); }
+std::vector<double> SammonMapping::dimension(const std::size_t index) const { return sammon_mapping_.dimension(index); }
+DataFrame* SammonMapping::embedding_frame() const {
+  return new DataFrame(matrix_to_component_frame(sammon_mapping_.embedding(), "Dim"));
+}
+double SammonMapping::stress() const { return sammon_mapping_.stress(); }
+std::size_t SammonMapping::iterations_run() const { return sammon_mapping_.iterations_run(); }
+std::string SammonMapping::summary() const { return sammon_mapping_.summary(); }
+void SammonMapping::print_summary() const { sammon_mapping_.print_summary(); }
+datamunge::plot::RPlot SammonMapping::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return sammon_mapping_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot SammonMapping::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                              const std::size_t dimension_x,
+                                                              const std::size_t dimension_y) const {
+  return sammon_mapping_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
+UMAP::UMAP(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_components,
+          const std::size_t n_neighbors, const double min_dist, const std::size_t max_iterations,
+          const double learning_rate, const double negative_sample_rate, const std::string& metric,
+          const std::uint64_t seed)
+    : umap_(data.frame_, feature_columns, [&] {
+        stats::UMAPOptions options;
+        options.n_components         = n_components;
+        options.n_neighbors           = n_neighbors;
+        options.min_dist               = min_dist;
+        options.max_iterations         = max_iterations;
+        options.learning_rate          = learning_rate;
+        options.negative_sample_rate   = negative_sample_rate;
+        options.metric                  = parse_distance_metric(metric);
+        options.seed                    = seed;
+        return options;
+      }()) {}
+
+UMAP::UMAP(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_components,
+          const std::size_t n_neighbors, const double min_dist, const std::size_t max_iterations,
+          const double learning_rate, const double negative_sample_rate, const std::string& metric,
+          const std::uint64_t seed)
+    : UMAP(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_components, n_neighbors, min_dist,
+           max_iterations, learning_rate, negative_sample_rate, metric, seed) {}
+
+std::vector<std::string> UMAP::feature_names() const { return umap_.feature_names(); }
+std::size_t UMAP::observations() const { return umap_.observations(); }
+std::size_t UMAP::n_components() const { return umap_.n_components(); }
+std::vector<std::size_t> UMAP::kept_row_indices() const { return umap_.kept_row_indices(); }
+std::vector<double> UMAP::dimension(const std::size_t index) const { return umap_.dimension(index); }
+DataFrame* UMAP::embedding_frame() const { return new DataFrame(matrix_to_component_frame(umap_.embedding(), "Dim")); }
+std::vector<double> UMAP::sigmas() const { return umap_.sigmas(); }
+std::vector<double> UMAP::rhos() const { return umap_.rhos(); }
+std::string UMAP::summary() const { return umap_.summary(); }
+void UMAP::print_summary() const { umap_.print_summary(); }
+datamunge::plot::RPlot UMAP::plot_embedding(const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return umap_.plot_embedding(dimension_x, dimension_y);
+}
+datamunge::plot::RPlot UMAP::plot_embedding_grouped(const std::vector<std::string>& group_labels,
+                                                    const std::size_t dimension_x, const std::size_t dimension_y) const {
+  return umap_.plot_embedding(group_labels, dimension_x, dimension_y);
+}
+
 AgglomerativeClustering::AgglomerativeClustering(const DataFrame& data, const std::vector<std::string>& feature_columns,
                                                   const std::size_t n_clusters, const std::string& linkage,
                                                   const std::string& metric)

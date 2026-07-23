@@ -64,8 +64,8 @@ public class GibbsSampler : global::System.IDisposable {
   public GibbsSampler() : this(datamungePINVOKE.new_GibbsSampler__SWIG_1(), true) {
   }
 
-  public GibbsResult sample(SWIGTYPE_p_datamunge__optim__ArbitraryFunction log_posterior, DVector initial_params) {
-    GibbsResult ret = new GibbsResult(datamungePINVOKE.GibbsSampler_sample(swigCPtr, SWIGTYPE_p_datamunge__optim__ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
+  public GibbsResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
+    GibbsResult ret = new GibbsResult(datamungePINVOKE.GibbsSampler_sample(swigCPtr, ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

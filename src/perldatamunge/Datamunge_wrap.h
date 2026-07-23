@@ -120,4 +120,136 @@ private:
     mutable std::map<std::string, bool> swig_inner;
 };
 
+class SwigDirector_ProximalFunction : public datamunge::optim::ProximalFunction, public Swig::Director {
+
+public:
+    SwigDirector_ProximalFunction(SV *self);
+    virtual ~SwigDirector_ProximalFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > proximal(std::vector< double > const &point,double step);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_HessianFunction : public datamunge::optim::HessianFunction, public Swig::Director {
+
+public:
+    SwigDirector_HessianFunction(SV *self);
+    virtual ~SwigDirector_HessianFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > hessian(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_EqualityConstrainedFunction : public datamunge::optim::EqualityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_EqualityConstrainedFunction(SV *self);
+    virtual ~SwigDirector_EqualityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > constraints(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > constraint_jacobian(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_InequalityConstrainedFunction : public datamunge::optim::InequalityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_InequalityConstrainedFunction(SV *self);
+    virtual ~SwigDirector_InequalityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > inequalities(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > inequality_jacobian(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_ResidualFunction : public datamunge::optim::ResidualFunction, public Swig::Director {
+
+public:
+    SwigDirector_ResidualFunction(SV *self);
+    virtual ~SwigDirector_ResidualFunction();
+    virtual std::vector< double > residuals(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > jacobian(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_BayesianSurrogate : public datamunge::optim::BayesianSurrogate, public Swig::Director {
+
+public:
+    SwigDirector_BayesianSurrogate(SV *self);
+    virtual ~SwigDirector_BayesianSurrogate();
+    virtual void fit(std::vector< std::vector< double > > const &points,std::vector< double > const &values);
+    virtual double acquisition(std::vector< double > const &point,double incumbent);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
 #endif

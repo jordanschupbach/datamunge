@@ -458,6 +458,80 @@ public class Tensor {
     return (cPtr == 0) ? null : new Tensor(cPtr, false);
   }
 
+  /**
+   *  The Tensor's own image_to_tensor() bridge: <code>img</code> (already directly SWIG-bindable,<br>
+   *         no facade needed) as a [channels, height, width] tensor normalized to [0, 1].
+   */
+  public static Tensor from_image(SWIGTYPE_p_datamunge__image__Image img) {
+    long cPtr = datamungeJNI.Tensor_from_image(SWIGTYPE_p_datamunge__image__Image.getCPtr(img));
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  /**
+   *  Basic (inference-only) neural-network building blocks -- see<br>
+   *         datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying<br>
+   *         implementation and full documentation of shapes/semantics.
+   */
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias, int stride, int padding) {
+    long cPtr = datamungeJNI.Tensor_conv2d__SWIG_0(Tensor.getCPtr(input), input, Tensor.getCPtr(kernel), kernel, Tensor.getCPtr(bias), bias, stride, padding);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  /**
+   *  Basic (inference-only) neural-network building blocks -- see<br>
+   *         datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying<br>
+   *         implementation and full documentation of shapes/semantics.
+   */
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias, int stride) {
+    long cPtr = datamungeJNI.Tensor_conv2d__SWIG_1(Tensor.getCPtr(input), input, Tensor.getCPtr(kernel), kernel, Tensor.getCPtr(bias), bias, stride);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  /**
+   *  Basic (inference-only) neural-network building blocks -- see<br>
+   *         datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying<br>
+   *         implementation and full documentation of shapes/semantics.
+   */
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias) {
+    long cPtr = datamungeJNI.Tensor_conv2d__SWIG_2(Tensor.getCPtr(input), input, Tensor.getCPtr(kernel), kernel, Tensor.getCPtr(bias), bias);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor max_pool2d(int pool_size, int stride) {
+    long cPtr = datamungeJNI.Tensor_max_pool2d__SWIG_0(swigCPtr, this, pool_size, stride);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor max_pool2d(int pool_size) {
+    long cPtr = datamungeJNI.Tensor_max_pool2d__SWIG_1(swigCPtr, this, pool_size);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor avg_pool2d(int pool_size, int stride) {
+    long cPtr = datamungeJNI.Tensor_avg_pool2d__SWIG_0(swigCPtr, this, pool_size, stride);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor avg_pool2d(int pool_size) {
+    long cPtr = datamungeJNI.Tensor_avg_pool2d__SWIG_1(swigCPtr, this, pool_size);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor relu() {
+    long cPtr = datamungeJNI.Tensor_relu(swigCPtr, this);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor sigmoid() {
+    long cPtr = datamungeJNI.Tensor_sigmoid(swigCPtr, this);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
+  public Tensor softmax() {
+    long cPtr = datamungeJNI.Tensor_softmax(swigCPtr, this);
+    return (cPtr == 0) ? null : new Tensor(cPtr, false);
+  }
+
   public String to_string(long max_elements) {
     return datamungeJNI.Tensor_to_string__SWIG_0(swigCPtr, this, max_elements);
   }

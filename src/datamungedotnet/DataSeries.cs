@@ -141,13 +141,27 @@ public class DataSeries : global::System.IDisposable {
     } 
   }
 
+  public bool filled {
+    set {
+      datamungePINVOKE.DataSeries_filled_set(swigCPtr, value);
+    } 
+    get {
+      bool ret = datamungePINVOKE.DataSeries_filled_get(swigCPtr);
+      return ret;
+    } 
+  }
+
   public DataSeries() : this(datamungePINVOKE.new_DataSeries(), true) {
   }
 
   public enum Kind {
     Scatter,
     Line,
-    Bar
+    Bar,
+    Box,
+    Polygon,
+    Text,
+    Segment
   }
 
 }

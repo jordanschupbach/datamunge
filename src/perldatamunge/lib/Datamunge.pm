@@ -544,13 +544,38 @@ sub new {
 *add_string_column_encoded = *Datamungec::DataFrame_add_string_column_encoded;
 *fill_null_numeric = *Datamungec::DataFrame_fill_null_numeric;
 *fill_null_string = *Datamungec::DataFrame_fill_null_string;
+*mutate_numeric = *Datamungec::DataFrame_mutate_numeric;
+*mutate_string = *Datamungec::DataFrame_mutate_string;
+*mutate_string_encoded = *Datamungec::DataFrame_mutate_string_encoded;
+*rename = *Datamungec::DataFrame_rename;
 *select = *Datamungec::DataFrame_select;
 *select_encoded = *Datamungec::DataFrame_select_encoded;
+*relocate = *Datamungec::DataFrame_relocate;
+*relocate_encoded = *Datamungec::DataFrame_relocate_encoded;
 *sort_by = *Datamungec::DataFrame_sort_by;
+*arrange = *Datamungec::DataFrame_arrange;
+*arrange_encoded = *Datamungec::DataFrame_arrange_encoded;
 *drop_duplicates = *Datamungec::DataFrame_drop_duplicates;
 *drop_duplicates_encoded = *Datamungec::DataFrame_drop_duplicates_encoded;
+*distinct = *Datamungec::DataFrame_distinct;
+*distinct_encoded = *Datamungec::DataFrame_distinct_encoded;
+*pull_numeric = *Datamungec::DataFrame_pull_numeric;
+*pull_numeric_valid = *Datamungec::DataFrame_pull_numeric_valid;
+*pull_string = *Datamungec::DataFrame_pull_string;
+*pull_string_valid = *Datamungec::DataFrame_pull_string_valid;
+*n_distinct = *Datamungec::DataFrame_n_distinct;
 *group_by_sum = *Datamungec::DataFrame_group_by_sum;
 *group_by_sum_encoded = *Datamungec::DataFrame_group_by_sum_encoded;
+*count = *Datamungec::DataFrame_count;
+*count_encoded = *Datamungec::DataFrame_count_encoded;
+*summarise = *Datamungec::DataFrame_summarise;
+*summarise_encoded = *Datamungec::DataFrame_summarise_encoded;
+*pivot_longer = *Datamungec::DataFrame_pivot_longer;
+*pivot_longer_encoded = *Datamungec::DataFrame_pivot_longer_encoded;
+*pivot_wider = *Datamungec::DataFrame_pivot_wider;
+*pivot_wider_encoded = *Datamungec::DataFrame_pivot_wider_encoded;
+*bind_rows = *Datamungec::DataFrame_bind_rows;
+*bind_cols = *Datamungec::DataFrame_bind_cols;
 *join = *Datamungec::DataFrame_join;
 *numeric_count = *Datamungec::DataFrame_numeric_count;
 *numeric_null_count = *Datamungec::DataFrame_numeric_null_count;
@@ -572,6 +597,49 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_DataFrame($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ShapeLayer ##############
+
+package Datamunge::ShapeLayer;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*read = *Datamungec::ShapeLayer_read;
+*size = *Datamungec::ShapeLayer_size;
+*shape_type = *Datamungec::ShapeLayer_shape_type;
+*bounds = *Datamungec::ShapeLayer_bounds;
+*attributes = *Datamungec::ShapeLayer_attributes;
+*shape_kind = *Datamungec::ShapeLayer_shape_kind;
+*num_parts = *Datamungec::ShapeLayer_num_parts;
+*part_x = *Datamungec::ShapeLayer_part_x;
+*part_y = *Datamungec::ShapeLayer_part_y;
+*point_x = *Datamungec::ShapeLayer_point_x;
+*point_y = *Datamungec::ShapeLayer_point_y;
+*plot = *Datamungec::ShapeLayer_plot;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ShapeLayer($self);
         delete $OWNER{$self};
     }
 }
@@ -1508,6 +1576,108 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_KMeans($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::PCA ##############
+
+package Datamunge::PCA;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_PCA(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*feature_names = *Datamungec::PCA_feature_names;
+*observations = *Datamungec::PCA_observations;
+*num_components = *Datamungec::PCA_num_components;
+*kept_row_indices = *Datamungec::PCA_kept_row_indices;
+*explained_variance = *Datamungec::PCA_explained_variance;
+*explained_variance_ratio = *Datamungec::PCA_explained_variance_ratio;
+*cumulative_explained_variance_ratio = *Datamungec::PCA_cumulative_explained_variance_ratio;
+*component_loadings = *Datamungec::PCA_component_loadings;
+*component_scores = *Datamungec::PCA_component_scores;
+*scores_frame = *Datamungec::PCA_scores_frame;
+*transform = *Datamungec::PCA_transform;
+*summary = *Datamungec::PCA_summary;
+*print_summary = *Datamungec::PCA_print_summary;
+*plot_scores = *Datamungec::PCA_plot_scores;
+*plot_scores_grouped = *Datamungec::PCA_plot_scores_grouped;
+*plot_scree = *Datamungec::PCA_plot_scree;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_PCA($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::MDS ##############
+
+package Datamunge::MDS;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_MDS(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*feature_names = *Datamungec::MDS_feature_names;
+*observations = *Datamungec::MDS_observations;
+*n_components = *Datamungec::MDS_n_components;
+*kept_row_indices = *Datamungec::MDS_kept_row_indices;
+*eigenvalues = *Datamungec::MDS_eigenvalues;
+*goodness_of_fit = *Datamungec::MDS_goodness_of_fit;
+*dimension = *Datamungec::MDS_dimension;
+*embedding_frame = *Datamungec::MDS_embedding_frame;
+*summary = *Datamungec::MDS_summary;
+*print_summary = *Datamungec::MDS_print_summary;
+*plot_embedding = *Datamungec::MDS_plot_embedding;
+*plot_embedding_grouped = *Datamungec::MDS_plot_embedding_grouped;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_MDS($self);
         delete $OWNER{$self};
     }
 }
@@ -3265,6 +3435,299 @@ sub STORE {
     return $self->$member_func($newval);
 }
 
+############# Class : Datamunge::ProximalFunction ##############
+
+package Datamunge::ProximalFunction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge::DifferentiableFunction Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*proximal = *Datamungec::ProximalFunction_proximal;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_ProximalFunction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ProximalFunction($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_ProximalFunction($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_ProximalFunction($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_ProximalFunction($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
+############# Class : Datamunge::HessianFunction ##############
+
+package Datamunge::HessianFunction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge::DifferentiableFunction Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*hessian = *Datamungec::HessianFunction_hessian;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_HessianFunction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_HessianFunction($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_HessianFunction($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_HessianFunction($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_HessianFunction($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
+############# Class : Datamunge::EqualityConstrainedFunction ##############
+
+package Datamunge::EqualityConstrainedFunction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge::DifferentiableFunction Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*constraints = *Datamungec::EqualityConstrainedFunction_constraints;
+*constraint_jacobian = *Datamungec::EqualityConstrainedFunction_constraint_jacobian;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_EqualityConstrainedFunction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_EqualityConstrainedFunction($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_EqualityConstrainedFunction($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_EqualityConstrainedFunction($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_EqualityConstrainedFunction($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
+############# Class : Datamunge::InequalityConstrainedFunction ##############
+
+package Datamunge::InequalityConstrainedFunction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge::DifferentiableFunction Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*inequalities = *Datamungec::InequalityConstrainedFunction_inequalities;
+*inequality_jacobian = *Datamungec::InequalityConstrainedFunction_inequality_jacobian;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_InequalityConstrainedFunction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_InequalityConstrainedFunction($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_InequalityConstrainedFunction($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_InequalityConstrainedFunction($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_InequalityConstrainedFunction($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
+############# Class : Datamunge::ResidualFunction ##############
+
+package Datamunge::ResidualFunction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ResidualFunction($self);
+        delete $OWNER{$self};
+    }
+}
+
+*residuals = *Datamungec::ResidualFunction_residuals;
+*jacobian = *Datamungec::ResidualFunction_jacobian;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_ResidualFunction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_ResidualFunction($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_ResidualFunction($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_ResidualFunction($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
 ############# Class : Datamunge::GradientDescentOptions ##############
 
 package Datamunge::GradientDescentOptions;
@@ -3435,6 +3898,431 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::AdaGradOptions ##############
+
+package Datamunge::AdaGradOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::AdaGradOptions_step_size_get;
+*swig_step_size_set = *Datamungec::AdaGradOptions_step_size_set;
+*swig_epsilon_get = *Datamungec::AdaGradOptions_epsilon_get;
+*swig_epsilon_set = *Datamungec::AdaGradOptions_epsilon_set;
+*swig_max_iterations_get = *Datamungec::AdaGradOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::AdaGradOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::AdaGradOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::AdaGradOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AdaGradOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AdaGradOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AdaGrad ##############
+
+package Datamunge::AdaGrad;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AdaGrad(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::AdaGrad_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AdaGrad($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AdaDeltaOptions ##############
+
+package Datamunge::AdaDeltaOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_decay_rate_get = *Datamungec::AdaDeltaOptions_decay_rate_get;
+*swig_decay_rate_set = *Datamungec::AdaDeltaOptions_decay_rate_set;
+*swig_epsilon_get = *Datamungec::AdaDeltaOptions_epsilon_get;
+*swig_epsilon_set = *Datamungec::AdaDeltaOptions_epsilon_set;
+*swig_max_iterations_get = *Datamungec::AdaDeltaOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::AdaDeltaOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::AdaDeltaOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::AdaDeltaOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AdaDeltaOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AdaDeltaOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AdaDelta ##############
+
+package Datamunge::AdaDelta;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AdaDelta(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::AdaDelta_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AdaDelta($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AMSGradOptions ##############
+
+package Datamunge::AMSGradOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::AMSGradOptions_step_size_get;
+*swig_step_size_set = *Datamungec::AMSGradOptions_step_size_set;
+*swig_beta1_get = *Datamungec::AMSGradOptions_beta1_get;
+*swig_beta1_set = *Datamungec::AMSGradOptions_beta1_set;
+*swig_beta2_get = *Datamungec::AMSGradOptions_beta2_get;
+*swig_beta2_set = *Datamungec::AMSGradOptions_beta2_set;
+*swig_epsilon_get = *Datamungec::AMSGradOptions_epsilon_get;
+*swig_epsilon_set = *Datamungec::AMSGradOptions_epsilon_set;
+*swig_max_iterations_get = *Datamungec::AMSGradOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::AMSGradOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::AMSGradOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::AMSGradOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AMSGradOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AMSGradOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AMSGrad ##############
+
+package Datamunge::AMSGrad;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AMSGrad(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::AMSGrad_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AMSGrad($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::NadamOptions ##############
+
+package Datamunge::NadamOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::NadamOptions_step_size_get;
+*swig_step_size_set = *Datamungec::NadamOptions_step_size_set;
+*swig_beta1_get = *Datamungec::NadamOptions_beta1_get;
+*swig_beta1_set = *Datamungec::NadamOptions_beta1_set;
+*swig_beta2_get = *Datamungec::NadamOptions_beta2_get;
+*swig_beta2_set = *Datamungec::NadamOptions_beta2_set;
+*swig_epsilon_get = *Datamungec::NadamOptions_epsilon_get;
+*swig_epsilon_set = *Datamungec::NadamOptions_epsilon_set;
+*swig_max_iterations_get = *Datamungec::NadamOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::NadamOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::NadamOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::NadamOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NadamOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NadamOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::Nadam ##############
+
+package Datamunge::Nadam;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_Nadam(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::Nadam_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_Nadam($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RMSPropOptions ##############
+
+package Datamunge::RMSPropOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::RMSPropOptions_step_size_get;
+*swig_step_size_set = *Datamungec::RMSPropOptions_step_size_set;
+*swig_decay_rate_get = *Datamungec::RMSPropOptions_decay_rate_get;
+*swig_decay_rate_set = *Datamungec::RMSPropOptions_decay_rate_set;
+*swig_epsilon_get = *Datamungec::RMSPropOptions_epsilon_get;
+*swig_epsilon_set = *Datamungec::RMSPropOptions_epsilon_set;
+*swig_max_iterations_get = *Datamungec::RMSPropOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::RMSPropOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::RMSPropOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::RMSPropOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RMSPropOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RMSPropOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RMSProp ##############
+
+package Datamunge::RMSProp;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RMSProp(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::RMSProp_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RMSProp($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Datamunge::LBFGSOptions ##############
 
 package Datamunge::LBFGSOptions;
@@ -3522,6 +4410,95 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::NelderMeadOptions ##############
+
+package Datamunge::NelderMeadOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_initial_simplex_scale_get = *Datamungec::NelderMeadOptions_initial_simplex_scale_get;
+*swig_initial_simplex_scale_set = *Datamungec::NelderMeadOptions_initial_simplex_scale_set;
+*swig_reflection_get = *Datamungec::NelderMeadOptions_reflection_get;
+*swig_reflection_set = *Datamungec::NelderMeadOptions_reflection_set;
+*swig_expansion_get = *Datamungec::NelderMeadOptions_expansion_get;
+*swig_expansion_set = *Datamungec::NelderMeadOptions_expansion_set;
+*swig_contraction_get = *Datamungec::NelderMeadOptions_contraction_get;
+*swig_contraction_set = *Datamungec::NelderMeadOptions_contraction_set;
+*swig_shrink_get = *Datamungec::NelderMeadOptions_shrink_get;
+*swig_shrink_set = *Datamungec::NelderMeadOptions_shrink_set;
+*swig_max_iterations_get = *Datamungec::NelderMeadOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::NelderMeadOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::NelderMeadOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::NelderMeadOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NelderMeadOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NelderMeadOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::NelderMead ##############
+
+package Datamunge::NelderMead;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NelderMead(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::NelderMead_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NelderMead($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Datamunge::SGDOptions ##############
 
 package Datamunge::SGDOptions;
@@ -3592,6 +4569,605 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_SGD($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SVRGOptions ##############
+
+package Datamunge::SVRGOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::SVRGOptions_step_size_get;
+*swig_step_size_set = *Datamungec::SVRGOptions_step_size_set;
+*swig_max_epochs_get = *Datamungec::SVRGOptions_max_epochs_get;
+*swig_max_epochs_set = *Datamungec::SVRGOptions_max_epochs_set;
+*swig_inner_iterations_get = *Datamungec::SVRGOptions_inner_iterations_get;
+*swig_inner_iterations_set = *Datamungec::SVRGOptions_inner_iterations_set;
+*swig_tolerance_get = *Datamungec::SVRGOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::SVRGOptions_tolerance_set;
+*swig_seed_get = *Datamungec::SVRGOptions_seed_get;
+*swig_seed_set = *Datamungec::SVRGOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SVRGOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SVRGOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SVRG ##############
+
+package Datamunge::SVRG;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SVRG(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::SVRG_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SVRG($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SAGAOptions ##############
+
+package Datamunge::SAGAOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::SAGAOptions_step_size_get;
+*swig_step_size_set = *Datamungec::SAGAOptions_step_size_set;
+*swig_max_iterations_get = *Datamungec::SAGAOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::SAGAOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::SAGAOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::SAGAOptions_tolerance_set;
+*swig_seed_get = *Datamungec::SAGAOptions_seed_get;
+*swig_seed_set = *Datamungec::SAGAOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SAGAOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SAGAOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SAGA ##############
+
+package Datamunge::SAGA;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SAGA(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::SAGA_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SAGA($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CoordinateDescentOptions ##############
+
+package Datamunge::CoordinateDescentOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::CoordinateDescentOptions_step_size_get;
+*swig_step_size_set = *Datamungec::CoordinateDescentOptions_step_size_set;
+*swig_max_iterations_get = *Datamungec::CoordinateDescentOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::CoordinateDescentOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::CoordinateDescentOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::CoordinateDescentOptions_tolerance_set;
+*swig_armijo_c1_get = *Datamungec::CoordinateDescentOptions_armijo_c1_get;
+*swig_armijo_c1_set = *Datamungec::CoordinateDescentOptions_armijo_c1_set;
+*swig_backtracking_factor_get = *Datamungec::CoordinateDescentOptions_backtracking_factor_get;
+*swig_backtracking_factor_set = *Datamungec::CoordinateDescentOptions_backtracking_factor_set;
+*swig_max_line_search_trials_get = *Datamungec::CoordinateDescentOptions_max_line_search_trials_get;
+*swig_max_line_search_trials_set = *Datamungec::CoordinateDescentOptions_max_line_search_trials_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CoordinateDescentOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CoordinateDescentOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CoordinateDescent ##############
+
+package Datamunge::CoordinateDescent;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CoordinateDescent(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::CoordinateDescent_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CoordinateDescent($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RandomizedBlockCoordinateDescentOptions ##############
+
+package Datamunge::RandomizedBlockCoordinateDescentOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_block_size_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_block_size_get;
+*swig_block_size_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_block_size_set;
+*swig_step_size_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_step_size_get;
+*swig_step_size_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_step_size_set;
+*swig_max_iterations_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_tolerance_set;
+*swig_armijo_c1_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_armijo_c1_get;
+*swig_armijo_c1_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_armijo_c1_set;
+*swig_backtracking_factor_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_backtracking_factor_get;
+*swig_backtracking_factor_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_backtracking_factor_set;
+*swig_max_line_search_trials_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get;
+*swig_max_line_search_trials_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set;
+*swig_seed_get = *Datamungec::RandomizedBlockCoordinateDescentOptions_seed_get;
+*swig_seed_set = *Datamungec::RandomizedBlockCoordinateDescentOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RandomizedBlockCoordinateDescentOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RandomizedBlockCoordinateDescentOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RandomizedBlockCoordinateDescent ##############
+
+package Datamunge::RandomizedBlockCoordinateDescent;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RandomizedBlockCoordinateDescent(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::RandomizedBlockCoordinateDescent_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RandomizedBlockCoordinateDescent($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::NesterovAcceleratedGradientOptions ##############
+
+package Datamunge::NesterovAcceleratedGradientOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::NesterovAcceleratedGradientOptions_step_size_get;
+*swig_step_size_set = *Datamungec::NesterovAcceleratedGradientOptions_step_size_set;
+*swig_momentum_get = *Datamungec::NesterovAcceleratedGradientOptions_momentum_get;
+*swig_momentum_set = *Datamungec::NesterovAcceleratedGradientOptions_momentum_set;
+*swig_max_iterations_get = *Datamungec::NesterovAcceleratedGradientOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::NesterovAcceleratedGradientOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::NesterovAcceleratedGradientOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::NesterovAcceleratedGradientOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NesterovAcceleratedGradientOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NesterovAcceleratedGradientOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::NesterovAcceleratedGradient ##############
+
+package Datamunge::NesterovAcceleratedGradient;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NesterovAcceleratedGradient(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::NesterovAcceleratedGradient_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NesterovAcceleratedGradient($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ConjugateGradientOptions ##############
+
+package Datamunge::ConjugateGradientOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_max_iterations_get = *Datamungec::ConjugateGradientOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::ConjugateGradientOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::ConjugateGradientOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::ConjugateGradientOptions_tolerance_set;
+*swig_armijo_c1_get = *Datamungec::ConjugateGradientOptions_armijo_c1_get;
+*swig_armijo_c1_set = *Datamungec::ConjugateGradientOptions_armijo_c1_set;
+*swig_backtracking_factor_get = *Datamungec::ConjugateGradientOptions_backtracking_factor_get;
+*swig_backtracking_factor_set = *Datamungec::ConjugateGradientOptions_backtracking_factor_set;
+*swig_max_line_search_trials_get = *Datamungec::ConjugateGradientOptions_max_line_search_trials_get;
+*swig_max_line_search_trials_set = *Datamungec::ConjugateGradientOptions_max_line_search_trials_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ConjugateGradientOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ConjugateGradientOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ConjugateGradient ##############
+
+package Datamunge::ConjugateGradient;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ConjugateGradient(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::ConjugateGradient_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ConjugateGradient($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CMAESOptions ##############
+
+package Datamunge::CMAESOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::CMAESOptions_population_size_get;
+*swig_population_size_set = *Datamungec::CMAESOptions_population_size_set;
+*swig_initial_step_size_get = *Datamungec::CMAESOptions_initial_step_size_get;
+*swig_initial_step_size_set = *Datamungec::CMAESOptions_initial_step_size_set;
+*swig_max_generations_get = *Datamungec::CMAESOptions_max_generations_get;
+*swig_max_generations_set = *Datamungec::CMAESOptions_max_generations_set;
+*swig_tolerance_get = *Datamungec::CMAESOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::CMAESOptions_tolerance_set;
+*swig_seed_get = *Datamungec::CMAESOptions_seed_get;
+*swig_seed_set = *Datamungec::CMAESOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CMAESOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CMAESOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CMAES ##############
+
+package Datamunge::CMAES;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CMAES(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::CMAES_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CMAES($self);
         delete $OWNER{$self};
     }
 }
@@ -3966,6 +5542,1812 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_GeneticAlgorithm($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ACOROptions ##############
+
+package Datamunge::ACOROptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_archive_size_get = *Datamungec::ACOROptions_archive_size_get;
+*swig_archive_size_set = *Datamungec::ACOROptions_archive_size_set;
+*swig_samples_per_iteration_get = *Datamungec::ACOROptions_samples_per_iteration_get;
+*swig_samples_per_iteration_set = *Datamungec::ACOROptions_samples_per_iteration_set;
+*swig_locality_get = *Datamungec::ACOROptions_locality_get;
+*swig_locality_set = *Datamungec::ACOROptions_locality_set;
+*swig_convergence_speed_get = *Datamungec::ACOROptions_convergence_speed_get;
+*swig_convergence_speed_set = *Datamungec::ACOROptions_convergence_speed_set;
+*swig_max_iterations_get = *Datamungec::ACOROptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::ACOROptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::ACOROptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::ACOROptions_tolerance_set;
+*swig_seed_get = *Datamungec::ACOROptions_seed_get;
+*swig_seed_set = *Datamungec::ACOROptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ACOROptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ACOROptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ACOR ##############
+
+package Datamunge::ACOR;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ACOR(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::ACOR_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ACOR($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ArtificialBeeColonyOptions ##############
+
+package Datamunge::ArtificialBeeColonyOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::ArtificialBeeColonyOptions_population_size_get;
+*swig_population_size_set = *Datamungec::ArtificialBeeColonyOptions_population_size_set;
+*swig_abandonment_limit_get = *Datamungec::ArtificialBeeColonyOptions_abandonment_limit_get;
+*swig_abandonment_limit_set = *Datamungec::ArtificialBeeColonyOptions_abandonment_limit_set;
+*swig_max_generations_get = *Datamungec::ArtificialBeeColonyOptions_max_generations_get;
+*swig_max_generations_set = *Datamungec::ArtificialBeeColonyOptions_max_generations_set;
+*swig_tolerance_get = *Datamungec::ArtificialBeeColonyOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::ArtificialBeeColonyOptions_tolerance_set;
+*swig_seed_get = *Datamungec::ArtificialBeeColonyOptions_seed_get;
+*swig_seed_set = *Datamungec::ArtificialBeeColonyOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ArtificialBeeColonyOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ArtificialBeeColonyOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ArtificialBeeColony ##############
+
+package Datamunge::ArtificialBeeColony;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ArtificialBeeColony(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::ArtificialBeeColony_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ArtificialBeeColony($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CrossEntropyMethodOptions ##############
+
+package Datamunge::CrossEntropyMethodOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::CrossEntropyMethodOptions_population_size_get;
+*swig_population_size_set = *Datamungec::CrossEntropyMethodOptions_population_size_set;
+*swig_elite_ratio_get = *Datamungec::CrossEntropyMethodOptions_elite_ratio_get;
+*swig_elite_ratio_set = *Datamungec::CrossEntropyMethodOptions_elite_ratio_set;
+*swig_initial_std_dev_get = *Datamungec::CrossEntropyMethodOptions_initial_std_dev_get;
+*swig_initial_std_dev_set = *Datamungec::CrossEntropyMethodOptions_initial_std_dev_set;
+*swig_smoothing_get = *Datamungec::CrossEntropyMethodOptions_smoothing_get;
+*swig_smoothing_set = *Datamungec::CrossEntropyMethodOptions_smoothing_set;
+*swig_max_iterations_get = *Datamungec::CrossEntropyMethodOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::CrossEntropyMethodOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::CrossEntropyMethodOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::CrossEntropyMethodOptions_tolerance_set;
+*swig_seed_get = *Datamungec::CrossEntropyMethodOptions_seed_get;
+*swig_seed_set = *Datamungec::CrossEntropyMethodOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CrossEntropyMethodOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CrossEntropyMethodOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CrossEntropyMethod ##############
+
+package Datamunge::CrossEntropyMethod;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CrossEntropyMethod(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::CrossEntropyMethod_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CrossEntropyMethod($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CuckooSearchOptions ##############
+
+package Datamunge::CuckooSearchOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::CuckooSearchOptions_population_size_get;
+*swig_population_size_set = *Datamungec::CuckooSearchOptions_population_size_set;
+*swig_discovery_rate_get = *Datamungec::CuckooSearchOptions_discovery_rate_get;
+*swig_discovery_rate_set = *Datamungec::CuckooSearchOptions_discovery_rate_set;
+*swig_levy_beta_get = *Datamungec::CuckooSearchOptions_levy_beta_get;
+*swig_levy_beta_set = *Datamungec::CuckooSearchOptions_levy_beta_set;
+*swig_step_scale_get = *Datamungec::CuckooSearchOptions_step_scale_get;
+*swig_step_scale_set = *Datamungec::CuckooSearchOptions_step_scale_set;
+*swig_max_iterations_get = *Datamungec::CuckooSearchOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::CuckooSearchOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::CuckooSearchOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::CuckooSearchOptions_tolerance_set;
+*swig_seed_get = *Datamungec::CuckooSearchOptions_seed_get;
+*swig_seed_set = *Datamungec::CuckooSearchOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CuckooSearchOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CuckooSearchOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CuckooSearch ##############
+
+package Datamunge::CuckooSearch;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CuckooSearch(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::CuckooSearch_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CuckooSearch($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::EstimationOfDistributionOptions ##############
+
+package Datamunge::EstimationOfDistributionOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::EstimationOfDistributionOptions_population_size_get;
+*swig_population_size_set = *Datamungec::EstimationOfDistributionOptions_population_size_set;
+*swig_selection_ratio_get = *Datamungec::EstimationOfDistributionOptions_selection_ratio_get;
+*swig_selection_ratio_set = *Datamungec::EstimationOfDistributionOptions_selection_ratio_set;
+*swig_initial_std_dev_get = *Datamungec::EstimationOfDistributionOptions_initial_std_dev_get;
+*swig_initial_std_dev_set = *Datamungec::EstimationOfDistributionOptions_initial_std_dev_set;
+*swig_covariance_regularization_get = *Datamungec::EstimationOfDistributionOptions_covariance_regularization_get;
+*swig_covariance_regularization_set = *Datamungec::EstimationOfDistributionOptions_covariance_regularization_set;
+*swig_max_generations_get = *Datamungec::EstimationOfDistributionOptions_max_generations_get;
+*swig_max_generations_set = *Datamungec::EstimationOfDistributionOptions_max_generations_set;
+*swig_tolerance_get = *Datamungec::EstimationOfDistributionOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::EstimationOfDistributionOptions_tolerance_set;
+*swig_seed_get = *Datamungec::EstimationOfDistributionOptions_seed_get;
+*swig_seed_set = *Datamungec::EstimationOfDistributionOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_EstimationOfDistributionOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_EstimationOfDistributionOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::EstimationOfDistribution ##############
+
+package Datamunge::EstimationOfDistribution;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_EstimationOfDistribution(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::EstimationOfDistribution_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_EstimationOfDistribution($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::EvolutionStrategyOptions ##############
+
+package Datamunge::EvolutionStrategyOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_mu_get = *Datamungec::EvolutionStrategyOptions_mu_get;
+*swig_mu_set = *Datamungec::EvolutionStrategyOptions_mu_set;
+*swig_offspring_size_get = *Datamungec::EvolutionStrategyOptions_offspring_size_get;
+*swig_offspring_size_set = *Datamungec::EvolutionStrategyOptions_offspring_size_set;
+*swig_strategy_get = *Datamungec::EvolutionStrategyOptions_strategy_get;
+*swig_strategy_set = *Datamungec::EvolutionStrategyOptions_strategy_set;
+*swig_initial_step_size_get = *Datamungec::EvolutionStrategyOptions_initial_step_size_get;
+*swig_initial_step_size_set = *Datamungec::EvolutionStrategyOptions_initial_step_size_set;
+*swig_max_generations_get = *Datamungec::EvolutionStrategyOptions_max_generations_get;
+*swig_max_generations_set = *Datamungec::EvolutionStrategyOptions_max_generations_set;
+*swig_tolerance_get = *Datamungec::EvolutionStrategyOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::EvolutionStrategyOptions_tolerance_set;
+*swig_seed_get = *Datamungec::EvolutionStrategyOptions_seed_get;
+*swig_seed_set = *Datamungec::EvolutionStrategyOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_EvolutionStrategyOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_EvolutionStrategyOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::EvolutionStrategy ##############
+
+package Datamunge::EvolutionStrategy;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_EvolutionStrategy(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::EvolutionStrategy_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_EvolutionStrategy($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::FireflyAlgorithmOptions ##############
+
+package Datamunge::FireflyAlgorithmOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::FireflyAlgorithmOptions_population_size_get;
+*swig_population_size_set = *Datamungec::FireflyAlgorithmOptions_population_size_set;
+*swig_attractiveness_at_zero_get = *Datamungec::FireflyAlgorithmOptions_attractiveness_at_zero_get;
+*swig_attractiveness_at_zero_set = *Datamungec::FireflyAlgorithmOptions_attractiveness_at_zero_set;
+*swig_light_absorption_get = *Datamungec::FireflyAlgorithmOptions_light_absorption_get;
+*swig_light_absorption_set = *Datamungec::FireflyAlgorithmOptions_light_absorption_set;
+*swig_randomization_step_get = *Datamungec::FireflyAlgorithmOptions_randomization_step_get;
+*swig_randomization_step_set = *Datamungec::FireflyAlgorithmOptions_randomization_step_set;
+*swig_randomization_decay_get = *Datamungec::FireflyAlgorithmOptions_randomization_decay_get;
+*swig_randomization_decay_set = *Datamungec::FireflyAlgorithmOptions_randomization_decay_set;
+*swig_max_iterations_get = *Datamungec::FireflyAlgorithmOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::FireflyAlgorithmOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::FireflyAlgorithmOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::FireflyAlgorithmOptions_tolerance_set;
+*swig_seed_get = *Datamungec::FireflyAlgorithmOptions_seed_get;
+*swig_seed_set = *Datamungec::FireflyAlgorithmOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_FireflyAlgorithmOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_FireflyAlgorithmOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::FireflyAlgorithm ##############
+
+package Datamunge::FireflyAlgorithm;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_FireflyAlgorithm(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::FireflyAlgorithm_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_FireflyAlgorithm($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::GreyWolfOptimizerOptions ##############
+
+package Datamunge::GreyWolfOptimizerOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::GreyWolfOptimizerOptions_population_size_get;
+*swig_population_size_set = *Datamungec::GreyWolfOptimizerOptions_population_size_set;
+*swig_max_iterations_get = *Datamungec::GreyWolfOptimizerOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::GreyWolfOptimizerOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::GreyWolfOptimizerOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::GreyWolfOptimizerOptions_tolerance_set;
+*swig_seed_get = *Datamungec::GreyWolfOptimizerOptions_seed_get;
+*swig_seed_set = *Datamungec::GreyWolfOptimizerOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GreyWolfOptimizerOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GreyWolfOptimizerOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::GreyWolfOptimizer ##############
+
+package Datamunge::GreyWolfOptimizer;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GreyWolfOptimizer(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::GreyWolfOptimizer_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GreyWolfOptimizer($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::HarmonySearchOptions ##############
+
+package Datamunge::HarmonySearchOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::HarmonySearchOptions_population_size_get;
+*swig_population_size_set = *Datamungec::HarmonySearchOptions_population_size_set;
+*swig_memory_consideration_rate_get = *Datamungec::HarmonySearchOptions_memory_consideration_rate_get;
+*swig_memory_consideration_rate_set = *Datamungec::HarmonySearchOptions_memory_consideration_rate_set;
+*swig_pitch_adjustment_rate_get = *Datamungec::HarmonySearchOptions_pitch_adjustment_rate_get;
+*swig_pitch_adjustment_rate_set = *Datamungec::HarmonySearchOptions_pitch_adjustment_rate_set;
+*swig_bandwidth_fraction_get = *Datamungec::HarmonySearchOptions_bandwidth_fraction_get;
+*swig_bandwidth_fraction_set = *Datamungec::HarmonySearchOptions_bandwidth_fraction_set;
+*swig_max_iterations_get = *Datamungec::HarmonySearchOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::HarmonySearchOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::HarmonySearchOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::HarmonySearchOptions_tolerance_set;
+*swig_seed_get = *Datamungec::HarmonySearchOptions_seed_get;
+*swig_seed_set = *Datamungec::HarmonySearchOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_HarmonySearchOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_HarmonySearchOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::HarmonySearch ##############
+
+package Datamunge::HarmonySearch;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_HarmonySearch(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::HarmonySearch_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_HarmonySearch($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ParallelTemperingOptions ##############
+
+package Datamunge::ParallelTemperingOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_num_replicas_get = *Datamungec::ParallelTemperingOptions_num_replicas_get;
+*swig_num_replicas_set = *Datamungec::ParallelTemperingOptions_num_replicas_set;
+*swig_initial_temperature_get = *Datamungec::ParallelTemperingOptions_initial_temperature_get;
+*swig_initial_temperature_set = *Datamungec::ParallelTemperingOptions_initial_temperature_set;
+*swig_final_temperature_get = *Datamungec::ParallelTemperingOptions_final_temperature_get;
+*swig_final_temperature_set = *Datamungec::ParallelTemperingOptions_final_temperature_set;
+*swig_step_std_dev_get = *Datamungec::ParallelTemperingOptions_step_std_dev_get;
+*swig_step_std_dev_set = *Datamungec::ParallelTemperingOptions_step_std_dev_set;
+*swig_swap_interval_get = *Datamungec::ParallelTemperingOptions_swap_interval_get;
+*swig_swap_interval_set = *Datamungec::ParallelTemperingOptions_swap_interval_set;
+*swig_max_sweeps_get = *Datamungec::ParallelTemperingOptions_max_sweeps_get;
+*swig_max_sweeps_set = *Datamungec::ParallelTemperingOptions_max_sweeps_set;
+*swig_seed_get = *Datamungec::ParallelTemperingOptions_seed_get;
+*swig_seed_set = *Datamungec::ParallelTemperingOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ParallelTemperingOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ParallelTemperingOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ParallelTempering ##############
+
+package Datamunge::ParallelTempering;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ParallelTempering(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::ParallelTempering_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ParallelTempering($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::WhaleOptimizationOptions ##############
+
+package Datamunge::WhaleOptimizationOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_population_size_get = *Datamungec::WhaleOptimizationOptions_population_size_get;
+*swig_population_size_set = *Datamungec::WhaleOptimizationOptions_population_size_set;
+*swig_spiral_constant_get = *Datamungec::WhaleOptimizationOptions_spiral_constant_get;
+*swig_spiral_constant_set = *Datamungec::WhaleOptimizationOptions_spiral_constant_set;
+*swig_max_iterations_get = *Datamungec::WhaleOptimizationOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::WhaleOptimizationOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::WhaleOptimizationOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::WhaleOptimizationOptions_tolerance_set;
+*swig_seed_get = *Datamungec::WhaleOptimizationOptions_seed_get;
+*swig_seed_set = *Datamungec::WhaleOptimizationOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_WhaleOptimizationOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_WhaleOptimizationOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::WhaleOptimization ##############
+
+package Datamunge::WhaleOptimization;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_WhaleOptimization(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::WhaleOptimization_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_WhaleOptimization($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::FISTAOptions ##############
+
+package Datamunge::FISTAOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::FISTAOptions_step_size_get;
+*swig_step_size_set = *Datamungec::FISTAOptions_step_size_set;
+*swig_max_iterations_get = *Datamungec::FISTAOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::FISTAOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::FISTAOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::FISTAOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_FISTAOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_FISTAOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::FISTA ##############
+
+package Datamunge::FISTA;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_FISTA(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::FISTA_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_FISTA($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ProximalGradientOptions ##############
+
+package Datamunge::ProximalGradientOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::ProximalGradientOptions_step_size_get;
+*swig_step_size_set = *Datamungec::ProximalGradientOptions_step_size_set;
+*swig_max_iterations_get = *Datamungec::ProximalGradientOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::ProximalGradientOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::ProximalGradientOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::ProximalGradientOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ProximalGradientOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ProximalGradientOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ProximalGradient ##############
+
+package Datamunge::ProximalGradient;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ProximalGradient(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::ProximalGradient_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ProximalGradient($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::LevenbergMarquardtOptions ##############
+
+package Datamunge::LevenbergMarquardtOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_initial_damping_get = *Datamungec::LevenbergMarquardtOptions_initial_damping_get;
+*swig_initial_damping_set = *Datamungec::LevenbergMarquardtOptions_initial_damping_set;
+*swig_max_iterations_get = *Datamungec::LevenbergMarquardtOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::LevenbergMarquardtOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::LevenbergMarquardtOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::LevenbergMarquardtOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_LevenbergMarquardtOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_LevenbergMarquardtOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::LevenbergMarquardt ##############
+
+package Datamunge::LevenbergMarquardt;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_LevenbergMarquardt(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::LevenbergMarquardt_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_LevenbergMarquardt($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::NewtonOptions ##############
+
+package Datamunge::NewtonOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_max_iterations_get = *Datamungec::NewtonOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::NewtonOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::NewtonOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::NewtonOptions_tolerance_set;
+*swig_damping_get = *Datamungec::NewtonOptions_damping_get;
+*swig_damping_set = *Datamungec::NewtonOptions_damping_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_NewtonOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_NewtonOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::Newton ##############
+
+package Datamunge::Newton;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_Newton(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::Newton_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_Newton($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::TrustRegionNewtonOptions ##############
+
+package Datamunge::TrustRegionNewtonOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_initial_radius_get = *Datamungec::TrustRegionNewtonOptions_initial_radius_get;
+*swig_initial_radius_set = *Datamungec::TrustRegionNewtonOptions_initial_radius_set;
+*swig_max_radius_get = *Datamungec::TrustRegionNewtonOptions_max_radius_get;
+*swig_max_radius_set = *Datamungec::TrustRegionNewtonOptions_max_radius_set;
+*swig_max_iterations_get = *Datamungec::TrustRegionNewtonOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::TrustRegionNewtonOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::TrustRegionNewtonOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::TrustRegionNewtonOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_TrustRegionNewtonOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_TrustRegionNewtonOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::TrustRegionNewton ##############
+
+package Datamunge::TrustRegionNewton;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_TrustRegionNewton(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::TrustRegionNewton_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_TrustRegionNewton($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AugmentedLagrangianOptions ##############
+
+package Datamunge::AugmentedLagrangianOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::AugmentedLagrangianOptions_step_size_get;
+*swig_step_size_set = *Datamungec::AugmentedLagrangianOptions_step_size_set;
+*swig_initial_penalty_get = *Datamungec::AugmentedLagrangianOptions_initial_penalty_get;
+*swig_initial_penalty_set = *Datamungec::AugmentedLagrangianOptions_initial_penalty_set;
+*swig_max_outer_iterations_get = *Datamungec::AugmentedLagrangianOptions_max_outer_iterations_get;
+*swig_max_outer_iterations_set = *Datamungec::AugmentedLagrangianOptions_max_outer_iterations_set;
+*swig_inner_iterations_get = *Datamungec::AugmentedLagrangianOptions_inner_iterations_get;
+*swig_inner_iterations_set = *Datamungec::AugmentedLagrangianOptions_inner_iterations_set;
+*swig_tolerance_get = *Datamungec::AugmentedLagrangianOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::AugmentedLagrangianOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AugmentedLagrangianOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AugmentedLagrangianOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::AugmentedLagrangian ##############
+
+package Datamunge::AugmentedLagrangian;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_AugmentedLagrangian(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::AugmentedLagrangian_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_AugmentedLagrangian($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SQPOptions ##############
+
+package Datamunge::SQPOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::SQPOptions_step_size_get;
+*swig_step_size_set = *Datamungec::SQPOptions_step_size_set;
+*swig_regularization_get = *Datamungec::SQPOptions_regularization_get;
+*swig_regularization_set = *Datamungec::SQPOptions_regularization_set;
+*swig_max_iterations_get = *Datamungec::SQPOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::SQPOptions_max_iterations_set;
+*swig_tolerance_get = *Datamungec::SQPOptions_tolerance_get;
+*swig_tolerance_set = *Datamungec::SQPOptions_tolerance_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SQPOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SQPOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SQP ##############
+
+package Datamunge::SQP;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SQP(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::SQP_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SQP($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::InteriorPointOptions ##############
+
+package Datamunge::InteriorPointOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_step_size_get = *Datamungec::InteriorPointOptions_step_size_get;
+*swig_step_size_set = *Datamungec::InteriorPointOptions_step_size_set;
+*swig_initial_barrier_get = *Datamungec::InteriorPointOptions_initial_barrier_get;
+*swig_initial_barrier_set = *Datamungec::InteriorPointOptions_initial_barrier_set;
+*swig_barrier_decay_get = *Datamungec::InteriorPointOptions_barrier_decay_get;
+*swig_barrier_decay_set = *Datamungec::InteriorPointOptions_barrier_decay_set;
+*swig_max_outer_iterations_get = *Datamungec::InteriorPointOptions_max_outer_iterations_get;
+*swig_max_outer_iterations_set = *Datamungec::InteriorPointOptions_max_outer_iterations_set;
+*swig_inner_iterations_get = *Datamungec::InteriorPointOptions_inner_iterations_get;
+*swig_inner_iterations_set = *Datamungec::InteriorPointOptions_inner_iterations_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_InteriorPointOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_InteriorPointOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::InteriorPoint ##############
+
+package Datamunge::InteriorPoint;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_InteriorPoint(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::InteriorPoint_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_InteriorPoint($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::BayesianSurrogate ##############
+
+package Datamunge::BayesianSurrogate;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_BayesianSurrogate($self);
+        delete $OWNER{$self};
+    }
+}
+
+*fit = *Datamungec::BayesianSurrogate_fit;
+*acquisition = *Datamungec::BayesianSurrogate_acquisition;
+sub new {
+    my $pkg = $_[0];
+    my $self = Datamungec::new_BayesianSurrogate(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DISOWN {
+    my $self = shift;
+    Datamungec::disown_BayesianSurrogate($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_BayesianSurrogate($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Datamungec::swig_get_attr_BayesianSurrogate($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
+
+############# Class : Datamunge::BayesianOptimizationOptions ##############
+
+package Datamunge::BayesianOptimizationOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_initial_samples_get = *Datamungec::BayesianOptimizationOptions_initial_samples_get;
+*swig_initial_samples_set = *Datamungec::BayesianOptimizationOptions_initial_samples_set;
+*swig_max_iterations_get = *Datamungec::BayesianOptimizationOptions_max_iterations_get;
+*swig_max_iterations_set = *Datamungec::BayesianOptimizationOptions_max_iterations_set;
+*swig_seed_get = *Datamungec::BayesianOptimizationOptions_seed_get;
+*swig_seed_set = *Datamungec::BayesianOptimizationOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_BayesianOptimizationOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_BayesianOptimizationOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::BayesianOptimization ##############
+
+package Datamunge::BayesianOptimization;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_BayesianOptimization(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*optimize = *Datamungec::BayesianOptimization_optimize;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_BayesianOptimization($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RBFGaussianProcessSurrogate ##############
+
+package Datamunge::RBFGaussianProcessSurrogate;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge::BayesianSurrogate Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RBFGaussianProcessSurrogate(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*fit = *Datamungec::RBFGaussianProcessSurrogate_fit;
+*acquisition = *Datamungec::RBFGaussianProcessSurrogate_acquisition;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RBFGaussianProcessSurrogate($self);
         delete $OWNER{$self};
     }
 }
@@ -4708,6 +8090,170 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::RHS ##############
+
+package Datamunge::RHS;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RHS($self);
+        delete $OWNER{$self};
+    }
+}
+
+*evaluate = *Datamungec::RHS_evaluate;
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ODEOptions ##############
+
+package Datamunge::ODEOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_method_get = *Datamungec::ODEOptions_method_get;
+*swig_method_set = *Datamungec::ODEOptions_method_set;
+*swig_multistep_order_get = *Datamungec::ODEOptions_multistep_order_get;
+*swig_multistep_order_set = *Datamungec::ODEOptions_multistep_order_set;
+*swig_step_size_get = *Datamungec::ODEOptions_step_size_get;
+*swig_step_size_set = *Datamungec::ODEOptions_step_size_set;
+*swig_abs_tol_get = *Datamungec::ODEOptions_abs_tol_get;
+*swig_abs_tol_set = *Datamungec::ODEOptions_abs_tol_set;
+*swig_rel_tol_get = *Datamungec::ODEOptions_rel_tol_get;
+*swig_rel_tol_set = *Datamungec::ODEOptions_rel_tol_set;
+*swig_max_step_get = *Datamungec::ODEOptions_max_step_get;
+*swig_max_step_set = *Datamungec::ODEOptions_max_step_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ODEOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ODEOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ODESolution ##############
+
+package Datamunge::ODESolution;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_steps_taken_get = *Datamungec::ODESolution_steps_taken_get;
+*swig_steps_taken_set = *Datamungec::ODESolution_steps_taken_set;
+*swig_function_evaluations_get = *Datamungec::ODESolution_function_evaluations_get;
+*swig_function_evaluations_set = *Datamungec::ODESolution_function_evaluations_set;
+*size = *Datamungec::ODESolution_size;
+*time_at = *Datamungec::ODESolution_time_at;
+*state_at = *Datamungec::ODESolution_state_at;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ODESolution(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ODESolution($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ODESolver ##############
+
+package Datamunge::ODESolver;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ODESolver(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*solve = *Datamungec::ODESolver_solve;
+*solve_builtin = *Datamungec::ODESolver_solve_builtin;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ODESolver($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 # ------- VARIABLE STUBS --------
 
 package Datamunge;
@@ -4729,4 +8275,10 @@ package Datamunge;
 *PAdjustMethod_BH = *Datamungec::PAdjustMethod_BH;
 *PAdjustMethod_BY = *Datamungec::PAdjustMethod_BY;
 *PAdjustMethod_None = *Datamungec::PAdjustMethod_None;
+*StepMethod_Euler = *Datamungec::StepMethod_Euler;
+*StepMethod_Midpoint = *Datamungec::StepMethod_Midpoint;
+*StepMethod_RK4 = *Datamungec::StepMethod_RK4;
+*StepMethod_RK45 = *Datamungec::StepMethod_RK45;
+*StepMethod_AdamsBashforth = *Datamungec::StepMethod_AdamsBashforth;
+*StepMethod_AdamsMoulton = *Datamungec::StepMethod_AdamsMoulton;
 1;

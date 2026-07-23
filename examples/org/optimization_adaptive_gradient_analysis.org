@@ -1,0 +1,776 @@
+#+title: The AdaGrad Family: Per-Coordinate Adaptive Learning Rates
+#+subtitle: A literate C++ study of AdaGrad, RMSProp, AdaDelta, AMSGrad, and Nadam using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit five per-coordinate adaptive-learning-rate optimizers --
+=AdaGrad=, =RMSProp=, =AdaDelta=, =AMSGrad=, and =Nadam= -- from
+=datamunge='s C++ =optim= module against two objectives, and report it
+as a literate program: every number and figure below comes from a
+single compiled, executed C++ binary. On the same isotropic quadratic
+bowl the companion report =optimization_analysis.org= fits with
+=GradientDescent= (59 evaluations), =Adam= (7874 evaluations), and
+=LBFGS= (3 evaluations), the five new methods split sharply on their
+*default* options: =RMSProp= (4085 evaluations), =AdaDelta= (1267
+evaluations), and =Nadam= (9739 evaluations) all reach the exact
+minimum, while =AdaGrad= and =AMSGrad= both run out their full
+10000-iteration budget without converging ($f=5.106793$ and
+$f=0.016618$ respectively) -- a real, direct demonstration of
+=AdaGrad='s textbook weakness (its accumulator only ever grows, so its
+effective step size eventually decays toward zero) and a genuine
+surprise for =AMSGrad=, whose non-decreasing second-moment estimate
+makes it converge even more slowly than plain =Adam= on this easy,
+noise-free problem. On a second, deliberately ill-conditioned
+anisotropic bowl ($f(x,y,z)=100(x-4)^2+(y+2)^2+0.01(z-1)^2$, a
+10000:1 curvature ratio between its stiffest and softest coordinates),
+plain =GradientDescent= at the largest stable-looking step size
+($\eta=0.01$) does not diverge to infinity but oscillates in a stable
+period-2 cycle on the stiff coordinate ($\eta$ sitting exactly at the
+stability boundary $2/L$), and even at a safe step size ($\eta=0.005$)
+needs 20001 evaluations and still has not fully converged on the soft
+coordinate ($z=0.864678$, target $1$). All five adaptive methods
+handle both coordinates gracefully in one run with their own default
+or lightly-tuned step sizes, converging in 134 to 1276 evaluations --
+roughly 16x to 150x fewer than stable =GradientDescent= needed, and
+without diverging at any step size we tried. We derive all five
+methods' per-coordinate update rules from the exact formula in each
+=.cpp= file, in the order each was designed to fix the previous
+method's specific weakness.
+#+end_abstract
+
+* Introduction
+
+The companion report =optimization_analysis.org= shows that
+=GradientDescent='s single, global step size $\eta$ is a real
+liability: too large and it diverges, too small and convergence is
+needlessly slow, and the "right" $\eta$ is a property of the
+objective's *worst-conditioned* coordinate, not a good general choice
+for every coordinate at once. All five methods in this report target
+=DifferentiableFunction= (evaluations plus an exact gradient, the same
+interface =GradientDescent=, =Adam=, and =LBFGS= use) but answer this
+problem differently from all three: instead of one global $\eta$, each
+maintains a running *per-coordinate* statistic of past squared
+gradients and divides the step by its square root, so a coordinate
+with a history of large gradients automatically gets a smaller
+effective step, and a coordinate with a history of small gradients
+gets a larger one. This report's job is to make the real differences
+between five specific accumulation-and-correction strategies for that
+one shared idea concrete with real numbers, not just list five
+formulas that look superficially similar.
+
+As with its companions, this document is a /literate program/: prose
+and source are interleaved in reading order, and a single "assembling
+the program" step (§3.3.4) weaves every named chunk below into one
+=.cpp= file, compiles it, and runs it. Every number and figure from §4
+onward is that program's literal output.
+
+§2 derives every method's update rule, each tied to the specific
+formula in its =.cpp= file, in the order each was designed to fix the
+previous method's specific weakness. §3 describes the program chunk by
+chunk, reusing the =LoggingDifferentiable= decorator technique from the
+companion report to build this report's convergence-curve figure. §4
+reports both experiments' results alongside one figure. §5 discusses
+what =AdaGrad='s and =AMSGrad='s non-convergence on an "easy" problem
+and =GradientDescent='s period-2 oscillation on the ill-conditioned
+bowl both reveal. §6 concludes.
+
+* Background: Optimization Methods
+
+** The function-type hierarchy
+
+Every method in this report targets =datamunge::optim='s
+=DifferentiableFunction= interface -- =evaluate(coordinates)= plus an
+exact gradient =gradient(coordinates)=, the same interface
+=GradientDescent=, =Adam=, and =LBFGS= use in the companion report.
+None of the five needs anything beyond this: no Hessian, no
+separability into per-example terms, no proximal operator. What
+distinguishes them from each other is entirely how each turns a stream
+of past gradients into a per-coordinate step-size correction.
+
+** AdaGrad: the naive accumulator, and its real weakness
+
+=AdaGrad= (Duchi, Hazan & Singer 2011) accumulates the *sum* of every
+past squared gradient, per coordinate,
+
+$$G_j \leftarrow G_j + g_j^2, \qquad x_j \leftarrow x_j - \eta\,
+\frac{g_j}{\sqrt{G_j+\epsilon}}$$
+
+where $g=\nabla f(x)$ and $\epsilon$ (=AdaGradOptions::epsilon=,
+default $10^{-8}$) keeps the division finite before any gradient has
+been observed. This is exactly =adagrad.cpp='s update: accumulate
+=accumulated_squares[j]= by adding =gradient[j] * gradient[j]=, then
+update =coordinates[j]= by subtracting
+=step_size * gradient[j] / sqrt(accumulated_squares[j] + epsilon)=.
+Because $G_j$ is a running *sum* that never decays, it
+only ever grows, which means the effective step size
+$\eta/\sqrt{G_j+\epsilon}$ only ever shrinks, monotonically, for the
+rest of the run -- even long after the gradient in that coordinate has
+become small and the optimizer would benefit from taking larger steps
+again. This is a real, citable weakness of the original 2011 method,
+and §4.1 measures it directly: with =AdaGradOptions='s default
+=step_size= of =0.01=, =AdaGrad= does not reach this report's simple
+bowl's minimum within its default 10000-iteration budget.
+
+** RMSProp: replacing the sum with a decaying average
+
+=RMSProp= (Tieleman & Hinton, unpublished, Coursera lecture 6.5, 2012)
+fixes exactly this problem by replacing =AdaGrad='s ever-growing sum
+with an exponential moving average controlled by
+=RMSPropOptions::decay_rate= (default $0.9$):
+
+$$v_j \leftarrow \rho v_j + (1-\rho) g_j^2, \qquad x_j \leftarrow x_j -
+\eta\,\frac{g_j}{\sqrt{v_j}+\epsilon}$$
+
+matching =rmsprop.cpp= exactly (note =epsilon= is added *outside* the
+square root here, =sqrt(mean_squares[j]) + epsilon=, unlike =AdaGrad='s
+=epsilon= inside it -- a small but real implementation difference
+between the two). Because $v_j$ is now a weighted average of only the
+*recent* squared gradients rather than the full history, it can rise
+again if the gradient in that coordinate grows again later, so the
+effective step size no longer decays to zero unconditionally -- this
+is RMSProp's whole point, and the reason it was proposed as a direct
+fix to =AdaGrad='s weakness.
+
+** AdaDelta: removing the global step size entirely
+
+=AdaDelta= (Zeiler 2012) goes one step further and removes the global
+step-size hyperparameter $\eta$ altogether -- there is no =step_size=
+field at all in =AdaDeltaOptions=, only =decay_rate= (default $0.95$)
+and =epsilon= (default $10^{-6}$). In place of a fixed $\eta$, it
+tracks a *second* running average, of the squared *updates*
+themselves, and uses the ratio of RMS-past-updates to
+RMS-past-gradients as an implicit, units-matched step size:
+
+$$v_j \leftarrow \rho v_j + (1-\rho) g_j^2, \qquad \Delta x_j = -
+\frac{\sqrt{u_j+\epsilon}}{\sqrt{v_j+\epsilon}}\, g_j, \qquad x_j
+\leftarrow x_j + \Delta x_j, \qquad u_j \leftarrow \rho u_j + (1-\rho)
+\Delta x_j^2$$
+
+matching =adadelta.cpp='s =gradient_squares=, =update=, and
+=update_squares= sequence exactly (note the update is computed and
+applied to =coordinates[j]= *before* =update_squares[j]= is refreshed
+with it, so each step uses the *previous* step's update statistics,
+not its own). The ratio $\sqrt{u_j}/\sqrt{v_j}$ carries the same units
+as $x_j$ regardless of the units $g_j$ happens to be in, which is what
+lets =AdaDelta= supply an implicit step size without any
+hand-tuned global $\eta$ at all.
+
+** AMSGrad: fixing a real, published Adam counterexample
+
+=AMSGrad= (Reddi, Kale & Kumar 2018) returns to Adam's combination of a
+first-moment (momentum) estimate and a second-moment (variance)
+estimate,
+
+$$m_j \leftarrow \beta_1 m_j + (1-\beta_1) g_j, \qquad v_j \leftarrow
+\beta_2 v_j + (1-\beta_2) g_j^2$$
+
+but inserts one extra step before using $v_j$: a running elementwise
+maximum, $\hat{v}^{\max}_j \leftarrow \max(\hat{v}^{\max}_j, v_j)$,
+matching =amsgrad.cpp='s =max_second_moment[j] =
+std::max(max_second_moment[j], second_moment[j])= exactly. After bias
+correction ($\hat{m}_j=m_j/(1-\beta_1^t)$,
+$\hat{v}_j=\hat{v}^{\max}_j/(1-\beta_2^t)$), the update is
+$x_j \leftarrow x_j - \eta\,\hat{m}_j/(\sqrt{\hat{v}_j}+\epsilon)$.
+Reddi et al. (2018) proved that plain Adam's un-maxed $v_j$ admits a
+real, published counterexample where Adam provably fails to converge,
+because $v_j$ can shrink from one step to the next, letting the
+effective step size *increase* right when it should not; forcing
+$\hat{v}^{\max}_j$ to be non-decreasing restores a convergence
+guarantee Adam lacks in general, at the direct cost of an effective
+step size that can now only ever shrink over a run, never grow back --
+a cost §4.1 measures concretely against plain Adam's own numbers from
+the companion report.
+
+** Nadam: Nesterov look-ahead grafted onto Adam
+
+=Nadam= (Dozat 2016) keeps Adam's exact second-moment update
+($v_j \leftarrow \beta_2 v_j + (1-\beta_2)g_j^2$, bias-corrected the
+usual way) but replaces the bias-corrected first moment $\hat{m}_j$
+used in the update with a Nesterov-style blend of the bias-corrected
+running average *and* the current bias-corrected gradient:
+
+$$m_j \leftarrow \beta_1 m_j + (1-\beta_1) g_j, \qquad \tilde{m}_j =
+\beta_1\,\frac{m_j}{1-\beta_1^t} + (1-\beta_1)\,\frac{g_j}{1-\beta_1^t},
+\qquad x_j \leftarrow x_j - \eta\,\frac{\tilde{m}_j}{\sqrt{v_j/(1-
+\beta_2^t)}+\epsilon}$$
+
+which is the literal formula in =nadam.cpp=:
+=nesterov_first = beta1 * first[j] / first_correction + (1.0 - beta1) *
+gradient[j] / first_correction=. Unlike plain Adam, which uses only
+$\hat{m}_j$ (a lagging average of gradients seen *before* the current
+step), Nadam's $\tilde{m}_j$ incorporates the *current* step's raw
+gradient directly into the direction used for that same step -- the
+same "look ahead using an estimate of where momentum is about to carry
+you" idea behind Nesterov's classical accelerated gradient method,
+grafted onto Adam's adaptive per-coordinate step size.
+
+** Building a convergence curve without a native history API
+
+As in the companion report, none of these five optimizer classes
+expose an iteration callback, a returned trace, or a verbose/logging
+option -- every =optimize()= call returns only the final objective
+value after mutating the caller's coordinates in place. This report
+reuses the exact same =LoggingDifferentiable= decorator from
+=optimization_analysis.org=: it wraps a real objective, forwards every
+call, and records each =evaluate()= call's return value into an
+external vector, giving a per-evaluation convergence trace for any
+optimizer in this module without modifying the library itself.
+
+** What we will report
+
+§4.1 fits the isotropic bowl from the companion report (target
+$(4,-2,1)$, start $(0,0,0)$) with all five methods at their library
+defaults, directly comparable to that report's own =GradientDescent=
+(59 evaluations), =Adam= (7874 evaluations), and =LBFGS= (3
+evaluations) numbers. §4.2 fits a deliberately ill-conditioned
+anisotropic bowl (curvature ratio 10000:1 between coordinates) with
+plain =GradientDescent= at two step sizes and all five adaptive
+methods, and visualizes all six methods' logged convergence curves
+together on one log-log plot.
+
+* Data and Methods
+
+** The data
+
+Both experiments use purely synthetic objectives with known analytic
+minima, so every optimizer's result can be checked directly against
+ground truth. §4.1 reuses the exact isotropic 3D quadratic bowl
+($f(x)=\sum_i(x_i-t_i)^2$, target $(4,-2,1)$) the companion report
+uses for its own =GradientDescent= / =Adam= / =LBFGS= comparison, so this
+report's five new numbers sit on the same footing as numbers a reader
+may already know from that report. §4.2 constructs a second,
+axis-aligned but *anisotropic* bowl,
+$f(x,y,z)=100(x-4)^2+(y+2)^2+0.01(z-1)^2$ -- no cross terms, so
+curvature differs *only* by coordinate, isolating exactly the failure
+mode (a single global step size cannot simultaneously suit a stiff and
+a soft coordinate) these five per-coordinate methods are specifically
+designed to fix.
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module --
+=GradientDescent= (for the ill-conditioned-bowl baseline), =AdaGrad=,
+=RMSProp=, =AdaDelta=, =AMSGrad=, and =Nadam= -- together with
+=optim::DifferentiableFunction=, the interface every custom objective
+in this report implements, and =plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes and objectives
+
+#+name: adaptive-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class QuadraticBowl : public DifferentiableFunction {
+public:
+    explicit QuadraticBowl(std::vector<double> target)
+        : target_(std::move(target)) {}
+
+    double evaluate(const std::vector<double>& coordinates) override {
+        double total = 0.0;
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            const double d = coordinates[i] - target_[i];
+            total += d * d;
+        }
+        return total;
+    }
+    std::vector<double> gradient(const std::vector<double>& coordinates)
+        override {
+        std::vector<double> grad(coordinates.size());
+        for (std::size_t i = 0; i < coordinates.size(); ++i) {
+            grad[i] = 2.0 * (coordinates[i] - target_[i]);
+        }
+        return grad;
+    }
+
+private:
+    std::vector<double> target_;
+};
+
+// Anisotropic bowl: f(x,y,z) = 100*(x-4)^2 + (y+2)^2 + 0.01*(z-1)^2
+// curvature ratio 10000:1 between stiffest (x) and softest (z) coordinate.
+class IllConditionedBowl : public DifferentiableFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double dx = x[0] - 4.0;
+        const double dy = x[1] + 2.0;
+        const double dz = x[2] - 1.0;
+        return 100.0 * dx * dx + dy * dy + 0.01 * dz * dz;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return {200.0 * (x[0] - 4.0), 2.0 * (x[1] + 2.0),
+                0.02 * (x[2] - 1.0)};
+    }
+};
+
+class LoggingDifferentiable : public DifferentiableFunction {
+public:
+    LoggingDifferentiable(DifferentiableFunction& inner,
+                           std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        return v;
+    }
+    std::vector<double> gradient(const std::vector<double>& x) override {
+        return inner_->gradient(x);
+    }
+
+private:
+    DifferentiableFunction* inner_;
+    std::vector<double>* log_;
+};
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+std::vector<double> log10_shifted(const std::vector<double>& v) {
+    std::vector<double> out(v.size());
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        out[i] = std::log10(v[i] + 1e-12);
+    }
+    return out;
+}
+std::vector<double> log10_index(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        out[i] = std::log10(static_cast<double>(i + 1));
+    }
+    return out;
+}
+
+} // namespace
+#+end_src
+
+This mirrors the companion report's structure (=optim-includes= in
+=optimization_analysis.org=), reusing the same =QuadraticBowl= and
+=LoggingDifferentiable= classes and adding the new
+=IllConditionedBowl= objective.
+
+*** Five methods on the isotropic bowl
+
+#+name: adaptive-bowl
+#+begin_src c++ :eval no
+    std::cout << "=== Experiment 1: isotropic bowl, target (4,-2,1),"
+                 " x0=(0,0,0) ===\n";
+    const std::vector<double> target{4.0, -2.0, 1.0};
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = AdaGrad().optimize(lf, x);
+        std::cout << "AdaGrad:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = RMSProp().optimize(lf, x);
+        std::cout << "RMSProp:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = AdaDelta().optimize(lf, x);
+        std::cout << "AdaDelta: f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = AMSGrad().optimize(lf, x);
+        std::cout << "AMSGrad:  f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+    {
+        QuadraticBowl f(target);
+        std::vector<double> log;
+        LoggingDifferentiable lf(f, log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        const double value = Nadam().optimize(lf, x);
+        std::cout << "Nadam:    f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << log.size() << " evaluations)\n";
+    }
+#+end_src
+
+*** Six methods on the ill-conditioned bowl, and the convergence figure
+
+#+name: adaptive-illcond
+#+begin_src c++ :eval no
+    std::cout << "\n=== Experiment 2: ill-conditioned anisotropic bowl ===\n";
+    std::cout << "f(x,y,z) = 100*(x-4)^2 + (y+2)^2 + 0.01*(z-1)^2,"
+                 " x0=(0,0,0)\n";
+    std::vector<double> gd_ok_log, gd_div_log, adagrad_log, rmsprop_log,
+        adadelta_log, amsgrad_log, nadam_log;
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, gd_div_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        GradientDescentOptions opts{0.01, 0.0, 1000, 1e-10};
+        const double value = GradientDescent(opts).optimize(lf, x);
+        std::cout << "GD (step_size=0.01, diverges on stiff x): f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << gd_div_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, gd_ok_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        GradientDescentOptions opts{0.005, 0.0, 20000, 1e-10};
+        const double value = GradientDescent(opts).optimize(lf, x);
+        std::cout << "GD (step_size=0.005, stable):              f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << gd_ok_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, adagrad_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        AdaGradOptions opts;
+        opts.step_size = 0.5;
+        opts.max_iterations = 20000;
+        const double value = AdaGrad(opts).optimize(lf, x);
+        std::cout << "AdaGrad  (step_size=0.5):                   f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << adagrad_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, rmsprop_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        RMSPropOptions opts;
+        opts.step_size = 0.05;
+        opts.max_iterations = 20000;
+        const double value = RMSProp(opts).optimize(lf, x);
+        std::cout << "RMSProp  (step_size=0.05):                  f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << rmsprop_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, adadelta_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        AdaDeltaOptions opts;
+        opts.max_iterations = 20000;
+        const double value = AdaDelta(opts).optimize(lf, x);
+        std::cout << "AdaDelta (defaults, no step_size):          f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << adadelta_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, amsgrad_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        AMSGradOptions opts;
+        opts.step_size = 0.05;
+        opts.max_iterations = 20000;
+        const double value = AMSGrad(opts).optimize(lf, x);
+        std::cout << "AMSGrad  (step_size=0.05):                  f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << amsgrad_log.size() << " evaluations)\n";
+    }
+    {
+        IllConditionedBowl f;
+        LoggingDifferentiable lf(f, nadam_log);
+        std::vector<double> x{0.0, 0.0, 0.0};
+        NadamOptions opts;
+        opts.step_size = 0.05;
+        opts.max_iterations = 20000;
+        const double value = Nadam(opts).optimize(lf, x);
+        std::cout << "Nadam    (step_size=0.05):                  f=" << value
+                   << " x=";
+        print_vec(x);
+        std::cout << " (" << nadam_log.size() << " evaluations)\n";
+    }
+#+end_src
+
+#+name: adaptive-illcond-figure
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(log10_index(gd_ok_log.size()),
+                                 log10_shifted(gd_ok_log), "l",
+                                 "GradientDescent", {220, 38, 38});
+        plot.lines(log10_index(adagrad_log.size()), log10_shifted(adagrad_log),
+                   "AdaGrad", {96, 165, 250}, 2.0);
+        plot.lines(log10_index(rmsprop_log.size()), log10_shifted(rmsprop_log),
+                   "RMSProp", {34, 197, 94}, 2.0);
+        plot.lines(log10_index(adadelta_log.size()),
+                   log10_shifted(adadelta_log), "AdaDelta", {234, 179, 8},
+                   2.0);
+        plot.lines(log10_index(amsgrad_log.size()), log10_shifted(amsgrad_log),
+                   "AMSGrad", {168, 85, 247}, 2.0);
+        plot.lines(log10_index(nadam_log.size()), log10_shifted(nadam_log),
+                   "Nadam", {236, 72, 153}, 2.0);
+        plot.legend({"GradientDescent", "AdaGrad", "RMSProp", "AdaDelta",
+                     "AMSGrad", "Nadam"},
+                    {{220, 38, 38}, {96, 165, 250}, {34, 197, 94},
+                     {234, 179, 8}, {168, 85, 247}, {236, 72, 153}});
+        plot.title("Convergence on the ill-conditioned bowl"
+                   " (curvature ratio 10000:1)")
+            .x_label("log10(function evaluations)")
+            .y_label("log10(f)");
+        plot.save_svg("build/org/optim_adaptive_illcond_convergence.svg");
+        std::cout << "\nwrote optim_adaptive_illcond_convergence.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_adaptive_gradient.cpp <<'CPP'
+<<adaptive-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<adaptive-bowl>>
+
+<<adaptive-illcond>>
+
+<<adaptive-illcond-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_adaptive_gradient.cpp \
+  -o build/org/optim_adaptive_gradient $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_adaptive_gradient
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Five methods on the isotropic bowl
+
+#+begin_example
+AdaGrad:  f=5.106793 x=[1.789279, -1.531657, 0.987421]
+  (10001 evaluations)
+RMSProp:  f=0.000000 x=[4.000000, -2.000000, 1.000000]
+  (4085 evaluations)
+AdaDelta: f=0.000000 x=[4.000000, -2.000000, 1.000000]
+  (1267 evaluations)
+AMSGrad:  f=0.016618 x=[3.871091, -1.999371, 1.000000]
+  (10001 evaluations)
+Nadam:    f=0.000000 x=[4.000000, -2.000000, 1.000000]
+  (9739 evaluations)
+#+end_example
+
+Against the companion report's =GradientDescent= (59 evaluations),
+=Adam= (7874 evaluations), and =LBFGS= (3 evaluations) on this
+identical bowl, three of the five new methods reach the true minimum
+$(4,-2,1)$ exactly with their library defaults: =RMSProp= in 4085
+evaluations, =AdaDelta= in only 1267 (fewer than =Adam= needed, despite
+having no global step-size hyperparameter to tune at all), and =Nadam=
+in 9739 (slightly more than =Adam=). The other two do *not* converge
+within their default 10000-iteration budget: =AdaGrad= stalls at
+$f=5.106793$, and =AMSGrad= stalls at $f=0.016618$ -- both real,
+reproducible non-convergence results at default options, not a bug in
+this report's harness.
+
+** Six methods on the ill-conditioned bowl
+
+#+begin_example
+GD (step_size=0.01, diverges on stiff x):
+  f=1600.006703 x=[0.000000, -2.000000, 0.181286] (1001 evaluations)
+GD (step_size=0.005, stable):
+  f=0.000183 x=[4.000000, -2.000000, 0.864678] (20001 evaluations)
+AdaGrad  (step_size=0.5):
+  f=0.000000 x=[4.000000, -2.000000, 1.000000] (517 evaluations)
+RMSProp  (step_size=0.05):
+  f=0.000000 x=[4.000000, -2.000000, 1.000000] (134 evaluations)
+AdaDelta (defaults, no step_size):
+  f=0.000000 x=[4.000000, -2.000000, 1.000000] (1276 evaluations)
+AMSGrad  (step_size=0.05):
+  f=0.000000 x=[4.000000, -2.000000, 1.000000] (533 evaluations)
+Nadam    (step_size=0.05):
+  f=0.000000 x=[4.000000, -2.000000, 1.000000] (496 evaluations)
+#+end_example
+
+At =step_size= set to =0.01=, =GradientDescent= does not blow up to infinity --
+it settles into a stable period-2 oscillation on the stiff $x$
+coordinate, ending back at exactly its starting value $x=0$ after an
+even number of steps, because $\eta=0.01$ sits exactly at that
+coordinate's stability boundary $2/L_x=2/200=0.01$ (the update becomes
+$x \leftarrow -x+8$, whose fixed point is unstable and whose orbit is a
+period-2 cycle, not a divergence). At the safe =step_size= set to
+=0.005= (under the boundary), =GradientDescent= is stable and reaches the
+stiff and mid coordinates exactly, but after 20000 iterations
+(20001 evaluations) still has not converged on the soft $z$ coordinate
+($z=0.864678$ against a target of $1$, residual $f=0.000183$) -- the
+same step size that is barely safe for the stiff coordinate is far too
+small to move the soft coordinate quickly. All five adaptive methods,
+run with lightly hand-tuned step sizes (=AdaGrad='s benefits from a
+noticeably larger =step_size= (set to =0.5=) to compensate for how
+fast its denominator grows; the other three all work well with
+=step_size= set to =0.05=; =AdaDelta= needs no step size at all),
+reach the exact minimum on
+*both* coordinates in one run, in 134 to 1276 evaluations -- between
+about 16x (=AdaDelta= vs. stable =GradientDescent='s 20001) and 150x
+(=RMSProp=) fewer evaluations than stable =GradientDescent= needed.
+
+#+ATTR_HTML: :alt Log-log convergence plot comparing GradientDescent, AdaGrad, RMSProp, AdaDelta, AMSGrad, and Nadam on the ill-conditioned anisotropic bowl :width 100%
+[[file:../../build/org/optim_adaptive_illcond_convergence.svg]]
+
+The log-log plot makes the shape of each method's descent visible at
+once: =GradientDescent= (red) falls in two distinct stages -- a fast
+initial drop as the stiff $x$ coordinate converges, then a long, nearly
+flat plateau while it crawls the rest of the way down the soft $z$
+coordinate, never fully reaching the bottom within the plotted budget.
+=AdaDelta= (yellow) is flat for the longest stretch before it starts
+falling -- its implicit step size has to warm up through its two
+running averages before an effective step size emerges -- but once it
+starts, it falls just as steeply as the rest. =RMSProp=, =AMSGrad=, and
+=Nadam= all trace nearly identical steep drops close together at
+tightly clustered evaluation counts, while =AdaGrad= (blue) starts its
+descent noticeably earlier but reaches the floor slightly later than
+that cluster.
+
+* Discussion
+
+**=AdaGrad='s and =AMSGrad='s non-convergence in §4.1 is not a harness
+bug -- it is each method's core design tradeoff showing up exactly
+where theory predicts it should.** =AdaGrad='s accumulator
+=accumulated_squares[j]= is a running *sum* that never decays by
+construction; once it has grown large early in a run (as it does here,
+starting far from the target at the origin), the effective step size
+$\eta/\sqrt{G_j+\epsilon}$ can only keep shrinking, so a fixed
+iteration budget that would be plenty for a decaying-average method
+can simply run out before $G_j$'s growth-induced slowdown is overcome.
+=AMSGrad='s failure is a subtler version of the identical mechanism:
+its whole design point (Reddi et al.'s fix to Adam's non-convergence
+counterexample) is that $\hat{v}^{\max}_j$ may never *decrease*, which
+is exactly what makes it provably safe -- but that same guarantee means
+an early large gradient (again, starting far from the target) can lock
+in a large denominator for the rest of the run even after the true
+local gradient magnitude has shrunk, making =AMSGrad= at its default
+=step_size= (=0.001=) actually *slower* to converge than plain =Adam=
+at the identical default step size on this easy, noise-free problem (see
+the companion report's own $f=0.000001$ after 7874 evaluations, versus
+this report's $f=0.016618$ after the identical 10001-evaluation-ish
+budget here). This is a genuine, if narrow, illustration of a point the
+AMSGrad literature itself makes: the safety guarantee against Adam's
+non-convergence counterexample is not free, and on a landscape where
+that counterexample was never going to occur in the first place
+(a single, static, noise-free convex bowl), paying for the guarantee
+buys nothing and costs real convergence speed.
+
+**=GradientDescent='s period-2 oscillation in §4.2, rather than an
+outright divergence to infinity, is a real and instructive edge case
+of the stability boundary $\eta=2/L$.** Because the stiff coordinate's
+curvature is exactly $L_x=200$ and the chosen step size was exactly
+$\eta=0.01=2/L_x$, the per-coordinate update collapses to the exactly
+linear, exactly periodic map $x\leftarrow -x+8$ -- a knife-edge case
+that a slightly larger step size would push into true exponential
+divergence, and a slightly smaller one would make convergent (as
+=step_size= set to =0.005= demonstrates). This distinction matters in practice:
+a period-2 oscillation and a genuine divergence look similar from a
+single final-iterate check (=x= "did not reach the target"), but the
+convergence curve's shape -- and in this case, exact arithmetic -- tells
+them apart immediately, one more example (alongside the companion
+report's Rosenbrock overshoot) of a convergence trace carrying real
+diagnostic information a bare final answer does not.
+
+**No single method in this report dominates on both experiments,
+which is itself the report's central finding.** =AdaDelta= is the most
+evaluation-efficient method on the easy isotropic bowl (1267
+evaluations, beating even =Adam='s 7874) and needs no step-size tuning
+at all, but is the *slowest to start* falling on the harder
+ill-conditioned bowl in the convergence figure -- its implicit,
+ratio-based step size needs a longer warm-up before it becomes
+effective. =RMSProp= is the fastest of all six methods on the
+ill-conditioned bowl (134 evaluations) but needs 4085 on the easy
+bowl -- more than =AdaDelta= despite the easy bowl nominally being the
+simpler problem, a reminder that "easy" and "ill-conditioned" measure
+genuinely different properties of an objective, and a method tuned for
+one is not automatically well suited to the other. Every result in
+this report used either library defaults or one lightly hand-picked
+step size per method (documented directly in each program chunk above,
+not tuned by a search) -- a more careful per-method tuning pass could
+plausibly close some of these gaps, but the fact that meaningfully
+different behavior shows up even at reasonable, un-tuned settings is
+itself informative about how sensitive each accumulation strategy is
+to its own hyperparameters.
+
+* Conclusion
+
+Fitting five per-coordinate adaptive-learning-rate optimizers against
+two objectives surfaces real, measurable behavior a formula listing
+alone would not: on an easy, noise-free isotropic bowl, three of five
+methods (=RMSProp=, =AdaDelta=, =Nadam=) converge exactly at their
+library defaults while two (=AdaGrad=, =AMSGrad=) run out their full
+iteration budget without converging, a direct, reproducible
+demonstration of each method's specific, citable design tradeoff; on a
+10000:1-curvature-ratio ill-conditioned bowl, plain =GradientDescent=
+either oscillates in a stable period-2 cycle at the stability boundary
+or converges 16x-150x slower than every adaptive method tried, while
+every adaptive method handles both coordinates gracefully in one run.
+As with its companions, this entire report is reproducible end to end
+via =just org-example optimization_adaptive_gradient_analysis=, which
+re-executes §3.3.4's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Duchi, J., Hazan, E., & Singer, Y. (2011). "Adaptive Subgradient
+  Methods for Online Learning and Stochastic Optimization." /Journal
+  of Machine Learning Research/, 12, 2121--2159.
+- Tieleman, T., & Hinton, G. (2012). "Lecture 6.5 -- RMSProp: Divide
+  the Gradient by a Running Average of Its Recent Magnitude."
+  /COURSERA: Neural Networks for Machine Learning/.
+- Zeiler, M. D. (2012). "ADADELTA: An Adaptive Learning Rate Method."
+  /arXiv:1212.5701/.
+- Reddi, S. J., Kale, S., & Kumar, S. (2018). "On the Convergence of
+  Adam and Beyond." /Proceedings of the 6th International Conference
+  on Learning Representations (ICLR)/.
+- Dozat, T. (2016). "Incorporating Nesterov Momentum into Adam."
+  /ICLR 2016 Workshop Track/.
+- Kingma, D. P., & Ba, J. (2015). "Adam: A Method for Stochastic
+  Optimization." /Proceedings of the 3rd International Conference on
+  Learning Representations (ICLR)/.

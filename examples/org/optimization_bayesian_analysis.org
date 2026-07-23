@@ -1,0 +1,711 @@
+#+title: Bayesian Optimization with a Gaussian Process Surrogate
+#+subtitle: A literate C++ study of BayesianOptimization and RBFGaussianProcessSurrogate using datamunge, benchmarked for sample efficiency against PSO
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit =datamunge='s C++ =BayesianOptimization= class, driven by an
+exact =RBFGaussianProcessSurrogate= (Cholesky-factored Gaussian process
+regression plus closed-form Expected Improvement), against the
+=optimization_analysis.org= companion report's bumpy, non-convex
+=BumpyFunction= objective on $[-5,5]\times[-5,5]$, and report it as a
+literate program: every fragment below is a real, compiled, executed
+chunk of the single C++ binary that produced every number and figure in
+this document. At a genuinely small, matched budget of 28 real
+objective evaluations (8 initial design-of-experiments samples plus 20
+Bayesian-optimization iterations), =BayesianOptimization= with
+=length_scale= set to =1.0= finds $f=-2.228602$ at
+$(4.223, -0.288)$, beating =PSO= capped to the identical 28-evaluation
+budget (population size 3, 8 generations), which reaches only
+$f=-2.158078$ -- a real win for Bayesian optimization at the small
+budget it was designed for. More strikingly, =BayesianOptimization='s
+28-evaluation result comes within $0.006$ of the $f=-2.234690$ that
+=PSO= at its own /default/ budget needs 3161 real evaluations (before
+its own tolerance-based early stopping) to reach -- roughly 113 times
+more evaluations for a 0.3% better answer. A length-scale sensitivity
+sweep across =length_scale= from $0.15$ to $7.0$ finds a genuinely
+surprising shape, not the simple textbook narrative: a broad plateau
+spanning roughly $[0.3, 5.0]$ where every value tested finds the exact
+same $f=-2.228602$, interrupted by a real, non-monotonic dip at
+=length_scale= set to =0.4= ($f=-1.309915$) and =0.5= ($f=-2.158446$) that is
+/worse/ than both of its plateau neighbors, before performance collapses
+outside the plateau in both directions ($f=-0.216631$ at =0.15=;
+$f=-0.023203$ at =7.0=). We derive the Gaussian process regression
+posterior, tie its Cholesky-based solve directly to the library's exact
+implementation, and derive the Expected Improvement acquisition
+function from first principles, explaining the exploration/exploitation
+trade-off its two additive terms encode.
+#+end_abstract
+
+* Introduction
+
+Every optimizer in the companion =optimization_analysis.org= report
+shares one assumption this report's method does not: that the objective
+is cheap enough to evaluate hundreds, thousands, or tens of thousands of
+times. =SimulatedAnnealing= ran for 20000 iterations there; =PSO=,
+=DifferentialEvolution=, and =GeneticAlgorithm= each burned hundreds of
+generations of a population. Bayesian optimization exists specifically
+for the opposite regime -- objectives so expensive to evaluate (a
+physical experiment, a multi-hour simulation, a model-training run)
+that only a few dozen evaluations are affordable at all. Rather than
+searching the raw objective directly, =BayesianOptimization= fits a
+cheap /surrogate/ model to every point observed so far, and uses that
+surrogate to decide, evaluation by evaluation, exactly where the next
+expensive real evaluation will be most valuable.
+
+=datamunge::optim= exposes this as two collaborating pieces. The outer
+loop, =BayesianOptimization=, targets the same =ArbitraryFunction=
+interface (only point evaluations, no gradient) that
+=SimulatedAnnealing=, =PSO=, =DifferentialEvolution=, and
+=GeneticAlgorithm= target in the companion report. The surrogate itself
+is abstracted behind a small extension point, =BayesianSurrogate=, with
+exactly two virtual methods -- =fit(points, values)= and
+=acquisition(point, incumbent)= -- so any regression model with an
+uncertainty estimate could in principle drive the search;
+=RBFGaussianProcessSurrogate= is the one concrete implementation this
+report exercises, an exact (not approximate or sparse) Gaussian process
+with a squared-exponential kernel.
+
+This document is a /literate program/, matching the companion report's
+convention: prose and source are interleaved in reading order, and a
+single "assembling the program" step weaves every named chunk below
+into one =.cpp= file, compiles it, and runs it. Every number and figure
+from §4 onward is that program's literal output. §2 derives the
+Gaussian process posterior and the Expected Improvement acquisition
+function, tying both directly to the =.cpp= source. §3 describes the
+program chunk by chunk. §4 reports the length-scale sensitivity sweep,
+the matched-budget comparison against =PSO=, and where
+=BayesianOptimization= actually samples. §5 discusses what the
+non-monotonic length-scale sensitivity and the matched-budget win each
+reveal. §6 concludes.
+
+* Background: Bayesian Optimization with a Gaussian Process Surrogate
+
+** The function-type interface and the =BayesianSurrogate= extension point
+
+=BayesianOptimization::optimize= targets =ArbitraryFunction=, the same
+minimum-information interface (only =evaluate(coordinates)=, no
+gradient) that every derivative-free method in the companion report
+targets. What is different here is /how/ it decides where to evaluate
+next. The real algorithm, read directly from the =.cpp=: draw
+=initial_samples= points uniformly at random within
+=[lower, upper]= (Mersenne Twister seeded by =seed=) and evaluate the
+real objective at each -- this "design of experiments" phase alone costs
+=initial_samples= real evaluations before any surrogate modeling
+happens at all. Then, for =max_iterations= rounds: fit the surrogate
+(=BayesianSurrogate::fit=) to every point observed so far; find the
+current incumbent (the best value observed so far); propose the next
+point by drawing 128 random candidate points and evaluating the
+surrogate's =acquisition(candidate, incumbent)= on each, keeping
+whichever candidate scores highest; evaluate the /real/ objective at the
+winning candidate and add it to the observed set. The method returns
+the best (point, value) pair seen across the entire run, initial
+samples included.
+
+Two real, worth-stating simplifications follow directly from this. The
+number of acquisition candidates, 128, is hardcoded rather than exposed
+in =BayesianOptimizationOptions= -- the "cheap inner problem, expensive
+outer problem" structure Bayesian optimization is built around is
+itself solved here by 128 cheap random draws each round, not by a more
+sophisticated inner optimizer (gradient ascent on the acquisition
+surface, or a small CMA-ES run, are both common alternatives in other
+Bayesian-optimization libraries). Second, reading the loop closely: a
+single acquisition-candidate variable is pre-drawn immediately before
+the 128-candidate loop starts, but since the running best score is
+initialized to $-10^{300}$ and Expected Improvement is never negative,
+that pre-loop draw is always immediately overwritten by the loop's
+first candidate -- a harmless but genuinely wasted Mersenne Twister draw
+each iteration, not a bug that affects the result, just a small piece
+of dead-weight code discovered by reading the real source.
+
+** Exact Gaussian process regression via Cholesky decomposition
+
+=RBFGaussianProcessSurrogate= implements =fit= and =acquisition= as an
+exact Gaussian process regression with the squared-exponential (RBF)
+kernel
+
+$$k(x,x') = \exp\!\left(-\frac{\lVert x-x'\rVert^2}{2\,\ell^2}\right),$$
+
+where $\ell$ is =length_scale=. Placing a zero-mean Gaussian process
+prior over the objective and observing $n$ noisy values $y$ at points
+$X$ makes the joint distribution of $y$ and the function value $f_*$ at
+a new query point $x_*$ jointly Gaussian:
+
+$$\begin{pmatrix} y \\ f_* \end{pmatrix} \sim
+\mathcal{N}\!\left(0, \begin{pmatrix} K+\sigma^2 I & k_* \\
+k_*^\top & k(x_*,x_*) \end{pmatrix}\right),$$
+
+where $K_{ij}=k(x_i,x_j)$, $k_*$ is the vector of kernel values between
+$x_*$ and every observed point, and $\sigma^2$ is the =noise= parameter
+(default $10^{-6}$). Conditioning on the observed $y$ gives the
+standard Gaussian process regression posterior,
+
+$$\text{mean}(x_*) = k_*^\top (K+\sigma^2 I)^{-1} y, \qquad
+\text{var}(x_*) = k(x_*,x_*) - k_*^\top (K+\sigma^2 I)^{-1} k_*.$$
+
+Explicitly forming and inverting $(K+\sigma^2 I)^{-1}$ is both
+numerically unstable and wasteful; the library instead Cholesky-factors
+$K+\sigma^2 I = LL^\top$ once inside =fit()= (the code's own
+Cholesky--Banachiewicz loop, building =cholesky_= entry by entry) and
+solves $L\alpha' = y$ by forward substitution followed by
+$L^\top\alpha = \alpha'$ by back substitution to obtain
+$\alpha = (K+\sigma^2 I)^{-1}y$ once, reused for every later query --
+exactly the numerically stable approach a competent from-scratch
+Gaussian process implementation should use. Since the RBF kernel gives
+$k(x_*,x_*)=\exp(0)=1$, =acquisition()= then only needs, per query: the
+mean as $k_*^\top\alpha$ (a dot product against the already-solved
+$\alpha$), and the variance as $1 - \lVert z\rVert^2$ where $z$ solves
+$Lz=k_*$ by forward substitution alone -- because
+$k_*^\top(LL^\top)^{-1}k_* = (L^{-1}k_*)^\top(L^{-1}k_*) = \lVert
+z\rVert^2$, the code never needs the back-substitution step for the
+variance, only for $\alpha$. The variance is clipped to a floor of
+$10^{-12}$ before taking its square root, a numerical-safety guard
+against a query point coinciding almost exactly with an already-observed
+point (where the true variance is essentially zero but floating-point
+error could otherwise make it slightly negative).
+
+** Expected Improvement, derived and tied to the exact formula
+
+Because every optimizer in this project /minimizes/, the quantity worth
+maximizing at a candidate point $x$ is the expected amount by which its
+(unknown, GP-modeled) value $Y(x)\sim\mathcal{N}(\mu,\sigma^2)$ beats
+the incumbent, i.e. the /improvement/
+$I(x) = \max(\text{incumbent} - Y(x),\, 0)$. Writing
+$Y(x)=\mu+\sigma Z$ for a standard normal $Z$, and
+$u = (\text{incumbent}-\mu)/\sigma$, gives
+$\text{incumbent}-Y(x) = \sigma(u-Z)$, so
+$I(x) = \sigma\max(u-Z,0)$ and
+
+$$\text{EI}(x) = \mathbb{E}[I(x)] = \sigma\,\mathbb{E}[\max(u-Z,0)]
+= \sigma\int_{-\infty}^{u}(u-z)\,\varphi(z)\,dz,$$
+
+where $\varphi$ is the standard normal density. Splitting the integral,
+$\int_{-\infty}^{u}u\,\varphi(z)\,dz = u\,\Phi(u)$, and
+$\int_{-\infty}^{u}z\,\varphi(z)\,dz = -\varphi(u)$ (since
+$\varphi'(z)=-z\varphi(z)$, so $z\varphi(z)$ integrates to
+$-\varphi(z)$, and $\varphi(-\infty)=0$), the key step in the standard
+Expected Improvement derivation. Combining the two terms gives
+$\mathbb{E}[\max(u-Z,0)] = u\Phi(u)+\varphi(u)$, and multiplying back
+through by $\sigma$:
+
+$$\text{EI}(x) = (\text{incumbent}-\mu)\,\Phi(u) + \sigma\,\varphi(u),
+\qquad u = \frac{\text{incumbent}-\mu}{\sigma}.$$
+
+This is exactly what =acquisition()= computes, confirmed line by line
+against the =.cpp=: =.5*(1+erf(u/sqrt(2)))= for $\Phi(u)$ (the standard
+identity relating the normal CDF to the error function), and
+=.3989422804*exp(-.5*u*u)= for $\varphi(u)$ -- a hardcoded literal for
+$1/\sqrt{2\pi}\approx0.398942280401\ldots$ rather than a computed
+constant, a minor real implementation detail worth naming rather than
+glossing over. Note this is the /minimization/ form of Expected
+Improvement, not the more commonly seen maximization form found in most
+textbook derivations (which instead use $u=(\mu-\text{incumbent})/
+\sigma$ and reward $Y(x)$ exceeding the incumbent) -- a reader
+cross-referencing a textbook derivation should watch for exactly this
+sign convention difference.
+
+Expected Improvement's two additive terms encode a real
+exploration/exploitation trade-off. The first term,
+$(\text{incumbent}-\mu)\Phi(u)$, is large when the GP's /mean/ already
+predicts a point will beat the incumbent -- pure exploitation of what
+the model currently believes. The second term, $\sigma\varphi(u)$, is
+large whenever the GP is simply /uncertain/ at that point, regardless of
+its predicted mean -- pure exploration of where the model knows the
+least. =length_scale= directly controls the balance between these two
+terms in a way §4.1's real sweep makes concrete: a length scale much
+larger than the objective's real spatial structure over-smooths the GP,
+making it confidently (and wrongly) predict similar values everywhere,
+shrinking the exploration term and starving the search of the
+uncertainty signal it needs; a length scale much smaller makes nearly
+every unobserved point look highly uncertain regardless of how close it
+is to an existing sample, inflating the exploration term until the
+acquisition function stops discriminating between candidates on the
+basis of their predicted mean at all.
+
+* Data and Methods
+
+** The objective
+
+We reuse the companion =optimization_analysis.org= report's
+=BumpyFunction= objective directly, so this report's numbers are
+comparable to its own: a smooth quadratic bowl centered at $(3,-1)$ plus
+a multiplicative ripple term, $f(x,y) = (x-3)^2+(y+1)^2 +
+5\sin(x)\cos(y)$. The bowl alone is minimized at $(3,-1)$ with value 0,
+but the ripple term measurably displaces the true combined minimum, as
+the companion report's =SimulatedAnnealing= run already found:
+$f=-2.234513$ at $(4.191, -0.326)$ (cited from that report's own
+published output, not re-executed here). We search within the box
+$[-5,5]\times[-5,5]$, the domain =BayesianOptimization::optimize=
+requires explicit bounds for (unlike the companion report's
+=SimulatedAnnealing=, which needs none).
+
+** Software
+
+All computation uses =datamunge='s C++ =optim= module --
+=BayesianOptimization= and =RBFGaussianProcessSurrogate=, together with
+=PSO= for the matched-budget comparison -- and =plot::RPlot= for
+visualization. As in the companion report, no optimizer in this module
+exposes an iteration history directly, so this report reuses its
+=LoggingArbitrary= decorator technique (wrapping =ArbitraryFunction='s
+=evaluate()= to record every call's return value into an external
+vector) and extends it with a second decorator,
+=LoggingArbitraryXY=, that additionally records each call's
+/coordinates/ -- needed to recover exactly which points
+=BayesianOptimization= chose to sample, not just their values.
+
+** Program, presented as a literate whole
+
+*** Includes, the objective, and the logging decorators
+
+#+name: bayes-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::optim;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class BumpyFunction : public ArbitraryFunction {
+public:
+    double evaluate(const std::vector<double>& x) override {
+        const double bowl =
+            (x[0] - 3.0) * (x[0] - 3.0) + (x[1] + 1.0) * (x[1] + 1.0);
+        const double ripples = 5.0 * std::sin(x[0]) * std::cos(x[1]);
+        return bowl + ripples;
+    }
+};
+
+// Logs every evaluate() call's value only, for a convergence-curve figure.
+class LoggingArbitrary : public ArbitraryFunction {
+public:
+    LoggingArbitrary(ArbitraryFunction& inner, std::vector<double>& log)
+        : inner_(&inner), log_(&log) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        return v;
+    }
+
+private:
+    ArbitraryFunction* inner_;
+    std::vector<double>* log_;
+};
+
+// Logs every evaluate() call's value AND coordinates, for a sample-location
+// scatter figure.
+class LoggingArbitraryXY : public ArbitraryFunction {
+public:
+    LoggingArbitraryXY(ArbitraryFunction& inner, std::vector<double>& log,
+                        std::vector<std::vector<double>>& points)
+        : inner_(&inner), log_(&log), points_(&points) {}
+    double evaluate(const std::vector<double>& x) override {
+        const double v = inner_->evaluate(x);
+        log_->push_back(v);
+        points_->push_back(x);
+        return v;
+    }
+
+private:
+    ArbitraryFunction* inner_;
+    std::vector<double>* log_;
+    std::vector<std::vector<double>>* points_;
+};
+
+std::vector<double> running_min(const std::vector<double>& v) {
+    std::vector<double> out(v.size());
+    double m = v.empty() ? 0.0 : v[0];
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        m = std::min(m, v[i]);
+        out[i] = m;
+    }
+    return out;
+}
+
+std::vector<double> indices(std::size_t n) {
+    std::vector<double> out(n);
+    for (std::size_t i = 0; i < n; ++i) out[i] = static_cast<double>(i + 1);
+    return out;
+}
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) {
+        std::cout << (i ? ", " : "") << v[i];
+    }
+    std::cout << "]";
+}
+
+} // namespace
+#+end_src
+
+*** Length-scale sensitivity sweep
+
+#+name: bayes-length-scale
+#+begin_src c++ :eval no
+    std::cout << "=== Length-scale sensitivity"
+                 " (8 initial + 20 BO iterations = 28 evaluations) ===\n";
+    const std::vector<double> lower{-5.0, -5.0}, upper{5.0, 5.0};
+    const std::vector<double> length_scales{0.15, 0.3, 0.4, 0.5, 0.7,
+                                             1.0,  3.0, 5.0, 7.0};
+    std::vector<double> ls_f;
+    for (double ls : length_scales) {
+        BumpyFunction f;
+        std::vector<double> x{0.0, 0.0};
+        BayesianOptimizationOptions bo_opts;
+        bo_opts.initial_samples = 8;
+        bo_opts.max_iterations = 20;
+        bo_opts.seed = 42;
+        RBFGaussianProcessSurrogate surrogate(ls, 1e-6);
+        const double value = BayesianOptimization(bo_opts)
+            .optimize(f, x, lower, upper, surrogate);
+        ls_f.push_back(value);
+        std::cout << "length_scale=" << ls << ": f=" << value << " x=";
+        print_vec(x);
+        std::cout << "\n";
+    }
+#+end_src
+
+*** The full run, logged, at =length_scale= set to =1.0=
+
+#+name: bayes-run
+#+begin_src c++ :eval no
+    std::cout << "\n=== BayesianOptimization"
+                 " (length_scale=1.0), full sample log ===\n";
+    std::vector<double> bo_log;
+    std::vector<std::vector<double>> bo_points;
+    std::vector<double> bo_x{0.0, 0.0};
+    {
+        BumpyFunction f;
+        LoggingArbitraryXY lf(f, bo_log, bo_points);
+        BayesianOptimizationOptions bo_opts;
+        bo_opts.initial_samples = 8;
+        bo_opts.max_iterations = 20;
+        bo_opts.seed = 42;
+        RBFGaussianProcessSurrogate surrogate(1.0, 1e-6);
+        const double value = BayesianOptimization(bo_opts)
+            .optimize(lf, bo_x, lower, upper, surrogate);
+        std::cout << "f=" << value << " x=";
+        print_vec(bo_x);
+        std::cout << " (" << bo_log.size() << " evaluations)\n";
+    }
+#+end_src
+
+*** PSO at a matched 28-evaluation budget, and at its own default budget
+
+#+name: bayes-pso
+#+begin_src c++ :eval no
+    std::cout << "\n=== PSO at a matched 28-evaluation budget"
+                 " (population_size=3, max_iterations=8) ===\n";
+    std::vector<double> pso_log;
+    std::vector<double> pso_x{0.0, 0.0};
+    {
+        BumpyFunction f;
+        LoggingArbitrary lf(f, pso_log);
+        PSOOptions pso_opts;
+        pso_opts.population_size = 3;
+        pso_opts.max_iterations = 8;
+        pso_opts.seed = 42;
+        const double value = PSO(pso_opts).optimize(lf, pso_x, lower, upper);
+        std::cout << "f=" << value << " x=";
+        print_vec(pso_x);
+        std::cout << " (" << pso_log.size() << " evaluations)\n";
+    }
+
+    std::cout << "\n=== PSO at its own default budget"
+                 " (population_size=40, max_iterations=1000)"
+                 " for reference ===\n";
+    std::vector<double> pso_full_log;
+    {
+        BumpyFunction f;
+        LoggingArbitrary lf(f, pso_full_log);
+        std::vector<double> x{0.0, 0.0};
+        PSOOptions pso_opts; // defaults
+        pso_opts.seed = 42;
+        const double value = PSO(pso_opts).optimize(lf, x, lower, upper);
+        std::cout << "f=" << value << " x=";
+        print_vec(x);
+        std::cout << " (" << pso_full_log.size()
+                   << " evaluations, early-stopped via tolerance)\n";
+    }
+#+end_src
+
+*** Three figures: convergence, sample locations, length-scale sweep
+
+#+name: bayes-figures
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::plot(indices(bo_log.size()), running_min(bo_log),
+                                 "l", "BayesianOptimization", {34, 197, 94});
+        plot.lines(indices(pso_log.size()), running_min(pso_log), "PSO",
+                   {220, 38, 38}, 2.0);
+        plot.legend({"BayesianOptimization (length_scale=1.0)",
+                     "PSO (population_size=3, max_iterations=8)"},
+                    {{34, 197, 94}, {220, 38, 38}});
+        plot.title("Best f found so far at a matched 28-evaluation budget")
+            .x_label("real objective evaluations")
+            .y_label("best f so far");
+        plot.save_svg("build/org/optim_bayes_convergence.svg");
+        std::cout << "\nwrote optim_bayes_convergence.svg\n";
+    }
+    {
+        std::vector<double> init_x, init_y, sel_x, sel_y;
+        for (std::size_t i = 0; i < 8; ++i) {
+            init_x.push_back(bo_points[i][0]);
+            init_y.push_back(bo_points[i][1]);
+        }
+        for (std::size_t i = 8; i < bo_points.size(); ++i) {
+            sel_x.push_back(bo_points[i][0]);
+            sel_y.push_back(bo_points[i][1]);
+        }
+        auto plot = RPlot::plot(init_x, init_y, "p", "initial random samples",
+                                 {96, 165, 250});
+        plot.points(sel_x, sel_y, "BO-selected samples", {220, 38, 38}, 5.0);
+        plot.points({4.191193}, {-0.326305},
+                    "SimulatedAnnealing optimum (companion report)",
+                    {17, 24, 39}, 7.0);
+        plot.legend({"initial random samples", "BO-selected samples",
+                     "SimulatedAnnealing optimum (companion report)"},
+                    {{96, 165, 250}, {220, 38, 38}, {17, 24, 39}});
+        plot.x_limits(-5.0, 5.0).y_limits(-5.0, 5.0);
+        plot.title("BayesianOptimization sample locations"
+                    " on the bumpy objective")
+            .x_label("x0")
+            .y_label("x1");
+        plot.save_svg("build/org/optim_bayes_samples.svg");
+        std::cout << "wrote optim_bayes_samples.svg\n";
+    }
+    {
+        std::vector<double> log_ls(length_scales.size());
+        for (std::size_t i = 0; i < length_scales.size(); ++i)
+            log_ls[i] = std::log10(length_scales[i]);
+        auto plot = RPlot::plot(log_ls, ls_f, "b", "found f", {220, 38, 38});
+        plot.title("Length-scale sensitivity of BayesianOptimization"
+                    " (28-evaluation budget)")
+            .x_label("log10(length_scale)")
+            .y_label("f found");
+        plot.save_svg("build/org/optim_bayes_length_scale.svg");
+        std::cout << "wrote optim_bayes_length_scale.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/optim_bayes_analysis.cpp <<'CPP'
+<<bayes-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(6);
+
+<<bayes-length-scale>>
+
+<<bayes-run>>
+
+<<bayes-pso>>
+
+<<bayes-figures>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/optim_bayes_analysis.cpp -o build/org/optim_bayes_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optim_bayes_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Length-scale sensitivity
+
+#+begin_example
+length_scale=0.150000: f=-0.216631 x=[2.374832, -2.215946]
+length_scale=0.300000: f=-2.228602 x=[4.223005, -0.287613]
+length_scale=0.400000: f=-1.309915 x=[3.638774, -0.219113]
+length_scale=0.500000: f=-2.158446 x=[4.310780, -0.403785]
+length_scale=0.700000: f=-2.228602 x=[4.223005, -0.287613]
+length_scale=1.000000: f=-2.228602 x=[4.223005, -0.287613]
+length_scale=3.000000: f=-2.228602 x=[4.223005, -0.287613]
+length_scale=5.000000: f=-2.228602 x=[4.223005, -0.287613]
+length_scale=7.000000: f=-0.023203 x=[3.195832, -1.194854]
+#+end_example
+
+#+ATTR_HTML: :alt Line plot of found f versus log10 of the length-scale parameter, showing a broad flat plateau near f=-2.23 from length scale 0.3 to 5.0 interrupted by two dips at 0.4 and 0.5, collapsing sharply outside that range :width 100%
+[[file:../../build/org/optim_bayes_length_scale.svg]]
+
+The real shape here is not the clean unimodal "sweet spot" a first guess
+might predict. Every =length_scale= from =0.3= to =5.0= except two
+finds the identical $f=-2.228602$ at the identical point -- a broad,
+flat plateau spanning more than one and a half orders of magnitude.
+Inside that plateau, =length_scale= set to =0.4= and =0.5= are real,
+reproducible /dips/ below their immediate neighbors ($f=-1.309915$ and
+$f=-2.158446$, both worse than =0.3='s and =0.7='s $f=-2.228602$) --
+non-monotonic behavior a smooth sensitivity curve would not predict.
+Outside the plateau, both directions collapse as expected:
+=length_scale= set to =0.15= finds only $f=-0.216631$, and =length_scale=
+set to =7.0= finds only $f=-0.023203$, both far short of the plateau's
+value.
+
+** Bayesian optimization vs. PSO at a matched evaluation budget
+
+#+begin_example
+f=-2.228602 x=[4.223005, -0.287613] (28 evaluations)
+f=-2.158078 x=[4.310454, -0.208450] (28 evaluations)
+f=-2.234690 x=[4.188089, -0.319746]
+  (3161 evaluations, early-stopped via tolerance)
+#+end_example
+
+At the identical 28-real-evaluation budget, =BayesianOptimization=
+(=length_scale= set to =1.0=) reaches $f=-2.228602$, while =PSO=
+capped to a population of 3 particles for 8 generations reaches only
+$f=-2.158078$ -- =BayesianOptimization= wins by $0.0705$ at the exact
+same evaluation cost. Letting =PSO= run at its own default settings
+(population 40, up to 1000 generations) instead needs 3161 real
+evaluations, roughly 113 times =BayesianOptimization='s budget, before
+its own tolerance-based stagnation check stops it early at
+$f=-2.234690$ -- only $0.0061$ better than what
+=BayesianOptimization= already found using less than 1% of that
+evaluation count.
+
+#+ATTR_HTML: :alt Best-f-found-so-far convergence curves for BayesianOptimization and PSO at a matched 28-evaluation budget, with BayesianOptimization reaching a lower value :width 100%
+[[file:../../build/org/optim_bayes_convergence.svg]]
+
+The convergence curves show /how/ each method spends its shared
+28-evaluation budget differently. =PSO='s curve (red) drops fastest at
+the very start -- its full population of 3 is evaluated up front, giving
+it an early advantage -- but then improves only in small, infrequent
+steps as its tiny 3-particle swarm has too little diversity left to
+explore further. =BayesianOptimization='s curve (green) improves more
+slowly over its first several evaluations (still gathering its
+=initial_samples= design-of-experiments points, which are not chosen
+adaptively at all) but then drops sharply once the Gaussian process
+surrogate has enough data to guide the acquisition-driven samples toward
+the promising region, ultimately overtaking =PSO=.
+
+** Where Bayesian optimization samples
+
+#+ATTR_HTML: :alt Scatter plot of BumpyFunction sample locations: initial random samples in blue scattered across the whole domain, later Bayesian-optimization-selected samples in red concentrating near x approximately 4, y approximately -0.3, close to the SimulatedAnnealing optimum from the companion report :width 100%
+[[file:../../build/org/optim_bayes_samples.svg]]
+
+The 8 initial samples (blue) are scattered essentially uniformly across
+the full $[-5,5]\times[-5,5]$ box, exactly as expected from
+uninformed random draws. The subsequent 20 Bayesian-optimization-selected
+samples (red) are visibly denser near $x_0\approx4$, $x_1\approx-0.3$ --
+close to the companion report's =SimulatedAnnealing= optimum (black) --
+but far from perfectly concentrated there: several red points still land
+near the domain's corners and edges. This is a direct, visible
+consequence of §2.1's real implementation detail: the acquisition
+function is optimized over only 128 /randomly drawn/ candidates each
+round rather than a local, gradient-guided search, so even once the
+Gaussian process has correctly identified the promising region, a
+purely-random candidate pool still occasionally proposes (and,
+if its Expected Improvement narrowly wins, samples) a point far from
+that region.
+
+* Discussion
+
+**=BayesianOptimization='s win over =PSO= at the matched 28-evaluation
+budget is a real demonstration of the problem Bayesian optimization is
+built to solve, not a foregone conclusion.** =PSO='s own default
+settings reach a slightly better final value than
+=BayesianOptimization= does here ($f=-2.234690$ versus $-2.228602$),
+so this is not a claim that Bayesian optimization is simply a
+/better/ optimizer -- it is a claim about which method uses a
+/scarce/ evaluation budget more effectively. Every evaluation
+=BayesianOptimization= spends after its initial design-of-experiments
+phase is chosen using everything learned from every prior evaluation;
+every evaluation a small, 3-particle =PSO= swarm spends is constrained
+by that swarm's own limited internal diversity. The gap would likely
+narrow or reverse at a larger shared budget, exactly what letting
+=PSO= run to its own default settings shows.
+
+**The length-scale sensitivity sweep's real shape -- a broad, mostly
+flat plateau interrupted by two non-monotonic dips, not a single clean
+optimum -- is a genuinely more informative (and more honest) result
+than the simpler "too small bad, too large bad, middle good" story
+would have been.** The broad plateau itself is consistent with the
+exploration/exploitation argument in §2.3: once =length_scale= is in a
+reasonable range relative to the objective's real spatial structure
+(the ripple term's period is $2\pi\approx6.28$ and the domain spans 10
+units in each dimension, so length scales from roughly 0.3 to 5 all
+plausibly resolve that structure), the Gaussian process's qualitative
+behavior -- which candidates get high Expected Improvement -- barely
+changes even though the actual mean and variance values underneath do.
+The two dips inside that plateau are harder to explain from the
+closed-form Expected Improvement formula alone; the most likely
+mechanism, given the 128-random-candidate acquisition search identified
+in §2.1 and §4.3, is that a slightly different Gaussian process fit at
+those two specific length scales caused a /different/ one of the 128
+identical random candidates to win the acquisition comparison at some
+early iteration, sending the rest of that run down a different sampling
+trajectory entirely -- a form of sensitivity to the acquisition
+optimizer's own randomness, not to the Gaussian process model itself,
+that a purely mathematical treatment of Expected Improvement would not
+predict.
+
+**A convergence curve's shape again carries information a single final
+number does not, matching the companion report's own finding.**
+=BayesianOptimization='s curve in §4.2's figure is nearly flat for its
+first 8 evaluations (the uninformed design-of-experiments phase) before
+dropping sharply -- exactly the shape expected from a method that spends
+a fixed, un-adaptive up-front cost before its adaptive phase can begin.
+Reading only the final numbers, without this curve, would not show that
+=BayesianOptimization= spent almost a third of its entire 28-evaluation
+budget on samples chosen with no information at all.
+
+* Conclusion
+
+Bayesian optimization is built for the specific regime the rest of
+this project's optimizer reports rarely test: a real evaluation budget
+too small for population- or iteration-hungry methods to use well.
+At a matched 28-evaluation budget on the companion report's bumpy,
+non-convex objective, =BayesianOptimization= with an exact
+=RBFGaussianProcessSurrogate= beats a comparably-capped =PSO= by
+$0.0705$, and comes within $0.0061$ of the value =PSO= needs 113 times
+more evaluations to reach at its own default settings -- a genuine,
+measured sample-efficiency result, not an assumed one. A length-scale
+sensitivity sweep surfaces a real, non-monotonic shape -- a broad
+plateau interrupted by two unexpected dips -- that is more informative,
+and more honestly reported, than a forced single-optimum narrative
+would have been. As with its companions, this entire report is
+reproducible end to end via
+=just org-example optimization_bayesian_analysis=, which re-executes
+§3.3.6's assembly block -- and therefore every number and figure above
+-- from the =datamunge= source tree.
+
+* References
+
+- Mockus, J. (1975). "On Bayesian Methods for Seeking the Extremum."
+  /Optimization Techniques IFIP Technical Conference/, 400--404.
+- Mockus, J., Tiesis, V., & Zilinskas, A. (1978). "The Application of
+  Bayesian Methods for Seeking the Extremum." /Towards Global
+  Optimization/, 2, 117--129.
+- Jones, D. R., Schonlau, M., & Welch, W. J. (1998). "Efficient Global
+  Optimization of Expensive Black-Box Functions." /Journal of Global
+  Optimization/, 13(4), 455--492.
+- Rasmussen, C. E., & Williams, C. K. I. (2006). /Gaussian Processes for
+  Machine Learning/. MIT Press. (See also this project's own GP
+  regression companion report, which covers exact Gaussian process
+  regression in a supervised-learning context.)
+- Kennedy, J., & Eberhart, R. (1995). "Particle Swarm Optimization."
+  /Proceedings of ICNN'95 -- International Conference on Neural
+  Networks/, 4, 1942--1948.
+- Kirkpatrick, S., Gelatt, C. D., & Vecchi, M. P. (1983). "Optimization
+  by Simulated Annealing." /Science/, 220(4598), 671--680.

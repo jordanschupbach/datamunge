@@ -150,31 +150,31 @@ public class KernelRegression : global::System.IDisposable {
   }
 
   /// <summary>Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.</summary>
-  public ScatterPlot plot_fit(DataFrame data, uint grid_resolution) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.KernelRegression_plot_fit__SWIG_0(swigCPtr, DataFrame.getCPtr(data), grid_resolution), true);
+  public RPlot plot_fit(DataFrame data, uint grid_resolution) {
+    RPlot ret = new RPlot(datamungePINVOKE.KernelRegression_plot_fit__SWIG_0(swigCPtr, DataFrame.getCPtr(data), grid_resolution), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   /// <summary>Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.</summary>
-  public ScatterPlot plot_fit(DataFrame data) {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.KernelRegression_plot_fit__SWIG_1(swigCPtr, DataFrame.getCPtr(data)), true);
+  public RPlot plot_fit(DataFrame data) {
+    RPlot ret = new RPlot(datamungePINVOKE.KernelRegression_plot_fit__SWIG_1(swigCPtr, DataFrame.getCPtr(data)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.KernelRegression_plot_predicted_vs_actual(swigCPtr), true);
+  public RPlot plot_predicted_vs_actual() {
+    RPlot ret = new RPlot(datamungePINVOKE.KernelRegression_plot_predicted_vs_actual(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.KernelRegression_plot_residuals_vs_fitted(swigCPtr), true);
+  public RPlot plot_residuals_vs_fitted() {
+    RPlot ret = new RPlot(datamungePINVOKE.KernelRegression_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 
-  public ScatterPlot plot_cv_curve() {
-    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.KernelRegression_plot_cv_curve(swigCPtr), true);
+  public RPlot plot_cv_curve() {
+    RPlot ret = new RPlot(datamungePINVOKE.KernelRegression_plot_cv_curve(swigCPtr), true);
     return ret;
   }
 

@@ -7,6 +7,12 @@
 #include <vector>
 
 using datamunge::optim::ArbitraryFunction;
+using datamunge::optim::BayesianOptimization;
+using datamunge::optim::BayesianOptimizationOptions;
+using datamunge::optim::BayesianSurrogate;
+using datamunge::optim::RBFGaussianProcessSurrogate;
+using datamunge::optim::CMAES;
+using datamunge::optim::CMAESOptions;
 using datamunge::optim::DEOptions;
 using datamunge::optim::DifferentialEvolution;
 using datamunge::optim::GAOptions;
@@ -43,6 +49,71 @@ public:
 };
 
 } // namespace
+
+TEST(BayesianOptimization, UsesSurrogateWithinBounds) {
+    class MockSurrogate : public BayesianSurrogate { public:
+        int fits{0}; void fit(const std::vector<std::vector<double>>&, const std::vector<double>&) override { ++fits; }
+        double acquisition(const std::vector<double>& x, double) override { return -std::abs(x[0] - 1.0); }
+    } surrogate;
+    SphereFunction f({1.0}); std::vector<double> x{0.0}; BayesianOptimizationOptions o; o.initial_samples=3; o.max_iterations=10; o.seed=7;
+    const double v=BayesianOptimization(o).optimize(f,x,{-2.0},{2.0},surrogate);
+    EXPECT_GE(x[0],-2.0); EXPECT_LE(x[0],2.0); EXPECT_LT(v,0.1); EXPECT_EQ(surrogate.fits,10);
+}
+
+TEST(BayesianOptimization, RunsWithRBFGaussianProcessSurrogate) {
+    SphereFunction f({0.5});
+    RBFGaussianProcessSurrogate surrogate(0.5, 1e-6);
+    std::vector<double> x{0.0}; BayesianOptimizationOptions o; o.initial_samples=4; o.max_iterations=12; o.seed=7;
+    const double value=BayesianOptimization(o).optimize(f,x,{-1.0},{1.0},surrogate);
+    EXPECT_GE(x[0],-1.0); EXPECT_LE(x[0],1.0); EXPECT_LT(value,.05);
+}
+
+TEST(RBFGaussianProcessSurrogate, ProducesFiniteAcquisition) {
+    RBFGaussianProcessSurrogate surrogate(1.0);
+    surrogate.fit({{0.0}, {1.0}}, {1.0, 0.0});
+    EXPECT_TRUE(std::isfinite(surrogate.acquisition({0.75}, 0.0)));
+}
+
+TEST(RBFGaussianProcessSurrogate, ExpectedImprovementIsFiniteAwayFromObservations) {
+    RBFGaussianProcessSurrogate surrogate(0.5, 1e-6);
+    surrogate.fit({{0.0}, {1.0}}, {1.0, 0.0});
+    EXPECT_TRUE(std::isfinite(surrogate.acquisition({0.5}, 0.0)));
+}
+
+TEST(RBFGaussianProcessSurrogate, RejectsInvalidTrainingShape) {
+    RBFGaussianProcessSurrogate surrogate;
+    EXPECT_THROW(surrogate.fit({{0.0}, {1.0, 2.0}}, {1.0, 0.0}), std::invalid_argument);
+}
+
+TEST(RBFGaussianProcessSurrogate, RejectsInvalidHyperparametersAndQueryDimension) {
+    EXPECT_THROW(RBFGaussianProcessSurrogate(0.0), std::invalid_argument);
+    RBFGaussianProcessSurrogate surrogate;
+    surrogate.fit({{0.0}}, {1.0});
+    EXPECT_THROW(surrogate.acquisition({0.0, 1.0}, 1.0), std::invalid_argument);
+}
+
+TEST(CMAES, ConvergesOnShiftedSphere) {
+    SphereFunction f({3.0, -2.0, 1.0});
+    std::vector<double> x{0.0, 0.0, 0.0};
+    CMAESOptions options;
+    options.population_size = 16;
+    options.initial_step_size = 2.0;
+    options.max_generations = 300;
+    options.seed = 7;
+    const double value = CMAES(options).optimize(f, x);
+    EXPECT_LT(value, 1e-8);
+    EXPECT_NEAR(x[0], 3.0, 1e-3);
+    EXPECT_NEAR(x[1], -2.0, 1e-3);
+    EXPECT_NEAR(x[2], 1.0, 1e-3);
+}
+
+TEST(CMAES, RejectsPopulationSmallerThanTwo) {
+    SphereFunction f({0.0});
+    std::vector<double> x{1.0};
+    CMAESOptions options;
+    options.population_size = 1;
+    EXPECT_THROW(CMAES(options).optimize(f, x), std::invalid_argument);
+}
 
 // ---- PSO ----
 

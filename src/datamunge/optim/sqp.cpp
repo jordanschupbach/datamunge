@@ -1,0 +1,3 @@
+#include <datamunge/optim/sqp.hpp>
+#include <cmath>
+namespace datamunge::optim { SQP::SQP(SQPOptions o):options_(o){} double SQP::optimize(EqualityConstrainedFunction& f,std::vector<double>& x)const{for(std::size_t it=0;it<options_.max_iterations;++it){auto g=f.gradient(x);for(std::size_t p=0;p<x.size();++p)x[p]-=options_.step_size*g[p];auto c=f.constraints(x);auto j=f.constraint_jacobian(x);double cn=0;for(std::size_t k=0;k<c.size();++k){double nn=0;for(double z:j[k])nn+=z*z;for(std::size_t p=0;p<x.size();++p)x[p]-=j[k][p]*c[k]/(nn+options_.regularization);cn+=c[k]*c[k];}if(std::sqrt(cn)<=options_.tolerance&&std::sqrt(options_.step_size*options_.step_size)<=options_.tolerance)break;}return f.evaluate(x);}}

@@ -131,16 +131,16 @@ public class GBMRegressor {
     return new DVector(datamungeJNI.GBMRegressor_predict(swigCPtr, this, DataFrame.getCPtr(newdata), newdata), true);
   }
 
-  public ScatterPlot plot_predicted_vs_actual() {
-    return new ScatterPlot(datamungeJNI.GBMRegressor_plot_predicted_vs_actual(swigCPtr, this), true);
+  public RPlot plot_predicted_vs_actual() {
+    return new RPlot(datamungeJNI.GBMRegressor_plot_predicted_vs_actual(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_residuals_vs_fitted() {
-    return new ScatterPlot(datamungeJNI.GBMRegressor_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public RPlot plot_residuals_vs_fitted() {
+    return new RPlot(datamungeJNI.GBMRegressor_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
-  public ScatterPlot plot_training_deviance() {
-    return new ScatterPlot(datamungeJNI.GBMRegressor_plot_training_deviance(swigCPtr, this), true);
+  public RPlot plot_training_deviance() {
+    return new RPlot(datamungeJNI.GBMRegressor_plot_training_deviance(swigCPtr, this), true);
   }
 
 }

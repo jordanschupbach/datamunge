@@ -43,6 +43,13 @@
 (setq org-latex-hyperref-template
       "\\hypersetup{\n colorlinks=true,\n linkcolor=blue,\n urlcolor=blue,\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}}\n")
 
+;; Every examples/org/*.org report and the index page it links from are
+;; exported flat into the same output directory, so a relative link back to
+;; index.html works uniformly from any report's HTML page.
+(setq org-html-preamble t)
+(setq org-html-preamble-format
+      '(("en" "<div id=\"datamunge-nav\"><a href=\"index.html\">&larr; All examples</a></div>")))
+
 (defun datamunge--convert-svg-link-for-latex (output backend _info)
   "Rewrite an Org \\includesvg link in OUTPUT to a plain \\includegraphics
 pointing at a converted PDF.

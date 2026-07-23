@@ -1627,85 +1627,166 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__LM swig_types[21]
 #define SWIGTYPE_p_datamunge__LMM swig_types[22]
 #define SWIGTYPE_p_datamunge__Lasso swig_types[23]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[24]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[25]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[26]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[27]
-#define SWIGTYPE_p_datamunge__SVM swig_types[28]
-#define SWIGTYPE_p_datamunge__Tape swig_types[29]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[30]
-#define SWIGTYPE_p_datamunge__Var swig_types[31]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[32]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[33]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[34]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[35]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[36]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[37]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[39]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[40]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[41]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[42]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[43]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[44]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[45]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[46]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[47]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[50]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[51]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[52]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[53]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[54]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[55]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[56]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[57]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[58]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[59]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[60]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[61]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[62]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[63]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[64]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[65]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[66]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[67]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[68]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[69]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[71]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[72]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[73]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[74]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[75]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[76]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[77]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[78]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[79]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[80]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[81]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[82]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[83]
-#define SWIGTYPE_p_double swig_types[84]
-#define SWIGTYPE_p_int swig_types[85]
-#define SWIGTYPE_p_p_std__vectorT_double_t swig_types[86]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[87]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[88]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[89]
-#define SWIGTYPE_p_std__size_t swig_types[90]
-#define SWIGTYPE_p_std__uint64_t swig_types[91]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[92]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[93]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[94]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[95]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[96]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[97]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[98]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[99]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[100]
-static swig_type_info *swig_types[102];
-static swig_module_info swig_module = {swig_types, 101, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__MDS swig_types[24]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[25]
+#define SWIGTYPE_p_datamunge__PCA swig_types[26]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[27]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[28]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[29]
+#define SWIGTYPE_p_datamunge__SVM swig_types[30]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[31]
+#define SWIGTYPE_p_datamunge__Tape swig_types[32]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[33]
+#define SWIGTYPE_p_datamunge__Var swig_types[34]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[35]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[36]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[37]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[38]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[39]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[40]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[41]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[53]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[54]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[55]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[56]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[57]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[58]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[59]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[60]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[72]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[73]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[74]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[75]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[76]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[77]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[78]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[79]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[81]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[82]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[83]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[84]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[85]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[86]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[87]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[88]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[89]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[90]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[91]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[92]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[93]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[94]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[95]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[96]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[97]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[98]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[99]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[100]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[101]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[102]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[103]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[104]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[105]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[106]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[107]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[108]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[109]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[110]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[111]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[112]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[113]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[114]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[115]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[116]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[117]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[118]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[119]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[120]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[121]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[122]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[123]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[124]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[125]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[151]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[152]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[153]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[154]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[155]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[156]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[157]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[158]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[159]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[160]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[161]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[162]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[163]
+#define SWIGTYPE_p_double swig_types[164]
+#define SWIGTYPE_p_int swig_types[165]
+#define SWIGTYPE_p_p_std__vectorT_double_t swig_types[166]
+#define SWIGTYPE_p_p_std__vectorT_std__vectorT_double_t_t swig_types[167]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[168]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[169]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[170]
+#define SWIGTYPE_p_std__size_t swig_types[171]
+#define SWIGTYPE_p_std__uint64_t swig_types[172]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[173]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[174]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[175]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[176]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[177]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[178]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[179]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[180]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[181]
+static swig_type_info *swig_types[183];
+static swig_module_info swig_module = {swig_types, 182, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1907,6 +1988,12 @@ static int SWIG_ENUM__datamunge__stats__Hochberg = static_cast<int>(datamunge::s
 static int SWIG_ENUM__datamunge__stats__Hommel = static_cast<int>(datamunge::stats::PAdjustMethod::Hommel);
 static int SWIG_ENUM__datamunge__stats__BH = static_cast<int>(datamunge::stats::PAdjustMethod::BH);
 static int SWIG_ENUM__datamunge__stats__BY = static_cast<int>(datamunge::stats::PAdjustMethod::BY);
+static int SWIG_ENUM__datamunge__ode__Euler = static_cast<int>(datamunge::ode::StepMethod::Euler);
+static int SWIG_ENUM__datamunge__ode__Midpoint = static_cast<int>(datamunge::ode::StepMethod::Midpoint);
+static int SWIG_ENUM__datamunge__ode__RK4 = static_cast<int>(datamunge::ode::StepMethod::RK4);
+static int SWIG_ENUM__datamunge__ode__RK45 = static_cast<int>(datamunge::ode::StepMethod::RK45);
+static int SWIG_ENUM__datamunge__ode__AdamsBashforth = static_cast<int>(datamunge::ode::StepMethod::AdamsBashforth);
+static int SWIG_ENUM__datamunge__ode__AdamsMoulton = static_cast<int>(datamunge::ode::StepMethod::AdamsMoulton);
 
 class SwigDirector_Callback : public datamunge::Callback, public Swig::Director {
 
@@ -1957,6 +2044,72 @@ public:
     virtual std::size_t num_functions() const;
     virtual double evaluate_term(std::vector< double > const &coordinates,std::size_t i);
     virtual std::vector< double > gradient_term(std::vector< double > const &coordinates,std::size_t i);
+};
+
+
+class SwigDirector_ProximalFunction : public datamunge::optim::ProximalFunction, public Swig::Director {
+
+public:
+    SwigDirector_ProximalFunction(value self);
+    virtual ~SwigDirector_ProximalFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > proximal(std::vector< double > const &point,double step);
+};
+
+
+class SwigDirector_HessianFunction : public datamunge::optim::HessianFunction, public Swig::Director {
+
+public:
+    SwigDirector_HessianFunction(value self);
+    virtual ~SwigDirector_HessianFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > hessian(std::vector< double > const &coordinates);
+};
+
+
+class SwigDirector_EqualityConstrainedFunction : public datamunge::optim::EqualityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_EqualityConstrainedFunction(value self);
+    virtual ~SwigDirector_EqualityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > constraints(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > constraint_jacobian(std::vector< double > const &coordinates);
+};
+
+
+class SwigDirector_InequalityConstrainedFunction : public datamunge::optim::InequalityConstrainedFunction, public Swig::Director {
+
+public:
+    SwigDirector_InequalityConstrainedFunction(value self);
+    virtual ~SwigDirector_InequalityConstrainedFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::vector< double > inequalities(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > inequality_jacobian(std::vector< double > const &coordinates);
+};
+
+
+class SwigDirector_ResidualFunction : public datamunge::optim::ResidualFunction, public Swig::Director {
+
+public:
+    SwigDirector_ResidualFunction(value self);
+    virtual ~SwigDirector_ResidualFunction();
+    virtual std::vector< double > residuals(std::vector< double > const &coordinates);
+    virtual std::vector< std::vector< double > > jacobian(std::vector< double > const &coordinates);
+};
+
+
+class SwigDirector_BayesianSurrogate : public datamunge::optim::BayesianSurrogate, public Swig::Director {
+
+public:
+    SwigDirector_BayesianSurrogate(value self);
+    virtual ~SwigDirector_BayesianSurrogate();
+    virtual void fit(std::vector< std::vector< double > > const &points,std::vector< double > const &values);
+    virtual double acquisition(std::vector< double > const &point,double incumbent);
 };
 
 SWIGEXT value _wrap_new_DPair__SWIG_0datamunge (value args)
@@ -5745,6 +5898,673 @@ SWIGEXT value _wrap_DataFrame_fill_null_stringdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_DataFrame_mutate_numeric__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< int > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_int_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< int > const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_numeric__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double > const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_numericdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_mutate_numeric__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+          }
+        }
+        if (_v) {
+          {
+            if (!Is_block(argv[3]) || !(Tag_val(argv[3]) == C_obj || Tag_val(argv[3]) == C_ptr)) {
+              _v = 0;
+            } else {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_int_t);
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_mutate_numeric__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_numeric'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_numeric(std::string const &,std::vector< double > const &,std::vector< int > const &) const\n"
+    "    datamunge::DataFrame::mutate_numeric(std::string const &,std::vector< double > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_string__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg4 = (std::vector< int > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_int_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string > const &)*arg3,(std::vector< int > const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_string__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string > const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_stringdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_mutate_string__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+          }
+        }
+        if (_v) {
+          {
+            if (!Is_block(argv[3]) || !(Tag_val(argv[3]) == C_obj || Tag_val(argv[3]) == C_ptr)) {
+              _v = 0;
+            } else {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_int_t);
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_mutate_string__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_string'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_string(std::string const &,std::vector< std::string > const &,std::vector< int > const &) const\n"
+    "    datamunge::DataFrame::mutate_string(std::string const &,std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_string_encoded__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg4 = (std::vector< int > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_int_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int > const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_string_encoded__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_mutate_string_encodeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_mutate_string_encoded__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if (!Is_block(argv[3]) || !(Tag_val(argv[3]) == C_obj || Tag_val(argv[3]) == C_ptr)) {
+              _v = 0;
+            } else {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_int_t);
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_mutate_string_encoded__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_string_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_string_encoded(std::string const &,std::string const &,std::vector< int > const &) const\n"
+    "    datamunge::DataFrame::mutate_string_encoded(std::string const &,std::string const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_renamedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_rename'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->rename((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_DataFrame_selectdatamunge (value args)
 {
   CAMLparam1(args);
@@ -5802,6 +6622,342 @@ SWIGEXT value _wrap_DataFrame_select_encodeddatamunge (value args)
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocate__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string > const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocate__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocatedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_relocate__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_relocate__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_relocate'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::relocate(std::vector< std::string > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::relocate(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocate_encoded__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocate_encoded__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_relocate_encodeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_relocate_encoded__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_relocate_encoded__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_relocate_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::relocate_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::relocate_encoded(std::string const &) const\n");
 }
 
 
@@ -5974,6 +7130,306 @@ SWIGEXT value _wrap_DataFrame_sort_bydatamunge(value args) {
 }
 
 
+SWIGEXT value _wrap_DataFrame_arrange__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::vector< int > *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = (std::vector< int > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_int_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string > const &)*arg2,(std::vector< int > const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_arrange__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_arrangedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_arrange__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_int_t);
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_arrange__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_arrange'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::arrange(std::vector< std::string > const &,std::vector< int > const &) const\n"
+    "    datamunge::DataFrame::arrange(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_arrange_encoded__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< int > *arg3 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< int > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_int_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2,(std::vector< int > const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_arrange_encoded__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_arrange_encodeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_arrange_encoded__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_int_t);
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_arrange_encoded__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_arrange_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::arrange_encoded(std::string const &,std::vector< int > const &) const\n"
+    "    datamunge::DataFrame::arrange_encoded(std::string const &) const\n");
+}
+
+
 SWIGEXT value _wrap_DataFrame_drop_duplicates__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
@@ -6111,6 +7567,312 @@ SWIGEXT value _wrap_DataFrame_drop_duplicates_encodeddatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_DataFrame_distinct__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct((std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_distinct__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_distinctdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_DataFrame_distinct__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_distinct__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_distinct'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::distinct(std::vector< std::string > const &) const\n"
+    "    datamunge::DataFrame::distinct() const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_distinct_encodeddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_distinct_encoded'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct_encoded((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pull_numericdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_pull_numeric'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_numeric((std::string const &)*arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pull_numeric_validdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::vector< int > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_pull_numeric_valid'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_numeric_valid((std::string const &)*arg2);
+  {
+    std::vector< int > * temp = new std::vector< int >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< int >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_int_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pull_stringdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_pull_string'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_string((std::string const &)*arg2);
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pull_string_validdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::vector< int > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_pull_string_valid'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_string_valid((std::string const &)*arg2);
+  {
+    std::vector< int > * temp = new std::vector< int >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< int >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_int_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_n_distinctdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_n_distinct'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = ((datamunge::DataFrame const *)arg1)->n_distinct((std::string const &)*arg2);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_DataFrame_group_by_sumdatamunge (value args)
 {
   CAMLparam1(args);
@@ -6185,6 +7947,1365 @@ SWIGEXT value _wrap_DataFrame_group_by_sum_encodeddatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_DataFrame_count__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string > const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_count__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_countdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_count__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_count__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_count'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::count(std::vector< std::string > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::count(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_count_encoded__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_count_encoded__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_count_encodeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_count_encoded__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_count_encoded__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_count_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::count_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::count_encoded(std::string const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_summarisedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::vector< std::string > *arg4 = 0 ;
+  std::vector< std::string > *arg5 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_summarise'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg4 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg5 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise((std::vector< std::string > const &)*arg2,(std::vector< std::string > const &)*arg3,(std::vector< std::string > const &)*arg4,(std::vector< std::string > const &)*arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_summarise_encodeddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_summarise_encoded'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string > const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longerdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_pivot_longer__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_pivot_longer__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_pivot_longer__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_longer'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string > const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer_encoded__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer_encoded__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer_encoded__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_longer_encodeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_DataFrame_pivot_longer_encoded__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_pivot_longer_encoded__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_pivot_longer_encoded__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_longer_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_wider__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< std::string > *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg4 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< std::string > const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_wider__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_widerdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_DataFrame_pivot_wider__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if (!Is_block(argv[3]) || !(Tag_val(argv[3]) == C_obj || Tag_val(argv[3]) == C_ptr)) {
+              _v = 0;
+            } else {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_DataFrame_pivot_wider__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_wider'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_wider(std::string const &,std::string const &,std::vector< std::string > const &) const\n"
+    "    datamunge::DataFrame::pivot_wider(std::string const &,std::string const &) const\n");
+}
+
+
+SWIGEXT value _wrap_DataFrame_pivot_wider_encodeddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_pivot_wider_encoded'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_bind_rowsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_bind_rows'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_rows((datamunge::DataFrame const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_bind_colsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataFrame_bind_cols'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_cols((datamunge::DataFrame const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_DataFrame_join__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
@@ -6193,9 +9314,14 @@ SWIGEXT value _wrap_DataFrame_join__SWIG_0datamunge (value args)
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  bool arg5 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  std::string *arg7 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
+  std::string temp5 ;
+  std::string temp6 ;
+  std::string temp7 ;
   datamunge::DataFrame *result = 0 ;
   
   swig_result = Val_unit;
@@ -6222,9 +9348,30 @@ SWIGEXT value _wrap_DataFrame_join__SWIG_0datamunge (value args)
     }
   }
   {
-    arg5 = caml_long_val(caml_list_nth(args,4));
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
   }
-  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  {
+    if (caml_ptr_check(caml_list_nth(args,5))) {
+      temp6.assign((char *)caml_ptr_val(caml_list_nth(args,5),0), caml_string_len(caml_list_nth(args,5)));
+      arg6 = &temp6;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,6))) {
+      temp7.assign((char *)caml_ptr_val(caml_list_nth(args,6),0), caml_string_len(caml_list_nth(args,6)));
+      arg7 = &temp7;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6,(std::string const &)*arg7);
   {
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
   }
@@ -6234,6 +9381,124 @@ SWIGEXT value _wrap_DataFrame_join__SWIG_0datamunge (value args)
 
 
 SWIGEXT value _wrap_DataFrame_join__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  std::string temp6 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,5))) {
+      temp6.assign((char *)caml_ptr_val(caml_list_nth(args,5),0), caml_string_len(caml_list_nth(args,5)));
+      arg6 = &temp6;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_join__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataFrame_join__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
@@ -6351,7 +9616,7 @@ SWIGEXT value _wrap_DataFrame_joindatamunge(value args) {
           }
           if (_v) {
             free(argv);
-            CAMLreturn(_wrap_DataFrame_join__SWIG_1datamunge(args));
+            CAMLreturn(_wrap_DataFrame_join__SWIG_3datamunge(args));
           }
         }
       }
@@ -6423,14 +9688,273 @@ SWIGEXT value _wrap_DataFrame_joindatamunge(value args) {
               if( !Is_block(argv[4]) ) _v = 0;
               else {
                 switch( Tag_val(argv[4]) ) {
-                  case C_bool: _v = 1; break;
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
                   default: _v = 0; break;
                 }
-              }
+              }    
             }
             if (_v) {
               free(argv);
-              CAMLreturn(_wrap_DataFrame_join__SWIG_0datamunge(args));
+              CAMLreturn(_wrap_DataFrame_join__SWIG_2datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_string: _v = 1; break;
+                    case C_ptr: {
+                      swig_type_info *typeinfo = 
+                      (swig_type_info *)(long)Int64_val(Field(argv[5],1));
+                      _v = SWIG_TypeCheck("char *",typeinfo) ||
+                      SWIG_TypeCheck("signed char *",typeinfo) ||
+                      SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("const char *",typeinfo) ||
+                      SWIG_TypeCheck("const signed char *",typeinfo) ||
+                      SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("std::string",typeinfo);
+                    } break;
+                    default: _v = 0; break;
+                  }
+                }    
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_DataFrame_join__SWIG_1datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_string: _v = 1; break;
+                    case C_ptr: {
+                      swig_type_info *typeinfo = 
+                      (swig_type_info *)(long)Int64_val(Field(argv[5],1));
+                      _v = SWIG_TypeCheck("char *",typeinfo) ||
+                      SWIG_TypeCheck("signed char *",typeinfo) ||
+                      SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("const char *",typeinfo) ||
+                      SWIG_TypeCheck("const signed char *",typeinfo) ||
+                      SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("std::string",typeinfo);
+                    } break;
+                    default: _v = 0; break;
+                  }
+                }    
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_string: _v = 1; break;
+                      case C_ptr: {
+                        swig_type_info *typeinfo = 
+                        (swig_type_info *)(long)Int64_val(Field(argv[6],1));
+                        _v = SWIG_TypeCheck("char *",typeinfo) ||
+                        SWIG_TypeCheck("signed char *",typeinfo) ||
+                        SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                        SWIG_TypeCheck("const char *",typeinfo) ||
+                        SWIG_TypeCheck("const signed char *",typeinfo) ||
+                        SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                        SWIG_TypeCheck("std::string",typeinfo);
+                      } break;
+                      default: _v = 0; break;
+                    }
+                  }    
+                }
+                if (_v) {
+                  free(argv);
+                  CAMLreturn(_wrap_DataFrame_join__SWIG_0datamunge(args));
+                }
+              }
             }
           }
         }
@@ -6441,7 +9965,9 @@ SWIGEXT value _wrap_DataFrame_joindatamunge(value args) {
   free(argv);
   caml_failwith("Wrong number or type of arguments for overloaded function 'DataFrame_join'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,bool) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &) const\n"
     "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &) const\n");
 }
 
@@ -6939,6 +10465,752 @@ SWIGEXT value _wrap_delete_DataFramedatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::DataFrame *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_readdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::string *arg1 = 0 ;
+  std::string temp1 ;
+  datamunge::ShapeLayer *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_read'");
+  }
+  swig_result = Val_unit;
+  {
+    if (caml_ptr_check(caml_list_nth(args,0))) {
+      temp1.assign((char *)caml_ptr_val(caml_list_nth(args,0),0), caml_string_len(caml_list_nth(args,0)));
+      arg1 = &temp1;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::ShapeLayer *)datamunge::ShapeLayer::read((std::string const &)*arg1);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ShapeLayer_from_ptr", (void *)result, SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_sizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_size'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->size();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_shape_typedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_shape_type'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->shape_type();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_boundsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_bounds'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->bounds();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_attributesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_attributes'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  result = (datamunge::DataFrame *)((datamunge::ShapeLayer const *)arg1)->attributes();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_shape_kinddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_shape_kind'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->shape_kind(SWIG_STD_MOVE(arg2));
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_num_partsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_num_parts'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->num_parts(SWIG_STD_MOVE(arg2));
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_part_xdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_part_x'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->part_x(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_part_ydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_part_y'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->part_y(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_point_xdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_point_x'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->point_x(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_point_ydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ShapeLayer_point_y'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->point_y(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plot__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_long_val(caml_list_nth(args,4));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::size_t arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plot__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plot__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plot__SWIG_4datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot();
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ShapeLayer_plotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ShapeLayer);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_ShapeLayer_plot__SWIG_4datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ShapeLayer);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_ShapeLayer_plot__SWIG_3datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ShapeLayer);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_ShapeLayer_plot__SWIG_2datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ShapeLayer);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_ShapeLayer_plot__SWIG_1datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ShapeLayer);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_int64: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_ShapeLayer_plot__SWIG_0datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'ShapeLayer_plot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB) const\n"
+    "    datamunge::ShapeLayer::plot() const\n");
+}
+
+
+SWIGEXT value _wrap_delete_ShapeLayerdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ShapeLayer *arg1 = (datamunge::ShapeLayer *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ShapeLayer'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ShapeLayer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ShapeLayer);
   }
   delete arg1;
   rv = Val_unit;
@@ -30613,6 +34885,2358 @@ SWIGEXT value _wrap_delete_KMeansdatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::KMeans *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__KMeans);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,arg3,arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  std::string temp2 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_4datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::string temp2 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCA__SWIG_5datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::PCA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::PCA *)new datamunge::PCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::PCA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__PCA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_PCAdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_PCA__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_PCA__SWIG_5datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_bool: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_PCA__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_bool: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_PCA__SWIG_4datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_bool: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_bool: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_PCA__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_bool: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_bool: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_PCA__SWIG_3datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_PCA'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::vector< std::string > const &,bool,bool)\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::vector< std::string > const &,bool)\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::vector< std::string > const &)\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::string const &,bool,bool)\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::string const &,bool)\n"
+    "    datamunge::PCA::PCA(datamunge::DataFrame const &,std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_PCA_feature_namesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_feature_names'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->feature_names();
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_observationsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_observations'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->observations();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_num_componentsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_num_components'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->num_components();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_kept_row_indicesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< std::size_t > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_kept_row_indices'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->kept_row_indices();
+  {
+    std::vector< std::size_t > * temp = new std::vector< std::size_t >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::size_t >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__size_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_explained_variancedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_explained_variance'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->explained_variance();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_explained_variance_ratiodatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_explained_variance_ratio'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->explained_variance_ratio();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_cumulative_explained_variance_ratiodatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_cumulative_explained_variance_ratio'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->cumulative_explained_variance_ratio();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_component_loadingsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_component_loadings'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::PCA const *)arg1)->component_loadings(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_component_scoresdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_component_scores'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::PCA const *)arg1)->component_scores(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_scores_framedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_scores_frame'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = (datamunge::DataFrame *)((datamunge::PCA const *)arg1)->scores_frame();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_transformdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_transform'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  result = (datamunge::DataFrame *)((datamunge::PCA const *)arg1)->transform((datamunge::DataFrame const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->summary();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_print_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_print_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  ((datamunge::PCA const *)arg1)->print_summary();
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::size_t arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores();
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scoresdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_PCA_plot_scores__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_PCA_plot_scores__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_PCA_plot_scores__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'PCA_plot_scores'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::PCA::plot_scores(std::size_t,std::size_t) const\n"
+    "    datamunge::PCA::plot_scores(std::size_t) const\n"
+    "    datamunge::PCA::plot_scores() const\n");
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores_grouped__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_PCA_plot_scores_groupeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_PCA_plot_scores_grouped__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_PCA_plot_scores_grouped__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__PCA);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_PCA_plot_scores_grouped__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'PCA_plot_scores_grouped'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::PCA::plot_scores_grouped(std::vector< std::string > const &,std::size_t,std::size_t) const\n"
+    "    datamunge::PCA::plot_scores_grouped(std::vector< std::string > const &,std::size_t) const\n"
+    "    datamunge::PCA::plot_scores_grouped(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_PCA_plot_screedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  datamunge::plot::RPlot result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'PCA_plot_scree'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  result = ((datamunge::PCA const *)arg1)->plot_scree();
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_PCAdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::PCA *arg1 = (datamunge::PCA *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_PCA'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::PCA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__PCA);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  std::string temp4 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp4 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_4datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string temp2 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDS__SWIG_5datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::MDS *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::MDS *)new datamunge::MDS((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::MDS_from_ptr", (void *)result, SWIGTYPE_p_datamunge__MDS);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_MDSdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_MDS__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_MDS__SWIG_5datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_MDS__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_MDS__SWIG_4datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_MDS__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_MDS__SWIG_3datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_MDS'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::vector< std::string > const &,std::size_t,std::string const &)\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::vector< std::string > const &,std::size_t)\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::vector< std::string > const &)\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::string const &,std::size_t,std::string const &)\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::string const &,std::size_t)\n"
+    "    datamunge::MDS::MDS(datamunge::DataFrame const &,std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_MDS_feature_namesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_feature_names'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->feature_names();
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_observationsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_observations'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->observations();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_n_componentsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_n_components'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->n_components();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_kept_row_indicesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< std::size_t > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_kept_row_indices'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->kept_row_indices();
+  {
+    std::vector< std::size_t > * temp = new std::vector< std::size_t >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::size_t >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__size_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_eigenvaluesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_eigenvalues'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->eigenvalues();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_goodness_of_fitdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_goodness_of_fit'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = (double)((datamunge::MDS const *)arg1)->goodness_of_fit();
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_dimensiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_dimension'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::MDS const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_embedding_framedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_embedding_frame'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = (datamunge::DataFrame *)((datamunge::MDS const *)arg1)->embedding_frame();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::DataFrame_from_ptr", (void *)result, SWIGTYPE_p_datamunge__DataFrame);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->summary();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_print_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'MDS_print_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  ((datamunge::MDS const *)arg1)->print_summary();
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::size_t arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding();
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embeddingdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_MDS_plot_embedding__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_MDS_plot_embedding__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_MDS_plot_embedding__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'MDS_plot_embedding'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::MDS::plot_embedding(std::size_t,std::size_t) const\n"
+    "    datamunge::MDS::plot_embedding(std::size_t) const\n"
+    "    datamunge::MDS::plot_embedding() const\n");
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding_grouped__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
+  }
+  {
+    arg2 = (std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_MDS_plot_embedding_groupeddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_MDS_plot_embedding_grouped__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_MDS_plot_embedding_grouped__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__MDS);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_MDS_plot_embedding_grouped__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'MDS_plot_embedding_grouped'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::MDS::plot_embedding_grouped(std::vector< std::string > const &,std::size_t,std::size_t) const\n"
+    "    datamunge::MDS::plot_embedding_grouped(std::vector< std::string > const &,std::size_t) const\n"
+    "    datamunge::MDS::plot_embedding_grouped(std::vector< std::string > const &) const\n");
+}
+
+
+SWIGEXT value _wrap_delete_MDSdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::MDS *arg1 = (datamunge::MDS *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_MDS'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::MDS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__MDS);
   }
   delete arg1;
   rv = Val_unit;
@@ -68882,6 +75506,653 @@ SWIGEXT value _wrap_disown_DifferentiableSeparableFunctiondatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_ProximalFunction_proximaldatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalFunction *arg1 = (datamunge::optim::ProximalFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  double arg3 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalFunction_proximal'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::ProximalFunction::proximal");
+  } else {
+    result = (arg1)->proximal((std::vector< double > const &)*arg2,arg3);
+  }
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ProximalFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::ProximalFunction *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_ProximalFunction'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::ProximalFunction *)new SwigDirector_ProximalFunction(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ProximalFunction_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ProximalFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalFunction *arg1 = (datamunge::optim::ProximalFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ProximalFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_ProximalFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalFunction *arg1 = (datamunge::optim::ProximalFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_ProximalFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HessianFunction_hessiandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HessianFunction *arg1 = (datamunge::optim::HessianFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< std::vector< double > > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HessianFunction_hessian'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HessianFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::HessianFunction::hessian");
+  } else {
+    result = (arg1)->hessian((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< std::vector< double > > * temp = new std::vector< std::vector< double > >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_HessianFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::HessianFunction *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_HessianFunction'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::HessianFunction *)new SwigDirector_HessianFunction(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::HessianFunction_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_HessianFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HessianFunction *arg1 = (datamunge::optim::HessianFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_HessianFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HessianFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_HessianFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HessianFunction *arg1 = (datamunge::optim::HessianFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_HessianFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HessianFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EqualityConstrainedFunction_constraintsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EqualityConstrainedFunction *arg1 = (datamunge::optim::EqualityConstrainedFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EqualityConstrainedFunction_constraints'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EqualityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::EqualityConstrainedFunction::constraints");
+  } else {
+    result = (arg1)->constraints((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EqualityConstrainedFunction_constraint_jacobiandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EqualityConstrainedFunction *arg1 = (datamunge::optim::EqualityConstrainedFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< std::vector< double > > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EqualityConstrainedFunction_constraint_jacobian'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EqualityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::EqualityConstrainedFunction::constraint_jacobian");
+  } else {
+    result = (arg1)->constraint_jacobian((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< std::vector< double > > * temp = new std::vector< std::vector< double > >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EqualityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::EqualityConstrainedFunction *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_EqualityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::EqualityConstrainedFunction *)new SwigDirector_EqualityConstrainedFunction(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EqualityConstrainedFunction_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_EqualityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EqualityConstrainedFunction *arg1 = (datamunge::optim::EqualityConstrainedFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_EqualityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EqualityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_EqualityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EqualityConstrainedFunction *arg1 = (datamunge::optim::EqualityConstrainedFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_EqualityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EqualityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InequalityConstrainedFunction_inequalitiesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InequalityConstrainedFunction *arg1 = (datamunge::optim::InequalityConstrainedFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InequalityConstrainedFunction_inequalities'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InequalityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::InequalityConstrainedFunction::inequalities");
+  } else {
+    result = (arg1)->inequalities((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InequalityConstrainedFunction_inequality_jacobiandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InequalityConstrainedFunction *arg1 = (datamunge::optim::InequalityConstrainedFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< std::vector< double > > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InequalityConstrainedFunction_inequality_jacobian'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InequalityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::InequalityConstrainedFunction::inequality_jacobian");
+  } else {
+    result = (arg1)->inequality_jacobian((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< std::vector< double > > * temp = new std::vector< std::vector< double > >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_InequalityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::InequalityConstrainedFunction *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_InequalityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::InequalityConstrainedFunction *)new SwigDirector_InequalityConstrainedFunction(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::InequalityConstrainedFunction_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_InequalityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InequalityConstrainedFunction *arg1 = (datamunge::optim::InequalityConstrainedFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_InequalityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InequalityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_InequalityConstrainedFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InequalityConstrainedFunction *arg1 = (datamunge::optim::InequalityConstrainedFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_InequalityConstrainedFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InequalityConstrainedFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ResidualFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ResidualFunction *arg1 = (datamunge::optim::ResidualFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ResidualFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ResidualFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ResidualFunction_residualsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ResidualFunction *arg1 = (datamunge::optim::ResidualFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ResidualFunction_residuals'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ResidualFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::ResidualFunction::residuals");
+  } else {
+    result = (arg1)->residuals((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ResidualFunction_jacobiandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ResidualFunction *arg1 = (datamunge::optim::ResidualFunction *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  std::vector< std::vector< double > > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ResidualFunction_jacobian'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ResidualFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::ResidualFunction::jacobian");
+  } else {
+    result = (arg1)->jacobian((std::vector< double > const &)*arg2);
+  }
+  {
+    std::vector< std::vector< double > > * temp = new std::vector< std::vector< double > >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ResidualFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::ResidualFunction *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_ResidualFunction'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::ResidualFunction *)new SwigDirector_ResidualFunction(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ResidualFunction_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_ResidualFunctiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ResidualFunction *arg1 = (datamunge::optim::ResidualFunction *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_ResidualFunction'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ResidualFunction *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_GradientDescentOptions_step_size_setdatamunge (value args)
 {
   CAMLparam1(args);
@@ -69702,6 +76973,2056 @@ SWIGEXT value _wrap_delete_Adamdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_AdaGradOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_epsilon_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_epsilon_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->epsilon = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_epsilon_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_epsilon_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  result = (double) ((arg1)->epsilon);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaGradOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGradOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaGradOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_AdaGradOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::AdaGradOptions *)new datamunge::optim::AdaGradOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaGradOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AdaGradOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions *arg1 = (datamunge::optim::AdaGradOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AdaGradOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaGrad__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGradOptions arg1 ;
+  datamunge::optim::AdaGrad *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::AdaGradOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGradOptions)) ;
+  }
+  result = (datamunge::optim::AdaGrad *)new datamunge::optim::AdaGrad(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaGrad_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaGrad);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaGrad__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGrad *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::AdaGrad *)new datamunge::optim::AdaGrad();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaGrad_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaGrad);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaGraddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_AdaGrad__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__AdaGradOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::AdaGradOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_AdaGrad__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_AdaGrad'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::AdaGrad::AdaGrad(datamunge::optim::AdaGradOptions)\n"
+    "    datamunge::optim::AdaGrad::AdaGrad()\n");
+}
+
+
+SWIGEXT value _wrap_AdaGrad_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGrad *arg1 = (datamunge::optim::AdaGrad *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaGrad_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGrad *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGrad);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::AdaGrad const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AdaGraddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaGrad *arg1 = (datamunge::optim::AdaGrad *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AdaGrad'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaGrad *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaGrad);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_decay_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_decay_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->decay_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_decay_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_decay_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  result = (double) ((arg1)->decay_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_epsilon_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_epsilon_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->epsilon = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_epsilon_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_epsilon_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  result = (double) ((arg1)->epsilon);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdaDeltaOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDeltaOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaDeltaOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_AdaDeltaOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::AdaDeltaOptions *)new datamunge::optim::AdaDeltaOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaDeltaOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AdaDeltaOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions *arg1 = (datamunge::optim::AdaDeltaOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AdaDeltaOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDeltaOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaDelta__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDeltaOptions arg1 ;
+  datamunge::optim::AdaDelta *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::AdaDeltaOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDeltaOptions)) ;
+  }
+  result = (datamunge::optim::AdaDelta *)new datamunge::optim::AdaDelta(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaDelta_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaDelta);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaDelta__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDelta *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::AdaDelta *)new datamunge::optim::AdaDelta();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AdaDelta_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AdaDelta);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AdaDeltadatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_AdaDelta__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__AdaDeltaOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::AdaDeltaOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_AdaDelta__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_AdaDelta'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::AdaDelta::AdaDelta(datamunge::optim::AdaDeltaOptions)\n"
+    "    datamunge::optim::AdaDelta::AdaDelta()\n");
+}
+
+
+SWIGEXT value _wrap_AdaDelta_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDelta *arg1 = (datamunge::optim::AdaDelta *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AdaDelta_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDelta *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDelta);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::AdaDelta const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AdaDeltadatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AdaDelta *arg1 = (datamunge::optim::AdaDelta *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AdaDelta'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AdaDelta *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AdaDelta);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_beta1_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_beta1_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->beta1 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_beta1_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_beta1_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result = (double) ((arg1)->beta1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_beta2_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_beta2_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->beta2 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_beta2_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_beta2_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result = (double) ((arg1)->beta2);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_epsilon_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_epsilon_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->epsilon = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_epsilon_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_epsilon_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result = (double) ((arg1)->epsilon);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AMSGradOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGradOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AMSGradOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_AMSGradOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::AMSGradOptions *)new datamunge::optim::AMSGradOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AMSGradOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AMSGradOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions *arg1 = (datamunge::optim::AMSGradOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AMSGradOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGradOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AMSGrad__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGradOptions arg1 ;
+  datamunge::optim::AMSGrad *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::AMSGradOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGradOptions)) ;
+  }
+  result = (datamunge::optim::AMSGrad *)new datamunge::optim::AMSGrad(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AMSGrad_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AMSGrad);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AMSGrad__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGrad *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::AMSGrad *)new datamunge::optim::AMSGrad();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AMSGrad_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AMSGrad);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AMSGraddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_AMSGrad__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__AMSGradOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::AMSGradOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_AMSGrad__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_AMSGrad'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::AMSGrad::AMSGrad(datamunge::optim::AMSGradOptions)\n"
+    "    datamunge::optim::AMSGrad::AMSGrad()\n");
+}
+
+
+SWIGEXT value _wrap_AMSGrad_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGrad *arg1 = (datamunge::optim::AMSGrad *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AMSGrad_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGrad *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGrad);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::AMSGrad const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AMSGraddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AMSGrad *arg1 = (datamunge::optim::AMSGrad *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AMSGrad'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AMSGrad *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AMSGrad);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_beta1_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_beta1_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->beta1 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_beta1_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_beta1_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result = (double) ((arg1)->beta1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_beta2_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_beta2_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->beta2 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_beta2_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_beta2_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result = (double) ((arg1)->beta2);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_epsilon_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_epsilon_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->epsilon = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_epsilon_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_epsilon_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result = (double) ((arg1)->epsilon);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NadamOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NadamOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NadamOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_NadamOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::NadamOptions *)new datamunge::optim::NadamOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NadamOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NadamOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions *arg1 = (datamunge::optim::NadamOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NadamOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NadamOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Nadam__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NadamOptions arg1 ;
+  datamunge::optim::Nadam *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::NadamOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NadamOptions)) ;
+  }
+  result = (datamunge::optim::Nadam *)new datamunge::optim::Nadam(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::Nadam_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__Nadam);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Nadam__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Nadam *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::Nadam *)new datamunge::optim::Nadam();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::Nadam_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__Nadam);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Nadamdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_Nadam__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__NadamOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::NadamOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_Nadam__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_Nadam'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::Nadam::Nadam(datamunge::optim::NadamOptions)\n"
+    "    datamunge::optim::Nadam::Nadam()\n");
+}
+
+
+SWIGEXT value _wrap_Nadam_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Nadam *arg1 = (datamunge::optim::Nadam *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Nadam_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::Nadam *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__Nadam);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::Nadam const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_Nadamdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Nadam *arg1 = (datamunge::optim::Nadam *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_Nadam'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::Nadam *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__Nadam);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_decay_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_decay_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->decay_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_decay_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_decay_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  result = (double) ((arg1)->decay_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_epsilon_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_epsilon_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->epsilon = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_epsilon_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_epsilon_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  result = (double) ((arg1)->epsilon);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RMSPropOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSPropOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RMSPropOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RMSPropOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::RMSPropOptions *)new datamunge::optim::RMSPropOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RMSPropOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RMSPropOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions *arg1 = (datamunge::optim::RMSPropOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RMSPropOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSPropOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RMSProp__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSPropOptions arg1 ;
+  datamunge::optim::RMSProp *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::RMSPropOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSPropOptions)) ;
+  }
+  result = (datamunge::optim::RMSProp *)new datamunge::optim::RMSProp(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RMSProp_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RMSProp);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RMSProp__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSProp *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::RMSProp *)new datamunge::optim::RMSProp();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RMSProp_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RMSProp);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RMSPropdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_RMSProp__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__RMSPropOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::RMSPropOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_RMSProp__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_RMSProp'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::RMSProp::RMSProp(datamunge::optim::RMSPropOptions)\n"
+    "    datamunge::optim::RMSProp::RMSProp()\n");
+}
+
+
+SWIGEXT value _wrap_RMSProp_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSProp *arg1 = (datamunge::optim::RMSProp *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RMSProp_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSProp *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSProp);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::RMSProp const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RMSPropdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RMSProp *arg1 = (datamunge::optim::RMSProp *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RMSProp'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RMSProp *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RMSProp);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_LBFGSOptions_max_iterations_setdatamunge (value args)
 {
   CAMLparam1(args);
@@ -70151,6 +79472,510 @@ SWIGEXT value _wrap_delete_LBFGSdatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::optim::LBFGS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LBFGS);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_initial_simplex_scale_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_initial_simplex_scale_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_simplex_scale = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_initial_simplex_scale_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_initial_simplex_scale_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->initial_simplex_scale);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_reflection_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_reflection_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->reflection = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_reflection_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_reflection_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->reflection);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_expansion_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_expansion_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->expansion = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_expansion_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_expansion_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->expansion);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_contraction_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_contraction_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->contraction = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_contraction_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_contraction_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->contraction);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_shrink_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_shrink_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->shrink = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_shrink_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_shrink_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->shrink);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NelderMeadOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMeadOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NelderMeadOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_NelderMeadOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::NelderMeadOptions *)new datamunge::optim::NelderMeadOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NelderMeadOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NelderMeadOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions *arg1 = (datamunge::optim::NelderMeadOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NelderMeadOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMeadOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NelderMead__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMeadOptions arg1 ;
+  datamunge::optim::NelderMead *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::NelderMeadOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMeadOptions)) ;
+  }
+  result = (datamunge::optim::NelderMead *)new datamunge::optim::NelderMead(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NelderMead_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NelderMead);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NelderMead__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMead *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::NelderMead *)new datamunge::optim::NelderMead();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NelderMead_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NelderMead);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NelderMeaddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_NelderMead__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__NelderMeadOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::NelderMeadOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_NelderMead__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_NelderMead'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::NelderMead::NelderMead(datamunge::optim::NelderMeadOptions)\n"
+    "    datamunge::optim::NelderMead::NelderMead()\n");
+}
+
+
+SWIGEXT value _wrap_NelderMead_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMead *arg1 = (datamunge::optim::NelderMead *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NelderMead_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMead *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMead);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::NelderMead const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NelderMeaddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NelderMead *arg1 = (datamunge::optim::NelderMead *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NelderMead'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NelderMead *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NelderMead);
   }
   delete arg1;
   rv = Val_unit;
@@ -70609,6 +80434,2974 @@ SWIGEXT value _wrap_delete_SGDdatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::optim::SGD *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SGD);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_max_epochs_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_max_epochs_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_epochs = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_max_epochs_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_max_epochs_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  result =  ((arg1)->max_epochs);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_inner_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_inner_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->inner_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_inner_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_inner_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  result =  ((arg1)->inner_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SVRGOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRGOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SVRGOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_SVRGOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::SVRGOptions *)new datamunge::optim::SVRGOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SVRGOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SVRGOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions *arg1 = (datamunge::optim::SVRGOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SVRGOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRGOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SVRG__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRGOptions arg1 ;
+  datamunge::optim::SVRG *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::SVRGOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRGOptions)) ;
+  }
+  result = (datamunge::optim::SVRG *)new datamunge::optim::SVRG(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SVRG_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SVRG);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SVRG__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRG *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::SVRG *)new datamunge::optim::SVRG();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SVRG_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SVRG);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SVRGdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_SVRG__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__SVRGOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::SVRGOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_SVRG__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_SVRG'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::SVRG::SVRG(datamunge::optim::SVRGOptions)\n"
+    "    datamunge::optim::SVRG::SVRG()\n");
+}
+
+
+SWIGEXT value _wrap_SVRG_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRG *arg1 = (datamunge::optim::SVRG *) 0 ;
+  datamunge::optim::DifferentiableSeparableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SVRG_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRG *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRG);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableSeparableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::SVRG const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SVRGdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SVRG *arg1 = (datamunge::optim::SVRG *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SVRG'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SVRG *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SVRG);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SAGAOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGAOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SAGAOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_SAGAOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::SAGAOptions *)new datamunge::optim::SAGAOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SAGAOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SAGAOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions *arg1 = (datamunge::optim::SAGAOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SAGAOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SAGA__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGAOptions arg1 ;
+  datamunge::optim::SAGA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::SAGAOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGAOptions)) ;
+  }
+  result = (datamunge::optim::SAGA *)new datamunge::optim::SAGA(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SAGA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SAGA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SAGA__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGA *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::SAGA *)new datamunge::optim::SAGA();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SAGA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SAGA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SAGAdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_SAGA__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__SAGAOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::SAGAOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_SAGA__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_SAGA'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::SAGA::SAGA(datamunge::optim::SAGAOptions)\n"
+    "    datamunge::optim::SAGA::SAGA()\n");
+}
+
+
+SWIGEXT value _wrap_SAGA_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGA *arg1 = (datamunge::optim::SAGA *) 0 ;
+  datamunge::optim::DifferentiableSeparableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SAGA_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGA);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableSeparableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::SAGA const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SAGAdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SAGA *arg1 = (datamunge::optim::SAGA *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SAGA'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SAGA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SAGA);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_armijo_c1_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_armijo_c1_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->armijo_c1 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_armijo_c1_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_armijo_c1_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->armijo_c1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_backtracking_factor_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_backtracking_factor_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->backtracking_factor = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_backtracking_factor_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_backtracking_factor_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->backtracking_factor);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_max_line_search_trials_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_max_line_search_trials_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_line_search_trials = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CoordinateDescentOptions_max_line_search_trials_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescentOptions_max_line_search_trials_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  result =  ((arg1)->max_line_search_trials);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CoordinateDescentOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_CoordinateDescentOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::CoordinateDescentOptions *)new datamunge::optim::CoordinateDescentOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CoordinateDescentOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CoordinateDescentOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions *arg1 = (datamunge::optim::CoordinateDescentOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CoordinateDescentOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CoordinateDescent__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescentOptions arg1 ;
+  datamunge::optim::CoordinateDescent *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::CoordinateDescentOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions)) ;
+  }
+  result = (datamunge::optim::CoordinateDescent *)new datamunge::optim::CoordinateDescent(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CoordinateDescent_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CoordinateDescent);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CoordinateDescent__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescent *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::CoordinateDescent *)new datamunge::optim::CoordinateDescent();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CoordinateDescent_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CoordinateDescent);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CoordinateDescentdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_CoordinateDescent__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::CoordinateDescentOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_CoordinateDescent__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_CoordinateDescent'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::CoordinateDescent::CoordinateDescent(datamunge::optim::CoordinateDescentOptions)\n"
+    "    datamunge::optim::CoordinateDescent::CoordinateDescent()\n");
+}
+
+
+SWIGEXT value _wrap_CoordinateDescent_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescent *arg1 = (datamunge::optim::CoordinateDescent *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CoordinateDescent_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescent *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescent);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::CoordinateDescent const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CoordinateDescentdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CoordinateDescent *arg1 = (datamunge::optim::CoordinateDescent *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CoordinateDescent'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CoordinateDescent *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CoordinateDescent);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_block_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_block_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->block_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_block_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_block_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result =  ((arg1)->block_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_armijo_c1_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_armijo_c1_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->armijo_c1 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_armijo_c1_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_armijo_c1_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->armijo_c1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_backtracking_factor_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_backtracking_factor_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->backtracking_factor = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_backtracking_factor_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_backtracking_factor_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result = (double) ((arg1)->backtracking_factor);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_max_line_search_trials_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_line_search_trials = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_max_line_search_trials_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result =  ((arg1)->max_line_search_trials);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescentOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescentOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomizedBlockCoordinateDescentOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RandomizedBlockCoordinateDescentOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)new datamunge::optim::RandomizedBlockCoordinateDescentOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RandomizedBlockCoordinateDescentOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RandomizedBlockCoordinateDescentOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RandomizedBlockCoordinateDescentOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomizedBlockCoordinateDescent__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions arg1 ;
+  datamunge::optim::RandomizedBlockCoordinateDescent *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::RandomizedBlockCoordinateDescentOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions)) ;
+  }
+  result = (datamunge::optim::RandomizedBlockCoordinateDescent *)new datamunge::optim::RandomizedBlockCoordinateDescent(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RandomizedBlockCoordinateDescent_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomizedBlockCoordinateDescent__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescent *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::RandomizedBlockCoordinateDescent *)new datamunge::optim::RandomizedBlockCoordinateDescent();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RandomizedBlockCoordinateDescent_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomizedBlockCoordinateDescentdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_RandomizedBlockCoordinateDescent__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::RandomizedBlockCoordinateDescentOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_RandomizedBlockCoordinateDescent__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_RandomizedBlockCoordinateDescent'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::RandomizedBlockCoordinateDescent::RandomizedBlockCoordinateDescent(datamunge::optim::RandomizedBlockCoordinateDescentOptions)\n"
+    "    datamunge::optim::RandomizedBlockCoordinateDescent::RandomizedBlockCoordinateDescent()\n");
+}
+
+
+SWIGEXT value _wrap_RandomizedBlockCoordinateDescent_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomizedBlockCoordinateDescent_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::RandomizedBlockCoordinateDescent const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RandomizedBlockCoordinateDescentdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RandomizedBlockCoordinateDescent'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_momentum_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_momentum_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->momentum = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_momentum_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_momentum_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  result = (double) ((arg1)->momentum);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradientOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradientOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NesterovAcceleratedGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_NesterovAcceleratedGradientOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::NesterovAcceleratedGradientOptions *)new datamunge::optim::NesterovAcceleratedGradientOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NesterovAcceleratedGradientOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NesterovAcceleratedGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions *arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NesterovAcceleratedGradientOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NesterovAcceleratedGradient__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradientOptions arg1 ;
+  datamunge::optim::NesterovAcceleratedGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::NesterovAcceleratedGradientOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions)) ;
+  }
+  result = (datamunge::optim::NesterovAcceleratedGradient *)new datamunge::optim::NesterovAcceleratedGradient(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NesterovAcceleratedGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NesterovAcceleratedGradient__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::NesterovAcceleratedGradient *)new datamunge::optim::NesterovAcceleratedGradient();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NesterovAcceleratedGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NesterovAcceleratedGradientdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_NesterovAcceleratedGradient__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::NesterovAcceleratedGradientOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_NesterovAcceleratedGradient__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_NesterovAcceleratedGradient'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::NesterovAcceleratedGradient::NesterovAcceleratedGradient(datamunge::optim::NesterovAcceleratedGradientOptions)\n"
+    "    datamunge::optim::NesterovAcceleratedGradient::NesterovAcceleratedGradient()\n");
+}
+
+
+SWIGEXT value _wrap_NesterovAcceleratedGradient_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradient *arg1 = (datamunge::optim::NesterovAcceleratedGradient *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NesterovAcceleratedGradient_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NesterovAcceleratedGradientdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NesterovAcceleratedGradient *arg1 = (datamunge::optim::NesterovAcceleratedGradient *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NesterovAcceleratedGradient'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NesterovAcceleratedGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_armijo_c1_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_armijo_c1_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->armijo_c1 = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_armijo_c1_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_armijo_c1_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  result = (double) ((arg1)->armijo_c1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_backtracking_factor_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_backtracking_factor_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->backtracking_factor = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_backtracking_factor_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_backtracking_factor_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  result = (double) ((arg1)->backtracking_factor);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_max_line_search_trials_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_max_line_search_trials_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_line_search_trials = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ConjugateGradientOptions_max_line_search_trials_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradientOptions_max_line_search_trials_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  result =  ((arg1)->max_line_search_trials);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ConjugateGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ConjugateGradientOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::ConjugateGradientOptions *)new datamunge::optim::ConjugateGradientOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ConjugateGradientOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ConjugateGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions *arg1 = (datamunge::optim::ConjugateGradientOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ConjugateGradientOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ConjugateGradient__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradientOptions arg1 ;
+  datamunge::optim::ConjugateGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::ConjugateGradientOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions)) ;
+  }
+  result = (datamunge::optim::ConjugateGradient *)new datamunge::optim::ConjugateGradient(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ConjugateGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ConjugateGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ConjugateGradient__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::ConjugateGradient *)new datamunge::optim::ConjugateGradient();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ConjugateGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ConjugateGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ConjugateGradientdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ConjugateGradient__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::ConjugateGradientOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ConjugateGradient__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ConjugateGradient'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::ConjugateGradient::ConjugateGradient(datamunge::optim::ConjugateGradientOptions)\n"
+    "    datamunge::optim::ConjugateGradient::ConjugateGradient()\n");
+}
+
+
+SWIGEXT value _wrap_ConjugateGradient_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradient *arg1 = (datamunge::optim::ConjugateGradient *) 0 ;
+  datamunge::optim::DifferentiableFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ConjugateGradient_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradient);
+  }
+  {
+    arg2 = (datamunge::optim::DifferentiableFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__DifferentiableFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::ConjugateGradient const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ConjugateGradientdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ConjugateGradient *arg1 = (datamunge::optim::ConjugateGradient *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ConjugateGradient'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ConjugateGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ConjugateGradient);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_initial_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_initial_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_initial_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_initial_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  result = (double) ((arg1)->initial_step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_max_generations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_max_generations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_generations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_max_generations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_max_generations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  result =  ((arg1)->max_generations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CMAESOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAESOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CMAESOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_CMAESOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::CMAESOptions *)new datamunge::optim::CMAESOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CMAESOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CMAESOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions *arg1 = (datamunge::optim::CMAESOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CMAESOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAESOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CMAES__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAESOptions arg1 ;
+  datamunge::optim::CMAES *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::CMAESOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAESOptions)) ;
+  }
+  result = (datamunge::optim::CMAES *)new datamunge::optim::CMAES(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CMAES_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CMAES);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CMAES__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAES *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::CMAES *)new datamunge::optim::CMAES();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CMAES_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CMAES);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CMAESdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_CMAES__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__CMAESOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::CMAESOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_CMAES__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_CMAES'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::CMAES::CMAES(datamunge::optim::CMAESOptions)\n"
+    "    datamunge::optim::CMAES::CMAES()\n");
+}
+
+
+SWIGEXT value _wrap_CMAES_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAES *arg1 = (datamunge::optim::CMAES *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CMAES_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAES *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAES);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::CMAES const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CMAESdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CMAES *arg1 = (datamunge::optim::CMAES *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CMAES'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CMAES *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CMAES);
   }
   delete arg1;
   rv = Val_unit;
@@ -73112,6 +85905,8857 @@ SWIGEXT value _wrap_delete_GeneticAlgorithmdatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::optim::GeneticAlgorithm *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GeneticAlgorithm);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_archive_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_archive_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->archive_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_archive_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_archive_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result =  ((arg1)->archive_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_samples_per_iteration_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_samples_per_iteration_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->samples_per_iteration = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_samples_per_iteration_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_samples_per_iteration_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result =  ((arg1)->samples_per_iteration);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_locality_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_locality_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->locality = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_locality_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_locality_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result = (double) ((arg1)->locality);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_convergence_speed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_convergence_speed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->convergence_speed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_convergence_speed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_convergence_speed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result = (double) ((arg1)->convergence_speed);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ACOROptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOROptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ACOROptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ACOROptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::ACOROptions *)new datamunge::optim::ACOROptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ACOROptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ACOROptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions *arg1 = (datamunge::optim::ACOROptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ACOROptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOROptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ACOR__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOROptions arg1 ;
+  datamunge::optim::ACOR *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::ACOROptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOROptions)) ;
+  }
+  result = (datamunge::optim::ACOR *)new datamunge::optim::ACOR(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ACOR_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ACOR);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ACOR__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOR *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::ACOR *)new datamunge::optim::ACOR();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ACOR_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ACOR);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ACORdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ACOR__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__ACOROptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::ACOROptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ACOR__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ACOR'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::ACOR::ACOR(datamunge::optim::ACOROptions)\n"
+    "    datamunge::optim::ACOR::ACOR()\n");
+}
+
+
+SWIGEXT value _wrap_ACOR_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOR *arg1 = (datamunge::optim::ACOR *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ACOR_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOR *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOR);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::ACOR const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ACORdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ACOR *arg1 = (datamunge::optim::ACOR *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ACOR'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ACOR *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ACOR);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_abandonment_limit_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_abandonment_limit_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->abandonment_limit = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_abandonment_limit_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_abandonment_limit_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  result =  ((arg1)->abandonment_limit);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_max_generations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_max_generations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_generations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_max_generations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_max_generations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  result =  ((arg1)->max_generations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColonyOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColonyOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ArtificialBeeColonyOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ArtificialBeeColonyOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::ArtificialBeeColonyOptions *)new datamunge::optim::ArtificialBeeColonyOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ArtificialBeeColonyOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ArtificialBeeColonyOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions *arg1 = (datamunge::optim::ArtificialBeeColonyOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ArtificialBeeColonyOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColonyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ArtificialBeeColony__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColonyOptions arg1 ;
+  datamunge::optim::ArtificialBeeColony *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::ArtificialBeeColonyOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions)) ;
+  }
+  result = (datamunge::optim::ArtificialBeeColony *)new datamunge::optim::ArtificialBeeColony(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ArtificialBeeColony_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ArtificialBeeColony);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ArtificialBeeColony__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColony *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::ArtificialBeeColony *)new datamunge::optim::ArtificialBeeColony();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ArtificialBeeColony_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ArtificialBeeColony);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ArtificialBeeColonydatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ArtificialBeeColony__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::ArtificialBeeColonyOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ArtificialBeeColony__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ArtificialBeeColony'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::ArtificialBeeColony::ArtificialBeeColony(datamunge::optim::ArtificialBeeColonyOptions)\n"
+    "    datamunge::optim::ArtificialBeeColony::ArtificialBeeColony()\n");
+}
+
+
+SWIGEXT value _wrap_ArtificialBeeColony_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColony *arg1 = (datamunge::optim::ArtificialBeeColony *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ArtificialBeeColony_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColony *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColony);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::ArtificialBeeColony const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ArtificialBeeColonydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ArtificialBeeColony *arg1 = (datamunge::optim::ArtificialBeeColony *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ArtificialBeeColony'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ArtificialBeeColony *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ArtificialBeeColony);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_elite_ratio_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_elite_ratio_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->elite_ratio = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_elite_ratio_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_elite_ratio_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result = (double) ((arg1)->elite_ratio);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_initial_std_dev_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_initial_std_dev_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_std_dev = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_initial_std_dev_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_initial_std_dev_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result = (double) ((arg1)->initial_std_dev);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_smoothing_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_smoothing_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->smoothing = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_smoothing_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_smoothing_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result = (double) ((arg1)->smoothing);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethodOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethodOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CrossEntropyMethodOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_CrossEntropyMethodOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::CrossEntropyMethodOptions *)new datamunge::optim::CrossEntropyMethodOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CrossEntropyMethodOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CrossEntropyMethodOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions *arg1 = (datamunge::optim::CrossEntropyMethodOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CrossEntropyMethodOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethodOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CrossEntropyMethod__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethodOptions arg1 ;
+  datamunge::optim::CrossEntropyMethod *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::CrossEntropyMethodOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions)) ;
+  }
+  result = (datamunge::optim::CrossEntropyMethod *)new datamunge::optim::CrossEntropyMethod(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CrossEntropyMethod_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CrossEntropyMethod);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CrossEntropyMethod__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethod *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::CrossEntropyMethod *)new datamunge::optim::CrossEntropyMethod();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CrossEntropyMethod_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CrossEntropyMethod);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CrossEntropyMethoddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_CrossEntropyMethod__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::CrossEntropyMethodOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_CrossEntropyMethod__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_CrossEntropyMethod'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::CrossEntropyMethod::CrossEntropyMethod(datamunge::optim::CrossEntropyMethodOptions)\n"
+    "    datamunge::optim::CrossEntropyMethod::CrossEntropyMethod()\n");
+}
+
+
+SWIGEXT value _wrap_CrossEntropyMethod_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethod *arg1 = (datamunge::optim::CrossEntropyMethod *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CrossEntropyMethod_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethod *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethod);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::CrossEntropyMethod const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CrossEntropyMethoddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CrossEntropyMethod *arg1 = (datamunge::optim::CrossEntropyMethod *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CrossEntropyMethod'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CrossEntropyMethod *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CrossEntropyMethod);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_discovery_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_discovery_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->discovery_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_discovery_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_discovery_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result = (double) ((arg1)->discovery_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_levy_beta_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_levy_beta_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->levy_beta = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_levy_beta_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_levy_beta_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result = (double) ((arg1)->levy_beta);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_step_scale_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_step_scale_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_scale = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_step_scale_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_step_scale_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result = (double) ((arg1)->step_scale);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_CuckooSearchOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearchOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CuckooSearchOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_CuckooSearchOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::CuckooSearchOptions *)new datamunge::optim::CuckooSearchOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CuckooSearchOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CuckooSearchOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions *arg1 = (datamunge::optim::CuckooSearchOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CuckooSearchOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CuckooSearch__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearchOptions arg1 ;
+  datamunge::optim::CuckooSearch *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::CuckooSearchOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearchOptions)) ;
+  }
+  result = (datamunge::optim::CuckooSearch *)new datamunge::optim::CuckooSearch(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CuckooSearch_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CuckooSearch);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CuckooSearch__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearch *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::CuckooSearch *)new datamunge::optim::CuckooSearch();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::CuckooSearch_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__CuckooSearch);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_CuckooSearchdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_CuckooSearch__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__CuckooSearchOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::CuckooSearchOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_CuckooSearch__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_CuckooSearch'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::CuckooSearch::CuckooSearch(datamunge::optim::CuckooSearchOptions)\n"
+    "    datamunge::optim::CuckooSearch::CuckooSearch()\n");
+}
+
+
+SWIGEXT value _wrap_CuckooSearch_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearch *arg1 = (datamunge::optim::CuckooSearch *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'CuckooSearch_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearch *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearch);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::CuckooSearch const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_CuckooSearchdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::CuckooSearch *arg1 = (datamunge::optim::CuckooSearch *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_CuckooSearch'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::CuckooSearch *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__CuckooSearch);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_selection_ratio_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_selection_ratio_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->selection_ratio = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_selection_ratio_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_selection_ratio_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result = (double) ((arg1)->selection_ratio);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_initial_std_dev_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_initial_std_dev_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_std_dev = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_initial_std_dev_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_initial_std_dev_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result = (double) ((arg1)->initial_std_dev);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_covariance_regularization_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_covariance_regularization_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->covariance_regularization = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_covariance_regularization_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_covariance_regularization_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result = (double) ((arg1)->covariance_regularization);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_max_generations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_max_generations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_generations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_max_generations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_max_generations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result =  ((arg1)->max_generations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistributionOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistributionOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EstimationOfDistributionOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_EstimationOfDistributionOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::EstimationOfDistributionOptions *)new datamunge::optim::EstimationOfDistributionOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EstimationOfDistributionOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_EstimationOfDistributionOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions *arg1 = (datamunge::optim::EstimationOfDistributionOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_EstimationOfDistributionOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistributionOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EstimationOfDistribution__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistributionOptions arg1 ;
+  datamunge::optim::EstimationOfDistribution *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::EstimationOfDistributionOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions)) ;
+  }
+  result = (datamunge::optim::EstimationOfDistribution *)new datamunge::optim::EstimationOfDistribution(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EstimationOfDistribution_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EstimationOfDistribution);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EstimationOfDistribution__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistribution *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::EstimationOfDistribution *)new datamunge::optim::EstimationOfDistribution();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EstimationOfDistribution_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EstimationOfDistribution);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EstimationOfDistributiondatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_EstimationOfDistribution__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::EstimationOfDistributionOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_EstimationOfDistribution__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_EstimationOfDistribution'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::EstimationOfDistribution::EstimationOfDistribution(datamunge::optim::EstimationOfDistributionOptions)\n"
+    "    datamunge::optim::EstimationOfDistribution::EstimationOfDistribution()\n");
+}
+
+
+SWIGEXT value _wrap_EstimationOfDistribution_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistribution *arg1 = (datamunge::optim::EstimationOfDistribution *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EstimationOfDistribution_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistribution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistribution);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::EstimationOfDistribution const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_EstimationOfDistributiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EstimationOfDistribution *arg1 = (datamunge::optim::EstimationOfDistribution *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_EstimationOfDistribution'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EstimationOfDistribution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EstimationOfDistribution);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_mu_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_mu_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->mu = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_mu_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_mu_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result =  ((arg1)->mu);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_offspring_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_offspring_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->offspring_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_offspring_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_offspring_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result =  ((arg1)->offspring_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_strategy_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_strategy_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  if (arg1) (arg1)->strategy = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_strategy_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::string *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_strategy_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result = (std::string *) & ((arg1)->strategy);
+  {
+    rv = caml_val_string_len((*result).data(), (*result).size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_initial_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_initial_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_initial_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_initial_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result = (double) ((arg1)->initial_step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_max_generations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_max_generations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_generations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_max_generations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_max_generations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result =  ((arg1)->max_generations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategyOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategyOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EvolutionStrategyOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_EvolutionStrategyOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::EvolutionStrategyOptions *)new datamunge::optim::EvolutionStrategyOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EvolutionStrategyOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_EvolutionStrategyOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions *arg1 = (datamunge::optim::EvolutionStrategyOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_EvolutionStrategyOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategyOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EvolutionStrategy__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategyOptions arg1 ;
+  datamunge::optim::EvolutionStrategy *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::EvolutionStrategyOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions)) ;
+  }
+  result = (datamunge::optim::EvolutionStrategy *)new datamunge::optim::EvolutionStrategy(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EvolutionStrategy_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EvolutionStrategy);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EvolutionStrategy__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategy *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::EvolutionStrategy *)new datamunge::optim::EvolutionStrategy();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::EvolutionStrategy_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__EvolutionStrategy);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_EvolutionStrategydatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_EvolutionStrategy__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::EvolutionStrategyOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_EvolutionStrategy__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_EvolutionStrategy'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::EvolutionStrategy::EvolutionStrategy(datamunge::optim::EvolutionStrategyOptions)\n"
+    "    datamunge::optim::EvolutionStrategy::EvolutionStrategy()\n");
+}
+
+
+SWIGEXT value _wrap_EvolutionStrategy_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategy *arg1 = (datamunge::optim::EvolutionStrategy *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'EvolutionStrategy_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategy *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategy);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::EvolutionStrategy const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_EvolutionStrategydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::EvolutionStrategy *arg1 = (datamunge::optim::EvolutionStrategy *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_EvolutionStrategy'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::EvolutionStrategy *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__EvolutionStrategy);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_attractiveness_at_zero_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_attractiveness_at_zero_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->attractiveness_at_zero = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_attractiveness_at_zero_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_attractiveness_at_zero_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result = (double) ((arg1)->attractiveness_at_zero);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_light_absorption_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_light_absorption_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->light_absorption = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_light_absorption_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_light_absorption_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result = (double) ((arg1)->light_absorption);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_randomization_step_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_randomization_step_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->randomization_step = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_randomization_step_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_randomization_step_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result = (double) ((arg1)->randomization_step);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_randomization_decay_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_randomization_decay_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->randomization_decay = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_randomization_decay_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_randomization_decay_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result = (double) ((arg1)->randomization_decay);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithmOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithmOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FireflyAlgorithmOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_FireflyAlgorithmOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::FireflyAlgorithmOptions *)new datamunge::optim::FireflyAlgorithmOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FireflyAlgorithmOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_FireflyAlgorithmOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions *arg1 = (datamunge::optim::FireflyAlgorithmOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_FireflyAlgorithmOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithmOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FireflyAlgorithm__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithmOptions arg1 ;
+  datamunge::optim::FireflyAlgorithm *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::FireflyAlgorithmOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions)) ;
+  }
+  result = (datamunge::optim::FireflyAlgorithm *)new datamunge::optim::FireflyAlgorithm(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FireflyAlgorithm_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FireflyAlgorithm);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FireflyAlgorithm__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithm *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::FireflyAlgorithm *)new datamunge::optim::FireflyAlgorithm();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FireflyAlgorithm_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FireflyAlgorithm);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FireflyAlgorithmdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_FireflyAlgorithm__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::FireflyAlgorithmOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_FireflyAlgorithm__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_FireflyAlgorithm'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::FireflyAlgorithm::FireflyAlgorithm(datamunge::optim::FireflyAlgorithmOptions)\n"
+    "    datamunge::optim::FireflyAlgorithm::FireflyAlgorithm()\n");
+}
+
+
+SWIGEXT value _wrap_FireflyAlgorithm_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithm *arg1 = (datamunge::optim::FireflyAlgorithm *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FireflyAlgorithm_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithm *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithm);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::FireflyAlgorithm const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_FireflyAlgorithmdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FireflyAlgorithm *arg1 = (datamunge::optim::FireflyAlgorithm *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_FireflyAlgorithm'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FireflyAlgorithm *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FireflyAlgorithm);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizerOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizerOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GreyWolfOptimizerOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_GreyWolfOptimizerOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::GreyWolfOptimizerOptions *)new datamunge::optim::GreyWolfOptimizerOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::GreyWolfOptimizerOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_GreyWolfOptimizerOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions *arg1 = (datamunge::optim::GreyWolfOptimizerOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GreyWolfOptimizerOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizerOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GreyWolfOptimizer__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizerOptions arg1 ;
+  datamunge::optim::GreyWolfOptimizer *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::GreyWolfOptimizerOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions)) ;
+  }
+  result = (datamunge::optim::GreyWolfOptimizer *)new datamunge::optim::GreyWolfOptimizer(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::GreyWolfOptimizer_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GreyWolfOptimizer__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizer *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::GreyWolfOptimizer *)new datamunge::optim::GreyWolfOptimizer();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::GreyWolfOptimizer_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GreyWolfOptimizerdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_GreyWolfOptimizer__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::GreyWolfOptimizerOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_GreyWolfOptimizer__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_GreyWolfOptimizer'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::GreyWolfOptimizer::GreyWolfOptimizer(datamunge::optim::GreyWolfOptimizerOptions)\n"
+    "    datamunge::optim::GreyWolfOptimizer::GreyWolfOptimizer()\n");
+}
+
+
+SWIGEXT value _wrap_GreyWolfOptimizer_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizer *arg1 = (datamunge::optim::GreyWolfOptimizer *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GreyWolfOptimizer_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::GreyWolfOptimizer const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_GreyWolfOptimizerdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::GreyWolfOptimizer *arg1 = (datamunge::optim::GreyWolfOptimizer *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GreyWolfOptimizer'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::GreyWolfOptimizer *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_memory_consideration_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_memory_consideration_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->memory_consideration_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_memory_consideration_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_memory_consideration_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result = (double) ((arg1)->memory_consideration_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_pitch_adjustment_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_pitch_adjustment_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->pitch_adjustment_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_pitch_adjustment_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_pitch_adjustment_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result = (double) ((arg1)->pitch_adjustment_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_bandwidth_fraction_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_bandwidth_fraction_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->bandwidth_fraction = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_bandwidth_fraction_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_bandwidth_fraction_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result = (double) ((arg1)->bandwidth_fraction);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_HarmonySearchOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearchOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_HarmonySearchOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_HarmonySearchOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::HarmonySearchOptions *)new datamunge::optim::HarmonySearchOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::HarmonySearchOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_HarmonySearchOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions *arg1 = (datamunge::optim::HarmonySearchOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_HarmonySearchOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearchOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_HarmonySearch__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearchOptions arg1 ;
+  datamunge::optim::HarmonySearch *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::HarmonySearchOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearchOptions)) ;
+  }
+  result = (datamunge::optim::HarmonySearch *)new datamunge::optim::HarmonySearch(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::HarmonySearch_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__HarmonySearch);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_HarmonySearch__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearch *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::HarmonySearch *)new datamunge::optim::HarmonySearch();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::HarmonySearch_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__HarmonySearch);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_HarmonySearchdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_HarmonySearch__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__HarmonySearchOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::HarmonySearchOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_HarmonySearch__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_HarmonySearch'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::HarmonySearch::HarmonySearch(datamunge::optim::HarmonySearchOptions)\n"
+    "    datamunge::optim::HarmonySearch::HarmonySearch()\n");
+}
+
+
+SWIGEXT value _wrap_HarmonySearch_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearch *arg1 = (datamunge::optim::HarmonySearch *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'HarmonySearch_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearch *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearch);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::HarmonySearch const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_HarmonySearchdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::HarmonySearch *arg1 = (datamunge::optim::HarmonySearch *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_HarmonySearch'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::HarmonySearch *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__HarmonySearch);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_num_replicas_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_num_replicas_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_replicas = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_num_replicas_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_num_replicas_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result =  ((arg1)->num_replicas);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_initial_temperature_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_initial_temperature_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_temperature = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_initial_temperature_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_initial_temperature_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result = (double) ((arg1)->initial_temperature);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_final_temperature_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_final_temperature_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->final_temperature = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_final_temperature_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_final_temperature_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result = (double) ((arg1)->final_temperature);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_step_std_dev_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_step_std_dev_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_std_dev = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_step_std_dev_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_step_std_dev_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result = (double) ((arg1)->step_std_dev);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_swap_interval_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_swap_interval_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->swap_interval = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_swap_interval_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_swap_interval_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result =  ((arg1)->swap_interval);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_max_sweeps_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_max_sweeps_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_sweeps = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_max_sweeps_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_max_sweeps_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result =  ((arg1)->max_sweeps);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ParallelTemperingOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTemperingOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ParallelTemperingOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ParallelTemperingOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::ParallelTemperingOptions *)new datamunge::optim::ParallelTemperingOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ParallelTemperingOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ParallelTemperingOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions *arg1 = (datamunge::optim::ParallelTemperingOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ParallelTemperingOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTemperingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ParallelTempering__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTemperingOptions arg1 ;
+  datamunge::optim::ParallelTempering *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::ParallelTemperingOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions)) ;
+  }
+  result = (datamunge::optim::ParallelTempering *)new datamunge::optim::ParallelTempering(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ParallelTempering_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ParallelTempering);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ParallelTempering__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTempering *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::ParallelTempering *)new datamunge::optim::ParallelTempering();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ParallelTempering_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ParallelTempering);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ParallelTemperingdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ParallelTempering__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::ParallelTemperingOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ParallelTempering__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ParallelTempering'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::ParallelTempering::ParallelTempering(datamunge::optim::ParallelTemperingOptions)\n"
+    "    datamunge::optim::ParallelTempering::ParallelTempering()\n");
+}
+
+
+SWIGEXT value _wrap_ParallelTempering_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTempering *arg1 = (datamunge::optim::ParallelTempering *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ParallelTempering_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTempering *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTempering);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::ParallelTempering const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ParallelTemperingdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ParallelTempering *arg1 = (datamunge::optim::ParallelTempering *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ParallelTempering'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ParallelTempering *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ParallelTempering);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_population_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_population_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->population_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_population_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_population_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  result =  ((arg1)->population_size);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_spiral_constant_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_spiral_constant_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->spiral_constant = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_spiral_constant_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_spiral_constant_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  result = (double) ((arg1)->spiral_constant);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_WhaleOptimizationOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimizationOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_WhaleOptimizationOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_WhaleOptimizationOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::WhaleOptimizationOptions *)new datamunge::optim::WhaleOptimizationOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::WhaleOptimizationOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_WhaleOptimizationOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions *arg1 = (datamunge::optim::WhaleOptimizationOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_WhaleOptimizationOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_WhaleOptimization__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimizationOptions arg1 ;
+  datamunge::optim::WhaleOptimization *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::WhaleOptimizationOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions)) ;
+  }
+  result = (datamunge::optim::WhaleOptimization *)new datamunge::optim::WhaleOptimization(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::WhaleOptimization_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__WhaleOptimization);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_WhaleOptimization__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimization *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::WhaleOptimization *)new datamunge::optim::WhaleOptimization();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::WhaleOptimization_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__WhaleOptimization);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_WhaleOptimizationdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_WhaleOptimization__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::WhaleOptimizationOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_WhaleOptimization__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_WhaleOptimization'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::WhaleOptimization::WhaleOptimization(datamunge::optim::WhaleOptimizationOptions)\n"
+    "    datamunge::optim::WhaleOptimization::WhaleOptimization()\n");
+}
+
+
+SWIGEXT value _wrap_WhaleOptimization_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimization *arg1 = (datamunge::optim::WhaleOptimization *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'WhaleOptimization_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimization *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimization);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::WhaleOptimization const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_WhaleOptimizationdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::WhaleOptimization *arg1 = (datamunge::optim::WhaleOptimization *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_WhaleOptimization'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::WhaleOptimization *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__WhaleOptimization);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_FISTAOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTAOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FISTAOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_FISTAOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::FISTAOptions *)new datamunge::optim::FISTAOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FISTAOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_FISTAOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions *arg1 = (datamunge::optim::FISTAOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_FISTAOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTAOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FISTA__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTAOptions arg1 ;
+  datamunge::optim::FISTA *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::FISTAOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTAOptions)) ;
+  }
+  result = (datamunge::optim::FISTA *)new datamunge::optim::FISTA(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FISTA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FISTA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FISTA__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTA *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::FISTA *)new datamunge::optim::FISTA();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::FISTA_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__FISTA);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_FISTAdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_FISTA__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__FISTAOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::FISTAOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_FISTA__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_FISTA'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::FISTA::FISTA(datamunge::optim::FISTAOptions)\n"
+    "    datamunge::optim::FISTA::FISTA()\n");
+}
+
+
+SWIGEXT value _wrap_FISTA_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTA *arg1 = (datamunge::optim::FISTA *) 0 ;
+  datamunge::optim::ProximalFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'FISTA_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTA);
+  }
+  {
+    arg2 = (datamunge::optim::ProximalFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::FISTA const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_FISTAdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::FISTA *arg1 = (datamunge::optim::FISTA *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_FISTA'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::FISTA *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__FISTA);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ProximalGradientOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradientOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ProximalGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ProximalGradientOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::ProximalGradientOptions *)new datamunge::optim::ProximalGradientOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ProximalGradientOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ProximalGradientOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions *arg1 = (datamunge::optim::ProximalGradientOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ProximalGradientOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradientOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ProximalGradient__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradientOptions arg1 ;
+  datamunge::optim::ProximalGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::ProximalGradientOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradientOptions)) ;
+  }
+  result = (datamunge::optim::ProximalGradient *)new datamunge::optim::ProximalGradient(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ProximalGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ProximalGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ProximalGradient__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradient *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::ProximalGradient *)new datamunge::optim::ProximalGradient();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::ProximalGradient_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__ProximalGradient);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ProximalGradientdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ProximalGradient__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__ProximalGradientOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::ProximalGradientOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ProximalGradient__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ProximalGradient'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::ProximalGradient::ProximalGradient(datamunge::optim::ProximalGradientOptions)\n"
+    "    datamunge::optim::ProximalGradient::ProximalGradient()\n");
+}
+
+
+SWIGEXT value _wrap_ProximalGradient_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradient *arg1 = (datamunge::optim::ProximalGradient *) 0 ;
+  datamunge::optim::ProximalFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ProximalGradient_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradient);
+  }
+  {
+    arg2 = (datamunge::optim::ProximalFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ProximalFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::ProximalGradient const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ProximalGradientdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::ProximalGradient *arg1 = (datamunge::optim::ProximalGradient *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ProximalGradient'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::ProximalGradient *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__ProximalGradient);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_initial_damping_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_initial_damping_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_damping = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_initial_damping_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_initial_damping_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  result = (double) ((arg1)->initial_damping);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardtOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardtOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_LevenbergMarquardtOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_LevenbergMarquardtOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::LevenbergMarquardtOptions *)new datamunge::optim::LevenbergMarquardtOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::LevenbergMarquardtOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_LevenbergMarquardtOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions *arg1 = (datamunge::optim::LevenbergMarquardtOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_LevenbergMarquardtOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardtOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_LevenbergMarquardt__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardtOptions arg1 ;
+  datamunge::optim::LevenbergMarquardt *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::LevenbergMarquardtOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions)) ;
+  }
+  result = (datamunge::optim::LevenbergMarquardt *)new datamunge::optim::LevenbergMarquardt(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::LevenbergMarquardt_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__LevenbergMarquardt);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_LevenbergMarquardt__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardt *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::LevenbergMarquardt *)new datamunge::optim::LevenbergMarquardt();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::LevenbergMarquardt_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__LevenbergMarquardt);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_LevenbergMarquardtdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_LevenbergMarquardt__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::LevenbergMarquardtOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_LevenbergMarquardt__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_LevenbergMarquardt'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::LevenbergMarquardt::LevenbergMarquardt(datamunge::optim::LevenbergMarquardtOptions)\n"
+    "    datamunge::optim::LevenbergMarquardt::LevenbergMarquardt()\n");
+}
+
+
+SWIGEXT value _wrap_LevenbergMarquardt_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardt *arg1 = (datamunge::optim::LevenbergMarquardt *) 0 ;
+  datamunge::optim::ResidualFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LevenbergMarquardt_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardt *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardt);
+  }
+  {
+    arg2 = (datamunge::optim::ResidualFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ResidualFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::LevenbergMarquardt const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_LevenbergMarquardtdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::LevenbergMarquardt *arg1 = (datamunge::optim::LevenbergMarquardt *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_LevenbergMarquardt'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::LevenbergMarquardt *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__LevenbergMarquardt);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_damping_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_damping_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->damping = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_NewtonOptions_damping_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'NewtonOptions_damping_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  result = (double) ((arg1)->damping);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_NewtonOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_NewtonOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::NewtonOptions *)new datamunge::optim::NewtonOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::NewtonOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_NewtonOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions *arg1 = (datamunge::optim::NewtonOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_NewtonOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::NewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Newton__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::NewtonOptions arg1 ;
+  datamunge::optim::Newton *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::NewtonOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__NewtonOptions)) ;
+  }
+  result = (datamunge::optim::Newton *)new datamunge::optim::Newton(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::Newton_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__Newton);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Newton__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Newton *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::Newton *)new datamunge::optim::Newton();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::Newton_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__Newton);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Newtondatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_Newton__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__NewtonOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::NewtonOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_Newton__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_Newton'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::Newton::Newton(datamunge::optim::NewtonOptions)\n"
+    "    datamunge::optim::Newton::Newton()\n");
+}
+
+
+SWIGEXT value _wrap_Newton_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Newton *arg1 = (datamunge::optim::Newton *) 0 ;
+  datamunge::optim::HessianFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Newton_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::Newton *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__Newton);
+  }
+  {
+    arg2 = (datamunge::optim::HessianFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::Newton const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_Newtondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::Newton *arg1 = (datamunge::optim::Newton *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_Newton'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::Newton *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__Newton);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_initial_radius_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_initial_radius_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_radius = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_initial_radius_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_initial_radius_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  result = (double) ((arg1)->initial_radius);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_max_radius_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_max_radius_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_radius = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_max_radius_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_max_radius_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  result = (double) ((arg1)->max_radius);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewtonOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewtonOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_TrustRegionNewtonOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_TrustRegionNewtonOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::TrustRegionNewtonOptions *)new datamunge::optim::TrustRegionNewtonOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::TrustRegionNewtonOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_TrustRegionNewtonOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions *arg1 = (datamunge::optim::TrustRegionNewtonOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_TrustRegionNewtonOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewtonOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_TrustRegionNewton__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewtonOptions arg1 ;
+  datamunge::optim::TrustRegionNewton *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::TrustRegionNewtonOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions)) ;
+  }
+  result = (datamunge::optim::TrustRegionNewton *)new datamunge::optim::TrustRegionNewton(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::TrustRegionNewton_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__TrustRegionNewton);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_TrustRegionNewton__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewton *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::TrustRegionNewton *)new datamunge::optim::TrustRegionNewton();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::TrustRegionNewton_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__TrustRegionNewton);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_TrustRegionNewtondatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_TrustRegionNewton__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::TrustRegionNewtonOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_TrustRegionNewton__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_TrustRegionNewton'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::TrustRegionNewton::TrustRegionNewton(datamunge::optim::TrustRegionNewtonOptions)\n"
+    "    datamunge::optim::TrustRegionNewton::TrustRegionNewton()\n");
+}
+
+
+SWIGEXT value _wrap_TrustRegionNewton_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewton *arg1 = (datamunge::optim::TrustRegionNewton *) 0 ;
+  datamunge::optim::HessianFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'TrustRegionNewton_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewton *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewton);
+  }
+  {
+    arg2 = (datamunge::optim::HessianFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__HessianFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::TrustRegionNewton const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_TrustRegionNewtondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::TrustRegionNewton *arg1 = (datamunge::optim::TrustRegionNewton *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_TrustRegionNewton'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::TrustRegionNewton *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__TrustRegionNewton);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_initial_penalty_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_initial_penalty_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_penalty = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_initial_penalty_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_initial_penalty_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  result = (double) ((arg1)->initial_penalty);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_max_outer_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_max_outer_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_outer_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_max_outer_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_max_outer_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  result =  ((arg1)->max_outer_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_inner_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_inner_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->inner_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_inner_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_inner_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  result =  ((arg1)->inner_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangianOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangianOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AugmentedLagrangianOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_AugmentedLagrangianOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::AugmentedLagrangianOptions *)new datamunge::optim::AugmentedLagrangianOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AugmentedLagrangianOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AugmentedLagrangianOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions *arg1 = (datamunge::optim::AugmentedLagrangianOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AugmentedLagrangianOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangianOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AugmentedLagrangian__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangianOptions arg1 ;
+  datamunge::optim::AugmentedLagrangian *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::AugmentedLagrangianOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions)) ;
+  }
+  result = (datamunge::optim::AugmentedLagrangian *)new datamunge::optim::AugmentedLagrangian(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AugmentedLagrangian_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AugmentedLagrangian);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AugmentedLagrangian__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangian *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::AugmentedLagrangian *)new datamunge::optim::AugmentedLagrangian();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::AugmentedLagrangian_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__AugmentedLagrangian);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_AugmentedLagrangiandatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_AugmentedLagrangian__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::AugmentedLagrangianOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_AugmentedLagrangian__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_AugmentedLagrangian'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::AugmentedLagrangian::AugmentedLagrangian(datamunge::optim::AugmentedLagrangianOptions)\n"
+    "    datamunge::optim::AugmentedLagrangian::AugmentedLagrangian()\n");
+}
+
+
+SWIGEXT value _wrap_AugmentedLagrangian_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangian *arg1 = (datamunge::optim::AugmentedLagrangian *) 0 ;
+  datamunge::optim::EqualityConstrainedFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'AugmentedLagrangian_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangian *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangian);
+  }
+  {
+    arg2 = (datamunge::optim::EqualityConstrainedFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::AugmentedLagrangian const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_AugmentedLagrangiandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::AugmentedLagrangian *arg1 = (datamunge::optim::AugmentedLagrangian *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_AugmentedLagrangian'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::AugmentedLagrangian *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__AugmentedLagrangian);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_regularization_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_regularization_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->regularization = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_regularization_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_regularization_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  result = (double) ((arg1)->regularization);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_tolerance_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_tolerance_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->tolerance = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_SQPOptions_tolerance_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQPOptions_tolerance_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  result = (double) ((arg1)->tolerance);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SQPOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_SQPOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::SQPOptions *)new datamunge::optim::SQPOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SQPOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SQPOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions *arg1 = (datamunge::optim::SQPOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SQPOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQPOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SQP__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQPOptions arg1 ;
+  datamunge::optim::SQP *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::SQPOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQPOptions)) ;
+  }
+  result = (datamunge::optim::SQP *)new datamunge::optim::SQP(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SQP_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SQP);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SQP__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQP *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::SQP *)new datamunge::optim::SQP();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::SQP_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__SQP);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_SQPdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_SQP__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__SQPOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::SQPOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_SQP__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_SQP'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::SQP::SQP(datamunge::optim::SQPOptions)\n"
+    "    datamunge::optim::SQP::SQP()\n");
+}
+
+
+SWIGEXT value _wrap_SQP_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQP *arg1 = (datamunge::optim::SQP *) 0 ;
+  datamunge::optim::EqualityConstrainedFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'SQP_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQP *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQP);
+  }
+  {
+    arg2 = (datamunge::optim::EqualityConstrainedFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::SQP const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_SQPdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::SQP *arg1 = (datamunge::optim::SQP *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_SQP'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::SQP *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__SQP);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_initial_barrier_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_initial_barrier_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_barrier = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_initial_barrier_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_initial_barrier_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  result = (double) ((arg1)->initial_barrier);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_barrier_decay_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_barrier_decay_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->barrier_decay = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_barrier_decay_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_barrier_decay_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  result = (double) ((arg1)->barrier_decay);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_max_outer_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_max_outer_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_outer_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_max_outer_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_max_outer_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  result =  ((arg1)->max_outer_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_inner_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_inner_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->inner_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_InteriorPointOptions_inner_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPointOptions_inner_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  result =  ((arg1)->inner_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_InteriorPointOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_InteriorPointOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::InteriorPointOptions *)new datamunge::optim::InteriorPointOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::InteriorPointOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_InteriorPointOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions *arg1 = (datamunge::optim::InteriorPointOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_InteriorPointOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPointOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_InteriorPoint__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPointOptions arg1 ;
+  datamunge::optim::InteriorPoint *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::InteriorPointOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPointOptions)) ;
+  }
+  result = (datamunge::optim::InteriorPoint *)new datamunge::optim::InteriorPoint(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::InteriorPoint_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__InteriorPoint);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_InteriorPoint__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPoint *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::InteriorPoint *)new datamunge::optim::InteriorPoint();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::InteriorPoint_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__InteriorPoint);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_InteriorPointdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_InteriorPoint__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__InteriorPointOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::InteriorPointOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_InteriorPoint__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_InteriorPoint'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::InteriorPoint::InteriorPoint(datamunge::optim::InteriorPointOptions)\n"
+    "    datamunge::optim::InteriorPoint::InteriorPoint()\n");
+}
+
+
+SWIGEXT value _wrap_InteriorPoint_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPoint *arg1 = (datamunge::optim::InteriorPoint *) 0 ;
+  datamunge::optim::InequalityConstrainedFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'InteriorPoint_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPoint *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPoint);
+  }
+  {
+    arg2 = (datamunge::optim::InequalityConstrainedFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (double)((datamunge::optim::InteriorPoint const *)arg1)->optimize(*arg2,*arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_InteriorPointdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::InteriorPoint *arg1 = (datamunge::optim::InteriorPoint *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_InteriorPoint'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::InteriorPoint *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__InteriorPoint);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_BayesianSurrogatedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianSurrogate *arg1 = (datamunge::optim::BayesianSurrogate *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_BayesianSurrogate'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianSurrogate_fitdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianSurrogate *arg1 = (datamunge::optim::BayesianSurrogate *) 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianSurrogate_fit'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  {
+    arg2 = (std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::BayesianSurrogate::fit");
+  } else {
+    (arg1)->fit((std::vector< std::vector< double > > const &)*arg2,(std::vector< double > const &)*arg3);
+  }
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianSurrogate_acquisitiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianSurrogate *arg1 = (datamunge::optim::BayesianSurrogate *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  double arg3 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianSurrogate_acquisition'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    Swig::DirectorPureVirtualException::raise("datamunge::optim::BayesianSurrogate::acquisition");
+  } else {
+    result = (double)(arg1)->acquisition((std::vector< double > const &)*arg2,arg3);
+  }
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_BayesianSurrogatedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  datamunge::optim::BayesianSurrogate *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_BayesianSurrogate'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (datamunge::optim::BayesianSurrogate *)new SwigDirector_BayesianSurrogate(SWIG_STD_MOVE(arg1)); 
+  } else {
+    caml_failwith("accessing abstract class or protected constructor"); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::BayesianSurrogate_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_BayesianSurrogatedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianSurrogate *arg1 = (datamunge::optim::BayesianSurrogate *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_BayesianSurrogate'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_initial_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_initial_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_samples = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_initial_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_initial_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  result =  ((arg1)->initial_samples);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_max_iterations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_max_iterations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_iterations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_max_iterations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_max_iterations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  result =  ((arg1)->max_iterations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BayesianOptimizationOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimizationOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_BayesianOptimizationOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_BayesianOptimizationOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::optim::BayesianOptimizationOptions *)new datamunge::optim::BayesianOptimizationOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::BayesianOptimizationOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_BayesianOptimizationOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_BayesianOptimizationOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimizationOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_BayesianOptimization__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimizationOptions arg1 ;
+  datamunge::optim::BayesianOptimization *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::optim::BayesianOptimizationOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions)) ;
+  }
+  result = (datamunge::optim::BayesianOptimization *)new datamunge::optim::BayesianOptimization(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::BayesianOptimization_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__BayesianOptimization);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_BayesianOptimization__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimization *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::BayesianOptimization *)new datamunge::optim::BayesianOptimization();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::BayesianOptimization_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__BayesianOptimization);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_BayesianOptimizationdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_BayesianOptimization__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::optim::BayesianOptimizationOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_BayesianOptimization__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_BayesianOptimization'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::BayesianOptimization::BayesianOptimization(datamunge::optim::BayesianOptimizationOptions)\n"
+    "    datamunge::optim::BayesianOptimization::BayesianOptimization()\n");
+}
+
+
+SWIGEXT value _wrap_BayesianOptimization_optimizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimization *arg1 = (datamunge::optim::BayesianOptimization *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  std::vector< double > *arg5 = 0 ;
+  datamunge::optim::BayesianSurrogate *arg6 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 6 || caml_list_length(args) > 6) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'BayesianOptimization_optimize'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimization *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimization);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg6 = (datamunge::optim::BayesianSurrogate *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__optim__BayesianSurrogate);
+  }
+  result = (double)((datamunge::optim::BayesianOptimization const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5,*arg6);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_BayesianOptimizationdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::BayesianOptimization *arg1 = (datamunge::optim::BayesianOptimization *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_BayesianOptimization'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::BayesianOptimization *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__BayesianOptimization);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RBFGaussianProcessSurrogate__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  double arg1 ;
+  double arg2 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = caml_double_val(caml_list_nth(args,0));
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::optim::RBFGaussianProcessSurrogate *)new datamunge::optim::RBFGaussianProcessSurrogate(arg1,arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RBFGaussianProcessSurrogate_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RBFGaussianProcessSurrogate__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  double arg1 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = caml_double_val(caml_list_nth(args,0));
+  }
+  result = (datamunge::optim::RBFGaussianProcessSurrogate *)new datamunge::optim::RBFGaussianProcessSurrogate(arg1);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RBFGaussianProcessSurrogate_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RBFGaussianProcessSurrogate__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RBFGaussianProcessSurrogate *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::optim::RBFGaussianProcessSurrogate *)new datamunge::optim::RBFGaussianProcessSurrogate();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::optim::RBFGaussianProcessSurrogate_from_ptr", (void *)result, SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RBFGaussianProcessSurrogatedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_RBFGaussianProcessSurrogate__SWIG_2datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if( !Is_block(argv[0]) ) _v = 0;
+      else {
+        switch( Tag_val(argv[0]) ) {
+          case C_double: _v = 1; break;
+          default: _v = 0; break;
+        }
+      }  
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_RBFGaussianProcessSurrogate__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if( !Is_block(argv[0]) ) _v = 0;
+      else {
+        switch( Tag_val(argv[0]) ) {
+          case C_double: _v = 1; break;
+          default: _v = 0; break;
+        }
+      }  
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_RBFGaussianProcessSurrogate__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_RBFGaussianProcessSurrogate'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::optim::RBFGaussianProcessSurrogate::RBFGaussianProcessSurrogate(double,double)\n"
+    "    datamunge::optim::RBFGaussianProcessSurrogate::RBFGaussianProcessSurrogate(double)\n"
+    "    datamunge::optim::RBFGaussianProcessSurrogate::RBFGaussianProcessSurrogate()\n");
+}
+
+
+SWIGEXT value _wrap_RBFGaussianProcessSurrogate_fitdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *) 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RBFGaussianProcessSurrogate_fit'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
+  }
+  {
+    arg2 = (std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  (arg1)->fit((std::vector< std::vector< double > > const &)*arg2,(std::vector< double > const &)*arg3);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RBFGaussianProcessSurrogate_acquisitiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *) 0 ;
+  std::vector< double > *arg2 = 0 ;
+  double arg3 ;
+  double result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RBFGaussianProcessSurrogate_acquisition'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  result = (double)(arg1)->acquisition((std::vector< double > const &)*arg2,arg3);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RBFGaussianProcessSurrogatedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RBFGaussianProcessSurrogate'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate);
   }
   delete arg1;
   rv = Val_unit;
@@ -76484,6 +98128,860 @@ SWIGEXT value _wrap_delete_ImportanceSamplingdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_delete_RHSdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::RHS *arg1 = (datamunge::ode::RHS *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RHS'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::RHS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__RHS);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RHS_evaluatedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::RHS *arg1 = (datamunge::ode::RHS *) 0 ;
+  double arg2 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RHS_evaluate'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::RHS *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__RHS);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = (arg1)->evaluate(arg2,(std::vector< double > const &)*arg3);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Euler(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__Euler);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Midpoint(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__Midpoint);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RK4(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__RK4);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RK45(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__RK45);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdamsBashforth(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__AdamsBashforth);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_AdamsMoulton(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__ode__AdamsMoulton);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_method_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  datamunge::ode::StepMethod arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_method_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = (datamunge::ode::StepMethod)caml_long_val_full(caml_list_nth(args,1),"datamunge::ode::StepMethod_marker");
+  }
+  if (arg1) (arg1)->method = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_method_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  datamunge::ode::StepMethod result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_method_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result = (datamunge::ode::StepMethod) ((arg1)->method);
+  {
+    rv = caml_callback2(*caml_named_value(SWIG_MODULE "_int_to_enum"),*caml_named_value("datamunge::ode::StepMethod_marker"),Val_int((int)result));
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_multistep_order_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_multistep_order_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->multistep_order = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_multistep_order_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_multistep_order_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result =  ((arg1)->multistep_order);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result = (double) ((arg1)->step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_abs_tol_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_abs_tol_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->abs_tol = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_abs_tol_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_abs_tol_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result = (double) ((arg1)->abs_tol);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_rel_tol_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_rel_tol_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->rel_tol = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_rel_tol_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_rel_tol_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result = (double) ((arg1)->rel_tol);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_max_step_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_max_step_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->max_step = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODEOptions_max_step_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODEOptions_max_step_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  result = (double) ((arg1)->max_step);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ODEOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ODEOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::ode::ODEOptions *)new datamunge::ode::ODEOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODEOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ODEOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions *arg1 = (datamunge::ode::ODEOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ODEOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODEOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_steps_taken_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_steps_taken_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->steps_taken = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_steps_taken_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_steps_taken_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  result =  ((arg1)->steps_taken);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_function_evaluations_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_function_evaluations_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->function_evaluations = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_function_evaluations_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_function_evaluations_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  result =  ((arg1)->function_evaluations);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_sizedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_size'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  result = ((datamunge::ode::ODESolution const *)arg1)->size();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_time_atdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t arg2 ;
+  double result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_time_at'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (double)((datamunge::ode::ODESolution const *)arg1)->time_at(SWIG_STD_MOVE(arg2));
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolution_state_atdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolution_state_at'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (std::vector< double > *) &((datamunge::ode::ODESolution const *)arg1)->state_at(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ODESolutiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ODESolution' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::ode::ODESolution *)new datamunge::ode::ODESolution();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODESolution_from_ptr", (void *)result, SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ODESolutiondatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolution *arg1 = (datamunge::ode::ODESolution *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ODESolution'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolution *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ODESolver__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODEOptions arg1 ;
+  datamunge::ode::ODESolver *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::ode::ODEOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODEOptions)) ;
+  }
+  result = (datamunge::ode::ODESolver *)new datamunge::ode::ODESolver(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODESolver_from_ptr", (void *)result, SWIGTYPE_p_datamunge__ode__ODESolver);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ODESolver__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolver *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::ode::ODESolver *)new datamunge::ode::ODESolver();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODESolver_from_ptr", (void *)result, SWIGTYPE_p_datamunge__ode__ODESolver);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ODESolverdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ODESolver__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__ode__ODEOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::ode::ODEOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ODESolver__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ODESolver'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::ode::ODESolver::ODESolver(datamunge::ode::ODEOptions)\n"
+    "    datamunge::ode::ODESolver::ODESolver()\n");
+}
+
+
+SWIGEXT value _wrap_ODESolver_solvedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolver *arg1 = (datamunge::ode::ODESolver *) 0 ;
+  datamunge::ode::RHS *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  double arg4 ;
+  double arg5 ;
+  datamunge::ode::ODESolution result;
+  
+  if (caml_list_length(args) < 5 || caml_list_length(args) > 5) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolver_solve'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolver *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolver);
+  }
+  {
+    arg2 = (datamunge::ode::RHS *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__ode__RHS);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  result = ((datamunge::ode::ODESolver const *)arg1)->solve(*arg2,(std::vector< double > const &)*arg3,arg4,arg5);
+  {
+    datamunge::ode::ODESolution * temp = new datamunge::ode::ODESolution(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODESolution_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ODESolver_solve_builtindatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolver *arg1 = (datamunge::ode::ODESolver *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  double arg5 ;
+  double arg6 ;
+  std::string temp2 ;
+  datamunge::ode::ODESolution result;
+  
+  if (caml_list_length(args) < 6 || caml_list_length(args) > 6) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ODESolver_solve_builtin'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolver *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolver);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  result = ((datamunge::ode::ODESolver const *)arg1)->solve_builtin((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< double > const &)*arg4,arg5,arg6);
+  {
+    datamunge::ode::ODESolution * temp = new datamunge::ode::ODESolution(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::ode::ODESolution_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__ode__ODESolution);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ODESolverdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::ode::ODESolver *arg1 = (datamunge::ode::ODESolver *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ODESolver'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::ode::ODESolver *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__ode__ODESolver);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -76493,11 +98991,38 @@ static void *_p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__A
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::ArbitraryFunction *) (datamunge::optim::DifferentiableFunction *) ((datamunge::optim::DifferentiableSeparableFunction *) x));
 }
+static void *_p_datamunge__optim__EqualityConstrainedFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::ArbitraryFunction *) (datamunge::optim::DifferentiableFunction *) ((datamunge::optim::EqualityConstrainedFunction *) x));
+}
+static void *_p_datamunge__optim__HessianFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::ArbitraryFunction *) (datamunge::optim::DifferentiableFunction *) ((datamunge::optim::HessianFunction *) x));
+}
+static void *_p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::ArbitraryFunction *) (datamunge::optim::DifferentiableFunction *) ((datamunge::optim::InequalityConstrainedFunction *) x));
+}
+static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::ArbitraryFunction *) (datamunge::optim::DifferentiableFunction *) ((datamunge::optim::ProximalFunction *) x));
+}
 static void *_p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::ArbitraryFunction *)  ((datamunge::optim::SeparableFunction *) x));
 }
+static void *_p_datamunge__optim__RBFGaussianProcessSurrogateTo_p_datamunge__optim__BayesianSurrogate(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::BayesianSurrogate *)  ((datamunge::optim::RBFGaussianProcessSurrogate *) x));
+}
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::DifferentiableSeparableFunction *) x));
+}
+static void *_p_datamunge__optim__EqualityConstrainedFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::EqualityConstrainedFunction *) x));
+}
+static void *_p_datamunge__optim__HessianFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::HessianFunction *) x));
+}
+static void *_p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::InequalityConstrainedFunction *) x));
+}
+static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
 static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
@@ -76526,11 +99051,14 @@ static swig_type_info _swigt__p_datamunge__LDA = {"_p_datamunge__LDA", "datamung
 static swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "datamunge::LM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__LMM = {"_p_datamunge__LMM", "datamunge::LMM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Lasso = {"_p_datamunge__Lasso", "datamunge::Lasso *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__MDS = {"_p_datamunge__MDS", "datamunge::MDS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__NaiveBayesClassifier = {"_p_datamunge__NaiveBayesClassifier", "datamunge::NaiveBayesClassifier *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__PCA = {"_p_datamunge__PCA", "datamunge::PCA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__RandomForestClassifier = {"_p_datamunge__RandomForestClassifier", "datamunge::RandomForestClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__RandomForestRegressor = {"_p_datamunge__RandomForestRegressor", "datamunge::RandomForestRegressor *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "datamunge::Ridge *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
@@ -76554,26 +99082,103 @@ static swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__b
 static swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__ode__ODEOptions = {"_p_datamunge__ode__ODEOptions", "datamunge::ode::ODEOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__ode__ODESolution = {"_p_datamunge__ode__ODESolution", "datamunge::ode::ODESolution *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__ode__ODESolver = {"_p_datamunge__ode__ODESolver", "datamunge::ode::ODESolver *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__ode__RHS = {"_p_datamunge__ode__RHS", "datamunge::ode::RHS *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ACOR = {"_p_datamunge__optim__ACOR", "datamunge::optim::ACOR *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ACOROptions = {"_p_datamunge__optim__ACOROptions", "datamunge::optim::ACOROptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AMSGrad = {"_p_datamunge__optim__AMSGrad", "datamunge::optim::AMSGrad *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AMSGradOptions = {"_p_datamunge__optim__AMSGradOptions", "datamunge::optim::AMSGradOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AdaDelta = {"_p_datamunge__optim__AdaDelta", "datamunge::optim::AdaDelta *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AdaDeltaOptions = {"_p_datamunge__optim__AdaDeltaOptions", "datamunge::optim::AdaDeltaOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AdaGrad = {"_p_datamunge__optim__AdaGrad", "datamunge::optim::AdaGrad *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AdaGradOptions = {"_p_datamunge__optim__AdaGradOptions", "datamunge::optim::AdaGradOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__Adam = {"_p_datamunge__optim__Adam", "datamunge::optim::Adam *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__AdamOptions = {"_p_datamunge__optim__AdamOptions", "datamunge::optim::AdamOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__ArbitraryFunction = {"_p_datamunge__optim__ArbitraryFunction", "datamunge::optim::ArbitraryFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ArtificialBeeColony = {"_p_datamunge__optim__ArtificialBeeColony", "datamunge::optim::ArtificialBeeColony *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ArtificialBeeColonyOptions = {"_p_datamunge__optim__ArtificialBeeColonyOptions", "datamunge::optim::ArtificialBeeColonyOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangian = {"_p_datamunge__optim__AugmentedLagrangian", "datamunge::optim::AugmentedLagrangian *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangianOptions = {"_p_datamunge__optim__AugmentedLagrangianOptions", "datamunge::optim::AugmentedLagrangianOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__BayesianOptimization = {"_p_datamunge__optim__BayesianOptimization", "datamunge::optim::BayesianOptimization *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__BayesianOptimizationOptions = {"_p_datamunge__optim__BayesianOptimizationOptions", "datamunge::optim::BayesianOptimizationOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__BayesianSurrogate = {"_p_datamunge__optim__BayesianSurrogate", "datamunge::optim::BayesianSurrogate *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CMAES = {"_p_datamunge__optim__CMAES", "datamunge::optim::CMAES *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CMAESOptions = {"_p_datamunge__optim__CMAESOptions", "datamunge::optim::CMAESOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ConjugateGradient = {"_p_datamunge__optim__ConjugateGradient", "datamunge::optim::ConjugateGradient *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ConjugateGradientOptions = {"_p_datamunge__optim__ConjugateGradientOptions", "datamunge::optim::ConjugateGradientOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CoordinateDescent = {"_p_datamunge__optim__CoordinateDescent", "datamunge::optim::CoordinateDescent *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CoordinateDescentOptions = {"_p_datamunge__optim__CoordinateDescentOptions", "datamunge::optim::CoordinateDescentOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CrossEntropyMethod = {"_p_datamunge__optim__CrossEntropyMethod", "datamunge::optim::CrossEntropyMethod *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CrossEntropyMethodOptions = {"_p_datamunge__optim__CrossEntropyMethodOptions", "datamunge::optim::CrossEntropyMethodOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CuckooSearch = {"_p_datamunge__optim__CuckooSearch", "datamunge::optim::CuckooSearch *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__CuckooSearchOptions = {"_p_datamunge__optim__CuckooSearchOptions", "datamunge::optim::CuckooSearchOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__DEOptions = {"_p_datamunge__optim__DEOptions", "datamunge::optim::DEOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__DifferentiableFunction = {"_p_datamunge__optim__DifferentiableFunction", "datamunge::optim::DifferentiableFunction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__DifferentiableSeparableFunction = {"_p_datamunge__optim__DifferentiableSeparableFunction", "datamunge::optim::DifferentiableSeparableFunction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__DifferentialEvolution = {"_p_datamunge__optim__DifferentialEvolution", "datamunge::optim::DifferentialEvolution *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__EqualityConstrainedFunction = {"_p_datamunge__optim__EqualityConstrainedFunction", "datamunge::optim::EqualityConstrainedFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__EstimationOfDistribution = {"_p_datamunge__optim__EstimationOfDistribution", "datamunge::optim::EstimationOfDistribution *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__EstimationOfDistributionOptions = {"_p_datamunge__optim__EstimationOfDistributionOptions", "datamunge::optim::EstimationOfDistributionOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__EvolutionStrategy = {"_p_datamunge__optim__EvolutionStrategy", "datamunge::optim::EvolutionStrategy *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__EvolutionStrategyOptions = {"_p_datamunge__optim__EvolutionStrategyOptions", "datamunge::optim::EvolutionStrategyOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__FISTA = {"_p_datamunge__optim__FISTA", "datamunge::optim::FISTA *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__FISTAOptions = {"_p_datamunge__optim__FISTAOptions", "datamunge::optim::FISTAOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__FireflyAlgorithm = {"_p_datamunge__optim__FireflyAlgorithm", "datamunge::optim::FireflyAlgorithm *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__FireflyAlgorithmOptions = {"_p_datamunge__optim__FireflyAlgorithmOptions", "datamunge::optim::FireflyAlgorithmOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__GAOptions = {"_p_datamunge__optim__GAOptions", "datamunge::optim::GAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__GeneticAlgorithm = {"_p_datamunge__optim__GeneticAlgorithm", "datamunge::optim::GeneticAlgorithm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__GradientDescent = {"_p_datamunge__optim__GradientDescent", "datamunge::optim::GradientDescent *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__GradientDescentOptions = {"_p_datamunge__optim__GradientDescentOptions", "datamunge::optim::GradientDescentOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__GreyWolfOptimizer = {"_p_datamunge__optim__GreyWolfOptimizer", "datamunge::optim::GreyWolfOptimizer *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__GreyWolfOptimizerOptions = {"_p_datamunge__optim__GreyWolfOptimizerOptions", "datamunge::optim::GreyWolfOptimizerOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__HarmonySearch = {"_p_datamunge__optim__HarmonySearch", "datamunge::optim::HarmonySearch *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__HarmonySearchOptions = {"_p_datamunge__optim__HarmonySearchOptions", "datamunge::optim::HarmonySearchOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__HessianFunction = {"_p_datamunge__optim__HessianFunction", "datamunge::optim::HessianFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__InequalityConstrainedFunction = {"_p_datamunge__optim__InequalityConstrainedFunction", "datamunge::optim::InequalityConstrainedFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__InteriorPoint = {"_p_datamunge__optim__InteriorPoint", "datamunge::optim::InteriorPoint *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__InteriorPointOptions = {"_p_datamunge__optim__InteriorPointOptions", "datamunge::optim::InteriorPointOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__LBFGS = {"_p_datamunge__optim__LBFGS", "datamunge::optim::LBFGS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__LBFGSOptions = {"_p_datamunge__optim__LBFGSOptions", "datamunge::optim::LBFGSOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__LevenbergMarquardt = {"_p_datamunge__optim__LevenbergMarquardt", "datamunge::optim::LevenbergMarquardt *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__LevenbergMarquardtOptions = {"_p_datamunge__optim__LevenbergMarquardtOptions", "datamunge::optim::LevenbergMarquardtOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__Nadam = {"_p_datamunge__optim__Nadam", "datamunge::optim::Nadam *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NadamOptions = {"_p_datamunge__optim__NadamOptions", "datamunge::optim::NadamOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NelderMead = {"_p_datamunge__optim__NelderMead", "datamunge::optim::NelderMead *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NelderMeadOptions = {"_p_datamunge__optim__NelderMeadOptions", "datamunge::optim::NelderMeadOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NesterovAcceleratedGradient = {"_p_datamunge__optim__NesterovAcceleratedGradient", "datamunge::optim::NesterovAcceleratedGradient *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NesterovAcceleratedGradientOptions = {"_p_datamunge__optim__NesterovAcceleratedGradientOptions", "datamunge::optim::NesterovAcceleratedGradientOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__Newton = {"_p_datamunge__optim__Newton", "datamunge::optim::Newton *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__NewtonOptions = {"_p_datamunge__optim__NewtonOptions", "datamunge::optim::NewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__PSO = {"_p_datamunge__optim__PSO", "datamunge::optim::PSO *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__PSOOptions = {"_p_datamunge__optim__PSOOptions", "datamunge::optim::PSOOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ParallelTempering = {"_p_datamunge__optim__ParallelTempering", "datamunge::optim::ParallelTempering *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ParallelTemperingOptions = {"_p_datamunge__optim__ParallelTemperingOptions", "datamunge::optim::ParallelTemperingOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ProximalFunction = {"_p_datamunge__optim__ProximalFunction", "datamunge::optim::ProximalFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ProximalGradient = {"_p_datamunge__optim__ProximalGradient", "datamunge::optim::ProximalGradient *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ProximalGradientOptions = {"_p_datamunge__optim__ProximalGradientOptions", "datamunge::optim::ProximalGradientOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__RBFGaussianProcessSurrogate = {"_p_datamunge__optim__RBFGaussianProcessSurrogate", "datamunge::optim::RBFGaussianProcessSurrogate *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__RMSProp = {"_p_datamunge__optim__RMSProp", "datamunge::optim::RMSProp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__RMSPropOptions = {"_p_datamunge__optim__RMSPropOptions", "datamunge::optim::RMSPropOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__RandomizedBlockCoordinateDescent = {"_p_datamunge__optim__RandomizedBlockCoordinateDescent", "datamunge::optim::RandomizedBlockCoordinateDescent *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__RandomizedBlockCoordinateDescentOptions = {"_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions", "datamunge::optim::RandomizedBlockCoordinateDescentOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__ResidualFunction = {"_p_datamunge__optim__ResidualFunction", "datamunge::optim::ResidualFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SAGA = {"_p_datamunge__optim__SAGA", "datamunge::optim::SAGA *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SAGAOptions = {"_p_datamunge__optim__SAGAOptions", "datamunge::optim::SAGAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SGD = {"_p_datamunge__optim__SGD", "datamunge::optim::SGD *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SGDOptions = {"_p_datamunge__optim__SGDOptions", "datamunge::optim::SGDOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SQP = {"_p_datamunge__optim__SQP", "datamunge::optim::SQP *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SQPOptions = {"_p_datamunge__optim__SQPOptions", "datamunge::optim::SQPOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SVRG = {"_p_datamunge__optim__SVRG", "datamunge::optim::SVRG *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SVRGOptions = {"_p_datamunge__optim__SVRGOptions", "datamunge::optim::SVRGOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datamunge__optim__TrustRegionNewton", "datamunge::optim::TrustRegionNewton *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
@@ -76589,6 +99194,7 @@ static swig_type_info _swigt__p_datamunge__stats__HypothesisTestResult = {"_p_da
 static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_std__vectorT_double_t = {"_p_p_std__vectorT_double_t", "std::vector< double > **", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_p_std__vectorT_std__vectorT_double_t_t = {"_p_p_std__vectorT_std__vectorT_double_t_t", "std::vector< std::vector< double > > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_double_double_t", "std::pair< double,double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
@@ -76629,11 +99235,14 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__LM,
   &_swigt__p_datamunge__LMM,
   &_swigt__p_datamunge__Lasso,
+  &_swigt__p_datamunge__MDS,
   &_swigt__p_datamunge__NaiveBayesClassifier,
+  &_swigt__p_datamunge__PCA,
   &_swigt__p_datamunge__RandomForestClassifier,
   &_swigt__p_datamunge__RandomForestRegressor,
   &_swigt__p_datamunge__Ridge,
   &_swigt__p_datamunge__SVM,
+  &_swigt__p_datamunge__ShapeLayer,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
   &_swigt__p_datamunge__Var,
@@ -76657,26 +99266,103 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__bayes__RWMResult,
   &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
   &_swigt__p_datamunge__image__Image,
+  &_swigt__p_datamunge__ode__ODEOptions,
+  &_swigt__p_datamunge__ode__ODESolution,
+  &_swigt__p_datamunge__ode__ODESolver,
+  &_swigt__p_datamunge__ode__RHS,
+  &_swigt__p_datamunge__optim__ACOR,
+  &_swigt__p_datamunge__optim__ACOROptions,
+  &_swigt__p_datamunge__optim__AMSGrad,
+  &_swigt__p_datamunge__optim__AMSGradOptions,
+  &_swigt__p_datamunge__optim__AdaDelta,
+  &_swigt__p_datamunge__optim__AdaDeltaOptions,
+  &_swigt__p_datamunge__optim__AdaGrad,
+  &_swigt__p_datamunge__optim__AdaGradOptions,
   &_swigt__p_datamunge__optim__Adam,
   &_swigt__p_datamunge__optim__AdamOptions,
   &_swigt__p_datamunge__optim__ArbitraryFunction,
+  &_swigt__p_datamunge__optim__ArtificialBeeColony,
+  &_swigt__p_datamunge__optim__ArtificialBeeColonyOptions,
+  &_swigt__p_datamunge__optim__AugmentedLagrangian,
+  &_swigt__p_datamunge__optim__AugmentedLagrangianOptions,
+  &_swigt__p_datamunge__optim__BayesianOptimization,
+  &_swigt__p_datamunge__optim__BayesianOptimizationOptions,
+  &_swigt__p_datamunge__optim__BayesianSurrogate,
+  &_swigt__p_datamunge__optim__CMAES,
+  &_swigt__p_datamunge__optim__CMAESOptions,
+  &_swigt__p_datamunge__optim__ConjugateGradient,
+  &_swigt__p_datamunge__optim__ConjugateGradientOptions,
+  &_swigt__p_datamunge__optim__CoordinateDescent,
+  &_swigt__p_datamunge__optim__CoordinateDescentOptions,
+  &_swigt__p_datamunge__optim__CrossEntropyMethod,
+  &_swigt__p_datamunge__optim__CrossEntropyMethodOptions,
+  &_swigt__p_datamunge__optim__CuckooSearch,
+  &_swigt__p_datamunge__optim__CuckooSearchOptions,
   &_swigt__p_datamunge__optim__DEOptions,
   &_swigt__p_datamunge__optim__DifferentiableFunction,
   &_swigt__p_datamunge__optim__DifferentiableSeparableFunction,
   &_swigt__p_datamunge__optim__DifferentialEvolution,
+  &_swigt__p_datamunge__optim__EqualityConstrainedFunction,
+  &_swigt__p_datamunge__optim__EstimationOfDistribution,
+  &_swigt__p_datamunge__optim__EstimationOfDistributionOptions,
+  &_swigt__p_datamunge__optim__EvolutionStrategy,
+  &_swigt__p_datamunge__optim__EvolutionStrategyOptions,
+  &_swigt__p_datamunge__optim__FISTA,
+  &_swigt__p_datamunge__optim__FISTAOptions,
+  &_swigt__p_datamunge__optim__FireflyAlgorithm,
+  &_swigt__p_datamunge__optim__FireflyAlgorithmOptions,
   &_swigt__p_datamunge__optim__GAOptions,
   &_swigt__p_datamunge__optim__GeneticAlgorithm,
   &_swigt__p_datamunge__optim__GradientDescent,
   &_swigt__p_datamunge__optim__GradientDescentOptions,
+  &_swigt__p_datamunge__optim__GreyWolfOptimizer,
+  &_swigt__p_datamunge__optim__GreyWolfOptimizerOptions,
+  &_swigt__p_datamunge__optim__HarmonySearch,
+  &_swigt__p_datamunge__optim__HarmonySearchOptions,
+  &_swigt__p_datamunge__optim__HessianFunction,
+  &_swigt__p_datamunge__optim__InequalityConstrainedFunction,
+  &_swigt__p_datamunge__optim__InteriorPoint,
+  &_swigt__p_datamunge__optim__InteriorPointOptions,
   &_swigt__p_datamunge__optim__LBFGS,
   &_swigt__p_datamunge__optim__LBFGSOptions,
+  &_swigt__p_datamunge__optim__LevenbergMarquardt,
+  &_swigt__p_datamunge__optim__LevenbergMarquardtOptions,
+  &_swigt__p_datamunge__optim__Nadam,
+  &_swigt__p_datamunge__optim__NadamOptions,
+  &_swigt__p_datamunge__optim__NelderMead,
+  &_swigt__p_datamunge__optim__NelderMeadOptions,
+  &_swigt__p_datamunge__optim__NesterovAcceleratedGradient,
+  &_swigt__p_datamunge__optim__NesterovAcceleratedGradientOptions,
+  &_swigt__p_datamunge__optim__Newton,
+  &_swigt__p_datamunge__optim__NewtonOptions,
   &_swigt__p_datamunge__optim__PSO,
   &_swigt__p_datamunge__optim__PSOOptions,
+  &_swigt__p_datamunge__optim__ParallelTempering,
+  &_swigt__p_datamunge__optim__ParallelTemperingOptions,
+  &_swigt__p_datamunge__optim__ProximalFunction,
+  &_swigt__p_datamunge__optim__ProximalGradient,
+  &_swigt__p_datamunge__optim__ProximalGradientOptions,
+  &_swigt__p_datamunge__optim__RBFGaussianProcessSurrogate,
+  &_swigt__p_datamunge__optim__RMSProp,
+  &_swigt__p_datamunge__optim__RMSPropOptions,
+  &_swigt__p_datamunge__optim__RandomizedBlockCoordinateDescent,
+  &_swigt__p_datamunge__optim__RandomizedBlockCoordinateDescentOptions,
+  &_swigt__p_datamunge__optim__ResidualFunction,
+  &_swigt__p_datamunge__optim__SAGA,
+  &_swigt__p_datamunge__optim__SAGAOptions,
   &_swigt__p_datamunge__optim__SGD,
   &_swigt__p_datamunge__optim__SGDOptions,
+  &_swigt__p_datamunge__optim__SQP,
+  &_swigt__p_datamunge__optim__SQPOptions,
+  &_swigt__p_datamunge__optim__SVRG,
+  &_swigt__p_datamunge__optim__SVRGOptions,
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
+  &_swigt__p_datamunge__optim__TrustRegionNewton,
+  &_swigt__p_datamunge__optim__TrustRegionNewtonOptions,
+  &_swigt__p_datamunge__optim__WhaleOptimization,
+  &_swigt__p_datamunge__optim__WhaleOptimizationOptions,
   &_swigt__p_datamunge__plot__ABLine,
   &_swigt__p_datamunge__plot__DataSeries,
   &_swigt__p_datamunge__plot__LegendEntry,
@@ -76692,6 +99378,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_double,
   &_swigt__p_int,
   &_swigt__p_p_std__vectorT_double_t,
+  &_swigt__p_p_std__vectorT_std__vectorT_double_t_t,
   &_swigt__p_std__pairT_double_double_t,
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
@@ -76732,11 +99419,14 @@ static swig_cast_info _swigc__p_datamunge__LDA[] = {  {&_swigt__p_datamunge__LDA
 static swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__LMM[] = {  {&_swigt__p_datamunge__LMM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Lasso[] = {  {&_swigt__p_datamunge__Lasso, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__MDS[] = {  {&_swigt__p_datamunge__MDS, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__NaiveBayesClassifier[] = {  {&_swigt__p_datamunge__NaiveBayesClassifier, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__PCA[] = {  {&_swigt__p_datamunge__PCA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__RandomForestClassifier[] = {  {&_swigt__p_datamunge__RandomForestClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__RandomForestRegressor[] = {  {&_swigt__p_datamunge__RandomForestRegressor, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__Ridge, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
@@ -76760,26 +99450,103 @@ static swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_
 static swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__ode__ODEOptions[] = {  {&_swigt__p_datamunge__ode__ODEOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__ode__ODESolution[] = {  {&_swigt__p_datamunge__ode__ODESolution, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__ode__ODESolver[] = {  {&_swigt__p_datamunge__ode__ODESolver, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__ode__RHS[] = {  {&_swigt__p_datamunge__ode__RHS, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ACOR[] = {  {&_swigt__p_datamunge__optim__ACOR, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ACOROptions[] = {  {&_swigt__p_datamunge__optim__ACOROptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AMSGrad[] = {  {&_swigt__p_datamunge__optim__AMSGrad, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AMSGradOptions[] = {  {&_swigt__p_datamunge__optim__AMSGradOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AdaDelta[] = {  {&_swigt__p_datamunge__optim__AdaDelta, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AdaDeltaOptions[] = {  {&_swigt__p_datamunge__optim__AdaDeltaOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AdaGrad[] = {  {&_swigt__p_datamunge__optim__AdaGrad, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AdaGradOptions[] = {  {&_swigt__p_datamunge__optim__AdaGradOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__Adam[] = {  {&_swigt__p_datamunge__optim__Adam, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__AdamOptions[] = {  {&_swigt__p_datamunge__optim__AdamOptions, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__EqualityConstrainedFunction, _p_datamunge__optim__EqualityConstrainedFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__HessianFunction, _p_datamunge__optim__HessianFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__InequalityConstrainedFunction, _p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__ProximalFunction, _p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ArtificialBeeColony[] = {  {&_swigt__p_datamunge__optim__ArtificialBeeColony, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ArtificialBeeColonyOptions[] = {  {&_swigt__p_datamunge__optim__ArtificialBeeColonyOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangian[] = {  {&_swigt__p_datamunge__optim__AugmentedLagrangian, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangianOptions[] = {  {&_swigt__p_datamunge__optim__AugmentedLagrangianOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimization[] = {  {&_swigt__p_datamunge__optim__BayesianOptimization, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__BayesianOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__BayesianSurrogate[] = {  {&_swigt__p_datamunge__optim__BayesianSurrogate, 0, 0, 0},  {&_swigt__p_datamunge__optim__RBFGaussianProcessSurrogate, _p_datamunge__optim__RBFGaussianProcessSurrogateTo_p_datamunge__optim__BayesianSurrogate, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CMAES[] = {  {&_swigt__p_datamunge__optim__CMAES, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CMAESOptions[] = {  {&_swigt__p_datamunge__optim__CMAESOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ConjugateGradient[] = {  {&_swigt__p_datamunge__optim__ConjugateGradient, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ConjugateGradientOptions[] = {  {&_swigt__p_datamunge__optim__ConjugateGradientOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CoordinateDescent[] = {  {&_swigt__p_datamunge__optim__CoordinateDescent, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CoordinateDescentOptions[] = {  {&_swigt__p_datamunge__optim__CoordinateDescentOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CrossEntropyMethod[] = {  {&_swigt__p_datamunge__optim__CrossEntropyMethod, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CrossEntropyMethodOptions[] = {  {&_swigt__p_datamunge__optim__CrossEntropyMethodOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CuckooSearch[] = {  {&_swigt__p_datamunge__optim__CuckooSearch, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__CuckooSearchOptions[] = {  {&_swigt__p_datamunge__optim__CuckooSearchOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__DEOptions[] = {  {&_swigt__p_datamunge__optim__DEOptions, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__optim__DifferentiableFunction[] = {  {&_swigt__p_datamunge__optim__DifferentiableFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__DifferentiableFunction[] = {  {&_swigt__p_datamunge__optim__DifferentiableFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},  {&_swigt__p_datamunge__optim__EqualityConstrainedFunction, _p_datamunge__optim__EqualityConstrainedFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},  {&_swigt__p_datamunge__optim__HessianFunction, _p_datamunge__optim__HessianFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},  {&_swigt__p_datamunge__optim__InequalityConstrainedFunction, _p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},  {&_swigt__p_datamunge__optim__ProximalFunction, _p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__DifferentiableSeparableFunction[] = {  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__DifferentialEvolution[] = {  {&_swigt__p_datamunge__optim__DifferentialEvolution, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__EqualityConstrainedFunction[] = {  {&_swigt__p_datamunge__optim__EqualityConstrainedFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__EstimationOfDistribution[] = {  {&_swigt__p_datamunge__optim__EstimationOfDistribution, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__EstimationOfDistributionOptions[] = {  {&_swigt__p_datamunge__optim__EstimationOfDistributionOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__EvolutionStrategy[] = {  {&_swigt__p_datamunge__optim__EvolutionStrategy, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__EvolutionStrategyOptions[] = {  {&_swigt__p_datamunge__optim__EvolutionStrategyOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__FISTA[] = {  {&_swigt__p_datamunge__optim__FISTA, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__FISTAOptions[] = {  {&_swigt__p_datamunge__optim__FISTAOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__FireflyAlgorithm[] = {  {&_swigt__p_datamunge__optim__FireflyAlgorithm, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__FireflyAlgorithmOptions[] = {  {&_swigt__p_datamunge__optim__FireflyAlgorithmOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__GAOptions[] = {  {&_swigt__p_datamunge__optim__GAOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__GeneticAlgorithm[] = {  {&_swigt__p_datamunge__optim__GeneticAlgorithm, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__GradientDescent[] = {  {&_swigt__p_datamunge__optim__GradientDescent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__GradientDescentOptions[] = {  {&_swigt__p_datamunge__optim__GradientDescentOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__GreyWolfOptimizer[] = {  {&_swigt__p_datamunge__optim__GreyWolfOptimizer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__GreyWolfOptimizerOptions[] = {  {&_swigt__p_datamunge__optim__GreyWolfOptimizerOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__HarmonySearch[] = {  {&_swigt__p_datamunge__optim__HarmonySearch, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__HarmonySearchOptions[] = {  {&_swigt__p_datamunge__optim__HarmonySearchOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__HessianFunction[] = {  {&_swigt__p_datamunge__optim__HessianFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__InequalityConstrainedFunction[] = {  {&_swigt__p_datamunge__optim__InequalityConstrainedFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__InteriorPoint[] = {  {&_swigt__p_datamunge__optim__InteriorPoint, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__InteriorPointOptions[] = {  {&_swigt__p_datamunge__optim__InteriorPointOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__LBFGS[] = {  {&_swigt__p_datamunge__optim__LBFGS, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__LBFGSOptions[] = {  {&_swigt__p_datamunge__optim__LBFGSOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__LevenbergMarquardt[] = {  {&_swigt__p_datamunge__optim__LevenbergMarquardt, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__LevenbergMarquardtOptions[] = {  {&_swigt__p_datamunge__optim__LevenbergMarquardtOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__Nadam[] = {  {&_swigt__p_datamunge__optim__Nadam, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NadamOptions[] = {  {&_swigt__p_datamunge__optim__NadamOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NelderMead[] = {  {&_swigt__p_datamunge__optim__NelderMead, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NelderMeadOptions[] = {  {&_swigt__p_datamunge__optim__NelderMeadOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NesterovAcceleratedGradient[] = {  {&_swigt__p_datamunge__optim__NesterovAcceleratedGradient, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NesterovAcceleratedGradientOptions[] = {  {&_swigt__p_datamunge__optim__NesterovAcceleratedGradientOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__Newton[] = {  {&_swigt__p_datamunge__optim__Newton, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__NewtonOptions[] = {  {&_swigt__p_datamunge__optim__NewtonOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__PSO[] = {  {&_swigt__p_datamunge__optim__PSO, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__PSOOptions[] = {  {&_swigt__p_datamunge__optim__PSOOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ParallelTempering[] = {  {&_swigt__p_datamunge__optim__ParallelTempering, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ParallelTemperingOptions[] = {  {&_swigt__p_datamunge__optim__ParallelTemperingOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ProximalFunction[] = {  {&_swigt__p_datamunge__optim__ProximalFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ProximalGradient[] = {  {&_swigt__p_datamunge__optim__ProximalGradient, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ProximalGradientOptions[] = {  {&_swigt__p_datamunge__optim__ProximalGradientOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__RBFGaussianProcessSurrogate[] = {  {&_swigt__p_datamunge__optim__RBFGaussianProcessSurrogate, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__RMSProp[] = {  {&_swigt__p_datamunge__optim__RMSProp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__RMSPropOptions[] = {  {&_swigt__p_datamunge__optim__RMSPropOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__RandomizedBlockCoordinateDescent[] = {  {&_swigt__p_datamunge__optim__RandomizedBlockCoordinateDescent, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__RandomizedBlockCoordinateDescentOptions[] = {  {&_swigt__p_datamunge__optim__RandomizedBlockCoordinateDescentOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__ResidualFunction[] = {  {&_swigt__p_datamunge__optim__ResidualFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SAGA[] = {  {&_swigt__p_datamunge__optim__SAGA, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SAGAOptions[] = {  {&_swigt__p_datamunge__optim__SAGAOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SGD[] = {  {&_swigt__p_datamunge__optim__SGD, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SGDOptions[] = {  {&_swigt__p_datamunge__optim__SGDOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SQP[] = {  {&_swigt__p_datamunge__optim__SQP, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SQPOptions[] = {  {&_swigt__p_datamunge__optim__SQPOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SVRG[] = {  {&_swigt__p_datamunge__optim__SVRG, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SVRGOptions[] = {  {&_swigt__p_datamunge__optim__SVRGOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewton[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewton, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewtonOptions[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewtonOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimization[] = {  {&_swigt__p_datamunge__optim__WhaleOptimization, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__WhaleOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
@@ -76795,6 +99562,7 @@ static swig_cast_info _swigc__p_datamunge__stats__HypothesisTestResult[] = {  {&
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_std__vectorT_double_t[] = {  {&_swigt__p_p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_p_std__vectorT_std__vectorT_double_t_t[] = {  {&_swigt__p_p_std__vectorT_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_std__pairT_double_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -76835,11 +99603,14 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__LM,
   _swigc__p_datamunge__LMM,
   _swigc__p_datamunge__Lasso,
+  _swigc__p_datamunge__MDS,
   _swigc__p_datamunge__NaiveBayesClassifier,
+  _swigc__p_datamunge__PCA,
   _swigc__p_datamunge__RandomForestClassifier,
   _swigc__p_datamunge__RandomForestRegressor,
   _swigc__p_datamunge__Ridge,
   _swigc__p_datamunge__SVM,
+  _swigc__p_datamunge__ShapeLayer,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
   _swigc__p_datamunge__Var,
@@ -76863,26 +99634,103 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__bayes__RWMResult,
   _swigc__p_datamunge__bayes__RandomWalkMetropolis,
   _swigc__p_datamunge__image__Image,
+  _swigc__p_datamunge__ode__ODEOptions,
+  _swigc__p_datamunge__ode__ODESolution,
+  _swigc__p_datamunge__ode__ODESolver,
+  _swigc__p_datamunge__ode__RHS,
+  _swigc__p_datamunge__optim__ACOR,
+  _swigc__p_datamunge__optim__ACOROptions,
+  _swigc__p_datamunge__optim__AMSGrad,
+  _swigc__p_datamunge__optim__AMSGradOptions,
+  _swigc__p_datamunge__optim__AdaDelta,
+  _swigc__p_datamunge__optim__AdaDeltaOptions,
+  _swigc__p_datamunge__optim__AdaGrad,
+  _swigc__p_datamunge__optim__AdaGradOptions,
   _swigc__p_datamunge__optim__Adam,
   _swigc__p_datamunge__optim__AdamOptions,
   _swigc__p_datamunge__optim__ArbitraryFunction,
+  _swigc__p_datamunge__optim__ArtificialBeeColony,
+  _swigc__p_datamunge__optim__ArtificialBeeColonyOptions,
+  _swigc__p_datamunge__optim__AugmentedLagrangian,
+  _swigc__p_datamunge__optim__AugmentedLagrangianOptions,
+  _swigc__p_datamunge__optim__BayesianOptimization,
+  _swigc__p_datamunge__optim__BayesianOptimizationOptions,
+  _swigc__p_datamunge__optim__BayesianSurrogate,
+  _swigc__p_datamunge__optim__CMAES,
+  _swigc__p_datamunge__optim__CMAESOptions,
+  _swigc__p_datamunge__optim__ConjugateGradient,
+  _swigc__p_datamunge__optim__ConjugateGradientOptions,
+  _swigc__p_datamunge__optim__CoordinateDescent,
+  _swigc__p_datamunge__optim__CoordinateDescentOptions,
+  _swigc__p_datamunge__optim__CrossEntropyMethod,
+  _swigc__p_datamunge__optim__CrossEntropyMethodOptions,
+  _swigc__p_datamunge__optim__CuckooSearch,
+  _swigc__p_datamunge__optim__CuckooSearchOptions,
   _swigc__p_datamunge__optim__DEOptions,
   _swigc__p_datamunge__optim__DifferentiableFunction,
   _swigc__p_datamunge__optim__DifferentiableSeparableFunction,
   _swigc__p_datamunge__optim__DifferentialEvolution,
+  _swigc__p_datamunge__optim__EqualityConstrainedFunction,
+  _swigc__p_datamunge__optim__EstimationOfDistribution,
+  _swigc__p_datamunge__optim__EstimationOfDistributionOptions,
+  _swigc__p_datamunge__optim__EvolutionStrategy,
+  _swigc__p_datamunge__optim__EvolutionStrategyOptions,
+  _swigc__p_datamunge__optim__FISTA,
+  _swigc__p_datamunge__optim__FISTAOptions,
+  _swigc__p_datamunge__optim__FireflyAlgorithm,
+  _swigc__p_datamunge__optim__FireflyAlgorithmOptions,
   _swigc__p_datamunge__optim__GAOptions,
   _swigc__p_datamunge__optim__GeneticAlgorithm,
   _swigc__p_datamunge__optim__GradientDescent,
   _swigc__p_datamunge__optim__GradientDescentOptions,
+  _swigc__p_datamunge__optim__GreyWolfOptimizer,
+  _swigc__p_datamunge__optim__GreyWolfOptimizerOptions,
+  _swigc__p_datamunge__optim__HarmonySearch,
+  _swigc__p_datamunge__optim__HarmonySearchOptions,
+  _swigc__p_datamunge__optim__HessianFunction,
+  _swigc__p_datamunge__optim__InequalityConstrainedFunction,
+  _swigc__p_datamunge__optim__InteriorPoint,
+  _swigc__p_datamunge__optim__InteriorPointOptions,
   _swigc__p_datamunge__optim__LBFGS,
   _swigc__p_datamunge__optim__LBFGSOptions,
+  _swigc__p_datamunge__optim__LevenbergMarquardt,
+  _swigc__p_datamunge__optim__LevenbergMarquardtOptions,
+  _swigc__p_datamunge__optim__Nadam,
+  _swigc__p_datamunge__optim__NadamOptions,
+  _swigc__p_datamunge__optim__NelderMead,
+  _swigc__p_datamunge__optim__NelderMeadOptions,
+  _swigc__p_datamunge__optim__NesterovAcceleratedGradient,
+  _swigc__p_datamunge__optim__NesterovAcceleratedGradientOptions,
+  _swigc__p_datamunge__optim__Newton,
+  _swigc__p_datamunge__optim__NewtonOptions,
   _swigc__p_datamunge__optim__PSO,
   _swigc__p_datamunge__optim__PSOOptions,
+  _swigc__p_datamunge__optim__ParallelTempering,
+  _swigc__p_datamunge__optim__ParallelTemperingOptions,
+  _swigc__p_datamunge__optim__ProximalFunction,
+  _swigc__p_datamunge__optim__ProximalGradient,
+  _swigc__p_datamunge__optim__ProximalGradientOptions,
+  _swigc__p_datamunge__optim__RBFGaussianProcessSurrogate,
+  _swigc__p_datamunge__optim__RMSProp,
+  _swigc__p_datamunge__optim__RMSPropOptions,
+  _swigc__p_datamunge__optim__RandomizedBlockCoordinateDescent,
+  _swigc__p_datamunge__optim__RandomizedBlockCoordinateDescentOptions,
+  _swigc__p_datamunge__optim__ResidualFunction,
+  _swigc__p_datamunge__optim__SAGA,
+  _swigc__p_datamunge__optim__SAGAOptions,
   _swigc__p_datamunge__optim__SGD,
   _swigc__p_datamunge__optim__SGDOptions,
+  _swigc__p_datamunge__optim__SQP,
+  _swigc__p_datamunge__optim__SQPOptions,
+  _swigc__p_datamunge__optim__SVRG,
+  _swigc__p_datamunge__optim__SVRGOptions,
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
+  _swigc__p_datamunge__optim__TrustRegionNewton,
+  _swigc__p_datamunge__optim__TrustRegionNewtonOptions,
+  _swigc__p_datamunge__optim__WhaleOptimization,
+  _swigc__p_datamunge__optim__WhaleOptimizationOptions,
   _swigc__p_datamunge__plot__ABLine,
   _swigc__p_datamunge__plot__DataSeries,
   _swigc__p_datamunge__plot__LegendEntry,
@@ -76898,6 +99746,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_double,
   _swigc__p_int,
   _swigc__p_p_std__vectorT_double_t,
+  _swigc__p_p_std__vectorT_std__vectorT_double_t_t,
   _swigc__p_std__pairT_double_double_t,
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
@@ -77274,6 +100123,516 @@ std::vector< double > SwigDirector_DifferentiableSeparableFunction::gradient_ter
   }
   swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("gradient_term"),args);
   CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+SwigDirector_ProximalFunction::SwigDirector_ProximalFunction(value self): datamunge::optim::ProximalFunction(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_ProximalFunction::~SwigDirector_ProximalFunction() {
+}
+
+double SwigDirector_ProximalFunction::evaluate(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("evaluate"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
+}
+
+
+std::vector< double > SwigDirector_ProximalFunction::gradient(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("gradient"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< double > SwigDirector_ProximalFunction::proximal(std::vector< double > const &point,double step) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&point, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  {
+    args = caml_list_append(args, caml_val_double(step));
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("proximal"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+SwigDirector_HessianFunction::SwigDirector_HessianFunction(value self): datamunge::optim::HessianFunction(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_HessianFunction::~SwigDirector_HessianFunction() {
+}
+
+double SwigDirector_HessianFunction::evaluate(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("evaluate"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
+}
+
+
+std::vector< double > SwigDirector_HessianFunction::gradient(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("gradient"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< std::vector< double > > SwigDirector_HessianFunction::hessian(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< std::vector< double > > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("hessian"),args);
+  CAMLreturnT(std::vector< std::vector< double > >, (std::vector< std::vector< double > >)c_result);
+}
+
+
+SwigDirector_EqualityConstrainedFunction::SwigDirector_EqualityConstrainedFunction(value self): datamunge::optim::EqualityConstrainedFunction(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_EqualityConstrainedFunction::~SwigDirector_EqualityConstrainedFunction() {
+}
+
+double SwigDirector_EqualityConstrainedFunction::evaluate(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("evaluate"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
+}
+
+
+std::vector< double > SwigDirector_EqualityConstrainedFunction::gradient(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("gradient"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< double > SwigDirector_EqualityConstrainedFunction::constraints(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("constraints"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< std::vector< double > > SwigDirector_EqualityConstrainedFunction::constraint_jacobian(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< std::vector< double > > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("constraint_jacobian"),args);
+  CAMLreturnT(std::vector< std::vector< double > >, (std::vector< std::vector< double > >)c_result);
+}
+
+
+SwigDirector_InequalityConstrainedFunction::SwigDirector_InequalityConstrainedFunction(value self): datamunge::optim::InequalityConstrainedFunction(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_InequalityConstrainedFunction::~SwigDirector_InequalityConstrainedFunction() {
+}
+
+double SwigDirector_InequalityConstrainedFunction::evaluate(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("evaluate"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
+}
+
+
+std::vector< double > SwigDirector_InequalityConstrainedFunction::gradient(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("gradient"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< double > SwigDirector_InequalityConstrainedFunction::inequalities(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("inequalities"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< std::vector< double > > SwigDirector_InequalityConstrainedFunction::inequality_jacobian(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< std::vector< double > > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("inequality_jacobian"),args);
+  CAMLreturnT(std::vector< std::vector< double > >, (std::vector< std::vector< double > >)c_result);
+}
+
+
+SwigDirector_ResidualFunction::SwigDirector_ResidualFunction(value self): datamunge::optim::ResidualFunction(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_ResidualFunction::~SwigDirector_ResidualFunction() {
+}
+
+std::vector< double > SwigDirector_ResidualFunction::residuals(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< double > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("residuals"),args);
+  CAMLreturnT(std::vector< double >, (std::vector< double >)c_result);
+}
+
+
+std::vector< std::vector< double > > SwigDirector_ResidualFunction::jacobian(std::vector< double > const &coordinates) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  std::vector< std::vector< double > > c_result;
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&coordinates, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("jacobian"),args);
+  CAMLreturnT(std::vector< std::vector< double > >, (std::vector< std::vector< double > >)c_result);
+}
+
+
+SwigDirector_BayesianSurrogate::SwigDirector_BayesianSurrogate(value self): datamunge::optim::BayesianSurrogate(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_BayesianSurrogate::~SwigDirector_BayesianSurrogate() {
+}
+
+void SwigDirector_BayesianSurrogate::fit(std::vector< std::vector< double > > const &points,std::vector< double > const &values) {
+  CAMLparam0();
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > > *_from_ptr", (void *)&points, SWIGTYPE_p_p_std__vectorT_std__vectorT_double_t_t);
+    args = caml_list_append(args, swig_result);
+  }
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&values, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("fit"),args);
+  CAMLreturn0;
+}
+
+
+double SwigDirector_BayesianSurrogate::acquisition(std::vector< double > const &point,double incumbent) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    swig_result = SWIG_Ocaml_ptr_to_val("create_std::vector< double > *_from_ptr", (void *)&point, SWIGTYPE_p_p_std__vectorT_double_t);
+    args = caml_list_append(args, swig_result);
+  }
+  {
+    args = caml_list_append(args, caml_val_double(incumbent));
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("acquisition"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
 }
 
 
