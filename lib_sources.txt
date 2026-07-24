@@ -117,3 +117,7 @@ datamunge/stats/diffusion_maps
 datamunge/stats/kernel_pca
 datamunge/stats/sammon_mapping
 datamunge/stats/umap
+datamunge/fem/mesh1d
+datamunge/fem/mesh2d
+datamunge/fem/fem1d
+datamunge/fem/fem2d

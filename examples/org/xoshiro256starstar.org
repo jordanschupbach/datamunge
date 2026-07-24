@@ -1,0 +1,45 @@
+#+title: xoshiro256**: Fast 256-bit XOR/Shift/Rotate Random Generation
+#+subtitle: A four-word generator with star-star output scrambling
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+xoshiro256** keeps four 64-bit words with period \(2^{256}-1\). Its output
+function multiplies by 5, rotates, then multiplies by 9, improving low-bit
+behavior over simpler output scramblers. It is a strong general simulation
+engine, but not a cryptographic primitive.
+
+* Mathematics and pseudocode
+
+#+begin_example
+result = rotl(s1 * 5, 7) * 9
+t = s1 << 17
+s2 = s2 xor s0;  s3 = s3 xor s1
+s1 = s1 xor s2;  s0 = s0 xor s3
+s2 = s2 xor t
+s3 = rotl(s3, 45)
+return result
+#+end_example
+
+All four words are seeded with successive SplitMix64 outputs, preventing an
+all-zero state.
+
+* Executable example
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/xoshiro256starstar.cpp <<'CPP'
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  datamunge::random::Xoshiro256StarStar rng(0xC0FFEEULL);
+  std::cout << "raw word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "uniform01 = " << rng.uniform01() << "\n"
+            << "exponential(rate=2) = " << rng.exponential(2.0) << "\n"
+            << "Bernoulli(0.8) = " << rng.bernoulli(0.8) << "\n";
+}
+CPP
+c++ -std=c++17 -Iinclude build/org/xoshiro256starstar.cpp src/datamunge/random.cpp -o build/org/xoshiro256starstar
+./build/org/xoshiro256starstar
+#+end_src

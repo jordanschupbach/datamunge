@@ -3,6 +3,7 @@
 #include <datamunge/algebra/algebra.hpp>
 
 #include <algorithm>
+#include <cmath>
 
 using namespace datamunge::algebra;
 
@@ -177,4 +178,131 @@ TEST(BerlekampFactor, IrreduciblePolynomialFactorsAsItself) {
     const auto factors = berlekamp_factor(f, 3);
     ASSERT_EQ(factors.size(), 1u);
     EXPECT_EQ(factors[0], f);
+}
+
+TEST(ComplexRoots, RecoversAllRootsOfARealCubic) {
+    // (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6
+    const Polynomial p(std::vector<double>{-6.0, 11.0, -6.0, 1.0});
+    const auto roots = complex_roots(p);
+    ASSERT_EQ(roots.size(), 3u);
+
+    std::vector<double> real_parts;
+    for (const auto& r : roots) {
+        EXPECT_NEAR(r.im, 0.0, 1e-6);
+        real_parts.push_back(r.re);
+    }
+    std::sort(real_parts.begin(), real_parts.end());
+    EXPECT_NEAR(real_parts[0], 1.0, 1e-8);
+    EXPECT_NEAR(real_parts[1], 2.0, 1e-8);
+    EXPECT_NEAR(real_parts[2], 3.0, 1e-8);
+}
+
+TEST(ComplexRoots, RecoversAConjugatePairForXSquaredPlusOne) {
+    const Polynomial p(std::vector<double>{1.0, 0.0, 1.0}); // x^2 + 1, roots +-i
+    const auto roots = complex_roots(p);
+    ASSERT_EQ(roots.size(), 2u);
+    EXPECT_NEAR(roots[0].re, 0.0, 1e-8);
+    EXPECT_NEAR(roots[1].re, 0.0, 1e-8);
+    EXPECT_NEAR(std::fabs(roots[0].im), 1.0, 1e-8);
+    EXPECT_NEAR(roots[0].im, -roots[1].im, 1e-8);
+}
+
+TEST(ComplexRoots, RejectsDegreeZeroPolynomial) {
+    EXPECT_THROW(complex_roots(Polynomial(5.0)), std::invalid_argument);
+}
+
+TEST(RationalRoots, FindsAllRootsOfAKnownCubic) {
+    // 2x^3 - x^2 - 2x + 1 = (x-1)(x+1)(2x-1), roots 1, -1, 1/2.
+    const Polynomial p(std::vector<double>{1.0, -2.0, -1.0, 2.0});
+    const auto roots = rational_roots(p);
+    ASSERT_EQ(roots.size(), 3u);
+    EXPECT_NEAR(roots[0], -1.0, 1e-9);
+    EXPECT_NEAR(roots[1], 0.5, 1e-9);
+    EXPECT_NEAR(roots[2], 1.0, 1e-9);
+}
+
+TEST(RationalRoots, HandlesARootAtExactlyZero) {
+    // x^2 * (x - 2) = x^3 - 2x^2, roots 0 (double) and 2.
+    const Polynomial p(std::vector<double>{0.0, 0.0, -2.0, 1.0});
+    const auto roots = rational_roots(p);
+    ASSERT_EQ(roots.size(), 2u);
+    EXPECT_NEAR(roots[0], 0.0, 1e-9);
+    EXPECT_NEAR(roots[1], 2.0, 1e-9);
+}
+
+TEST(RationalRoots, NoRationalRootsForAnIrreducibleQuadratic) {
+    const Polynomial p(std::vector<double>{1.0, 0.0, 1.0}); // x^2 + 1
+    EXPECT_TRUE(rational_roots(p).empty());
+}
+
+TEST(RationalRoots, RejectsNonIntegerCoefficients) {
+    const Polynomial p(std::vector<double>{0.5, 1.0});
+    EXPECT_THROW(rational_roots(p), std::invalid_argument);
+}
+
+namespace {
+Polynomial rebuild(const RealFactorization& rf) {
+    Polynomial result(rf.leading_coefficient);
+    for (const auto& f : rf.factors)
+        for (int i = 0; i < f.multiplicity; ++i) result = result.multiply(f.factor);
+    return result;
+}
+} // namespace
+
+TEST(FactorOverReals, SplitsAMixedRealAndComplexRootPolynomial) {
+    // (x^2 + 1)(x - 2): one real linear factor, one irreducible real quadratic factor.
+    const Polynomial p = Polynomial(std::vector<double>{1.0, 0.0, 1.0}).multiply(Polynomial(std::vector<double>{-2.0, 1.0}));
+    const auto rf = factor_over_reals(p);
+    ASSERT_EQ(rf.num_factors(), 2u);
+
+    bool found_linear = false, found_quadratic = false;
+    for (const auto& f : rf.factors) {
+        EXPECT_EQ(f.multiplicity, 1);
+        if (f.factor.degree() == 1) found_linear = true;
+        if (f.factor.degree() == 2) found_quadratic = true;
+    }
+    EXPECT_TRUE(found_linear);
+    EXPECT_TRUE(found_quadratic);
+
+    const Polynomial rebuilt = rebuild(rf);
+    ASSERT_EQ(rebuilt.degree(), p.degree());
+    for (int i = 0; i <= p.degree(); ++i) EXPECT_NEAR(rebuilt.coefficient(i), p.coefficient(i), 1e-6);
+}
+
+TEST(FactorOverReals, RecoversARepeatedRealRootWithItsMultiplicity) {
+    // (x-1)^2 (x-3) -- this exact shape once tripped a floating-point robustness bug in
+    // poly_gcd() (a near-zero-but-not-exactly-zero remainder failed to terminate the Euclidean
+    // algorithm, collapsing the GCD to a spurious constant); this is as much a regression test
+    // for that fix as for factor_over_reals() itself.
+    const Polynomial x_minus_1(std::vector<double>{-1.0, 1.0});
+    const Polynomial x_minus_3(std::vector<double>{-3.0, 1.0});
+    const Polynomial p = x_minus_1.multiply(x_minus_1).multiply(x_minus_3);
+
+    const auto rf = factor_over_reals(p);
+    ASSERT_EQ(rf.num_factors(), 2u);
+
+    bool found_mult_2 = false, found_mult_1 = false;
+    for (const auto& f : rf.factors) {
+        EXPECT_EQ(f.factor.degree(), 1);
+        if (f.multiplicity == 2) found_mult_2 = true;
+        if (f.multiplicity == 1) found_mult_1 = true;
+    }
+    EXPECT_TRUE(found_mult_2);
+    EXPECT_TRUE(found_mult_1);
+
+    const Polynomial rebuilt = rebuild(rf);
+    ASSERT_EQ(rebuilt.degree(), p.degree());
+    for (int i = 0; i <= p.degree(); ++i) EXPECT_NEAR(rebuilt.coefficient(i), p.coefficient(i), 1e-6);
+}
+
+TEST(PolyGcd, HandlesNearZeroRemainderNoise) {
+    // Regression test for the same poly_gcd() bug: gcd(p, p') must recover the true repeated
+    // factor (x-1), not collapse to a spurious near-zero constant.
+    const Polynomial x_minus_1(std::vector<double>{-1.0, 1.0});
+    const Polynomial x_minus_3(std::vector<double>{-3.0, 1.0});
+    const Polynomial p = x_minus_1.multiply(x_minus_1).multiply(x_minus_3);
+    const Polynomial g = poly_gcd(p, p.derivative());
+    ASSERT_EQ(g.degree(), 1);
+    EXPECT_NEAR(g.coefficient(0), -1.0, 1e-6);
+    EXPECT_NEAR(g.coefficient(1), 1.0, 1e-6);
 }

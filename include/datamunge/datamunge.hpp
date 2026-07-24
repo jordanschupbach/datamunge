@@ -3,6 +3,7 @@
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/cv/cv.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/fem/fem.hpp>
 #include <datamunge/filter/filter.hpp>
 #include <datamunge/geometry/geometry.hpp>
 #include <datamunge/gis/gis.hpp>

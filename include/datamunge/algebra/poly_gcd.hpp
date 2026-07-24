@@ -2,6 +2,7 @@
 
 #include <datamunge/algebra/polynomial.hpp>
 
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -14,6 +15,32 @@ namespace datamunge::algebra {
     return p.scale(1.0 / p.coefficient(p.degree()));
 }
 
+namespace detail {
+
+/// @brief True when every coefficient of `r` is negligible relative to `scale_reference`'s
+///        largest-magnitude coefficient. The classical Euclidean algorithm's termination test
+///        (`remainder.is_zero()`) assumes a remainder that is mathematically zero comes back
+///        as *exactly* zero -- true over an exact field, but not over doubles: a genuine
+///        (e.g. repeated) common factor can leave a remainder like 1.78e-15 instead of 0.0,
+///        which Polynomial::is_zero()'s exact-equality check treats as a nonzero polynomial,
+///        making the Euclidean algorithm take one more spurious step and converge on a
+///        meaningless near-zero-constant "GCD" instead of the true, higher-degree one. Treating
+///        such a remainder as zero (this function) fixes that without weakening
+///        Polynomial::is_zero() itself, which is used elsewhere for genuine exact-zero checks
+///        (e.g. rejecting division by the zero polynomial).
+[[nodiscard]] inline bool is_negligible_remainder(const Polynomial& r, const Polynomial& scale_reference,
+                                                   double relative_tolerance = 1e-9) {
+    if (r.is_zero()) return true;
+    double scale = 0.0;
+    for (double c : scale_reference.coefficients()) scale = std::max(scale, std::fabs(c));
+    if (scale == 0.0) return true;
+    double max_r = 0.0;
+    for (double c : r.coefficients()) max_r = std::max(max_r, std::fabs(c));
+    return max_r <= relative_tolerance * scale;
+}
+
+} // namespace detail
+
 /// @brief GCD of two polynomials via the classical Euclidean algorithm (repeated
 ///        divmod-and-swap), returned monic.
 [[nodiscard]] inline Polynomial poly_gcd(Polynomial a, Polynomial b) {
@@ -21,7 +48,7 @@ namespace datamunge::algebra {
         auto [q, r] = a.divmod(b);
         (void)q;
         a = b;
-        b = r;
+        b = detail::is_negligible_remainder(r, b) ? Polynomial(0.0) : r;
     }
     return monic(a);
 }
@@ -43,6 +70,7 @@ struct PolyExtendedGcdResult {
 
     while (!r.is_zero()) {
         auto [q, rem] = old_r.divmod(r);
+        if (detail::is_negligible_remainder(rem, r)) rem = Polynomial(0.0);
 
         Polynomial new_r = rem;
         old_r = r;
@@ -85,7 +113,7 @@ struct PolyExtendedGcdResult {
         auto [q, rem] = scaled.divmod(b);
         (void)q;
         a = b;
-        b = rem;
+        b = detail::is_negligible_remainder(rem, b) ? Polynomial(0.0) : rem;
     }
     return monic(a);
 }

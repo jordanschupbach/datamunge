@@ -1,0 +1,50 @@
+#+title: ChaCha20: Stream-Cipher Random Generation
+#+subtitle: A 20-round ARX generator for securely keyed streams
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+ChaCha20 is an ARX (addition, rotation, xor) stream cipher. Unlike the other
+engines in this module, it is appropriate for security-sensitive random output
+only when its 256-bit key is secret, unique, and drawn from a secure entropy
+source. The single-64-bit-seed constructor is for deterministic testing and
+simulation, not for generating cryptographic secrets.
+
+* Mathematics and pseudocode
+
+ChaCha's quarter round operates on four 32-bit words modulo \(2^{32}\):
+
+#+begin_example
+a += b; d ^= a; d = rotl(d, 16)
+c += d; b ^= c; b = rotl(b, 12)
+a += b; d ^= a; d = rotl(d, 8)
+c += d; b ^= c; b = rotl(b, 7)
+#+end_example
+
+A 512-bit block begins with four constants, an eight-word key, a 32-bit
+counter, and a three-word nonce. Ten column-round/diagonal-round pairs are
+applied; the original words are added back to form the 64-byte output block.
+
+* Executable example
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/chacha20.cpp <<'CPP'
+#include <array>
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  // In production, fill this key from an operating-system CSPRNG, never a constant.
+  const std::array<std::uint32_t, 8> key{0x11111111U, 0x22222222U, 0x33333333U, 0x44444444U,
+                                         0x55555555U, 0x66666666U, 0x77777777U, 0x88888888U};
+  const std::array<std::uint32_t, 3> nonce{7U, 0U, 0U};
+  datamunge::random::ChaCha20 rng(key, nonce);
+  std::cout << "raw word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "uniform01 = " << rng.uniform01() << "\n"
+            << "bounded integer = " << rng.uniform_u64(1, 6) << "\n";
+}
+CPP
+c++ -std=c++17 -Iinclude build/org/chacha20.cpp src/datamunge/random.cpp -o build/org/chacha20
+./build/org/chacha20
+#+end_src

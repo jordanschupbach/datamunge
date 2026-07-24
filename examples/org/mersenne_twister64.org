@@ -1,0 +1,46 @@
+#+title: MT19937-64: Mersenne Twister Random Generation
+#+subtitle: A 64-bit twisted generalized feedback shift-register engine
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+MT19937-64 stores 312 64-bit words (19,968 state bits) and has period
+\(2^{19937}-1\). It suits reproducible simulations with a large state, but its
+output is predictable and therefore not cryptographically secure.
+
+* Mathematics and pseudocode
+
+The twist combines the upper 33 bits of \(x_i\) with the lower 31 bits of
+\(x_{i+1}\), then conditionally xors a matrix constant. Output tempering
+improves equidistribution without changing the recurrence.
+
+#+begin_example
+for i = 0 .. 311:
+    y = (state[i] & upper_33_bits) | (state[(i + 1) mod 312] & lower_31_bits)
+    state[i] = state[(i + 156) mod 312] xor (y >> 1)
+    if y is odd: state[i] = state[i] xor 0xB5026F5AA96619E9
+y = state[index++]
+y = y xor ((y >> 29) & 0x5555555555555555)
+y = y xor ((y << 17) & 0x71D67FFFEDA60000)
+y = y xor ((y << 37) & 0xFFF7EEE000000000)
+return y xor (y >> 43)
+#+end_example
+
+* Executable example
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/mersenne_twister64.cpp <<'CPP'
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  datamunge::random::MersenneTwister64 rng(5489ULL);
+  std::cout << "reference first word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "normal(10,2) = " << rng.normal(10.0, 2.0) << "\n"
+            << "die roll = " << rng.uniform_u64(1, 6) << "\n";
+}
+CPP
+c++ -std=c++17 -Iinclude build/org/mersenne_twister64.cpp src/datamunge/random.cpp -o build/org/mersenne_twister64
+./build/org/mersenne_twister64
+#+end_src
