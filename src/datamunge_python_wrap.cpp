@@ -4072,265 +4072,281 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__Var swig_types[44]
 #define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[45]
 #define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[46]
-#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[47]
-#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[48]
-#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[49]
-#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[50]
-#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[51]
-#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[52]
-#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[55]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[56]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[57]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[58]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[59]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[60]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[61]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[62]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[63]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[64]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[65]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[66]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[67]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[68]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[69]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[70]
-#define SWIGTYPE_p_datamunge__cv__Corner swig_types[71]
-#define SWIGTYPE_p_datamunge__cv__FlowVector swig_types[72]
-#define SWIGTYPE_p_datamunge__cv__HoughCircle swig_types[73]
-#define SWIGTYPE_p_datamunge__cv__HoughLine swig_types[74]
-#define SWIGTYPE_p_datamunge__cv__KeyPoint swig_types[75]
-#define SWIGTYPE_p_datamunge__cv__LabelMap swig_types[76]
-#define SWIGTYPE_p_datamunge__cv__detail__StructureTensorField swig_types[77]
-#define SWIGTYPE_p_datamunge__dstruct__DirectedGraphT_std__string_t swig_types[78]
-#define SWIGTYPE_p_datamunge__dstruct__UndirectedGraphT_std__string_t swig_types[79]
-#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t swig_types[80]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaFilter swig_types[81]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaFilter swig_types[82]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaState swig_types[83]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaState swig_types[84]
-#define SWIGTYPE_p_datamunge__filter__EnsembleKalmanFilter swig_types[85]
-#define SWIGTYPE_p_datamunge__filter__ExtendedKalmanFilter swig_types[86]
-#define SWIGTYPE_p_datamunge__filter__InformationFilter swig_types[87]
-#define SWIGTYPE_p_datamunge__filter__KalmanFilter swig_types[88]
-#define SWIGTYPE_p_datamunge__filter__KalmanState swig_types[89]
-#define SWIGTYPE_p_datamunge__filter__ParticleFilter swig_types[90]
-#define SWIGTYPE_p_datamunge__filter__SmoothResult swig_types[91]
-#define SWIGTYPE_p_datamunge__filter__UnscentedKalmanFilter swig_types[92]
-#define SWIGTYPE_p_datamunge__filter__VectorFunction swig_types[93]
-#define SWIGTYPE_p_datamunge__geometry__BoundingBox swig_types[94]
-#define SWIGTYPE_p_datamunge__geometry__Circle swig_types[95]
-#define SWIGTYPE_p_datamunge__geometry__ClosestPairResult swig_types[96]
-#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[97]
-#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[98]
-#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[99]
-#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[100]
-#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[101]
-#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[102]
-#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[103]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge swig_types[104]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash swig_types[105]
-#define SWIGTYPE_p_datamunge__image__HSV swig_types[106]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[107]
-#define SWIGTYPE_p_datamunge__image__Pixel swig_types[108]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[109]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[110]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[111]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[112]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[113]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[114]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[115]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[116]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[117]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[118]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[119]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[120]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[121]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[122]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[123]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[124]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[125]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[126]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[127]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[128]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[129]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[163]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[164]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[165]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[166]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[167]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[168]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[169]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[170]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[171]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[172]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[173]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[174]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[175]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[176]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[177]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[178]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[179]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[180]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[181]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[182]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[183]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[184]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[185]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[186]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[187]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[188]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[189]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[190]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[191]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[192]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[193]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[194]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[195]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[196]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[197]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[198]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[199]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[200]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[201]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[202]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[203]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[204]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[205]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[206]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[207]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[208]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[209]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[210]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[211]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[212]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[213]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[214]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[215]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[216]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[217]
-#define SWIGTYPE_p_difference_type swig_types[218]
-#define SWIGTYPE_p_first_type swig_types[219]
-#define SWIGTYPE_p_int swig_types[220]
-#define SWIGTYPE_p_long_long swig_types[221]
-#define SWIGTYPE_p_p_PyObject swig_types[222]
-#define SWIGTYPE_p_second_type swig_types[223]
-#define SWIGTYPE_p_short swig_types[224]
-#define SWIGTYPE_p_signed_char swig_types[225]
-#define SWIGTYPE_p_size_type swig_types[226]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[227]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[228]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[229]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[230]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[231]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[232]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[233]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[234]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[235]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[236]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[237]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[238]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[239]
-#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[240]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__ABLine_t swig_types[241]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__DataSeries_t swig_types[242]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__LegendEntry_t swig_types[243]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__RGB_t swig_types[244]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[245]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[246]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[247]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[248]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[249]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[250]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[251]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[252]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[253]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[254]
-#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[255]
-#define SWIGTYPE_p_std__invalid_argument swig_types[256]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[257]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[258]
-#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[259]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[260]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[261]
-#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[262]
-#define SWIGTYPE_p_std__string swig_types[263]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[264]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[265]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[266]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[267]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[268]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[269]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[270]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[271]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[272]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[273]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[274]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[275]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[276]
-#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[277]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[278]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[279]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[280]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[281]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[282]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[283]
-#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[284]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[285]
-#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[286]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[287]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[288]
-#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[289]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[290]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[291]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[292]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[293]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[294]
-#define SWIGTYPE_p_unsigned_char swig_types[295]
-#define SWIGTYPE_p_unsigned_int swig_types[296]
-#define SWIGTYPE_p_unsigned_long_long swig_types[297]
-#define SWIGTYPE_p_unsigned_short swig_types[298]
-#define SWIGTYPE_p_value_type swig_types[299]
-#define SWIGTYPE_p_vertex_type swig_types[300]
-#define SWIGTYPE_p_weight_type swig_types[301]
+#define SWIGTYPE_p_datamunge__algebra__Complex swig_types[47]
+#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[48]
+#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[49]
+#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[50]
+#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[51]
+#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[52]
+#define SWIGTYPE_p_datamunge__algebra__RealFactor swig_types[53]
+#define SWIGTYPE_p_datamunge__algebra__RealFactorization swig_types[54]
+#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[55]
+#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[56]
+#define SWIGTYPE_p_datamunge__algebra__detail__Cplx swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[60]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[61]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[62]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[63]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[64]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[66]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[67]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[68]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[69]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[70]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[71]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[72]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[73]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[74]
+#define SWIGTYPE_p_datamunge__cv__Corner swig_types[75]
+#define SWIGTYPE_p_datamunge__cv__FlowVector swig_types[76]
+#define SWIGTYPE_p_datamunge__cv__HoughCircle swig_types[77]
+#define SWIGTYPE_p_datamunge__cv__HoughLine swig_types[78]
+#define SWIGTYPE_p_datamunge__cv__KeyPoint swig_types[79]
+#define SWIGTYPE_p_datamunge__cv__LabelMap swig_types[80]
+#define SWIGTYPE_p_datamunge__cv__detail__StructureTensorField swig_types[81]
+#define SWIGTYPE_p_datamunge__dstruct__DirectedGraphT_std__string_t swig_types[82]
+#define SWIGTYPE_p_datamunge__dstruct__UndirectedGraphT_std__string_t swig_types[83]
+#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t swig_types[84]
+#define SWIGTYPE_p_datamunge__fem__BoundaryCondition1D swig_types[85]
+#define SWIGTYPE_p_datamunge__fem__FEM1D swig_types[86]
+#define SWIGTYPE_p_datamunge__fem__FEM1DResult swig_types[87]
+#define SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries swig_types[88]
+#define SWIGTYPE_p_datamunge__fem__FEM2D swig_types[89]
+#define SWIGTYPE_p_datamunge__fem__FEM2DResult swig_types[90]
+#define SWIGTYPE_p_datamunge__fem__Mesh1D swig_types[91]
+#define SWIGTYPE_p_datamunge__fem__Mesh2D swig_types[92]
+#define SWIGTYPE_p_datamunge__fem__ScalarField1D swig_types[93]
+#define SWIGTYPE_p_datamunge__fem__ScalarField2D swig_types[94]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaFilter swig_types[95]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaFilter swig_types[96]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaState swig_types[97]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaState swig_types[98]
+#define SWIGTYPE_p_datamunge__filter__EnsembleKalmanFilter swig_types[99]
+#define SWIGTYPE_p_datamunge__filter__ExtendedKalmanFilter swig_types[100]
+#define SWIGTYPE_p_datamunge__filter__InformationFilter swig_types[101]
+#define SWIGTYPE_p_datamunge__filter__KalmanFilter swig_types[102]
+#define SWIGTYPE_p_datamunge__filter__KalmanState swig_types[103]
+#define SWIGTYPE_p_datamunge__filter__ParticleFilter swig_types[104]
+#define SWIGTYPE_p_datamunge__filter__SmoothResult swig_types[105]
+#define SWIGTYPE_p_datamunge__filter__UnscentedKalmanFilter swig_types[106]
+#define SWIGTYPE_p_datamunge__filter__VectorFunction swig_types[107]
+#define SWIGTYPE_p_datamunge__geometry__BoundingBox swig_types[108]
+#define SWIGTYPE_p_datamunge__geometry__Circle swig_types[109]
+#define SWIGTYPE_p_datamunge__geometry__ClosestPairResult swig_types[110]
+#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[111]
+#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[112]
+#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[113]
+#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[114]
+#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[115]
+#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[116]
+#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[117]
+#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge swig_types[118]
+#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash swig_types[119]
+#define SWIGTYPE_p_datamunge__image__HSV swig_types[120]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[121]
+#define SWIGTYPE_p_datamunge__image__Pixel swig_types[122]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[123]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[124]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[125]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[175]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[176]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[177]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[178]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[179]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[180]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[181]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[182]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[183]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[184]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[185]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[186]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[187]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[188]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[189]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[190]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[191]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[192]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[193]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[194]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[195]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[196]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[197]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[198]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[199]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[200]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[201]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[202]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[203]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[204]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[205]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[206]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[207]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[208]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[209]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[210]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[211]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[212]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[213]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[214]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[215]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[216]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[217]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[218]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[219]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[220]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[221]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[222]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[223]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[224]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[225]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[226]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[227]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[228]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[229]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[230]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[231]
+#define SWIGTYPE_p_difference_type swig_types[232]
+#define SWIGTYPE_p_first_type swig_types[233]
+#define SWIGTYPE_p_int swig_types[234]
+#define SWIGTYPE_p_long_long swig_types[235]
+#define SWIGTYPE_p_p_PyObject swig_types[236]
+#define SWIGTYPE_p_second_type swig_types[237]
+#define SWIGTYPE_p_short swig_types[238]
+#define SWIGTYPE_p_signed_char swig_types[239]
+#define SWIGTYPE_p_size_type swig_types[240]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[241]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[242]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[243]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[244]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[245]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[246]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[247]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[248]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[249]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[250]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[251]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[252]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[253]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[254]
+#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[255]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__ABLine_t swig_types[256]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__DataSeries_t swig_types[257]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__LegendEntry_t swig_types[258]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__RGB_t swig_types[259]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[260]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[261]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[262]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[263]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[264]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[265]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[266]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[267]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[268]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[269]
+#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[270]
+#define SWIGTYPE_p_std__invalid_argument swig_types[271]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[272]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[273]
+#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[274]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[275]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[276]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[277]
+#define SWIGTYPE_p_std__string swig_types[278]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[279]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[280]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[281]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[282]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[283]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[284]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[285]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[286]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[287]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[288]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[289]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[290]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[291]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[292]
+#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[293]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[294]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[295]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[296]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[297]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[298]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[299]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[300]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[301]
+#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[302]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[303]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[304]
+#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[305]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[306]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[307]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[308]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[309]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[310]
+#define SWIGTYPE_p_unsigned_char swig_types[311]
+#define SWIGTYPE_p_unsigned_int swig_types[312]
+#define SWIGTYPE_p_unsigned_long_long swig_types[313]
+#define SWIGTYPE_p_unsigned_short swig_types[314]
+#define SWIGTYPE_p_value_type swig_types[315]
+#define SWIGTYPE_p_vertex_type swig_types[316]
+#define SWIGTYPE_p_weight_type swig_types[317]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[303];
-SWIGINTERN swig_module_info swig_module = {swig_types, 302, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[319];
+SWIGINTERN swig_module_info swig_module = {swig_types, 318, 0, 0, 0, 0};
 #ifdef SWIG_TypeQuery
 # undef SWIG_TypeQuery
 #endif
@@ -9688,6 +9704,115 @@ SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::iterator s
 SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::iterator std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__insert__SWIG_0(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator pos,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__insert__SWIG_1(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator pos,std::vector< datamunge::algebra::MultivariatePolynomial >::size_type n,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){ self->insert(pos, n, x); }
 
+  namespace swig {
+    template <>  struct traits< datamunge::algebra::Complex > {
+      typedef pointer_category category;
+      static const char* type_name() { return"datamunge::algebra::Complex"; }
+    };
+  }
+
+
+      namespace swig {
+	template <>  struct traits<std::vector< datamunge::algebra::Complex, std::allocator< datamunge::algebra::Complex > > > {
+	  typedef pointer_category category;
+	  static const char* type_name() {
+	    return "std::vector<" "datamunge::algebra::Complex" "," "std::allocator< datamunge::algebra::Complex >" " >";
+	  }
+	};
+      }
+    
+SWIGINTERN swig::SwigPyIterator *std_vector_Sl_datamunge_algebra_Complex_Sg__iterator(std::vector< datamunge::algebra::Complex > *self,PyObject **PYTHON_SELF){
+      return swig::make_output_iterator(self->begin(), self->begin(), self->end(), *PYTHON_SELF);
+    }
+SWIGINTERN bool std_vector_Sl_datamunge_algebra_Complex_Sg____nonzero__(std::vector< datamunge::algebra::Complex > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN bool std_vector_Sl_datamunge_algebra_Complex_Sg____bool__(std::vector< datamunge::algebra::Complex > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::size_type std_vector_Sl_datamunge_algebra_Complex_Sg____len__(std::vector< datamunge::algebra::Complex > const *self){
+      return self->size();
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *std_vector_Sl_datamunge_algebra_Complex_Sg____getslice__(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i,std::vector< datamunge::algebra::Complex >::difference_type j){
+      return swig::getslice(self, i, j, 1);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____setslice____SWIG_0(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i,std::vector< datamunge::algebra::Complex >::difference_type j){
+      swig::setslice(self, i, j, 1, std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >());
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____setslice____SWIG_1(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i,std::vector< datamunge::algebra::Complex >::difference_type j,std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &v){
+      swig::setslice(self, i, j, 1, v);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____delslice__(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i,std::vector< datamunge::algebra::Complex >::difference_type j){
+      swig::delslice(self, i, j, 1);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____delitem____SWIG_0(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i){
+      swig::erase(self, swig::getpos(self, i));
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *std_vector_Sl_datamunge_algebra_Complex_Sg____getitem____SWIG_0(std::vector< datamunge::algebra::Complex > *self,SWIGPY_SLICEOBJECT *slice){
+      Py_ssize_t i, j, step;
+      if( !PySlice_Check(slice) ) {
+        SWIG_Error(SWIG_TypeError, "Slice object expected.");
+        return NULL;
+      }
+      PySlice_GetIndices(slice, (Py_ssize_t)self->size(), &i, &j, &step);
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type id = i;
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type jd = j;
+      return swig::getslice(self, id, jd, step);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_0(std::vector< datamunge::algebra::Complex > *self,SWIGPY_SLICEOBJECT *slice,std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &v){
+      Py_ssize_t i, j, step;
+      if( !PySlice_Check(slice) ) {
+        SWIG_Error(SWIG_TypeError, "Slice object expected.");
+        return;
+      }
+      PySlice_GetIndices(slice, (Py_ssize_t)self->size(), &i, &j, &step);
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type id = i;
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type jd = j;
+      swig::setslice(self, id, jd, step, v);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_1(std::vector< datamunge::algebra::Complex > *self,SWIGPY_SLICEOBJECT *slice){
+      Py_ssize_t i, j, step;
+      if( !PySlice_Check(slice) ) {
+        SWIG_Error(SWIG_TypeError, "Slice object expected.");
+        return;
+      }
+      PySlice_GetIndices(slice, (Py_ssize_t)self->size(), &i, &j, &step);
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type id = i;
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type jd = j;
+      swig::delslice(self, id, jd, step);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____delitem____SWIG_1(std::vector< datamunge::algebra::Complex > *self,SWIGPY_SLICEOBJECT *slice){
+      Py_ssize_t i, j, step;
+      if( !PySlice_Check(slice) ) {
+        SWIG_Error(SWIG_TypeError, "Slice object expected.");
+        return;
+      }
+      PySlice_GetIndices(slice, (Py_ssize_t)self->size(), &i, &j, &step);
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type id = i;
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::difference_type jd = j;
+      swig::delslice(self, id, jd, step);
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::value_type const &std_vector_Sl_datamunge_algebra_Complex_Sg____getitem____SWIG_1(std::vector< datamunge::algebra::Complex > const *self,std::vector< datamunge::algebra::Complex >::difference_type i){
+      return *(swig::cgetpos(self, i));
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_2(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::difference_type i,std::vector< datamunge::algebra::Complex >::value_type const &x){
+      *(swig::getpos(self,i)) = x;
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::value_type std_vector_Sl_datamunge_algebra_Complex_Sg__pop(std::vector< datamunge::algebra::Complex > *self){
+      if (self->size() == 0)
+	throw std::out_of_range("pop from empty container");
+      std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >::value_type x = self->back();
+      self->pop_back();
+      return x;
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg__append(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::value_type const &x){
+      self->push_back(x);
+    }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_datamunge_algebra_Complex_Sg__erase__SWIG_0(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator pos){ return self->erase(pos); }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_datamunge_algebra_Complex_Sg__erase__SWIG_1(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator first,std::vector< datamunge::algebra::Complex >::iterator last){ return self->erase(first, last); }
+SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_0(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator pos,std::vector< datamunge::algebra::Complex >::value_type const &x){ return self->insert(pos, x); }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_1(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator pos,std::vector< datamunge::algebra::Complex >::size_type n,std::vector< datamunge::algebra::Complex >::value_type const &x){ self->insert(pos, n, x); }
+
 
 /* ---------------------------------------------------
  * C++ director class methods
@@ -10838,6 +10963,94 @@ std::vector< double,std::allocator< double > > SwigDirector_RHS::evaluate(double
   c_result = *swig_optr;
   if (SWIG_IsNewObj(swig_ores)) delete swig_optr;
   return (std::vector< double,std::allocator< double > >) c_result;
+}
+
+
+SwigDirector_ScalarField1D::SwigDirector_ScalarField1D(PyObject *self): datamunge::fem::ScalarField1D(), Swig::Director(self) {
+  SWIG_DIRECTOR_RGTR((datamunge::fem::ScalarField1D *)this, this); 
+}
+
+
+
+
+SwigDirector_ScalarField1D::~SwigDirector_ScalarField1D() {
+}
+
+double SwigDirector_ScalarField1D::evaluate(double x) {
+  double c_result = SwigValueInit< double >() ;
+  
+  swig::SwigVar_PyObject obj0;
+  obj0 = SWIG_From_double(static_cast< double >(x));
+  if (!swig_get_self()) {
+    Swig::DirectorException::raise("'self' uninitialized, maybe you forgot to call ScalarField1D.__init__.");
+  }
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+  const size_t swig_method_index = 0;
+  const char *const swig_method_name = "evaluate";
+  PyObject *method = swig_get_method(swig_method_index, swig_method_name);
+  swig::SwigVar_PyObject result = PyObject_CallFunctionObjArgs(method ,(PyObject *)obj0, NULL);
+#else
+  swig::SwigVar_PyObject swig_method_name = SWIG_Python_str_FromChar("evaluate");
+  swig::SwigVar_PyObject result = PyObject_CallMethodObjArgs(swig_get_self(), (PyObject *) swig_method_name ,(PyObject *)obj0, NULL);
+#endif
+  if (!result) {
+    PyObject *error = PyErr_Occurred();
+    if (error) {
+      Swig::DirectorMethodException::raise("Error detected when calling 'ScalarField1D.evaluate'");
+    }
+  }
+  double swig_val;
+  int swig_res = SWIG_AsVal_double(result, &swig_val);
+  if (!SWIG_IsOK(swig_res)) {
+    Swig::DirectorTypeMismatchException::raise(SWIG_ErrorType(SWIG_ArgError(swig_res)), "in output value of type '""double""'");
+  }
+  c_result = static_cast< double >(swig_val);
+  return (double) c_result;
+}
+
+
+SwigDirector_ScalarField2D::SwigDirector_ScalarField2D(PyObject *self): datamunge::fem::ScalarField2D(), Swig::Director(self) {
+  SWIG_DIRECTOR_RGTR((datamunge::fem::ScalarField2D *)this, this); 
+}
+
+
+
+
+SwigDirector_ScalarField2D::~SwigDirector_ScalarField2D() {
+}
+
+double SwigDirector_ScalarField2D::evaluate(double x,double y) {
+  double c_result = SwigValueInit< double >() ;
+  
+  swig::SwigVar_PyObject obj0;
+  obj0 = SWIG_From_double(static_cast< double >(x));
+  swig::SwigVar_PyObject obj1;
+  obj1 = SWIG_From_double(static_cast< double >(y));
+  if (!swig_get_self()) {
+    Swig::DirectorException::raise("'self' uninitialized, maybe you forgot to call ScalarField2D.__init__.");
+  }
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+  const size_t swig_method_index = 0;
+  const char *const swig_method_name = "evaluate";
+  PyObject *method = swig_get_method(swig_method_index, swig_method_name);
+  swig::SwigVar_PyObject result = PyObject_CallFunctionObjArgs(method ,(PyObject *)obj0,(PyObject *)obj1, NULL);
+#else
+  swig::SwigVar_PyObject swig_method_name = SWIG_Python_str_FromChar("evaluate");
+  swig::SwigVar_PyObject result = PyObject_CallMethodObjArgs(swig_get_self(), (PyObject *) swig_method_name ,(PyObject *)obj0,(PyObject *)obj1, NULL);
+#endif
+  if (!result) {
+    PyObject *error = PyErr_Occurred();
+    if (error) {
+      Swig::DirectorMethodException::raise("Error detected when calling 'ScalarField2D.evaluate'");
+    }
+  }
+  double swig_val;
+  int swig_res = SWIG_AsVal_double(result, &swig_val);
+  if (!SWIG_IsOK(swig_res)) {
+    Swig::DirectorTypeMismatchException::raise(SWIG_ErrorType(SWIG_ArgError(swig_res)), "in output value of type '""double""'");
+  }
+  c_result = static_cast< double >(swig_val);
+  return (double) c_result;
 }
 
 
@@ -147165,6 +147378,2005 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Mesh1D_num_nodes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh1D_num_nodes" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  result = ((datamunge::fem::Mesh1D const *)arg1)->num_nodes();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh1D_num_elements(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh1D_num_elements" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  result = ((datamunge::fem::Mesh1D const *)arg1)->num_elements();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh1D_node_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Mesh1D_node_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh1D_node_at" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Mesh1D_node_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::Mesh1D const *)arg1)->node_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh1D_element_length(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Mesh1D_element_length", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh1D_element_length" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Mesh1D_element_length" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::Mesh1D const *)arg1)->element_length(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Mesh1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_Mesh1D", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::Mesh1D *)new datamunge::fem::Mesh1D();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__Mesh1D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Mesh1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh1D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Mesh1D" "', argument " "1"" of type '" "datamunge::fem::Mesh1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Mesh1D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__Mesh1D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Mesh1D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_make_uniform_mesh1d(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  std::size_t arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  datamunge::fem::Mesh1D result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "make_uniform_mesh1d", 3, 3, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_uniform_mesh1d" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_uniform_mesh1d" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "make_uniform_mesh1d" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::fem::make_uniform_mesh1d(arg1,arg2,SWIG_STD_MOVE(arg3));
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::Mesh1D(result)), SWIGTYPE_p_datamunge__fem__Mesh1D, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh2D_num_nodes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh2D_num_nodes" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  result = ((datamunge::fem::Mesh2D const *)arg1)->num_nodes();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh2D_num_triangles(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh2D_num_triangles" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  result = ((datamunge::fem::Mesh2D const *)arg1)->num_triangles();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh2D_node_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::geometry::Point2D result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Mesh2D_node_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh2D_node_at" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Mesh2D_node_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::fem::Mesh2D const *)arg1)->node_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::Point2D(result)), SWIGTYPE_p_datamunge__geometry__Point2D, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Mesh2D_triangle_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::geometry::Triangle result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Mesh2D_triangle_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Mesh2D_triangle_at" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Mesh2D_triangle_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::fem::Mesh2D const *)arg1)->triangle_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::Triangle(result)), SWIGTYPE_p_datamunge__geometry__Triangle, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Mesh2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_Mesh2D", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::Mesh2D *)new datamunge::fem::Mesh2D();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__Mesh2D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Mesh2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__Mesh2D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Mesh2D" "', argument " "1"" of type '" "datamunge::fem::Mesh2D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Mesh2D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__Mesh2D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Mesh2D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_make_rectangular_mesh2d(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  PyObject *swig_obj[6] ;
+  datamunge::fem::Mesh2D result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "make_rectangular_mesh2d", 6, 6, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_rectangular_mesh2d" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_rectangular_mesh2d" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "make_rectangular_mesh2d" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "make_rectangular_mesh2d" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "make_rectangular_mesh2d" "', argument " "5"" of type '" "std::size_t""'");
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_size_t(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "make_rectangular_mesh2d" "', argument " "6"" of type '" "std::size_t""'");
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  result = datamunge::fem::make_rectangular_mesh2d(arg1,arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::Mesh2D(result)), SWIGTYPE_p_datamunge__fem__Mesh2D, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_make_mesh2d_from_points(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  datamunge::fem::Mesh2D result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "make_mesh2d_from_points" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "make_mesh2d_from_points" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::fem::make_mesh2d_from_points((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::Mesh2D(result)), SWIGTYPE_p_datamunge__fem__Mesh2D, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_boundary_nodes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh2D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "boundary_nodes" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "boundary_nodes" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  result = datamunge::fem::boundary_nodes((datamunge::fem::Mesh2D const &)*arg1);
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ScalarField1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField1D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ScalarField1D" "', argument " "1"" of type '" "datamunge::fem::ScalarField1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField1D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ScalarField1D_evaluate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField1D *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ScalarField1D_evaluate", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScalarField1D_evaluate" "', argument " "1"" of type '" "datamunge::fem::ScalarField1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField1D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ScalarField1D_evaluate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  director = SWIG_DIRECTOR_CAST(arg1);
+  upcall = (director && (director->swig_get_self()==swig_obj[0]));
+  try {
+    if (upcall) {
+      Swig::DirectorPureVirtualException::raise("datamunge::fem::ScalarField1D::evaluate");
+    } else {
+      result = (double)(arg1)->evaluate(arg2);
+    }
+  } catch (Swig::DirectorException&) {
+    SWIG_fail;
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ScalarField1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PyObject *arg1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::fem::ScalarField1D *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  arg1 = swig_obj[0];
+  if ( arg1 != Py_None ) {
+    /* subclassed */
+    result = (datamunge::fem::ScalarField1D *)new SwigDirector_ScalarField1D(arg1); 
+  } else {
+    SWIG_SetErrorMsg(PyExc_RuntimeError,"accessing abstract class or protected constructor"); 
+    SWIG_fail;
+  }
+  
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__ScalarField1D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_disown_ScalarField1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "disown_ScalarField1D" "', argument " "1"" of type '" "datamunge::fem::ScalarField1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField1D * >(argp1);
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ScalarField1D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__ScalarField1D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ScalarField1D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_delete_ScalarField2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField2D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ScalarField2D" "', argument " "1"" of type '" "datamunge::fem::ScalarField2D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField2D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ScalarField2D_evaluate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField2D *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ScalarField2D_evaluate", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScalarField2D_evaluate" "', argument " "1"" of type '" "datamunge::fem::ScalarField2D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField2D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ScalarField2D_evaluate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ScalarField2D_evaluate" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  director = SWIG_DIRECTOR_CAST(arg1);
+  upcall = (director && (director->swig_get_self()==swig_obj[0]));
+  try {
+    if (upcall) {
+      Swig::DirectorPureVirtualException::raise("datamunge::fem::ScalarField2D::evaluate");
+    } else {
+      result = (double)(arg1)->evaluate(arg2,arg3);
+    }
+  } catch (Swig::DirectorException&) {
+    SWIG_fail;
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ScalarField2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PyObject *arg1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::fem::ScalarField2D *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  arg1 = swig_obj[0];
+  if ( arg1 != Py_None ) {
+    /* subclassed */
+    result = (datamunge::fem::ScalarField2D *)new SwigDirector_ScalarField2D(arg1); 
+  } else {
+    SWIG_SetErrorMsg(PyExc_RuntimeError,"accessing abstract class or protected constructor"); 
+    SWIG_fail;
+  }
+  
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__ScalarField2D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_disown_ScalarField2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::ScalarField2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__ScalarField2D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "disown_ScalarField2D" "', argument " "1"" of type '" "datamunge::fem::ScalarField2D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::ScalarField2D * >(argp1);
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ScalarField2D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__ScalarField2D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ScalarField2D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_type_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  datamunge::fem::BCType arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BoundaryCondition1D_type_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_type_set" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BoundaryCondition1D_type_set" "', argument " "2"" of type '" "datamunge::fem::BCType""'");
+  } 
+  arg2 = static_cast< datamunge::fem::BCType >(val2);
+  if (arg1) (arg1)->type = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_type_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::fem::BCType result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_type_get" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  result = (datamunge::fem::BCType) ((arg1)->type);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_value_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BoundaryCondition1D_value_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_value_set" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BoundaryCondition1D_value_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->value = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_value_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_value_get" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  result = (double) ((arg1)->value);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_robin_coefficient_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BoundaryCondition1D_robin_coefficient_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_robin_coefficient_set" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BoundaryCondition1D_robin_coefficient_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->robin_coefficient = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BoundaryCondition1D_robin_coefficient_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BoundaryCondition1D_robin_coefficient_get" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  result = (double) ((arg1)->robin_coefficient);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_BoundaryCondition1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_BoundaryCondition1D", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::BoundaryCondition1D *)new datamunge::fem::BoundaryCondition1D();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_BoundaryCondition1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::BoundaryCondition1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BoundaryCondition1D" "', argument " "1"" of type '" "datamunge::fem::BoundaryCondition1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *BoundaryCondition1D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__BoundaryCondition1D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *BoundaryCondition1D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_FEM1DResult_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DResult_size" "', argument " "1"" of type '" "datamunge::fem::FEM1DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DResult * >(argp1);
+  result = ((datamunge::fem::FEM1DResult const *)arg1)->size();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DResult_node_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DResult *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1DResult_node_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DResult_node_at" "', argument " "1"" of type '" "datamunge::fem::FEM1DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DResult * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM1DResult_node_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::FEM1DResult const *)arg1)->node_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DResult_value_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DResult *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1DResult_value_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DResult_value_at" "', argument " "1"" of type '" "datamunge::fem::FEM1DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DResult * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM1DResult_value_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::FEM1DResult const *)arg1)->value_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FEM1DResult(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DResult *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_FEM1DResult", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::FEM1DResult *)new datamunge::fem::FEM1DResult();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__FEM1DResult, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FEM1DResult(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DResult, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FEM1DResult" "', argument " "1"" of type '" "datamunge::fem::FEM1DResult *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DResult * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FEM1DResult_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__FEM1DResult, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FEM1DResult_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_FEM1DTimeSeries_num_steps(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DTimeSeries_num_steps" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  result = ((datamunge::fem::FEM1DTimeSeries const *)arg1)->num_steps();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DTimeSeries_num_nodes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DTimeSeries_num_nodes" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  result = ((datamunge::fem::FEM1DTimeSeries const *)arg1)->num_nodes();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DTimeSeries_node_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1DTimeSeries_node_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DTimeSeries_node_at" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM1DTimeSeries_node_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::FEM1DTimeSeries const *)arg1)->node_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DTimeSeries_time_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1DTimeSeries_time_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DTimeSeries_time_at" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM1DTimeSeries_time_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::FEM1DTimeSeries const *)arg1)->time_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1DTimeSeries_value_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1DTimeSeries_value_at", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1DTimeSeries_value_at" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM1DTimeSeries_value_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FEM1DTimeSeries_value_at" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (double)((datamunge::fem::FEM1DTimeSeries const *)arg1)->value_at(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FEM1DTimeSeries(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_FEM1DTimeSeries", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::FEM1DTimeSeries *)new datamunge::fem::FEM1DTimeSeries();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FEM1DTimeSeries(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1DTimeSeries *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FEM1DTimeSeries" "', argument " "1"" of type '" "datamunge::fem::FEM1DTimeSeries *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1DTimeSeries * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FEM1DTimeSeries_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FEM1DTimeSeries_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_FEM1D_solve(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  datamunge::fem::ScalarField1D *arg4 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg5 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  void *argp6 = 0 ;
+  int res6 = 0 ;
+  PyObject *swig_obj[6] ;
+  datamunge::fem::FEM1DResult result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1D_solve", 6, 6, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh1D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1D_solve" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FEM1D_solve" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM1D_solve" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__fem__ScalarField1D,  0 );
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM1D_solve" "', argument " "4"" of type '" "datamunge::fem::ScalarField1D &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "4"" of type '" "datamunge::fem::ScalarField1D &""'"); 
+  }
+  arg4 = reinterpret_cast< datamunge::fem::ScalarField1D * >(argp4);
+  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM1D_solve" "', argument " "5"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp5) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "5"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg5 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp5);
+  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res6)) {
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "FEM1D_solve" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp6) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg6 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp6);
+  result = datamunge::fem::FEM1D::solve((datamunge::fem::Mesh1D const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,*arg4,(datamunge::fem::BoundaryCondition1D const &)*arg5,(datamunge::fem::BoundaryCondition1D const &)*arg6);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM1DResult(result)), SWIGTYPE_p_datamunge__fem__FEM1DResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1D_solve_builtin(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::vector< double,std::allocator< double > > *arg5 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg6 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg7 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  void *argp6 = 0 ;
+  int res6 = 0 ;
+  void *argp7 = 0 ;
+  int res7 = 0 ;
+  PyObject *swig_obj[7] ;
+  datamunge::fem::FEM1DResult result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1D_solve_builtin", 7, 7, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh1D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1D_solve_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FEM1D_solve_builtin" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM1D_solve_builtin" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM1D_solve_builtin" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res5 = swig::asptr(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM1D_solve_builtin" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res6)) {
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "FEM1D_solve_builtin" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp6) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg6 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp6);
+  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res7)) {
+    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "FEM1D_solve_builtin" "', argument " "7"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp7) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_builtin" "', argument " "7"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg7 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp7);
+  result = datamunge::fem::FEM1D::solve_builtin((datamunge::fem::Mesh1D const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::string const &)*arg4,(std::vector< double,std::allocator< double > > const &)*arg5,(datamunge::fem::BoundaryCondition1D const &)*arg6,(datamunge::fem::BoundaryCondition1D const &)*arg7);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM1DResult(result)), SWIGTYPE_p_datamunge__fem__FEM1DResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1D_solve_transient(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  datamunge::fem::ScalarField1D *arg4 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg5 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg6 = 0 ;
+  std::vector< double,std::allocator< double > > *arg7 = 0 ;
+  double arg8 ;
+  double arg9 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  void *argp6 = 0 ;
+  int res6 = 0 ;
+  int res7 = SWIG_OLDOBJ ;
+  double val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  PyObject *swig_obj[9] ;
+  datamunge::fem::FEM1DTimeSeries result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1D_solve_transient", 9, 9, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh1D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1D_solve_transient" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FEM1D_solve_transient" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM1D_solve_transient" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__fem__ScalarField1D,  0 );
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM1D_solve_transient" "', argument " "4"" of type '" "datamunge::fem::ScalarField1D &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "4"" of type '" "datamunge::fem::ScalarField1D &""'"); 
+  }
+  arg4 = reinterpret_cast< datamunge::fem::ScalarField1D * >(argp4);
+  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM1D_solve_transient" "', argument " "5"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp5) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "5"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg5 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp5);
+  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res6)) {
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "FEM1D_solve_transient" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp6) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg6 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp6);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res7 = swig::asptr(swig_obj[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "FEM1D_solve_transient" "', argument " "7"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient" "', argument " "7"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg7 = ptr;
+  }
+  ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "FEM1D_solve_transient" "', argument " "8"" of type '" "double""'");
+  } 
+  arg8 = static_cast< double >(val8);
+  ecode9 = SWIG_AsVal_double(swig_obj[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "FEM1D_solve_transient" "', argument " "9"" of type '" "double""'");
+  } 
+  arg9 = static_cast< double >(val9);
+  result = datamunge::fem::FEM1D::solve_transient((datamunge::fem::Mesh1D const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,*arg4,(datamunge::fem::BoundaryCondition1D const &)*arg5,(datamunge::fem::BoundaryCondition1D const &)*arg6,(std::vector< double,std::allocator< double > > const &)*arg7,arg8,arg9);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM1DTimeSeries(result)), SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FEM1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1D *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_FEM1D", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::FEM1D *)new datamunge::fem::FEM1D();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__FEM1D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FEM1D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM1D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM1D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FEM1D" "', argument " "1"" of type '" "datamunge::fem::FEM1D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM1D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FEM1D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__FEM1D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FEM1D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_FEM2DResult_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2DResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM2DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM2DResult_size" "', argument " "1"" of type '" "datamunge::fem::FEM2DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM2DResult * >(argp1);
+  result = ((datamunge::fem::FEM2DResult const *)arg1)->size();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM2DResult_node_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2DResult *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::geometry::Point2D result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM2DResult_node_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM2DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM2DResult_node_at" "', argument " "1"" of type '" "datamunge::fem::FEM2DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM2DResult * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM2DResult_node_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::fem::FEM2DResult const *)arg1)->node_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::Point2D(result)), SWIGTYPE_p_datamunge__geometry__Point2D, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM2DResult_value_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2DResult *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM2DResult_value_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM2DResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM2DResult_value_at" "', argument " "1"" of type '" "datamunge::fem::FEM2DResult const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM2DResult * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM2DResult_value_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (double)((datamunge::fem::FEM2DResult const *)arg1)->value_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FEM2DResult(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2DResult *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_FEM2DResult", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::FEM2DResult *)new datamunge::fem::FEM2DResult();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__FEM2DResult, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FEM2DResult(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2DResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM2DResult, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FEM2DResult" "', argument " "1"" of type '" "datamunge::fem::FEM2DResult *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM2DResult * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FEM2DResult_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__FEM2DResult, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FEM2DResult_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_FEM2D_solve(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  double arg2 ;
+  datamunge::fem::ScalarField2D *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  std::vector< double,std::allocator< double > > *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[5] ;
+  datamunge::fem::FEM2DResult result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM2D_solve", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh2D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM2D_solve" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM2D_solve" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__fem__ScalarField2D,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM2D_solve" "', argument " "3"" of type '" "datamunge::fem::ScalarField2D &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve" "', argument " "3"" of type '" "datamunge::fem::ScalarField2D &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::fem::ScalarField2D * >(argp3);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM2D_solve" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res5 = swig::asptr(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM2D_solve" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  result = datamunge::fem::FEM2D::solve((datamunge::fem::Mesh2D const &)*arg1,arg2,*arg3,(std::vector< int,std::allocator< int > > const &)*arg4,(std::vector< double,std::allocator< double > > const &)*arg5);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM2DResult(result)), SWIGTYPE_p_datamunge__fem__FEM2DResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM2D_solve_builtin(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh2D *arg1 = 0 ;
+  double arg2 ;
+  std::string *arg3 = 0 ;
+  std::vector< double,std::allocator< double > > *arg4 = 0 ;
+  std::vector< int,std::allocator< int > > *arg5 = 0 ;
+  std::vector< double,std::allocator< double > > *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  int res6 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[6] ;
+  datamunge::fem::FEM2DResult result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM2D_solve_builtin", 6, 6, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh2D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM2D_solve_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh2D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh2D * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FEM2D_solve_builtin" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM2D_solve_builtin" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve_builtin" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM2D_solve_builtin" "', argument " "4"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve_builtin" "', argument " "4"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res5 = swig::asptr(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM2D_solve_builtin" "', argument " "5"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve_builtin" "', argument " "5"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res6 = swig::asptr(swig_obj[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "FEM2D_solve_builtin" "', argument " "6"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM2D_solve_builtin" "', argument " "6"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg6 = ptr;
+  }
+  result = datamunge::fem::FEM2D::solve_builtin((datamunge::fem::Mesh2D const &)*arg1,arg2,(std::string const &)*arg3,(std::vector< double,std::allocator< double > > const &)*arg4,(std::vector< int,std::allocator< int > > const &)*arg5,(std::vector< double,std::allocator< double > > const &)*arg6);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM2DResult(result)), SWIGTYPE_p_datamunge__fem__FEM2DResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FEM2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2D *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_FEM2D", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::fem::FEM2D *)new datamunge::fem::FEM2D();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__fem__FEM2D, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FEM2D(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::FEM2D *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__fem__FEM2D, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FEM2D" "', argument " "1"" of type '" "datamunge::fem::FEM2D *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::FEM2D * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FEM2D_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__fem__FEM2D, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FEM2D_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
 SWIGINTERN PyObject *_wrap_StringVectorVector_iterator(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   std::vector< std::vector< std::string > > *arg1 = 0 ;
@@ -190169,6 +192381,134 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_is_negligible_remainder__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  datamunge::algebra::Polynomial *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "is_negligible_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "is_negligible_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "is_negligible_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "is_negligible_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "is_negligible_remainder" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (bool)datamunge::algebra::detail::is_negligible_remainder((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2,arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_is_negligible_remainder__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  datamunge::algebra::Polynomial *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "is_negligible_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "is_negligible_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "is_negligible_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "is_negligible_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+  result = (bool)datamunge::algebra::detail::is_negligible_remainder((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_is_negligible_remainder(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "is_negligible_remainder", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_is_negligible_remainder__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_is_negligible_remainder__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'is_negligible_remainder'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::detail::is_negligible_remainder(datamunge::algebra::Polynomial const &,datamunge::algebra::Polynomial const &,double)\n"
+    "    datamunge::algebra::detail::is_negligible_remainder(datamunge::algebra::Polynomial const &,datamunge::algebra::Polynomial const &)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_poly_gcd(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::algebra::Polynomial arg1 ;
@@ -199007,6 +201347,44 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Expr_integrate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::Expr result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Expr_integrate", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_integrate" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_integrate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_integrate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::algebra::Expr const *)arg1)->integrate((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Expr_simplify(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::algebra::Expr *arg1 = 0 ;
@@ -199141,6 +201519,3713 @@ SWIGINTERN PyObject *Expr_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject 
 SWIGINTERN PyObject *Expr_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
+
+SWIGINTERN PyObject *_wrap_ComplexVector_iterator(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  PyObject **arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  swig::SwigPyIterator *result = 0 ;
+  
+  arg2 = &swig_obj[0];
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_iterator" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (swig::SwigPyIterator *)std_vector_Sl_datamunge_algebra_Complex_Sg__iterator(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_swig__SwigPyIterator, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___nonzero__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___nonzero__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (bool)std_vector_Sl_datamunge_algebra_Complex_Sg____nonzero__((std::vector< datamunge::algebra::Complex > const *)arg1);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___bool__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___bool__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (bool)std_vector_Sl_datamunge_algebra_Complex_Sg____bool__((std::vector< datamunge::algebra::Complex > const *)arg1);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___len__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::size_type result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___len__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = std_vector_Sl_datamunge_algebra_Complex_Sg____len__((std::vector< datamunge::algebra::Complex > const *)arg1);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___getslice__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  ptrdiff_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector___getslice__", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___getslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___getslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  ecode3 = SWIG_AsVal_ptrdiff_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ComplexVector___getslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg3 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val3);
+  try {
+    result = (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *)std_vector_Sl_datamunge_algebra_Complex_Sg____getslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setslice____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  ptrdiff_t val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___setslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___setslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  ecode3 = SWIG_AsVal_ptrdiff_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ComplexVector___setslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg3 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val3);
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____setslice____SWIG_0(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setslice____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg3 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  ptrdiff_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___setslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___setslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  ecode3 = SWIG_AsVal_ptrdiff_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ComplexVector___setslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg3 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val3);
+  {
+    std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *ptr = (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "ComplexVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____setslice____SWIG_1(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &)*arg4);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setslice__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector___setslice__", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_ptrdiff_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_ptrdiff_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ComplexVector___setslice____SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_ptrdiff_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_ptrdiff_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_ComplexVector___setslice____SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector___setslice__'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::__setslice__(std::vector< datamunge::algebra::Complex >::difference_type,std::vector< datamunge::algebra::Complex >::difference_type)\n"
+    "    std::vector< datamunge::algebra::Complex >::__setslice__(std::vector< datamunge::algebra::Complex >::difference_type,std::vector< datamunge::algebra::Complex >::difference_type,std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___delslice__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  ptrdiff_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector___delslice__", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___delslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___delslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  ecode3 = SWIG_AsVal_ptrdiff_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ComplexVector___delslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg3 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val3);
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____delslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___delitem____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___delitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___delitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____delitem____SWIG_0(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___getitem____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  SWIGPY_SLICEOBJECT *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___getitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  {
+    if (!PySlice_Check(swig_obj[1])) {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector___getitem__" "', argument " "2"" of type '" "SWIGPY_SLICEOBJECT *""'");
+    }
+    arg2 = (SWIGPY_SLICEOBJECT *) swig_obj[1];
+  }
+  try {
+    result = (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *)std_vector_Sl_datamunge_algebra_Complex_Sg____getitem____SWIG_0(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setitem____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  SWIGPY_SLICEOBJECT *arg2 = 0 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  {
+    if (!PySlice_Check(swig_obj[1])) {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector___setitem__" "', argument " "2"" of type '" "SWIGPY_SLICEOBJECT *""'");
+    }
+    arg2 = (SWIGPY_SLICEOBJECT *) swig_obj[1];
+  }
+  {
+    std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *ptr = (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ComplexVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_0(arg1,arg2,(std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setitem____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  SWIGPY_SLICEOBJECT *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  {
+    if (!PySlice_Check(swig_obj[1])) {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector___setitem__" "', argument " "2"" of type '" "SWIGPY_SLICEOBJECT *""'");
+    }
+    arg2 = (SWIGPY_SLICEOBJECT *) swig_obj[1];
+  }
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_1(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___delitem____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  SWIGPY_SLICEOBJECT *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___delitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  {
+    if (!PySlice_Check(swig_obj[1])) {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector___delitem__" "', argument " "2"" of type '" "SWIGPY_SLICEOBJECT *""'");
+    }
+    arg2 = (SWIGPY_SLICEOBJECT *) swig_obj[1];
+  }
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____delitem____SWIG_1(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  } catch(std::invalid_argument &_e) {
+    SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___delitem__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector___delitem__", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        _v = PySlice_Check(argv[1]);
+      }
+      if (_v) {
+        return _wrap_ComplexVector___delitem____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_ptrdiff_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ComplexVector___delitem____SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector___delitem__'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::__delitem__(std::vector< datamunge::algebra::Complex >::difference_type)\n"
+    "    std::vector< datamunge::algebra::Complex >::__delitem__(SWIGPY_SLICEOBJECT *)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___getitem____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< datamunge::algebra::Complex >::value_type *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___getitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___getitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  try {
+    result = (std::vector< datamunge::algebra::Complex >::value_type *) &std_vector_Sl_datamunge_algebra_Complex_Sg____getitem____SWIG_1((std::vector< datamunge::algebra::Complex > const *)arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  (void)swig::container_owner<swig::traits<std::vector< datamunge::algebra::Complex >::value_type>::category>::back_reference(resultobj, swig_obj[0]);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___getitem__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector___getitem__", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        _v = PySlice_Check(argv[1]);
+      }
+      if (_v) {
+        return _wrap_ComplexVector___getitem____SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_ptrdiff_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ComplexVector___getitem____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector___getitem__'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::__getitem__(SWIGPY_SLICEOBJECT *)\n"
+    "    std::vector< datamunge::algebra::Complex >::__getitem__(std::vector< datamunge::algebra::Complex >::difference_type) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setitem____SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::difference_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  ptrdiff_t val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_ptrdiff_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector___setitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::difference_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::difference_type >(val2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ComplexVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp3);
+  try {
+    std_vector_Sl_datamunge_algebra_Complex_Sg____setitem____SWIG_2(arg1,SWIG_STD_MOVE(arg2),(datamunge::algebra::Complex const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector___setitem__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector___setitem__", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        _v = PySlice_Check(argv[1]);
+      }
+      if (_v) {
+        return _wrap_ComplexVector___setitem____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        _v = PySlice_Check(argv[1]);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ComplexVector___setitem____SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_ptrdiff_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ComplexVector___setitem____SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector___setitem__'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::__setitem__(SWIGPY_SLICEOBJECT *,std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > const &)\n"
+    "    std::vector< datamunge::algebra::Complex >::__setitem__(SWIGPY_SLICEOBJECT *)\n"
+    "    std::vector< datamunge::algebra::Complex >::__setitem__(std::vector< datamunge::algebra::Complex >::difference_type,std::vector< datamunge::algebra::Complex >::value_type const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_pop(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::value_type result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_pop" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  try {
+    result = std_vector_Sl_datamunge_algebra_Complex_Sg__pop(arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
+  }
+  resultobj = SWIG_NewPointerObj((new std::vector< datamunge::algebra::Complex >::value_type(result)), SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_append(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector_append", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_append" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ComplexVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp2);
+  std_vector_Sl_datamunge_algebra_Complex_Sg__append(arg1,(datamunge::algebra::Complex const &)*arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ComplexVector__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
+  result = (std::vector< datamunge::algebra::Complex > *)new std::vector< datamunge::algebra::Complex >();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ComplexVector__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  std::vector< datamunge::algebra::Complex > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *ptr = (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ComplexVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_ComplexVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = (std::vector< datamunge::algebra::Complex > *)new std::vector< datamunge::algebra::Complex >((std::vector< datamunge::algebra::Complex > const &)*arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_empty(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_empty" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (bool)((std::vector< datamunge::algebra::Complex > const *)arg1)->empty();
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::size_type result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_size" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = ((std::vector< datamunge::algebra::Complex > const *)arg1)->size();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_swap(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector_swap", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_swap" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ComplexVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex > &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp2);
+  (arg1)->swap(*arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_begin(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::iterator result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_begin" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (arg1)->begin();
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_end(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::iterator result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_end" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (arg1)->end();
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_rbegin(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::reverse_iterator result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_rbegin" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (arg1)->rbegin();
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::reverse_iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_rend(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::reverse_iterator result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_rend" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (arg1)->rend();
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::reverse_iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_clear(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_clear" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  (arg1)->clear();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_get_allocator(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::allocator< datamunge::algebra::Complex > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_get_allocator" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = ((std::vector< datamunge::algebra::Complex > const *)arg1)->get_allocator();
+  resultobj = SWIG_NewPointerObj((new std::vector< datamunge::algebra::Complex >::allocator_type(result)), SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ComplexVector__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex >::size_type arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  std::vector< datamunge::algebra::Complex > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_ComplexVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg1 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val1);
+  result = (std::vector< datamunge::algebra::Complex > *)new std::vector< datamunge::algebra::Complex >(SWIG_STD_MOVE(arg1));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_pop_back(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_pop_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  (arg1)->pop_back();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_resize__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::size_type arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val2);
+  (arg1)->resize(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_erase__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::iterator arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  swig::SwigPyIterator *iter2 = 0 ;
+  int res2 ;
+  std::vector< datamunge::algebra::Complex >::iterator result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_erase" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], SWIG_as_voidptrptr(&iter2), swig::SwigPyIterator::descriptor(), 0);
+  if (!SWIG_IsOK(res2) || !iter2) {
+    SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+  } else {
+    swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *iter_t = dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter2);
+    if (iter_t) {
+      arg2 = iter_t->get_current();
+    } else {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+    }
+  }
+  result = std_vector_Sl_datamunge_algebra_Complex_Sg__erase__SWIG_0(arg1,SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_erase__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::iterator arg2 ;
+  std::vector< datamunge::algebra::Complex >::iterator arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  swig::SwigPyIterator *iter2 = 0 ;
+  int res2 ;
+  swig::SwigPyIterator *iter3 = 0 ;
+  int res3 ;
+  std::vector< datamunge::algebra::Complex >::iterator result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_erase" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], SWIG_as_voidptrptr(&iter2), swig::SwigPyIterator::descriptor(), 0);
+  if (!SWIG_IsOK(res2) || !iter2) {
+    SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+  } else {
+    swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *iter_t = dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter2);
+    if (iter_t) {
+      arg2 = iter_t->get_current();
+    } else {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+    }
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], SWIG_as_voidptrptr(&iter3), swig::SwigPyIterator::descriptor(), 0);
+  if (!SWIG_IsOK(res3) || !iter3) {
+    SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+  } else {
+    swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *iter_t = dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter3);
+    if (iter_t) {
+      arg3 = iter_t->get_current();
+    } else {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_erase" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+    }
+  }
+  result = std_vector_Sl_datamunge_algebra_Complex_Sg__erase__SWIG_1(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_erase(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector_erase", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      swig::SwigPyIterator *iter = 0;
+      int res = SWIG_ConvertPtr(argv[1], SWIG_as_voidptrptr(&iter), swig::SwigPyIterator::descriptor(), 0);
+      _v = (SWIG_IsOK(res) && iter && (dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter) != 0));
+      if (_v) {
+        return _wrap_ComplexVector_erase__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      swig::SwigPyIterator *iter = 0;
+      int res = SWIG_ConvertPtr(argv[1], SWIG_as_voidptrptr(&iter), swig::SwigPyIterator::descriptor(), 0);
+      _v = (SWIG_IsOK(res) && iter && (dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter) != 0));
+      if (_v) {
+        swig::SwigPyIterator *iter = 0;
+        int res = SWIG_ConvertPtr(argv[2], SWIG_as_voidptrptr(&iter), swig::SwigPyIterator::descriptor(), 0);
+        _v = (SWIG_IsOK(res) && iter && (dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter) != 0));
+        if (_v) {
+          return _wrap_ComplexVector_erase__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector_erase'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::erase(std::vector< datamunge::algebra::Complex >::iterator)\n"
+    "    std::vector< datamunge::algebra::Complex >::erase(std::vector< datamunge::algebra::Complex >::iterator,std::vector< datamunge::algebra::Complex >::iterator)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ComplexVector__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex >::size_type arg1 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg2 = 0 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::vector< datamunge::algebra::Complex > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_ComplexVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg1 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_ComplexVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_ComplexVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp2);
+  result = (std::vector< datamunge::algebra::Complex > *)new std::vector< datamunge::algebra::Complex >(SWIG_STD_MOVE(arg1),(std::vector< datamunge::algebra::Complex >::value_type const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ComplexVector(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_ComplexVector", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 0) {
+    return _wrap_new_ComplexVector__SWIG_0(self, argc, argv);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_ComplexVector__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_ComplexVector__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_ComplexVector__SWIG_3(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_ComplexVector'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::vector()\n"
+    "    std::vector< datamunge::algebra::Complex >::vector(std::vector< datamunge::algebra::Complex > const &)\n"
+    "    std::vector< datamunge::algebra::Complex >::vector(std::vector< datamunge::algebra::Complex >::size_type)\n"
+    "    std::vector< datamunge::algebra::Complex >::vector(std::vector< datamunge::algebra::Complex >::size_type,std::vector< datamunge::algebra::Complex >::value_type const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_push_back(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector_push_back", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_push_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ComplexVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp2);
+  (arg1)->push_back((std::vector< datamunge::algebra::Complex >::value_type const &)*arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_front(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::value_type *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_front" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (std::vector< datamunge::algebra::Complex >::value_type *) &((std::vector< datamunge::algebra::Complex > const *)arg1)->front();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  (void)swig::container_owner<swig::traits<std::vector< datamunge::algebra::Complex >::value_type>::category>::back_reference(resultobj, swig_obj[0]);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_back(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::value_type *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = (std::vector< datamunge::algebra::Complex >::value_type *) &((std::vector< datamunge::algebra::Complex > const *)arg1)->back();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  (void)swig::container_owner<swig::traits<std::vector< datamunge::algebra::Complex >::value_type>::category>::back_reference(resultobj, swig_obj[0]);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_assign(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::size_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector_assign", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_assign" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector_assign" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ComplexVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp3);
+  (arg1)->assign(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::Complex >::value_type const &)*arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_resize__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::size_type arg2 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ComplexVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp3);
+  (arg1)->resize(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::Complex >::value_type const &)*arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_resize(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector_resize", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ComplexVector_resize__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ComplexVector_resize__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector_resize'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::resize(std::vector< datamunge::algebra::Complex >::size_type)\n"
+    "    std::vector< datamunge::algebra::Complex >::resize(std::vector< datamunge::algebra::Complex >::size_type,std::vector< datamunge::algebra::Complex >::value_type const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_insert__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::iterator arg2 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  swig::SwigPyIterator *iter2 = 0 ;
+  int res2 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  std::vector< datamunge::algebra::Complex >::iterator result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_insert" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], SWIG_as_voidptrptr(&iter2), swig::SwigPyIterator::descriptor(), 0);
+  if (!SWIG_IsOK(res2) || !iter2) {
+    SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_insert" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+  } else {
+    swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *iter_t = dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter2);
+    if (iter_t) {
+      arg2 = iter_t->get_current();
+    } else {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_insert" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+    }
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ComplexVector_insert" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_insert" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp3);
+  result = std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_0(arg1,SWIG_STD_MOVE(arg2),(datamunge::algebra::Complex const &)*arg3);
+  resultobj = SWIG_NewPointerObj(swig::make_output_iterator(static_cast< const std::vector< datamunge::algebra::Complex >::iterator & >(result)),
+    swig::SwigPyIterator::descriptor(),SWIG_POINTER_OWN);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_insert__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::iterator arg2 ;
+  std::vector< datamunge::algebra::Complex >::size_type arg3 ;
+  std::vector< datamunge::algebra::Complex >::value_type *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  swig::SwigPyIterator *iter2 = 0 ;
+  int res2 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_insert" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], SWIG_as_voidptrptr(&iter2), swig::SwigPyIterator::descriptor(), 0);
+  if (!SWIG_IsOK(res2) || !iter2) {
+    SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_insert" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+  } else {
+    swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *iter_t = dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter2);
+    if (iter_t) {
+      arg2 = iter_t->get_current();
+    } else {
+      SWIG_exception_fail(SWIG_ArgError(SWIG_TypeError), "in method '" "ComplexVector_insert" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::iterator""'");
+    }
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ComplexVector_insert" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg3 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val3);
+  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "ComplexVector_insert" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ComplexVector_insert" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Complex >::value_type const &""'"); 
+  }
+  arg4 = reinterpret_cast< std::vector< datamunge::algebra::Complex >::value_type * >(argp4);
+  std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_1(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(datamunge::algebra::Complex const &)*arg4);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_insert(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ComplexVector_insert", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      swig::SwigPyIterator *iter = 0;
+      int res = SWIG_ConvertPtr(argv[1], SWIG_as_voidptrptr(&iter), swig::SwigPyIterator::descriptor(), 0);
+      _v = (SWIG_IsOK(res) && iter && (dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter) != 0));
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ComplexVector_insert__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      swig::SwigPyIterator *iter = 0;
+      int res = SWIG_ConvertPtr(argv[1], SWIG_as_voidptrptr(&iter), swig::SwigPyIterator::descriptor(), 0);
+      _v = (SWIG_IsOK(res) && iter && (dynamic_cast<swig::SwigPyIterator_T<std::vector< datamunge::algebra::Complex >::iterator > *>(iter) != 0));
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_ConvertPtr(argv[3], 0, SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NO_NULL | 0);
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_ComplexVector_insert__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ComplexVector_insert'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    std::vector< datamunge::algebra::Complex >::insert(std::vector< datamunge::algebra::Complex >::iterator,std::vector< datamunge::algebra::Complex >::value_type const &)\n"
+    "    std::vector< datamunge::algebra::Complex >::insert(std::vector< datamunge::algebra::Complex >::iterator,std::vector< datamunge::algebra::Complex >::size_type,std::vector< datamunge::algebra::Complex >::value_type const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_reserve(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  std::vector< datamunge::algebra::Complex >::size_type arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ComplexVector_reserve", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_reserve" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ComplexVector_reserve" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Complex >::size_type""'");
+  } 
+  arg2 = static_cast< std::vector< datamunge::algebra::Complex >::size_type >(val2);
+  (arg1)->reserve(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ComplexVector_capacity(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::algebra::Complex >::size_type result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ComplexVector_capacity" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > const *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  result = ((std::vector< datamunge::algebra::Complex > const *)arg1)->capacity();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ComplexVector(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::algebra::Complex > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ComplexVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Complex > *""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< datamunge::algebra::Complex > * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ComplexVector_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ComplexVector_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_Complex_re_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Complex_re_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex_re_set" "', argument " "1"" of type '" "datamunge::algebra::Complex *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Complex_re_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->re = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex_re_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex_re_get" "', argument " "1"" of type '" "datamunge::algebra::Complex *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  result = (double) ((arg1)->re);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex_im_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Complex_im_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex_im_set" "', argument " "1"" of type '" "datamunge::algebra::Complex *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Complex_im_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->im = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex_im_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex_im_get" "', argument " "1"" of type '" "datamunge::algebra::Complex *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  result = (double) ((arg1)->im);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex_modulus(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex_modulus" "', argument " "1"" of type '" "datamunge::algebra::Complex const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  result = (double)((datamunge::algebra::Complex const *)arg1)->modulus();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex___eq__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  datamunge::algebra::Complex *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Complex___eq__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex___eq__" "', argument " "1"" of type '" "datamunge::algebra::Complex const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Complex___eq__" "', argument " "2"" of type '" "datamunge::algebra::Complex const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Complex___eq__" "', argument " "2"" of type '" "datamunge::algebra::Complex const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::algebra::Complex * >(argp2);
+  result = (bool)((datamunge::algebra::Complex const *)arg1)->operator ==((datamunge::algebra::Complex const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
+    return NULL;
+  }
+  PyErr_Clear();
+  SWIG_Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_Complex___ne__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  datamunge::algebra::Complex *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Complex___ne__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Complex___ne__" "', argument " "1"" of type '" "datamunge::algebra::Complex const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__Complex,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Complex___ne__" "', argument " "2"" of type '" "datamunge::algebra::Complex const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Complex___ne__" "', argument " "2"" of type '" "datamunge::algebra::Complex const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::algebra::Complex * >(argp2);
+  result = (bool)((datamunge::algebra::Complex const *)arg1)->operator !=((datamunge::algebra::Complex const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
+    return NULL;
+  }
+  PyErr_Clear();
+  SWIG_Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Complex(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_Complex", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::algebra::Complex *)new datamunge::algebra::Complex();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Complex(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Complex *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Complex, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Complex" "', argument " "1"" of type '" "datamunge::algebra::Complex *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Complex * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Complex_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__algebra__Complex, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Complex_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_Cplx_re_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Cplx_re_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__Cplx, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Cplx_re_set" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Cplx_re_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->re = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Cplx_re_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__Cplx, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Cplx_re_get" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+  result = (double) ((arg1)->re);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Cplx_im_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Cplx_im_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__Cplx, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Cplx_im_set" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Cplx_im_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->im = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Cplx_im_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__Cplx, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Cplx_im_get" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+  result = (double) ((arg1)->im);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Cplx(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_Cplx", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::algebra::detail::Cplx *)new datamunge::algebra::detail::Cplx();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Cplx(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Cplx" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Cplx_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Cplx_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_c_add(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx arg1 ;
+  datamunge::algebra::detail::Cplx arg2 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::detail::Cplx result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "c_add", 2, 2, swig_obj)) SWIG_fail;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_add" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_add" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+      arg1 = *temp;
+      if (SWIG_IsNewObj(res1)) delete temp;
+    }
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "c_add" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_add" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::algebra::detail::c_add(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::detail::Cplx(result)), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_c_sub(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx arg1 ;
+  datamunge::algebra::detail::Cplx arg2 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::detail::Cplx result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "c_sub", 2, 2, swig_obj)) SWIG_fail;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_sub" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_sub" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+      arg1 = *temp;
+      if (SWIG_IsNewObj(res1)) delete temp;
+    }
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "c_sub" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_sub" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::algebra::detail::c_sub(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::detail::Cplx(result)), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_c_mul(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx arg1 ;
+  datamunge::algebra::detail::Cplx arg2 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::detail::Cplx result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "c_mul", 2, 2, swig_obj)) SWIG_fail;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_mul" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_mul" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+      arg1 = *temp;
+      if (SWIG_IsNewObj(res1)) delete temp;
+    }
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "c_mul" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_mul" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::algebra::detail::c_mul(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::detail::Cplx(result)), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_c_div(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx arg1 ;
+  datamunge::algebra::detail::Cplx arg2 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::detail::Cplx result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "c_div", 2, 2, swig_obj)) SWIG_fail;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_div" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_div" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+      arg1 = *temp;
+      if (SWIG_IsNewObj(res1)) delete temp;
+    }
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "c_div" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_div" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::algebra::detail::c_div(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::detail::Cplx(result)), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_c_abs(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::detail::Cplx arg1 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_abs" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_abs" "', argument " "1"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp1);
+      arg1 = *temp;
+      if (SWIG_IsNewObj(res1)) delete temp;
+    }
+  }
+  result = (double)datamunge::algebra::detail::c_abs(SWIG_STD_MOVE(arg1));
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_c_eval(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  datamunge::algebra::detail::Cplx arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::detail::Cplx result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "c_eval", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "c_eval" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_eval" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__algebra__detail__Cplx,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "c_eval" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "c_eval" "', argument " "2"" of type '" "datamunge::algebra::detail::Cplx""'");
+    } else {
+      datamunge::algebra::detail::Cplx * temp = reinterpret_cast< datamunge::algebra::detail::Cplx * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::algebra::detail::c_eval((datamunge::algebra::Polynomial const &)*arg1,SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::detail::Cplx(result)), SWIGTYPE_p_datamunge__algebra__detail__Cplx, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_complex_roots__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "complex_roots" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "complex_roots" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  result = datamunge::algebra::complex_roots((datamunge::algebra::Polynomial const &)*arg1,SWIG_STD_MOVE(arg2),arg3);
+  resultobj = swig::from(static_cast< std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_complex_roots__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "complex_roots" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = datamunge::algebra::complex_roots((datamunge::algebra::Polynomial const &)*arg1,SWIG_STD_MOVE(arg2));
+  resultobj = swig::from(static_cast< std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_complex_roots__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "complex_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  result = datamunge::algebra::complex_roots((datamunge::algebra::Polynomial const &)*arg1);
+  resultobj = swig::from(static_cast< std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_complex_roots(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "complex_roots", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_complex_roots__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_complex_roots__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_complex_roots__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'complex_roots'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::complex_roots(datamunge::algebra::Polynomial const &,std::size_t,double)\n"
+    "    datamunge::algebra::complex_roots(datamunge::algebra::Polynomial const &,std::size_t)\n"
+    "    datamunge::algebra::complex_roots(datamunge::algebra::Polynomial const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_rational_roots__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "rational_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "rational_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "rational_roots" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  result = datamunge::algebra::rational_roots((datamunge::algebra::Polynomial const &)*arg1,arg2);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_rational_roots__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "rational_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "rational_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  result = datamunge::algebra::rational_roots((datamunge::algebra::Polynomial const &)*arg1);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_rational_roots(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "rational_roots", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_rational_roots__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_rational_roots__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'rational_roots'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::rational_roots(datamunge::algebra::Polynomial const &,double)\n"
+    "    datamunge::algebra::rational_roots(datamunge::algebra::Polynomial const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactor_factor_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *arg1 = 0 ;
+  datamunge::algebra::Polynomial *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RealFactor_factor_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactor_factor_set" "', argument " "1"" of type '" "datamunge::algebra::RealFactor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealFactor_factor_set" "', argument " "2"" of type '" "datamunge::algebra::Polynomial *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+  if (arg1) (arg1)->factor = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactor_factor_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::algebra::Polynomial *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactor_factor_get" "', argument " "1"" of type '" "datamunge::algebra::RealFactor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactor * >(argp1);
+  result = (datamunge::algebra::Polynomial *)& ((arg1)->factor);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactor_multiplicity_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RealFactor_multiplicity_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactor_multiplicity_set" "', argument " "1"" of type '" "datamunge::algebra::RealFactor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactor * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealFactor_multiplicity_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->multiplicity = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactor_multiplicity_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactor_multiplicity_get" "', argument " "1"" of type '" "datamunge::algebra::RealFactor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactor * >(argp1);
+  result = (int) ((arg1)->multiplicity);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealFactor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_RealFactor", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::algebra::RealFactor *)new datamunge::algebra::RealFactor();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RealFactor, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RealFactor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactor, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealFactor" "', argument " "1"" of type '" "datamunge::algebra::RealFactor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactor * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RealFactor_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__algebra__RealFactor, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *RealFactor_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_RealFactorization_leading_coefficient_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RealFactorization_leading_coefficient_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactorization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactorization_leading_coefficient_set" "', argument " "1"" of type '" "datamunge::algebra::RealFactorization *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactorization * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealFactorization_leading_coefficient_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->leading_coefficient = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactorization_leading_coefficient_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactorization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactorization_leading_coefficient_get" "', argument " "1"" of type '" "datamunge::algebra::RealFactorization *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactorization * >(argp1);
+  result = (double) ((arg1)->leading_coefficient);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactorization_num_factors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactorization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactorization_num_factors" "', argument " "1"" of type '" "datamunge::algebra::RealFactorization const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactorization * >(argp1);
+  result = ((datamunge::algebra::RealFactorization const *)arg1)->num_factors();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealFactorization_factor_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::algebra::RealFactor *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RealFactorization_factor_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactorization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealFactorization_factor_at" "', argument " "1"" of type '" "datamunge::algebra::RealFactorization const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactorization * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealFactorization_factor_at" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (datamunge::algebra::RealFactor *) &((datamunge::algebra::RealFactorization const *)arg1)->factor_at(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RealFactor, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealFactorization(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_RealFactorization", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::algebra::RealFactorization *)new datamunge::algebra::RealFactorization();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RealFactorization, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RealFactorization(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RealFactorization *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RealFactorization, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealFactorization" "', argument " "1"" of type '" "datamunge::algebra::RealFactorization *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RealFactorization * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RealFactorization_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__algebra__RealFactorization, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *RealFactorization_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_factor_over_reals__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::algebra::RealFactorization result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "factor_over_reals" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "factor_over_reals" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "factor_over_reals" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  result = datamunge::algebra::factor_over_reals((datamunge::algebra::Polynomial const &)*arg1,arg2);
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::RealFactorization(result)), SWIGTYPE_p_datamunge__algebra__RealFactorization, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_factor_over_reals__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::algebra::RealFactorization result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "factor_over_reals" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "factor_over_reals" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  result = datamunge::algebra::factor_over_reals((datamunge::algebra::Polynomial const &)*arg1);
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::RealFactorization(result)), SWIGTYPE_p_datamunge__algebra__RealFactorization, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_factor_over_reals(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "factor_over_reals", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_factor_over_reals__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_factor_over_reals__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'factor_over_reals'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::factor_over_reals(datamunge::algebra::Polynomial const &,double)\n"
+    "    datamunge::algebra::factor_over_reals(datamunge::algebra::Polynomial const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_simpson_estimate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "simpson_estimate", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "simpson_estimate" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "simpson_estimate" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "simpson_estimate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "simpson_estimate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "simpson_estimate" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "simpson_estimate" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (double)datamunge::algebra::detail::simpson_estimate((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_adaptive_simpson_recurse(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  int arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int val7 ;
+  int ecode7 = 0 ;
+  PyObject *swig_obj[7] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "adaptive_simpson_recurse", 7, 7, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "adaptive_simpson_recurse" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "adaptive_simpson_recurse" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "adaptive_simpson_recurse" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "adaptive_simpson_recurse" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "adaptive_simpson_recurse" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "adaptive_simpson_recurse" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "adaptive_simpson_recurse" "', argument " "5"" of type '" "double""'");
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "adaptive_simpson_recurse" "', argument " "6"" of type '" "double""'");
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "adaptive_simpson_recurse" "', argument " "7"" of type '" "int""'");
+  } 
+  arg7 = static_cast< int >(val7);
+  result = (double)datamunge::algebra::detail::adaptive_simpson_recurse((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4,arg5,arg6,arg7);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_definite_integral__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  int arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  int val6 ;
+  int ecode6 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "definite_integral" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "definite_integral" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "definite_integral" "', argument " "5"" of type '" "double""'");
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "definite_integral" "', argument " "6"" of type '" "int""'");
+  } 
+  arg6 = static_cast< int >(val6);
+  result = (double)datamunge::algebra::definite_integral((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4,arg5,arg6);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_definite_integral__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "definite_integral" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "definite_integral" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "definite_integral" "', argument " "5"" of type '" "double""'");
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (double)datamunge::algebra::definite_integral((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4,arg5);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_definite_integral__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "definite_integral" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "definite_integral" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "definite_integral" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (double)datamunge::algebra::definite_integral((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_definite_integral(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[7] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "definite_integral", 0, 6, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_definite_integral__SWIG_2(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_definite_integral__SWIG_1(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_NO_NULL | 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_int(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_definite_integral__SWIG_0(self, argc, argv);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'definite_integral'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::definite_integral(datamunge::algebra::Expr const &,std::string const &,double,double,double,int)\n"
+    "    datamunge::algebra::definite_integral(datamunge::algebra::Expr const &,std::string const &,double,double,double)\n"
+    "    datamunge::algebra::definite_integral(datamunge::algebra::Expr const &,std::string const &,double,double)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_taylor_series(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  int arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  datamunge::algebra::Polynomial result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "taylor_series", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__algebra__Expr,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "taylor_series" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "taylor_series" "', argument " "1"" of type '" "datamunge::algebra::Expr const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "taylor_series" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "taylor_series" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "taylor_series" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "taylor_series" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  result = datamunge::algebra::taylor_series((datamunge::algebra::Expr const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  resultobj = SWIG_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -203576,6 +209661,139 @@ static PyMethodDef SwigMethods[] = {
 		"       (detects and internally corrects clockwise input). Returns empty for fewer than 3\n"
 		"       vertices; a triangle input returns itself unchanged.\n"
 		""},
+	 { "Mesh1D_num_nodes", _wrap_Mesh1D_num_nodes, METH_O, NULL},
+	 { "Mesh1D_num_elements", _wrap_Mesh1D_num_elements, METH_O, NULL},
+	 { "Mesh1D_node_at", _wrap_Mesh1D_node_at, METH_VARARGS, NULL},
+	 { "Mesh1D_element_length", _wrap_Mesh1D_element_length, METH_VARARGS, NULL},
+	 { "new_Mesh1D", _wrap_new_Mesh1D, METH_NOARGS, NULL},
+	 { "delete_Mesh1D", _wrap_delete_Mesh1D, METH_O, NULL},
+	 { "Mesh1D_swigregister", Mesh1D_swigregister, METH_O, NULL},
+	 { "Mesh1D_swiginit", Mesh1D_swiginit, METH_VARARGS, NULL},
+	 { "make_uniform_mesh1d", _wrap_make_uniform_mesh1d, METH_VARARGS, "\n"
+		"Builds a uniform mesh of ``num_elements`` equal-length elements on [a, b].\n"
+		"       Throws std::invalid_argument if num_elements is 0 or b <= a.\n"
+		""},
+	 { "Mesh2D_num_nodes", _wrap_Mesh2D_num_nodes, METH_O, NULL},
+	 { "Mesh2D_num_triangles", _wrap_Mesh2D_num_triangles, METH_O, NULL},
+	 { "Mesh2D_node_at", _wrap_Mesh2D_node_at, METH_VARARGS, NULL},
+	 { "Mesh2D_triangle_at", _wrap_Mesh2D_triangle_at, METH_VARARGS, NULL},
+	 { "new_Mesh2D", _wrap_new_Mesh2D, METH_NOARGS, NULL},
+	 { "delete_Mesh2D", _wrap_delete_Mesh2D, METH_O, NULL},
+	 { "Mesh2D_swigregister", Mesh2D_swigregister, METH_O, NULL},
+	 { "Mesh2D_swiginit", Mesh2D_swiginit, METH_VARARGS, NULL},
+	 { "make_rectangular_mesh2d", _wrap_make_rectangular_mesh2d, METH_VARARGS, "\n"
+		"Builds a structured rectangular mesh on [x0, x1] x [y0, y1]: nx * ny grid cells,\n"
+		"       each split into two counterclockwise triangles, for a total of nx*ny*2 triangles and\n"
+		"       (nx+1)*(ny+1) nodes, ordered row-major (x fastest, then y).\n"
+		"       Throws std::invalid_argument if nx or ny is 0, or if x1 <= x0 or y1 <= y0.\n"
+		""},
+	 { "make_mesh2d_from_points", _wrap_make_mesh2d_from_points, METH_O, "\n"
+		"Builds a mesh over the convex hull of an arbitrary point cloud via Delaunay\n"
+		"       triangulation (datamunge::geometry::delaunay_triangulation) -- useful for\n"
+		"       unstructured domains a structured grid does not fit.\n"
+		""},
+	 { "boundary_nodes", _wrap_boundary_nodes, METH_O, "\n"
+		"Node indices lying on the mesh's outer boundary: every node incident to a boundary\n"
+		"       edge (an edge belonging to exactly one triangle). Works generically for both a\n"
+		"       structured rectangular mesh (the domain's four sides) and an unstructured Delaunay\n"
+		"       mesh (the convex hull), returned in ascending order with no duplicates.\n"
+		""},
+	 { "delete_ScalarField1D", _wrap_delete_ScalarField1D, METH_O, NULL},
+	 { "ScalarField1D_evaluate", _wrap_ScalarField1D_evaluate, METH_VARARGS, NULL},
+	 { "new_ScalarField1D", _wrap_new_ScalarField1D, METH_O, NULL},
+	 { "disown_ScalarField1D", _wrap_disown_ScalarField1D, METH_O, NULL},
+	 { "ScalarField1D_swigregister", ScalarField1D_swigregister, METH_O, NULL},
+	 { "ScalarField1D_swiginit", ScalarField1D_swiginit, METH_VARARGS, NULL},
+	 { "delete_ScalarField2D", _wrap_delete_ScalarField2D, METH_O, NULL},
+	 { "ScalarField2D_evaluate", _wrap_ScalarField2D_evaluate, METH_VARARGS, NULL},
+	 { "new_ScalarField2D", _wrap_new_ScalarField2D, METH_O, NULL},
+	 { "disown_ScalarField2D", _wrap_disown_ScalarField2D, METH_O, NULL},
+	 { "ScalarField2D_swigregister", ScalarField2D_swigregister, METH_O, NULL},
+	 { "ScalarField2D_swiginit", ScalarField2D_swiginit, METH_VARARGS, NULL},
+	 { "BoundaryCondition1D_type_set", _wrap_BoundaryCondition1D_type_set, METH_VARARGS, NULL},
+	 { "BoundaryCondition1D_type_get", _wrap_BoundaryCondition1D_type_get, METH_O, NULL},
+	 { "BoundaryCondition1D_value_set", _wrap_BoundaryCondition1D_value_set, METH_VARARGS, NULL},
+	 { "BoundaryCondition1D_value_get", _wrap_BoundaryCondition1D_value_get, METH_O, NULL},
+	 { "BoundaryCondition1D_robin_coefficient_set", _wrap_BoundaryCondition1D_robin_coefficient_set, METH_VARARGS, NULL},
+	 { "BoundaryCondition1D_robin_coefficient_get", _wrap_BoundaryCondition1D_robin_coefficient_get, METH_O, NULL},
+	 { "new_BoundaryCondition1D", _wrap_new_BoundaryCondition1D, METH_NOARGS, NULL},
+	 { "delete_BoundaryCondition1D", _wrap_delete_BoundaryCondition1D, METH_O, NULL},
+	 { "BoundaryCondition1D_swigregister", BoundaryCondition1D_swigregister, METH_O, NULL},
+	 { "BoundaryCondition1D_swiginit", BoundaryCondition1D_swiginit, METH_VARARGS, NULL},
+	 { "FEM1DResult_size", _wrap_FEM1DResult_size, METH_O, NULL},
+	 { "FEM1DResult_node_at", _wrap_FEM1DResult_node_at, METH_VARARGS, NULL},
+	 { "FEM1DResult_value_at", _wrap_FEM1DResult_value_at, METH_VARARGS, NULL},
+	 { "new_FEM1DResult", _wrap_new_FEM1DResult, METH_NOARGS, NULL},
+	 { "delete_FEM1DResult", _wrap_delete_FEM1DResult, METH_O, NULL},
+	 { "FEM1DResult_swigregister", FEM1DResult_swigregister, METH_O, NULL},
+	 { "FEM1DResult_swiginit", FEM1DResult_swiginit, METH_VARARGS, NULL},
+	 { "FEM1DTimeSeries_num_steps", _wrap_FEM1DTimeSeries_num_steps, METH_O, NULL},
+	 { "FEM1DTimeSeries_num_nodes", _wrap_FEM1DTimeSeries_num_nodes, METH_O, NULL},
+	 { "FEM1DTimeSeries_node_at", _wrap_FEM1DTimeSeries_node_at, METH_VARARGS, NULL},
+	 { "FEM1DTimeSeries_time_at", _wrap_FEM1DTimeSeries_time_at, METH_VARARGS, NULL},
+	 { "FEM1DTimeSeries_value_at", _wrap_FEM1DTimeSeries_value_at, METH_VARARGS, NULL},
+	 { "new_FEM1DTimeSeries", _wrap_new_FEM1DTimeSeries, METH_NOARGS, NULL},
+	 { "delete_FEM1DTimeSeries", _wrap_delete_FEM1DTimeSeries, METH_O, NULL},
+	 { "FEM1DTimeSeries_swigregister", FEM1DTimeSeries_swigregister, METH_O, NULL},
+	 { "FEM1DTimeSeries_swiginit", FEM1DTimeSeries_swiginit, METH_VARARGS, NULL},
+	 { "FEM1D_solve", _wrap_FEM1D_solve, METH_VARARGS, "\n"
+		"Solves the steady-state BVP -(p u')' + q u = f with the given boundary\n"
+		"       conditions. p and q must each be either a single value (constant across the\n"
+		"       whole domain) or exactly one value per element (mesh.num_elements()).\n"
+		"       Throws std::invalid_argument for a mismatched size.\n"
+		""},
+	 { "FEM1D_solve_builtin", _wrap_FEM1D_solve_builtin, METH_VARARGS, "\n"
+		"Same as solve(), but f is one of a fixed set of named source terms instead of a\n"
+		"       live user-supplied callback -- the only option for bindings without director\n"
+		"       support. source_params is interpreted positionally per source name, with the\n"
+		"       listed defaults used for any parameter past the end of source_params:\n"
+		"         - \"zero\":       f(x) = 0.                            source_params unused.\n"
+		"         - \"constant\":   f(x) = c.                            {c=1}.\n"
+		"         - \"linear\":     f(x) = m*x + c.                       {m=1, c=0}.\n"
+		"         - \"polynomial\": f(x) = sum_i source_params[i] * x^i. an empty list means f=0.\n"
+		"         - \"sine\":       f(x) = amplitude*sin(freq*x+phase).  {amplitude=1, freq=1, phase=0}.\n"
+		"       Throws std::invalid_argument for an unknown source name.\n"
+		""},
+	 { "FEM1D_solve_transient", _wrap_FEM1D_solve_transient, METH_VARARGS, "\n"
+		"Solves the transient (parabolic) problem u_t - (p u')' + q u = f(x) [f and the\n"
+		"       boundary conditions are held fixed in time -- this \"basic\" transient solver does\n"
+		"       not support a time-varying source or BCs] from t=0 to t=t_end with initial\n"
+		"       condition u0 (one value per mesh node), via unconditionally stable backward\n"
+		"       Euler time-stepping with fixed step dt. Throws std::invalid_argument if\n"
+		"       u0.size() != mesh.num_nodes(), or if dt <= 0 or t_end <= 0.\n"
+		""},
+	 { "new_FEM1D", _wrap_new_FEM1D, METH_NOARGS, NULL},
+	 { "delete_FEM1D", _wrap_delete_FEM1D, METH_O, NULL},
+	 { "FEM1D_swigregister", FEM1D_swigregister, METH_O, NULL},
+	 { "FEM1D_swiginit", FEM1D_swiginit, METH_VARARGS, NULL},
+	 { "FEM2DResult_size", _wrap_FEM2DResult_size, METH_O, NULL},
+	 { "FEM2DResult_node_at", _wrap_FEM2DResult_node_at, METH_VARARGS, NULL},
+	 { "FEM2DResult_value_at", _wrap_FEM2DResult_value_at, METH_VARARGS, NULL},
+	 { "new_FEM2DResult", _wrap_new_FEM2DResult, METH_NOARGS, NULL},
+	 { "delete_FEM2DResult", _wrap_delete_FEM2DResult, METH_O, NULL},
+	 { "FEM2DResult_swigregister", FEM2DResult_swigregister, METH_O, NULL},
+	 { "FEM2DResult_swiginit", FEM2DResult_swiginit, METH_VARARGS, NULL},
+	 { "FEM2D_solve", _wrap_FEM2D_solve, METH_VARARGS, "\n"
+		"Solves -k * Laplacian(u) = f with Dirichlet data u = dirichlet_values[i] at node\n"
+		"       dirichlet_nodes[i] (every other node is a free unknown); k is the constant,\n"
+		"       isotropic diffusion coefficient. Throws std::invalid_argument if\n"
+		"       dirichlet_nodes.size() != dirichlet_values.size(), if any index in\n"
+		"       dirichlet_nodes is out of range, or if every node is constrained (nothing to\n"
+		"       solve for).\n"
+		""},
+	 { "FEM2D_solve_builtin", _wrap_FEM2D_solve_builtin, METH_VARARGS, "\n"
+		"Same as solve(), but f is one of a fixed set of named source terms instead of a\n"
+		"       live user-supplied callback. source_params is interpreted positionally, with the\n"
+		"       listed defaults used for any parameter past the end of source_params:\n"
+		"         - \"zero\":     f(x, y) = 0.                                source_params unused.\n"
+		"         - \"constant\": f(x, y) = c.                                {c=1}.\n"
+		"         - \"sine\":     f(x, y) = amplitude*sin(fx*x)*sin(fy*y).    {amplitude=1, fx=1, fy=1}.\n"
+		"       Throws std::invalid_argument for an unknown source name.\n"
+		""},
+	 { "new_FEM2D", _wrap_new_FEM2D, METH_NOARGS, NULL},
+	 { "delete_FEM2D", _wrap_delete_FEM2D, METH_O, NULL},
+	 { "FEM2D_swigregister", FEM2D_swigregister, METH_O, NULL},
+	 { "FEM2D_swiginit", FEM2D_swiginit, METH_VARARGS, NULL},
 	 { "StringVectorVector_iterator", _wrap_StringVectorVector_iterator, METH_O, NULL},
 	 { "StringVectorVector___nonzero__", _wrap_StringVectorVector___nonzero__, METH_O, NULL},
 	 { "StringVectorVector___bool__", _wrap_StringVectorVector___bool__, METH_O, NULL},
@@ -204803,6 +211021,19 @@ static PyMethodDef SwigMethods[] = {
 		"Monic-normalizes p by dividing through by its leading coefficient (no-op on the zero\n"
 		"       polynomial).\n"
 		""},
+	 { "is_negligible_remainder", _wrap_is_negligible_remainder, METH_VARARGS, "\n"
+		"True when every coefficient of `r` is negligible relative to `scale_reference`'s\n"
+		"       largest-magnitude coefficient. The classical Euclidean algorithm's termination test\n"
+		"       (`remainder.is_zero()`) assumes a remainder that is mathematically zero comes back\n"
+		"       as *exactly* zero -- true over an exact field, but not over doubles: a genuine\n"
+		"       (e.g. repeated) common factor can leave a remainder like 1.78e-15 instead of 0.0,\n"
+		"       which Polynomial::is_zero()'s exact-equality check treats as a nonzero polynomial,\n"
+		"       making the Euclidean algorithm take one more spurious step and converge on a\n"
+		"       meaningless near-zero-constant \"GCD\" instead of the true, higher-degree one. Treating\n"
+		"       such a remainder as zero (this function) fixes that without weakening\n"
+		"       Polynomial::is_zero() itself, which is used elsewhere for genuine exact-zero checks\n"
+		"       (e.g. rejecting division by the zero polynomial).\n"
+		""},
 	 { "poly_gcd", _wrap_poly_gcd, METH_VARARGS, "\n"
 		"GCD of two polynomials via the classical Euclidean algorithm (repeated\n"
 		"       divmod-and-swap), returned monic.\n"
@@ -205129,6 +211360,23 @@ static PyMethodDef SwigMethods[] = {
 		"            `exponent` is not a constant (only the constant-exponent power rule is\n"
 		"            supported).\n"
 		""},
+	 { "Expr_integrate", _wrap_Expr_integrate, METH_VARARGS, "\n"
+		"The symbolic antiderivative with respect to `var` (any other variable name is\n"
+		"       treated as a constant, matching differentiate()). Supports: the sum/difference\n"
+		"       and constant-multiple rules; the power rule x^c (any real c != -1) and its log\n"
+		"       special case (c == -1); sin/cos/exp/log of any expression that is affine\n"
+		"       (a*var + b) in var, via the standard substitution result for each; a constant\n"
+		"       divided by an affine expression (reduces to the log rule); and, for a product of\n"
+		"       two var-dependent factors, generic tabular integration by parts -- reusing\n"
+		"       differentiate() to peel one factor down to the constant 0 across at most 15\n"
+		"       repeated derivatives (terminates for any genuine polynomial factor), paired with\n"
+		"       repeated antiderivatives of the other factor. Not a full computer-algebra\n"
+		"       integrator: general rational functions (a non-constant denominator that isn't\n"
+		"       affine), a variable exponent, and products/quotients outside the forms above\n"
+		"       (e.g. sin(x)*cos(x), which never reduces to zero under repeated differentiation)\n"
+		"       are not attempted.\n"
+		":raises: std::invalid_argument when no rule above applies.\n"
+		""},
 	 { "Expr_simplify", _wrap_Expr_simplify, METH_O, "\n"
 		"Basic algebraic simplification: constant folding, plus identities like x+0, x*1,\n"
 		"       x*0, x/1, x^0, x^1. Not a full computer-algebra simplifier (no factoring,\n"
@@ -205144,6 +211392,149 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_Expr", _wrap_delete_Expr, METH_O, NULL},
 	 { "Expr_swigregister", Expr_swigregister, METH_O, NULL},
 	 { "Expr_swiginit", Expr_swiginit, METH_VARARGS, NULL},
+	 { "ComplexVector_iterator", _wrap_ComplexVector_iterator, METH_O, NULL},
+	 { "ComplexVector___nonzero__", _wrap_ComplexVector___nonzero__, METH_O, NULL},
+	 { "ComplexVector___bool__", _wrap_ComplexVector___bool__, METH_O, NULL},
+	 { "ComplexVector___len__", _wrap_ComplexVector___len__, METH_O, NULL},
+	 { "ComplexVector___getslice__", _wrap_ComplexVector___getslice__, METH_VARARGS, NULL},
+	 { "ComplexVector___setslice__", _wrap_ComplexVector___setslice__, METH_VARARGS, NULL},
+	 { "ComplexVector___delslice__", _wrap_ComplexVector___delslice__, METH_VARARGS, NULL},
+	 { "ComplexVector___delitem__", _wrap_ComplexVector___delitem__, METH_VARARGS, NULL},
+	 { "ComplexVector___getitem__", _wrap_ComplexVector___getitem__, METH_VARARGS, NULL},
+	 { "ComplexVector___setitem__", _wrap_ComplexVector___setitem__, METH_VARARGS, NULL},
+	 { "ComplexVector_pop", _wrap_ComplexVector_pop, METH_O, NULL},
+	 { "ComplexVector_append", _wrap_ComplexVector_append, METH_VARARGS, NULL},
+	 { "ComplexVector_empty", _wrap_ComplexVector_empty, METH_O, NULL},
+	 { "ComplexVector_size", _wrap_ComplexVector_size, METH_O, NULL},
+	 { "ComplexVector_swap", _wrap_ComplexVector_swap, METH_VARARGS, NULL},
+	 { "ComplexVector_begin", _wrap_ComplexVector_begin, METH_O, NULL},
+	 { "ComplexVector_end", _wrap_ComplexVector_end, METH_O, NULL},
+	 { "ComplexVector_rbegin", _wrap_ComplexVector_rbegin, METH_O, NULL},
+	 { "ComplexVector_rend", _wrap_ComplexVector_rend, METH_O, NULL},
+	 { "ComplexVector_clear", _wrap_ComplexVector_clear, METH_O, NULL},
+	 { "ComplexVector_get_allocator", _wrap_ComplexVector_get_allocator, METH_O, NULL},
+	 { "ComplexVector_pop_back", _wrap_ComplexVector_pop_back, METH_O, NULL},
+	 { "ComplexVector_erase", _wrap_ComplexVector_erase, METH_VARARGS, NULL},
+	 { "new_ComplexVector", _wrap_new_ComplexVector, METH_VARARGS, NULL},
+	 { "ComplexVector_push_back", _wrap_ComplexVector_push_back, METH_VARARGS, NULL},
+	 { "ComplexVector_front", _wrap_ComplexVector_front, METH_O, NULL},
+	 { "ComplexVector_back", _wrap_ComplexVector_back, METH_O, NULL},
+	 { "ComplexVector_assign", _wrap_ComplexVector_assign, METH_VARARGS, NULL},
+	 { "ComplexVector_resize", _wrap_ComplexVector_resize, METH_VARARGS, NULL},
+	 { "ComplexVector_insert", _wrap_ComplexVector_insert, METH_VARARGS, NULL},
+	 { "ComplexVector_reserve", _wrap_ComplexVector_reserve, METH_VARARGS, NULL},
+	 { "ComplexVector_capacity", _wrap_ComplexVector_capacity, METH_O, NULL},
+	 { "delete_ComplexVector", _wrap_delete_ComplexVector, METH_O, NULL},
+	 { "ComplexVector_swigregister", ComplexVector_swigregister, METH_O, NULL},
+	 { "ComplexVector_swiginit", ComplexVector_swiginit, METH_VARARGS, NULL},
+	 { "Complex_re_set", _wrap_Complex_re_set, METH_VARARGS, NULL},
+	 { "Complex_re_get", _wrap_Complex_re_get, METH_O, NULL},
+	 { "Complex_im_set", _wrap_Complex_im_set, METH_VARARGS, NULL},
+	 { "Complex_im_get", _wrap_Complex_im_get, METH_O, NULL},
+	 { "Complex_modulus", _wrap_Complex_modulus, METH_O, NULL},
+	 { "Complex___eq__", _wrap_Complex___eq__, METH_VARARGS, NULL},
+	 { "Complex___ne__", _wrap_Complex___ne__, METH_VARARGS, NULL},
+	 { "new_Complex", _wrap_new_Complex, METH_NOARGS, NULL},
+	 { "delete_Complex", _wrap_delete_Complex, METH_O, NULL},
+	 { "Complex_swigregister", Complex_swigregister, METH_O, NULL},
+	 { "Complex_swiginit", Complex_swiginit, METH_VARARGS, NULL},
+	 { "Cplx_re_set", _wrap_Cplx_re_set, METH_VARARGS, NULL},
+	 { "Cplx_re_get", _wrap_Cplx_re_get, METH_O, NULL},
+	 { "Cplx_im_set", _wrap_Cplx_im_set, METH_VARARGS, NULL},
+	 { "Cplx_im_get", _wrap_Cplx_im_get, METH_O, NULL},
+	 { "new_Cplx", _wrap_new_Cplx, METH_NOARGS, NULL},
+	 { "delete_Cplx", _wrap_delete_Cplx, METH_O, NULL},
+	 { "Cplx_swigregister", Cplx_swigregister, METH_O, NULL},
+	 { "Cplx_swiginit", Cplx_swiginit, METH_VARARGS, NULL},
+	 { "c_add", _wrap_c_add, METH_VARARGS, NULL},
+	 { "c_sub", _wrap_c_sub, METH_VARARGS, NULL},
+	 { "c_mul", _wrap_c_mul, METH_VARARGS, NULL},
+	 { "c_div", _wrap_c_div, METH_VARARGS, NULL},
+	 { "c_abs", _wrap_c_abs, METH_O, NULL},
+	 { "c_eval", _wrap_c_eval, METH_VARARGS, NULL},
+	 { "complex_roots", _wrap_complex_roots, METH_VARARGS, "\n"
+		"All n = p.degree() complex roots of p (real roots included, with a negligible\n"
+		"       imaginary part), via the Durand-Kerner (Weierstrass) method: simultaneous\n"
+		"       fixed-point iteration z_k <- z_k - p(z_k) / prod_{j != k}(z_k - z_j), starting from n\n"
+		"       points evenly spaced (with a fixed angular offset to avoid real-axis symmetry, which\n"
+		"       would otherwise stall convergence to any non-real root of a real-coefficient\n"
+		"       polynomial) around a circle whose radius is a Cauchy bound on root magnitude.\n"
+		"       Converges quadratically once guesses are close, but -- unlike Sturm's theorem-based\n"
+		"       real_roots(), which isolates each real root to a provably correct interval before\n"
+		"       refining it -- this is a general iterative method with no convergence guarantee.\n"
+		"       For best results p should be square-free (see square_free_factorization()); repeated\n"
+		"       roots make two of the simultaneous iterates chase the same point, which both slows\n"
+		"       convergence and risks a near-zero denominator late in the iteration.\n"
+		":raises: std::invalid_argument if p has degree 0 (a nonzero constant has no roots; the zero\n"
+		"            polynomial is degenerate).\n"
+		""},
+	 { "rational_roots", _wrap_rational_roots, METH_VARARGS, "\n"
+		"All rational roots of p, via the Rational Root Theorem: every rational root a/b in\n"
+		"       lowest terms has a dividing the constant term and b dividing the leading coefficient,\n"
+		"       so trying every such ratio (after first dividing out any factors of x, i.e. any\n"
+		"       roots at exactly 0) finds every rational root exactly -- a finite, exact search, in\n"
+		"       contrast to real_roots()'s numeric bisection or complex_roots()'s general iteration.\n"
+		":type tolerance: float, optional\n"
+		":param tolerance: Used both to verify p's coefficients are within `tolerance` of integers\n"
+		"           (required for the theorem to apply) and to test each candidate ratio's residual.\n"
+		":raises: std::invalid_argument if p's coefficients are not within `tolerance` of integers.\n"
+		""},
+	 { "RealFactor_factor_set", _wrap_RealFactor_factor_set, METH_VARARGS, NULL},
+	 { "RealFactor_factor_get", _wrap_RealFactor_factor_get, METH_O, NULL},
+	 { "RealFactor_multiplicity_set", _wrap_RealFactor_multiplicity_set, METH_VARARGS, NULL},
+	 { "RealFactor_multiplicity_get", _wrap_RealFactor_multiplicity_get, METH_O, NULL},
+	 { "new_RealFactor", _wrap_new_RealFactor, METH_NOARGS, NULL},
+	 { "delete_RealFactor", _wrap_delete_RealFactor, METH_O, NULL},
+	 { "RealFactor_swigregister", RealFactor_swigregister, METH_O, NULL},
+	 { "RealFactor_swiginit", RealFactor_swiginit, METH_VARARGS, NULL},
+	 { "RealFactorization_leading_coefficient_set", _wrap_RealFactorization_leading_coefficient_set, METH_VARARGS, NULL},
+	 { "RealFactorization_leading_coefficient_get", _wrap_RealFactorization_leading_coefficient_get, METH_O, NULL},
+	 { "RealFactorization_num_factors", _wrap_RealFactorization_num_factors, METH_O, NULL},
+	 { "RealFactorization_factor_at", _wrap_RealFactorization_factor_at, METH_VARARGS, NULL},
+	 { "new_RealFactorization", _wrap_new_RealFactorization, METH_NOARGS, NULL},
+	 { "delete_RealFactorization", _wrap_delete_RealFactorization, METH_O, NULL},
+	 { "RealFactorization_swigregister", RealFactorization_swigregister, METH_O, NULL},
+	 { "RealFactorization_swiginit", RealFactorization_swiginit, METH_VARARGS, NULL},
+	 { "factor_over_reals", _wrap_factor_over_reals, METH_VARARGS, "\n"
+		"Factors p over the reals: splits it into square-free pieces via\n"
+		"       square_free_factorization() (each with its own multiplicity), then finds every root\n"
+		"       of each piece via complex_roots() -- safe here since a square-free piece has, by\n"
+		"       construction, only distinct roots, exactly the case complex_roots() converges best\n"
+		"       on -- and pairs up complex-conjugate roots into real quadratic factors, leaving real\n"
+		"       roots as linear factors. This is the numeric analog of \"factor()\" in an exact CAS:\n"
+		"       for a floating-point polynomial with no assumed rational structure, linear and\n"
+		"       quadratic real factors are as far as factoring over R can go (see rational_roots()\n"
+		"       for an exact search restricted to genuinely rational roots instead).\n"
+		":type conjugate_tolerance: float, optional\n"
+		":param conjugate_tolerance: Two roots are treated as a real root (imaginary part ~ 0) or a\n"
+		"           conjugate pair (matching real parts, opposite imaginary parts) when within this\n"
+		"           tolerance of the corresponding exact relationship.\n"
+		""},
+	 { "simpson_estimate", _wrap_simpson_estimate, METH_VARARGS, NULL},
+	 { "adaptive_simpson_recurse", _wrap_adaptive_simpson_recurse, METH_VARARGS, NULL},
+	 { "definite_integral", _wrap_definite_integral, METH_VARARGS, "\n"
+		"The definite integral of f (with every other name in f bound as usual by evaluate())\n"
+		"       from a to b with respect to var, via adaptive Simpson's rule -- a numeric fallback/\n"
+		"       complement to Expr::integrate() for cases outside that method's supported symbolic\n"
+		"       forms (e.g. sin(x)*cos(x), or any other integrand it throws on), or simply to check\n"
+		"       a symbolic result. Handles a > b by returning the negated integral over [b, a].\n"
+		":type tolerance: float, optional\n"
+		":param tolerance: Target absolute error per the adaptive refinement's own error estimate; not\n"
+		"           a hard guarantee for a pathological (e.g. discontinuous or highly oscillatory)\n"
+		"           integrand.\n"
+		":type max_depth: int, optional\n"
+		":param max_depth: Hard cap on recursive bisection depth, bounding worst-case cost.\n"
+		""},
+	 { "taylor_series", _wrap_taylor_series, METH_VARARGS, "\n"
+		"The degree-`order` Taylor polynomial of f around var = center, built from `order`\n"
+		"       repeated symbolic differentiations of f (each evaluated at center and divided by the\n"
+		"       matching factorial) -- the returned polynomial q approximates f near center as\n"
+		"       q.evaluate(x - center), NOT q.evaluate(x) directly (q's coefficients are for powers\n"
+		"       of (x - center), matching the standard Taylor series form\n"
+		"       f(x) ~= sum_k f^(k)(center)/k! * (x-center)^k).\n"
+		":raises: std::invalid_argument if order is negative, or std::invalid_argument propagated from\n"
+		"            Expr::differentiate() if f contains a non-constant exponent.\n"
+		""},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -205245,13 +211636,17 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__UMAP = {"_p_datamunge__UMAP", "da
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Complex = {"_p_datamunge__algebra__Complex", "std::vector< datamunge::algebra::Complex >::value_type *|datamunge::algebra::Complex *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Expr = {"_p_datamunge__algebra__Expr", "datamunge::algebra::Expr *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__MultivariatePolynomial = {"_p_datamunge__algebra__MultivariatePolynomial", "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *|datamunge::algebra::MultivariatePolynomial *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__PolyExtendedGcdResult = {"_p_datamunge__algebra__PolyExtendedGcdResult", "datamunge::algebra::PolyExtendedGcdResult *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Polynomial = {"_p_datamunge__algebra__Polynomial", "std::vector< datamunge::algebra::Polynomial >::value_type *|datamunge::algebra::Polynomial *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RationalFunction = {"_p_datamunge__algebra__RationalFunction", "datamunge::algebra::RationalFunction *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RealFactor = {"_p_datamunge__algebra__RealFactor", "datamunge::algebra::RealFactor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RealFactorization = {"_p_datamunge__algebra__RealFactorization", "datamunge::algebra::RealFactorization *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RealRootIntervals = {"_p_datamunge__algebra__RealRootIntervals", "datamunge::algebra::RealRootIntervals *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__SquareFreeFactor = {"_p_datamunge__algebra__SquareFreeFactor", "std::vector< datamunge::algebra::SquareFreeFactor >::value_type *|datamunge::algebra::SquareFreeFactor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__detail__Cplx = {"_p_datamunge__algebra__detail__Cplx", "datamunge::algebra::detail::Cplx *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
@@ -205279,6 +211674,16 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__cv__detail__StructureTensorField 
 SWIGINTERN swig_type_info _swigt__p_datamunge__dstruct__DirectedGraphT_std__string_t = {"_p_datamunge__dstruct__DirectedGraphT_std__string_t", "datamunge::dstruct::DirectedGraph< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__dstruct__UndirectedGraphT_std__string_t = {"_p_datamunge__dstruct__UndirectedGraphT_std__string_t", "datamunge::dstruct::UndirectedGraph< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__dstruct__WeightedGraphT_std__string_double_t = {"_p_datamunge__dstruct__WeightedGraphT_std__string_double_t", "datamunge::dstruct::WeightedGraph< std::string,double > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__BoundaryCondition1D = {"_p_datamunge__fem__BoundaryCondition1D", "datamunge::fem::BoundaryCondition1D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__FEM1D = {"_p_datamunge__fem__FEM1D", "datamunge::fem::FEM1D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__FEM1DResult = {"_p_datamunge__fem__FEM1DResult", "datamunge::fem::FEM1DResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__FEM1DTimeSeries = {"_p_datamunge__fem__FEM1DTimeSeries", "datamunge::fem::FEM1DTimeSeries *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__FEM2D = {"_p_datamunge__fem__FEM2D", "datamunge::fem::FEM2D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__FEM2DResult = {"_p_datamunge__fem__FEM2DResult", "datamunge::fem::FEM2DResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__Mesh1D = {"_p_datamunge__fem__Mesh1D", "datamunge::fem::Mesh1D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__Mesh2D = {"_p_datamunge__fem__Mesh2D", "datamunge::fem::Mesh2D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__ScalarField1D = {"_p_datamunge__fem__ScalarField1D", "datamunge::fem::ScalarField1D *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__fem__ScalarField2D = {"_p_datamunge__fem__ScalarField2D", "datamunge::fem::ScalarField2D *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__filter__AlphaBetaFilter = {"_p_datamunge__filter__AlphaBetaFilter", "datamunge::filter::AlphaBetaFilter *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__filter__AlphaBetaGammaFilter = {"_p_datamunge__filter__AlphaBetaGammaFilter", "datamunge::filter::AlphaBetaGammaFilter *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__filter__AlphaBetaGammaState = {"_p_datamunge__filter__AlphaBetaGammaState", "std::vector< datamunge::filter::AlphaBetaGammaState >::value_type *|datamunge::filter::AlphaBetaGammaState *", 0, 0, (void*)0, 0};
@@ -205425,6 +211830,7 @@ SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_typ
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__Complex_t = {"_p_std__allocatorT_datamunge__algebra__Complex_t", "std::vector< datamunge::algebra::Complex >::allocator_type *|std::allocator< datamunge::algebra::Complex > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t = {"_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t", "std::vector< datamunge::algebra::MultivariatePolynomial >::allocator_type *|std::allocator< datamunge::algebra::MultivariatePolynomial > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t = {"_p_std__allocatorT_datamunge__algebra__Polynomial_t", "std::vector< datamunge::algebra::Polynomial >::allocator_type *|std::allocator< datamunge::algebra::Polynomial > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t = {"_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t", "std::vector< datamunge::algebra::SquareFreeFactor >::allocator_type *|std::allocator< datamunge::algebra::SquareFreeFactor > *", 0, 0, (void*)0, 0};
@@ -205462,6 +211868,7 @@ SWIGINTERN swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_
 SWIGINTERN swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > > > *|std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t = {"_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t", "datamunge::algebra::detail::ExprNodePtr *|std::shared_ptr< datamunge::algebra::detail::ExprNode > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__string = {"_p_std__string", "std::string *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__Complex_t = {"_p_std__vectorT_datamunge__algebra__Complex_t", "std::vector< datamunge::algebra::Complex,std::allocator< datamunge::algebra::Complex > > *|std::vector< datamunge::algebra::Complex > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t = {"_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t", "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *|std::vector< datamunge::algebra::MultivariatePolynomial > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__Polynomial_t = {"_p_std__vectorT_datamunge__algebra__Polynomial_t", "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *|std::vector< datamunge::algebra::Polynomial > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t = {"_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t", "std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *|std::vector< datamunge::algebra::SquareFreeFactor > *", 0, 0, (void*)0, 0};
@@ -205552,13 +211959,17 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__algebra__Complex,
   &_swigt__p_datamunge__algebra__Expr,
   &_swigt__p_datamunge__algebra__MultivariatePolynomial,
   &_swigt__p_datamunge__algebra__PolyExtendedGcdResult,
   &_swigt__p_datamunge__algebra__Polynomial,
   &_swigt__p_datamunge__algebra__RationalFunction,
+  &_swigt__p_datamunge__algebra__RealFactor,
+  &_swigt__p_datamunge__algebra__RealFactorization,
   &_swigt__p_datamunge__algebra__RealRootIntervals,
   &_swigt__p_datamunge__algebra__SquareFreeFactor,
+  &_swigt__p_datamunge__algebra__detail__Cplx,
   &_swigt__p_datamunge__bayes__GibbsOptions,
   &_swigt__p_datamunge__bayes__GibbsResult,
   &_swigt__p_datamunge__bayes__GibbsSampler,
@@ -205586,6 +211997,16 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__dstruct__DirectedGraphT_std__string_t,
   &_swigt__p_datamunge__dstruct__UndirectedGraphT_std__string_t,
   &_swigt__p_datamunge__dstruct__WeightedGraphT_std__string_double_t,
+  &_swigt__p_datamunge__fem__BoundaryCondition1D,
+  &_swigt__p_datamunge__fem__FEM1D,
+  &_swigt__p_datamunge__fem__FEM1DResult,
+  &_swigt__p_datamunge__fem__FEM1DTimeSeries,
+  &_swigt__p_datamunge__fem__FEM2D,
+  &_swigt__p_datamunge__fem__FEM2DResult,
+  &_swigt__p_datamunge__fem__Mesh1D,
+  &_swigt__p_datamunge__fem__Mesh2D,
+  &_swigt__p_datamunge__fem__ScalarField1D,
+  &_swigt__p_datamunge__fem__ScalarField2D,
   &_swigt__p_datamunge__filter__AlphaBetaFilter,
   &_swigt__p_datamunge__filter__AlphaBetaGammaFilter,
   &_swigt__p_datamunge__filter__AlphaBetaGammaState,
@@ -205732,6 +212153,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_short,
   &_swigt__p_signed_char,
   &_swigt__p_size_type,
+  &_swigt__p_std__allocatorT_datamunge__algebra__Complex_t,
   &_swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t,
   &_swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t,
   &_swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t,
@@ -205769,6 +212191,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   &_swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t,
   &_swigt__p_std__string,
+  &_swigt__p_std__vectorT_datamunge__algebra__Complex_t,
   &_swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t,
   &_swigt__p_std__vectorT_datamunge__algebra__Polynomial_t,
   &_swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t,
@@ -205856,13 +212279,17 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__UMAP[] = {  {&_swigt__p_datamunge
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Complex[] = {  {&_swigt__p_datamunge__algebra__Complex, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Expr[] = {  {&_swigt__p_datamunge__algebra__Expr, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__MultivariatePolynomial[] = {  {&_swigt__p_datamunge__algebra__MultivariatePolynomial, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__PolyExtendedGcdResult[] = {  {&_swigt__p_datamunge__algebra__PolyExtendedGcdResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Polynomial[] = {  {&_swigt__p_datamunge__algebra__Polynomial, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RationalFunction[] = {  {&_swigt__p_datamunge__algebra__RationalFunction, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RealFactor[] = {  {&_swigt__p_datamunge__algebra__RealFactor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RealFactorization[] = {  {&_swigt__p_datamunge__algebra__RealFactorization, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RealRootIntervals[] = {  {&_swigt__p_datamunge__algebra__RealRootIntervals, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__SquareFreeFactor[] = {  {&_swigt__p_datamunge__algebra__SquareFreeFactor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__detail__Cplx[] = {  {&_swigt__p_datamunge__algebra__detail__Cplx, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
@@ -205890,6 +212317,16 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__cv__detail__StructureTensorField[
 SWIGINTERN swig_cast_info _swigc__p_datamunge__dstruct__DirectedGraphT_std__string_t[] = {  {&_swigt__p_datamunge__dstruct__DirectedGraphT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__dstruct__UndirectedGraphT_std__string_t[] = {  {&_swigt__p_datamunge__dstruct__UndirectedGraphT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__dstruct__WeightedGraphT_std__string_double_t[] = {  {&_swigt__p_datamunge__dstruct__WeightedGraphT_std__string_double_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__BoundaryCondition1D[] = {  {&_swigt__p_datamunge__fem__BoundaryCondition1D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__FEM1D[] = {  {&_swigt__p_datamunge__fem__FEM1D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__FEM1DResult[] = {  {&_swigt__p_datamunge__fem__FEM1DResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__FEM1DTimeSeries[] = {  {&_swigt__p_datamunge__fem__FEM1DTimeSeries, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__FEM2D[] = {  {&_swigt__p_datamunge__fem__FEM2D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__FEM2DResult[] = {  {&_swigt__p_datamunge__fem__FEM2DResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__Mesh1D[] = {  {&_swigt__p_datamunge__fem__Mesh1D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__Mesh2D[] = {  {&_swigt__p_datamunge__fem__Mesh2D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__ScalarField1D[] = {  {&_swigt__p_datamunge__fem__ScalarField1D, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__fem__ScalarField2D[] = {  {&_swigt__p_datamunge__fem__ScalarField2D, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__filter__AlphaBetaFilter[] = {  {&_swigt__p_datamunge__filter__AlphaBetaFilter, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__filter__AlphaBetaGammaFilter[] = {  {&_swigt__p_datamunge__filter__AlphaBetaGammaFilter, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__filter__AlphaBetaGammaState[] = {  {&_swigt__p_datamunge__filter__AlphaBetaGammaState, 0, 0, 0},{0, 0, 0, 0}};
@@ -206036,6 +212473,7 @@ SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__Complex_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__Complex_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__Polynomial_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -206073,6 +212511,7 @@ SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t[] = {  {&_swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__string[] = {  {&_swigt__p_std__string, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__Complex_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__Complex_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__Polynomial_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__Polynomial_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -206160,13 +212599,17 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__algebra__Complex,
   _swigc__p_datamunge__algebra__Expr,
   _swigc__p_datamunge__algebra__MultivariatePolynomial,
   _swigc__p_datamunge__algebra__PolyExtendedGcdResult,
   _swigc__p_datamunge__algebra__Polynomial,
   _swigc__p_datamunge__algebra__RationalFunction,
+  _swigc__p_datamunge__algebra__RealFactor,
+  _swigc__p_datamunge__algebra__RealFactorization,
   _swigc__p_datamunge__algebra__RealRootIntervals,
   _swigc__p_datamunge__algebra__SquareFreeFactor,
+  _swigc__p_datamunge__algebra__detail__Cplx,
   _swigc__p_datamunge__bayes__GibbsOptions,
   _swigc__p_datamunge__bayes__GibbsResult,
   _swigc__p_datamunge__bayes__GibbsSampler,
@@ -206194,6 +212637,16 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__dstruct__DirectedGraphT_std__string_t,
   _swigc__p_datamunge__dstruct__UndirectedGraphT_std__string_t,
   _swigc__p_datamunge__dstruct__WeightedGraphT_std__string_double_t,
+  _swigc__p_datamunge__fem__BoundaryCondition1D,
+  _swigc__p_datamunge__fem__FEM1D,
+  _swigc__p_datamunge__fem__FEM1DResult,
+  _swigc__p_datamunge__fem__FEM1DTimeSeries,
+  _swigc__p_datamunge__fem__FEM2D,
+  _swigc__p_datamunge__fem__FEM2DResult,
+  _swigc__p_datamunge__fem__Mesh1D,
+  _swigc__p_datamunge__fem__Mesh2D,
+  _swigc__p_datamunge__fem__ScalarField1D,
+  _swigc__p_datamunge__fem__ScalarField2D,
   _swigc__p_datamunge__filter__AlphaBetaFilter,
   _swigc__p_datamunge__filter__AlphaBetaGammaFilter,
   _swigc__p_datamunge__filter__AlphaBetaGammaState,
@@ -206340,6 +212793,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_short,
   _swigc__p_signed_char,
   _swigc__p_size_type,
+  _swigc__p_std__allocatorT_datamunge__algebra__Complex_t,
   _swigc__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t,
   _swigc__p_std__allocatorT_datamunge__algebra__Polynomial_t,
   _swigc__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t,
@@ -206377,6 +212831,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   _swigc__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t,
   _swigc__p_std__string,
+  _swigc__p_std__vectorT_datamunge__algebra__Complex_t,
   _swigc__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t,
   _swigc__p_std__vectorT_datamunge__algebra__Polynomial_t,
   _swigc__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t,
@@ -207080,6 +213535,9 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "Orientation_Collinear",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::Collinear)));
   SWIG_Python_SetConstant(d, "Orientation_Clockwise",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::Clockwise)));
   SWIG_Python_SetConstant(d, "Orientation_CounterClockwise",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::CounterClockwise)));
+  SWIG_Python_SetConstant(d, "BCType_Dirichlet",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Dirichlet)));
+  SWIG_Python_SetConstant(d, "BCType_Neumann",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Neumann)));
+  SWIG_Python_SetConstant(d, "BCType_Robin",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Robin)));
   SWIG_Python_SetConstant(d, "ImageMode_Grayscale",SWIG_From_int(static_cast< int >(datamunge::image::ImageMode::Grayscale)));
   SWIG_Python_SetConstant(d, "ImageMode_GrayscaleAlpha",SWIG_From_int(static_cast< int >(datamunge::image::ImageMode::GrayscaleAlpha)));
   SWIG_Python_SetConstant(d, "ImageMode_RGB",SWIG_From_int(static_cast< int >(datamunge::image::ImageMode::RGB)));

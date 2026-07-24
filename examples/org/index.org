@@ -169,6 +169,34 @@ We fit a correlated bivariate Gaussian target -- deliberately unnormalized, with
 
 We apply thirteen classical hypothesis tests to the iris dataset using =datamunge='s C++ =stats= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+* Random Number Generation
+
+** [[./random_generation.html][Reproducible Random Variate Generation]] ([[./random_generation.pdf][PDF]])
+/A literate C++ study of seeded pseudorandom sampling using datamunge/
+
+We exercise =random::SplitMix64= directly, using its reproducible raw words,
+continuous distributions, bounded integers, Bernoulli outcomes, and
+exponential samples. Every reported value is emitted by the compiled program
+embedded in the report.
+
+** [[./mersenne_twister64.html][MT19937-64: Mersenne Twister Random Generation]] ([[./mersenne_twister64.pdf][PDF]])
+/A literate C++ study of a twisted generalized feedback shift-register engine/
+
+** [[./pcg32.html][PCG32: Permuted Congruential Random Generation]] ([[./pcg32.pdf][PDF]])
+/A literate C++ study of an LCG with a rotated xorshift output permutation/
+
+** [[./xoroshiro128plus.html][xoroshiro128+: Fast 128-bit XOR/Rotate Random Generation]] ([[./xoroshiro128plus.pdf][PDF]])
+/A literate C++ study of a compact two-word generator/
+
+** [[./xoshiro256starstar.html][xoshiro256**: Fast 256-bit XOR/Shift/Rotate Random Generation]] ([[./xoshiro256starstar.pdf][PDF]])
+/A literate C++ study of a four-word generator with star-star scrambling/
+
+** [[./sfc64.html][SFC64: Small Fast Counter Random Generation]] ([[./sfc64.pdf][PDF]])
+/A literate C++ study of a compact addition/rotation/xor generator/
+
+** [[./chacha20.html][ChaCha20: Stream-Cipher Random Generation]] ([[./chacha20.pdf][PDF]])
+/A literate C++ study of a 20-round ARX stream cipher/
+
 * Numerical Optimization
 
 ** [[./optimization_analysis.html][Numerical Optimization: Gradient-Based, Stochastic, and Population-Based Methods]] ([[./optimization_analysis.pdf][PDF]])
@@ -233,3 +261,7 @@ This example compiles and runs a small C++ program directly against =datamunge='
 
 We solve initial-value ordinary differential equations with =datamunge='s C++ =ode::ODESolver=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./fem_analysis.html][The Finite Element Method for Boundary Value Problems]] ([[./fem_analysis.pdf][PDF]])
+/A literate C++ study of Galerkin FEM for 1D/2D boundary value problems and transient heat conduction using datamunge/
+
+We solve linear boundary value problems with =datamunge='s C++ =fem::FEM1D= and =fem::FEM2D=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. Piecewise-linear (P1) Galerkin elements reproduce exact polynomial/linear/harmonic solutions to within double-precision round-off wherever nodal superconvergence applies, confirm the theoretical O(h^2) nodal convergence rate against manufactured solutions in one and two dimensions, and relax an unconditionally stable transient heat equation to its matching steady state.

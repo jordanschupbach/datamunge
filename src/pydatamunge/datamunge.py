@@ -9097,6 +9097,365 @@ def triangulate_polygon(polygon):
            vertices; a triangle input returns itself unchanged.
     """
     return _datamunge.triangulate_polygon(polygon)
+class Mesh1D(object):
+    r"""
+    A 1D finite-element mesh: a strictly increasing sequence of node coordinates.
+           Element i spans [nodes[i], nodes[i+1]] for i in [0, num_elements()) -- no separate
+           connectivity array is needed since consecutive nodes are always the two endpoints
+           of one linear (P1) element. `nodes` is a public field for direct C++ construction,
+           but (matching datamunge::ode::ODESolution's t/y fields -- a swig-jse R-backend
+           codegen bug hits plain vector<double> struct *field* getters) is not exposed to
+           language bindings; node_at()/num_nodes() are the cross-language-safe accessors.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def num_nodes(self):
+        return _datamunge.Mesh1D_num_nodes(self)
+
+    def num_elements(self):
+        return _datamunge.Mesh1D_num_elements(self)
+
+    def node_at(self, index):
+        return _datamunge.Mesh1D_node_at(self, index)
+
+    def element_length(self, element_index):
+        return _datamunge.Mesh1D_element_length(self, element_index)
+
+    def __init__(self):
+        _datamunge.Mesh1D_swiginit(self, _datamunge.new_Mesh1D())
+    __swig_destroy__ = _datamunge.delete_Mesh1D
+
+# Register Mesh1D in _datamunge:
+_datamunge.Mesh1D_swigregister(Mesh1D)
+
+def make_uniform_mesh1d(a, b, num_elements):
+    r"""
+    Builds a uniform mesh of ``num_elements`` equal-length elements on [a, b].
+           Throws std::invalid_argument if num_elements is 0 or b <= a.
+    """
+    return _datamunge.make_uniform_mesh1d(a, b, num_elements)
+class Mesh2D(object):
+    r"""
+    A 2D triangular finite-element mesh: shared vertex coordinates plus a triangle
+           connectivity list. Reuses datamunge::geometry's Point2D and (Delaunay-oriented,
+           always-counterclockwise) Triangle index type directly rather than duplicating them.
+           `nodes`/`triangles` are public fields for direct C++ construction, but -- same
+           rationale as Mesh1D::nodes -- are not exposed to language bindings; node_at()/
+           triangle_at()/num_nodes()/num_triangles() are the cross-language-safe accessors.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def num_nodes(self):
+        return _datamunge.Mesh2D_num_nodes(self)
+
+    def num_triangles(self):
+        return _datamunge.Mesh2D_num_triangles(self)
+
+    def node_at(self, index):
+        return _datamunge.Mesh2D_node_at(self, index)
+
+    def triangle_at(self, index):
+        return _datamunge.Mesh2D_triangle_at(self, index)
+
+    def __init__(self):
+        _datamunge.Mesh2D_swiginit(self, _datamunge.new_Mesh2D())
+    __swig_destroy__ = _datamunge.delete_Mesh2D
+
+# Register Mesh2D in _datamunge:
+_datamunge.Mesh2D_swigregister(Mesh2D)
+
+def make_rectangular_mesh2d(x0, y0, x1, y1, nx, ny):
+    r"""
+    Builds a structured rectangular mesh on [x0, x1] x [y0, y1]: nx * ny grid cells,
+           each split into two counterclockwise triangles, for a total of nx*ny*2 triangles and
+           (nx+1)*(ny+1) nodes, ordered row-major (x fastest, then y).
+           Throws std::invalid_argument if nx or ny is 0, or if x1 <= x0 or y1 <= y0.
+    """
+    return _datamunge.make_rectangular_mesh2d(x0, y0, x1, y1, nx, ny)
+
+def make_mesh2d_from_points(points):
+    r"""
+    Builds a mesh over the convex hull of an arbitrary point cloud via Delaunay
+           triangulation (datamunge::geometry::delaunay_triangulation) -- useful for
+           unstructured domains a structured grid does not fit.
+    """
+    return _datamunge.make_mesh2d_from_points(points)
+
+def boundary_nodes(mesh):
+    r"""
+    Node indices lying on the mesh's outer boundary: every node incident to a boundary
+           edge (an edge belonging to exactly one triangle). Works generically for both a
+           structured rectangular mesh (the domain's four sides) and an unstructured Delaunay
+           mesh (the convex hull), returned in ascending order with no duplicates.
+    """
+    return _datamunge.boundary_nodes(mesh)
+class ScalarField1D(object):
+    r"""
+    A user-supplied scalar source-term function of one spatial variable, f(x).
+           Director-enabled extension point (same pattern as datamunge::ode::RHS and
+           datamunge::optim::ArbitraryFunction elsewhere in this codebase): subclass and
+           override evaluate() in C++, or, via SWIG directors, in any binding with director
+           support. Bindings without director support must instead use
+           FEM1D::solve_builtin()'s fixed set of named source terms.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_ScalarField1D
+
+    def evaluate(self, x):
+        return _datamunge.ScalarField1D_evaluate(self, x)
+
+    def __init__(self):
+        if self.__class__ == ScalarField1D:
+            _self = None
+        else:
+            _self = self
+        _datamunge.ScalarField1D_swiginit(self, _datamunge.new_ScalarField1D(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_ScalarField1D(self)
+        return weakref.proxy(self)
+
+# Register ScalarField1D in _datamunge:
+_datamunge.ScalarField1D_swigregister(ScalarField1D)
+class ScalarField2D(object):
+    r"""
+    A user-supplied scalar source-term function of two spatial variables, f(x, y).
+           Same director-enabled pattern as ScalarField1D; FEM2D::solve_builtin() is the
+           fallback for bindings without director support.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_ScalarField2D
+
+    def evaluate(self, x, y):
+        return _datamunge.ScalarField2D_evaluate(self, x, y)
+
+    def __init__(self):
+        if self.__class__ == ScalarField2D:
+            _self = None
+        else:
+            _self = self
+        _datamunge.ScalarField2D_swiginit(self, _datamunge.new_ScalarField2D(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_ScalarField2D(self)
+        return weakref.proxy(self)
+
+# Register ScalarField2D in _datamunge:
+_datamunge.ScalarField2D_swigregister(ScalarField2D)
+BCType_Dirichlet = _datamunge.BCType_Dirichlet
+BCType_Neumann = _datamunge.BCType_Neumann
+BCType_Robin = _datamunge.BCType_Robin
+class BoundaryCondition1D(object):
+    r"""
+    A boundary condition at one end of a 1D domain, expressed in terms of the outward
+           normal derivative du/dn (i.e. +u'(x) at the right end, -u'(x) at the left end --
+           this sign convention is what makes the same struct/formula apply symmetrically at
+           both ends):
+             Dirichlet: u = value.
+             Neumann:   p * du/dn = value (value is the prescribed outward flux; positive
+                        means flux leaving the domain through this boundary).
+             Robin:     p * du/dn + robin_coefficient * (u - value) = 0 (a linear/convective
+                        mix of the two -- value is the ambient/reference value, robin_coefficient
+                        the transfer coefficient; robin_coefficient = 0 reduces to Neumann with
+                        flux 0).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    type = property(_datamunge.BoundaryCondition1D_type_get, _datamunge.BoundaryCondition1D_type_set)
+    value = property(_datamunge.BoundaryCondition1D_value_get, _datamunge.BoundaryCondition1D_value_set)
+    robin_coefficient = property(_datamunge.BoundaryCondition1D_robin_coefficient_get, _datamunge.BoundaryCondition1D_robin_coefficient_set)
+
+    def __init__(self):
+        _datamunge.BoundaryCondition1D_swiginit(self, _datamunge.new_BoundaryCondition1D())
+    __swig_destroy__ = _datamunge.delete_BoundaryCondition1D
+
+# Register BoundaryCondition1D in _datamunge:
+_datamunge.BoundaryCondition1D_swigregister(BoundaryCondition1D)
+class FEM1DResult(object):
+    r"""
+    The nodal solution of a steady-state 1D FEM solve, plus lightweight
+           cross-language-safe accessors (see datamunge::ode::ODESolution for the same
+           "public fields for C++, accessor methods for bindings" split rationale).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def size(self):
+        return _datamunge.FEM1DResult_size(self)
+
+    def node_at(self, index):
+        return _datamunge.FEM1DResult_node_at(self, index)
+
+    def value_at(self, index):
+        return _datamunge.FEM1DResult_value_at(self, index)
+
+    def __init__(self):
+        _datamunge.FEM1DResult_swiginit(self, _datamunge.new_FEM1DResult())
+    __swig_destroy__ = _datamunge.delete_FEM1DResult
+
+# Register FEM1DResult in _datamunge:
+_datamunge.FEM1DResult_swigregister(FEM1DResult)
+class FEM1DTimeSeries(object):
+    r"""One time slice of a transient (time-dependent) 1D FEM solve."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def num_steps(self):
+        return _datamunge.FEM1DTimeSeries_num_steps(self)
+
+    def num_nodes(self):
+        return _datamunge.FEM1DTimeSeries_num_nodes(self)
+
+    def node_at(self, index):
+        return _datamunge.FEM1DTimeSeries_node_at(self, index)
+
+    def time_at(self, step):
+        return _datamunge.FEM1DTimeSeries_time_at(self, step)
+
+    def value_at(self, step, node_index):
+        return _datamunge.FEM1DTimeSeries_value_at(self, step, node_index)
+
+    def __init__(self):
+        _datamunge.FEM1DTimeSeries_swiginit(self, _datamunge.new_FEM1DTimeSeries())
+    __swig_destroy__ = _datamunge.delete_FEM1DTimeSeries
+
+# Register FEM1DTimeSeries in _datamunge:
+_datamunge.FEM1DTimeSeries_swigregister(FEM1DTimeSeries)
+class FEM1D(object):
+    r"""
+    Galerkin finite-element solver for 1D linear two-point boundary value problems
+           -(p u')' + q u = f(x) on [a, b] (steady state), or its parabolic (time-dependent)
+           counterpart u_t - (p u')' + q u = f(x) (transient), using piecewise-linear (P1)
+           Lagrange basis functions on the supplied mesh. p and q are taken as piecewise
+           constant per element (the common case: known per-element material/diffusion/
+           reaction coefficients) while the source term f may vary continuously in space.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def solve(mesh, p, q, f, left, right):
+        r"""
+        Solves the steady-state BVP -(p u')' + q u = f with the given boundary
+               conditions. p and q must each be either a single value (constant across the
+               whole domain) or exactly one value per element (mesh.num_elements()).
+               Throws std::invalid_argument for a mismatched size.
+        """
+        return _datamunge.FEM1D_solve(mesh, p, q, f, left, right)
+
+    @staticmethod
+    def solve_builtin(mesh, p, q, source, source_params, left, right):
+        r"""
+        Same as solve(), but f is one of a fixed set of named source terms instead of a
+               live user-supplied callback -- the only option for bindings without director
+               support. source_params is interpreted positionally per source name, with the
+               listed defaults used for any parameter past the end of source_params:
+                 - "zero":       f(x) = 0.                            source_params unused.
+                 - "constant":   f(x) = c.                            {c=1}.
+                 - "linear":     f(x) = m*x + c.                       {m=1, c=0}.
+                 - "polynomial": f(x) = sum_i source_params[i] * x^i. an empty list means f=0.
+                 - "sine":       f(x) = amplitude*sin(freq*x+phase).  {amplitude=1, freq=1, phase=0}.
+               Throws std::invalid_argument for an unknown source name.
+        """
+        return _datamunge.FEM1D_solve_builtin(mesh, p, q, source, source_params, left, right)
+
+    @staticmethod
+    def solve_transient(mesh, p, q, f, left, right, u0, t_end, dt):
+        r"""
+        Solves the transient (parabolic) problem u_t - (p u')' + q u = f(x) [f and the
+               boundary conditions are held fixed in time -- this "basic" transient solver does
+               not support a time-varying source or BCs] from t=0 to t=t_end with initial
+               condition u0 (one value per mesh node), via unconditionally stable backward
+               Euler time-stepping with fixed step dt. Throws std::invalid_argument if
+               u0.size() != mesh.num_nodes(), or if dt <= 0 or t_end <= 0.
+        """
+        return _datamunge.FEM1D_solve_transient(mesh, p, q, f, left, right, u0, t_end, dt)
+
+    def __init__(self):
+        _datamunge.FEM1D_swiginit(self, _datamunge.new_FEM1D())
+    __swig_destroy__ = _datamunge.delete_FEM1D
+
+# Register FEM1D in _datamunge:
+_datamunge.FEM1D_swigregister(FEM1D)
+class FEM2DResult(object):
+    r"""The nodal solution of a 2D FEM Poisson solve."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def size(self):
+        return _datamunge.FEM2DResult_size(self)
+
+    def node_at(self, index):
+        return _datamunge.FEM2DResult_node_at(self, index)
+
+    def value_at(self, index):
+        return _datamunge.FEM2DResult_value_at(self, index)
+
+    def __init__(self):
+        _datamunge.FEM2DResult_swiginit(self, _datamunge.new_FEM2DResult())
+    __swig_destroy__ = _datamunge.delete_FEM2DResult
+
+# Register FEM2DResult in _datamunge:
+_datamunge.FEM2DResult_swigregister(FEM2DResult)
+class FEM2D(object):
+    r"""
+    Galerkin finite-element solver for the 2D Poisson equation
+           -k * (u_xx + u_yy) = f(x, y) on a triangular mesh, using piecewise-linear (P1)
+           Lagrange elements and Dirichlet boundary conditions only (this "basic" 2D solver
+           does not offer FEM1D's Neumann/Robin options). Internally assembles a sparse
+           stiffness system and solves it with the conjugate-gradient solver
+           (datamunge::linalg::cg) -- the assembled matrices themselves are never exposed,
+           matching this codebase's rule that linalg's sparse/dense matrix types are never
+           SWIG-bound.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def solve(mesh, k, f, dirichlet_nodes, dirichlet_values):
+        r"""
+        Solves -k * Laplacian(u) = f with Dirichlet data u = dirichlet_values[i] at node
+               dirichlet_nodes[i] (every other node is a free unknown); k is the constant,
+               isotropic diffusion coefficient. Throws std::invalid_argument if
+               dirichlet_nodes.size() != dirichlet_values.size(), if any index in
+               dirichlet_nodes is out of range, or if every node is constrained (nothing to
+               solve for).
+        """
+        return _datamunge.FEM2D_solve(mesh, k, f, dirichlet_nodes, dirichlet_values)
+
+    @staticmethod
+    def solve_builtin(mesh, k, source, source_params, dirichlet_nodes, dirichlet_values):
+        r"""
+        Same as solve(), but f is one of a fixed set of named source terms instead of a
+               live user-supplied callback. source_params is interpreted positionally, with the
+               listed defaults used for any parameter past the end of source_params:
+                 - "zero":     f(x, y) = 0.                                source_params unused.
+                 - "constant": f(x, y) = c.                                {c=1}.
+                 - "sine":     f(x, y) = amplitude*sin(fx*x)*sin(fy*y).    {amplitude=1, fx=1, fy=1}.
+               Throws std::invalid_argument for an unknown source name.
+        """
+        return _datamunge.FEM2D_solve_builtin(mesh, k, source, source_params, dirichlet_nodes, dirichlet_values)
+
+    def __init__(self):
+        _datamunge.FEM2D_swiginit(self, _datamunge.new_FEM2D())
+    __swig_destroy__ = _datamunge.delete_FEM2D
+
+# Register FEM2D in _datamunge:
+_datamunge.FEM2D_swigregister(FEM2D)
 class StringVectorVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -12104,6 +12463,22 @@ def monic(p):
     """
     return _datamunge.monic(p)
 
+def is_negligible_remainder(r, scale_reference, relative_tolerance=1e-9):
+    r"""
+    True when every coefficient of `r` is negligible relative to `scale_reference`'s
+           largest-magnitude coefficient. The classical Euclidean algorithm's termination test
+           (`remainder.is_zero()`) assumes a remainder that is mathematically zero comes back
+           as *exactly* zero -- true over an exact field, but not over doubles: a genuine
+           (e.g. repeated) common factor can leave a remainder like 1.78e-15 instead of 0.0,
+           which Polynomial::is_zero()'s exact-equality check treats as a nonzero polynomial,
+           making the Euclidean algorithm take one more spurious step and converge on a
+           meaningless near-zero-constant "GCD" instead of the true, higher-degree one. Treating
+           such a remainder as zero (this function) fixes that without weakening
+           Polynomial::is_zero() itself, which is used elsewhere for genuine exact-zero checks
+           (e.g. rejecting division by the zero polynomial).
+    """
+    return _datamunge.is_negligible_remainder(r, scale_reference, relative_tolerance)
+
 def poly_gcd(a, b):
     r"""
     GCD of two polynomials via the classical Euclidean algorithm (repeated
@@ -12870,6 +13245,26 @@ class Expr(object):
         """
         return _datamunge.Expr_differentiate(self, var)
 
+    def integrate(self, var):
+        r"""
+        The symbolic antiderivative with respect to `var` (any other variable name is
+               treated as a constant, matching differentiate()). Supports: the sum/difference
+               and constant-multiple rules; the power rule x^c (any real c != -1) and its log
+               special case (c == -1); sin/cos/exp/log of any expression that is affine
+               (a*var + b) in var, via the standard substitution result for each; a constant
+               divided by an affine expression (reduces to the log rule); and, for a product of
+               two var-dependent factors, generic tabular integration by parts -- reusing
+               differentiate() to peel one factor down to the constant 0 across at most 15
+               repeated derivatives (terminates for any genuine polynomial factor), paired with
+               repeated antiderivatives of the other factor. Not a full computer-algebra
+               integrator: general rational functions (a non-constant denominator that isn't
+               affine), a variable exponent, and products/quotients outside the forms above
+               (e.g. sin(x)*cos(x), which never reduces to zero under repeated differentiation)
+               are not attempted.
+        :raises: std::invalid_argument when no rule above applies.
+        """
+        return _datamunge.Expr_integrate(self, var)
+
     def simplify(self):
         r"""
         Basic algebraic simplification: constant folding, plus identities like x+0, x*1,
@@ -12893,4 +13288,296 @@ class Expr(object):
 
 # Register Expr in _datamunge:
 _datamunge.Expr_swigregister(Expr)
+class ComplexVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.ComplexVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.ComplexVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.ComplexVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.ComplexVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.ComplexVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.ComplexVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.ComplexVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.ComplexVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.ComplexVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.ComplexVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.ComplexVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.ComplexVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.ComplexVector_empty(self)
+
+    def size(self):
+        return _datamunge.ComplexVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.ComplexVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.ComplexVector_begin(self)
+
+    def end(self):
+        return _datamunge.ComplexVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.ComplexVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.ComplexVector_rend(self)
+
+    def clear(self):
+        return _datamunge.ComplexVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.ComplexVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.ComplexVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.ComplexVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.ComplexVector_swiginit(self, _datamunge.new_ComplexVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.ComplexVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.ComplexVector_front(self)
+
+    def back(self):
+        return _datamunge.ComplexVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.ComplexVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.ComplexVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.ComplexVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.ComplexVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.ComplexVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_ComplexVector
+
+# Register ComplexVector in _datamunge:
+_datamunge.ComplexVector_swigregister(ComplexVector)
+class Complex(object):
+    r"""
+    A complex number, used to report polynomial roots that are not real. Plain
+           re/im fields (no arithmetic operators exposed) matching Polynomial's convention of
+           a member `operator==` over a free one (SWIG's Python backend maps a free
+           `operator==` to a single module-level `__eq__` that collides across every type that
+           defines one).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    re = property(_datamunge.Complex_re_get, _datamunge.Complex_re_set)
+    im = property(_datamunge.Complex_im_get, _datamunge.Complex_im_set)
+
+    def modulus(self):
+        return _datamunge.Complex_modulus(self)
+
+    def __eq__(self, other):
+        return _datamunge.Complex___eq__(self, other)
+
+    def __ne__(self, other):
+        return _datamunge.Complex___ne__(self, other)
+
+    def __init__(self):
+        _datamunge.Complex_swiginit(self, _datamunge.new_Complex())
+    __swig_destroy__ = _datamunge.delete_Complex
+
+# Register Complex in _datamunge:
+_datamunge.Complex_swigregister(Complex)
+class Cplx(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    re = property(_datamunge.Cplx_re_get, _datamunge.Cplx_re_set)
+    im = property(_datamunge.Cplx_im_get, _datamunge.Cplx_im_set)
+
+    def __init__(self):
+        _datamunge.Cplx_swiginit(self, _datamunge.new_Cplx())
+    __swig_destroy__ = _datamunge.delete_Cplx
+
+# Register Cplx in _datamunge:
+_datamunge.Cplx_swigregister(Cplx)
+
+def c_add(a, b):
+    return _datamunge.c_add(a, b)
+
+def c_sub(a, b):
+    return _datamunge.c_sub(a, b)
+
+def c_mul(a, b):
+    return _datamunge.c_mul(a, b)
+
+def c_div(a, b):
+    return _datamunge.c_div(a, b)
+
+def c_abs(a):
+    return _datamunge.c_abs(a)
+
+def c_eval(p, x):
+    return _datamunge.c_eval(p, x)
+
+def complex_roots(p, max_iterations=200, tolerance=1e-12):
+    r"""
+    All n = p.degree() complex roots of p (real roots included, with a negligible
+           imaginary part), via the Durand-Kerner (Weierstrass) method: simultaneous
+           fixed-point iteration z_k <- z_k - p(z_k) / prod_{j != k}(z_k - z_j), starting from n
+           points evenly spaced (with a fixed angular offset to avoid real-axis symmetry, which
+           would otherwise stall convergence to any non-real root of a real-coefficient
+           polynomial) around a circle whose radius is a Cauchy bound on root magnitude.
+           Converges quadratically once guesses are close, but -- unlike Sturm's theorem-based
+           real_roots(), which isolates each real root to a provably correct interval before
+           refining it -- this is a general iterative method with no convergence guarantee.
+           For best results p should be square-free (see square_free_factorization()); repeated
+           roots make two of the simultaneous iterates chase the same point, which both slows
+           convergence and risks a near-zero denominator late in the iteration.
+    :raises: std::invalid_argument if p has degree 0 (a nonzero constant has no roots; the zero
+                polynomial is degenerate).
+    """
+    return _datamunge.complex_roots(p, max_iterations, tolerance)
+
+def rational_roots(p, tolerance=1e-9):
+    r"""
+    All rational roots of p, via the Rational Root Theorem: every rational root a/b in
+           lowest terms has a dividing the constant term and b dividing the leading coefficient,
+           so trying every such ratio (after first dividing out any factors of x, i.e. any
+           roots at exactly 0) finds every rational root exactly -- a finite, exact search, in
+           contrast to real_roots()'s numeric bisection or complex_roots()'s general iteration.
+    :type tolerance: float, optional
+    :param tolerance: Used both to verify p's coefficients are within `tolerance` of integers
+               (required for the theorem to apply) and to test each candidate ratio's residual.
+    :raises: std::invalid_argument if p's coefficients are not within `tolerance` of integers.
+    """
+    return _datamunge.rational_roots(p, tolerance)
+class RealFactor(object):
+    r"""
+    One irreducible-over-R factor of a real factorization: `factor` is either linear
+           (x - r) for a real root r, or an irreducible real quadratic (x^2 + bx + c, for a
+           complex-conjugate root pair), appearing with `multiplicity` in the original
+           polynomial.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    factor = property(_datamunge.RealFactor_factor_get, _datamunge.RealFactor_factor_set)
+    multiplicity = property(_datamunge.RealFactor_multiplicity_get, _datamunge.RealFactor_multiplicity_set)
+
+    def __init__(self):
+        _datamunge.RealFactor_swiginit(self, _datamunge.new_RealFactor())
+    __swig_destroy__ = _datamunge.delete_RealFactor
+
+# Register RealFactor in _datamunge:
+_datamunge.RealFactor_swigregister(RealFactor)
+class RealFactorization(object):
+    r"""
+    Factors p over the reals into irreducible linear/quadratic pieces plus the overall
+           scale needed to reconstruct p exactly:
+           p == leading_coefficient * prod(factors[i].factor ^ factors[i].multiplicity).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    leading_coefficient = property(_datamunge.RealFactorization_leading_coefficient_get, _datamunge.RealFactorization_leading_coefficient_set)
+
+    def num_factors(self):
+        return _datamunge.RealFactorization_num_factors(self)
+
+    def factor_at(self, index):
+        return _datamunge.RealFactorization_factor_at(self, index)
+
+    def __init__(self):
+        _datamunge.RealFactorization_swiginit(self, _datamunge.new_RealFactorization())
+    __swig_destroy__ = _datamunge.delete_RealFactorization
+
+# Register RealFactorization in _datamunge:
+_datamunge.RealFactorization_swigregister(RealFactorization)
+
+def factor_over_reals(p, conjugate_tolerance=1e-6):
+    r"""
+    Factors p over the reals: splits it into square-free pieces via
+           square_free_factorization() (each with its own multiplicity), then finds every root
+           of each piece via complex_roots() -- safe here since a square-free piece has, by
+           construction, only distinct roots, exactly the case complex_roots() converges best
+           on -- and pairs up complex-conjugate roots into real quadratic factors, leaving real
+           roots as linear factors. This is the numeric analog of "factor()" in an exact CAS:
+           for a floating-point polynomial with no assumed rational structure, linear and
+           quadratic real factors are as far as factoring over R can go (see rational_roots()
+           for an exact search restricted to genuinely rational roots instead).
+    :type conjugate_tolerance: float, optional
+    :param conjugate_tolerance: Two roots are treated as a real root (imaginary part ~ 0) or a
+               conjugate pair (matching real parts, opposite imaginary parts) when within this
+               tolerance of the corresponding exact relationship.
+    """
+    return _datamunge.factor_over_reals(p, conjugate_tolerance)
+
+def simpson_estimate(f, var, a, b):
+    return _datamunge.simpson_estimate(f, var, a, b)
+
+def adaptive_simpson_recurse(f, var, a, b, whole, tol, depth):
+    return _datamunge.adaptive_simpson_recurse(f, var, a, b, whole, tol, depth)
+
+def definite_integral(f, var, a, b, tolerance=1e-9, max_depth=50):
+    r"""
+    The definite integral of f (with every other name in f bound as usual by evaluate())
+           from a to b with respect to var, via adaptive Simpson's rule -- a numeric fallback/
+           complement to Expr::integrate() for cases outside that method's supported symbolic
+           forms (e.g. sin(x)*cos(x), or any other integrand it throws on), or simply to check
+           a symbolic result. Handles a > b by returning the negated integral over [b, a].
+    :type tolerance: float, optional
+    :param tolerance: Target absolute error per the adaptive refinement's own error estimate; not
+               a hard guarantee for a pathological (e.g. discontinuous or highly oscillatory)
+               integrand.
+    :type max_depth: int, optional
+    :param max_depth: Hard cap on recursive bisection depth, bounding worst-case cost.
+    """
+    return _datamunge.definite_integral(f, var, a, b, tolerance, max_depth)
+
+def taylor_series(f, var, center, order):
+    r"""
+    The degree-`order` Taylor polynomial of f around var = center, built from `order`
+           repeated symbolic differentiations of f (each evaluated at center and divided by the
+           matching factorial) -- the returned polynomial q approximates f near center as
+           q.evaluate(x - center), NOT q.evaluate(x) directly (q's coefficients are for powers
+           of (x - center), matching the standard Taylor series form
+           f(x) ~= sum_k f^(k)(center)/k! * (x-center)^k).
+    :raises: std::invalid_argument if order is negative, or std::invalid_argument propagated from
+                Expr::differentiate() if f contains a non-constant exponent.
+    """
+    return _datamunge.taylor_series(f, var, center, order)
 

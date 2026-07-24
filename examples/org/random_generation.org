@@ -1,0 +1,63 @@
+#+title: Reproducible Random Variate Generation
+#+subtitle: Sampling continuous, discrete, and Bernoulli distributions with SplitMix64
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+This report exercises the random-number-generation interface directly against
+the local C++ source. A =SplitMix64= seed fixes the entire sequence, making a
+simulation reproducible while allowing one generator to provide raw words,
+continuous samples, bounded integers, Bernoulli outcomes, exponential waiting
+times, and normal observations.
+
+The bounded-integer sampler is inclusive at both endpoints. It rejects the
+small prefix of raw 64-bit values that would make a modulo reduction uneven,
+so intervals whose width is not a power of two remain unbiased. These are
+pseudorandom methods for simulation and sampling, not cryptographic entropy.
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/random_generation.cpp <<'CPP'
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+
+int main() {
+    datamunge::random::SplitMix64 rng(0xC0FFEEULL);
+    constexpr int draws = 10000;
+    double normal_sum = 0.0;
+    double exponential_sum = 0.0;
+    int successes = 0;
+    std::uint64_t smallest = 12;
+    std::uint64_t largest = 0;
+
+    for (int i = 0; i < draws; ++i) {
+        const auto bucket = rng.uniform_u64(3, 11);
+        smallest = std::min(smallest, bucket);
+        largest = std::max(largest, bucket);
+        successes += rng.bernoulli(0.3) ? 1 : 0;
+        normal_sum += rng.normal(10.0, 2.0);
+        exponential_sum += rng.exponential(4.0);
+    }
+
+    std::cout << std::fixed << std::setprecision(4)
+              << "uniform[-2,5) = " << rng.uniform(-2.0, 5.0) << "\n"
+              << "integer range observed = [" << smallest << ", " << largest << "]\n"
+              << "Bernoulli mean = " << static_cast<double>(successes) / draws << "\n"
+              << "normal mean = " << normal_sum / draws << "\n"
+              << "exponential mean = " << exponential_sum / draws << "\n";
+}
+CPP
+
+c++ -std=c++17 -Iinclude build/org/random_generation.cpp src/datamunge/random.cpp \
+  -o build/org/random_generation
+
+./build/org/random_generation
+#+end_src
+
+The observed averages are close to their requested parameters: 0.3 for the
+Bernoulli success probability, 10 for the normal mean, and 0.25 for the
+exponential mean (rate 4). The test suite additionally checks seeded
+reproducibility, interval boundaries, every validation failure, and the full
+unsigned 64-bit integer interval.

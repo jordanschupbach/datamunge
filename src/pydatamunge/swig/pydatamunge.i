@@ -180,6 +180,8 @@
 %feature("director") datamunge::optim::ResidualFunction;
 %feature("director") datamunge::optim::BayesianSurrogate;
 %feature("director") datamunge::ode::RHS;
+%feature("director") datamunge::fem::ScalarField1D;
+%feature("director") datamunge::fem::ScalarField2D;
 
 %{
   #include "datamunge/datamunge.hpp"
@@ -283,6 +285,26 @@
 %include "datamunge/geometry/simplify_polyline.hpp"
 %include "datamunge/geometry/polygon_clip.hpp"
 %include "datamunge/geometry/polygon_triangulation.hpp"
+
+// FEM's Mesh1D/Mesh2D/FEM1DResult/FEM1DTimeSeries/FEM2DResult keep their nodes/u/times/
+// triangles fields public for direct C++ construction, but (same swig-jse R-backend field-
+// getter bug as datamunge::ode::ODESolution::t/y) they are not exposed to bindings --
+// node_at()/value_at()/time_at()/num_*() are the cross-language-safe accessors.
+%ignore datamunge::fem::Mesh1D::nodes;
+%ignore datamunge::fem::Mesh2D::nodes;
+%ignore datamunge::fem::Mesh2D::triangles;
+%ignore datamunge::fem::FEM1DResult::nodes;
+%ignore datamunge::fem::FEM1DResult::u;
+%ignore datamunge::fem::FEM1DTimeSeries::nodes;
+%ignore datamunge::fem::FEM1DTimeSeries::times;
+%ignore datamunge::fem::FEM1DTimeSeries::u;
+%ignore datamunge::fem::FEM2DResult::nodes;
+%ignore datamunge::fem::FEM2DResult::u;
+%include "datamunge/fem/mesh1d.hpp"
+%include "datamunge/fem/mesh2d.hpp"
+%include "datamunge/fem/source_function.hpp"
+%include "datamunge/fem/fem1d.hpp"
+%include "datamunge/fem/fem2d.hpp"
 
 %template(StringVectorVector) std::vector<std::vector<std::string> >;
 
@@ -394,3 +416,15 @@
 %include "datamunge/algebra/groebner.hpp"
 
 %include "datamunge/algebra/expression.hpp"
+
+%template(ComplexVector) std::vector<datamunge::algebra::Complex>;
+%include "datamunge/algebra/polynomial_roots.hpp"
+
+// RealFactorization::factors is a std::vector<RealFactor> struct field -- same swig-jse
+// R-backend field-getter bug as datamunge::fem's mesh/result types (see fem's %ignore block
+// above for the fuller explanation) -- so it is not exposed to bindings; num_factors()/
+// factor_at() are the cross-language-safe accessors.
+%ignore datamunge::algebra::RealFactorization::factors;
+%include "datamunge/algebra/factorization.hpp"
+
+%include "datamunge/algebra/calculus.hpp"

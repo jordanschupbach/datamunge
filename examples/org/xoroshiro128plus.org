@@ -1,0 +1,43 @@
+#+title: xoroshiro128+: Fast 128-bit XOR/Rotate Random Generation
+#+subtitle: A two-word generator with addition output scrambler
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+xoroshiro128+ keeps two 64-bit state words. Its xor/shift/rotate transition
+has period \(2^{128}-1\), and the output is their sum. Its small state is
+useful for many reproducible simulation objects; it is not cryptographic.
+
+* Mathematics and pseudocode
+
+With =rotl= a left rotate, the 24/16/37 parameterization is:
+
+#+begin_example
+result = s0 + s1
+s1 = s1 xor s0
+s0 = rotl(s0, 24) xor s1 xor (s1 << 16)
+s1 = rotl(s1, 37)
+return result
+#+end_example
+
+The two words are initialized from SplitMix64, which avoids the forbidden
+all-zero state.
+
+* Executable example
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/xoroshiro128plus.cpp <<'CPP'
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  datamunge::random::Xoroshiro128Plus rng(0xC0FFEEULL);
+  std::cout << "raw word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "uniform[5,10) = " << rng.uniform(5.0, 10.0) << "\n"
+            << "bounded integer = " << rng.uniform_u64(100, 199) << "\n";
+}
+CPP
+c++ -std=c++17 -Iinclude build/org/xoroshiro128plus.cpp src/datamunge/random.cpp -o build/org/xoroshiro128plus
+./build/org/xoroshiro128plus
+#+end_src

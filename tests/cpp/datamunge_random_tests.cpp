@@ -4,6 +4,28 @@
 #include <datamunge/random/random.hpp>
 
 #include <cmath>
+#include <cstdint>
+#include <limits>
+
+namespace {
+
+template <typename Engine>
+void expect_common_generator_contract(std::uint64_t seed) {
+  Engine a(seed);
+  Engine b(seed);
+  for (int i = 0; i < 32; ++i) {
+    EXPECT_EQ(a.next_u64(), b.next_u64());
+  }
+
+  EXPECT_GE(a.uniform(-4.0, 2.0), -4.0);
+  EXPECT_LT(a.uniform(-4.0, 2.0), 2.0);
+  EXPECT_GE(a.uniform_u64(4, 9), 4U);
+  EXPECT_LE(a.uniform_u64(4, 9), 9U);
+  EXPECT_TRUE(std::isfinite(a.normal(1.0, 2.0)));
+  EXPECT_GE(a.exponential(3.0), 0.0);
+}
+
+} // namespace
 
 TEST(SplitMix64, SameSeedProducesSameSequence) {
   datamunge::random::SplitMix64 a(0x12345678ULL);
@@ -24,6 +46,53 @@ TEST(SplitMix64, UniformIsBounded) {
   }
 }
 
+TEST(SplitMix64, ParameterizedUniformIsBoundedAndDeterministic) {
+  datamunge::random::SplitMix64 a(0xA11CEULL);
+  datamunge::random::SplitMix64 b(0xA11CEULL);
+
+  for (int i = 0; i < 64; ++i) {
+    const double x = a.uniform(-3.5, 7.25);
+    EXPECT_GE(x, -3.5);
+    EXPECT_LT(x, 7.25);
+    EXPECT_DOUBLE_EQ(x, b.uniform(-3.5, 7.25));
+  }
+  EXPECT_THROW(a.uniform(2.0, 2.0), std::invalid_argument);
+  EXPECT_THROW(a.uniform(3.0, -1.0), std::invalid_argument);
+  EXPECT_THROW(a.uniform(-std::numeric_limits<double>::infinity(), 1.0), std::invalid_argument);
+}
+
+TEST(SplitMix64, BoundedIntegersAreInclusiveAndReproducible) {
+  datamunge::random::SplitMix64 a(0xB0A0DULL);
+  datamunge::random::SplitMix64 b(0xB0A0DULL);
+
+  for (int i = 0; i < 256; ++i) {
+    const std::uint64_t value = a.uniform_u64(11, 17);
+    EXPECT_GE(value, 11U);
+    EXPECT_LE(value, 17U);
+    EXPECT_EQ(value, b.uniform_u64(11, 17));
+  }
+  EXPECT_EQ(a.uniform_u64(42, 42), 42U);
+  EXPECT_THROW(a.uniform_u64(7, 6), std::invalid_argument);
+
+  datamunge::random::SplitMix64 full_range(0xF00DULL);
+  datamunge::random::SplitMix64 raw(0xF00DULL);
+  EXPECT_EQ(full_range.uniform_u64(0, std::numeric_limits<std::uint64_t>::max()), raw.next_u64());
+}
+
+TEST(SplitMix64, BernoulliAndExponentialValidateParameters) {
+  datamunge::random::SplitMix64 rng(0xBEEFULL);
+  EXPECT_FALSE(rng.bernoulli(0.0));
+  EXPECT_TRUE(rng.bernoulli(1.0));
+  EXPECT_THROW(rng.bernoulli(-0.1), std::invalid_argument);
+  EXPECT_THROW(rng.bernoulli(1.1), std::invalid_argument);
+
+  for (int i = 0; i < 64; ++i) {
+    EXPECT_GE(rng.exponential(2.0), 0.0);
+  }
+  EXPECT_THROW(rng.exponential(0.0), std::invalid_argument);
+  EXPECT_THROW(rng.exponential(std::numeric_limits<double>::infinity()), std::invalid_argument);
+}
+
 TEST(SplitMix64, NormalIsDeterministicAndFinite) {
   datamunge::random::SplitMix64 a(0xDEADBEEFULL);
   datamunge::random::SplitMix64 b(0xDEADBEEFULL);
@@ -34,6 +103,36 @@ TEST(SplitMix64, NormalIsDeterministicAndFinite) {
     EXPECT_TRUE(std::isfinite(x));
     EXPECT_DOUBLE_EQ(x, y);
   }
+}
+
+TEST(SplitMix64, ParameterizedNormalIsDeterministicAndValidatesDeviation) {
+  datamunge::random::SplitMix64 a(0xBAD5EEDULL);
+  datamunge::random::SplitMix64 b(0xBAD5EEDULL);
+
+  for (int i = 0; i < 16; ++i) {
+    EXPECT_DOUBLE_EQ(a.normal(2.5, 0.75), b.normal(2.5, 0.75));
+  }
+  EXPECT_THROW(a.normal(0.0, 0.0), std::invalid_argument);
+  EXPECT_THROW(a.normal(std::numeric_limits<double>::infinity(), 1.0), std::invalid_argument);
+}
+
+TEST(RandomEngines, ShareSamplingContractAndAreReproducible) {
+  expect_common_generator_contract<datamunge::random::MersenneTwister64>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::Pcg32>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::Xoroshiro128Plus>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::Xoshiro256StarStar>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::Sfc64>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::ChaCha20>(0x1234ULL);
+}
+
+TEST(MersenneTwister64, MatchesReferenceSeedOutput) {
+  datamunge::random::MersenneTwister64 rng(5489ULL);
+  EXPECT_EQ(rng.next_u64(), 14514284786278117030ULL);
+}
+
+TEST(ChaCha20, MatchesAllZeroKeyTestVector) {
+  datamunge::random::ChaCha20 rng(std::array<std::uint32_t, 8>{});
+  EXPECT_EQ(rng.next_u64(), 0x903DF1A0ADE0B876ULL);
 }
 
 TEST(RandomDistributions, NormalRoundTrip) {
