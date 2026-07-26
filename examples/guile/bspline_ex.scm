@@ -1,0 +1,30 @@
+(use-modules (datamunge) (ice-9 format))
+
+;; Sample a smooth surface z = sin(x) + y^2 on an 8x8 grid over [0, 1]^2.
+(define xs '())
+(define ys '())
+(define zs '())
+(do ((iy 0 (+ iy 1))) ((= iy 8))
+  (do ((ix 0 (+ ix 1))) ((= ix 8))
+    (let ((xv (/ ix 7.0)) (yv (/ iy 7.0)))
+      (set! xs (cons xv xs))
+      (set! ys (cons yv ys))
+      (set! zs (cons (+ (sin xv) (* yv yv)) zs)))))
+(set! xs (reverse xs))
+(set! ys (reverse ys))
+(set! zs (reverse zs))
+
+(define data (DataFrame-empty))
+(DataFrame-add-numeric-column data "x" xs)
+(DataFrame-add-numeric-column data "y" ys)
+(DataFrame-add-numeric-column data "z" zs)
+
+(define surface (new-LM data "z ~ bs(x, y)"))
+(format #t "Fitted z ~~ bs(x, y)\n")
+(LM-print-summary surface)
+
+(define new-points (DataFrame-empty))
+(DataFrame-add-numeric-column new-points "x" (list 0.25 0.75))
+(DataFrame-add-numeric-column new-points "y" (list 0.50 0.25))
+(define pred (LM-predict surface new-points))
+(format #t "Predictions: [~,6f, ~,6f]\n" (vector-ref pred 0) (vector-ref pred 1))

@@ -1,0 +1,72 @@
+module app;
+
+// Demonstrates datamunge.GGPlot -- the ggplot2-style grammar-of-graphics library.
+import std.stdio : writeln;
+import datamunge;
+
+RGB rgb(int r, int g, int b) {
+  auto c = new RGB();
+  c.r = r;
+  c.g = g;
+  c.b = b;
+  return c;
+}
+
+void main() {
+  auto iris = DataFrame.iris();
+
+  // ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
+  auto scatter = new GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species");
+  scatter.geom_point();
+  scatter.labs("Iris Sepal Dimensions", "Sepal Length", "Sepal Width");
+  scatter.theme_minimal();
+  scatter.save_svg("d_ggplot_point.svg");
+
+  // + geom_smooth(): an lm() fit line, reusing stats::LM internally.
+  auto smooth = new GGPlot(iris, "Sepal.Length", "Petal.Length");
+  smooth.geom_point(rgb(156, 163, 175), 2.5);
+  smooth.geom_smooth();
+  smooth.labs("Petal Length vs Sepal Length With a Linear Fit", "Sepal Length", "Petal Length");
+  smooth.save_svg("d_ggplot_smooth.svg");
+
+  // geom_bar(): counts a discrete column (stat = "count").
+  auto bar = new GGPlot(iris, "Species");
+  bar.geom_bar();
+  bar.labs("Observations per Species", "Species", "Count");
+  bar.theme_bw();
+  bar.save_svg("d_ggplot_bar.svg");
+
+  // geom_boxplot(): grouped by a discrete x column.
+  auto box = new GGPlot(iris, "Species", "Petal.Width");
+  box.geom_boxplot();
+  box.labs("Petal Width by Species", "Species", "Petal Width");
+  box.save_svg("d_ggplot_boxplot.svg");
+
+  // geom_histogram() + geom_density(): distribution of a single numeric column.
+  auto hist = new GGPlot(iris, "Sepal.Length");
+  hist.geom_histogram(20);
+  hist.labs("Distribution of Sepal Length", "Sepal Length", "Count");
+  hist.save_svg("d_ggplot_histogram.svg");
+
+  auto density = new GGPlot(iris, "Sepal.Length");
+  density.geom_density();
+  density.labs("Density of Sepal Length", "Sepal Length", "Density");
+  density.save_svg("d_ggplot_density.svg");
+
+  // facet_wrap(): one panel per Species, composed via RLayout under the hood.
+  auto faceted = new GGPlot(iris, "Petal.Length", "Petal.Width");
+  faceted.geom_point();
+  faceted.facet_wrap("Species");
+  faceted.labs("Petal Dimensions", "Petal Length", "Petal Width");
+  faceted.save_svg("d_ggplot_facet.svg");
+
+  // theme_classic(): another built-in theme. (scale_color_manual is omitted here -- the
+  // std::vector<RGB> overload it needs is not part of the D binding's exposed surface;
+  // std::vector<RGB> is left as an opaque SWIGTYPE with no way to construct one from D.)
+  auto classic = new GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species");
+  classic.geom_point();
+  classic.theme_classic();
+  classic.save_svg("d_ggplot_classic.svg");
+
+  writeln("Wrote 7 SVGs to d_ggplot_*.svg");
+}
