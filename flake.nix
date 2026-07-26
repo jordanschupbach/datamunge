@@ -823,6 +823,7 @@
             gradleWrapped
             pkgs.jdk
             pkgs.cmake
+            pkgs.swig
             pkgs.just
           ];
 

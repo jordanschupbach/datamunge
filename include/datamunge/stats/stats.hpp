@@ -6,6 +6,8 @@
 #include <datamunge/stats/anova_test.hpp>
 #include <datamunge/stats/arima.hpp>
 #include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/cnn_classifier.hpp>
+#include <datamunge/stats/conformal.hpp>
 #include <datamunge/stats/correlation_test.hpp>
 #include <datamunge/stats/dbscan.hpp>
 #include <datamunge/stats/decision_tree_classifier.hpp>
@@ -13,6 +15,7 @@
 #include <datamunge/stats/diffusion_maps.hpp>
 #include <datamunge/stats/elastic_net.hpp>
 #include <datamunge/stats/exponential_smoothing.hpp>
+#include <datamunge/stats/factor_analysis.hpp>
 #include <datamunge/stats/fisher_exact_test.hpp>
 #include <datamunge/stats/formula.hpp>
 #include <datamunge/stats/gaussian_process_regression.hpp>
@@ -20,11 +23,14 @@
 #include <datamunge/stats/gbm_regressor.hpp>
 #include <datamunge/stats/glm.hpp>
 #include <datamunge/stats/glmm.hpp>
+#include <datamunge/stats/ica.hpp>
+#include <datamunge/stats/image_explainers.hpp>
 #include <datamunge/stats/hypothesis_test_result.hpp>
 #include <datamunge/stats/inla_mixed_model.hpp>
 #include <datamunge/stats/isomap.hpp>
 #include <datamunge/stats/kernel_pca.hpp>
 #include <datamunge/stats/kernel_regression.hpp>
+#include <datamunge/stats/kernel_ridge_regression.hpp>
 #include <datamunge/stats/kmeans.hpp>
 #include <datamunge/stats/knn_classifier.hpp>
 #include <datamunge/stats/knn_regressor.hpp>
@@ -35,11 +41,13 @@
 #include <datamunge/stats/lm.hpp>
 #include <datamunge/stats/lmm.hpp>
 #include <datamunge/stats/mds.hpp>
+#include <datamunge/stats/mlp_classifier.hpp>
 #include <datamunge/stats/naive_bayes_classifier.hpp>
 #include <datamunge/stats/pca.hpp>
 #include <datamunge/stats/normality_test.hpp>
 #include <datamunge/stats/p_adjust.hpp>
 #include <datamunge/stats/proportion_test.hpp>
+#include <datamunge/stats/quantile_regression.hpp>
 #include <datamunge/stats/random_forest_classifier.hpp>
 #include <datamunge/stats/random_forest_regressor.hpp>
 #include <datamunge/stats/sammon_mapping.hpp>
