@@ -115,6 +115,13 @@ datamunge/stats/tsne
 datamunge/stats/laplacian_eigenmaps
 datamunge/stats/diffusion_maps
 datamunge/stats/kernel_pca
+datamunge/stats/kernel_ridge_regression
+datamunge/stats/factor_analysis
+datamunge/stats/ica
+datamunge/stats/mlp_classifier
+datamunge/stats/cnn_classifier
+datamunge/stats/image_explainers
+datamunge/stats/conformal
 datamunge/stats/sammon_mapping
 datamunge/stats/umap
 datamunge/fem/mesh1d
