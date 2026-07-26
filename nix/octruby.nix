@@ -147,13 +147,15 @@ pkgs.stdenv.mkDerivation rec {
     shopt -u nullglob
 
     # mkmf may place the compiled extension under a subdir (e.g. ext/octruby/octruby/octruby.so).
-    soPath="$(find src/octruby/ext/octruby -name '*.so' -print -quit)"
+    # On macOS Ruby native extensions use the .bundle extension (RbConfig DLEXT), not .so.
+    dlext="$(${pkgs.ruby}/bin/ruby -e 'print RbConfig::CONFIG["DLEXT"]')"
+    soPath="$(find src/octruby/ext/octruby \( -name '*.so' -o -name "*.$dlext" \) -print -quit)"
     if [ -z "$soPath" ]; then
-      echo "Could not find built Ruby extension (.so) under src/octruby/ext/octruby" >&2
+      echo "Could not find built Ruby extension (.so/.$dlext) under src/octruby/ext/octruby" >&2
       find src/octruby/ext/octruby -maxdepth 3 -type f -print >&2
       exit 1
     fi
-    cp -v "$soPath" "$outLib/octruby/octruby.so"
+    cp -v "$soPath" "$outLib/octruby/octruby.$dlext"
 
     runHook postInstall
   '';
@@ -161,6 +163,6 @@ pkgs.stdenv.mkDerivation rec {
   meta = with pkgs.lib; {
     description = "Ruby (SWIG) bindings for the datamunge library.";
     license = licenses.unlicense;
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }

@@ -17,6 +17,10 @@ $(OBJECTS): $(HEADERS)
 
 #  datamunge/datamunge.cpp datamunge/datamunge.cpp
 
+# The datamunge C++ sources require C++23 (e.g. std::popcount and other <bit>/ranges
+# features); the CMake build uses -std=gnu++23, so match that here since R defaults to C++17.
+CXX_STD = CXX23
+
 # R builds this binding directly with R CMD SHLIB rather than through CMake, so carry over
 # the X11 support that CMake normally detects for Plot::show().
 PKG_CPPFLAGS += -I$(CURDIR)/../include -DDATAMUNGE_HAVE_X11=1

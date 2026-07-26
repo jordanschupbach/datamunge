@@ -26,7 +26,10 @@
         nodePackages = if has "nodePackages" pkgs then pkgs.nodePackages else { };
         opt = cond: xs: lib.optionals cond xs;
         datamunge = import ./nix/datamunge.nix { inherit pkgs; };
-        phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
+        # The custom php-from-source flake only targets x86_64-linux; fall back to the
+        # nixpkgs PHP (which supports darwin) on any host it doesn't provide.
+        phpPackage =
+          if has system php-from-source.packages then php-from-source.packages.${system} else pkgs.php;
         lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
 
         # {{{ Bindings
@@ -706,7 +709,6 @@
             export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
             export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
-
         };
 
         devShells.format =
@@ -801,6 +803,7 @@
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.arrow-cpp
+            pkgs.swig
             pkgs.cling
             pkgs.doxygen
             pkgs.graphviz
@@ -962,6 +965,8 @@
             export LDFLAGS="$DATAMUNGE_LDFLAGS ''${LDFLAGS:-}"
             export LIBRARY_PATH="$DATAMUNGE_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
             export LD_LIBRARY_PATH="${datamunged}/lib:$DATAMUNGE_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            # macOS resolves runtime libraries (incl. the SWIG wrapper loaded by dlopen) via DYLD_LIBRARY_PATH.
+            export DYLD_LIBRARY_PATH="${datamunged}/lib:$DATAMUNGE_LIBDIR''${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH"
 
             export DUB_HOME="$(pwd)/build/dub"
             mkdir -p "$DUB_HOME"
@@ -1112,6 +1117,35 @@
           '';
         };
 
+        # The example reports contain only C++ and shell Babel blocks. Keep
+        # their exporter independent of the unrelated language bindings.
+        devShells.org-examples = pkgs.mkShell {
+          packages = [
+            ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: [
+              epkgs.htmlize
+            ]))
+            (pkgs.texlive.combine {
+              inherit (pkgs.texlive)
+                scheme-small
+                wrapfig
+                ulem
+                capt-of
+                ;
+            })
+            pkgs.librsvg
+            datamunge
+            pkgs.pkg-config
+            pkgs.stdenv.cc
+          ];
+          shellHook = ''
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            datamungeLibDir="${datamunge}/lib/datamunge-${datamunge.version}"
+            export DYLD_LIBRARY_PATH="$datamungeLibDir''${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH"
+            export LD_LIBRARY_PATH="$datamungeLibDir''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export NIX_LDFLAGS="-rpath $datamungeLibDir"
+          '';
+        };
+
         devShells.docs-pages = pkgs.mkShell {
           packages = [
             # Doc export tooling
@@ -1151,33 +1185,22 @@
             # Language runtimes + bindings for runnable examples
             pydatamunge
             pkgs.python3
-
             datamungejs
             pkgs.nodejs
-
             datamunger
             pkgs.R
-
             octruby
             pkgs.ruby
-
             pkgs.perl
-
             phpPackage
-
             datamungelua
             lua
-
             datamungetcl
             pkgs.tcl
-
             datamungeoctave
             pkgs.octave
-
             datamungeguile
             pkgs.guile
-
-            # For building/running OCaml + Go examples during export
             pkgs.ocamlPackages.ocaml
             pkgs.ocamlPackages.dune_3
             pkgs.ocamlPackages.findlib
@@ -1188,11 +1211,9 @@
           shellHook = ''
             export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
 
-            # Octave: make the installed .m files discoverable.
             export DATAMUNGE_PREFIX="${datamunge}"
             export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
 
-            # Guile: make the installed module + extension discoverable.
             effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
             if [ -z "$effectiveVersion" ]; then
               effectiveVersion="3.0"
