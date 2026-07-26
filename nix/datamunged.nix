@@ -107,6 +107,6 @@ pkgs.stdenv.mkDerivation rec {
   meta = with pkgs.lib; {
     description = "D (SWIG) bindings for the datamunge library.";
     license = licenses.unlicense;
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }

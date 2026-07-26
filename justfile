@@ -14,13 +14,13 @@ run: run-cpp
 test: test-cpp
 
 format:
-  {{ NIX_DEVELOP }} .#format --command bash -lc './scripts/format.sh'
+  {{ NIX_DEVELOP }} .#format --command bash -c './scripts/format.sh'
 
 format-check:
-  {{ NIX_DEVELOP }} .#quality --command bash -lc './scripts/format_check.sh'
+  {{ NIX_DEVELOP }} .#quality --command bash -c './scripts/format_check.sh'
 
 lint:
-  {{ NIX_DEVELOP }} .#quality --command bash -lc './scripts/lint.sh'
+  {{ NIX_DEVELOP }} .#quality --command bash -c './scripts/lint.sh'
 
 quality: format-check lint
 
@@ -32,76 +32,76 @@ run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php ru
 # mechanism, like D's dub) -- copy the selected example over Program.cs before building, same
 # pattern as run-d's examples-src/ -> source/app.d copy.
 run-csharp: prebuild-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "rm -rf build/dotnet/release"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "rm -rf build/dotnet/release"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
   cp examples/csharp/{{ TARGET }}.cs {{ BINDINGS_DIR }}/datamungedotnet/Program.cs
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/datamungedotnet'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/datamungedotnet'
 
 run-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
+  {{ NIX_DEVELOP }} .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
 
 run-go: build-go
-  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" DYLD_LIBRARY_PATH="$(pwd)/../../build:$DYLD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
 
 run-rust: build-rust
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
 
 run-d: build-d
-  bash -lc 'set -euo pipefail; \
+  bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     cp examples/d/examples-src/{{ TARGET }}.d examples/d/source/app.d; \
     if command -v nix >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
+      {{ NIX_DEVELOP }} .#d --command bash -c "rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
     else \
       rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release; \
     fi'
 
 run-python: build-python
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
 
 run-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/{{ TARGET }}.php'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php --php-ini .user.ini examples/php/{{ TARGET }}.php'
 
 run-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/{{ TARGET }}.pl'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/{{ TARGET }}.pl'
 
 run-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/{{ TARGET }}.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ -f build/datamungetcl/Datamunge.so ] && [ ! -e "build/datamungetcl/Datamunge$ext" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi && export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && tclsh examples/tcl/{{ TARGET }}.tcl'
 
 run-lua: build-lua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && lua examples/lua/{{ TARGET }}.lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && lua examples/lua/{{ TARGET }}.lua'
 
 run-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
 
 run-r: build-r
-   {{ NIX_DEVELOP }} .#r --command bash -lc 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/{{ TARGET }}.r'
+   {{ NIX_DEVELOP }} .#r --command bash -c 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/{{ TARGET }}.r'
 
 run-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
 
 run-javascript: build-javascript
-   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/{{ TARGET }}.js'
+   {{ NIX_DEVELOP }} .#javascript --command bash -c 'node ./examples/javascript/{{ TARGET }}.js'
 
 run-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/{{ TARGET }}.ml -o build/ocaml/{{ TARGET }} && ./build/ocaml/{{ TARGET }}'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/{{ TARGET }}.ml -o build/ocaml/{{ TARGET }} && ./build/ocaml/{{ TARGET }}'
 
 run-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/{{ TARGET }}.m'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/{{ TARGET }}.m'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/{{ TARGET }}'
+    {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/{{ TARGET }}'
 
 run-plot: examples
     @echo "Running plot example"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/plot_ex'
+    {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/plot_ex'
 
 view-plot: examples
     @echo "Running plot example and opening the scatter plot"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/plot_ex'
+    {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/plot_ex'
 
 run-benchmark:
     @echo "Running Benchmarks"
@@ -116,21 +116,21 @@ prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r pr
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -python -o ../src/datamunge_python_wrap.cpp -oh ../src/datamunge_python_wrap.h ../src/pydatamunge/swig/pydatamunge.i && mv ../src/datamunge.py ../src/pydatamunge/datamunge.py"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -doxygen -c++ -python -o ../src/datamunge_python_wrap.cpp -oh ../src/datamunge_python_wrap.h ../src/pydatamunge/swig/pydatamunge.i && mv ../src/datamunge.py ../src/pydatamunge/datamunge.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
   # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
   perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"datamunge_js_callbacks.inl\"\n/s' src/datamunge_js_wrap.cpp
   perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  DatamungeJS_RegisterCallbackBridge(env, exports);\n/s' src/datamunge_js_wrap.cpp
 
 prebuild-csharp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./{{ BINDINGS_DIR }}/datamungedotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -csharp -dllimport datamunge_csharp -o ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.h ../src/datamungedotnet/swig/datamungedotnet.i"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"datamunge\"/DllImport(\"datamunge_csharp\"/g' ./{{ BINDINGS_DIR }}/datamungedotnet/datamungePINVOKE.cs"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./{{ BINDINGS_DIR }}/datamungedotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -doxygen -c++ -csharp -dllimport datamunge_csharp -o ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.h ../src/datamungedotnet/swig/datamungedotnet.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "sed -i 's/DllImport(\"datamunge\"/DllImport(\"datamunge_csharp\"/g' ./{{ BINDINGS_DIR }}/datamungedotnet/datamungePINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
   # Work around a swig-jse R-backend codegen bug: for a namespace-level `enum class` (not
   # nested inside a class -- nested enums like plot::DataSeries::Kind are unaffected),
   # defineEnumeration()'s .values=c(...) table calls a differently-named (and never-generated)
@@ -170,52 +170,52 @@ prebuild-r:
   perl -0777 -pi -e "s/sapply\(argv\[\[1\]\] , is\.integer\) \|\| sapply\(argv\[\[1\]\], is\.numeric\)/sapply(argv[[1]] , is.integer) | sapply(argv[[1]], is.numeric)/g" R/datamunger.R
 
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
 
 # Ruby (SWIG)
 prebuild-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
+  {{ NIX_DEVELOP }} .#ruby --command bash -c "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
 
 # Tcl (SWIG)
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/datamungetcl/swig && swig -tcl8 -c++ -Iinclude -o build/datamungetcl/swig/datamunge_tcl_wrap.cxx -oh build/datamungetcl/swig/datamunge_tcl_wrap.h src/datamungetcl/swig/datamungetcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command bash -c "mkdir -p build/datamungetcl/swig && swig -tcl8 -c++ -Iinclude -o build/datamungetcl/swig/datamunge_tcl_wrap.cxx -oh build/datamungetcl/swig/datamunge_tcl_wrap.h src/datamungetcl/swig/datamungetcl.i"
 
 # Lua (SWIG)
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/datamungelua-swig && swig -lua -c++ -Iinclude -outdir build/datamungelua-swig -o build/datamungelua-swig/datamunge_lua_wrap.cxx -oh build/datamungelua-swig/datamunge_lua_wrap.h src/datamungelua/swig/datamungelua.i"
+  {{ NIX_DEVELOP }} .#lua --command bash -c "mkdir -p build/datamungelua-swig && swig -lua -c++ -Iinclude -outdir build/datamungelua-swig -o build/datamungelua-swig/datamunge_lua_wrap.cxx -oh build/datamungelua-swig/datamunge_lua_wrap.h src/datamungelua/swig/datamungelua.i"
 
 # D (SWIG)
 prebuild-d:
-  bash -lc 'set -euo pipefail; \
+  bash -c 'set -euo pipefail; \
     cmd="mkdir -p {{ BINDINGS_DIR }}/datamunged/source && swig -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.cpp -oh {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.h -outdir {{ BINDINGS_DIR }}/datamunged/source src/datamunged/swig/datamunged.i"; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "$cmd"; \
+      {{ NIX_DEVELOP }} .#d --command bash -c "$cmd"; \
     else \
-      bash -lc "$cmd"; \
+      bash -c "$cmd"; \
     fi'
 
 # Guile (SWIG)
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/datamungeguile-swig && swig -guile -c++ -Iinclude -o build/datamungeguile-swig/datamunge_guile_wrap.cxx -oh build/datamungeguile-swig/datamunge_guile_wrap.h src/datamungeguile/swig/datamungeguile.i"
+  {{ NIX_DEVELOP }} .#guile --command bash -c "mkdir -p build/datamungeguile-swig && swig -guile -c++ -Iinclude -o build/datamungeguile-swig/datamunge_guile_wrap.cxx -oh build/datamungeguile-swig/datamunge_guile_wrap.h src/datamungeguile/swig/datamungeguile.i"
 
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/datamungeoctave-swig && swig -octave -c++ -Iinclude -o build/datamungeoctave-swig/datamunge_octave_wrap.cxx -oh build/datamungeoctave-swig/datamunge_octave_wrap.h src/datamungeoctave/swig/datamungeoctave.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p build/datamungeoctave-swig && swig -octave -c++ -Iinclude -o build/datamungeoctave-swig/datamunge_octave_wrap.cxx -oh build/datamungeoctave-swig/datamunge_octave_wrap.h src/datamungeoctave/swig/datamungeoctave.i"
 
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.h -outdir {{ BINDINGS_DIR }}/godatamunge src/godatamunge/swig/godatamunge.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.h -outdir {{ BINDINGS_DIR }}/godatamunge src/godatamunge/swig/godatamunge.i"
 
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/datamunge_php_wrap.cpp -oh ../src/datamunge_php_wrap.h ../src/datamungePHP/swig/datamungePHP.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -php7 -o ../src/datamunge_php_wrap.cpp -oh ../src/datamunge_php_wrap.h ../src/datamungePHP/swig/datamungePHP.i"
 
 prebuild-java:
-    {{ NIX_DEVELOP }} .#java --command bash -lc "find {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*' -exec rm {} +"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.h -package js.datamunge.jdatamunge -outdir ../{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge ../src/jdatamunge-datamunge/swig/jdatamunge.i"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"datamunge\")/System.loadLibrary(\"datamunge_jni\")/g' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/App.java {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/StlEx.java"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class datamunge \\{/public class datamunge {\\n  static { System.loadLibrary(\"datamunge_jni\"); }/s' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/datamunge.java"
+    {{ NIX_DEVELOP }} .#java --command bash -c "find {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*' -exec rm {} +"
+    {{ NIX_DEVELOP }} .#java --command bash -c "rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake"
+    {{ NIX_DEVELOP }} .#java --command bash -c "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.h -package js.datamunge.jdatamunge -outdir ../{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge ../src/jdatamunge-datamunge/swig/jdatamunge.i"
+    {{ NIX_DEVELOP }} .#java --command bash -c "sed -i 's/System.loadLibrary(\"datamunge\")/System.loadLibrary(\"datamunge_jni\")/g' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/App.java {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/StlEx.java"
+    {{ NIX_DEVELOP }} .#java --command bash -c "perl -0777 -pi -e 's/public class datamunge \\{/public class datamunge {\\n  static { System.loadLibrary(\"datamunge_jni\"); }/s' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/datamunge.java"
 
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
   # Work around a swig-jse OCaml-backend codegen bug: for ANY `enum class` (nested or
   # namespace-level), the generated SWIG_ENUM__... initializers reference the enumerator by
   # its bare name in the ENCLOSING namespace (e.g. `datamunge::stats::Additive`) instead of
@@ -234,7 +234,7 @@ prebuild-ocaml:
 # {{{ rust (bindgen) commands
 
 prebuild-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'inc="$(pkg-config --variable=includedir datamunge)" && bindgen "$inc/datamunge/datamunge_c.h" --allowlist-function "datamunge_.*" --allowlist-type "datamunge_.*" --no-layout-tests --rustfmt-bindings -o {{ BINDINGS_DIR }}/rustdatamunge/src/bindings.rs'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'inc="$(pkg-config --variable=includedir datamunge)" && bindgen "$inc/datamunge/datamunge_c.h" --allowlist-function "datamunge_.*" --allowlist-type "datamunge_.*" --no-layout-tests --rustfmt-bindings -o {{ BINDINGS_DIR }}/rustdatamunge/src/bindings.rs'
 
 # }}} rust (bindgen) commands
 
@@ -242,109 +242,109 @@ prebuild-rust:
 
 build-php: prebuild-php
   rm -rf build/datamungePHP
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake -S src/datamungePHP -B build/datamungePHP'
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake --build build/datamungePHP -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'cmake -S src/datamungePHP -B build/datamungePHP'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'cmake --build build/datamungePHP -j{{ JOBS }} --verbose'
 
 
 build: build-debug
 
 build-example-installed:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cmake -S examples/cpp -B build/debug/examples-installed -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=ON'
+  {{ NIX_DEVELOP }} .#cpp --command bash -c 'cmake -S examples/cpp -B build/debug/examples-installed -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=ON'
 
 
 build-release:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build/release --preset=release-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S . -B build/release --preset=release-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
   ln -sf build/release/compile_commands.json compile_commands.json
 
 build-debug:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build/debug --preset=debug-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S . -B build/debug --preset=debug-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
   ln -sf build/debug/compile_commands.json compile_commands.json
 
 build-cpp:
     @echo "Building datamunge"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build -j{{ JOBS }} --verbose"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S . -B build"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
 build-csharp: prebuild-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "rm -rf build/dotnet/release"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cd ./{{ BINDINGS_DIR }}/datamungedotnet && dotnet build"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "rm -rf build/dotnet/release"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c "cd ./{{ BINDINGS_DIR }}/datamungedotnet && dotnet build"
 
 
 build-javascript: prebuild-javascript
-    {{ NIX_DEVELOP }} .#jsbuild --command bash -lc "npm --prefix . run build"
+    {{ NIX_DEVELOP }} .#jsbuild --command bash -c "npm --prefix . run build"
 
 build-python: prebuild-python
   rm -rf build/venv/pydatamunge-run
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge-run'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-run/bin/python -m pip install -e . --no-build-isolation'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge-run'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python -m pip install -e . --no-build-isolation'
 
 
 build-java: prebuild-java
-  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle cmakeBuild"
-  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle build"
+  {{ NIX_DEVELOP }} .#java --command bash -c "gradle cmakeBuild"
+  {{ NIX_DEVELOP }} .#java --command bash -c "gradle build"
 
 build-dotnet:
-    {{ NIX_DEVELOP }} . --command bash -lc "cmake -S {{ BINDINGS_DIR }}/datamungedotnet -B build/datamungedotnet"
-    {{ NIX_DEVELOP }} . --command bash -lc "cmake --build build/datamungedotnet"
+    {{ NIX_DEVELOP }} . --command bash -c "cmake -S {{ BINDINGS_DIR }}/datamungedotnet -B build/datamungedotnet"
+    {{ NIX_DEVELOP }} . --command bash -c "cmake --build build/datamungedotnet"
     # nix develop ./datamungedotnet --command bash -c "just --justfile ./datamungedotnet/justfile build"
 
 build-go: prebuild-go build-cpp
   # For Go bindings, we need to run go build on the generated files
   # Note: This assumes the SWIG-generated files are already in place from prebuild-go
-  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
 
 build-d: prebuild-d
-  bash -lc 'set -euo pipefail; \
+  bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force"; \
+      {{ NIX_DEVELOP }} .#d --command bash -c "cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force"; \
     else \
       cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force; \
     fi'
 
 build-perl: prebuild-perl build-cpp
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd {{ BINDINGS_DIR }}/perldatamunge && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'cd {{ BINDINGS_DIR }}/perldatamunge && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
 
 build-ruby: prebuild-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc "set -euo pipefail; cd {{ BINDINGS_DIR }}/octruby/ext/octruby && ruby extconf.rb && make -j1 && so=\"\$(find . -type f -name 'octruby*.so' -print -quit)\" && test -n \"\$so\" && mkdir -p ../../lib/octruby && cp -f \"\$so\" ../../lib/octruby/octruby.so"
+  {{ NIX_DEVELOP }} .#ruby --command bash -c "set -euo pipefail; cd {{ BINDINGS_DIR }}/octruby/ext/octruby && ruby extconf.rb && make -j1 && dlext=\"\$(ruby -e 'print RbConfig::CONFIG[\"DLEXT\"]')\" && so=\"\$(find . -type f \( -name 'octruby*.so' -o -name \"octruby*.\$dlext\" \) -print -quit)\" && test -n \"\$so\" && mkdir -p ../../lib/octruby && cp -f \"\$so\" \"../../lib/octruby/octruby.\$dlext\""
 
 build-r: prebuild-r
   rm -rf build/r/library
-  {{ NIX_DEVELOP }} .#r --command bash -lc 'mkdir -p build/r/library && R CMD INSTALL -l build/r/library .'
+  {{ NIX_DEVELOP }} .#r --command bash -c 'mkdir -p build/r/library && R CMD INSTALL -l build/r/library .'
 
 build-tcl: prebuild-tcl
   rm -rf build/datamungetcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
 
 build-lua: prebuild-lua
   rm -rf build/datamungelua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
 
 build-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
 
 build-guile: prebuild-guile
   rm -rf build/datamungeguile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
 
 build-octave: prebuild-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake --build build/datamungeoctave -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake --build build/datamungeoctave -j{{ JOBS }} --verbose'
 
 build-ocaml: prebuild-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && cd {{ BINDINGS_DIR }}/datamungeocaml && dune build'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && cd {{ BINDINGS_DIR }}/datamungeocaml && dune build'
 
 install-ocaml: build-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd {{ BINDINGS_DIR }}/datamungeocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd {{ BINDINGS_DIR }}/datamungeocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
 
 
 
@@ -354,56 +354,56 @@ install-ocaml: build-ocaml
 # {{{ repl commands
 
 repl-javascript: prebuild-javascript build-javascript
-  {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node'
+  {{ NIX_DEVELOP }} .#javascript --command bash -c 'node'
 
 repl-python: prebuild-python
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'ipython'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'ipython'
 
 repl-r: prebuild-r
-  {{ NIX_DEVELOP }} .#r --command bash -lc 'R'
+  {{ NIX_DEVELOP }} .#r --command bash -c 'R'
 
 repl-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -a --php-ini .user.ini'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php -a --php-ini .user.ini'
 
 repl-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
 
 repl-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
 
 repl-java:
-  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
+  {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
 
 repl-cpp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cling $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) -ldatamunge -std=c++17'
+  {{ NIX_DEVELOP }} .#cpp --command bash -c 'cling $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) -ldatamunge -std=c++17'
 
 repl-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
 
 repl-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'lua'
 
 repl-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'irb -r octruby'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -r octruby'
 
 repl-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'utop'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'utop'
 
 repl-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'guile'
 
 repl-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
 
 repl-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m"'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m"'
 
 repl-d:
-  bash -lc 'set -euo pipefail; \
+  bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "cd examples/d && dub run $compiler --build=release"; \
+      {{ NIX_DEVELOP }} .#d --command bash -c "cd examples/d && dub run $compiler --build=release"; \
     else \
       cd examples/d && dub run $compiler --build=release; \
     fi'
@@ -414,78 +414,78 @@ repl-d:
 
 test-python-build: prebuild-python
   rm -rf build/venv/pydatamunge-build
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge-build'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-build/bin/python setup.py sdist bdist_wheel'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge-build'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-build/bin/python setup.py sdist bdist_wheel'
 
 test-python: prebuild-python
   rm -rf build/venv/pydatamunge
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge/bin/python -m pip install -e . --no-build-isolation'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge/bin/python -m pip install -e . --no-build-isolation'
   # PYTHONPATH=src is required despite the editable install: --system-site-packages pulls in
   # the nix flake's own pinned pydatamunge build, which otherwise shadows this fresh local one
   # on sys.path (the pinned build wins even though the venv's own editable install should take
   # precedence, since it's older code without the changes just built above).
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'PYTHONPATH=src build/venv/pydatamunge/bin/python -m pytest -q tests/python'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'PYTHONPATH=src build/venv/pydatamunge/bin/python -m pytest -q tests/python'
 
 test-r: prebuild-r
-  {{ NIX_DEVELOP }} .#r --command bash -lc 'R -q -e "testthat::test_local(\".\")"'
+  {{ NIX_DEVELOP }} .#r --command bash -c 'R -q -e "testthat::test_local(\".\")"'
 
 test-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/datamungedotnet.tests'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/datamungedotnet.tests'
 
 test-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && gradle test'
+  {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && gradle test'
 
 test-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
 
 test-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_datamunge.php'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_datamunge.php'
 
 test-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua tests/lua/test_datamunge.lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'lua tests/lua/test_datamunge.lua'
 
 test-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l tests/perl'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l tests/perl'
 
 test-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_datamunge.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_datamunge.tcl'
 
 test-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_datamunge\""'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_datamunge\""'
 
 test-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile --no-auto-compile -s tests/guile/test_datamunge.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'guile --no-auto-compile -s tests/guile/test_datamunge.scm'
 
 test-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m" --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m" --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
 
 test-d: prebuild-d
-  bash -lc 'set -euo pipefail; \
+  bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "dub test --root tests/d $compiler --build=release"; \
+      {{ NIX_DEVELOP }} .#d --command bash -c "dub test --root tests/d $compiler --build=release"; \
     else \
       dub test --root tests/d $compiler --build=release; \
     fi'
 
 
 test-go: build-go
-    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
+    {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
 
 
 test-javascript: build-javascript
     @echo "Running Javascript Tests"
-    {{ NIX_DEVELOP }} .#javascript --command bash -lc "npm run test"
+    {{ NIX_DEVELOP }} .#javascript --command bash -c "npm run test"
 
 test-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && cd tests/ocaml && dune runtest'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'just install-ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && cd tests/ocaml && dune runtest'
 
 
 test-cpp:
     @echo "Running Tests"
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       gtest_prefix=""; \
       for p in /nix/store/*-gtest-*-dev; do \
         if [ -f "$p/lib/cmake/GTest/GTestConfig.cmake" ]; then gtest_prefix="$p"; break; fi; \
@@ -505,13 +505,13 @@ rename NEW:
   ./rename_datamunge {{ NEW }}
 
 jq:
-    {{ NIX_DEVELOP }} . --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} . --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
 playground:
     @echo "Building playground"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S playground -B build/debug/playground"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/playground -j {{JOBS}} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S playground -B build/debug/playground"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/playground -j {{JOBS}} --verbose"
     ./build/debug/playground/playground_cpp
 
 flamechart:
@@ -527,8 +527,8 @@ flamechart:
 
 benchmark:
     @echo "Building benchmarks"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/benchmarks -j{{ JOBS }}"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks -j{{ JOBS }}"
     @echo "Running {{ BENCH_TARGET }}"
     ./build/benchmarks/{{ BENCH_TARGET }} --benchmark_format=json \
         --benchmark_out="benchmarks/results/$(date +%Y%m%d_%H%M%S).json"
@@ -546,7 +546,7 @@ memcheck:
 
 coverage:
     rm -rf build/coverage
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       gtest_prefix=""; \
       for p in /nix/store/*-gtest-*-dev; do \
         if [ -f "$p/lib/cmake/GTest/GTestConfig.cmake" ]; then gtest_prefix="$p"; break; fi; \
@@ -561,7 +561,7 @@ coverage:
     genhtml --rc genhtml_function_coverage=0 --ignore-errors inconsistent --ignore-errors corrupt build/coverage/coverage.info --output-directory build/coverage/html
 
 test-coverage: coverage
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       info="build/coverage/coverage.info"; \
       test -f "$info"; \
       awk -v want1="$(pwd)/src/datamunge/datamunge.cpp" -v want2="$(pwd)/src/datamunge/datamunge_c.cpp" '\'' \
@@ -597,7 +597,7 @@ test-coverage: coverage
 
 
 debuggable:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -ldatamunge -lxml2'
+  {{ NIX_DEVELOP }} .#cpp --command bash -c 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -ldatamunge -lxml2'
 
 
 clean:
@@ -614,29 +614,40 @@ clean:
 
 org-export INPUT OUTPUT:
     @echo "Exporting {{ INPUT }} -> {{ OUTPUT }}"
-    @bash -lc 'set -euo pipefail; \
-      export_cmd='\''emacs --batch -Q -l init.el -- "{{ INPUT }}" "{{ OUTPUT }}"'\''; \
+    @bash -c 'set -euo pipefail; \
+      export_cmd='\''DATAMUNGE_SKIP_DIRENV=1 emacs --batch -Q -l init.el -- "{{ INPUT }}" "{{ OUTPUT }}"'\''; \
       if command -v nix >/dev/null 2>&1; then \
-        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+        nix develop --accept-flake-config .#org-examples --command bash -c "$export_cmd"; \
       else \
-        bash -lc "$export_cmd"; \
+        bash -c "$export_cmd"; \
       fi'
 
 org-example NAME="dense_linear_algebra" FORMAT="html":
     just org-export examples/org/{{ NAME }}.org build/org/{{ NAME }}.{{ FORMAT }}
 
+# Build every examples/org/*.org file to HTML and PDF under build/org/.
+org-examples:
+    @echo "Exporting Org examples -> HTML and PDF"
+    @bash -c 'set -euo pipefail; \
+      export_cmd='\''set -euo pipefail; shopt -s nullglob; files=(examples/org/*.org); if ((${#files[@]} == 0)); then echo "No Org examples found under examples/org/" >&2; exit 1; fi; mkdir -p build/org; for f in "${files[@]}"; do base="$(basename "$f" .org)"; for format in html pdf; do out="build/org/${base}.${format}"; echo "Exporting $f -> $out"; DATAMUNGE_SKIP_DIRENV=1 emacs --batch -Q -l init.el -- "$f" "$out"; done; done'\''; \
+      if command -v nix >/dev/null 2>&1; then \
+        nix develop --accept-flake-config .#org-examples --command bash -c "$export_cmd"; \
+      else \
+        bash -c "$export_cmd"; \
+      fi'
+
 prebuild-docs-pages:
     @echo "Exporting Org pages -> Markdown"
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       export_cmd='\''set -euo pipefail; shopt -s nullglob; for f in docs/org/pages/*.org; do base="$(basename "$f" .org)"; out="docs/pages/${base}.md"; emacs --batch -Q -l docs/org-to-md.el -- "$f" "$out"; done'\''; \
       if command -v nix >/dev/null 2>&1; then \
-        if nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd" >/dev/null 2>&1; then \
-          nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+        if nix develop --accept-flake-config .#docs-pages --command bash -c "$export_cmd" >/dev/null 2>&1; then \
+          nix develop --accept-flake-config .#docs-pages --command bash -c "$export_cmd"; \
         else \
-          bash -lc "$export_cmd"; \
+          bash -c "$export_cmd"; \
         fi; \
       else \
-        bash -lc "$export_cmd"; \
+        bash -c "$export_cmd"; \
       fi'
 
 # Convenience alias: build every docs/org/pages/*.org page to Markdown (docs/pages/*.md).
@@ -647,19 +658,19 @@ docs-md: prebuild-docs-pages
 # (failures are captured into an "Export notes" section instead of aborting the export).
 docs-md-file INPUT OUTPUT:
     @echo "Exporting {{ INPUT }} -> {{ OUTPUT }} (Markdown, best-effort Babel)"
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       export_cmd='\''emacs --batch -Q -l docs/org-to-md.el -- "{{ INPUT }}" "{{ OUTPUT }}"'\''; \
       if command -v nix >/dev/null 2>&1; then \
-        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+        nix develop --accept-flake-config .#docs-pages --command bash -c "$export_cmd"; \
       else \
-        bash -lc "$export_cmd"; \
+        bash -c "$export_cmd"; \
       fi'
 
 docs: build
     @echo "Building docs"
     just prebuild-docs-pages
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S docs -B build/debug/docs"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/docs --target GenerateDocs"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S docs -B build/debug/docs"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/docs --target GenerateDocs"
 
 docs-bindings: prebuild-swig
     @echo "Binding documentation is emitted as SWIG-generated docstrings/comments (per language)."
@@ -683,18 +694,18 @@ org-pdf NAME="dense_linear_algebra":
 # Build every docs/org/pages/*.org page to PDF under build/org/pages-pdf/.
 docs-pdf:
     @echo "Exporting Org pages -> PDF"
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       export_cmd='\''set -euo pipefail; shopt -s nullglob; mkdir -p build/org/pages-pdf; for f in docs/org/pages/*.org; do base="$(basename "$f" .org)"; out="build/org/pages-pdf/${base}.pdf"; emacs --batch -Q -l init.el -- "$f" "$out"; done'\''; \
       if command -v nix >/dev/null 2>&1; then \
-        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+        nix develop --accept-flake-config .#docs-pages --command bash -c "$export_cmd"; \
       else \
-        bash -lc "$export_cmd"; \
+        bash -c "$export_cmd"; \
       fi'
 
 # Open a PDF with the user's preferred viewer: $BROWSER, then the first common
 # viewer found on PATH.
 view-pdf PATH:
-    @bash -lc 'set -euo pipefail; \
+    @bash -c 'set -euo pipefail; \
       f="{{ PATH }}"; \
       if [ ! -f "$f" ]; then echo "No such file: $f" >&2; exit 1; fi; \
       if [ -n "${BROWSER:-}" ]; then exec "$BROWSER" "$f"; fi; \
@@ -713,9 +724,9 @@ view-org-pdf NAME="dense_linear_algebra": (org-pdf NAME)
 
 examples:
     @echo "Building Examples"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S examples/cpp -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=OFF"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/examples -j{{ JOBS }} --verbose"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S examples/cpp -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=OFF"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/examples -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
     # nix develop . --command bash -c "make -C ./build/debug/examples -j10 --verbose"
 
 example EXAMPLE:
@@ -723,7 +734,7 @@ example EXAMPLE:
     ./build/debug/examples/{{ EXAMPLE }}
 
 example-python:
-    {{ NIX_DEVELOP }} .#python --command bash -lc "python examples/python/datamunge_ex.py"
+    {{ NIX_DEVELOP }} .#python --command bash -c "python examples/python/datamunge_ex.py"
 
 # }}} example commands
 

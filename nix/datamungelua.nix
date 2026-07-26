@@ -49,10 +49,11 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     cmake --install build/datamungelua --prefix "$out"
 
-    # Ensure the Lua module can find libdatamunge.so at runtime inside the Nix store.
-    datamungeLib="$(find "${datamunge}" -name 'libdatamunge.so' -print -quit)"
+    # Ensure the Lua module can find libdatamunge at runtime inside the Nix store
+    # (.so on Linux, .dylib on macOS).
+    datamungeLib="$(find "${datamunge}" \( -name 'libdatamunge.so' -o -name 'libdatamunge.dylib' \) -print -quit)"
     if [ -z "$datamungeLib" ]; then
-      echo "Could not find libdatamunge.so in ${datamunge}" >&2
+      echo "Could not find libdatamunge shared library in ${datamunge}" >&2
       find "${datamunge}" -maxdepth 4 -type f -name 'libdatamunge*' -print >&2 || true
       exit 1
     fi
@@ -63,11 +64,17 @@ pkgs.stdenv.mkDerivation rec {
       find "$out" -maxdepth 4 -type f -print >&2
       exit 1
     fi
-    existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$soPath" || true)"
-    if [ -n "$existingRpath" ]; then
-      ${pkgs.patchelf}/bin/patchelf --set-rpath "$datamungeLibDir:$existingRpath" "$soPath"
+    if [ "$(uname)" = "Darwin" ]; then
+      # On macOS the Nix-built dylib carries an absolute install_name, so the module
+      # resolves it without rpath patching; just add an rpath for robustness.
+      ${pkgs.darwin.cctools}/bin/install_name_tool -add_rpath "$datamungeLibDir" "$soPath" || true
     else
-      ${pkgs.patchelf}/bin/patchelf --set-rpath "$datamungeLibDir" "$soPath"
+      existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$soPath" || true)"
+      if [ -n "$existingRpath" ]; then
+        ${pkgs.patchelf}/bin/patchelf --set-rpath "$datamungeLibDir:$existingRpath" "$soPath"
+      else
+        ${pkgs.patchelf}/bin/patchelf --set-rpath "$datamungeLibDir" "$soPath"
+      fi
     fi
 
     luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
@@ -94,6 +101,6 @@ pkgs.stdenv.mkDerivation rec {
   meta = with pkgs.lib; {
     description = "Lua (SWIG) bindings for the datamunge library.";
     license = licenses.unlicense;
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }

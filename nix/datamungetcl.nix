@@ -52,7 +52,17 @@ pkgs.stdenv.mkDerivation rec {
         pkgDir="$out/lib/$tclVersionDir"
         mkdir -p "$pkgDir"
 
-        cp -v build/datamungetcl/Datamunge.so "$pkgDir/"
+        # CMake emits Datamunge.so (MODULE) on both Linux and macOS, but Tcl's
+        # `load` uses [info sharedlibextension] (.dylib on macOS). Install the
+        # built module under the name Tcl will actually look for.
+        builtMod="$(find build/datamungetcl \( -name 'Datamunge.so' -o -name 'Datamunge.dylib' \) -print -quit)"
+        if [ -z "$builtMod" ]; then
+          echo "Could not find built Datamunge module under build/datamungetcl" >&2
+          find build/datamungetcl -maxdepth 2 -type f -print >&2
+          exit 1
+        fi
+        sharedExt="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info sharedlibextension]')"
+        cp -v "$builtMod" "$pkgDir/Datamunge$sharedExt"
 
         if [ ! -f src/datamungetcl/pkgIndex.tcl ]; then
           mkdir -p src/datamungetcl
@@ -104,6 +114,6 @@ pkgs.stdenv.mkDerivation rec {
   meta = with pkgs.lib; {
     description = "Tcl (SWIG) bindings for the datamunge library.";
     license = licenses.unlicense;
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }
