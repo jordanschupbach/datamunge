@@ -1,0 +1,168 @@
+#+title: Shell Sort: Insertion Sort With Long-Range Moves
+#+subtitle: A literate C++ study of gapped insertion sorting with =datamunge='s =algorithms::shell_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Insertion sort is slow on large arrays because an element out of place can move
+only one step per comparison. *Shell sort* (Donald Shell, 1959) fixes this by first
+sorting elements that are a large *gap* apart, then repeatedly shrinking the gap to
+1. The early long-range passes carry elements most of the way home cheaply, so the
+final ordinary insertion pass has little left to do -- breaking insertion sort's
+\(O(n^2)\) barrier with almost no extra code. This report implements it in
+=datamunge='s C++ =algorithms::shell_sort=, traces its gapped passes, and shows it
+making far fewer comparisons than plain insertion sort as arrays grow.
+#+end_abstract
+
+* h-sorting for a shrinking gap
+
+An array is *h-sorted* if every element is \(\le\) the element \(h\) positions
+ahead. Shell sort runs an insertion sort on each of the \(h\) interleaved
+subsequences (elements \(h\) apart), making the array \(h\)-sorted, then reduces
+\(h\) and repeats, ending with \(h=1\) -- an ordinary insertion sort, but on an
+array already nearly in order, so it does little work. The magic is that
+\(h\)-sorting a \(k\)-sorted array keeps it \(k\)-sorted, so progress accumulates.
+The cost depends heavily on the *gap sequence*; the simple halving sequence
+\(n/2,n/4,\dots,1\) used here gives about \(O(n^{3/2})\) on average, and cleverer
+sequences (Knuth, Sedgewick, Ciura) do better. Long-range moves are what let an
+out-of-place element leap toward its home instead of inching.
+
+#+name: sh-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/comparison_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static long shell_compares(std::vector<int> a) {
+    long c = 0; const std::size_t n = a.size();
+    for (std::size_t gap = n / 2; gap > 0; gap /= 2)
+        for (std::size_t i = gap; i < n; ++i) {
+            const int key = a[i]; std::size_t j = i;
+            while (j >= gap) { ++c; if (a[j - gap] > key) { a[j] = a[j - gap]; j -= gap; } else break; }
+            a[j] = key;
+        }
+    return c;
+}
+static long insertion_compares(std::vector<int> a) {
+    long c = 0;
+    for (std::size_t i = 1; i < a.size(); ++i) {
+        const int key = a[i]; std::size_t j = i;
+        while (j > 0) { ++c; if (a[j - 1] > key) { a[j] = a[j - 1]; --j; } else break; }
+        a[j] = key;
+    }
+    return c;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SHELL-SORT(a):
+  for gap in n/2, n/4, ..., 1:
+      for i in gap .. n-1:              # gapped insertion sort
+          key <- a[i]; j <- i
+          while j >= gap and a[j-gap] > key:
+              a[j] <- a[j-gap]; j <- j-gap
+          a[j] <- key
+#+end_example
+
+* Worked example and comparison-count experiment
+
+We sort \([5,3,8,1,9,2,7]\) (\(n=7\), so gaps 3 then 1), printing the array after
+each gap's pass, then compare Shell sort's total comparisons against plain
+insertion sort as \(n\) grows.
+
+#+name: sh-run
+#+begin_src c++ :eval no
+    std::cout << "=== Shell sort of [5,3,8,1,9,2,7] ===\n";
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    for (std::size_t gap = a.size() / 2; gap > 0; gap /= 2) {
+        for (std::size_t i = gap; i < a.size(); ++i) {
+            const int key = a[i]; std::size_t j = i;
+            while (j >= gap && a[j - gap] > key) { a[j] = a[j - gap]; j -= gap; }
+            a[j] = key;
+        }
+        std::cout << "  after gap " << gap << ": ";
+        for (int v : a) std::cout << v << " ";
+        std::cout << "\n";
+    }
+    std::cout << "sorted (library): ";
+    for (int v : shell_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\nShell vs insertion comparisons (random input):\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ns, sh, in;
+    std::mt19937 rng(3);
+    for (int n = 10; n <= 400; n += 10) {
+        std::vector<int> v(static_cast<std::size_t>(n));
+        for (int i = 0; i < n; ++i) v[static_cast<std::size_t>(i)] = i;
+        std::shuffle(v.begin(), v.end(), rng);
+        ns.push_back(n);
+        sh.push_back(static_cast<double>(shell_compares(v)));
+        in.push_back(static_cast<double>(insertion_compares(v)));
+    }
+    std::cout << "  n=400: insertion=" << in.back() << ", shell=" << sh.back() << "\n";
+    plot.line(ns, in, "insertion sort", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, sh, "shell sort", RGB{37, 99, 235}, 2.0);
+    plot.legend({"insertion O(n^2)", "shell ~O(n^1.5)"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Shell sort's long-range moves cut comparisons well below insertion sort")
+        .x_label("array size n").y_label("key comparisons").background({250, 250, 252});
+    plot.save_svg("build/org/shell_sort.svg");
+    std::cout << "\nwrote shell_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/shell_sort_analysis.cpp <<'CPP'
+<<sh-includes>>
+#include <algorithm>
+
+int main() {
+<<sh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/shell_sort_analysis.cpp -o build/org/shell_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/shell_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Shell sort of [5,3,8,1,9,2,7] ===
+  after gap 3: 1 3 2 5 9 8 7
+  after gap 1: 1 2 3 5 7 8 9
+sorted (library): 1 2 3 5 7 8 9
+
+Shell vs insertion comparisons (random input):
+  n=400: insertion=40622, shell=5284
+
+wrote shell_sort.svg
+#+end_example
+
+The gap-3 pass already nudges small values leftward and large ones right, so the
+final gap-1 pass finishes an array that is nearly ordered. At \(n=400\) Shell sort
+makes a small fraction of insertion sort's comparisons -- the payoff of trading a
+few long-range passes for a cheap final one.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/shell_sort.svg]]
+
+The red insertion-sort curve climbs steeply as \(O(n^2)\); the blue Shell-sort
+curve stays far lower, bending like \(O(n^{1.5})\). The whole difference is those
+early wide-gap passes, which let a badly placed element cross the array in a couple
+of hops instead of crawling one position at a time.

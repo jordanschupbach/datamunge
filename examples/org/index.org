@@ -633,6 +633,26 @@ We implement the natural cubic spline (=algorithms::natural_cubic_spline=, =cubi
 
 We implement de Casteljau's algorithm (=algorithms::de_casteljau=) and report it as a literate program. We give the pyramid of linear interpolations, its equivalence to the Bernstein form, and the endpoint-interpolation and convex-hull properties; a cubic Bezier is evaluated with B(0.5)=(2,1.875) and the interpolation scaffold drawn.
 
+** [[./insertion_sort_analysis.html][Insertion Sort: Building Order One Element at a Time]] ([[./insertion_sort_analysis.pdf][PDF]])
+/A literate C++ study of the adaptive elementary sort using datamunge/
+
+We implement insertion sort (=algorithms::insertion_sort=) and report it as a literate program. We give the sorted-prefix invariant and its adaptivity; on n=200 the comparison count is 199 for sorted input, ~10466 for random, and 19900 for reversed -- linear to quadratic depending on pre-existing order.
+
+** [[./selection_sort_analysis.html][Selection Sort: Fewest Writes, Always]] ([[./selection_sort_analysis.pdf][PDF]])
+/A literate C++ study of the minimal-swap elementary sort using datamunge/
+
+We implement selection sort (=algorithms::selection_sort=) and report it as a literate program. We show it always makes n(n-1)/2 comparisons but at most n-1 swaps -- the fewest writes of any simple sort; at n=200 that is 19900 comparisons versus 195 swaps, plotted as quadratic-vs-linear.
+
+** [[./shell_sort_analysis.html][Shell Sort: Insertion Sort With Long-Range Moves]] ([[./shell_sort_analysis.pdf][PDF]])
+/A literate C++ study of gapped insertion sorting using datamunge/
+
+We implement Shell sort (=algorithms::shell_sort=) and report it as a literate program. We give h-sorting on a shrinking gap sequence and why long-range moves break the O(n^2) barrier; at n=400 it makes 5284 comparisons versus insertion sort's 40622.
+
+** [[./comb_sort_analysis.html][Comb Sort: Bubble Sort That Kills the Turtles]] ([[./comb_sort_analysis.pdf][PDF]])
+/A literate C++ study of gapped exchange sorting using datamunge/
+
+We implement comb sort (=algorithms::comb_sort=) and report it as a literate program. We explain turtles and the 1.3 shrink factor that lets distant swaps clear them; at n=400 comb sort makes 7106 comparisons versus bubble sort's 147630.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

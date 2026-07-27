@@ -1,0 +1,170 @@
+#+title: Insertion Sort: Building Order One Element at a Time
+#+subtitle: A literate C++ study of the adaptive elementary sort with =datamunge='s =algorithms::insertion_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The way most people sort a hand of cards -- pick up each new card and slide it into
+its place among the cards already held -- is *insertion sort*. It is simple,
+in-place, and stable, and its great virtue is being *adaptive*: on already- or
+nearly-sorted data it runs in linear time, which is why it hides inside industrial
+sorts (Timsort, Introsort) as the small-array base case. This report implements it
+in =datamunge='s C++ =algorithms::insertion_sort=, traces it sorting a small array,
+and measures how its cost collapses from quadratic to linear as the input becomes
+ordered.
+#+end_abstract
+
+* Growing a sorted prefix
+
+Maintain the invariant that the first \(i\) elements are sorted among themselves.
+To extend it, take element \(i\), and shift every larger element in the sorted
+prefix one place to the right until the correct slot opens, then drop the element
+in. Each step preserves the invariant, so after \(n-1\) steps the whole array is
+sorted.
+
+The cost is the number of shifts. On reversed input every new element must travel
+past the entire prefix -- \(1+2+\dots+(n-1)=O(n^2)\). On sorted input every new
+element is already in place and stops immediately -- \(O(n)\). This *adaptivity* to
+existing order is insertion sort's defining feature, and the reason it beats
+fancier \(O(n\log n)\) sorts on small or nearly-sorted arrays.
+
+#+name: is-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/comparison_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Instrumented copy that counts key comparisons, for the cost figure.
+static long insertion_compares(std::vector<int> a) {
+    long c = 0;
+    for (std::size_t i = 1; i < a.size(); ++i) {
+        const int key = a[i];
+        std::size_t j = i;
+        while (j > 0) { ++c; if (a[j - 1] > key) { a[j] = a[j - 1]; --j; } else break; }
+        a[j] = key;
+    }
+    return c;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+INSERTION-SORT(a):
+  for i in 1 .. n-1:
+      key <- a[i]
+      j <- i
+      while j > 0 and a[j-1] > key:      # shift larger elements right
+          a[j] <- a[j-1]; j <- j-1
+      a[j] <- key
+#+end_example
+
+* Worked example and cost experiment
+
+We sort \([5,3,8,1,9,2,7]\), printing the array after each insertion, then count key
+comparisons on random, already-sorted, and reverse-sorted inputs of growing size
+to expose the adaptivity.
+
+#+name: is-run
+#+begin_src c++ :eval no
+    std::cout << "=== Insertion sort of [5,3,8,1,9,2,7] ===\n";
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    for (std::size_t i = 1; i < a.size(); ++i) {
+        const int key = a[i]; std::size_t j = i;
+        while (j > 0 && a[j - 1] > key) { a[j] = a[j - 1]; --j; }
+        a[j] = key;
+        std::cout << "  after inserting a[" << i << "]: ";
+        for (int v : a) std::cout << v << " ";
+        std::cout << "\n";
+    }
+    std::cout << "sorted (library): ";
+    for (int v : insertion_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\ncomparisons vs input order:\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ns, rnd, srt, rev;
+    std::mt19937 rng(1);
+    for (int n = 5; n <= 200; n += 5) {
+        std::vector<int> base(static_cast<std::size_t>(n));
+        for (int i = 0; i < n; ++i) base[static_cast<std::size_t>(i)] = i;
+        std::vector<int> sorted = base, reversed = base;
+        std::reverse(reversed.begin(), reversed.end());
+        std::vector<int> random = base; std::shuffle(random.begin(), random.end(), rng);
+        ns.push_back(n);
+        rnd.push_back(static_cast<double>(insertion_compares(random)));
+        srt.push_back(static_cast<double>(insertion_compares(sorted)));
+        rev.push_back(static_cast<double>(insertion_compares(reversed)));
+    }
+    std::cout << "  n=200: sorted=" << srt.back() << ", random=" << rnd.back()
+              << ", reversed=" << rev.back() << "\n";
+    plot.line(ns, rev, "reversed (worst)", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, rnd, "random (average)", RGB{202, 138, 4}, 2.0);
+    plot.line(ns, srt, "sorted (best)", RGB{22, 163, 74}, 2.0);
+    plot.legend({"reversed O(n^2)", "random", "sorted O(n)"}, {{220, 38, 38}, {202, 138, 4}, {22, 163, 74}});
+    plot.title("Insertion sort is adaptive: comparisons vs input order")
+        .x_label("array size n").y_label("key comparisons").background({250, 250, 252});
+    plot.save_svg("build/org/insertion_sort.svg");
+    std::cout << "\nwrote insertion_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/insertion_sort_analysis.cpp <<'CPP'
+<<is-includes>>
+#include <random>
+
+int main() {
+<<is-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/insertion_sort_analysis.cpp -o build/org/insertion_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/insertion_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Insertion sort of [5,3,8,1,9,2,7] ===
+  after inserting a[1]: 3 5 8 1 9 2 7
+  after inserting a[2]: 3 5 8 1 9 2 7
+  after inserting a[3]: 1 3 5 8 9 2 7
+  after inserting a[4]: 1 3 5 8 9 2 7
+  after inserting a[5]: 1 2 3 5 8 9 7
+  after inserting a[6]: 1 2 3 5 7 8 9
+sorted (library): 1 2 3 5 7 8 9
+
+comparisons vs input order:
+  n=200: sorted=199, random=10466, reversed=19900
+
+wrote insertion_sort.svg
+#+end_example
+
+The trace shows the sorted prefix growing left to right, each new element sliding
+back to its place. The cost experiment makes the adaptivity concrete: sorted input
+costs a linear number of comparisons, reversed input a quadratic number, and random
+input sits between -- the same algorithm, wildly different cost depending on
+pre-existing order.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/insertion_sort.svg]]
+
+The green "sorted" curve is nearly a straight line -- \(O(n)\), one comparison per
+element -- while the red "reversed" curve arcs upward as \(O(n^2)\); random input
+tracks about half the worst case. This gap is exactly why insertion sort is the
+right tool for small or almost-ordered data even though its worst case is
+quadratic.
