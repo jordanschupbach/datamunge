@@ -1,0 +1,162 @@
+#+title: The Longest Common Substring: The Longest Shared Run
+#+subtitle: A literate C++ study of the common-suffix dynamic program with =datamunge='s =algorithms::longest_common_substring=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The longest common /subsequence/ may skip characters; the longest common
+/substring/ may not -- it is the longest run that appears *contiguously* in both
+strings. It answers "how much do these two share verbatim?", the question behind
+plagiarism detection and sequence-assembly overlap. A short dynamic program solves
+it in \(O(nm)\) by tracking, for each pair of positions, the length of the common
+/suffix/ ending there. This report implements it in =datamunge='s C++
+=algorithms::longest_common_substring=, works =GeeksforGeeks= against =GeeksQuiz=
+(shared run =Geeks=), and highlights the matched run in both strings.
+#+end_abstract
+
+* The common-suffix recurrence
+
+Let \(L(i,j)\) be the length of the longest common substring that *ends at*
+\(a_{i}\) and \(b_{j}\) simultaneously. If the characters differ there is no such
+run; if they match, extend the run ending one position earlier in both:
+
+\[
+L(i,j)=\begin{cases}
+L(i-1,j-1)+1 & a_i=b_j,\\
+0 & a_i\ne b_j.
+\end{cases}
+\]
+
+The answer is \(\max_{i,j} L(i,j)\), and remembering where that maximum occurs
+lets us read the substring straight out of \(a\). Contrast the LCS recurrence,
+which on a mismatch inherits \(\max(L(i-1,j),L(i,j-1))\) rather than resetting to
+0: that single difference is exactly "contiguous" versus "may skip". Time and
+space are \(O(nm)\) (reducible to \(O(\min(n,m))\) space with two rolling rows, as
+here).
+
+#+name: lcstr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/substrings.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::vector<int> to_seq(const std::string& s) { return {s.begin(), s.end()}; }
+static std::string      to_str(const std::vector<int>& v) { return {v.begin(), v.end()}; }
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LONGEST-COMMON-SUBSTRING(a, b):
+  best_len, best_end <- 0, 0
+  L[*] <- 0
+  for i in 1 .. n:
+      for j in 1 .. m:
+          if a[i] == b[j]:
+              L'[j] <- L[j-1] + 1
+              if L'[j] > best_len: best_len, best_end <- L'[j], i
+          else:
+              L'[j] <- 0
+      L <- L'
+  return a[best_end - best_len : best_end]
+#+end_example
+
+* Worked example: =GeeksforGeeks= and =GeeksQuiz=
+
+Both begin with =Geeks=, and no longer run is shared, so the longest common
+substring is =Geeks= (length 5). Note =GeeksforGeeks= actually contains =Geeks=
+twice; the algorithm reports the first occurrence. The program prints the run and
+its position in each string.
+
+#+name: lcstr-run
+#+begin_src c++ :eval no
+    const std::string as = "GeeksforGeeks", bs = "GeeksQuiz";
+    const std::vector<int> a = to_seq(as), b = to_seq(bs);
+    const std::vector<int> lcs = longest_common_substring(a, b);
+    const std::string ls = to_str(lcs);
+
+    const std::size_t pa = as.find(ls);
+    const std::size_t pb = bs.find(ls);
+    std::cout << "=== Longest common substring ===\n";
+    std::cout << "a = " << as << "\nb = " << bs << "\n";
+    std::cout << "LCSubstr = \"" << ls << "\"  (length " << ls.size() << ")\n";
+    std::cout << "  at a[" << pa << "..] and b[" << pb << "..]\n";
+
+    // Figure: draw both strings as boxes, highlighting the shared run.
+    auto plot = RPlot::create();
+    auto draw = [&](const std::string& s, double y, std::size_t hs, std::size_t hlen) {
+        std::vector<double> x0, y0, x1, y1;
+        for (std::size_t k = 0; k < s.size(); ++k) {
+            const double x = static_cast<double>(k), r = 0.46;
+            x0.insert(x0.end(), {x - r, x + r, x + r, x - r});
+            y0.insert(y0.end(), {y - r, y - r, y + r, y + r});
+            x1.insert(x1.end(), {x + r, x + r, x - r, x - r});
+            y1.insert(y1.end(), {y - r, y + r, y + r, y - r});
+            const bool hi = (k >= hs && k < hs + hlen);
+            plot.text(x, y, std::string(1, s[k]), hi ? RGB{202, 138, 4} : RGB{100, 116, 139}, 14.0);
+        }
+        plot.segments(x0, y0, x1, y1, RGB{148, 163, 184}, 1.0);
+    };
+    draw(as, 1.0, pa, ls.size());
+    draw(bs, 0.0, pb, ls.size());
+    plot.text(-1.4, 1.0, "a", RGB{31, 41, 55}, 14.0);
+    plot.text(-1.4, 0.0, "b", RGB{31, 41, 55}, 14.0);
+    plot.title("Longest common substring of GeeksforGeeks and GeeksQuiz: \"Geeks\"")
+        .x_label("position").y_label("").background({250, 250, 252});
+    plot.x_limits(-2.0, static_cast<double>(std::max(as.size(), bs.size())));
+    plot.y_limits(-1.0, 2.0);
+    plot.save_svg("build/org/longest_common_substring.svg");
+    std::cout << "\nwrote longest_common_substring.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/longest_common_substring_analysis.cpp <<'CPP'
+<<lcstr-includes>>
+
+int main() {
+<<lcstr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/longest_common_substring_analysis.cpp -o build/org/longest_common_substring_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/longest_common_substring_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Longest common substring ===
+a = GeeksforGeeks
+b = GeeksQuiz
+LCSubstr = "Geeks"  (length 5)
+  at a[0..] and b[0..]
+
+wrote longest_common_substring.svg
+#+end_example
+
+The shared run =Geeks= has length 5 and occurs at the start of both strings; it is
+a genuine contiguous substring of each, which is what distinguishes this from the
+longest common /subsequence/ (which for these strings could stitch together
+non-adjacent characters into something longer).
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/longest_common_substring.svg]]
+
+Each string is drawn as a row of boxes; the gold letters mark the longest run they
+share verbatim. The match is a solid, uninterrupted block in both rows -- the
+defining feature of a common /substring/.

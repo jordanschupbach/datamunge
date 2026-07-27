@@ -553,6 +553,26 @@ We implement the Ruzzo-Tompa algorithm (=algorithms::ruzzo_tompa=) and report it
 
 We implement the shortest common supersequence (=algorithms::shortest_common_supersequence=) and report it as a literate program. We derive |SCS| = |a|+|b|-|LCS| and the LCS-table walk that shares the backbone and interleaves the private elements; =AGGTAB= and =GXTXAYB= merge into the length-9 =AGXGTXAYB=, coloured by element origin.
 
+** [[./kadane_analysis.html][Kadane's Algorithm: The Maximum Subarray in One Pass]] ([[./kadane_analysis.pdf][PDF]])
+/A literate C++ study of the maximum contiguous sum using datamunge/
+
+We implement Kadane's algorithm (=algorithms::kadane=) and report it as a literate program. We give the B_i = max(a_i, B_{i-1}+a_i) recurrence and the restart-when-negative rule, returning the sum and the index range; the classic =-2 1 -3 4 -1 2 1 -5 4= yields 6 over [3,7) = =4 -1 2 1=, plotted with the winning window highlighted.
+
+** [[./longest_common_substring_analysis.html][The Longest Common Substring: The Longest Shared Run]] ([[./longest_common_substring_analysis.pdf][PDF]])
+/A literate C++ study of the common-suffix dynamic program using datamunge/
+
+We implement the longest common substring (=algorithms::longest_common_substring=) and report it as a literate program. We give the common-suffix recurrence L(i,j)=L(i-1,j-1)+1 or 0, contrasting it with the LCS recurrence (contiguous vs skipping); =GeeksforGeeks= and =GeeksQuiz= share the length-5 run =Geeks=, highlighted in both strings.
+
+** [[./wildcard_match_analysis.html][Wildcard Matching: Globs With * and ?]] ([[./wildcard_match_analysis.pdf][PDF]])
+/A literate C++ study of two-pointer glob matching using datamunge/
+
+We implement wildcard matching (=algorithms::wildcard_match=, the non-recursive Krauss algorithm; wildmat is its recursive twin) and report it as a literate program. We give the two-pointer scan with star-backtracking and the equivalent DP relation M(i,j); =x?y*z= matches =xaylmz= (the star swallowing =lm=), with the boolean DP table drawn.
+
+** [[./ukkonen_analysis.html][Ukkonen's Algorithm: Suffix Trees in Linear Time]] ([[./ukkonen_analysis.pdf][PDF]])
+/A literate C++ study of online suffix-tree construction using datamunge/
+
+We implement Ukkonen's algorithm (=algorithms::build_suffix_tree=, plus =suffix_tree_contains= and =distinct_substring_count=) and report it as a literate program. We explain the three tricks -- global leaf end, active point, and suffix links -- that make construction linear and online; the suffix tree of =banana= (11 nodes, 15 distinct substrings) is built, queried, and drawn as a labelled tree.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

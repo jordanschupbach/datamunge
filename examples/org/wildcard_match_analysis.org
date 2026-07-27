@@ -1,0 +1,170 @@
+#+title: Wildcard Matching: Globs With * and ?
+#+subtitle: A literate C++ study of two-pointer glob matching with =datamunge='s =algorithms::wildcard_match=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Shell globs, =.gitignore= rules, and =LIKE= clauses all ask the same question: does
+this string match a pattern with =*= (any run of characters) and =?= (exactly one)?
+The naive recursion can blow up exponentially on patterns full of stars. The
+*Krauss* non-recursive algorithm (and Salz's recursive =wildmat=) match in linear
+time in practice with a two-pointer scan that remembers the last =*= so it can
+backtrack. This report implements it in =datamunge='s C++
+=algorithms::wildcard_match=, matches =x?y*z= against =xaylmz=, and draws the
+underlying dynamic-programming table whose accepting corner certifies the match.
+#+end_abstract
+
+* The two-pointer algorithm
+
+Scan the text with pointer \(i\) and the pattern with pointer \(j\). At each step:
+
+- if the pattern character is =?= or equals the text character, advance both;
+- if it is =*=, record its position and the current text index, and advance only
+  the pattern (first trying =*= \(=\) empty);
+- on any other mismatch, if a =*= was seen, *backtrack*: reset the pattern to just
+  after that star and let the star swallow one more text character;
+- otherwise fail.
+
+At the end, any trailing =*= consume the empty string. Because the star position
+and its "consumed so far" mark advance monotonically, the total work is linear in
+practice -- no exponential re-exploration. This is the essence of Krauss's
+non-recursive matcher; Salz's =wildmat= computes the same relation recursively.
+
+#+name: wc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/substrings.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+WILDCARD-MATCH(text, pattern):
+  i, j <- 0, 0 ; star <- NONE ; mark <- 0
+  while i < len(text):
+      if j < len(pattern) and (pattern[j] == '?' or pattern[j] == text[i]):
+          i, j <- i+1, j+1
+      elif j < len(pattern) and pattern[j] == '*':
+          star <- j ; mark <- i ; j <- j+1          # try '*' = empty first
+      elif star != NONE:
+          j <- star+1 ; mark <- mark+1 ; i <- mark   # backtrack: '*' eats one more
+      else:
+          return false
+  while j < len(pattern) and pattern[j] == '*': j <- j+1
+  return j == len(pattern)
+#+end_example
+
+An equivalent /dynamic program/ makes the structure explicit: let
+\(M(i,j)\) be true iff =pattern[0..j)= matches =text[0..i)=. Then a =*= gives
+\(M(i,j)=M(i,j-1)\ \text{or}\ M(i-1,j)\) (match empty, or consume one more text
+char), a =?= or literal gives \(M(i,j)=M(i-1,j-1)\) on a character match, and
+false otherwise. The pattern matches iff \(M(|text|,|pattern|)\) is true.
+
+* Worked example: =x?y*z= against =xaylmz=
+
+The pattern reads: an =x=, then any one character, then a =y=, then any run, then a
+=z=. Against =xaylmz=: =x= matches =x=, =?= matches =a=, =y= matches =y=, =*=
+swallows =lm=, and =z= matches =z= -- a match. The program reports the result and
+builds the DP table for the figure.
+
+#+name: wc-run
+#+begin_src c++ :eval no
+    struct Case { std::string text, pattern; };
+    for (const Case& c : std::vector<Case>{
+             {"xaylmz", "x?y*z"}, {"xaylmz", "x?y*w"}, {"mississippi", "m*i*s*p*i"},
+             {"", "*"}, {"abc", "a?c"}, {"abc", "?"}}) {
+        std::cout << "match(\"" << c.text << "\", \"" << c.pattern << "\") = "
+                  << std::boolalpha << wildcard_match(c.text, c.pattern) << "\n";
+    }
+
+    // Build the DP table M for the headline case and plot it.
+    const std::string text = "xaylmz", pattern = "x?y*z";
+    const std::size_t n = text.size(), m = pattern.size();
+    std::vector<std::vector<char>> M(n + 1, std::vector<char>(m + 1, 0));
+    M[0][0] = 1;
+    for (std::size_t j = 1; j <= m; ++j) M[0][j] = (pattern[j - 1] == '*') && M[0][j - 1];
+    for (std::size_t i = 1; i <= n; ++i)
+        for (std::size_t j = 1; j <= m; ++j) {
+            if (pattern[j - 1] == '*') M[i][j] = M[i][j - 1] || M[i - 1][j];
+            else if (pattern[j - 1] == '?' || pattern[j - 1] == text[i - 1]) M[i][j] = M[i - 1][j - 1];
+            else M[i][j] = 0;
+        }
+    std::cout << "\nDP table M (rows text, cols pattern), accept = M[" << n << "][" << m
+              << "] = " << std::boolalpha << static_cast<bool>(M[n][m]) << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> tx, ty, fx, fy;
+    for (std::size_t i = 0; i <= n; ++i)
+        for (std::size_t j = 0; j <= m; ++j)
+            (M[i][j] ? tx : fx).push_back(static_cast<double>(j)),
+                (M[i][j] ? ty : fy).push_back(-static_cast<double>(i));
+    plot.points(fx, fy, "no match", RGB{203, 213, 225}, 9.0);
+    plot.points(tx, ty, "match", RGB{22, 163, 74}, 10.0);
+    plot.points({static_cast<double>(m)}, {-static_cast<double>(n)}, "accept", RGB{202, 138, 4}, 15.0);
+    for (std::size_t j = 0; j < m; ++j) plot.text(static_cast<double>(j + 1), 0.7, std::string(1, pattern[j]), RGB{37, 99, 235}, 14.0);
+    for (std::size_t i = 0; i < n; ++i) plot.text(-0.8, -static_cast<double>(i + 1), std::string(1, text[i]), RGB{100, 116, 139}, 14.0);
+    plot.title("Wildcard DP: x?y*z matches xaylmz (accepting corner in gold)")
+        .x_label("pattern prefix").y_label("text prefix (downward)").background({250, 250, 252});
+    plot.x_limits(-1.5, static_cast<double>(m) + 0.5);
+    plot.y_limits(-static_cast<double>(n) - 0.5, 1.5);
+    plot.save_svg("build/org/wildcard_match.svg");
+    std::cout << "\nwrote wildcard_match.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/wildcard_match_analysis.cpp <<'CPP'
+<<wc-includes>>
+
+int main() {
+<<wc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/wildcard_match_analysis.cpp -o build/org/wildcard_match_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/wildcard_match_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+match("xaylmz", "x?y*z") = true
+match("xaylmz", "x?y*w") = false
+match("mississippi", "m*i*s*p*i") = true
+match("", "*") = true
+match("abc", "a?c") = true
+match("abc", "?") = false
+
+DP table M (rows text, cols pattern), accept = M[6][5] = true
+
+wrote wildcard_match.svg
+#+end_example
+
+The headline pattern matches, and changing its final literal to =w= breaks it; the
+star-heavy =m*i*s*p*i= still matches =mississippi=, =*= matches the empty string,
+and =?= matches exactly one character (so it fails against the three-character
+=abc=). The two-pointer scan decides each case without the exponential backtracking
+that a careless recursion would suffer.
+
+#+attr_html: :width 560
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/wildcard_match.svg]]
+
+Green cells are =(text prefix, pattern prefix)= pairs that match; the gold
+bottom-right corner is the whole-string match. A =*= column lights up downward (it
+can absorb more and more text), while =?= and literal columns only advance along
+the diagonal -- the picture of how a single star bridges the gap between =y= and
+=z= to cover =lm=.

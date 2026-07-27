@@ -1,0 +1,201 @@
+#+title: Ukkonen's Algorithm: Suffix Trees in Linear Time
+#+subtitle: A literate C++ study of online suffix-tree construction with =datamunge='s =algorithms::build_suffix_tree=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *suffix tree* is the compressed trie of all suffixes of a string -- a Swiss-army
+index that answers "is this a substring?" in time proportional to the query, and
+counts distinct substrings, longest repeats, and more in linear time. Building one
+naively is quadratic; *Ukkonen's algorithm* (1995) builds it in \(O(n)\) time and
+/online/ -- extending the tree one character at a time -- using suffix links, a
+global growing leaf end, and an "active point" that skips redundant work. This
+report implements it in =datamunge='s C++ =algorithms::build_suffix_tree=, indexes
+=banana=, verifies substring queries and the distinct-substring count, and draws
+the resulting tree.
+#+end_abstract
+
+* Suffixes, compression, and the three tricks
+
+The suffix tree of a string \(S\) (with a unique terminal appended so every suffix
+ends at its own leaf) is a tree whose root-to-leaf paths spell the suffixes,
+edges are labelled with /substrings/ (stored as index ranges, not copied), and no
+two edges out of a node share a first character. Every substring of \(S\) is a
+prefix of some suffix, hence a path from the root -- which is why a substring query
+is just an edge walk.
+
+Ukkonen builds it incrementally. Processing position \(p\), it must add the new
+character to every suffix seen so far. Three ideas make this linear:
+
+1. *Global leaf end.* Once a leaf, always a leaf: instead of updating every leaf
+   edge's end each step, all leaves share one end variable that simply increments
+   -- "rule 1" is free.
+2. *The active point* \((\text{node}, \text{edge}, \text{length})\) and
+   *remaining* counter track exactly where the next insertion belongs, so the
+   algorithm never rescans from the root.
+3. *Suffix links.* An internal node for string \(x\alpha\) links to the node for
+   \(\alpha\); following the link moves the active point to the next shorter
+   suffix in \(O(1)\), and a skip/count walk descends without rereading
+   characters.
+
+The famous subtlety -- "rule 3 is a show stopper" -- is that when the new character
+is already present at the active point, the phase ends early (the addition is
+implicit), and deferred suffix links are wired up on the next insertion. The total
+work amortizes to \(O(n)\).
+
+#+name: uk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/substrings.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The active-point construction (sketch)
+
+#+begin_example
+BUILD-SUFFIX-TREE(S):                 # online, left to right
+  active = (root, edge=0, length=0) ; remaining = 0 ; leaf_end grows each phase
+  for p in 0 .. |S| (last is the virtual terminal):
+      leaf_end <- p ; remaining <- remaining + 1 ; need_link <- NONE
+      while remaining > 0:
+          if active.length == 0: active.edge <- p
+          if no child for S[active.edge] at active.node:
+              add a leaf edge starting at p               # rule 2
+          else:
+              nxt <- that child
+              if active.length >= edgelen(nxt): walk down into nxt; continue
+              if S[nxt.start + active.length] == S[p]:    # rule 3: already there
+                  active.length++ ; wire deferred link ; break
+              split the edge, hang a new leaf, wire deferred link
+          remaining <- remaining - 1
+          if active.node == root and active.length > 0:
+              active.length-- ; active.edge <- p - remaining + 1
+          else:
+              active.node <- suffix_link(active.node) or root
+#+end_example
+
+* Worked example: the suffix tree of =banana=
+
+The 6-character string =banana= has 6+1 = 7 suffixes (counting the terminal), so
+the tree has 7 leaves; the shared prefixes =a=, =na=, and =ana= become internal
+branch nodes. The program builds it, checks some substring queries, counts the
+distinct substrings, and lays the tree out for the figure.
+
+#+name: uk-run
+#+begin_src c++ :eval no
+    const SuffixTree tree = build_suffix_tree("banana");
+    const int n = static_cast<int>(tree.text.size());
+
+    std::cout << "=== Ukkonen suffix tree of \"banana\" ===\n";
+    std::cout << "nodes (incl. root): " << tree.nodes.size() << "\n";
+    std::cout << "distinct non-empty substrings: " << distinct_substring_count(tree) << "\n\n";
+    for (const std::string& q : {"ana", "nan", "banana", "ban", "anas", "x"})
+        std::cout << "  contains(\"" << q << "\") = " << std::boolalpha
+                  << suffix_tree_contains(tree, q) << "\n";
+
+    // Lay the tree out: depth downward, leaves spread left to right.
+    const std::size_t N = tree.nodes.size();
+    std::vector<double> X(N, 0.0), Y(N, 0.0);
+    std::vector<int> parent(N, -1);
+    std::vector<std::string> label(N, "");
+    double leaf = 0.0;
+    std::function<void(int, int)> dfs = [&](int u, int depth) {
+        Y[static_cast<std::size_t>(u)] = -static_cast<double>(depth);
+        const auto& ch = tree.nodes[static_cast<std::size_t>(u)].children;
+        if (ch.empty()) { X[static_cast<std::size_t>(u)] = leaf; leaf += 1.0; return; }
+        double sx = 0.0; int cnt = 0;
+        for (const auto& [key, v] : ch) {
+            parent[static_cast<std::size_t>(v)] = u;
+            const int e = tree.nodes[static_cast<std::size_t>(v)].end == -1 ? n : tree.nodes[static_cast<std::size_t>(v)].end;
+            std::string lab;
+            for (int p = tree.nodes[static_cast<std::size_t>(v)].start; p <= e; ++p) lab += (p < n ? tree.text[static_cast<std::size_t>(p)] : '$');
+            label[static_cast<std::size_t>(v)] = lab;
+            dfs(v, depth + 1);
+            sx += X[static_cast<std::size_t>(v)]; ++cnt;
+        }
+        X[static_cast<std::size_t>(u)] = sx / cnt;
+    };
+    dfs(0, 0);
+
+    auto plot = RPlot::create();
+    std::vector<double> ex0, ey0, ex1, ey1;
+    for (std::size_t v = 1; v < N; ++v) {
+        const int p = parent[v];
+        ex0.push_back(X[static_cast<std::size_t>(p)]); ey0.push_back(Y[static_cast<std::size_t>(p)]);
+        ex1.push_back(X[v]); ey1.push_back(Y[v]);
+        plot.text((X[static_cast<std::size_t>(p)] + X[v]) / 2.0, (Y[static_cast<std::size_t>(p)] + Y[v]) / 2.0 + 0.12,
+                  label[v], RGB{202, 138, 4}, 12.0);
+    }
+    plot.segments(ex0, ey0, ex1, ey1, RGB{148, 163, 184}, 1.5);
+    std::vector<double> ix, iy, lx, ly;
+    for (std::size_t v = 0; v < N; ++v)
+        (tree.nodes[v].children.empty() ? lx : ix).push_back(X[v]),
+            (tree.nodes[v].children.empty() ? ly : iy).push_back(Y[v]);
+    plot.points(ix, iy, "internal", RGB{37, 99, 235}, 9.0);
+    plot.points(lx, ly, "leaf (suffix)", RGB{22, 163, 74}, 9.0);
+    plot.legend({"internal", "leaf"}, {{37, 99, 235}, {22, 163, 74}});
+    plot.title("Ukkonen suffix tree of \"banana\" ($ = terminal)")
+        .x_label("").y_label("depth (downward)").background({250, 250, 252});
+    plot.save_svg("build/org/ukkonen.svg");
+    std::cout << "\nwrote ukkonen.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ukkonen_analysis.cpp <<'CPP'
+<<uk-includes>>
+
+int main() {
+<<uk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ukkonen_analysis.cpp -o build/org/ukkonen_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ukkonen_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ukkonen suffix tree of "banana" ===
+nodes (incl. root): 11
+distinct non-empty substrings: 15
+
+  contains("ana") = true
+  contains("nan") = true
+  contains("banana") = true
+  contains("ban") = true
+  contains("anas") = false
+  contains("x") = false
+
+wrote ukkonen.svg
+#+end_example
+
+Every genuine substring query on =banana= succeeds and the non-substrings =anas=
+and =x= are rejected, each in time proportional to the query length. The distinct
+substring count is 15 -- the six single positions collapsed into the shared
+branches for =a=, =na=, and =ana= -- computed straight from the edge lengths of the
+tree Ukkonen built in a single linear pass.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/ukkonen.svg]]
+
+The tree drawn: blue internal nodes, green leaves (one per suffix), and gold edge
+labels (=$= is the terminal). The repeated structure of =banana= shows as sharing:
+the =a=- and =na=-prefixed suffixes fan out from common internal nodes rather than
+from separate root edges, which is exactly the compression that makes the suffix
+tree -- and Ukkonen's linear construction of it -- so powerful.
