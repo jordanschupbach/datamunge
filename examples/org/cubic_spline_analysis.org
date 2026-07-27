@@ -1,0 +1,155 @@
+#+title: The Natural Cubic Spline: Smooth Piecewise Interpolation
+#+subtitle: A literate C++ study of C2 spline interpolation with =datamunge='s =algorithms::natural_cubic_spline=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A single high-degree polynomial through many points oscillates (Runge's
+phenomenon). The fix is to interpolate /piecewise/: fit a separate low-degree
+polynomial on each interval and glue the pieces together smoothly. The *natural
+cubic spline* uses cubics joined so that the curve, its slope, and its curvature
+are all continuous (\(C^2\)), with zero curvature at the ends. This report
+implements it in =datamunge='s C++ =algorithms::natural_cubic_spline=, fits the
+very Runge function that defeats polynomial interpolation, and shows the spline
+tracking it faithfully where the degree-10 polynomial flails.
+#+end_abstract
+
+* Smoothness conditions and the tridiagonal system
+
+On each interval \([x_i,x_{i+1}]\) the spline is a cubic
+\(S_i(t)=a_i+b_i t+c_i t^2+d_i t^3\) with \(t=x-x_i\). We require it to interpolate
+the data (\(S_i(x_i)=y_i\), \(S_i(x_{i+1})=y_{i+1}\)) and to match its neighbours in
+first and second derivative at the interior knots. Introducing the second-derivative
+"moments" \(m_i=S''(x_i)\), continuity reduces to a symmetric *tridiagonal* system
+
+\[
+h_{i-1}m_{i-1}+2(h_{i-1}+h_i)m_i+h_i m_{i+1}
+=6\!\left(\frac{y_{i+1}-y_i}{h_i}-\frac{y_i-y_{i-1}}{h_{i-1}}\right),
+\]
+
+for the interior \(m_i\), where \(h_i=x_{i+1}-x_i\). The *natural* boundary
+condition sets \(m_0=m_{n-1}=0\). Solving the tridiagonal system with the Thomas
+algorithm costs \(O(n)\); the per-interval coefficients follow directly from the
+moments. Because each piece is only cubic, the spline cannot develop the violent
+swings of a global high-degree polynomial.
+
+#+name: cs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+NATURAL-CUBIC-SPLINE(xs, ys):
+  h[i] <- xs[i+1] - xs[i]
+  solve tridiagonal system for interior moments m[1..n-2]   (m[0] = m[n-1] = 0)
+  for each interval i:
+      a[i] <- ys[i]
+      b[i] <- (ys[i+1]-ys[i])/h[i] - h[i]*(2 m[i] + m[i+1])/6
+      c[i] <- m[i]/2
+      d[i] <- (m[i+1]-m[i])/(6 h[i])
+  # evaluate: find interval containing x, then a + b t + c t^2 + d t^3, t = x - xs[i]
+#+end_example
+
+* Worked example: taming Runge's function
+
+We fit \(f(x)=\dfrac{1}{1+25x^2}\) at the same 11 equally spaced nodes that made
+the degree-10 polynomial oscillate. The spline passes through every node and stays
+close to \(f\) throughout, while the polynomial's worst error is orders of
+magnitude larger. The program measures both.
+
+#+name: cs-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return 1.0 / (1.0 + 25.0 * x * x); };
+    const int n = 11;
+    std::vector<double> xs, ys;
+    for (int i = 0; i < n; ++i) { const double x = -1.0 + 2.0 * i / (n - 1); xs.push_back(x); ys.push_back(f(x)); }
+    const CubicSpline s = natural_cubic_spline(xs, ys);
+
+    std::cout << "=== Natural cubic spline vs Lagrange on 1/(1+25x^2) ===\n";
+    double node_err = 0.0;
+    for (std::size_t i = 0; i < xs.size(); ++i)
+        node_err = std::max(node_err, std::fabs(cubic_spline_eval(s, xs[i]) - ys[i]));
+    std::cout << "spline max error at nodes: " << node_err << "\n";
+
+    double spline_err = 0.0, poly_err = 0.0;
+    for (double x = -1.0; x <= 1.0; x += 0.001) {
+        spline_err = std::max(spline_err, std::fabs(cubic_spline_eval(s, x) - f(x)));
+        poly_err   = std::max(poly_err, std::fabs(lagrange_interpolate(xs, ys, x) - f(x)));
+    }
+    std::cout << "spline max error between nodes:    " << spline_err << "\n";
+    std::cout << "polynomial max error between nodes: " << poly_err << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> tx, tf, sx, sf, px, pf;
+    for (double x = -1.0; x <= 1.0001; x += 0.005) {
+        tx.push_back(x); tf.push_back(f(x));
+        sx.push_back(x); sf.push_back(cubic_spline_eval(s, x));
+        px.push_back(x); pf.push_back(lagrange_interpolate(xs, ys, x));
+    }
+    plot.line(px, pf, "degree-10 polynomial", RGB{220, 38, 38}, 1.6);
+    plot.line(tx, tf, "true f", RGB{22, 163, 74}, 2.0);
+    plot.line(sx, sf, "cubic spline", RGB{37, 99, 235}, 2.0);
+    plot.points(xs, ys, "nodes", RGB{31, 41, 55}, 7.0);
+    plot.legend({"polynomial", "true f", "cubic spline"}, {{220, 38, 38}, {22, 163, 74}, {37, 99, 235}});
+    plot.title("Cubic spline hugs Runge's function where the polynomial oscillates")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.y_limits(-0.6, 1.3);
+    plot.save_svg("build/org/cubic_spline.svg");
+    std::cout << "\nwrote cubic_spline.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cubic_spline_analysis.cpp <<'CPP'
+<<cs-includes>>
+
+int main() {
+<<cs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cubic_spline_analysis.cpp -o build/org/cubic_spline_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cubic_spline_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Natural cubic spline vs Lagrange on 1/(1+25x^2) ===
+spline max error at nodes: 0
+spline max error between nodes:    0.0219738
+polynomial max error between nodes: 1.91564
+
+wrote cubic_spline.svg
+#+end_example
+
+On identical data the spline's worst error is a small fraction, while the degree-10
+polynomial's is enormous -- the same Runge oscillation seen earlier. Piecewise
+cubics with matched curvature buy smoothness /and/ stability that a single global
+polynomial cannot.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/cubic_spline.svg]]
+
+The blue cubic spline and green true curve are nearly indistinguishable, both
+threading the black nodes; the red degree-10 polynomial threads the same nodes but
+lurches far above and below between the outer ones. Same points, same interpolation
+requirement -- utterly different behaviour, because the spline keeps each piece
+tame.

@@ -422,7 +422,7 @@ Further information: Extrapolation and Interpolation
     Birkhoff interpolation: an extension of polynomial interpolation
     Cubic interpolation
     Hermite interpolation
-    Lagrange interpolation: interpolation using Lagrange polynomials
+    [x] Lagrange interpolation: interpolation using Lagrange polynomials  -- datamunge::algorithms::lagrange_interpolate; report examples/org/lagrange_interpolation_analysis.org
     Linear interpolation: a method of curve fitting using linear polynomials
     Monotone cubic interpolation: a variant of cubic interpolation that preserves monotonicity of the data set being interpolated.
     Multivariate interpolation
@@ -433,10 +433,11 @@ Further information: Extrapolation and Interpolation
         Tricubic interpolation: a generalization of cubic interpolation to three dimensions
     Pareto interpolation: a method of estimating the median and other properties of a population that follows a Pareto distribution.
     Polynomial interpolation
-        Neville's algorithm
+        [x] Neville's algorithm  -- datamunge::algorithms::neville_interpolate; report examples/org/neville_analysis.org
     Spline interpolation: Reduces error with Runge's phenomenon.
+        [x] Natural cubic spline interpolation  -- datamunge::algorithms::natural_cubic_spline / cubic_spline_eval; report examples/org/cubic_spline_analysis.org
         De Boor algorithm: B-splines
-        De Casteljau's algorithm: Bézier curves
+        [x] De Casteljau's algorithm: Bézier curves  -- datamunge::algorithms::de_casteljau; report examples/org/de_casteljau_analysis.org
     Trigonometric interpolation
 
 Linear algebra

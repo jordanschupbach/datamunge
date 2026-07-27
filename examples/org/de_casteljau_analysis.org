@@ -1,0 +1,157 @@
+#+title: De Casteljau's Algorithm: Bezier Curves by Repeated Lerping
+#+subtitle: A literate C++ study of Bezier evaluation with =datamunge='s =algorithms::de_casteljau=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Bezier curves* -- the workhorses of fonts, vector graphics, and animation paths --
+are defined by a handful of control points. *De Casteljau's algorithm* evaluates
+them by nothing more than repeated *linear interpolation*: blend consecutive
+control points, then blend the blends, and so on until a single point remains --
+the curve at parameter \(t\). It is numerically stable, geometrically intuitive,
+and doubles as a curve-subdivision tool. This report implements it in =datamunge='s
+C++ =algorithms::de_casteljau=, evaluates a cubic Bezier, and draws the
+interpolation scaffold that constructs the point at \(t=0.5\).
+#+end_abstract
+
+* The pyramid of lerps
+
+Given control points \(P_0,\dots,P_n\) and a parameter \(t\in[0,1]\), form
+successive levels by linear interpolation (a "lerp"):
+
+\[
+P_i^{(0)}=P_i,\qquad
+P_i^{(r)}=(1-t)\,P_i^{(r-1)}+t\,P_{i+1}^{(r-1)} .
+\]
+
+Each level has one fewer point than the last; after \(n\) levels a single point
+\(P_0^{(n)}\) remains -- the curve \(B(t)\). This equals the Bernstein form
+\(B(t)=\sum_i \binom{n}{i}t^i(1-t)^{n-i}P_i\), but computed as a cascade of stable
+convex blends rather than by evaluating powers. Two properties fall straight out of
+the construction: the curve passes through the first and last control points
+(\(B(0)=P_0\), \(B(1)=P_n\)), and it lies entirely within the convex hull of the
+control points (every level is a convex combination). The same recurrence, kept at
+a fixed \(t\), also *subdivides* the curve into two Bezier halves -- the basis of
+adaptive rendering.
+
+#+name: dc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+DE-CASTELJAU(control, t):
+  p <- copy of control
+  for r in 1 .. n:                     # n = number of control points - 1
+      for i in 0 .. n-r:
+          p[i] <- (1 - t) * p[i] + t * p[i+1]   # lerp (component-wise)
+  return p[0]
+#+end_example
+
+* Worked example: a cubic Bezier at t = 0.5
+
+We take four control points \((0,0),(1,2),(3,3),(4,0)\). At \(t=0.5\) the algorithm
+lerps the 4 points to 3, then to 2, then to the single curve point. The program
+checks the endpoints and records the intermediate levels for the figure.
+
+#+name: dc-run
+#+begin_src c++ :eval no
+    const std::vector<PlanarPoint> ctrl = {{0.0, 0.0}, {1.0, 2.0}, {3.0, 3.0}, {4.0, 0.0}};
+
+    std::cout << "=== De Casteljau: cubic Bezier ===\n";
+    const PlanarPoint b0 = de_casteljau(ctrl, 0.0), b1 = de_casteljau(ctrl, 1.0), bh = de_casteljau(ctrl, 0.5);
+    std::cout << "B(0)   = (" << b0.x << ", " << b0.y << ")  [= P0]\n";
+    std::cout << "B(1)   = (" << b1.x << ", " << b1.y << ")  [= P3]\n";
+    std::cout << "B(0.5) = (" << bh.x << ", " << bh.y << ")\n";
+
+    // Reconstruct the scaffold at t = 0.5.
+    const double t = 0.5;
+    std::vector<std::vector<PlanarPoint>> levels{ctrl};
+    while (levels.back().size() > 1) {
+        const auto& cur = levels.back();
+        std::vector<PlanarPoint> nxt;
+        for (std::size_t i = 0; i + 1 < cur.size(); ++i)
+            nxt.push_back({(1 - t) * cur[i].x + t * cur[i + 1].x, (1 - t) * cur[i].y + t * cur[i + 1].y});
+        levels.push_back(nxt);
+    }
+
+    auto plot = RPlot::create();
+    // Bezier curve.
+    std::vector<double> cx, cy;
+    for (double u = 0.0; u <= 1.0001; u += 0.01) { const PlanarPoint p = de_casteljau(ctrl, u); cx.push_back(p.x); cy.push_back(p.y); }
+    plot.line(cx, cy, "Bezier curve", RGB{220, 38, 38}, 2.5);
+    // Control polygon.
+    std::vector<double> px, py;
+    for (const auto& p : ctrl) { px.push_back(p.x); py.push_back(p.y); }
+    plot.line(px, py, "control polygon", RGB{37, 99, 235}, 1.5);
+    plot.points(px, py, "control points", RGB{37, 99, 235}, 9.0);
+    // Scaffold levels at t = 0.5.
+    const std::vector<RGB> lvlcol = {{148, 163, 184}, {203, 213, 225}, {202, 138, 4}};
+    for (std::size_t r = 1; r < levels.size(); ++r) {
+        std::vector<double> lx, ly;
+        for (const auto& p : levels[r]) { lx.push_back(p.x); ly.push_back(p.y); }
+        if (lx.size() > 1) plot.line(lx, ly, "", lvlcol[(r - 1) % lvlcol.size()], 1.5);
+        plot.points(lx, ly, "", lvlcol[(r - 1) % lvlcol.size()], 8.0);
+    }
+    plot.points({bh.x}, {bh.y}, "B(0.5)", RGB{202, 138, 4}, 13.0);
+    plot.legend({"Bezier curve", "control polygon", "B(0.5)"}, {{220, 38, 38}, {37, 99, 235}, {202, 138, 4}});
+    plot.title("De Casteljau at t=0.5: lerp 4 points to 3 to 2 to the curve point")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/de_casteljau.svg");
+    std::cout << "\nwrote de_casteljau.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/de_casteljau_analysis.cpp <<'CPP'
+<<dc-includes>>
+
+int main() {
+<<dc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/de_casteljau_analysis.cpp -o build/org/de_casteljau_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/de_casteljau_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== De Casteljau: cubic Bezier ===
+B(0)   = (0, 0)  [= P0]
+B(1)   = (4, 0)  [= P3]
+B(0.5) = (2, 1.875)
+
+wrote de_casteljau.svg
+#+end_example
+
+The curve starts exactly at \(P_0=(0,0)\) and ends at \(P_3=(4,0)\) -- the endpoint
+interpolation property -- and \(B(0.5)\) is the apex of the scaffold. Every
+intermediate point is a convex blend, so the whole curve stays inside the control
+polygon's hull.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/de_casteljau.svg]]
+
+The blue control polygon connects the four control points; the red Bezier curve
+bows toward but never reaches the interior ones. The grey and gold scaffold shows
+one evaluation at \(t=0.5\): the four control points lerp to three (grey), those to
+two, and finally to the single gold point \(B(0.5)\) on the curve -- interpolation
+all the way down.
