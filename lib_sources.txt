@@ -1,5 +1,6 @@
 datamunge/datamunge
 datamunge/datamunge_c
+datamunge/algorithms/cycle_detection
 datamunge/plot
 datamunge/plot/ggplot
 datamunge/random

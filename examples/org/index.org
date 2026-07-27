@@ -336,6 +336,13 @@ We implement SPEA2 (Zitzler, Laumanns & Thiele 2001) in =datamunge='s C++ =optim
 
 We implement MOEA/D (Zhang & Li 2007) in =datamunge='s C++ =optim::MOEAD= and report it as a literate program: every number and figure below is real, compiled, executed output. We build the Das-Dennis weight lattice, derive the ideal-point-anchored Tchebycheff scalarization, show numerically how different weights steer to different parts of the front, and converge the decomposed population to the ZDT1 front to within \(\approx1.4\times10^{-3}\).
 
+* General & Combinatorial Algorithms
+
+** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])
+/A literate C++ study of period-finding in eventually-periodic sequences using datamunge/
+
+We implement Brent's cycle-detection algorithm (=algorithms::brent_cycle_detection=) and report it as a literate program: every number and figure comes from a single compiled, executed C++ binary. We describe the rho structure of a functional-graph iteration, give Brent's two-phase powers-of-two method with pseudocode and a correctness argument, and apply it to an explicit rho graph (recovering tail mu=3 and cycle lambda=4) and to classifying happy numbers by the cycle their digit-square-sum iteration reaches.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])
