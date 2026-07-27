@@ -1,0 +1,265 @@
+#+title: Tarjan's Off-line LCA: All Lowest Common Ancestors in One DFS
+#+subtitle: A literate C++ study of union-find lowest-common-ancestor queries with =datamunge='s =algorithms::tarjan_offline_lca=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a rooted tree and a pile of node pairs, the *lowest common ancestor*
+(LCA) of a pair is the deepest node that lies above both. Answered one at a
+time by walking parent pointers, a batch of \(q\) queries on a tree of height
+\(h\) costs \(O(qh)\) -- quadratic on a long path. Tarjan (1979) observed that
+if /every/ query is known in advance -- the *off-line* setting -- a single
+depth-first search can settle all of them together. The trick is a
+disjoint-set (union-find) structure that, as the DFS retreats out of each
+subtree, glues it to its parent and remembers the parent as the subtree's
+*representative ancestor*; the LCA of the node being finished and any
+already-finished partner is then just that partner's current representative.
+This report implements the method in =datamunge='s C++
+=algorithms::tarjan_offline_lca= and presents it as a literate program: every
+number and the figure come from one compiled binary. We define rooted trees,
+ancestry and the LCA, argue why the off-line restriction buys near-linear
+\(O((n+q)\,\alpha(n))\) time, give the algorithm in pseudocode, and work a
+deterministic eight-node example by hand -- confirming, among others, that two
+leaves in opposite subtrees meet only at the root while a node and its own
+ancestor meet at the ancestor.
+#+end_abstract
+
+* Rooted trees, ancestors, and the LCA
+
+A *rooted tree* on nodes \(\{0,\dots,n-1\}\) with a distinguished *root* is a
+connected acyclic graph in which every non-root node has a unique *parent* --
+its neighbour on the path toward the root. Node \(x\) is an *ancestor* of node
+\(y\) (equivalently \(y\) is a *descendant* of \(x\)) when \(x\) lies on the
+unique path from \(y\) up to the root; by convention every node is an ancestor
+of itself. The *lowest common ancestor* of a pair \((a,b)\) is the ancestor of
+both that is deepest -- farthest from the root:
+
+- if \(a=b\), then \(\mathrm{LCA}(a,b)=a\);
+- if \(a\) is an ancestor of \(b\), then \(\mathrm{LCA}(a,b)=a\) (and dually);
+- otherwise \(a\) and \(b\) sit in disjoint subtrees hanging off their LCA, and
+  it is the node where their two root-ward paths first merge.
+
+=datamunge= takes the tree as its =n-1= undirected =tree_edges= plus a =root=,
+and a batch of =queries=; =tarjan_offline_lca= returns a vector =lca= with
+=lca[k]= the LCA of the \(k\)-th queried pair.
+
+#+name: tarjan-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tarjan_lca.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Why off-line makes it near-linear
+
+On-line, each query can arrive after the answer to the last is already needed,
+so the best simple bound per query is the tree height. The *off-line*
+promise -- all queries handed over up front -- removes that pressure: we may
+reorder the work to suit the tree rather than the query stream. Tarjan's
+insight is to hang every query off both of its endpoints and then run one
+post-order DFS. The moment the DFS *finishes* a node \(u\) (having explored its
+whole subtree), it knows \(u\)'s entire subtree; for any partner \(v\) that was
+finished *earlier*, the paths from \(u\) and \(v\) upward first coincide at a
+node that is already determined, and a union-find structure hands it over in
+amortised inverse-Ackermann time.
+
+Concretely, maintain a disjoint-set forest. Each finished subtree is
+=union='d into its parent's set, and that set's *representative ancestor* is
+reset to the parent. A node is coloured *black* once finished. When finishing
+\(u\), scan the queries touching \(u\); for each partner \(v\) already black,
+=find(v)= names the set \(v\) has been merged into, whose representative
+ancestor is exactly \(\mathrm{LCA}(u,v)\). With path compression and union by
+rank, the \(n\) unions and \(O(n+q)\) finds run in \(O((n+q)\,\alpha(n))\) --
+effectively linear, versus \(O(qh)\) for pointer-walking.
+
+* The method
+
+The classic recursion, with an explicit stack in the implementation to survive
+very deep trees:
+
+#+begin_example
+TARJAN-OLCA(root, tree, queries):
+  for each node u:  parent_set[u] <- u;  ancestor[u] <- u;  black[u] <- false
+  for query k = (a, b):  attach (b, k) to a;  attach (a, k) to b
+
+  DFS(root, none)
+
+  procedure DFS(u, parent):
+      for each neighbour v of u with v != parent:      # v is a child of u
+          DFS(v, u)
+          UNION(u, v)                                  # merge v's finished subtree into u's set
+          ancestor[ FIND(u) ] <- u                     # ... whose representative becomes u
+      black[u] <- true                                 # u's subtree is fully explored
+      for each (v, k) attached to u:
+          if black[v]:                                 # partner already finished
+              answer[k] <- ancestor[ FIND(v) ]         # ... = LCA(u, v)
+
+  FIND(x): follow parent_set pointers to the root, compressing the path
+  UNION(a, b): link the two set roots (by rank)
+#+end_example
+
+*Why =ancestor[FIND(v)]= is the LCA.* When \(u\) is finished, walk up from the
+already-black partner \(v\). Every subtree strictly below the true
+\(\ell=\mathrm{LCA}(u,v)\) on \(v\)'s side has been finished and merged upward,
+so =FIND(v)= lands in the set whose representative ancestor was last reset to
+\(\ell\) -- but not higher, because \(\ell\) itself is still open (it is an
+ancestor of the not-yet-finished \(u\), hence still on the DFS stack) and has
+not yet been merged into /its/ parent. Thus =ancestor[FIND(v)] = \(\ell\)=.
+
+*Correctness of ordering.* Because a query is attached to both endpoints, it is
+inspected when the /second/ endpoint is finished (the first was still white,
+hence skipped). At that instant the first endpoint is black and the argument
+above applies, so every query is answered exactly once.
+
+* A worked example (by hand)
+
+Take this eight-node tree, rooted at \(0\):
+
+#+begin_example
+            0
+           / \
+          1   2
+         / \   \
+        3   4   5
+       /         \
+      6           7
+#+end_example
+
+Root-ward paths: \(6\!\to\!3\!\to\!1\!\to\!0\), \(7\!\to\!5\!\to\!2\!\to\!0\),
+\(4\!\to\!1\!\to\!0\). Reading off deepest common nodes by hand:
+
+- \(\mathrm{LCA}(6,7)\): paths meet only at \(0\) -- leaves in opposite subtrees.
+- \(\mathrm{LCA}(3,4)=1\): siblings under \(1\).
+- \(\mathrm{LCA}(6,4)=1\): \(6\) sits under \(3\) under \(1\); \(4\) under \(1\) -- cousins.
+- \(\mathrm{LCA}(5,7)=5\): \(7\) is a descendant of \(5\).
+- \(\mathrm{LCA}(6,1)=1\): \(1\) is an ancestor of \(6\).
+- \(\mathrm{LCA}(4,4)=4\): a node with itself.
+- \(\mathrm{LCA}(7,2)=2\): \(2\) is an ancestor of \(7\).
+
+The program below feeds exactly these queries to =tarjan_offline_lca=, prints
+the answers, and draws the tree with the queried pairs marked.
+
+#+name: tarjan-run
+#+begin_src c++ :eval no
+    const std::size_t n = 8, root = 0;
+    const std::vector<std::pair<std::size_t, std::size_t>> edges = {
+        {0, 1}, {0, 2}, {1, 3}, {1, 4}, {3, 6}, {2, 5}, {5, 7}};
+    const std::vector<std::pair<std::size_t, std::size_t>> queries = {
+        {6, 7}, {3, 4}, {6, 4}, {5, 7}, {6, 1}, {4, 4}, {7, 2}};
+    const std::vector<std::string> notes = {
+        "leaves in different subtrees", "siblings", "cousins",
+        "node and its descendant", "node and its ancestor",
+        "a node with itself", "node and its ancestor"};
+
+    std::cout << "=== Tarjan off-line LCA on an 8-node tree (rooted at 0) ===\n";
+    std::cout << "tree edges (parent -- child):\n";
+    for (const auto& [u, v] : edges) std::cout << "  " << u << " -- " << v << "\n";
+
+    const auto lca = tarjan_offline_lca(n, root, edges, queries);
+    std::cout << "\nlowest common ancestors:\n";
+    for (std::size_t k = 0; k < queries.size(); ++k)
+        std::cout << "  LCA(" << queries[k].first << ", " << queries[k].second
+                  << ") = " << lca[k] << "     [" << notes[k] << "]\n";
+
+    // --- draw the tree: vertices placed by depth (root at top), edges as grey lines ---
+    std::vector<double> px(n), py(n);
+    px[0] = 3.5; py[0] = 3;
+    px[1] = 2.0; py[1] = 2;  px[2] = 5.0; py[2] = 2;
+    px[3] = 1.0; py[3] = 1;  px[4] = 3.0; py[4] = 1;  px[5] = 5.0; py[5] = 1;
+    px[6] = 1.0; py[6] = 0;  px[7] = 5.0; py[7] = 0;
+
+    std::vector<double> ex0, ey0, ex1, ey1;
+    for (const auto& [u, v] : edges) {
+        ex0.push_back(px[u]); ey0.push_back(py[u]);
+        ex1.push_back(px[v]); ey1.push_back(py[v]);
+    }
+    std::vector<double> qx0, qy0, qx1, qy1; // red chords linking each queried pair
+    for (const auto& [a, b] : queries)
+        if (a != b) {
+            qx0.push_back(px[a]); qy0.push_back(py[a]);
+            qx1.push_back(px[b]); qy1.push_back(py[b]);
+        }
+
+    auto plot = RPlot::create();
+    plot.segments(ex0, ey0, ex1, ey1, {148, 163, 184}, 3.0); // tree edges
+    plot.segments(qx0, qy0, qx1, qy1, {220, 38, 38}, 1.0);   // queried pairs
+    plot.points(px, py, "", {37, 99, 235}, 10.0);            // vertices
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(px[i] + 0.14, py[i] + 0.12, std::to_string(i), {17, 24, 39}, 15.0);
+    plot.title("8-node tree rooted at 0; red chords link the queried pairs")
+        .x_label("").y_label("depth (root at top)")
+        .x_limits(0.3, 5.7).y_limits(-0.5, 3.5).show_grid(false);
+    plot.save_svg("build/org/tarjan_lca_tree.svg");
+    std::cout << "\nwrote tarjan_lca_tree.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tarjan_lca_analysis.cpp <<'CPP'
+<<tarjan-includes>>
+
+int main() {
+<<tarjan-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tarjan_lca_analysis.cpp -o build/org/tarjan_lca_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tarjan_lca_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tarjan off-line LCA on an 8-node tree (rooted at 0) ===
+tree edges (parent -- child):
+  0 -- 1
+  0 -- 2
+  1 -- 3
+  1 -- 4
+  3 -- 6
+  2 -- 5
+  5 -- 7
+
+lowest common ancestors:
+  LCA(6, 7) = 0     [leaves in different subtrees]
+  LCA(3, 4) = 1     [siblings]
+  LCA(6, 4) = 1     [cousins]
+  LCA(5, 7) = 5     [node and its descendant]
+  LCA(6, 1) = 1     [node and its ancestor]
+  LCA(4, 4) = 4     [a node with itself]
+  LCA(7, 2) = 2     [node and its ancestor]
+
+wrote tarjan_lca_tree.svg
+#+end_example
+
+Every answer matches the by-hand reading of the tree: the two deep leaves
+\(6\) and \(7\) share only the root, the siblings and cousins under \(1\) all
+resolve to \(1\), a node paired with an ancestor (or with itself) returns that
+ancestor, and \(\mathrm{LCA}(5,7)=5\) because \(7\) descends from \(5\). All
+seven were produced by a single depth-first traversal.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/tarjan_lca_tree.svg]]
+
+The figure lays the vertices out by depth -- the root at the top, leaves at the
+bottom -- with grey tree edges and red chords marking the queried pairs. Read
+against the picture, each red chord's LCA is the lowest vertex from which both
+of its endpoints hang: chords crossing between the left \((1)\) and right
+\((2)\) subtrees can only meet at \(0\), whereas a chord running straight down a
+single branch meets at its upper endpoint. That geometry is what Tarjan's one
+pass extracts, in near-linear time, for the whole batch at once.

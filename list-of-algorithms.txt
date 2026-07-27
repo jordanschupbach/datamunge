@@ -14,12 +14,12 @@ Graph algorithms
 Further information: Category:Graph algorithms and Graph theory
 
     Blossom algorithm: algorithm for constructing maximum-cardinality matching on graphs.
-    Coloring algorithm: algorithms for graph (vertex or edge) coloring (subject to constraints, e.g. proper coloring or list coloring)
-    Hopcroft–Karp algorithm: convert a bipartite graph to a maximum-cardinality matching
-    Hungarian algorithm: algorithm for finding a perfect matching
-    Prüfer coding: conversion between a labeled tree and its Prüfer sequence
-    Tarjan's off-line lowest common ancestors algorithm: computes lowest common ancestors for pairs of nodes in a tree
-    Topological sort: finds linear order of nodes (e.g. jobs) based on their dependencies.
+    [x] Coloring algorithm: algorithms for graph (vertex or edge) coloring (subject to constraints, e.g. proper coloring or list coloring)  -- datamunge::algorithms::greedy_coloring (greedy Welsh-Powell proper vertex coloring); report examples/org/graph_coloring_analysis.org
+    [x] Hopcroft–Karp algorithm: convert a bipartite graph to a maximum-cardinality matching  -- datamunge::algorithms::hopcroft_karp; report examples/org/hopcroft_karp_analysis.org
+    [x] Hungarian algorithm: algorithm for finding a perfect matching  -- datamunge::algorithms::hungarian (Kuhn-Munkres min-cost assignment); report examples/org/hungarian_analysis.org
+    [x] Prüfer coding: conversion between a labeled tree and its Prüfer sequence  -- datamunge::algorithms::tree_to_prufer / prufer_to_tree; report examples/org/prufer_analysis.org
+    [x] Tarjan's off-line lowest common ancestors algorithm: computes lowest common ancestors for pairs of nodes in a tree  -- datamunge::algorithms::tarjan_offline_lca; report examples/org/tarjan_lca_analysis.org
+    [x] Topological sort: finds linear order of nodes (e.g. jobs) based on their dependencies.  -- datamunge::algorithms::topological_sort; report examples/org/topological_sort_analysis.org
 
 Graph drawing
 Further information: Graph drawing

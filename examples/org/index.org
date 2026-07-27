@@ -353,6 +353,36 @@ We implement Floyd's cycle-detection algorithm (=algorithms::floyd_cycle_detecti
 
 We implement Gale-Shapley deferred acceptance (=algorithms::gale_shapley=, plus =is_stable=) and report it as a literate program. We define stability and blocking pairs, give the proposal-rejection pseudocode with termination/completeness/stability arguments, and state proposer-optimality; a five-resident, five-hospital match shows residents averaging their 1.2nd choice when they propose versus 3.2nd when hospitals propose -- both stable -- the asymmetry behind applicant-proposing residency matches.
 
+** [[./topological_sort_analysis.html][Topological Sort: Linear Ordering of a Directed Acyclic Graph]] ([[./topological_sort_analysis.pdf][PDF]])
+/A literate C++ study of Kahn's in-degree algorithm and cycle detection using datamunge/
+
+We implement Kahn's topological-sort algorithm (=algorithms::topological_sort=, plus =is_topological_order=) and report it as a literate program. We define directed acyclic graphs and topological order, give the in-degree/queue pseudocode with termination and correctness arguments, and note how emitting fewer than n vertices doubles as an exact cycle test; a six-course computer-science prerequisite DAG is sorted into a legal study plan and drawn as a layered left-to-right layout in the returned order.
+
+** [[./prufer_analysis.html][Prüfer Coding: A Bijection Between Labeled Trees and Integer Sequences]] ([[./prufer_analysis.pdf][PDF]])
+/A literate C++ study of tree encoding, the labeled-tree bijection, and Cayley's formula using datamunge/
+
+We implement Prüfer coding (=algorithms::tree_to_prufer= and =algorithms::prufer_to_tree=) and report it as a literate program. We describe labeled trees and the leaf-stripping encoding, give the encode and decode algorithms with pseudocode, and show how their being mutually inverse proves Cayley's formula -- there are n^(n-2) labeled trees on n vertices, one per sequence. A six-vertex tree round-trips through its code 3 3 3 4, and enumerating all 4^2 = 16 sequences on four vertices decodes to exactly 16 distinct labeled trees.
+
+** [[./hopcroft_karp_analysis.html][The Hopcroft-Karp Algorithm: Maximum Bipartite Matching in O(E sqrt(V))]] ([[./hopcroft_karp_analysis.pdf][PDF]])
+/A literate C++ study of layered augmenting paths and maximum bipartite matching using datamunge/
+
+We implement Hopcroft-Karp maximum-cardinality bipartite matching (=algorithms::hopcroft_karp=) and report it as a literate program. We define matchings and augmenting paths, state Berge's theorem (a matching is maximum iff it has no augmenting path), and give the phased BFS-layering + simultaneous-DFS pseudocode that turns the naive O(VE) method into O(E sqrt(V)); a five-applicant, four-job instance fills all four jobs -- exactly the maximum.
+
+** [[./hungarian_analysis.html][The Hungarian Algorithm: Minimum-Cost Assignment by Kuhn-Munkres]] ([[./hungarian_analysis.pdf][PDF]])
+/A literate C++ study of the assignment problem and LP-duality certificates using datamunge/
+
+We implement the Hungarian algorithm (=algorithms::hungarian=) and report it as a literate program. We cast the assignment problem as a linear program, derive its dual -- row potentials u_i and column potentials v_j with u_i + v_j <= c_ij -- and the complementary-slackness condition under which a perfect matching of tight edges is provably optimal, give the O(n^3) augmenting-path algorithm with pseudocode, and solve a three-worker, three-task instance (optimal cost 9), cross-checked against all 3! permutations.
+
+** [[./tarjan_lca_analysis.html][Tarjan's Off-line LCA: All Lowest Common Ancestors in One DFS]] ([[./tarjan_lca_analysis.pdf][PDF]])
+/A literate C++ study of union-find lowest-common-ancestor queries using datamunge/
+
+We implement Tarjan's off-line lowest-common-ancestors algorithm (=algorithms::tarjan_offline_lca=) and report it as a literate program. We define rooted trees, ancestry, and the LCA, explain why the off-line setting lets one depth-first search plus path-compressed union-find answer a whole batch in near-linear O((n+q) alpha(n)) time, give the method with pseudocode and a correctness argument, and work an eight-node tree by hand.
+
+** [[./graph_coloring_analysis.html][Greedy Graph Coloring: The Welsh-Powell Heuristic]] ([[./graph_coloring_analysis.pdf][PDF]])
+/A literate C++ study of proper vertex coloring and the Delta+1 bound using datamunge/
+
+We implement greedy proper vertex coloring with the Welsh-Powell ordering (=algorithms::greedy_coloring=, plus =is_proper_coloring=) and report it as a literate program. We define proper colorings, the chromatic number chi(G) and its NP-hardness, give the degree-descending greedy rule with pseudocode and a proof it never exceeds Delta+1 colors, then color the 5-cycle with three colors and K4 with four (where the bound is tight).
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])

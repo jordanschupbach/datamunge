@@ -1,0 +1,282 @@
+#+title: Prüfer Coding: A Bijection Between Labeled Trees and Integer Sequences
+#+subtitle: A literate C++ study of tree encoding and Cayley's formula with =datamunge='s =algorithms::tree_to_prufer=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How many different trees can you draw on \(n\) labeled dots? Cayley's 1889
+theorem gives the astonishing answer \(n^{\,n-2}\), and *Prüfer coding*
+(Prüfer 1918) proves it in the most concrete way imaginable: it exhibits an
+explicit, invertible dictionary that turns every labeled tree on \(n\)
+vertices into a unique sequence of \(n-2\) vertex labels, and turns every such
+sequence back into a unique tree. Counting the trees becomes counting the
+sequences -- of which there are exactly \(n^{\,n-2}\). This report implements
+both directions in =datamunge='s C++ =algorithms::tree_to_prufer= and
+=algorithms::prufer_to_tree= and presents them as a literate program: every
+number and figure is produced by a single compiled binary. We describe labeled
+trees and the encoding, give the encode and decode algorithms as pseudocode
+with the bijection argument that yields Cayley's formula, round-trip a small
+hand-computed tree (whose Prüfer code is \(3\,3\,3\,4\)) in both directions,
+and confirm the count by exhaustively enumerating all \(4^2 = 16\) sequences on
+four vertices and watching them decode to \(16\) distinct trees.
+#+end_abstract
+
+* Labeled trees and their codes
+
+A *tree* is a connected, acyclic undirected graph; on \(n\) vertices it has
+exactly \(n-1\) edges. A *labeled* tree carries the vertex names
+\(\{0,1,\dots,n-1\}\), so two trees that differ only by a relabeling are
+counted as different. A vertex of degree one is a *leaf*; every tree on
+\(n \ge 2\) vertices has at least two leaves.
+
+The Prüfer code exploits leaves. To encode, we repeatedly strip off the
+smallest-labeled leaf and write down the single neighbor it was attached to;
+after \(n-2\) removals only two vertices are left and we stop. The result is a
+sequence of \(n-2\) labels drawn from \(\{0,\dots,n-1\}\). A useful invariant
+falls straight out of the construction: *each vertex \(v\) appears in the code
+exactly \(\deg(v)-1\) times*, because \(v\) is written once for every incident
+edge except the one that survives until \(v\) itself is deleted (or, for the
+final two vertices, until the algorithm halts). That identity is what makes the
+process reversible, and it drives the decoder.
+
+=datamunge= represents a tree as its vertex count =n= and a list of undirected
+=tree_edges=, and represents a Prüfer code as a =std::vector<std::size_t>=.
+
+#+name: prufer-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Encoding: tree to sequence
+
+Keep the current leaves in a set ordered by label so the smallest is always at
+hand. Repeatedly remove that smallest leaf, emit its unique still-present
+neighbor, and -- because deleting the leaf lowers the neighbor's degree -- check
+whether the neighbor has just *become* a leaf, adding it to the set if so.
+
+#+begin_example
+TREE-TO-PRUFER(n, edges):
+  build adjacency and degree[v] from edges
+  leaves <- { v : degree[v] == 1 }         # ordered set, smallest label first
+  sequence <- empty
+  repeat n - 2 times:
+      leaf <- smallest element of leaves;  remove it from leaves
+      neighbor <- the unique still-present vertex adjacent to leaf
+      append neighbor to sequence
+      degree[neighbor] <- degree[neighbor] - 1
+      if degree[neighbor] == 1: add neighbor to leaves
+  return sequence            # length n - 2
+#+end_example
+
+Each removal deletes one vertex and appends one label, so after \(n-2\) rounds
+exactly two vertices survive and the sequence has length \(n-2\). A leaf has a
+single remaining neighbor, so "the neighbor" is well defined.
+
+* Decoding: sequence to tree
+
+Decoding inverts the invariant above. Set \(n = \text{length} + 2\) and give
+every vertex a provisional degree of \(1\), then add one for each of its
+appearances in the code, reconstructing the true degrees. Now replay the
+encoder: the vertex it would have deleted at step \(k\) is the smallest label
+that is currently a leaf *and* does not appear in the remaining code -- which is
+exactly the smallest current leaf once we decrement degrees as we consume code
+entries. Join that leaf to the current code entry, and when a code entry's
+running degree drops to one it too becomes an available leaf. Two vertices of
+degree one are left at the end; they form the last edge.
+
+#+begin_example
+PRUFER-TO-TREE(sequence):
+  n <- length(sequence) + 2
+  degree[v] <- 1 for every v in 0..n-1
+  for s in sequence: degree[s] <- degree[s] + 1
+  leaves <- { v : degree[v] == 1 }         # ordered set, smallest label first
+  edges <- empty
+  for s in sequence:
+      leaf <- smallest element of leaves;  remove it from leaves
+      add edge (leaf, s) to edges
+      degree[leaf] <- degree[leaf] - 1
+      degree[s]    <- degree[s] - 1
+      if degree[s] == 1: add s to leaves
+  u, v <- the two vertices remaining in leaves
+  add edge (u, v) to edges
+  return edges               # n - 1 edges
+#+end_example
+
+Encoding and decoding are mutually inverse: encoding a tree and decoding the
+result returns the original tree, and decoding any sequence and re-encoding
+returns the original sequence.
+
+** Cayley's formula
+
+Because =tree_to_prufer= and =prufer_to_tree= are inverse maps, they set up a
+*bijection* between the labeled trees on \(n\) vertices and the sequences in
+\(\{0,\dots,n-1\}^{\,n-2}\). Two finite sets in bijection have the same size,
+and the number of length-\((n-2)\) sequences over \(n\) symbols is plainly
+\(n^{\,n-2}\). Therefore
+
+\[
+  \#\{\text{labeled trees on } n \text{ vertices}\} = n^{\,n-2},
+\]
+
+which is *Cayley's formula*. The bijection is not merely a counting trick -- it
+is a constructive proof, and it lets us sample a uniformly random labeled tree
+by sampling a uniformly random sequence.
+
+* Example: encode, decode, and count
+
+We take a fixed six-vertex tree, encode it to its Prüfer code, decode that code
+back, and confirm the round trip. By hand: the leaves are \(0,1,2,5\); we strip
+\(0,1,2\) (each attached to \(3\), emitting \(3\) three times), which turns
+\(3\) into a leaf, so we strip \(3\) next (attached to \(4\), emitting \(4\)),
+leaving \(\{4,5\}\). The code is therefore \(3\,3\,3\,4\). We then enumerate
+*all* Prüfer sequences on four vertices to watch Cayley's formula hold exactly.
+
+#+name: prufer-run
+#+begin_src c++ :eval no
+    // --- A labeled tree on six vertices (Prüfer code hand-computed above) ---
+    const std::size_t n = 6;
+    const std::vector<std::pair<std::size_t, std::size_t>> tree = {
+        {0, 3}, {1, 3}, {2, 3}, {3, 4}, {4, 5}};
+
+    auto print_edges = [](const std::vector<std::pair<std::size_t, std::size_t>>& es) {
+        for (std::size_t i = 0; i < es.size(); ++i)
+            std::cout << (i ? " " : "") << "(" << es[i].first << "," << es[i].second << ")";
+    };
+
+    std::cout << "=== Prufer coding: a labeled tree on " << n << " vertices ===\n";
+    std::cout << "tree edges:\n  ";
+    print_edges(tree);
+    std::cout << "\n\n";
+
+    const auto code = tree_to_prufer(n, tree);
+    std::cout << "encode -> Prufer sequence:";
+    for (const std::size_t s : code) std::cout << " " << s;
+    std::cout << "\n\n";
+
+    const auto rebuilt = prufer_to_tree(code);
+    std::cout << "decode(";
+    for (std::size_t i = 0; i < code.size(); ++i) std::cout << (i ? " " : "") << code[i];
+    std::cout << ") -> tree edges:\n  ";
+    print_edges(rebuilt);
+    std::cout << "\n\n";
+
+    const auto recode = tree_to_prufer(n, rebuilt);
+    std::cout << "round-trip (encode after decode) matches: " << (recode == code ? "yes" : "NO") << "\n\n";
+
+    // --- Cayley's formula by exhaustive enumeration for n = 4 ---
+    const std::size_t m = 4;
+    auto ipow = [](std::size_t base, std::size_t exp) {
+        std::size_t r = 1;
+        for (std::size_t i = 0; i < exp; ++i) r *= base;
+        return r;
+    };
+    std::set<std::string> distinct;
+    std::size_t total = 0;
+    for (std::size_t a = 0; a < m; ++a)
+        for (std::size_t b = 0; b < m; ++b) {
+            const std::vector<std::size_t> seq = {a, b};
+            const auto edges = prufer_to_tree(seq);
+            std::vector<std::pair<std::size_t, std::size_t>> canon;
+            for (const auto& [u, v] : edges) canon.emplace_back(std::min(u, v), std::max(u, v));
+            std::sort(canon.begin(), canon.end());
+            std::string key;
+            for (const auto& [u, v] : canon) key += std::to_string(u) + "-" + std::to_string(v) + ";";
+            distinct.insert(key);
+            ++total;
+        }
+    const std::size_t predicted = ipow(m, m - 2);
+    std::cout << "=== Cayley's formula by enumeration (n = " << m << ") ===\n";
+    std::cout << "enumerated all " << m << "^" << (m - 2) << " = " << total
+              << " Prufer sequences of length " << (m - 2) << "\n";
+    std::cout << "distinct labeled trees decoded: " << distinct.size() << "\n";
+    std::cout << "Cayley predicts n^(n-2) = " << m << "^" << (m - 2) << " = " << predicted
+              << " labeled trees  ->  " << (distinct.size() == predicted ? "match" : "MISMATCH") << "\n\n";
+
+    // --- Figure: draw the six-vertex tree ---
+    const std::vector<double> vx = {0.0, 0.0, 0.0, 2.0, 4.0, 6.0};
+    const std::vector<double> vy = {2.0, 1.0, 0.0, 1.0, 1.0, 1.0};
+    auto fig = RPlot::create();
+    for (const auto& [u, v] : tree)
+        fig.lines({vx[u], vx[v]}, {vy[u], vy[v]}, "", {156, 163, 175}, 2.0);
+    fig.points(vx, vy, "vertex", {37, 99, 235}, 12.0);
+    for (std::size_t i = 0; i < n; ++i)
+        fig.text(vx[i] + 0.15, vy[i] + 0.12, std::to_string(i), {17, 24, 39}, 15.0);
+    fig.title("A labeled tree on 6 vertices (Prufer code 3 3 3 4)")
+        .x_label("").y_label("").background({250, 250, 252}).show_grid(false);
+    fig.save_svg("build/org/prufer_tree.svg");
+    std::cout << "wrote prufer_tree.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/prufer_analysis.cpp <<'CPP'
+<<prufer-includes>>
+
+int main() {
+<<prufer-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/prufer_analysis.cpp -o build/org/prufer_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/prufer_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Prufer coding: a labeled tree on 6 vertices ===
+tree edges:
+  (0,3) (1,3) (2,3) (3,4) (4,5)
+
+encode -> Prufer sequence: 3 3 3 4
+
+decode(3 3 3 4) -> tree edges:
+  (0,3) (1,3) (2,3) (3,4) (4,5)
+
+round-trip (encode after decode) matches: yes
+
+=== Cayley's formula by enumeration (n = 4) ===
+enumerated all 4^2 = 16 Prufer sequences of length 2
+distinct labeled trees decoded: 16
+Cayley predicts n^(n-2) = 4^2 = 16 labeled trees  ->  match
+
+wrote prufer_tree.svg
+#+end_example
+
+The encoder reproduces the hand-computed code \(3\,3\,3\,4\) exactly, and
+decoding it returns the identical five-edge tree we started from -- the two
+directions are inverse, as promised. The label \(3\) appears three times
+because \(\deg(3)=4\), and \(4\) appears once because \(\deg(4)=2\), matching
+the "\(\deg(v)-1\) appearances" invariant; the four vertices that never appear,
+\(0,1,2,5\), are exactly the leaves (degree one, zero appearances), and the two
+vertices \(4,5\) are the pair left standing to form the final edge.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/prufer_tree.svg]]
+
+The figure draws the tree the code describes: a hub at vertex \(3\) with the
+three leaves \(0,1,2\), a path out through \(4\) to the leaf \(5\). The
+enumeration then closes the loop on the theory. Every one of the \(4^2 = 16\)
+length-two sequences over \(\{0,1,2,3\}\) decodes to a labeled tree, and all
+\(16\) are distinct -- exactly the count Cayley's formula predicts,
+\(n^{\,n-2} = 4^{2} = 16\). Because the map is a bijection, no tree is missed
+and none is produced twice: enumerating sequences *is* enumerating trees, which
+is precisely why the formula is what it is.

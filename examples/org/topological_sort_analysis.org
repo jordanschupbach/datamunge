@@ -1,0 +1,239 @@
+#+title: Topological Sort: Linear Ordering of a Directed Acyclic Graph
+#+subtitle: A literate C++ study of Kahn's algorithm with =datamunge='s =algorithms::topological_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a set of tasks with precedence constraints -- courses and their
+prerequisites, build targets and their dependencies, spreadsheet cells and the
+cells they reference -- in what order may the tasks be performed so that every
+constraint is respected? Such an order exists exactly when the constraint graph
+has no cycle, and a *topological sort* produces one. This report implements
+*Kahn's algorithm* (1962) in =datamunge='s C++ =algorithms::topological_sort=
+and presents it as a literate program: every number and figure is produced by a
+single compiled binary. We define directed acyclic graphs and topological
+order, give the in-degree/queue algorithm with pseudocode and an argument for
+its termination and correctness, and note how it doubles as a cycle detector.
+A worked six-course computer-science curriculum -- with hand-computed prerequisites
+-- is sorted into a legal study plan, and a layered layout draws the whole
+prerequisite DAG left to right in the order the algorithm returns. Because the
+queue is seeded with sources in ascending index order, the ordering is fully
+deterministic, so its output is verified against a by-hand trace.
+#+end_abstract
+
+* Directed acyclic graphs and topological order
+
+Model a set of tasks as a *directed graph*: vertices \(\{0,\dots,n-1\}\) are the
+tasks, and a directed edge \(u \to v\) means "\(u\) must come before \(v\)".
+A *topological order* is a linear arrangement of the vertices in which, for
+every edge \(u \to v\), vertex \(u\) appears somewhere before \(v\). Reading the
+order left to right therefore never violates a precedence constraint.
+
+Such an order exists *if and only if* the graph is a *directed acyclic graph*
+(DAG) -- one with no directed cycle. The "only if" direction is immediate: a
+cycle \(a \to b \to \dots \to a\) would demand \(a\) precede \(b\) precede
+\(\dots\) precede \(a\), an impossibility in a linear order. The "if" direction
+is exactly what the algorithm below establishes constructively. A DAG may admit
+*many* valid orders; the algorithm returns one particular one.
+
+=datamunge= represents the graph by a vertex count =n= and an edge list of
+=(from, to)= index pairs, and returns a =TopologicalSortResult= carrying the
+=order= together with a boolean =is_dag=. The helper =is_topological_order=
+certifies that a proposed order places every edge's tail before its head.
+
+#+name: ts-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/topological_sort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Kahn's algorithm
+
+Kahn's method rests on a simple observation: a *source* -- a vertex with no
+incoming edges (in-degree 0) -- depends on nothing, so it may safely be placed
+first. Emit any source, conceptually delete it from the graph (which lowers the
+in-degree of each of its successors), and repeat. New sources are exposed as
+their last prerequisite is removed. We track in-degrees in an array and keep the
+current sources in a queue so each is emitted once.
+
+#+begin_example
+KAHN-TOPOLOGICAL-SORT(n, edges):
+  in_degree[v] <- 0  for all vertices v
+  successors[u] <- []  for all vertices u
+  for each edge (u, v) in edges:
+      successors[u].append(v)
+      in_degree[v] <- in_degree[v] + 1
+
+  ready <- queue of all v with in_degree[v] == 0   # sources, in ascending index order
+  order <- []
+
+  while ready is not empty:
+      u <- pop(ready)
+      order.append(u)
+      for each v in successors[u]:                 # "delete" u
+          in_degree[v] <- in_degree[v] - 1
+          if in_degree[v] == 0:
+              push(ready, v)
+
+  if length(order) < n:                            # some vertices never reached in-degree 0
+      return (order = [], is_dag = false)          # a cycle blocks them
+  return (order, is_dag = true)
+#+end_example
+
+*Termination.* Each vertex is enqueued at most once -- only at the instant its
+in-degree reaches 0 -- and dequeued at most once, so the loop runs at most \(n\)
+iterations; each edge is examined exactly once across all the successor scans.
+The algorithm runs in \(O(n + m)\) time for \(m\) edges.
+
+*Correctness.* When a vertex \(u\) is emitted, its in-degree is 0, meaning every
+predecessor was emitted (and deleted) earlier. Hence every edge \(u \to v\) is
+emitted with \(u\) before \(v\): the output is a valid topological order. If the
+graph is a DAG, it always has a source (follow edges backward; in a finite
+acyclic graph you cannot loop, so you reach a vertex with no in-edges), and
+deleting a source leaves a smaller DAG, which again has a source -- so all \(n\)
+vertices are emitted. Conversely, if a cycle exists, none of its vertices ever
+reaches in-degree 0 (each has an in-cycle predecessor still present), so fewer
+than \(n\) vertices are emitted. The count \(< n\) is therefore an exact test:
+Kahn's algorithm is simultaneously a *cycle detector*. On that outcome
+=datamunge= reports =is_dag = false= and returns an empty =order=.
+
+* Example: a course prerequisite plan
+
+We model six computer-science courses and their prerequisites as a DAG (an edge
+=prereq -> course= says the prerequisite must be taken first) and ask for a legal
+order in which to take them. The vertices are
+
+- =0= CS101 Intro to Programming,
+- =1= MA210 Discrete Mathematics,
+- =2= CS201 Data Structures,
+- =3= CS240 Computer Architecture,
+- =4= CS310 Algorithms, and
+- =5= CS330 Operating Systems,
+
+with prerequisites CS101 before both CS201 and CS240; MA210 before CS201 and
+CS310; CS201 before CS310 and CS330; and CS240 before CS330. Tracing Kahn's
+algorithm by hand, the initial sources are =0= and =1= (nothing precedes them);
+emitting =0= exposes =3=, emitting =1= exposes =2=, and so on, yielding
+=CS101, MA210, CS240, CS201, CS310, CS330=. We compute it, verify =is_dag= and
+=is_topological_order=, and draw the DAG in the returned order.
+
+#+name: ts-run
+#+begin_src c++ :eval no
+    const std::size_t n = 6;
+    const std::vector<std::string> name = {
+        "CS101 Intro to Programming", "MA210 Discrete Mathematics", "CS201 Data Structures",
+        "CS240 Computer Architecture", "CS310 Algorithms",           "CS330 Operating Systems"};
+    // Prerequisite edges: prereq -> course.
+    const std::vector<std::pair<std::size_t, std::size_t>> prereqs = {
+        {0, 2}, {0, 3}, {1, 2}, {1, 4}, {2, 4}, {2, 5}, {3, 5}};
+
+    std::cout << "=== Course prerequisite graph (edge: prereq -> course) ===\n";
+    for (const auto& [u, v] : prereqs)
+        std::cout << "  " << name[u] << "  ->  " << name[v] << "\n";
+
+    const auto ts = topological_sort(n, prereqs);
+    std::cout << "\nis_dag: " << (ts.is_dag ? "yes" : "no") << "\n";
+
+    std::cout << "\nA valid order to take the courses (Kahn's algorithm):\n";
+    for (std::size_t p = 0; p < ts.order.size(); ++p)
+        std::cout << "  " << p + 1 << ". " << name[ts.order[p]] << "\n";
+
+    std::cout << "\nis_topological_order check: "
+              << (is_topological_order(n, prereqs, ts.order) ? "valid" : "INVALID") << "\n";
+
+    // Layered layout: x = topological position, y = longest-path depth (a "dependency layer").
+    std::vector<double> pos(n, 0.0);
+    for (std::size_t p = 0; p < ts.order.size(); ++p) pos[ts.order[p]] = static_cast<double>(p);
+    std::vector<double> depth(n, 0.0);
+    for (const std::size_t u : ts.order) // relaxing in topological order gives the longest path
+        for (const auto& [a, b] : prereqs)
+            if (a == u && depth[u] + 1.0 > depth[b]) depth[b] = depth[u] + 1.0;
+
+    auto plot = RPlot::create();
+    for (const auto& [u, v] : prereqs) // dependency edges behind the nodes
+        plot.segments({pos[u]}, {depth[u]}, {pos[v]}, {depth[v]}, {203, 213, 225}, 1.5);
+    std::vector<double> nx, ny;
+    for (std::size_t u = 0; u < n; ++u) { nx.push_back(pos[u]); ny.push_back(depth[u]); }
+    plot.points(nx, ny, "course", {37, 99, 235}, 9.0);
+    for (std::size_t u = 0; u < n; ++u)
+        plot.text(pos[u], depth[u] + 0.18, name[u].substr(0, 5), {17, 24, 39}, 12.0);
+    plot.title("Course prerequisite DAG in topological order (left to right)")
+        .x_label("topological position").y_label("dependency depth (longest path)")
+        .background({250, 250, 252});
+    plot.save_svg("build/org/topological_sort_order.svg");
+    std::cout << "\nwrote topological_sort_order.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/topological_sort_analysis.cpp <<'CPP'
+<<ts-includes>>
+
+int main() {
+<<ts-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/topological_sort_analysis.cpp -o build/org/topological_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/topological_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Course prerequisite graph (edge: prereq -> course) ===
+  CS101 Intro to Programming  ->  CS201 Data Structures
+  CS101 Intro to Programming  ->  CS240 Computer Architecture
+  MA210 Discrete Mathematics  ->  CS201 Data Structures
+  MA210 Discrete Mathematics  ->  CS310 Algorithms
+  CS201 Data Structures  ->  CS310 Algorithms
+  CS201 Data Structures  ->  CS330 Operating Systems
+  CS240 Computer Architecture  ->  CS330 Operating Systems
+
+is_dag: yes
+
+A valid order to take the courses (Kahn's algorithm):
+  1. CS101 Intro to Programming
+  2. MA210 Discrete Mathematics
+  3. CS240 Computer Architecture
+  4. CS201 Data Structures
+  5. CS310 Algorithms
+  6. CS330 Operating Systems
+
+is_topological_order check: valid
+
+wrote topological_sort_order.svg
+#+end_example
+
+The plan is legal: CS101 and MA210, which depend on nothing, come first; CS201
+waits until both are done; CS330 waits until both CS201 and CS240 are done; and
+CS310 comes after CS201 and MA210. =is_topological_order= re-checks every edge
+independently and agrees, and =is_dag= confirms no prerequisite loop. The order
+matches the by-hand trace exactly, as it must -- seeding the queue with sources
+in ascending index order pins down which of the many valid orders the algorithm
+selects.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/topological_sort_order.svg]]
+
+Each course sits at its topological position (its place in the returned order)
+along the x-axis and at its dependency depth -- the length of the longest chain
+of prerequisites reaching it -- along the y-axis, with the grey segments drawing
+the prerequisite edges. Every edge leans strictly to the right: a picture of the
+topological-order guarantee, and of why a DAG can always be flattened onto a
+line while a cyclic graph cannot.
