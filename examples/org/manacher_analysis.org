@@ -1,0 +1,262 @@
+#+title: Manacher's Algorithm: Longest Palindromic Substring in Linear Time
+#+subtitle: A literate C++ study of the '#'-interleaving trick and mirror reuse with =datamunge='s =algorithms::longest_palindrome=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The longest palindromic substring problem asks, of all the contiguous stretches
+of a string that read the same forwards and backwards, for one of maximum
+length. The obvious approaches -- expanding around every center, or dynamic
+programming over all substring endpoints -- cost \(O(n^2)\). Manacher's
+algorithm (1975) solves it in \(O(n)\). This report implements it in
+=datamunge='s C++ =algorithms::longest_palindrome= (and the underlying
+=palindrome_radii=) and presents it as a literate program: every number and
+figure is produced by a single compiled binary. We give the two ideas that make
+it work: a =#=-interleaving transform =^#a#b#c#...#$= that turns both odd- and
+even-length palindromes into odd-length palindromes of one longer string, and a
+mirror trick that seeds each center's radius from an already-computed reflection
+inside the current rightmost palindrome \([center, right]\), so the amortized
+cost is linear because =right= only ever advances. A worked example on the
+palindrome =abacaba= -- whose radius array we compute by hand and hardcode --
+recovers the whole string as its own longest palindrome (length 7) and produces
+the classic Manacher radius plot, a symmetric skyline peaking at the string's
+center.
+#+end_abstract
+
+* The longest palindromic substring problem
+
+A *palindrome* is a string equal to its own reversal: =aba=, =abba=, =z=, and
+the empty string all qualify. Given a string \(s\) of length \(n\), the *longest
+palindromic substring* problem asks for a contiguous substring \(s[a\ldots b]\)
+that is a palindrome and is as long as possible. Ties are broken here in favor
+of the *leftmost* such substring, so =babad= resolves to =bab= (start 0), not
+=aba= (start 1).
+
+Two \(O(n^2)\) baselines are worth naming. *Center expansion* walks each of the
+\(2n-1\) possible palindrome centers (each character, and each gap between
+adjacent characters) and grows outward while the mirror characters match;
+*dynamic programming* fills an \(n \times n\) table of "is \(s[i\ldots j]\) a
+palindrome?". Manacher's insight is that center expansion repeats an enormous
+amount of work -- and that the symmetry of an already-discovered palindrome
+tells you, for free, most of the radius at nearby centers.
+
+=datamunge= exposes the result as a =PalindromeResult= (a =start=/=length= pair
+into the original string) and the full Manacher radius array as
+=palindrome_radii=.
+
+#+name: manacher-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/manacher.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The '#'-interleaving trick
+
+The awkwardness of palindromes is that they come in two parities: odd-length
+ones (=aba=) are centered on a character, even-length ones (=abba=) are centered
+between two characters. Manacher removes the case split with a transform. Insert
+a separator =#= before every character and after the last, and cap the two ends
+with *distinct* sentinels =^= and =$=:
+
+#+begin_example
+  s  =    a   b   a   c   a   b   a
+  t  =  ^ # a # b # a # c # a # b # a # $
+index  0 1 2 3 4 5 6 7 8 9 ...        2n+2
+#+end_example
+
+For a string of length \(n\) the transform \(t\) has length \(2n + 3\). Every
+palindrome of \(s\) -- odd or even -- is now an *odd-length* palindrome of \(t\)
+centered on a single position: an odd palindrome of \(s\) centers on the copy of
+its middle character, an even palindrome centers on the =#= between its two
+middle characters. Two facts make the transform pay off:
+
+- The sentinels =^= and =$= differ from each other and from every =#= and every
+  input character, so an outward expansion always halts at the ends without a
+  bounds check.
+- With *this* transform the radius \(p[i]\) -- the largest \(r\) such that
+  \(t[i-r \ldots i+r]\) is a palindrome -- equals *exactly the length of the
+  original-string palindrome* centered at \(t[i]\), and that palindrome begins in
+  \(s\) at index \((i - p[i]) / 2\).
+
+So computing the radius array over \(t\) simultaneously handles both parities and
+hands back original-string lengths and offsets directly.
+
+* Linear time by mirror reuse
+
+Compute the \(p[i]\) left to right, maintaining the palindrome discovered so far
+whose right edge reaches furthest: call it \([center, right]\). When we arrive at
+position \(i\):
+
+- If \(i < right\), then \(i\) lies inside the current palindrome, whose mirror
+  image about \(center\) is \(i' = 2\,center - i\). By symmetry the palindrome at
+  \(i\) is at least as long as the one at \(i'\) -- *up to* the point where it
+  would poke past \(right\), beyond which symmetry tells us nothing. So we may
+  initialize \(p[i] \leftarrow \min(p[i'],\; right - i)\) with no character
+  comparisons at all.
+- Then we try to grow \(p[i]\) further by comparing \(t[i + p[i] + 1]\) with
+  \(t[i - p[i] - 1]\), exactly as plain center expansion would.
+- If the palindrome at \(i\) now extends past \(right\), it becomes the new
+  reference: \(center \leftarrow i\), \(right \leftarrow i + p[i]\).
+
+#+begin_example
+MANACHER-RADII(s):
+  t <- "^" + "#" between every char of s + "#" + "$"      # |t| = 2|s| + 3
+  p[0 .. |t|-1] <- 0
+  center <- 0;  right <- 0                                  # furthest-reaching palindrome so far
+
+  for i in 1 .. |t|-2:
+      if i < right:
+          mirror <- 2*center - i
+          p[i] <- min(p[mirror], right - i)                # reuse reflection, capped at the boundary
+      while t[i + p[i] + 1] == t[i - p[i] - 1]:             # sentinels stop this at the ends
+          p[i] <- p[i] + 1
+      if i + p[i] > right:                                  # new furthest-reaching palindrome
+          center <- i;  right <- i + p[i]
+
+  return p
+
+LONGEST-PALINDROME(s):
+  p <- MANACHER-RADII(s)
+  i* <- argmax_i p[i]        (leftmost on ties)
+  return { start = (i* - p[i*]) / 2, length = p[i*] }
+#+end_example
+
+*Why it is linear.* The =while= loop is the only place character comparisons
+happen. Each successful comparison increments \(p[i]\) and therefore advances
+\(i + p[i]\); whenever that exceeds \(right\), \(right\) moves to it. Because
+\(right\) never decreases and never exceeds \(|t|\), the total number of
+successful comparisons across the whole run is at most \(|t| = 2n + 3\). Each
+center also spends \(O(1)\) on the mirror initialization and one failing
+comparison. Hence \(O(n)\) time and \(O(n)\) space.
+
+*Leftmost longest.* For a fixed length \(L\), a palindrome centered at \(t[i]\)
+starts at \((i - L)/2\), which increases with \(i\). Scanning \(i\) upward and
+keeping only *strictly* longer palindromes therefore records the first --
+smallest-\(i\), hence smallest-start -- occurrence of the maximum length: the
+leftmost longest palindromic substring.
+
+* Example: the palindrome =abacaba=
+
+We run the algorithm on =abacaba=, itself a palindrome of length 7, print the
+full radius array over the transform =^#a#b#a#c#a#b#a#$=, read off the longest
+palindromic substring, and plot the radius at each center -- the classic
+Manacher skyline.
+
+#+name: manacher-run
+#+begin_src c++ :eval no
+    const std::string s = "abacaba";
+    std::cout << "=== Manacher's algorithm on s = \"" << s << "\" ===\n";
+    std::cout << "n = " << s.size() << "\n\n";
+
+    // Rebuild the transform exactly as palindrome_radii does, purely for display.
+    std::string t = "^";
+    for (char c : s) { t += '#'; t += c; }
+    t += "#$";
+    std::cout << "transformed t = " << t << "\n";
+    std::cout << "|t| = " << t.size() << " = 2n+3\n\n";
+
+    const auto p = palindrome_radii(s);
+    std::cout << "Manacher radii over the transformed string (i: t[i] -> p[i]):\n";
+    for (std::size_t i = 0; i < t.size(); ++i) {
+        std::cout << "  i=" << std::setw(2) << i << "  t=" << t[i] << "  p=" << p[i] << "\n";
+    }
+
+    const auto best = longest_palindrome(s);
+    std::cout << "\nlongest palindromic substring: \"" << s.substr(best.start, best.length)
+              << "\"  (start = " << best.start << ", length = " << best.length << ")\n";
+    std::cout << "p[i] is exactly the length of the original palindrome centered at t[i];\n";
+    std::cout << "its start in s is (i - p[i]) / 2 = (" << (s.size() + 1) << " - " << best.length
+              << ") / 2 = " << best.start << "\n";
+
+    std::vector<double> ix, py;
+    for (std::size_t i = 0; i < p.size(); ++i) {
+        ix.push_back(static_cast<double>(i));
+        py.push_back(static_cast<double>(p[i]));
+    }
+    auto plot = RPlot::create();
+    plot.bars(ix, py, "radius p[i]", {37, 99, 235}, 0.7);
+    plot.title("Manacher radii p[i] over the transform of \"abacaba\" (^#a#b#a#c#a#b#a#$)")
+        .x_label("transformed-string index i").y_label("palindrome radius p[i]").background({250, 250, 252});
+    plot.save_svg("build/org/manacher_radii.svg");
+    std::cout << "\nwrote manacher_radii.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/manacher_analysis.cpp <<'CPP'
+<<manacher-includes>>
+
+int main() {
+<<manacher-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/manacher_analysis.cpp -o build/org/manacher_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/manacher_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Manacher's algorithm on s = "abacaba" ===
+n = 7
+
+transformed t = ^#a#b#a#c#a#b#a#$
+|t| = 17 = 2n+3
+
+Manacher radii over the transformed string (i: t[i] -> p[i]):
+  i= 0  t=^  p=0
+  i= 1  t=#  p=0
+  i= 2  t=a  p=1
+  i= 3  t=#  p=0
+  i= 4  t=b  p=3
+  i= 5  t=#  p=0
+  i= 6  t=a  p=1
+  i= 7  t=#  p=0
+  i= 8  t=c  p=7
+  i= 9  t=#  p=0
+  i=10  t=a  p=1
+  i=11  t=#  p=0
+  i=12  t=b  p=3
+  i=13  t=#  p=0
+  i=14  t=a  p=1
+  i=15  t=#  p=0
+  i=16  t=$  p=0
+
+longest palindromic substring: "abacaba"  (start = 0, length = 7)
+p[i] is exactly the length of the original palindrome centered at t[i];
+its start in s is (i - p[i]) / 2 = (8 - 7) / 2 = 0
+#+end_example
+
+The radius array is a symmetric skyline. The tallest bar, \(p[8] = 7\), sits at
+the center =c= of the transform and reports that the palindrome centered there
+has length 7 -- the whole string. The two \(p = 3\) peaks at the =b= positions
+mark =aba= palindromes, the \(p = 1\) spikes at each =a= mark the single
+characters, and every =#= and both sentinels contribute a radius of 0 here. From
+the peak, the start index falls straight out of \((i - p[i])/2 = (8 - 7)/2 = 0\).
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/manacher_radii.svg]]
+
+The characteristic shape -- tallest at the middle, tapering symmetrically toward
+the ends -- is exactly what the mirror trick exploits: once the central
+palindrome is known, the radii on its right half are seeded from their
+reflections on the left, so no character comparison there ever has to start from
+zero. That reuse, together with the observation that the right edge only ever
+advances, is the whole reason a problem that looks quadratic collapses to a
+single linear pass.

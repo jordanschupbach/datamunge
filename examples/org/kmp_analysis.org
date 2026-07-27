@@ -1,0 +1,248 @@
+#+title: The Knuth-Morris-Pratt Algorithm: Linear-Time Exact String Matching
+#+subtitle: A literate C++ study of the prefix function with =datamunge='s =algorithms::kmp_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a long =text= and a shorter =pattern=, where -- if anywhere -- does the
+pattern occur? The obvious method tries every alignment and re-reads text
+characters again and again, costing \(O(nm)\). Knuth, Morris & Pratt (1977)
+observed that the pattern already knows enough about /itself/ to never need
+those re-reads: after a partial match fails, the characters just matched tell
+us exactly how far the pattern may safely slide. That self-knowledge is the
+*prefix function* \(\pi\), and it turns matching into a single left-to-right
+sweep in \(O(n + m)\). This report implements KMP in =datamunge='s C++
+=algorithms::kmp_prefix_function= and =algorithms::kmp_search= and presents it
+as a literate program: every number and figure below is produced by one
+compiled binary. We define the exact-matching problem, explain why naive
+matching is quadratic, derive the prefix function and the shift insight it
+encodes, give pseudocode for both the \(\pi\)-construction and the search, and
+work a small deterministic example by hand -- the pattern ="ababaca"= with
+prefix function \(\pi = (0,0,1,2,3,0,1)\) -- confirming the compiled program
+reproduces it exactly and locating every (including overlapping) occurrence.
+#+end_abstract
+
+* The exact string-matching problem
+
+Given a =text= \(T\) of length \(n\) and a =pattern= \(P\) of length \(m \le
+n\), report every /shift/ \(s\) such that \(T[s..s+m-1] = P\) -- every start
+index at which the pattern occurs, overlaps included. The direct approach
+slides the pattern across all \(n - m + 1\) alignments and, at each, compares
+up to \(m\) characters:
+
+#+begin_example
+NAIVE-MATCH(T, P):
+  for s from 0 to n - m:
+      j <- 0
+      while j < m and T[s + j] == P[j]:
+          j <- j + 1
+      if j == m:
+          report an occurrence at s
+#+end_example
+
+On adversarial input -- say \(T = \) ="aaaa...a"= and \(P = \) ="aaa...ab"= --
+almost every alignment matches \(m-1\) characters before failing on the last,
+so the work is \(\Theta((n-m+1)\,m) = \Theta(nm)\). The waste is that after a
+mismatch the algorithm throws away everything it just learned and restarts the
+text pointer one position over, re-examining characters it already read.
+
+=datamunge= exposes two entry points, =kmp_prefix_function(pattern)= (the
+\(\pi\) table) and =kmp_search(text, pattern)= (the sorted start indices); an
+empty pattern returns no matches by convention.
+
+#+name: kmp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/kmp.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The prefix function and the shift insight
+
+The prefix function of the pattern is the array \(\pi\) where \(\pi[i]\) is the
+length of the longest /proper/ prefix of \(P[0..i]\) that is also a suffix of
+\(P[0..i]\). "Proper" means shorter than the whole \(i+1\) characters, so
+\(0 \le \pi[i] \le i\). Equivalently, \(\pi[i]\) is the longest /border/ of
+the prefix \(P[0..i]\): the longest string that is simultaneously a prefix and
+a suffix of it, apart from the string itself.
+
+Why does this solve the re-reading problem? Suppose while scanning the text we
+have matched the first \(q\) characters of the pattern and then hit a mismatch.
+Those \(q\) matched text characters are exactly \(P[0..q-1]\). We must find the
+longest pattern prefix that could still be alive here -- i.e. the longest
+prefix of \(P\) that is a suffix of what we just matched. That is precisely a
+border of \(P[0..q-1]\), whose length is \(\pi[q-1]\). So instead of backing up
+in the text, we set the pattern-match length to \(\pi[q-1]\) and keep the text
+pointer where it is: the pattern slides forward by \(q - \pi[q-1]\), never
+missing an occurrence and never re-examining a text character. Each text
+character is compared successfully at most once and can trigger only bounded
+amortized fall-back, giving \(O(n)\) for the scan on top of \(O(m)\) to build
+\(\pi\) -- \(O(n + m)\) overall.
+
+Building \(\pi\) uses the very same idea on the pattern against itself:
+
+#+begin_example
+PREFIX-FUNCTION(P):                      # m = length(P)
+  pi[0] <- 0
+  k <- 0                                 # length of current longest border
+  for i from 1 to m - 1:
+      while k > 0 and P[i] != P[k]:      # cannot extend: fall back to a shorter border
+          k <- pi[k - 1]
+      if P[i] == P[k]:                   # border extends by one character
+          k <- k + 1
+      pi[i] <- k
+  return pi
+#+end_example
+
+Every iteration raises \(k\) by at most one, and each fall-back strictly lowers
+it, so \(k\) changes \(O(m)\) times in total: the construction is linear. With
+\(\pi\) in hand the search is a mirror image, scanning the text with a running
+matched-length \(q\):
+
+#+begin_example
+KMP-SEARCH(T, P):                        # n = length(T), m = length(P)
+  if m == 0 or m > n: return {}          # empty pattern / too-long pattern: no matches
+  pi <- PREFIX-FUNCTION(P)
+  q <- 0                                 # characters of P currently matched
+  matches <- {}
+  for i from 0 to n - 1:
+      while q > 0 and T[i] != P[q]:      # mismatch: slide pattern via the failure function
+          q <- pi[q - 1]
+      if T[i] == P[q]:
+          q <- q + 1
+      if q == m:                         # full occurrence ends at i
+          append (i - m + 1) to matches
+          q <- pi[q - 1]                 # realign to allow overlapping matches
+  return matches
+#+end_example
+
+* Example: the pattern ="ababaca"=
+
+We take the classic pattern \(P = \) ="ababaca"= and compute its prefix
+function by hand. Reading left to right, each \(\pi[i]\) is the longest border
+of \(P[0..i]\):
+
+- \(\pi[0]\): ="a"= has no proper prefix -> \(0\).
+- \(\pi[1]\): ="ab"= -> border length \(0\).
+- \(\pi[2]\): ="aba"= -> ="a"= is a prefix and suffix -> \(1\).
+- \(\pi[3]\): ="abab"= -> ="ab"= -> \(2\).
+- \(\pi[4]\): ="ababa"= -> ="aba"= -> \(3\).
+- \(\pi[5]\): ="ababac"= -> the ='c'= breaks every border -> \(0\).
+- \(\pi[6]\): ="ababaca"= -> ="a"= -> \(1\).
+
+So \(\pi = (0,0,1,2,3,0,1)\). We then run two searches: the pattern in the text
+="ababacaababaca"= (two non-overlapping copies, expected at shifts \(0\) and
+\(7\)), and the short pattern ="aba"= in ="ababababa"= to exhibit /overlapping/
+matches at shifts \(0, 2, 4, 6\) (consecutive matches share one character).
+Finally we draw the prefix-function values as a bar chart.
+
+#+name: kmp-run
+#+begin_src c++ :eval no
+    const std::string pattern = "ababaca";
+    const auto pi = kmp_prefix_function(pattern);
+
+    std::cout << "=== Knuth-Morris-Pratt exact string matching ===\n\n";
+    std::cout << "Pattern P = \"" << pattern << "\"  (length " << pattern.size() << ")\n";
+    std::cout << "prefix function pi[i] = longest proper prefix of P[0..i] that is also a suffix:\n";
+    std::cout << "  i    :";
+    for (std::size_t i = 0; i < pattern.size(); ++i) std::cout << " " << std::setw(2) << i;
+    std::cout << "\n  P[i] :";
+    for (std::size_t i = 0; i < pattern.size(); ++i) std::cout << " " << std::setw(2) << pattern[i];
+    std::cout << "\n  pi[i]:";
+    for (std::size_t i = 0; i < pattern.size(); ++i) std::cout << " " << std::setw(2) << pi[i];
+    std::cout << "\n";
+
+    auto report = [](const std::string& note, const std::string& text, const std::string& pat) {
+        const auto m = kmp_search(text, pat);
+        std::cout << "\n" << note << ": pattern \"" << pat << "\" in text \"" << text << "\"\n";
+        std::cout << "  matches (start indices):";
+        for (auto x : m) std::cout << " " << x;
+        std::cout << "\n  -> " << m.size() << " occurrence(s)\n";
+    };
+    report("Search 1", "ababacaababaca", "ababaca");
+    report("Search 2 (overlapping)", "ababababa", "aba");
+
+    // Bar chart of the prefix function pi[i] over pattern positions i.
+    std::vector<double> ix, py;
+    for (std::size_t i = 0; i < pattern.size(); ++i) {
+        ix.push_back(static_cast<double>(i));
+        py.push_back(static_cast<double>(pi[i]));
+    }
+    auto plot = RPlot::create();
+    plot.bars(ix, py, "pi[i]", {37, 99, 235}, 0.6);
+    plot.points(ix, py, "", {220, 38, 38}, 6.0);
+    plot.title("Prefix function of pattern \"ababaca\"")
+        .x_label("pattern position i").y_label("pi[i] = longest proper prefix-suffix")
+        .background({250, 250, 252});
+    plot.save_svg("build/org/kmp_prefix.svg");
+
+    std::cout << "\nwrote kmp_prefix.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kmp_analysis.cpp <<'CPP'
+<<kmp-includes>>
+
+int main() {
+<<kmp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kmp_analysis.cpp -o build/org/kmp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kmp_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Knuth-Morris-Pratt exact string matching ===
+
+Pattern P = "ababaca"  (length 7)
+prefix function pi[i] = longest proper prefix of P[0..i] that is also a suffix:
+  i    :  0  1  2  3  4  5  6
+  P[i] :  a  b  a  b  a  c  a
+  pi[i]:  0  0  1  2  3  0  1
+
+Search 1: pattern "ababaca" in text "ababacaababaca"
+  matches (start indices): 0 7
+  -> 2 occurrence(s)
+
+Search 2 (overlapping): pattern "aba" in text "ababababa"
+  matches (start indices): 0 2 4 6
+  -> 4 occurrence(s)
+
+wrote kmp_prefix.svg
+#+end_example
+
+The computed prefix function \(\pi = (0,0,1,2,3,0,1)\) matches the hand
+calculation exactly. Search 1 finds the two non-overlapping copies at shifts
+\(0\) and \(7\); Search 2 finds ="aba"= at shifts \(0, 2, 4, 6\), where each
+consecutive pair overlaps on a single ='a'= -- the =q <- pi[q-1]= step after a
+full match is precisely what lets the automaton report these without rescanning
+text. The bar chart shows the \(\pi\) values rising along the repeated
+="abab"= prefix (\(0,0,1,2,3\)), collapsing to \(0\) at the ='c'=, and
+recovering to \(1\) at the trailing ='a'=:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/kmp_prefix.svg]]
+
+The rise-then-fall of \(\pi\) is the pattern's self-similarity made numeric:
+wherever \(\pi[i]\) is large, a long prefix has recurred, and on a mismatch the
+search can slide that far ahead for free. That single table is the whole reason
+KMP reads the text once, turning a \(\Theta(nm)\) scan into a \(\Theta(n+m)\)
+one.

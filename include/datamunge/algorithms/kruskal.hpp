@@ -4,19 +4,9 @@
 #include <tuple>
 #include <vector>
 
-namespace datamunge::algorithms {
+#include <datamunge/algorithms/mst_result.hpp>
 
-struct MinimumSpanningTree {
-    /// @brief The chosen edges (u, v, weight), in the order Kruskal accepts them -- i.e. ascending
-    ///        by weight. Exactly n-1 edges when @ref is_connected is true.
-    std::vector<std::tuple<std::size_t, std::size_t, double>> edges;
-    /// @brief Sum of the weights of the chosen edges.
-    double total_weight{0.0};
-    /// @brief True iff the chosen edges span all n vertices (there are n-1 of them). When false the
-    ///        input graph is disconnected and @ref edges is a minimum spanning *forest* -- a minimum
-    ///        spanning tree of each connected component, and the cheapest such forest overall.
-    bool is_connected{false};
-};
+namespace datamunge::algorithms {
 
 /// @brief Kruskal's algorithm (Kruskal 1956) for the minimum spanning tree of a weighted,
 ///        undirected graph. The graph is given as a vertex count @p n (vertices are 0..n-1) and an

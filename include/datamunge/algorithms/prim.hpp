@@ -4,19 +4,9 @@
 #include <tuple>
 #include <vector>
 
-namespace datamunge::algorithms {
+#include <datamunge/algorithms/mst_result.hpp>
 
-struct MinimumSpanningTree {
-    /// @brief The tree edges as (u, v, weight) tuples, in the order Prim attaches them. In each
-    ///        tuple u is the vertex that was already in the tree when the edge was chosen and v is
-    ///        the vertex it pulls in. For a connected graph there are exactly n-1 edges.
-    std::vector<std::tuple<std::size_t, std::size_t, double>> edges;
-    /// @brief The sum of the weights of @ref edges.
-    double total_weight{0.0};
-    /// @brief true iff the tree spans all n vertices -- i.e. the whole graph is reachable from the
-    ///        start vertex. When false the returned tree spans only start's connected component.
-    bool is_connected{false};
-};
+namespace datamunge::algorithms {
 
 /// @brief Prim's minimum-spanning-tree algorithm (Jarnik 1930; Prim 1957; Dijkstra 1959) on a
 ///        weighted *undirected* graph. A *spanning tree* of a connected graph is an acyclic,

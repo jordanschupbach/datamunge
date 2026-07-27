@@ -233,11 +233,13 @@ Further information: Substrings
         Krauss matching wildcards algorithm: an open-source non-recursive algorithm
         Rich Salz' wildmat: a widely used open-source recursive algorithm
     Substring search
-        Aho–Corasick string matching algorithm: trie based algorithm for finding all substring matches to any of a finite set of strings
+        [x] Aho–Corasick string matching algorithm: trie based algorithm for finding all substring matches to any of a finite set of strings  -- datamunge::algorithms::aho_corasick_search; report examples/org/aho_corasick_analysis.org
         Boyer–Moore–Horspool algorithm: Simplification of Boyer–Moore
-        Boyer–Moore string-search algorithm: amortized linear (sublinear in most times) algorithm for substring search
-        Knuth–Morris–Pratt algorithm: substring search which bypasses reexamination of matched characters
-        Rabin–Karp string search algorithm: searches multiple patterns efficiently
+        [x] Boyer–Moore string-search algorithm: amortized linear (sublinear in most times) algorithm for substring search  -- datamunge::algorithms::boyer_moore_search; report examples/org/boyer_moore_analysis.org
+        [x] Knuth–Morris–Pratt algorithm: substring search which bypasses reexamination of matched characters  -- datamunge::algorithms::kmp_search (+ kmp_prefix_function); report examples/org/kmp_analysis.org
+        [x] Rabin–Karp string search algorithm: searches multiple patterns efficiently  -- datamunge::algorithms::rabin_karp_search; report examples/org/rabin_karp_analysis.org
+        [x] Z-algorithm (fundamental preprocessing): linear-time substring search via the Z-array  -- datamunge::algorithms::z_array / z_search; report examples/org/z_algorithm_analysis.org
+        [x] Manacher's algorithm: longest palindromic substring in linear time  -- datamunge::algorithms::longest_palindrome / palindrome_radii; report examples/org/manacher_analysis.org
         Zhu–Takaoka string matching algorithm: a variant of Boyer–Moore
     Ukkonen's algorithm: a linear-time, online algorithm for constructing suffix trees
 

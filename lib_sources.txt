@@ -14,6 +14,12 @@ datamunge/algorithms/floyd_warshall
 datamunge/algorithms/kruskal
 datamunge/algorithms/prim
 datamunge/algorithms/edmonds_karp
+datamunge/algorithms/kmp
+datamunge/algorithms/rabin_karp
+datamunge/algorithms/boyer_moore
+datamunge/algorithms/z_algorithm
+datamunge/algorithms/manacher
+datamunge/algorithms/aho_corasick
 datamunge/plot
 datamunge/plot/ggplot
 datamunge/random
