@@ -374,10 +374,10 @@ Elementary and special functions
 Further information: Special functions
 
     Computation of π:
-        Bailey–Borwein–Plouffe formula: (BBP formula) a spigot algorithm for the computation of the nth binary digit of π
+        [x] Bailey–Borwein–Plouffe formula: (BBP formula) a spigot algorithm for the computation of the nth binary digit of π  -- datamunge::algorithms::bbp_pi_hex_digit; report examples/org/bbp_pi_analysis.org
         Borwein's algorithm: an algorithm to calculate the value of 1/π
-        Chudnovsky algorithm: a fast method for calculating the digits of π
-        Gauss–Legendre algorithm: computes the digits of pi
+        [x] Chudnovsky algorithm: a fast method for calculating the digits of π  -- datamunge::algorithms::chudnovsky_pi; report examples/org/chudnovsky_pi_analysis.org
+        [x] Gauss–Legendre algorithm: computes the digits of pi  -- datamunge::algorithms::gauss_legendre_pi; report examples/org/gauss_legendre_pi_analysis.org
     Division algorithms: for computing quotient and/or remainder of two numbers
         Goldschmidt division
         Long division
@@ -390,7 +390,7 @@ Further information: Special functions
         [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
     Hyperbolic and Trigonometric Functions:
         BKM algorithm: computes elementary functions using a table of logarithms
-        CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents
+        [x] CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents  -- datamunge::algorithms::cordic_sincos; report examples/org/cordic_analysis.org
     Montgomery reduction: an algorithm that allows modular arithmetic to be performed efficiently when the modulus is large
     Multiplication algorithms: fast multiplication of two numbers
         Booth's multiplication algorithm: a multiplication algorithm that multiplies two signed binary numbers in two's complement notation

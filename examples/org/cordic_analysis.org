@@ -1,0 +1,157 @@
+#+title: CORDIC: Trigonometry With Only Shifts and Adds
+#+subtitle: A literate C++ study of shift-add rotation with =datamunge='s =algorithms::cordic_sincos=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How does a pocket calculator with no multiplier compute \(\sin\) and \(\cos\)?
+*CORDIC* (COordinate Rotation DIgital Computer, Volder 1959) rotates a vector to
+the target angle as a sum of ever-smaller fixed rotations, each of which costs only
+a *bit shift and an add* -- no multiplication or division, just a small table of
+arctangents. It powered the HP-35, lives in FPGAs and DSPs, and computes far more
+than trig. This report implements circular-mode CORDIC in =datamunge='s C++
+=algorithms::cordic_sincos=, matches the standard library over a full range, and
+draws the vector spiralling onto the unit circle.
+#+end_abstract
+
+* Rotating by shift-and-add
+
+A rotation by angle \(\alpha\) is \(x'=x\cos\alpha-y\sin\alpha\),
+\(y'=y\cos\alpha+x\sin\alpha\). Factor out \(\cos\alpha\):
+\(x'=\cos\alpha\,(x-y\tan\alpha)\), \(y'=\cos\alpha\,(y+x\tan\alpha)\). Now choose
+the special angles \(\alpha_i=\arctan(2^{-i})\), so \(\tan\alpha_i=2^{-i}\) is a
+*bit shift*. Dropping the \(\cos\alpha_i\) factors turns each rotation into
+
+\[
+x_{i+1}=x_i-d_i\,2^{-i}y_i,\qquad
+y_{i+1}=y_i+d_i\,2^{-i}x_i,\qquad
+z_{i+1}=z_i-d_i\arctan(2^{-i}),
+\]
+
+where \(d_i=\pm1\) is chosen to drive the residual angle \(z\) toward zero. After
+\(N\) steps the vector has rotated to the target angle; the dropped cosines
+accumulate into a *constant* gain \(K=\prod_i\cos\alpha_i\approx0.6073\), applied
+once at the end (or folded into the starting vector). So \(\sin\) and \(\cos\) come
+out of nothing but shifts, adds, a comparison per step, and one table lookup -- the
+reason CORDIC is the trig engine of choice when there is no hardware multiplier.
+The input is first range-reduced into \([-\pi/2,\pi/2]\), which lies inside CORDIC's
+convergence radius of \(\sum_i\arctan(2^{-i})\approx1.743\).
+
+#+name: cd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pi_and_cordic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CORDIC-SINCOS(theta, N):
+  range-reduce theta into [-pi/2, pi/2]   (track a sign flip)
+  x, y, z <- 1, 0, theta ; gain <- 1
+  for i in 0 .. N-1:
+      d <- (z >= 0) ? +1 : -1
+      (x, y) <- (x - d*2^-i*y,  y + d*2^-i*x)     # shift-add rotation
+      z <- z - d*arctan(2^-i)                      # table lookup
+      gain <- gain * cos(arctan(2^-i))             # (a constant, precomputed)
+  return (cos = x*gain, sin = y*gain)  (apply the sign flip)
+#+end_example
+
+* Worked example: match the library and watch the rotation
+
+We compare CORDIC's \(\sin,\cos\) against =std= at a few angles, then trace the
+(normalized) vector as it rotates toward \(\theta=1\) radian, landing on
+\((\cos 1,\sin 1)\) on the unit circle.
+
+#+name: cd-run
+#+begin_src c++ :eval no
+    std::cout << "=== CORDIC sin/cos vs std ===\n";
+    for (double th : {0.5, 1.0, 2.5, -1.2}) {
+        const auto sc = cordic_sincos(th, 44);
+        std::cout << "  theta=" << th << ": cordic(sin,cos)=(" << sc.sin << ", " << sc.cos
+                  << "), std=(" << std::sin(th) << ", " << std::cos(th) << ")\n";
+    }
+
+    // Trace the (normalized) rotating vector toward theta = 1.
+    const double theta = 1.0;
+    std::vector<double> tx, ty;
+    {
+        double x = 1.0, y = 0.0, z = theta, p2 = 1.0;
+        for (int i = 0; i < 12; ++i) {
+            const double d = (z >= 0.0) ? 1.0 : -1.0;
+            const double nx = x - d * y * p2, ny = y + d * x * p2;
+            x = nx; y = ny; z -= d * std::atan(p2); p2 *= 0.5;
+            const double n = std::hypot(x, y);
+            tx.push_back(x / n); ty.push_back(y / n);
+        }
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> cx, cy;
+    for (double a = 0.0; a <= 6.2832; a += 0.05) { cx.push_back(std::cos(a)); cy.push_back(std::sin(a)); }
+    plot.line(cx, cy, "unit circle", RGB{203, 213, 225}, 1.5);
+    plot.line(tx, ty, "CORDIC steps", RGB{37, 99, 235}, 1.5);
+    plot.points(tx, ty, "CORDIC steps", RGB{37, 99, 235}, 7.0);
+    plot.points({std::cos(theta)}, {std::sin(theta)}, "target (cos1, sin1)", RGB{202, 138, 4}, 13.0);
+    plot.legend({"unit circle", "CORDIC steps", "target"}, {{203, 213, 225}, {37, 99, 235}, {202, 138, 4}});
+    plot.title("CORDIC: the vector rotates onto the unit circle at theta = 1 rad")
+        .x_label("cos").y_label("sin").background({250, 250, 252});
+    plot.x_limits(-1.2, 1.2); plot.y_limits(-0.4, 1.2);
+    plot.save_svg("build/org/cordic.svg");
+    std::cout << "\nwrote cordic.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cordic_analysis.cpp <<'CPP'
+<<cd-includes>>
+
+int main() {
+<<cd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cordic_analysis.cpp -o build/org/cordic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cordic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== CORDIC sin/cos vs std ===
+  theta=0.5: cordic(sin,cos)=(0.479426, 0.877583), std=(0.479426, 0.877583)
+  theta=1: cordic(sin,cos)=(0.841471, 0.540302), std=(0.841471, 0.540302)
+  theta=2.5: cordic(sin,cos)=(0.598472, -0.801144), std=(0.598472, -0.801144)
+  theta=-1.2: cordic(sin,cos)=(-0.932039, 0.362358), std=(-0.932039, 0.362358)
+
+wrote cordic.svg
+#+end_example
+
+CORDIC's sine and cosine agree with the standard library to many digits at every
+angle, including ones outside \([-\pi/2,\pi/2]\) that the range reduction folds back
+in -- all computed with shifts, adds, and a table, no multiplier. The famous gain
+\(K\approx0.6073\) is the only "multiplication", and even that is a single fixed
+constant.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/cordic.svg]]
+
+The blue path is the (normalized) vector after each CORDIC step, spiralling along
+the unit circle toward the gold target \((\cos 1,\sin 1)\). Each step is a
+smaller-and-smaller fixed rotation -- overshoot, correct, overshoot less -- until the
+direction locks onto \(\theta=1\) radian. That zig-zag convergence, built from bit
+shifts alone, is how trigonometry gets done without a multiplier.
