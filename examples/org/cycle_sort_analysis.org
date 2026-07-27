@@ -1,0 +1,154 @@
+#+title: Cycle Sort: The Theoretically Minimum Number of Writes
+#+subtitle: A literate C++ study of write-optimal in-place sorting with =datamunge='s =algorithms::cycle_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+On some media -- EEPROM, flash -- a write costs vastly more than a read and wears
+the device out. For those, the sort that matters is the one that *writes least*.
+*Cycle sort* writes each element to memory *exactly once* (unless it is already in
+place), the theoretical minimum, by decomposing the rearrangement into cycles and
+rotating each into position in a single sweep. This report implements it in
+=datamunge='s C++ =algorithms::cycle_sort=, traces it on a small array, and shows
+its write count staying flat and linear while its comparison count grows
+quadratically.
+#+end_abstract
+
+* Cycles and the write-once guarantee
+
+Sorting permutes the array; every permutation splits into disjoint *cycles*. Cycle
+sort realizes each cycle directly. For the element at the current start position,
+count how many elements are smaller than it -- that count is its final index. Move
+it there, displacing whatever sat in that slot; now hold the displaced value and
+repeat, finding /its/ home, until the chain returns to the start and the cycle
+closes. Each element is written to its final slot once and never touched again, so
+the total number of writes is at most \(n\) -- optimal. The price is that finding
+each element's rank is an \(O(n)\) scan, so cycle sort always makes \(\Theta(n^2)\)
+comparisons; it is the algorithm to reach for only when writes, not comparisons,
+are the scarce resource.
+
+#+name: cy-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Instrumented copy returning (writes, comparisons).
+static std::pair<long, long> cycle_counts(std::vector<int> a) {
+    long writes = 0, comps = 0; const std::size_t n = a.size();
+    for (std::size_t start = 0; start + 1 < n; ++start) {
+        int item = a[start]; std::size_t pos = start;
+        for (std::size_t i = start + 1; i < n; ++i) { ++comps; if (a[i] < item) ++pos; }
+        if (pos == start) continue;
+        while (item == a[pos]) ++pos;
+        std::swap(item, a[pos]); ++writes;
+        while (pos != start) {
+            pos = start;
+            for (std::size_t i = start + 1; i < n; ++i) { ++comps; if (a[i] < item) ++pos; }
+            while (item == a[pos]) ++pos;
+            std::swap(item, a[pos]); ++writes;
+        }
+    }
+    return {writes, comps};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CYCLE-SORT(a):
+  for start in 0 .. n-2:
+      item <- a[start]
+      pos  <- start + (count of a[i] < item for i > start)   # item's final index
+      if pos == start: continue                               # already placed
+      while item == a[pos]: pos <- pos + 1                    # skip equal values
+      swap(item, a[pos])                                       # one write
+      while pos != start:                                      # rotate the rest of the cycle
+          pos <- start + (count of a[i] < item for i > start)
+          while item == a[pos]: pos <- pos + 1
+          swap(item, a[pos])                                   # one write each
+#+end_example
+
+* Worked example and write-count experiment
+
+We sort \([5,3,8,1,9,2,7]\), then count writes and comparisons as the array grows,
+to show the write count stay minimal while comparisons balloon.
+
+#+name: cy-run
+#+begin_src c++ :eval no
+    std::cout << "=== Cycle sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : cycle_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    const auto [w0, c0] = cycle_counts({5, 3, 8, 1, 9, 2, 7});
+    std::cout << "\n  writes = " << w0 << " (<= n = 7), comparisons = " << c0 << "\n\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ns, writes, comps;
+    std::mt19937 rng(3);
+    for (int n = 5; n <= 200; n += 5) {
+        std::vector<int> v(static_cast<std::size_t>(n));
+        for (int i = 0; i < n; ++i) v[static_cast<std::size_t>(i)] = static_cast<int>(rng() % 100000);
+        const auto [w, c] = cycle_counts(v);
+        ns.push_back(n); writes.push_back(static_cast<double>(w)); comps.push_back(static_cast<double>(c));
+    }
+    std::cout << "n=200: writes=" << writes.back() << " (<= 200), comparisons=" << comps.back() << "\n";
+    plot.line(ns, comps, "comparisons", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, writes, "writes", RGB{37, 99, 235}, 2.0);
+    plot.legend({"comparisons O(n^2)", "writes <= n"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Cycle sort: quadratic comparisons but minimal (<= n) writes")
+        .x_label("array size n").y_label("operations").background({250, 250, 252});
+    plot.save_svg("build/org/cycle_sort.svg");
+    std::cout << "\nwrote cycle_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cycle_sort_analysis.cpp <<'CPP'
+<<cy-includes>>
+
+int main() {
+<<cy-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cycle_sort_analysis.cpp -o build/org/cycle_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cycle_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cycle sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+  writes = 7 (<= n = 7), comparisons = 39
+
+n=200: writes=199 (<= 200), comparisons=57301
+
+wrote cycle_sort.svg
+#+end_example
+
+The write count stays at or below \(n\) -- each out-of-place element is placed
+exactly once -- while comparisons grow as \(O(n^2)\) from the repeated rank scans.
+That is the defining trade: cycle sort spends comparisons freely to spend writes as
+frugally as mathematically possible.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/cycle_sort.svg]]
+
+The red comparison curve climbs as \(O(n^2)\); the blue write curve hugs the bottom
+axis, never exceeding \(n\). When each write is a precious, wear-inducing operation,
+that flat blue line is exactly what cycle sort is for.

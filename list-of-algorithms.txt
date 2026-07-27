@@ -186,22 +186,22 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Introsort: begin with quicksort and switch to heapsort when the recursion depth exceeds a certain level
         Timsort: adaptative algorithm derived from merge sort and insertion sort. Used in Python 2.3 and up, and Java SE 7.
     Insertion sorts
-        Cycle sort: in-place with theoretically optimal number of writes
+        [x] Cycle sort: in-place with theoretically optimal number of writes  -- datamunge::algorithms::cycle_sort; report examples/org/cycle_sort_analysis.org
         [x] Insertion sort: determine where the current item belongs in the list of sorted ones, and insert it there  -- datamunge::algorithms::insertion_sort; report examples/org/insertion_sort_analysis.org
         Library sort
         Patience sorting
         [x] Shell sort: an attempt to improve insertion sort  -- datamunge::algorithms::shell_sort; report examples/org/shell_sort_analysis.org
-        Tree sort (binary tree sort): build binary tree, then traverse it to create sorted list
+        [x] Tree sort (binary tree sort): build binary tree, then traverse it to create sorted list  -- datamunge::algorithms::tree_sort; report examples/org/tree_sort_analysis.org
     Merge sorts
         Merge sort: sort the first and second half of the list separately, then merge the sorted lists
         Slowsort
         Strand sort
     Non-comparison sorts
         Bead sort
-        Bucket sort
+        [x] Bucket sort  -- datamunge::algorithms::bucket_sort; report examples/org/bucket_sort_analysis.org
         Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output
         Counting sort
-        Pigeonhole sort
+        [x] Pigeonhole sort  -- datamunge::algorithms::pigeonhole_sort; report examples/org/pigeonhole_sort_analysis.org
         Postman sort: variant of Bucket sort which takes advantage of hierarchical structure
         Radix sort: sorts strings letter by letter
     Selection sorts
