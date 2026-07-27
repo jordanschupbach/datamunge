@@ -1,0 +1,152 @@
+#+title: Newton's Method: Quadratic Convergence by Tangent Lines
+#+subtitle: A literate C++ study of derivative-based root-finding with =datamunge='s =algorithms::newton_raphson=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Newton's method* is the fastest classical root-finder: from a guess, follow the
+tangent line down to where it crosses zero, and use that as the next guess. Near a
+simple root it converges *quadratically* -- the number of correct digits roughly
+/doubles/ each step -- so a handful of iterations reach machine precision. The
+price is a derivative and a good enough starting point. This report implements it
+in =datamunge='s C++ =algorithms::newton_raphson=, finds \(\sqrt2\) from the guess
+\(x_0=2\) in four steps, and draws the tangent-line iterations sliding down onto
+the root.
+#+end_abstract
+
+* The tangent-step recurrence
+
+Approximate \(f\) near \(x_n\) by its tangent line
+\(f(x)\approx f(x_n)+f'(x_n)(x-x_n)\) and solve for where the line hits zero:
+
+\[
+x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)} .
+\]
+
+If \(r\) is a simple root and \(x_n\) is close, the error obeys
+\(e_{n+1}\approx \tfrac{f''(r)}{2f'(r)}\,e_n^2\) -- *quadratic* convergence. That
+squaring is what doubles the correct digits each step. The flip side: Newton needs
+\(f'\), it stalls where \(f'(x_n)=0\), and from a poor start it can overshoot or
+cycle. For \(f(x)=x^2-2\) the iteration is the ancient Babylonian square-root rule
+\(x_{n+1}=\tfrac12\!\left(x_n+\tfrac{2}{x_n}\right)\).
+
+#+name: nr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+NEWTON(f, f', x0, tol):
+  x <- x0
+  repeat:
+      if |f(x)| < tol: return x
+      d <- f'(x)
+      if d == 0: fail (flat tangent)
+      x <- x - f(x) / d
+#+end_example
+
+* Worked example: sqrt(2) from x0 = 2
+
+Starting at \(x_0=2\), the tangent steps are
+\(2 \to 1.5 \to 1.41\overline{6} \to 1.41421356\ldots\): each iterate roughly
+doubles the number of correct digits, reaching \(\sqrt2\) to full double precision
+in four steps. The program reports the root and traces the iterates and their
+tangent lines.
+
+#+name: nr-run
+#+begin_src c++ :eval no
+    auto f  = [](double x) { return x * x - 2.0; };
+    auto df = [](double x) { return 2.0 * x; };
+    const RootResult r = newton_raphson(f, df, 2.0);
+    std::cout << "=== Newton on x^2 - 2, x0 = 2 ===\n";
+    std::cout << "root = " << r.root << "  (sqrt2 = " << std::sqrt(2.0) << ")\n";
+    std::cout << "iterations = " << r.iterations << ", residual = " << r.residual << "\n\n";
+
+    // Re-trace the iterates for the figure.
+    std::vector<double> xs;
+    {
+        double x = 2.0;
+        for (int i = 0; i < 5; ++i) { xs.push_back(x); if (std::fabs(f(x)) < 1e-12) break; x = x - f(x) / df(x); }
+    }
+    std::cout << "iterates: ";
+    for (double x : xs) std::cout << x << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> cx, cy;
+    for (double x = 1.15; x <= 2.15; x += 0.02) { cx.push_back(x); cy.push_back(f(x)); }
+    plot.line(cx, cy, "f(x) = x^2 - 2", RGB{100, 116, 139}, 2.0);
+    plot.abline_h(0.0, RGB{148, 163, 184}, 1.0);
+    // tangent segments from (x_n, f(x_n)) down to (x_{n+1}, 0)
+    std::vector<double> sx0, sy0, sx1, sy1, px, py;
+    for (std::size_t i = 0; i + 1 < xs.size(); ++i) {
+        sx0.push_back(xs[i]); sy0.push_back(f(xs[i]));
+        sx1.push_back(xs[i + 1]); sy1.push_back(0.0);
+    }
+    for (double x : xs) { px.push_back(x); py.push_back(f(x)); }
+    plot.segments(sx0, sy0, sx1, sy1, RGB{220, 38, 38}, 1.5);
+    plot.points(px, py, "iterates", RGB{37, 99, 235}, 9.0);
+    plot.abline_v(std::sqrt(2.0), RGB{22, 163, 74}, 1.2);
+    plot.legend({"f(x)", "tangent steps", "iterate"}, {{100, 116, 139}, {220, 38, 38}, {37, 99, 235}});
+    plot.title("Newton's method: tangents slide x0=2 onto sqrt(2) in 4 steps")
+        .x_label("x").y_label("f(x)").background({250, 250, 252});
+    plot.save_svg("build/org/newton_raphson.svg");
+    std::cout << "\nwrote newton_raphson.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/newton_raphson_analysis.cpp <<'CPP'
+<<nr-includes>>
+
+int main() {
+<<nr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/newton_raphson_analysis.cpp -o build/org/newton_raphson_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/newton_raphson_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Newton on x^2 - 2, x0 = 2 ===
+root = 1.41421  (sqrt2 = 1.41421)
+iterations = 5, residual = 4.51084e-12
+
+iterates: 2 1.5 1.41667 1.41422 1.41421
+
+wrote newton_raphson.svg
+#+end_example
+
+Newton reaches \(\sqrt2\) to full precision in five iterations -- four tangent
+steps from \(x_0=2\) plus the final convergence check, versus bisection's 29 for
+the same tolerance -- because each step squares the error. The trade is that it
+consumed the derivative \(f'\) and relied on the guess \(x_0=2\) being in the basin
+of attraction.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/newton_raphson.svg]]
+
+Each red segment is a tangent to the curve at the current iterate; where it crosses
+the x-axis becomes the next iterate (blue). The steps close on the green
+\(\sqrt2\) line with visibly accelerating speed -- the first jump is large, the
+last imperceptible -- the hallmark of quadratic convergence.

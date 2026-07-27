@@ -1,0 +1,138 @@
+#+title: The Bisection Method: Root-Finding by Halving
+#+subtitle: A literate C++ study of bracketed root-finding with =datamunge='s =algorithms::bisection=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+If a continuous function is negative at one point and positive at another, the
+Intermediate Value Theorem guarantees a root between them. The *bisection method*
+turns that guarantee into an algorithm: halve the bracketing interval, keep the
+half that still straddles zero, and repeat. It converges only *linearly* -- one
+binary digit of accuracy per step -- but it is bulletproof: it cannot diverge and
+always encloses a genuine root. This report implements it in =datamunge='s C++
+=algorithms::bisection=, finds \(\sqrt2\) as a root of \(x^2-2\) on \([1,2]\), and
+plots the interval squeezing shut around it.
+#+end_abstract
+
+* The bracketing invariant
+
+Suppose \(f\) is continuous and \(f(a)\,f(b)<0\), so a root lies in \([a,b]\). Let
+\(c=\tfrac{a+b}{2}\). Whichever of \([a,c]\) or \([c,b]\) has endpoints of opposite
+sign still brackets a root; keep it and discard the other. Each step halves the
+interval, so after \(n\) steps the root is known to within
+\((b-a)/2^{\,n+1}\) -- to reach a tolerance \(\varepsilon\) takes about
+\(\log_2\!\frac{b-a}{\varepsilon}\) steps, independent of the function's shape.
+That guaranteed, shape-independent progress is bisection's great virtue; its slow
+(linear) rate is the price.
+
+#+name: bi-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BISECTION(f, a, b, tol):
+  if f(a)*f(b) > 0: fail (no bracketed sign change)
+  repeat:
+      c <- (a + b) / 2
+      if |f(c)| < tol or (b - a)/2 < tol: return c
+      if sign(f(c)) == sign(f(a)): a <- c
+      else:                        b <- c
+#+end_example
+
+* Worked example: sqrt(2) as a root of x^2 - 2
+
+On \([1,2]\), \(f(1)=-1<0\) and \(f(2)=2>0\), so a root is bracketed. Bisection
+drives the interval toward \(\sqrt2\approx1.41421356\): the midpoints are
+\(1.5, 1.25, 1.375, 1.4375,\dots\), each halving the remaining uncertainty. The
+program reports the converged root and traces the shrinking bracket.
+
+#+name: bi-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return x * x - 2.0; };
+    const RootResult r = bisection(f, 1.0, 2.0);
+    std::cout << "=== Bisection on x^2 - 2, [1, 2] ===\n";
+    std::cout << "root = " << r.root << "  (sqrt2 = " << std::sqrt(2.0) << ")\n";
+    std::cout << "iterations = " << r.iterations << ", residual = " << r.residual << "\n\n";
+
+    // Re-trace the bracket for the figure.
+    std::vector<double> it, lo, hi;
+    {
+        double a = 1.0, b = 2.0, fa = f(a);
+        for (int i = 1; i <= 20; ++i) {
+            const double c = 0.5 * (a + b), fc = f(c);
+            if ((fc < 0) == (fa < 0)) { a = c; fa = fc; } else { b = c; }
+            it.push_back(i); lo.push_back(a); hi.push_back(b);
+        }
+    }
+    std::cout << "first brackets: ";
+    for (std::size_t i = 0; i < 6; ++i) std::cout << "[" << lo[i] << ", " << hi[i] << "] ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(it, lo, "a", RGB{37, 99, 235}, 2.0);
+    plot.line(it, hi, "b", RGB{220, 38, 38}, 2.0);
+    plot.points(it, lo, "a", RGB{37, 99, 235}, 6.0);
+    plot.points(it, hi, "b", RGB{220, 38, 38}, 6.0);
+    plot.abline_h(std::sqrt(2.0), RGB{22, 163, 74}, 1.5);
+    plot.legend({"lower a", "upper b", "sqrt2"}, {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}});
+    plot.title("Bisection: the bracket [a, b] halves onto sqrt(2)")
+        .x_label("iteration").y_label("bracket endpoint").background({250, 250, 252});
+    plot.save_svg("build/org/bisection.svg");
+    std::cout << "\nwrote bisection.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bisection_analysis.cpp <<'CPP'
+<<bi-includes>>
+
+int main() {
+<<bi-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bisection_analysis.cpp -o build/org/bisection_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bisection_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bisection on x^2 - 2, [1, 2] ===
+root = 1.41421  (sqrt2 = 1.41421)
+iterations = 29, residual = 3.15447e-11
+
+first brackets: [1, 1.5] [1.25, 1.5] [1.375, 1.5] [1.375, 1.4375] [1.40625, 1.4375] [1.40625, 1.42188]
+
+wrote bisection.svg
+#+end_example
+
+Bisection converges to \(\sqrt2\) to full tolerance, taking on the order of
+\(\log_2(1/\varepsilon)\) iterations -- more than the derivative-based methods need,
+but with an ironclad guarantee no faster method offers: the answer is /always/
+inside a bracket of known width.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bisection.svg]]
+
+The blue lower endpoint and red upper endpoint march toward each other, squeezing
+the green \(\sqrt2\) line between them; the gap halves every step, a straight-line
+descent on a logarithmic view -- the visual signature of linear convergence.
