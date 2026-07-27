@@ -160,10 +160,10 @@ Sequence combinations
 Further information: Combination
 Sequence alignment
 
-    Dynamic time warping: measure similarity between two sequences which may vary in time or speed
-    Hirschberg's algorithm: finds the least cost sequence alignment between two sequences, as measured by their Levenshtein distance
-    Needleman–Wunsch algorithm: find global alignment between two sequences
-    Smith–Waterman algorithm: find local sequence alignment
+    [x] Dynamic time warping: measure similarity between two sequences which may vary in time or speed  -- datamunge::geometry::dynamic_time_warping; report examples/org/dynamic_time_warping_analysis.org
+    [x] Hirschberg's algorithm: finds the least cost sequence alignment between two sequences, as measured by their Levenshtein distance  -- datamunge::algorithms::hirschberg (linear-space global alignment); report examples/org/hirschberg_analysis.org
+    [x] Needleman–Wunsch algorithm: find global alignment between two sequences  -- datamunge::algorithms::needleman_wunsch; report examples/org/needleman_wunsch_analysis.org
+    [x] Smith–Waterman algorithm: find local sequence alignment  -- datamunge::algorithms::smith_waterman; report examples/org/smith_waterman_analysis.org
 
 Sequence sorting
 Main article: Sorting algorithm

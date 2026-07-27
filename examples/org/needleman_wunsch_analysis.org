@@ -1,0 +1,242 @@
+#+title: The Needleman-Wunsch Algorithm: Optimal Global Sequence Alignment
+#+subtitle: A literate C++ study of global dynamic-programming alignment with =datamunge='s =algorithms::needleman_wunsch=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Comparing two biological sequences -- or any two strings -- means lining them up
+so that shared symbols coincide and differences are explained by the fewest,
+cheapest edits. The *Needleman-Wunsch algorithm* (Needleman & Wunsch, 1970) was
+the first dynamic-programming method to find the /provably optimal/ *global*
+alignment: it aligns the sequences end to end, maximizing a score that rewards
+matches and penalizes mismatches and gaps. It is the direct scoring-maximization
+twin of the Levenshtein edit distance. This report implements it in
+=datamunge='s C++ =algorithms::needleman_wunsch=, works the small example
+=AAAC= vs =AGC= (optimal score 0) by hand, prints the full scoring matrix, and
+draws the traceback that reconstructs the alignment.
+#+end_abstract
+
+* Global alignment and scoring
+
+An /alignment/ of strings \(a\) and \(b\) writes them one above the other, having
+inserted gap symbols =-= so that both have the same length, with no column made
+of two gaps. Each column is scored under a scheme with three constants:
+
+- a *match* reward \(s_{\text{match}}\) when the two characters are equal,
+- a *mismatch* penalty \(s_{\text{mismatch}}\) when they differ,
+- a *gap* penalty \(s_{\text{gap}}\) when one side is a gap.
+
+The score of an alignment is the sum over its columns, and the *global alignment
+problem* is to maximize it over all alignments of the /entire/ strings.
+Needleman-Wunsch solves it exactly. =datamunge= uses defaults
+\(s_{\text{match}}=+2,\ s_{\text{mismatch}}=-1,\ s_{\text{gap}}=-2\), overridable
+via an =AlignmentScoring=.
+
+#+name: nw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sequence_alignment.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The dynamic program
+
+Let \(H(i,j)\) be the best score aligning the length-\(i\) prefix of \(a\) with the
+length-\(j\) prefix of \(b\). Aligning against the empty prefix forces a run of
+gaps, so the boundary is \(H(i,0)=i\,s_{\text{gap}}\) and
+\(H(0,j)=j\,s_{\text{gap}}\). Every interior alignment ends in exactly one of
+three ways -- a (mis)match of the last two characters, a gap in \(b\), or a gap in
+\(a\) -- giving the recurrence
+
+\[
+H(i,j)=\max\begin{cases}
+H(i-1,j-1)+s(a_i,b_j) & \text{align } a_i \text{ with } b_j,\\
+H(i-1,j)+s_{\text{gap}} & \text{gap in } b,\\
+H(i,j-1)+s_{\text{gap}} & \text{gap in } a,
+\end{cases}
+\]
+
+where \(s(a_i,b_j)\) is the match reward if \(a_i=b_j\) and the mismatch penalty
+otherwise. The optimal global score is \(H(|a|,|b|)\), and a traceback from that
+bottom-right corner -- following which of the three cases achieved each maximum --
+spells out the alignment. Time and space are \(O(|a||b|)\).
+
+#+begin_example
+NEEDLEMAN-WUNSCH(a, b, s):               # |a| = n, |b| = m
+  H[0][0] <- 0
+  for i in 1..n: H[i][0] <- i * s.gap
+  for j in 1..m: H[0][j] <- j * s.gap
+  for i in 1..n:
+      for j in 1..m:
+          H[i][j] <- max( H[i-1][j-1] + score(a[i], b[j], s),   # (mis)match
+                          H[i-1][j]   + s.gap,                   # gap in b
+                          H[i][j-1]   + s.gap )                  # gap in a
+  # traceback from (n, m) to (0, 0), prepending a column each step
+  i, j <- n, m
+  A, B <- "", ""
+  while i > 0 or j > 0:
+      if i>0 and j>0 and H[i][j] == H[i-1][j-1] + score(a[i], b[j], s):
+          prepend a[i], b[j];  i, j <- i-1, j-1
+      elif i>0 and H[i][j] == H[i-1][j] + s.gap:
+          prepend a[i], '-';   i <- i-1
+      else:
+          prepend '-', b[j];   j <- j-1
+  return (H[n][m], A, B)
+#+end_example
+
+* Worked example: =AAAC= versus =AGC=
+
+Take \(s_{\text{match}}=+1,\ s_{\text{mismatch}}=-1,\ s_{\text{gap}}=-1\). The
+optimal global alignment is
+
+: A A A C
+: - A G C
+
+scoring \(-1\) (leading gap) \(+1\) (=A=/=A=) \(-1\) (=A=/=G=) \(+1\) (=C=/=C=)
+\(= 0\). No alignment scores higher: =b= has only one =A= and one =C= to match, so
+at best two columns match (\(+2\)), and the surplus =A= of =a= must pair with the
+=G= (a mismatch, \(-1\)) and a gap (\(-1\)), netting 0. Filling \(H\) and tracing
+back from the corner recovers exactly this alignment; the traceback takes three
+diagonal steps and one upward (gap) step.
+
+#+name: nw-run
+#+begin_src c++ :eval no
+    const AlignmentScoring s{1, -1, -1};
+    const std::string a = "AAAC", b = "AGC";
+    const Alignment al = needleman_wunsch(a, b, s);
+
+    std::cout << "=== Needleman-Wunsch global alignment ===\n";
+    std::cout << "scoring: match=" << s.match << " mismatch=" << s.mismatch << " gap=" << s.gap << "\n";
+    std::cout << "score = " << al.score << "\n";
+    std::cout << al.a_aligned << "\n" << al.b_aligned << "\n\n";
+
+    // A few more pairs under the default scoring.
+    for (const auto& [x, y] : std::vector<std::pair<std::string, std::string>>{
+             {"GATTACA", "GCATGCU"}, {"HELLO", "HELP"}, {"ALIGN", "ALIGNMENT"}}) {
+        const Alignment g = needleman_wunsch(x, y);
+        std::cout << "default-scored \"" << x << "\" vs \"" << y << "\": score " << g.score << "\n"
+                  << "  " << g.a_aligned << "\n  " << g.b_aligned << "\n";
+    }
+
+    // Rebuild H for the worked pair to display and plot.
+    const std::size_t n = a.size(), m = b.size();
+    std::vector<std::vector<int>> H(n + 1, std::vector<int>(m + 1, 0));
+    for (std::size_t i = 0; i <= n; ++i) H[i][0] = static_cast<int>(i) * s.gap;
+    for (std::size_t j = 0; j <= m; ++j) H[0][j] = static_cast<int>(j) * s.gap;
+    for (std::size_t i = 1; i <= n; ++i)
+        for (std::size_t j = 1; j <= m; ++j) {
+            const int sc = (a[i - 1] == b[j - 1]) ? s.match : s.mismatch;
+            H[i][j] = std::max({H[i - 1][j - 1] + sc, H[i - 1][j] + s.gap, H[i][j - 1] + s.gap});
+        }
+
+    std::cout << "\nDP matrix H for \"" << a << "\" vs \"" << b << "\" (score " << H[n][m] << "):\n        _";
+    for (char c : b) std::cout << std::setw(4) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i <= n; ++i) {
+        std::cout << "   " << (i == 0 ? '_' : a[i - 1]) << " ";
+        for (std::size_t j = 0; j <= m; ++j) std::cout << std::setw(4) << H[i][j];
+        std::cout << "\n";
+    }
+
+    // Traceback path for the figure.
+    std::vector<std::pair<std::size_t, std::size_t>> path;
+    for (std::size_t i = n, j = m;;) {
+        path.emplace_back(i, j);
+        if (i == 0 && j == 0) break;
+        const int sc = (i > 0 && j > 0 && a[i - 1] == b[j - 1]) ? s.match : s.mismatch;
+        if (i > 0 && j > 0 && H[i][j] == H[i - 1][j - 1] + sc) { --i; --j; }
+        else if (i > 0 && H[i][j] == H[i - 1][j] + s.gap) { --i; }
+        else { --j; }
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> px, py;
+    for (const auto& [i, j] : path) { px.push_back(static_cast<double>(j)); py.push_back(-static_cast<double>(i)); }
+    plot.line(px, py, "traceback", RGB{220, 38, 38}, 2.5);
+    for (std::size_t i = 0; i <= n; ++i)
+        for (std::size_t j = 0; j <= m; ++j)
+            plot.text(static_cast<double>(j), -static_cast<double>(i), std::to_string(H[i][j]), RGB{31, 41, 55}, 13.0);
+    for (std::size_t j = 0; j < m; ++j)
+        plot.text(static_cast<double>(j + 1), 0.7, std::string(1, b[j]), RGB{37, 99, 235}, 14.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(-0.8, -static_cast<double>(i + 1), std::string(1, a[i]), RGB{22, 163, 74}, 14.0);
+    plot.title("Needleman-Wunsch matrix: AAAC vs AGC (global score 0)")
+        .x_label("prefix of \"AGC\"").y_label("prefix of \"AAAC\" (downward)").background({250, 250, 252});
+    plot.x_limits(-1.5, static_cast<double>(m) + 0.5);
+    plot.y_limits(-static_cast<double>(n) - 0.5, 1.5);
+    plot.save_svg("build/org/needleman_wunsch_dp.svg");
+    std::cout << "\nwrote needleman_wunsch_dp.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/needleman_wunsch_analysis.cpp <<'CPP'
+<<nw-includes>>
+
+int main() {
+<<nw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/needleman_wunsch_analysis.cpp -o build/org/needleman_wunsch_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/needleman_wunsch_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Needleman-Wunsch global alignment ===
+scoring: match=1 mismatch=-1 gap=-1
+score = 0
+AAAC
+-AGC
+
+default-scored "GATTACA" vs "GCATGCU": score 2
+  GATTACA
+  GCATGCU
+default-scored "HELLO" vs "HELP": score 3
+  HELLO
+  HE-LP
+default-scored "ALIGN" vs "ALIGNMENT": score 2
+  ALIG---N-
+  ALIGNMENT
+
+DP matrix H for "AAAC" vs "AGC" (score 0):
+        _   A   G   C
+   _    0  -1  -2  -3
+   A   -1   1   0  -1
+   A   -2   0   0  -1
+   A   -3  -1  -1  -1
+   C   -4  -2  -2   0
+
+wrote needleman_wunsch_dp.svg
+#+end_example
+
+The worked pair reproduces the hand computation: global score 0 with the surplus
+=A= absorbed by a gap. The default-scored pairs show the same machinery aligning
+whole strings end to end -- padding =HELP= against =HELLO= and extending =ALIGN=
+to =ALIGNMENT= with gaps -- always spanning both sequences in full, which is the
+defining property of /global/ alignment.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/needleman_wunsch_dp.svg]]
+
+The red path is the traceback from the bottom-right corner. Its three diagonal
+segments are the =A=/=A=, =A=/=G=, and =C=/=C= columns (two matches lifting the
+score, one mismatch), and the single vertical segment is the gap that swallows the
+extra =A= of =AAAC=. Reading the path off the matrix /is/ the optimal alignment.

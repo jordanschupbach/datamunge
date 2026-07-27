@@ -1,0 +1,213 @@
+#+title: Hirschberg's Algorithm: Global Alignment in Linear Space
+#+subtitle: A literate C++ study of divide-and-conquer, linear-space alignment with =datamunge='s =algorithms::hirschberg=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Needleman-Wunsch finds the optimal global alignment but stores the whole
+\(|a|\times|b|\) scoring matrix -- prohibitive for long sequences (two
+30,000-character strings would need ~1 GB just for the traceback). *Hirschberg's
+algorithm* (Hirschberg, 1975) computes the /same/ optimal alignment in only
+\(O(\min(|a|,|b|))\) space, by divide and conquer: it never stores the matrix,
+only ever two rows of it. The trick is that the optimal alignment's crossing
+point at the middle row of \(a\) can be found from two linear-space score sweeps,
+after which the problem splits into two independent halves. This report
+implements it in =datamunge='s C++ =algorithms::hirschberg=, shows that it
+reproduces Needleman-Wunsch's score exactly, and visualizes the forward/reverse
+score profiles whose sum pinpoints the split column.
+#+end_abstract
+
+* The idea: find where the optimal alignment crosses the middle
+
+Fix the midpoint row \(x_{\text{mid}}=\lfloor|a|/2\rfloor\), splitting \(a\) into a
+left half \(a_L=a[0{:}x_{\text{mid}}]\) and right half
+\(a_R=a[x_{\text{mid}}{:}]\). Any global alignment passes through the middle row
+at some column \(y_{\text{mid}}\) of \(b\): the part above aligns \(a_L\) with
+\(b[0{:}y_{\text{mid}}]\), the part below aligns \(a_R\) with
+\(b[y_{\text{mid}}{:}]\). Its total score is the sum of those two independent
+sub-scores, so the optimal crossing column maximizes
+
+\[
+y_{\text{mid}}=\arg\max_{0\le j\le|b|}\;
+\underbrace{\text{NWScore}(a_L,\,b[0{:}j])}_{\text{forward}}
++\underbrace{\text{NWScore}(a_R^{R},\,b[j{:}]^{R})}_{\text{reverse}} .
+\]
+
+Here =NWScore= is the *last row* of the Needleman-Wunsch matrix -- computable in
+two rolling rows, i.e. \(O(|b|)\) space -- and the reverse term is the same
+computation on the reversed strings, giving the score of aligning the /suffixes/.
+Once \(y_{\text{mid}}\) is known, the algorithm recurses on
+\((a_L, b[0{:}y_{\text{mid}}])\) and \((a_R, b[y_{\text{mid}}{:}])\) and
+concatenates the two alignments. The recursion depth is \(O(\log|a|)\) and the
+total work is still \(O(|a||b|)\), but no full matrix is ever held.
+
+#+name: hb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sequence_alignment.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// NWScore: the last row of the Needleman-Wunsch matrix aligning `a` against `b`, in O(|b|) space.
+static std::vector<int> nw_score(const std::string& a, const std::string& b, AlignmentScoring s) {
+    const std::size_t m = b.size();
+    std::vector<int> prev(m + 1), curr(m + 1);
+    for (std::size_t j = 0; j <= m; ++j) prev[j] = static_cast<int>(j) * s.gap;
+    for (std::size_t i = 1; i <= a.size(); ++i) {
+        curr[0] = static_cast<int>(i) * s.gap;
+        for (std::size_t j = 1; j <= m; ++j) {
+            const int sc = (a[i - 1] == b[j - 1]) ? s.match : s.mismatch;
+            curr[j] = std::max({prev[j - 1] + sc, prev[j] + s.gap, curr[j - 1] + s.gap});
+        }
+        std::swap(prev, curr);
+    }
+    return prev;
+}
+#+end_src
+
+* Pseudo-code
+
+#+begin_example
+HIRSCHBERG(a, b, s):
+  if |a| == 0: return (all-gap alignment of b)
+  if |b| == 0: return (all-gap alignment of a)
+  if |a| == 1 or |b| == 1: return NEEDLEMAN-WUNSCH(a, b, s)   # cheap base case
+  xmid <- |a| / 2
+  scoreL <- NWScore(a[0:xmid], b, s)                          # forward last row
+  scoreR <- NWScore(reverse(a[xmid:]), reverse(b), s)         # reverse last row
+  reverse(scoreR)                                             # so scoreR[j] scores b[j:] vs a[xmid:]
+  ymid <- argmax over j of ( scoreL[j] + scoreR[j] )
+  (AL, BL) <- HIRSCHBERG(a[0:xmid],  b[0:ymid],  s)
+  (AR, BR) <- HIRSCHBERG(a[xmid:],   b[ymid:],   s)
+  return (AL + AR, BL + BR)
+#+end_example
+
+* Worked example: =AGTACGCA= versus =TATGC=
+
+We align \(a=\)=AGTACGCA= (length 8) against \(b=\)=TATGC= (length 5) with the
+default scoring \(+2/-1/-2\). At the top level \(x_{\text{mid}}=4\), so we score
+the left half =AGTA= forward against every prefix of =TATGC= and the right half
+=CGCA= (reversed) against every suffix of =TATGC=; adding the two profiles gives a
+total score per candidate crossing column, and its maximizer is the column where
+the optimal alignment passes through the middle. Hirschberg then recurses into the
+two halves. The program prints the alignment it reconstructs alongside the one
+Needleman-Wunsch produces and confirms the scores are identical.
+
+#+name: hb-run
+#+begin_src c++ :eval no
+    const AlignmentScoring s{};              // default 2/-1/-2
+    const std::string a = "AGTACGCA", b = "TATGC";
+
+    const Alignment hb = hirschberg(a, b, s);
+    const Alignment nw = needleman_wunsch(a, b, s);
+    std::cout << "=== Hirschberg (linear space) vs Needleman-Wunsch ===\n";
+    std::cout << "Hirschberg:      score " << hb.score << "\n  " << hb.a_aligned << "\n  " << hb.b_aligned << "\n";
+    std::cout << "Needleman-Wunsch: score " << nw.score << "\n  " << nw.a_aligned << "\n  " << nw.b_aligned << "\n";
+    std::cout << "scores identical: " << std::boolalpha << (hb.score == nw.score) << "\n\n";
+
+    // The top-level split: forward + reverse score profiles over crossing column j.
+    const std::size_t xmid = a.size() / 2;
+    const std::vector<int> scoreL = nw_score(a.substr(0, xmid), b, s);
+    std::string a_r = a.substr(xmid); std::reverse(a_r.begin(), a_r.end());
+    std::string b_r = b;              std::reverse(b_r.begin(), b_r.end());
+    std::vector<int> scoreR = nw_score(a_r, b_r, s);
+    std::reverse(scoreR.begin(), scoreR.end());
+
+    std::size_t ymid = 0; int best = scoreL[0] + scoreR[0];
+    std::cout << "top-level split at xmid=" << xmid << " (\"" << a.substr(0, xmid) << "\" | \""
+              << a.substr(xmid) << "\"):\n  j : forwardL + reverseR = total\n";
+    std::vector<double> xs, tot;
+    for (std::size_t j = 0; j < scoreL.size(); ++j) {
+        const int t = scoreL[j] + scoreR[j];
+        if (t > best) { best = t; ymid = j; }
+        std::cout << "  " << j << " : " << scoreL[j] << " + " << scoreR[j] << " = " << t << "\n";
+        xs.push_back(static_cast<double>(j)); tot.push_back(static_cast<double>(t));
+    }
+    std::cout << "  -> crossing column ymid = " << ymid << " (b split \"" << b.substr(0, ymid)
+              << "\" | \"" << b.substr(ymid) << "\")\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> js, fL, rR;
+    for (std::size_t j = 0; j < scoreL.size(); ++j) {
+        js.push_back(static_cast<double>(j));
+        fL.push_back(static_cast<double>(scoreL[j]));
+        rR.push_back(static_cast<double>(scoreR[j]));
+    }
+    plot.line(js, fL, "forward NWScore(aL, b[:j])", RGB{37, 99, 235}, 2.0);
+    plot.line(js, rR, "reverse NWScore(aR, b[j:])", RGB{22, 163, 74}, 2.0);
+    plot.line(xs, tot, "sum", RGB{220, 38, 38}, 2.5);
+    plot.points({static_cast<double>(ymid)}, {static_cast<double>(best)}, "argmax = ymid", RGB{202, 138, 4}, 14.0);
+    plot.legend({"forward", "reverse", "sum", "argmax"},
+                {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}, {202, 138, 4}});
+    plot.title("Hirschberg split: the summed profile peaks at the crossing column")
+        .x_label("crossing column j in \"TATGC\"").y_label("alignment score").background({250, 250, 252});
+    plot.save_svg("build/org/hirschberg_split.svg");
+    std::cout << "\nwrote hirschberg_split.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hirschberg_analysis.cpp <<'CPP'
+<<hb-includes>>
+
+int main() {
+<<hb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hirschberg_analysis.cpp -o build/org/hirschberg_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hirschberg_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Hirschberg (linear space) vs Needleman-Wunsch ===
+Hirschberg:      score 1
+  AGTACGCA
+  --TATGC-
+Needleman-Wunsch: score 1
+  AGTACGCA
+  --TATGC-
+scores identical: true
+
+top-level split at xmid=4 ("AGTA" | "CGCA"):
+  j : forwardL + reverseR = total
+  0 : -8 + -3 = -11
+  1 : -4 + -1 = -5
+  2 : 0 + 1 = 1
+  3 : -2 + 0 = -2
+  4 : -1 + -4 = -5
+  5 : -3 + -8 = -11
+  -> crossing column ymid = 2 (b split "TA" | "TGC")
+
+wrote hirschberg_split.svg
+#+end_example
+
+Hirschberg returns the same optimal score as Needleman-Wunsch -- the guarantee of
+the algorithm -- while never materializing more than two matrix rows at a time.
+The printed profile shows how the forward and reverse score sweeps combine: their
+sum is maximized at the crossing column =ymid=, the single decision that splits
+the alignment into two independent subproblems.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hirschberg_split.svg]]
+
+The blue forward profile rises as more of =b= is available to the top half; the
+green reverse profile falls symmetrically for the bottom half; and their red sum
+peaks at the gold marker -- the column \(y_{\text{mid}}\) through which an optimal
+global alignment passes at the middle row. Recursing left and right of this point,
+and again inside each half, reconstructs the full alignment in linear space.

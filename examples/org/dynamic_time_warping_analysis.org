@@ -1,0 +1,181 @@
+#+title: Dynamic Time Warping: Aligning Sequences That Vary in Speed
+#+subtitle: A literate C++ study of elastic time alignment with =datamunge='s =geometry::dynamic_time_warping=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Two recordings of the same spoken word, two gait cycles, two heartbeats -- they
+trace the same shape but at different, locally varying speeds, so a point-by-point
+(Euclidean) comparison badly overstates their difference. *Dynamic Time Warping*
+(Sakoe & Chiba, 1978) measures similarity under /elastic/ time: it finds the
+monotone alignment of the two index axes that minimizes the summed local cost,
+letting one series stretch or compress to meet the other. It is the numeric-series
+member of the sequence-alignment family, sharing the Needleman-Wunsch dynamic
+program but over real values with a distance floor instead of a score. This report
+uses =datamunge='s C++ =geometry::dynamic_time_warping=, works the tiny example
+=[1,2,3]= vs =[1,1,2,3]= (distance 0) by hand, and warps a sinusoid against a
+time-distorted copy to show DTW collapsing a difference that Euclidean distance
+inflates.
+#+end_abstract
+
+* Elastic alignment
+
+Given numeric series \(a\) of length \(n\) and \(b\) of length \(m\), a /warping
+path/ is a sequence of index pairs \((i_1,j_1),\dots,(i_L,j_L)\) with
+\((i_1,j_1)=(0,0)\), \((i_L,j_L)=(n-1,m-1)\), that advances monotonically and
+continuously -- each step increments \(i\), \(j\), or both by one. Its cost is the
+sum of local costs \(\sum_k |a_{i_k}-b_{j_k}|\). DTW is the minimum cost over all
+warping paths. Because the path may take several steps in one series while the
+other waits, DTW aligns features that occur at different times, and it needs no
+equal lengths -- both impossible for plain Euclidean distance.
+
+#+name: dtw-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/dtw.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static constexpr double PI = 3.14159265358979323846;
+#+end_src
+
+* The dynamic program
+
+Let \(D(i,j)\) be the minimum warping cost aligning the first \(i\) values of \(a\)
+with the first \(j\) of \(b\). With local cost \(d(i,j)=|a_i-b_j|\), boundaries
+\(D(0,0)=0\) and \(D(i,0)=D(0,j)=\infty\),
+
+\[
+D(i,j)=d(i,j)+\min\bigl(D(i-1,j-1),\,D(i-1,j),\,D(i,j-1)\bigr).
+\]
+
+The three predecessors are the three legal moves: a diagonal step (advance both
+series), a vertical step (a stays put while b advances -- b is /compressed/), and a
+horizontal step (b stays while a advances -- a is /compressed/). The answer is
+\(D(n,m)\), and a traceback choosing the minimizing predecessor at each cell
+recovers the warping path. Time and space are \(O(nm)\).
+
+#+begin_example
+DTW(a, b):                               # |a| = n, |b| = m
+  D[0][0] <- 0;  D[i][0] <- inf;  D[0][j] <- inf
+  for i in 1..n:
+      for j in 1..m:
+          D[i][j] <- |a[i] - b[j]| + min( D[i-1][j-1], D[i-1][j], D[i][j-1] )
+  # traceback from (n, m) to (1, 1), choosing the predecessor that attained the min
+  return ( D[n][m], warping-path )
+#+end_example
+
+* Worked example: =[1,2,3]= versus =[1,1,2,3]=
+
+The second series is the first with its leading =1= held for one extra tick. DTW
+matches \(a_0=1\) to /both/ leading =1='s of \(b\) (a vertical step, zero cost),
+then =2=/=2= and =3=/=3= diagonally, for a total distance of \(0\): the two series
+are identical up to a time stretch, and DTW sees through it. A rigid comparison,
+by contrast, would line up =1= vs =1=, =2= vs =1=, =3= vs =2= and complain of a
+mismatch at every position after the first.
+
+#+name: dtw-run
+#+begin_src c++ :eval no
+    // Hand example: a stretched copy costs nothing under DTW.
+    const auto tiny = dynamic_time_warping({1, 2, 3}, {1, 1, 2, 3});
+    std::cout << "=== Dynamic Time Warping ===\n";
+    std::cout << "DTW([1,2,3], [1,1,2,3]) = " << tiny.distance << "\n  warping path:";
+    for (std::size_t k = 0; k < tiny.path_a.size(); ++k)
+        std::cout << " (" << tiny.path_a[k] << "," << tiny.path_b[k] << ")";
+    std::cout << "\n\n";
+
+    // A sinusoid vs a time-distorted copy of itself (same shape, warped phase).
+    const std::size_t N = 30;
+    std::vector<double> a(N), b(N);
+    for (std::size_t i = 0; i < N; ++i) {
+        const double u = static_cast<double>(i) / static_cast<double>(N - 1);
+        a[i] = std::sin(2.0 * PI * u);
+        b[i] = std::sin(2.0 * PI * std::pow(u, 1.6));   // nonlinear time warp
+    }
+
+    const auto res = dynamic_time_warping(a, b);
+    double euclid = 0.0;                                  // rigid point-by-point distance
+    for (std::size_t i = 0; i < N; ++i) euclid += std::abs(a[i] - b[i]);
+    std::cout << "sinusoid vs time-warped copy (" << N << " samples each):\n";
+    std::cout << "  DTW distance        = " << res.distance << "\n";
+    std::cout << "  rigid L1 distance   = " << euclid << "\n";
+    std::cout << "  warping-path length = " << res.path_a.size() << "\n";
+
+    // Plot: the two series (offset vertically) with the warping path drawn between them.
+    auto plot = RPlot::create();
+    std::vector<double> xa(N), ya(N), xb(N), yb(N);
+    for (std::size_t i = 0; i < N; ++i) {
+        xa[i] = static_cast<double>(i); ya[i] = a[i] + 1.6;
+        xb[i] = static_cast<double>(i); yb[i] = b[i] - 1.6;
+    }
+    std::vector<double> sx0, sy0, sx1, sy1;
+    for (std::size_t k = 0; k < res.path_a.size(); ++k) {
+        sx0.push_back(static_cast<double>(res.path_a[k])); sy0.push_back(a[res.path_a[k]] + 1.6);
+        sx1.push_back(static_cast<double>(res.path_b[k])); sy1.push_back(b[res.path_b[k]] - 1.6);
+    }
+    plot.segments(sx0, sy0, sx1, sy1, RGB{203, 213, 225}, 1.0);   // warping correspondences
+    plot.line(xa, ya, "a: sin(2 pi u)", RGB{37, 99, 235}, 2.0);
+    plot.line(xb, yb, "b: sin(2 pi u^1.6)", RGB{220, 38, 38}, 2.0);
+    plot.legend({"a: sin", "b: warped sin", "warp"}, {{37, 99, 235}, {220, 38, 38}, {148, 163, 184}});
+    plot.title("DTW aligns a sinusoid to a time-warped copy")
+        .x_label("sample index").y_label("value (series offset for clarity)").background({250, 250, 252});
+    plot.save_svg("build/org/dynamic_time_warping.svg");
+    std::cout << "\nwrote dynamic_time_warping.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/dynamic_time_warping_analysis.cpp <<'CPP'
+<<dtw-includes>>
+
+int main() {
+<<dtw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/dynamic_time_warping_analysis.cpp -o build/org/dynamic_time_warping_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/dynamic_time_warping_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Dynamic Time Warping ===
+DTW([1,2,3], [1,1,2,3]) = 0
+  warping path: (0,0) (0,1) (1,2) (2,3)
+
+sinusoid vs time-warped copy (30 samples each):
+  DTW distance        = 1.41447
+  rigid L1 distance   = 12.2668
+  warping-path length = 35
+
+wrote dynamic_time_warping.svg
+#+end_example
+
+The tiny example returns distance 0 with a warping path that pauses on the
+repeated =1=, and the sinusoid example shows DTW's whole point: the same waveform
+sampled on a distorted time axis has a small DTW distance but a large rigid
+(point-by-point) distance, because DTW is free to slide features into alignment
+while Euclidean distance compares fixed positions.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/dynamic_time_warping.svg]]
+
+The grey lines are the warping correspondences: near the ends, where the two time
+axes agree, they run almost vertically; through the middle, where the warp
+\(u\mapsto u^{1.6}\) bends time hardest, they fan out -- one series marking time
+while the other advances -- so that each crest and trough of the blue sinusoid is
+joined to the matching feature of the red one rather than to whatever happens to
+share its index.

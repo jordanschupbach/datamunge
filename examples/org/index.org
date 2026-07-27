@@ -468,6 +468,26 @@ We implement Jaro and Jaro-Winkler similarity (=algorithms::jaro_similarity=, =j
 
 We implement the Sorensen-Dice coefficient over character bigrams (=algorithms::dice_coefficient=) and report it as a literate program. We define it as 2|A∩B|/(|A|+|B|) on bigram multisets, relate it to the Jaccard index, and give the O(|a|+|b|) counting algorithm; =night= vs =nacht= = 0.25 is worked by hand and word pairs from disjoint to identical are compared.
 
+** [[./needleman_wunsch_analysis.html][The Needleman-Wunsch Algorithm: Optimal Global Sequence Alignment]] ([[./needleman_wunsch_analysis.pdf][PDF]])
+/A literate C++ study of global dynamic-programming alignment using datamunge/
+
+We implement Needleman-Wunsch global alignment (=algorithms::needleman_wunsch=) and report it as a literate program. We define match/mismatch/gap scoring, derive the H(i,j) recurrence with fully-penalized boundaries, and give traceback pseudo-code; =AAAC= vs =AGC= is worked by hand to global score 0, its scoring matrix printed and the traceback drawn.
+
+** [[./smith_waterman_analysis.html][The Smith-Waterman Algorithm: Optimal Local Sequence Alignment]] ([[./smith_waterman_analysis.pdf][PDF]])
+/A literate C++ study of local dynamic-programming alignment using datamunge/
+
+We implement Smith-Waterman local alignment (=algorithms::smith_waterman=) and report it as a literate program. We show that flooring the Needleman-Wunsch recurrence at zero yields the best-scoring pair of substrings, with the traceback starting at the maximum cell and stopping at the first zero; =AAGT= vs =AGT= gives local score 6, beating the global score 4, and an embedded =GATTACA= motif is extracted from differing flanks.
+
+** [[./hirschberg_analysis.html][Hirschberg's Algorithm: Global Alignment in Linear Space]] ([[./hirschberg_analysis.pdf][PDF]])
+/A literate C++ study of divide-and-conquer, linear-space alignment using datamunge/
+
+We implement Hirschberg's algorithm (=algorithms::hirschberg=) and report it as a literate program. We show how two linear-space NWScore sweeps (forward and reverse) locate the column where an optimal alignment crosses the middle row, splitting the problem in two; on =AGTACGCA= vs =TATGC= it reproduces Needleman-Wunsch's score exactly in O(min) space, with the summed score profile plotted.
+
+** [[./dynamic_time_warping_analysis.html][Dynamic Time Warping: Aligning Sequences That Vary in Speed]] ([[./dynamic_time_warping_analysis.pdf][PDF]])
+/A literate C++ study of elastic time alignment using datamunge/
+
+We implement Dynamic Time Warping (=geometry::dynamic_time_warping=) and report it as a literate program. We define the warping path and the D(i,j)=|a_i-b_j|+min(...) recurrence; =[1,2,3]= vs =[1,1,2,3]= is worked to distance 0, and a sinusoid warped by u->u^1.6 shows DTW distance (1.41) collapsing a difference that the rigid L1 distance (12.27) inflates.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 
