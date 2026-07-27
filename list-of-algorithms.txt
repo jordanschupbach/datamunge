@@ -173,7 +173,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
     Exchange sorts
         Bubble sort: for each pair of indices, swap the items if out of order
         Cocktail shaker sort or bidirectional bubble sort, a bubble sort traversing the list alternately from front to back and back to front
-        Comb sort
+        [x] Comb sort  -- datamunge::algorithms::comb_sort; report examples/org/comb_sort_analysis.org
         Gnome sort
         Odd–even sort
         Quicksort: divide list into two, with all items on the first list coming before all items on the second list.; then sort the two lists. Often the method of choice
@@ -187,10 +187,10 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Timsort: adaptative algorithm derived from merge sort and insertion sort. Used in Python 2.3 and up, and Java SE 7.
     Insertion sorts
         Cycle sort: in-place with theoretically optimal number of writes
-        Insertion sort: determine where the current item belongs in the list of sorted ones, and insert it there
+        [x] Insertion sort: determine where the current item belongs in the list of sorted ones, and insert it there  -- datamunge::algorithms::insertion_sort; report examples/org/insertion_sort_analysis.org
         Library sort
         Patience sorting
-        Shell sort: an attempt to improve insertion sort
+        [x] Shell sort: an attempt to improve insertion sort  -- datamunge::algorithms::shell_sort; report examples/org/shell_sort_analysis.org
         Tree sort (binary tree sort): build binary tree, then traverse it to create sorted list
     Merge sorts
         Merge sort: sort the first and second half of the list separately, then merge the sorted lists
@@ -206,7 +206,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Radix sort: sorts strings letter by letter
     Selection sorts
         Heapsort: convert the list into a heap, keep removing the largest element from the heap and adding it to the end of the list
-        Selection sort: pick the smallest of the remaining elements, add it to the end of the sorted list
+        [x] Selection sort: pick the smallest of the remaining elements, add it to the end of the sorted list  -- datamunge::algorithms::selection_sort; report examples/org/selection_sort_analysis.org
         Smoothsort
     Other
         Bitonic sorter

@@ -1,0 +1,159 @@
+#+title: Selection Sort: Fewest Writes, Always
+#+subtitle: A literate C++ study of the minimal-swap elementary sort with =datamunge='s =algorithms::selection_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Selection sort* repeatedly finds the smallest remaining element and moves it to
+the front. It is the elementary sort that makes the *fewest writes* -- at most
+\(n-1\) swaps, no matter the input -- which matters when writing to memory is far
+more expensive than reading it (flash storage, EEPROM). The catch is that it is
+never adaptive: it always performs \(\Theta(n^2)\) comparisons, even on already
+sorted data. This report implements it in =datamunge='s C++
+=algorithms::selection_sort=, traces it on a small array, and contrasts its linear
+swap count against its quadratic comparison count.
+#+end_abstract
+
+* Select the minimum, swap it home
+
+For each position \(i\) from the front, scan the unsorted tail \([i,n)\) for the
+index of its minimum, then swap that minimum into position \(i\). After the swap the
+prefix \([0,i]\) is sorted and final. The scan costs \(n-i-1\) comparisons, so the
+total is \(\sum_{i}(n-i-1)=\binom{n}{2}=\Theta(n^2)\) comparisons *regardless of the
+data* -- there is no early exit. But each position triggers at most one swap, so the
+number of writes is at most \(n-1\): selection sort trades comparisons (cheap reads)
+for writes (expensive), the opposite bias to insertion sort.
+
+#+name: ss-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/comparison_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Instrumented copy returning (comparisons, swaps).
+static std::pair<long, long> selection_counts(std::vector<int> a) {
+    long comps = 0, swaps = 0;
+    const std::size_t n = a.size();
+    for (std::size_t i = 0; i + 1 < n; ++i) {
+        std::size_t m = i;
+        for (std::size_t j = i + 1; j < n; ++j) { ++comps; if (a[j] < a[m]) m = j; }
+        if (m != i) { std::swap(a[i], a[m]); ++swaps; }
+    }
+    return {comps, swaps};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SELECTION-SORT(a):
+  for i in 0 .. n-2:
+      m <- i
+      for j in i+1 .. n-1:
+          if a[j] < a[m]: m <- j        # track the minimum of the tail
+      if m != i: swap(a[i], a[m])        # at most one swap per position
+#+end_example
+
+* Worked example and write-count experiment
+
+We sort \([5,3,8,1,9,2,7]\), printing the array after each selection, then compare
+the number of comparisons and swaps as the array grows.
+
+#+name: ss-run
+#+begin_src c++ :eval no
+    std::cout << "=== Selection sort of [5,3,8,1,9,2,7] ===\n";
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    for (std::size_t i = 0; i + 1 < a.size(); ++i) {
+        std::size_t m = i;
+        for (std::size_t j = i + 1; j < a.size(); ++j) if (a[j] < a[m]) m = j;
+        if (m != i) std::swap(a[i], a[m]);
+        std::cout << "  step " << i + 1 << " (min " << a[i] << " -> front): ";
+        for (int v : a) std::cout << v << " ";
+        std::cout << "\n";
+    }
+    std::cout << "sorted (library): ";
+    for (int v : selection_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\ncomparisons vs swaps as n grows:\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ns, comps, swaps;
+    std::mt19937 rng(2);
+    for (int n = 5; n <= 200; n += 5) {
+        std::vector<int> v(static_cast<std::size_t>(n));
+        for (int i = 0; i < n; ++i) v[static_cast<std::size_t>(i)] = i;
+        std::shuffle(v.begin(), v.end(), rng);
+        const auto [c, s] = selection_counts(v);
+        ns.push_back(n); comps.push_back(static_cast<double>(c)); swaps.push_back(static_cast<double>(s));
+    }
+    std::cout << "  n=200: comparisons=" << comps.back() << ", swaps=" << swaps.back()
+              << " (<= n-1 = 199)\n";
+    plot.line(ns, comps, "comparisons", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, swaps, "swaps", RGB{37, 99, 235}, 2.0);
+    plot.legend({"comparisons O(n^2)", "swaps <= n-1"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Selection sort: quadratic comparisons but linear (minimal) swaps")
+        .x_label("array size n").y_label("operations").background({250, 250, 252});
+    plot.save_svg("build/org/selection_sort.svg");
+    std::cout << "\nwrote selection_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/selection_sort_analysis.cpp <<'CPP'
+<<ss-includes>>
+#include <algorithm>
+#include <random>
+
+int main() {
+<<ss-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/selection_sort_analysis.cpp -o build/org/selection_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/selection_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Selection sort of [5,3,8,1,9,2,7] ===
+  step 1 (min 1 -> front): 1 3 8 5 9 2 7
+  step 2 (min 2 -> front): 1 2 8 5 9 3 7
+  step 3 (min 3 -> front): 1 2 3 5 9 8 7
+  step 4 (min 5 -> front): 1 2 3 5 9 8 7
+  step 5 (min 7 -> front): 1 2 3 5 7 8 9
+  step 6 (min 8 -> front): 1 2 3 5 7 8 9
+sorted (library): 1 2 3 5 7 8 9
+
+comparisons vs swaps as n grows:
+  n=200: comparisons=19900, swaps=195 (<= n-1 = 199)
+
+wrote selection_sort.svg
+#+end_example
+
+Each step fixes one more element at the front by a single swap, and the array is
+sorted after \(n-1\) steps. The experiment shows the signature trade: comparisons
+climb quadratically while swaps stay below \(n-1\) -- so when a write costs far more
+than a read, selection sort's stinginess with writes can win despite its quadratic
+comparisons.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/selection_sort.svg]]
+
+The red comparison curve arcs up as \(O(n^2)\); the blue swap curve stays flat
+against it, never exceeding \(n-1\). That flat write cost -- independent of the
+data -- is selection sort's one enduring advantage over its faster rivals.

@@ -8,6 +8,7 @@
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
+#include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>

@@ -1,0 +1,169 @@
+#+title: Comb Sort: Bubble Sort That Kills the Turtles
+#+subtitle: A literate C++ study of gapped exchange sorting with =datamunge='s =algorithms::comb_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Bubble sort is notoriously slow because of *turtles*: small values stranded near
+the end of the array move only one position closer to the front per pass. *Comb
+sort* applies the same idea Shell sort brought to insertion sort -- compare and
+swap elements a large *gap* apart, shrinking the gap each pass by the empirically
+tuned factor 1.3 until it reaches 1. The wide early gaps hurl turtles most of the
+way home, lifting bubble sort's \(O(n^2)\) to roughly \(O(n\log n)\) in practice
+with a one-line change. This report implements it in =datamunge='s C++
+=algorithms::comb_sort=, traces its shrinking gaps, and shows it crushing bubble
+sort's comparison count.
+#+end_abstract
+
+* Turtles, rabbits, and the shrink factor
+
+In bubble sort, large values near the front ("rabbits") reach the end quickly, but
+small values near the end ("turtles") crawl forward one step per pass -- the source
+of the quadratic cost. Comb sort compares elements a gap \(g\) apart rather than
+adjacent ones; a turtle can leap \(g\) positions in a single swap. Starting at
+\(g=n\) and shrinking by the *shrink factor* 1.3 each pass -- \(g\leftarrow\lfloor
+g/1.3\rfloor\) -- until \(g=1\), it finishes with ordinary (gap-1) bubble passes on
+an array whose turtles are already gone, so almost no work remains. The value 1.3
+was found empirically to minimize comparisons; it occasionally leaves the gap at an
+unlucky value, so the algorithm keeps making gap-1 passes until one completes with
+no swaps.
+
+#+name: cb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/comparison_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static long comb_compares(std::vector<int> a) {
+    long c = 0; const std::size_t n = a.size();
+    if (n < 2) return 0;
+    std::size_t gap = n; bool sw = true;
+    while (gap > 1 || sw) {
+        gap = (gap * 10) / 13; if (gap < 1) gap = 1;
+        sw = false;
+        for (std::size_t i = 0; i + gap < n; ++i) { ++c; if (a[i] > a[i + gap]) { std::swap(a[i], a[i + gap]); sw = true; } }
+    }
+    return c;
+}
+static long bubble_compares(std::vector<int> a) {
+    long c = 0; const std::size_t n = a.size();
+    bool sw = true;
+    while (sw) { sw = false; for (std::size_t i = 0; i + 1 < n; ++i) { ++c; if (a[i] > a[i + 1]) { std::swap(a[i], a[i + 1]); sw = true; } } }
+    return c;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+COMB-SORT(a):
+  gap <- n ; swapped <- true
+  while gap > 1 or swapped:
+      gap <- floor(gap / 1.3)  (at least 1)
+      swapped <- false
+      for i in 0 .. n-1-gap:
+          if a[i] > a[i+gap]: swap(a[i], a[i+gap]); swapped <- true
+#+end_example
+
+* Worked example and comparison-count experiment
+
+We sort \([5,3,8,1,9,2,7]\) (\(n=7\), so gaps 5, 3, 2, 1, ...), printing the array
+after each gap's pass, then compare comb sort's total comparisons against bubble
+sort's as \(n\) grows.
+
+#+name: cb-run
+#+begin_src c++ :eval no
+    std::cout << "=== Comb sort of [5,3,8,1,9,2,7] ===\n";
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    std::size_t gap = a.size(); bool sw = true;
+    while (gap > 1 || sw) {
+        gap = (gap * 10) / 13; if (gap < 1) gap = 1;
+        sw = false;
+        for (std::size_t i = 0; i + gap < a.size(); ++i) if (a[i] > a[i + gap]) { std::swap(a[i], a[i + gap]); sw = true; }
+        std::cout << "  after gap " << gap << ": ";
+        for (int v : a) std::cout << v << " ";
+        std::cout << "\n";
+    }
+    std::cout << "sorted (library): ";
+    for (int v : comb_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\nComb vs bubble comparisons (random input):\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ns, cb, bb;
+    std::mt19937 rng(4);
+    for (int n = 10; n <= 400; n += 10) {
+        std::vector<int> v(static_cast<std::size_t>(n));
+        for (int i = 0; i < n; ++i) v[static_cast<std::size_t>(i)] = i;
+        std::shuffle(v.begin(), v.end(), rng);
+        ns.push_back(n);
+        cb.push_back(static_cast<double>(comb_compares(v)));
+        bb.push_back(static_cast<double>(bubble_compares(v)));
+    }
+    std::cout << "  n=400: bubble=" << bb.back() << ", comb=" << cb.back() << "\n";
+    plot.line(ns, bb, "bubble sort", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, cb, "comb sort", RGB{37, 99, 235}, 2.0);
+    plot.legend({"bubble O(n^2)", "comb ~O(n log n)"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Comb sort's shrinking gap crushes bubble sort's comparison count")
+        .x_label("array size n").y_label("comparisons").background({250, 250, 252});
+    plot.save_svg("build/org/comb_sort.svg");
+    std::cout << "\nwrote comb_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/comb_sort_analysis.cpp <<'CPP'
+<<cb-includes>>
+
+int main() {
+<<cb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/comb_sort_analysis.cpp -o build/org/comb_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/comb_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Comb sort of [5,3,8,1,9,2,7] ===
+  after gap 5: 2 3 8 1 9 5 7
+  after gap 3: 1 3 5 2 9 8 7
+  after gap 2: 1 2 5 3 7 8 9
+  after gap 1: 1 2 3 5 7 8 9
+  after gap 1: 1 2 3 5 7 8 9
+sorted (library): 1 2 3 5 7 8 9
+
+Comb vs bubble comparisons (random input):
+  n=400: bubble=147630, comb=7106
+
+wrote comb_sort.svg
+#+end_example
+
+The wide first gaps move stranded small values many places at once, so by the time
+the gap reaches 1 the array is almost sorted and the final bubble passes finish
+quickly. Against bubble sort the comparison count is dramatically lower at
+\(n=400\) -- the same exchange mechanism, rescued from quadratic behaviour by the
+shrinking gap.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/comb_sort.svg]]
+
+The red bubble-sort curve balloons as \(O(n^2)\); the blue comb-sort curve stays
+low, growing nearly linearithmically. The difference is entirely the gap: comparing
+distant elements first lets a turtle cross most of the array in one swap instead of
+one position per pass.
