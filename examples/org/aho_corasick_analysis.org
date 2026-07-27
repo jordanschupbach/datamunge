@@ -1,0 +1,311 @@
+#+title: The Aho-Corasick Algorithm: Matching Many Patterns in One Pass
+#+subtitle: A literate C++ study of trie automata, failure links, and dictionary matching with =datamunge='s =algorithms::aho_corasick_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a fixed dictionary of words -- virus signatures, forbidden terms, DNA
+motifs -- and a long stream of text, how do we find /every/ occurrence of
+/every/ word in a single pass? Running a separate single-pattern search once
+per word costs time proportional to the text length times the number of
+patterns. Aho & Corasick (1975) showed this is unnecessary: compile the whole
+dictionary into one finite-state automaton -- a trie of the patterns, augmented
+with *failure links* (the Knuth-Morris-Pratt prefix function generalized from a
+single string to a trie) and *output/dictionary links* -- and then sweep the
+text left to right just once. This report implements it in =datamunge='s C++
+=algorithms::aho_corasick_search= and presents it as a literate program: every
+number and figure is produced by a single compiled binary. After
+\(O(\sum|\text{pattern}|)\) preprocessing, the scan reports all occurrences in
+\(O(|\text{text}| + \#\text{matches})\) time, independent of how many patterns
+there are. The canonical worked example -- the patterns \{he, she, his, hers\}
+against the text =ushers= -- is carried out by hand and reproduced exactly by
+the program: three occurrences (=she= at 1, =he= at 2, =hers= at 2), including
+two patterns that end at the same character and one (=he=) that is a suffix of
+another match, all recovered by following a single chain of dictionary links.
+#+end_abstract
+
+* The multi-pattern matching problem
+
+We are given a /text/ \(T\) of length \(n\) and a set of /patterns/
+\(P_0,\dots,P_{k-1}\) (a *dictionary*). We want to report every pair
+\((i, j)\) such that pattern \(P_j\) occurs in \(T\) starting at index \(i\) --
+/all/ of them, including occurrences that overlap and patterns that are
+suffixes of one another.
+
+The obvious approach is to loop over the dictionary and run a good
+single-pattern searcher -- Knuth-Morris-Pratt, say -- once per pattern. Each
+call is linear in the text, so the total is \(O(k\,(n + m))\) where
+\(m = \sum_j |P_j|\): the text is re-scanned \(k\) times, once for every
+pattern. When the dictionary is large -- thousands of virus signatures, a whole
+lexicon of stopwords -- this factor of \(k\) dominates.
+
+Aho-Corasick removes it. It reads the text /once/, spending amortized constant
+work per character plus constant work per reported match, for a total of
+\(O(n + z)\) where \(z\) is the number of occurrences, after preprocessing that
+is linear in the total pattern length \(m\). The number of patterns \(k\) never
+appears in the scan cost.
+
+=datamunge= exposes the whole search as one call returning a flat list of
+matches, each carrying the start =position= in the text and the =pattern_index=
+into the dictionary.
+
+#+name: ac-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/aho_corasick.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The Aho-Corasick automaton
+
+The automaton has three ingredients built on top of a trie of the patterns.
+
+*The trie (goto function).* Insert every pattern into a trie (prefix tree). Each
+node is a /state/ and corresponds to a prefix of one or more patterns; the root
+is the empty prefix. The edge labelled \(c\) out of a state is the *goto*
+transition: from the state for prefix \(w\), reading \(c\) moves to the state
+for \(wc\), if that is still a prefix of some pattern. A state where a pattern
+ends is marked with that pattern's index in its /output/ set (a set, not a
+single value, so that duplicate patterns can share a state).
+
+*Failure links.* While scanning the text we sit in the state for the /longest/
+suffix of what we have read so far that is also a trie prefix. When the next
+character \(c\) has no goto edge out of the current state, we must not restart:
+some shorter suffix might still extend by \(c\). The *failure link* of a state
+\(v\) points to the state for the longest /proper/ suffix of \(v\)'s prefix that
+is itself a trie node -- exactly the KMP prefix function, but generalized from
+the single-string case to a branching trie. Following failure links repeatedly
+walks through successively shorter suffixes until a goto edge for \(c\) exists
+(or we reach the root).
+
+*Output / dictionary links.* A single position in the text can complete several
+patterns at once -- any pattern that is a suffix of the current match. For
+example, arriving at the state for =she= also completes =he=, because =he= is a
+suffix of =she= and is itself a pattern. The failure link of the =she= state
+already points at the =he= state; the *dictionary link* (a.k.a. output link) of
+a state is the nearest state reachable by failure links whose output is
+non-empty. Chaining along dictionary links from the current state enumerates
+every pattern that ends at the current character, in \(O(1)\) per reported
+match.
+
+With these three structures the search is a single left-to-right pass: at each
+character follow a goto edge if one exists, otherwise follow failure links until
+one does (or fall back to the root), then walk the dictionary-link chain to emit
+every pattern ending here. Amortized, the failure-link walking is \(O(n)\) over
+the whole scan (each goto step advances the state depth by one, each failure
+step decreases it, and depth never goes negative), and the dictionary-link walk
+costs \(O(1)\) per emitted match, giving \(O(n + z)\).
+
+** Building the failure and output links by BFS
+
+The failure link of a state depends only on the failure links of shallower
+states, so we compute them in breadth-first (increasing-depth) order. A state's
+dictionary link is read off its failure link's output in the same sweep.
+
+#+begin_example
+BUILD-AUTOMATON(patterns):
+  create root state 0
+  # --- trie / goto function ---
+  for pi in 0 .. len(patterns) - 1:
+      if patterns[pi] is empty: continue          # empty pattern matches nowhere
+      s <- 0
+      for ch in patterns[pi]:
+          if goto[s][ch] does not exist:
+              goto[s][ch] <- new state
+          s <- goto[s][ch]
+      append pi to output[s]
+
+  # --- failure and dictionary links, breadth-first (shallow states first) ---
+  fail[0] <- 0;  dict[0] <- 0
+  Q <- queue containing the root 0
+  while Q not empty:
+      u <- pop(Q)
+      for (ch, v) in goto[u]:                      # v = goto[u][ch]
+          f <- fail[u]
+          while f != 0 and goto[f][ch] does not exist:
+              f <- fail[f]
+          if goto[f][ch] exists and goto[f][ch] != v:
+              fail[v] <- goto[f][ch]               # longest proper suffix that is a trie node
+          else:
+              fail[v] <- 0                         # ... otherwise fall back to the root
+          if output[fail[v]] is non-empty:
+              dict[v] <- fail[v]                   # fail target itself completes a pattern
+          else:
+              dict[v] <- dict[fail[v]]             # inherit its dictionary link
+          push(Q, v)
+#+end_example
+
+Every trie edge is processed once and each failure-link walk is paid for by the
+depth it descends, so the whole construction is \(O(m)\) in the total pattern
+length.
+
+** Scanning the text
+
+#+begin_example
+SEARCH(text, patterns):                            # automaton already built
+  state <- 0
+  matches <- empty list
+  for i in 0 .. len(text) - 1:
+      ch <- text[i]
+      while state != 0 and goto[state][ch] does not exist:
+          state <- fail[state]                     # follow failure links
+      if goto[state][ch] exists:
+          state <- goto[state][ch]                 # take the goto edge
+      # (else there is no edge even from the root -> state stays at 0)
+
+      # report every pattern ending at i: this state's output, then all
+      # shorter suffix-patterns reachable via dictionary links
+      u <- state
+      while u != 0:
+          for pi in output[u]:
+              emit (position = i - len(patterns[pi]) + 1, pattern = pi)
+          u <- dict[u]
+  return matches
+#+end_example
+
+The reported =position= is the /start/ index of the occurrence: if pattern
+\(P_j\) of length \(\ell\) ends at text index \(i\), it starts at
+\(i - \ell + 1\).
+
+* Worked example: {he, she, his, hers} in "ushers"
+
+We build the automaton for the four patterns =he= (0), =she= (1), =his= (2), and
+=hers= (3), and scan the text =ushers=. By hand, the trie has these marked
+states (writing the prefix each stands for): =he= completes pattern 0, =hers=
+completes pattern 3, =she= completes pattern 1, =his= completes pattern 2. The
+one interesting failure link is from =she= to =he= (the longest proper suffix of
+=she= that is a trie node), and because =he= is itself a pattern, =she='s
+dictionary link points at it.
+
+Walking =u s h e r s=:
+
+- =u= (0): no edge, stay at the root.
+- =s= (1): goto to =s=.
+- =h= (2): goto to =sh=.
+- =e= (3): goto to =she= -- output {1}, so emit =she= starting at
+  \(3 - 3 + 1 = 1\); then its dictionary link reaches =he= -- output {0}, emit
+  =he= starting at \(3 - 2 + 1 = 2\).
+- =r= (4): no =r= edge from =she=; follow the failure link to =he=, which /does/
+  have an =r= edge, goto to =her= (no output).
+- =s= (5): goto to =hers= -- output {3}, emit =hers= starting at
+  \(5 - 4 + 1 = 2\).
+
+So the occurrences are =she= at 1, =he= at 2, and =hers= at 2 -- three matches;
+=his= never appears. Note that =she= and =he= end at the very same character (index
+3) and are both recovered from one dictionary-link chain, and that all matches
+come out ordered by the character at which they /complete/.
+
+#+name: ac-run
+#+begin_src c++ :eval no
+    const std::vector<std::string> patterns = {"he", "she", "his", "hers"};
+    const std::string text = "ushers";
+
+    std::cout << "=== Aho-Corasick: " << patterns.size() << " patterns over text \"" << text << "\" ===\n";
+    std::cout << "patterns:\n";
+    for (std::size_t i = 0; i < patterns.size(); ++i)
+        std::cout << "  [" << i << "] " << patterns[i] << "\n";
+    std::cout << "text index:  ";
+    for (std::size_t i = 0; i < text.size(); ++i) std::cout << i << " ";
+    std::cout << "\ntext char:   ";
+    for (std::size_t i = 0; i < text.size(); ++i) std::cout << text[i] << " ";
+    std::cout << "\n\n";
+
+    const auto matches = aho_corasick_search(text, patterns);
+    std::cout << "occurrences (in emission order):\n";
+    for (const auto& m : matches) {
+        const std::string& p = patterns[m.pattern_index];
+        std::cout << "  '" << p << "' (pattern " << m.pattern_index << ") at ["
+                  << m.position << ".." << m.position + p.size() - 1 << "]\n";
+    }
+    std::cout << "\ntotal matches: " << matches.size() << "\n";
+
+    // Timeline: one series per pattern; a marker at (start position, pattern index).
+    auto plot = RPlot::create();
+    const std::vector<RGB> palette = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4}};
+    for (std::size_t k = 0; k < patterns.size(); ++k) {
+        std::vector<double> xs, ys;
+        for (const auto& m : matches)
+            if (m.pattern_index == k) {
+                xs.push_back(static_cast<double>(m.position));
+                ys.push_back(static_cast<double>(k));
+            }
+        if (!xs.empty()) plot.points(xs, ys, patterns[k], palette[k % palette.size()], 9.0); // skip patterns with no matches
+    }
+    plot.title("Aho-Corasick matches in \"ushers\": start position vs pattern")
+        .x_label("start position in text")
+        .y_label("pattern index")
+        .background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(text.size()) - 0.5);
+    plot.y_limits(-0.5, static_cast<double>(patterns.size()) - 0.5);
+    plot.save_svg("build/org/aho_corasick_matches.svg");
+    std::cout << "\nwrote aho_corasick_matches.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/aho_corasick_analysis.cpp <<'CPP'
+<<ac-includes>>
+
+int main() {
+<<ac-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/aho_corasick_analysis.cpp -o build/org/aho_corasick_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/aho_corasick_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Aho-Corasick: 4 patterns over text "ushers" ===
+patterns:
+  [0] he
+  [1] she
+  [2] his
+  [3] hers
+text index:  0 1 2 3 4 5 
+text char:   u s h e r s 
+
+occurrences (in emission order):
+  'she' (pattern 1) at [1..3]
+  'he' (pattern 0) at [2..3]
+  'hers' (pattern 3) at [2..5]
+
+total matches: 3
+
+wrote aho_corasick_matches.svg
+#+end_example
+
+The program reproduces the hand computation exactly: three occurrences, none of
+them for =his=. Two of the three -- =she= and =he= -- end at the same text
+character (index 3) yet start at different positions (1 and 2), and =he= is a
+suffix of the =she= match: the automaton reports both from a single
+dictionary-link chain rather than backtracking. The third match, =hers=, is
+found after one failure-link hop from the =she= state to the =he= state, showing
+how the failure links let the scan reuse the already-matched =he= prefix instead
+of rereading the text.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/aho_corasick_matches.svg]]
+
+Each marker sits at the /start/ position of an occurrence, on the row of its
+pattern index: =she= (row 1) at position 1, =he= (row 0) at position 2, and
+=hers= (row 3) at position 2 -- with the =he= and =hers= markers sharing a start
+column, and row 2 (=his=) empty because that pattern never occurs. The whole
+picture is produced by one left-to-right sweep of the text through a single
+automaton compiled once from all four patterns, the essence of what makes
+Aho-Corasick independent of the size of the dictionary.

@@ -1,0 +1,256 @@
+#+title: The Z-Algorithm: Fundamental Preprocessing and Linear-Time String Matching
+#+subtitle: A literate C++ study of the Z-array and prefix-based substring search with =datamunge='s =algorithms::z_array=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How much of a string agrees with its own beginning, read off from every
+position at once? The *Z-array* answers exactly that: z[i] is the length of the
+longest substring starting at position i that is also a prefix of the string.
+This one array -- Gusfield's /fundamental preprocessing/ -- is computed in a
+single linear pass by maintaining the rightmost /Z-box/, an interval already
+known to match the prefix, and reusing its mirror values instead of
+recomparing. Concatenating a pattern, a separator, and a text then turns exact
+substring search into a plain scan of one Z-array, giving O(n + m) matching
+with overlapping occurrences for free. This report implements both in
+=datamunge='s C++ =algorithms::z_array= and =algorithms::z_search= and presents
+them as a literate program: every number and figure below is produced by a
+single compiled binary. We define the Z-array, give the Z-box construction with
+an argument for its correctness and linearity (the right edge only ever
+advances), show how the concatenation reduces matching to a Z-array scan, work a
+self-similar string whose Z-array we compute by hand, and find all three
+overlapping copies of "aba" in "abababa".
+#+end_abstract
+
+* The Z-array: fundamental preprocessing
+
+Fix a string s of length n, indexed 0..n-1. Its *Z-array* is the sequence
+z[0..n-1] where z[i] is the length of the longest substring that starts at
+position i /and/ equals a prefix of s. Equivalently, z[i] is the largest k such
+that s[0..k-1] = s[i..i+k-1]. Position 0 is a special case: the whole string is
+a prefix of itself, and =datamunge= adopts the convention z[0] = n. (Some
+authors leave z[0] undefined instead; code that scans the array for matches
+simply starts at i = 1.)
+
+For example, in =aabaabaab= the substring starting at position 3 is =aabaab=,
+whose first six characters reproduce the prefix =aabaab=, so z[3] = 6. Nothing
+starting at position 2 (=b...=) agrees with the prefix =a...=, so z[2] = 0. The
+Z-array records all of this structure -- every self-overlap of the string -- in
+n numbers.
+
+=datamunge= exposes =z_array(s)= returning the vector z, and =z_search(text,
+pattern)= which uses it to list every start index of =pattern= in =text=.
+
+#+name: z-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/z_algorithm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Linear-time construction with the Z-box
+
+A naive computation compares s against each shifted copy of itself, costing
+O(n^2). The Z-algorithm avoids the redundant comparisons by carrying along the
+*rightmost Z-box*: the half-open interval [l, r) that reaches farthest to the
+right among all prefix-matching intervals seen so far. Concretely, l is the
+start of the match that produced the largest r = l + z[l], so we know
+s[l..r-1] = s[0..r-l-1].
+
+When we reach position i:
+
+- If i >= r, we know nothing yet; extend a match from scratch by comparing
+  s[0..] with s[i..] character by character.
+- If i < r, then i sits inside the current box, and its mirror position i - l
+  (measured from the box start) has already been solved. Because s[l..r-1]
+  copies the prefix, the value z[i - l] transfers to i -- but only as far as the
+  box reaches. So we set z[i] = min(r - i, z[i - l]); if z[i - l] would run past
+  r we can only trust up to r and must verify the rest by explicit comparison.
+
+After seeding z[i], we keep comparing s[z[i]] against s[i + z[i]] while they
+agree, and finally, if the match now reaches past r, we slide the box forward to
+[i, i + z[i]).
+
+#+begin_example
+Z-ARRAY(s):                                   # s has length n, indexed 0..n-1
+  z[0] <- n                                   # whole string is a prefix of itself
+  l <- 0;  r <- 0                             # [l, r) = rightmost known Z-box
+  for i from 1 to n-1:
+      if i < r:                               # i lies inside the current Z-box
+          z[i] <- min(r - i, z[i - l])        # reuse the mirror value z[i - l]
+      while i + z[i] < n and s[z[i]] == s[i + z[i]]:   # extend past r by comparison
+          z[i] <- z[i] + 1
+      if i + z[i] > r:                        # a farther-reaching box: record it
+          l <- i;  r <- i + z[i]
+  return z
+#+end_example
+
+*Correctness.* The reuse step is sound because inside the box s[i] = s[i - l],
+s[i+1] = s[i - l + 1], and so on up to index r - 1, so the prefix-match at the
+mirror position i - l is literally the same comparison as at i for as many
+characters as the box guarantees (that is r - i of them). Capping at r - i and
+then extending by direct comparison is therefore never wrong: we only ever trust
+characters we have already proven equal, and we verify every character beyond
+the box explicitly.
+
+*Linearity.* Every explicit character comparison that /succeeds/ strictly
+increases i + z[i] beyond the old r, and each such success moves r one step to
+the right. Since r never decreases and is bounded by n, there are at most n
+successful comparisons over the whole run. Each position i additionally spends at
+most one /failing/ comparison. So the total comparison count is at most 2n, and
+the algorithm runs in O(n) time and O(n) space.
+
+* From matching to a Z-array scan
+
+The Z-array turns exact string matching into bookkeeping. To find a pattern p of
+length m inside a text t, build the string
+
+: joined = p + SEP + t
+
+where SEP is a *separator byte that appears in neither p nor t* (=datamunge=
+uses ='\x01'=). Compute the Z-array of =joined=. Now consider any position i
+that lies in the text region -- that is, i >= m + 1, past the pattern and the
+separator. The value z[i] is the longest prefix of =joined= (hence of p, since
+the separator halts any longer match) that reappears starting at i. So z[i] = m
+means an entire copy of the pattern begins there, and the corresponding text
+index is i - (m + 1). Scanning for z[i] >= m lists every occurrence, overlaps
+included, in O(n + m) total.
+
+The separator is what keeps a matched prefix from bleeding across the boundary
+into the text; without it, a pattern that is itself a prefix of the text could
+produce a z-value longer than m. An empty pattern is handled directly: it
+matches at every position 0..length(t) inclusive.
+
+#+begin_example
+Z-SEARCH(text, pattern):                      # every start index of pattern in text
+  m <- length(pattern)
+  if m == 0: return 0, 1, ..., length(text)   # empty pattern matches everywhere
+  joined <- pattern + SEP + text              # SEP occurs in neither string
+  z <- Z-ARRAY(joined)
+  for i from m+1 to length(joined)-1:
+      if z[i] >= m: report (i - (m+1)) as a match
+#+end_example
+
+* Example: a worked Z-array and an overlapping search
+
+We compute the Z-array of the self-similar string =aabaabaab= by hand and check
+it against the library, then draw its profile. Reading it off: z[0] = 9 (the
+whole string), z[3] = 6 (=aabaab= repeats the prefix), z[6] = 3 (=aab= repeats
+it), and z[1] = z[4] = z[7] = 1 with the rest 0 -- the giveaway pattern of a
+string built from a repeated block. Then we search a few texts, including the
+classic overlapping case of =aba= inside =abababa=, which occurs at positions 0,
+2, and 4.
+
+#+name: z-array-demo
+#+begin_src c++ :eval no
+    const std::string s = "aabaabaab";
+    const std::vector<std::size_t> z = z_array(s);
+
+    std::cout << "=== Z-array (fundamental preprocessing) ===\n";
+    std::cout << "s = \"" << s << "\"\n";
+    std::cout << " i :";
+    for (std::size_t i = 0; i < s.size(); ++i) std::cout << ' ' << i;
+    std::cout << "\n c :";
+    for (char c : s) std::cout << ' ' << c;
+    std::cout << "\n z :";
+    for (std::size_t v : z) std::cout << ' ' << v;
+    std::cout << "\n\n";
+
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < z.size(); ++i) {
+        xs.push_back(static_cast<double>(i));
+        ys.push_back(static_cast<double>(z[i]));
+    }
+    auto plot = RPlot::create();
+    plot.bars(xs, ys, "z[i]", {37, 99, 235}, 0.6);
+    plot.title("Z-array of \"aabaabaab\": prefix-match length at each position")
+        .x_label("position i").y_label("z[i]").background({250, 250, 252});
+    plot.save_svg("build/org/z_array.svg");
+    std::cout << "wrote z_array.svg\n\n";
+#+end_src
+
+#+name: z-search-demo
+#+begin_src c++ :eval no
+    auto show = [](const std::string& text, const std::string& pattern) {
+        const std::vector<std::size_t> hits = z_search(text, pattern);
+        std::cout << "pattern = \"" << pattern << "\", text = \"" << text << "\"\n";
+        std::cout << "  occurrences (start indices):";
+        if (hits.empty()) std::cout << " (none)";
+        for (std::size_t p : hits) std::cout << ' ' << p;
+        std::cout << "\n";
+    };
+
+    std::cout << "=== String matching via z_search ===\n";
+    show("abababa", "aba");   // overlapping matches at 0, 2, 4
+    show("aaaaa", "aa");      // overlapping matches at 0, 1, 2, 3
+    show("ababab", "abc");    // not present
+    show("ab", "");           // empty pattern matches at every position
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/z_algorithm_analysis.cpp <<'CPP'
+<<z-includes>>
+
+int main() {
+<<z-array-demo>>
+<<z-search-demo>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/z_algorithm_analysis.cpp -o build/org/z_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/z_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Z-array (fundamental preprocessing) ===
+s = "aabaabaab"
+ i : 0 1 2 3 4 5 6 7 8
+ c : a a b a a b a a b
+ z : 9 1 0 6 1 0 3 1 0
+
+wrote z_array.svg
+
+=== String matching via z_search ===
+pattern = "aba", text = "abababa"
+  occurrences (start indices): 0 2 4
+pattern = "aa", text = "aaaaa"
+  occurrences (start indices): 0 1 2 3
+pattern = "abc", text = "ababab"
+  occurrences (start indices): (none)
+pattern = "", text = "ab"
+  occurrences (start indices): 0 1 2
+#+end_example
+
+The hand computation is reproduced exactly: the Z-array of =aabaabaab= is
+=9 1 0 6 1 0 3 1 0=, its three nonzero peaks (9, 6, 3) marking the whole string
+and its two shorter self-copies, and the interior ones (z = 1 at positions 1, 4,
+7) catching the single leading =a= of each block. The bar chart below is that
+same array:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/z_array.svg]]
+
+The searches confirm the reduction: =aba= is found at positions 0, 2, and 4 of
+=abababa= -- overlapping occurrences the Z-array scan reports without any extra
+work -- and =aa= at 0, 1, 2, 3 of =aaaaa=. A pattern absent from the text yields
+no matches, and the empty pattern matches at every position 0, 1, 2 of the
+two-character text, one past the end included. Every one of these came from a
+single O(n + m) pass over one Z-array: no character of the text is examined more
+than a constant number of times, which is exactly the guarantee the advancing
+right edge of the Z-box buys us.

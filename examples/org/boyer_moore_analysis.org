@@ -1,0 +1,359 @@
+#+title: The Boyer-Moore Algorithm: Sublinear String Matching by Skipping
+#+subtitle: A literate C++ study of the bad-character and good-suffix heuristics with =datamunge='s =algorithms::boyer_moore_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Naive string search compares a pattern against the text one alignment at a
+time, left to right, touching essentially every character -- \(O(nm)\) in the
+worst case. Boyer and Moore (1977) turned the scan around: compare the pattern
+to the current alignment *right to left*, and on a mismatch jump forward by the
+larger of two precomputed rules, the *bad-character* rule and the *good-suffix*
+rule. Because a single mismatch near the right end can license a shift of
+almost the whole pattern length, most text characters are never examined at all,
+and the average running time is *sublinear* -- the longer the pattern, the
+bigger the strides. This report implements it in =datamunge='s C++
+=algorithms::boyer_moore_search= and presents it as a literate program: every
+number and figure is produced by a single compiled binary. We state the exact
+matching problem, derive the two heuristics and the border-position
+construction behind the good-suffix table, and trace a deterministic search of
+the DNA pattern =GCGGCG= through a twenty-nine-base text by hand: Boyer-Moore
+settles it in six alignments where the naive method needs twenty-four, twice
+vaulting the whole pattern length forward the instant it meets a base the
+pattern does not contain.
+#+end_abstract
+
+* The exact-matching problem
+
+Given a =text= of length \(n\) and a =pattern= of length \(m\), report every
+index \(s\) with \(0 \le s \le n-m\) such that =text[s..s+m-1]= equals
+=pattern=. The naive algorithm tries each \(s\) in turn and, for each, compares
+up to \(m\) characters -- \(O(nm)\) work, and it re-reads text characters it has
+already seen. Boyer-Moore keeps the outer loop over alignments \(s\) but makes
+two changes that, together, let it *skip* most alignments entirely: it compares
+each alignment right-to-left, and after a mismatch it advances \(s\) by more
+than one whenever it safely can.
+
+=datamunge= exposes the search as =boyer_moore_search(text, pattern)=, returning
+the sorted start indices of every occurrence; overlapping matches are reported,
+and by convention an empty pattern (or one longer than the text) returns no
+matches.
+
+#+name: bm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/boyer_moore.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// An instrumented Boyer-Moore that records the shift taken at every alignment, so the report can
+// trace the algorithm's large skips. It mirrors boyer_moore_search exactly; the library function
+// is called separately below to confirm the match positions it reports.
+struct Alignment {
+    int  position; // s: left end of the pattern's current alignment in the text
+    int  mismatch; // pattern index where the right-to-left scan failed, or -1 on a full match
+    int  shift;    // distance jumped to reach the next alignment
+    bool matched;
+};
+
+std::array<int, 256> bad_char_last(const std::string& pat) {
+    std::array<int, 256> last;
+    last.fill(-1);
+    for (int i = 0; i < static_cast<int>(pat.size()); ++i)
+        last[static_cast<unsigned char>(pat[i])] = i;
+    return last;
+}
+
+std::vector<int> good_suffix_shifts(const std::string& pat) {
+    const int m = static_cast<int>(pat.size());
+    std::vector<int> shift(m + 1, 0), bpos(m + 1, 0);
+    int i = m, j = m + 1;
+    bpos[i] = j;
+    while (i > 0) {                                    // case 1: matched suffix recurs elsewhere
+        while (j <= m && pat[i - 1] != pat[j - 1]) {
+            if (shift[j] == 0) shift[j] = j - i;
+            j = bpos[j];
+        }
+        --i; --j;
+        bpos[i] = j;
+    }
+    j = bpos[0];                                       // case 2: a prefix equals the shorter suffix
+    for (i = 0; i <= m; ++i) {
+        if (shift[i] == 0) shift[i] = j;
+        if (i == j) j = bpos[j];
+    }
+    return shift;
+}
+
+std::vector<Alignment> trace_boyer_moore(const std::string& text, const std::string& pat) {
+    std::vector<Alignment> trace;
+    const int  n = static_cast<int>(text.size());
+    const int  m = static_cast<int>(pat.size());
+    const auto last = bad_char_last(pat);
+    const auto shift = good_suffix_shifts(pat);
+    int s = 0;
+    while (s <= n - m) {
+        int j = m - 1;
+        while (j >= 0 && pat[j] == text[s + j]) --j;   // scan right-to-left
+        Alignment a{s, -1, 0, false};
+        if (j < 0) {
+            a.matched = true;
+            a.shift = shift[0];
+        } else {
+            a.mismatch = j;
+            const int bad = j - last[static_cast<unsigned char>(text[s + j])];
+            const int good = shift[j + 1];
+            a.shift = std::max(std::max(bad, good), 1);
+        }
+        s += a.shift;
+        trace.push_back(a);
+    }
+    return trace;
+}
+#+end_src
+
+* The two heuristics
+
+At each alignment \(s\) the pattern is compared to =text[s..s+m-1]= from its
+*right end inward*. If all \(m\) characters agree, \(s\) is an occurrence.
+Otherwise the scan fails at some pattern index \(j\): the suffix
+=pattern[j+1..m-1]= matched, but =pattern[j]= disagrees with the text byte
+\(c = \)=text[s+j]=. The algorithm now shifts the pattern forward by the
+*larger* of two independently-safe amounts.
+
+** The bad-character rule
+
+Look at the offending text byte \(c\). Slide the pattern so that \(c\) lines up
+with its *rightmost occurrence in the pattern*; if \(c\) occurs nowhere in the
+pattern, slide the whole pattern *past* \(c\). Concretely, with
+=last[c]= the rightmost index of \(c\) in the pattern (or \(-1\)), the shift is
+\(j - \)=last[c]=. When the mismatching byte is one the pattern never uses, this
+alone jumps the pattern forward by up to its full length -- the source of
+Boyer-Moore's big strides on natural-language and DNA-sized alphabets. The table
+is a single 256-entry array over =unsigned char=.
+
+** The good-suffix rule
+
+The suffix =pattern[j+1..m-1]= just matched the text. Slide the pattern to the
+next place that reproduces that match without contradicting what we know:
+either another copy of the matched suffix occurring earlier in the pattern and
+*preceded by a different character* (so the mismatch might now succeed), or, if
+no full copy exists, the longest pattern *prefix* that equals a *suffix* of the
+matched part. This is the (strong) good-suffix rule; its shifts are precomputed
+in a table =shift[0..m]= indexed by \(j+1\) (and =shift[0]= is used after a full
+match to hunt the next, possibly overlapping, occurrence).
+
+The table is built from *border positions*. A border of a string is a substring
+that is both a proper prefix and a proper suffix; =bpos[i]= records, for the
+suffix starting at \(i\), where the widest such border begins. Two passes fill
+=shift=: the first records case-1 shifts as borders are discovered, the second
+propagates the widest whole-pattern border down to positions the first pass
+left at zero (case 2).
+
+#+begin_example
+GOOD-SUFFIX-TABLE(pattern):
+  m <- length(pattern);  bpos[0..m] <- 0;  shift[0..m] <- 0
+  i <- m;  j <- m + 1;  bpos[m] <- j
+  while i > 0:                                  # case 1: matched suffix recurs elsewhere
+      while j <= m and pattern[i-1] != pattern[j-1]:
+          if shift[j] == 0: shift[j] <- j - i
+          j <- bpos[j]
+      i <- i - 1;  j <- j - 1;  bpos[i] <- j
+  j <- bpos[0]                                  # case 2: a prefix equals the shorter suffix
+  for i in 0..m:
+      if shift[i] == 0: shift[i] <- j
+      if i == j: j <- bpos[j]
+  return shift
+#+end_example
+
+** Putting them together
+
+Both rules yield safe shifts -- neither can step over an occurrence -- so taking
+their maximum is safe too, and being the maximum it is also the fastest. Scanning
+right-to-left is what makes the whole scheme pay off: a mismatch discovered at
+the pattern's *right* end, against a byte the pattern lacks, licenses a shift of
+nearly \(m\), so long stretches of text are skipped untouched and the average
+running time drops *below* \(n\).
+
+#+begin_example
+BOYER-MOORE(text, pattern):
+  n <- length(text);  m <- length(pattern)
+  if m == 0 or m > n: return empty              # empty pattern: no matches by convention
+  last[c]    <- rightmost index of byte c in pattern, or -1     # bad-character table
+  shift[0..m] <- GOOD-SUFFIX-TABLE(pattern)                     # good-suffix table
+  result <- empty list
+  s <- 0                                        # left end of the current alignment
+  while s <= n - m:
+      j <- m - 1
+      while j >= 0 and pattern[j] == text[s + j]:               # scan RIGHT-TO-LEFT
+          j <- j - 1
+      if j < 0:                                 # whole pattern matched
+          append s to result
+          s <- s + shift[0]
+      else:                                     # mismatch at pattern index j
+          bad  <- j - last[text[s + j]]         # bad-character rule
+          good <- shift[j + 1]                  # good-suffix rule
+          s <- s + max(1, bad, good)            # jump by the larger safe shift
+  return result
+#+end_example
+
+* Example: tracing =GCGGCG= across a text
+
+We search =pattern = "GCGGCG"= in the DNA text
+=text = "GTTATAGCTGATCGCGGCGTAGCGGCGAA"=, printing the two precomputed tables,
+then the exact sequence of alignments the algorithm visits with the shift it
+takes at each, and finally the match positions from the library's
+=boyer_moore_search=. The instrumented trace and the library are independent
+code paths that must agree.
+
+#+name: bm-run
+#+begin_src c++ :eval no
+    const std::string text = "GTTATAGCTGATCGCGGCGTAGCGGCGAA";
+    const std::string pattern = "GCGGCG";
+
+    std::cout << "=== Boyer-Moore exact string matching ===\n";
+    std::cout << "text    = \"" << text << "\"  (length " << text.size() << ")\n";
+    std::cout << "pattern = \"" << pattern << "\"  (length " << pattern.size() << ")\n\n";
+
+    const auto last = bad_char_last(pattern);
+    std::cout << "Bad-character table (rightmost index of each pattern byte):\n";
+    for (char c : std::string("ACGT")) {
+        const int v = last[static_cast<unsigned char>(c)];
+        std::cout << "  '" << c << "': ";
+        if (v < 0) std::cout << "absent (shift past)\n";
+        else       std::cout << "index " << v << "\n";
+    }
+    std::cout << "\n";
+
+    const auto gs = good_suffix_shifts(pattern);
+    std::cout << "Good-suffix shift table (shift[k] applies when pattern[k..] already matched):\n";
+    for (int k = 0; k < static_cast<int>(gs.size()); ++k)
+        std::cout << "  shift[" << k << "] = " << gs[k] << "\n";
+    std::cout << "\n";
+
+    const auto trace = trace_boyer_moore(text, pattern);
+    std::cout << "Alignment trace (pattern scanned right-to-left at each position s):\n";
+    for (const auto& a : trace) {
+        std::cout << "  s=" << a.position << "  ";
+        if (a.matched)
+            std::cout << "FULL MATCH; shift " << a.shift << "\n";
+        else
+            std::cout << "mismatch at index " << a.mismatch << " (text '"
+                      << text[a.position + a.mismatch] << "'); shift " << a.shift << "\n";
+    }
+    std::cout << "\n";
+
+    const auto matches = boyer_moore_search(text, pattern);
+    std::cout << "Matches (from boyer_moore_search):";
+    for (auto p : matches) std::cout << " " << p;
+    std::cout << "\n";
+    std::cout << "Alignments examined: Boyer-Moore " << trace.size()
+              << " vs naive " << (text.size() - pattern.size() + 1) << "\n";
+
+    std::vector<double> xs, ys;
+    for (const auto& a : trace) {
+        xs.push_back(static_cast<double>(a.position));
+        ys.push_back(static_cast<double>(a.shift));
+    }
+    auto plot = RPlot::create();
+    plot.bars(xs, ys, "shift taken", {37, 99, 235}, 0.7);
+    plot.title("Boyer-Moore: shift taken at each alignment (pattern \"GCGGCG\")")
+        .x_label("alignment position s in text")
+        .y_label("shift to next alignment")
+        .background({250, 250, 252});
+    plot.save_svg("build/org/boyer_moore_shifts.svg");
+    std::cout << "\nwrote boyer_moore_shifts.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/boyer_moore_analysis.cpp <<'CPP'
+<<bm-includes>>
+
+int main() {
+<<bm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/boyer_moore_analysis.cpp -o build/org/boyer_moore_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/boyer_moore_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Boyer-Moore exact string matching ===
+text    = "GTTATAGCTGATCGCGGCGTAGCGGCGAA"  (length 29)
+pattern = "GCGGCG"  (length 6)
+
+Bad-character table (rightmost index of each pattern byte):
+  'A': absent (shift past)
+  'C': index 4
+  'G': index 5
+  'T': absent (shift past)
+
+Good-suffix shift table (shift[k] applies when pattern[k..] already matched):
+  shift[0] = 3
+  shift[1] = 3
+  shift[2] = 3
+  shift[3] = 3
+  shift[4] = 5
+  shift[5] = 2
+  shift[6] = 1
+
+Alignment trace (pattern scanned right-to-left at each position s):
+  s=0  mismatch at index 5 (text 'A'); shift 6
+  s=6  mismatch at index 5 (text 'T'); shift 6
+  s=12  mismatch at index 5 (text 'C'); shift 1
+  s=13  FULL MATCH; shift 3
+  s=16  mismatch at index 4 (text 'A'); shift 5
+  s=21  FULL MATCH; shift 3
+
+Matches (from boyer_moore_search): 13 21
+Alignments examined: Boyer-Moore 6 vs naive 24
+
+wrote boyer_moore_shifts.svg
+#+end_example
+
+The trace makes the skipping concrete. At \(s=0\) the very first comparison --
+the pattern's right end against =text[5] = 'A'= -- fails on a base the pattern
+never contains, so the bad-character rule slides the *entire* pattern past it,
+a shift of six; the same thing happens again at \(s=6\) against a =T=. Two
+comparisons have already carried the pattern twelve characters into the text.
+At \(s=12\) the mismatching base is a =C=, which /does/ occur in the pattern, so
+the bad-character shift shrinks to one -- and the realignment lands exactly on
+the first occurrence, a full match at \(s=13\). After it, the good-suffix table
+advances by =shift[0] = 3=. At \(s=16\) a mismatch at index 4 on an absent =A=
+lets the bad-character rule jump five (past the =A=) where the good-suffix rule
+offered only =shift[5] = 2=; the maximum wins, landing on the second match at
+\(s=21\). In all, Boyer-Moore inspects six alignments where the naive scan would
+grind through all twenty-four -- and it did so while reading only a fraction of
+the text's bases, exactly the sublinear behavior the right-to-left scan is
+designed to produce.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/boyer_moore_shifts.svg]]
+
+Each bar is the shift the algorithm took to leave an alignment, plotted at the
+position it left. The two full-height bars at \(s=0\) and \(s=6\) are the
+bad-character rule vaulting the pattern over a base it does not contain; the
+bar of height five at \(s=16\) is the same rule again beating the good-suffix
+alternative; the short unit bar at \(s=12\) is where a shared base forces a
+cautious single step onto a match. The gaps between the bars' positions are the
+text the algorithm never had to look at. Lengthen the pattern or widen the
+alphabet and those gaps only grow -- which is why, for large-alphabet exact
+search, Boyer-Moore and its descendants remain the method of choice.

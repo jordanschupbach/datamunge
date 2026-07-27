@@ -4,11 +4,9 @@
 #include <tuple>
 #include <vector>
 
-namespace datamunge::algorithms {
+#include <datamunge/algorithms/path_common.hpp>
 
-/// @brief Sentinel stored in BellmanFordResult::predecessor for a vertex with no predecessor --
-///        the source itself, or a vertex the source cannot reach.
-inline constexpr std::size_t kNoPredecessor = static_cast<std::size_t>(-1);
+namespace datamunge::algorithms {
 
 struct BellmanFordResult {
     /// @brief distance[v] is the weight of a shortest path from the source to v, or

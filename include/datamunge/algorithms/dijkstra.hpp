@@ -4,11 +4,9 @@
 #include <tuple>
 #include <vector>
 
-namespace datamunge::algorithms {
+#include <datamunge/algorithms/path_common.hpp>
 
-/// @brief Sentinel for "no predecessor" in a ShortestPathResult: the source vertex, and every
-///        vertex unreachable from it, carry this value in place of a real predecessor.
-inline constexpr std::size_t kNoPredecessor = static_cast<std::size_t>(-1);
+namespace datamunge::algorithms {
 
 struct ShortestPathResult {
     /// @brief distance[v] is the length of a shortest path source -> v, or +infinity if v is

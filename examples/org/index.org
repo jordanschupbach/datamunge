@@ -413,6 +413,36 @@ We implement Prim's minimum-spanning-tree algorithm (=algorithms::prim=) and rep
 
 We implement Edmonds-Karp -- the Ford-Fulkerson method augmenting along BFS shortest paths (=algorithms::edmonds_karp=) -- and report it as a literate program. We define flow networks, feasible flows, residual graphs, and augmenting paths, state the max-flow min-cut theorem, and explain why shortest augmenting paths give the O(VE^2) bound where generic Ford-Fulkerson can stall. The classic six-node CLRS network is worked by hand: maximum flow 23, minimum cut across three saturated edges 12 + 7 + 4 = 23, both recovered by the algorithm.
 
+** [[./kmp_analysis.html][The Knuth-Morris-Pratt Algorithm: Linear-Time Exact String Matching]] ([[./kmp_analysis.pdf][PDF]])
+/A literate C++ study of the prefix function and linear-time substring search using datamunge/
+
+We implement Knuth-Morris-Pratt exact matching (=algorithms::kmp_prefix_function= and =algorithms::kmp_search=) and report it as a literate program. We explain why naive matching is O(nm), derive the prefix function pi -- the longest proper prefix that is also a suffix -- and the shift insight that lets a mismatch slide the pattern without re-reading text, yielding O(n+m); pseudocode for both the pi-construction and the search accompanies a worked example on "ababaca" (pi = 0,0,1,2,3,0,1) that locates every occurrence, overlaps included.
+
+** [[./rabin_karp_analysis.html][The Rabin-Karp Algorithm: String Matching by Rolling Hash]] ([[./rabin_karp_analysis.pdf][PDF]])
+/A literate C++ study of exact substring search by polynomial rolling hash using datamunge/
+
+We implement Rabin-Karp string matching (=algorithms::rabin_karp_search=) and report it as a literate program. We derive the polynomial rolling hash that slides each length-m window's value in O(1) -- subtract the leading digit, multiply by the base, add the incoming digit -- and explain why a hash match only suggests an occurrence, so the characters are verified to rule out spurious collisions and keep the expected O(n+m) search exact. A hand-checkable search for =aba= in =abababbb= traces the window hashes, recovers the overlapping matches, and exposes a colliding window whose hash equals the pattern's yet fails verification.
+
+** [[./boyer_moore_analysis.html][The Boyer-Moore Algorithm: Sublinear String Matching by Skipping]] ([[./boyer_moore_analysis.pdf][PDF]])
+/A literate C++ study of the bad-character and good-suffix heuristics and right-to-left scanning using datamunge/
+
+We implement the Boyer-Moore exact string-matching algorithm (=algorithms::boyer_moore_search=) and report it as a literate program. We derive its two shift heuristics -- the bad-character rule and the strong good-suffix rule (via the border-position construction) -- and explain how right-to-left scanning lets a single mismatch skip nearly the whole pattern, giving sublinear average time. Searching the DNA pattern =GCGGCG= across a 29-base text, Boyer-Moore examines just 6 alignments to the naive scan's 24 and finds both occurrences.
+
+** [[./z_algorithm_analysis.html][The Z-Algorithm: Fundamental Preprocessing and Linear-Time String Matching]] ([[./z_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of the Z-array and prefix-based substring search using datamunge/
+
+We implement the Z-algorithm (=algorithms::z_array=, plus =z_search=) and report it as a literate program. We define the Z-array -- z[i] is the longest substring at position i that is also a prefix -- give the single-pass rightmost Z-box construction with correctness and O(n) linearity arguments, and show how concatenating pattern + separator + text reduces exact matching to a Z-array scan; the string "aabaabaab" has Z-array 9 1 0 6 1 0 3 1 0 computed by hand.
+
+** [[./manacher_analysis.html][Manacher's Algorithm: Longest Palindromic Substring in Linear Time]] ([[./manacher_analysis.pdf][PDF]])
+/A literate C++ study of the '#'-interleaving transform and mirror reuse using datamunge/
+
+We implement Manacher's algorithm (=algorithms::longest_palindrome=, plus =palindrome_radii=) and report it as a literate program. We give the two ideas behind its linear time -- a #-interleaving transform that turns odd- and even-length palindromes into odd-length palindromes of one string, and reusing each center's radius from its mirror inside the current rightmost palindrome so the right edge only advances -- with pseudocode and the amortized-linear argument; "abacaba" is recovered as its own length-7 longest palindromic substring and its symmetric radius skyline plotted.
+
+** [[./aho_corasick_analysis.html][The Aho-Corasick Algorithm: Matching Many Patterns in One Pass]] ([[./aho_corasick_analysis.pdf][PDF]])
+/A literate C++ study of trie automata, failure links, and dictionary matching using datamunge/
+
+We implement Aho-Corasick multi-pattern search (=algorithms::aho_corasick_search=) and report it as a literate program. We build the automaton -- a trie (goto), KMP-style failure links, and output/dictionary-suffix links -- and give BFS-construction and single-pass-scan pseudocode showing it reports every occurrence in O(|text| + #matches) after O(sum|patterns|) preprocessing; the classic dictionary {he, she, his, hers} scanned over "ushers" recovers she@1, he@2, and hers@2 from one left-to-right sweep.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])
