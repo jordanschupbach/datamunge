@@ -1,0 +1,134 @@
+#+title: The Bailey-Borwein-Plouffe Formula: Any Hex Digit of Pi, Directly
+#+subtitle: A literate C++ study of a spigot algorithm with =datamunge='s =algorithms::bbp_pi_hex_digit=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+In 1995 Bailey, Borwein, and Plouffe found something once thought impossible: a
+formula that yields the \(n\)-th *hexadecimal* digit of \(\pi\) *without computing
+any of the preceding digits*, using only ordinary-precision arithmetic. The trick
+is that multiplying \(\pi\) by \(16^{n}\) and taking the fractional part can be done
+term by term with *modular exponentiation*, so no giant numbers ever appear. This
+report implements the *BBP formula* in =datamunge='s C++
+=algorithms::bbp_pi_hex_digit=, reproduces the leading hex digits of \(\pi\), and
+extracts a deep digit straight out of thin air.
+#+end_abstract
+
+* The formula and the spigot trick
+
+The BBP series is
+
+\[
+\pi=\sum_{k=0}^{\infty}\frac{1}{16^{k}}
+\left(\frac{4}{8k+1}-\frac{2}{8k+4}-\frac{1}{8k+5}-\frac{1}{8k+6}\right).
+\]
+
+To get the digit at hex position \(n\) (after the point), multiply by \(16^{n}\)
+and keep the fractional part. For each of the four sub-series
+\(\sum_k 16^{n-k}/(8k+j)\), split at \(k=n\): the "head" terms \(k\le n\) have
+non-negative exponent, and only their /fractional/ contribution matters, so
+\(16^{n-k}\bmod(8k+j)\) -- a single modular exponentiation -- suffices; the "tail"
+terms \(k>n\) form a fast-converging series summed in a few iterations. Adding the
+four fractional parts and reading off \(\lfloor 16\cdot\{\cdot\}\rfloor\) gives the
+digit, in \(O(n\log n)\) time and \(O(\log n)\) space -- no arbitrary precision
+anywhere.
+
+#+name: bp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pi_and_cordic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BBP-HEX-DIGIT(n):
+  for j in {1, 4, 5, 6}:
+      S_j <- frac( sum_{k=0..n} (16^(n-k) mod (8k+j)) / (8k+j)
+                   + sum_{k>n} 16^(n-k) / (8k+j) )      # tail: few terms
+  x <- frac( 4*S_1 - 2*S_4 - S_5 - S_6 )
+  return floor(16 * x)
+#+end_example
+
+* Worked example: the leading hex digits, and a deep one
+
+We print the first 24 hexadecimal digits of \(\pi\) -- which should read
+=3.243F6A8885A308D313198A2E= -- and then compute the digit at position 1000 on its
+own, with none of the 999 before it.
+
+#+name: bp-run
+#+begin_src c++ :eval no
+    const char* hex = "0123456789ABCDEF";
+    std::cout << "=== BBP: hexadecimal digits of pi ===\n";
+    std::string s = "3.";
+    std::vector<double> idx, val;
+    for (int n = 0; n < 32; ++n) {
+        const int d = bbp_pi_hex_digit(n);
+        if (n < 24) s += hex[d];
+        idx.push_back(n); val.push_back(d);
+    }
+    std::cout << "pi = " << s << "...\n";
+    std::cout << "digit at position 100  = " << hex[bbp_pi_hex_digit(100)] << "\n";
+    std::cout << "digit at position 1000 = " << hex[bbp_pi_hex_digit(1000)]
+              << "  (computed with none of the previous 999)\n";
+
+    auto plot = RPlot::create();
+    plot.bars(idx, val, "hex digit", RGB{37, 99, 235});
+    plot.title("The first 32 hexadecimal digits of pi (0-15), each computed independently")
+        .x_label("position n").y_label("digit value").background({250, 250, 252});
+    plot.y_limits(0.0, 16.0);
+    plot.save_svg("build/org/bbp_pi.svg");
+    std::cout << "\nwrote bbp_pi.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bbp_pi_analysis.cpp <<'CPP'
+<<bp-includes>>
+
+int main() {
+<<bp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bbp_pi_analysis.cpp -o build/org/bbp_pi_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bbp_pi_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== BBP: hexadecimal digits of pi ===
+pi = 3.243F6A8885A308D313198A2E...
+digit at position 100  = 2
+digit at position 1000 = 4  (computed with none of the previous 999)
+
+wrote bbp_pi.svg
+#+end_example
+
+The leading digits match the known hexadecimal expansion of \(\pi\), and the
+thousandth digit is produced on its own -- the defining feat of a spigot algorithm.
+Each digit is a few modular exponentiations; the ones near the start and the one at
+position 1000 cost essentially the same per digit, and none needs the others.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/bbp_pi.svg]]
+
+The bars are the first 32 hexadecimal digits of \(\pi\), values 0 through 15. They
+look statistically random -- \(\pi\) is believed (though unproven) to be normal in
+base 16 -- yet every one of them was extracted independently by the BBP formula,
+with no big-number arithmetic and no dependence on its neighbours.

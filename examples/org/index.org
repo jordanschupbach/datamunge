@@ -613,6 +613,26 @@ We implement the Sieve of Sundaram (=algorithms::sundaram_primes=) and report it
 
 We implement the Sieve of Atkin (=algorithms::atkin_primes=) and report it as a literate program. We give the three quadratic-form toggle rules and the square-removal pass; the primes it produces match the Prime Number Theorem -- pi(10000)=1229 against x/ln x = 1086 -- with pi(x) plotted against x/ln x.
 
+** [[./bbp_pi_analysis.html][The Bailey-Borwein-Plouffe Formula: Any Hex Digit of Pi, Directly]] ([[./bbp_pi_analysis.pdf][PDF]])
+/A literate C++ study of a spigot algorithm using datamunge/
+
+We implement the BBP formula (=algorithms::bbp_pi_hex_digit=) and report it as a literate program. We show how multiplying pi by 16^n and taking the fractional part reduces to modular exponentiation, so the n-th hex digit needs no preceding digits and no big numbers; the leading digits reproduce 3.243F6A8885A308D3... and the 1000th is extracted on its own.
+
+** [[./gauss_legendre_pi_analysis.html][The Gauss-Legendre Algorithm: Pi by Doubling Digits]] ([[./gauss_legendre_pi_analysis.pdf][PDF]])
+/A literate C++ study of AGM iteration using datamunge/
+
+We implement the Gauss-Legendre algorithm (=algorithms::gauss_legendre_pi=) and report it as a literate program. We give the arithmetic-geometric-mean iteration and its quadratic convergence (digits double each step); the error falls 1e-3 -> 7e-9 -> 9e-16 across four iterations, reaching full double precision.
+
+** [[./chudnovsky_pi_analysis.html][The Chudnovsky Algorithm: Fourteen Digits of Pi per Term]] ([[./chudnovsky_pi_analysis.pdf][PDF]])
+/A literate C++ study of a hypergeometric pi series using datamunge/
+
+We implement the Chudnovsky algorithm (=algorithms::chudnovsky_pi=) and report it as a literate program. We give the Ramanujan-style series whose 640320^3 denominator adds ~14 digits per term; in double precision one term reaches error 6e-14 and a second saturates the machine at 4e-16.
+
+** [[./cordic_analysis.html][CORDIC: Trigonometry With Only Shifts and Adds]] ([[./cordic_analysis.pdf][PDF]])
+/A literate C++ study of shift-add rotation using datamunge/
+
+We implement circular-mode CORDIC (=algorithms::cordic_sincos=) and report it as a literate program. We derive how choosing rotation angles arctan(2^-i) turns each step into a bit shift and add, with a single constant gain K~0.6073; sin/cos match std to many digits over a full range, and the rotating vector is drawn spiralling onto the unit circle.
+
 ** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
 /A literate C++ study of bracketed root-finding using datamunge/
 

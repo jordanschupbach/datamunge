@@ -1,0 +1,133 @@
+#+title: The Chudnovsky Algorithm: Fourteen Digits of Pi per Term
+#+subtitle: A literate C++ study of a hypergeometric pi series with =datamunge='s =algorithms::chudnovsky_pi=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Chudnovsky algorithm* (1988) is the series behind every modern record
+computation of \(\pi\) -- trillions of digits. It descends from Ramanujan's
+astonishing \(1/\pi\) series and converges *linearly but extremely fast*: each term
+contributes about *14 correct decimal digits*. This report implements it in
+=datamunge='s C++ =algorithms::chudnovsky_pi=; in double precision a single term
+already nails \(\pi\) to 13 digits and a second saturates the machine, so we watch
+the error collapse term by term.
+#+end_abstract
+
+* Ramanujan's legacy, sped up
+
+The Chudnovsky brothers' series is
+
+\[
+\frac{1}{\pi}=12\sum_{k=0}^{\infty}
+\frac{(-1)^k\,(6k)!\,(545140134k+13591409)}{(3k)!\,(k!)^3\,640320^{3k+3/2}} .
+\]
+
+The huge constant \(640320^{3}=262537412640768000\) in the denominator is what makes
+it converge so fast: the ratio of successive terms is about \(1/640320^{3}\approx
+10^{-14}\), so *each term adds roughly 14 decimal digits*. That is linear
+convergence, but with an enormous per-term yield -- ideal for arbitrary-precision
+record runs, where the terms are computed exactly with big integers and *binary
+splitting*. Here we evaluate it in ordinary =double=, which caps the visible
+benefit at the ~16 significant digits a =double= holds: one term already reaches
+13, and a second exhausts the format.
+
+#+name: ch-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pi_and_cordic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static constexpr double PI = 3.14159265358979323846;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CHUDNOVSKY(terms):
+  sum <- 0
+  for k in 0 .. terms-1:
+      num  <- (-1)^k * (6k)! * (545140134 k + 13591409)
+      den  <- (3k)! * (k!)^3 * 640320^(3k + 3/2)
+      sum  <- sum + 12 * num / den
+  return 1 / sum
+#+end_example
+
+* Worked example: error per term
+
+We print the estimate and error after 1, 2, and 3 terms, and plot the error against
+the number of terms to see the ~14-digits-per-term collapse.
+
+#+name: ch-run
+#+begin_src c++ :eval no
+    std::cout << std::setprecision(16);
+    std::cout << "=== Chudnovsky: pi by hypergeometric series ===\n";
+    std::vector<double> ts, logerr;
+    for (int k = 1; k <= 4; ++k) {
+        const double est = chudnovsky_pi(k);
+        const double err = std::fabs(est - PI);
+        std::cout << "  " << k << " term(s): " << est << "   error " << err << "\n";
+        ts.push_back(k); logerr.push_back(std::log10(std::max(err, 1e-17)));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(ts, logerr, "log10 error", RGB{37, 99, 235}, 2.0);
+    plot.points(ts, logerr, "log10 error", RGB{37, 99, 235}, 9.0);
+    plot.title("Chudnovsky: each term buys about 14 decimal digits of pi")
+        .x_label("number of terms").y_label("log10 |estimate - pi|").background({250, 250, 252});
+    plot.save_svg("build/org/chudnovsky_pi.svg");
+    std::cout << "\nwrote chudnovsky_pi.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/chudnovsky_pi_analysis.cpp <<'CPP'
+<<ch-includes>>
+
+int main() {
+<<ch-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/chudnovsky_pi_analysis.cpp -o build/org/chudnovsky_pi_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/chudnovsky_pi_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Chudnovsky: pi by hypergeometric series ===
+  1 term(s): 3.141592653589734   error 5.861977570020827e-14
+  2 term(s): 3.141592653589794   error 4.440892098500626e-16
+  3 term(s): 3.141592653589794   error 4.440892098500626e-16
+  4 term(s): 3.141592653589794   error 4.440892098500626e-16
+
+wrote chudnovsky_pi.svg
+#+end_example
+
+One term of Chudnovsky already gives \(\pi\) to about 13 digits; the second term
+drops the error to the \(10^{-16}\) floor of double precision, where the format
+runs out. In an arbitrary-precision setting the same series would keep adding ~14
+digits per term indefinitely -- which is exactly how \(\pi\) has been pushed past a
+hundred trillion digits.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/chudnovsky_pi.svg]]
+
+The \(\log_{10}\) error falls by roughly 14 per term at first -- a near-vertical
+drop from one term to two -- then flattens at the double-precision floor near
+\(-16\). The steepness of that first drop is the whole reason Chudnovsky's series is
+the tool of choice for record \(\pi\) computations.
