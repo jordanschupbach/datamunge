@@ -1,0 +1,157 @@
+#+title: The Conjugate Gradient Method: Krylov Solving for SPD Systems
+#+subtitle: A literate C++ study of the classic Krylov solver with =datamunge='s =algorithms::conjugate_gradient=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+For a *symmetric positive-definite* system \(Ax=b\), the *conjugate gradient* (CG)
+method is the method of choice: it minimizes the associated quadratic along a
+sequence of mutually \(A\)-conjugate directions, reaching the exact answer in at
+most \(n\) steps (in exact arithmetic) and usually far fewer. Each step is a single
+matrix-vector product, so on sparse matrices CG is dramatically cheaper than a
+direct factorization. This report implements it in =datamunge='s C++
+=algorithms::conjugate_gradient=, solves a 1-D Laplacian system, and shows CG's
+error collapsing where Gauss-Seidel merely inches along.
+#+end_abstract
+
+* Minimizing a quadratic along conjugate directions
+
+Solving \(Ax=b\) with \(A\) symmetric positive-definite is equivalent to minimizing
+\(\phi(x)=\tfrac12 x^{\top}Ax-b^{\top}x\), whose gradient is the residual
+\(r=b-Ax\). Steepest descent along \(r\) zig-zags; CG instead builds search
+directions \(p_k\) that are *\(A\)-conjugate* (\(p_i^{\top}Ap_j=0\) for \(i\ne j\)),
+so progress made in one direction is never undone by later ones. Each iteration
+takes an optimal step \(\alpha_k=r_k^{\top}r_k/p_k^{\top}Ap_k\), updates the
+solution and residual, and forms the next direction
+\(p_{k+1}=r_{k+1}+\beta_k p_k\). Because there are only \(n\) mutually conjugate
+directions, CG terminates in at most \(n\) steps; and when the eigenvalues of \(A\)
+are clustered it converges in far fewer, at a rate governed by the square root of
+the condition number. Each step costs one matrix-vector product -- the reason CG
+dominates large sparse SPD solving.
+
+#+name: cg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CONJUGATE-GRADIENT(A, b):
+  x <- 0 ; r <- b ; p <- r ; rs <- r.r
+  repeat:
+      Ap <- A p
+      alpha <- rs / (p . Ap)
+      x <- x + alpha p ;  r <- r - alpha Ap
+      rs_new <- r.r ;  if sqrt(rs_new) < tol: stop
+      p <- r + (rs_new / rs) p ;  rs <- rs_new
+  return x
+#+end_example
+
+* Worked example: a 1-D Laplacian, CG versus Gauss-Seidel
+
+We solve \(Ax=b\) where \(A\) is the \(20\times20\) tridiagonal Laplacian
+\(\mathrm{tridiag}(-1,2,-1)\) (symmetric positive-definite) and \(b\) is all ones,
+and compare CG's residual history against Gauss-Seidel's on the same system.
+
+#+name: cg-run
+#+begin_src c++ :eval no
+    const std::size_t n = 20;
+    std::vector<std::vector<double>> A(n, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < n; ++i) { A[i][i] = 2.0; if (i) A[i][i - 1] = -1.0; if (i + 1 < n) A[i][i + 1] = -1.0; }
+    const std::vector<double> b(n, 1.0);
+
+    const auto sol = conjugate_gradient(A, b);
+    std::cout << "=== Conjugate gradient on the 20x20 Laplacian ===\n";
+    std::cout << "converged in " << sol.iterations << " iterations (<= n = " << n << "), residual "
+              << sol.residual << "\n\n";
+
+    auto matvec = [&](const std::vector<double>& v) { std::vector<double> y(n, 0.0); for (std::size_t i = 0; i < n; ++i) for (std::size_t j = 0; j < n; ++j) y[i] += A[i][j] * v[j]; return y; };
+    auto dot = [&](const std::vector<double>& u, const std::vector<double>& v) { double s = 0; for (std::size_t i = 0; i < n; ++i) s += u[i] * v[i]; return s; };
+    auto resnorm = [&](const std::vector<double>& x) { auto ax = matvec(x); double s = 0; for (std::size_t i = 0; i < n; ++i) s += (ax[i] - b[i]) * (ax[i] - b[i]); return std::sqrt(s); };
+
+    // CG residual trace.
+    std::vector<double> cg_it, cg_res;
+    {
+        std::vector<double> x(n, 0.0), r = b, p = b; double rs = dot(r, r);
+        for (int k = 1; k <= 40; ++k) {
+            auto Ap = matvec(p); double alpha = rs / dot(p, Ap);
+            for (std::size_t i = 0; i < n; ++i) { x[i] += alpha * p[i]; r[i] -= alpha * Ap[i]; }
+            cg_it.push_back(k); cg_res.push_back(std::log10(std::max(resnorm(x), 1e-16)));
+            double rsn = dot(r, r); if (std::sqrt(rsn) < 1e-12) break;
+            for (std::size_t i = 0; i < n; ++i) p[i] = r[i] + (rsn / rs) * p[i]; rs = rsn;
+        }
+    }
+    // Gauss-Seidel residual trace on the same system.
+    std::vector<double> gs_it, gs_res;
+    {
+        std::vector<double> x(n, 0.0);
+        for (int k = 1; k <= 40; ++k) {
+            for (std::size_t i = 0; i < n; ++i) { double s = b[i]; for (std::size_t j = 0; j < n; ++j) if (j != i) s -= A[i][j] * x[j]; x[i] = s / A[i][i]; }
+            gs_it.push_back(k); gs_res.push_back(std::log10(std::max(resnorm(x), 1e-16)));
+        }
+    }
+
+    auto plot = RPlot::create();
+    plot.line(gs_it, gs_res, "Gauss-Seidel", RGB{220, 38, 38}, 2.0);
+    plot.line(cg_it, cg_res, "conjugate gradient", RGB{37, 99, 235}, 2.0);
+    plot.points(cg_it, cg_res, "conjugate gradient", RGB{37, 99, 235}, 5.0);
+    plot.legend({"Gauss-Seidel", "conjugate gradient"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("CG collapses in <= n steps where Gauss-Seidel crawls (20x20 Laplacian)")
+        .x_label("iteration").y_label("log10 ||A x - b||").background({250, 250, 252});
+    plot.save_svg("build/org/conjugate_gradient.svg");
+    std::cout << "wrote conjugate_gradient.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/conjugate_gradient_analysis.cpp <<'CPP'
+<<cg-includes>>
+
+int main() {
+<<cg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/conjugate_gradient_analysis.cpp -o build/org/conjugate_gradient_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/conjugate_gradient_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Conjugate gradient on the 20x20 Laplacian ===
+converged in 10 iterations (<= n = 20), residual 2.31441e-16
+
+wrote conjugate_gradient.svg
+#+end_example
+
+Conjugate gradient drives the residual to machine zero within \(n\) iterations --
+its finite-termination guarantee -- while Gauss-Seidel on the same matrix is still
+far from converged. On this ill-conditioned Laplacian the gap is stark: CG's
+conjugate directions exploit the whole spectrum at once, where a stationary method
+damps only the high-frequency error components quickly.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/conjugate_gradient.svg]]
+
+The blue CG residual plunges and hits the floor by iteration \(n\); the red
+Gauss-Seidel residual descends slowly and steadily, nowhere near converged in the
+same number of steps. That contrast -- Krylov versus stationary -- is why CG (and its
+preconditioned variants) is the default for large symmetric positive-definite
+systems.

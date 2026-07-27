@@ -653,6 +653,26 @@ We implement Strassen's algorithm (=algorithms::strassen_multiply=) and report i
 
 We implement Freivalds' algorithm (=algorithms::freivalds_verify=) and report it as a literate program. We show the O(n^2)-per-round test A(Br)=Cr and its <= 2^-rounds error; a corrupted product is caught, and the measured false-accept rate is plotted halving each round (0.50, 0.24, 0.12, ...) alongside the 2^-rounds bound.
 
+** [[./gaussian_elimination_analysis.html][Gaussian Elimination: Solving Linear Systems by Row Reduction]] ([[./gaussian_elimination_analysis.pdf][PDF]])
+/A literate C++ study of the direct solver using datamunge/
+
+We implement Gaussian elimination with partial pivoting (=algorithms::gaussian_elimination=) and report it as a literate program. We give the reduce-to-triangle-then-back-substitute method and why pivoting keeps it stable; the 3x3 system with solution (2,3,-1) is solved and its augmented matrix shown collapsing to upper-triangular form.
+
+** [[./gauss_seidel_analysis.html][The Gauss-Seidel Method: Iterating to a Linear Solution]] ([[./gauss_seidel_analysis.pdf][PDF]])
+/A literate C++ study of stationary iteration using datamunge/
+
+We implement Gauss-Seidel (=algorithms::gauss_seidel=) and report it as a literate program. We give the in-place update using the latest values and its guaranteed convergence for diagonally dominant systems; a 3x3 system converges to (2,4,3) in 13 sweeps, the residual plotted decaying geometrically.
+
+** [[./conjugate_gradient_analysis.html][The Conjugate Gradient Method: Krylov Solving for SPD Systems]] ([[./conjugate_gradient_analysis.pdf][PDF]])
+/A literate C++ study of the classic Krylov solver using datamunge/
+
+We implement conjugate gradient (=algorithms::conjugate_gradient=) and report it as a literate program. We give the A-conjugate search directions that guarantee termination in <= n steps; on a 20x20 Laplacian CG converges in 10 iterations to residual 1e-16 while Gauss-Seidel crawls, the two histories plotted together.
+
+** [[./thomas_algorithm_analysis.html][The Thomas Algorithm: Tridiagonal Systems in Linear Time]] ([[./thomas_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of the tridiagonal solver using datamunge/
+
+We implement the Thomas algorithm (=algorithms::thomas_solve=) and report it as a literate program. We give the banded forward-sweep and back-substitution that solve a tridiagonal system in O(n); a finite-difference BVP -u''=pi^2 sin(pi x) is solved, recovering sin(pi x) to O(h^2) error.
+
 ** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
 /A literate C++ study of bracketed root-finding using datamunge/
 
