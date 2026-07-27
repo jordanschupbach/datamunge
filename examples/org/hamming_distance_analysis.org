@@ -1,0 +1,167 @@
+#+title: The Hamming Distance: Counting Positional Disagreements
+#+subtitle: A literate C++ study of the simplest string metric with =datamunge='s =algorithms::hamming_distance=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Hamming distance* (Hamming, 1950) between two strings of /equal length/ is
+the number of positions at which they disagree. Born from error-correcting codes,
+it is the metric that governs how many bit flips a code can detect or correct,
+and it remains the natural distance whenever substitutions -- but not insertions
+or deletions -- are the mode of variation, as in fixed-width records, DNA of
+equal length, or binary words. This report implements it in =datamunge='s C++
+=algorithms::hamming_distance=, relates it to the more permissive Levenshtein
+distance, and visualises exactly which positions two strings disagree on.
+#+end_abstract
+
+* Positional distance
+
+For two strings \(a\) and \(b\) with \(|a|=|b|=n\), the Hamming distance is
+
+\[
+d_H(a,b)=\bigl|\{\, i : a_i \ne b_i \,\}\bigr|=\sum_{i=1}^{n}\mathbf{1}[a_i\ne b_i].
+\]
+
+It is a metric on the space of length-\(n\) strings: non-negative, zero iff the
+strings are equal, symmetric, and satisfying the triangle inequality (a
+disagreement at position \(i\) between \(a\) and \(c\) forces a disagreement there
+between \(a\) and \(b\) or between \(b\) and \(c\)). It is *undefined* for strings
+of different length -- there is no notion of an insertion -- and =datamunge=
+signals that mismatch by throwing =std::invalid_argument=.
+
+Because a substitution-only script is a valid edit script, the Hamming distance
+is always an /upper bound/ on the Levenshtein distance:
+\(d_L(a,b)\le d_H(a,b)\) whenever both are defined. The gap is where indels let
+Levenshtein realign the strings more cheaply.
+
+#+name: ham-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+There is nothing to optimise: a single linear scan compares the strings position
+by position. The cost is \(O(n)\) time and \(O(1)\) space.
+
+#+begin_example
+HAMMING(a, b):
+  if length(a) != length(b): error "unequal lengths"
+  d <- 0
+  for i in 0 .. length(a) - 1:
+      if a[i] != b[i]: d <- d + 1
+  return d
+#+end_example
+
+* Worked example
+
+Take the classic pair =karolin= and =kathrin= (both length 7). Aligning them
+column by column,
+
+: k a r o l i n
+: k a t h r i n
+
+they agree on positions 0, 1, 5, 6 and disagree on positions 2 (=r= vs =t=), 3
+(=o= vs =h=) and 4 (=l= vs =r=), so \(d_H = 3\). The binary codewords
+=1011101= and =1001001= differ in bits 2 and 4, so their Hamming distance is 2 --
+meaning a code with these as valid words could detect a single bit error between
+them. Passing strings of different length is a usage error, which the library
+reports as an exception rather than a silent wrong answer.
+
+#+name: ham-run
+#+begin_src c++ :eval no
+    const std::vector<std::pair<std::string, std::string>> pairs = {
+        {"karolin", "kathrin"}, {"1011101", "1001001"},
+        {"GGACTG", "GGTCTA"}, {"identical", "identical"}};
+
+    std::cout << "=== Hamming distances ===\n";
+    for (const auto& [a, b] : pairs)
+        std::cout << "  d_H(\"" << a << "\", \"" << b << "\") = " << hamming_distance(a, b) << "\n";
+
+    std::cout << "\nUnequal lengths are a usage error:\n";
+    try {
+        (void)hamming_distance("abc", "ab");
+    } catch (const std::invalid_argument& e) {
+        std::cout << "  threw std::invalid_argument: " << e.what() << "\n";
+    }
+
+    // Visualise the mismatching columns of the first pair.
+    const std::string a = pairs[0].first, b = pairs[0].second;
+    auto plot = RPlot::create();
+    std::vector<double> agree_x, agree_y, dis_x, dis_y;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        (a[i] == b[i] ? agree_x : dis_x).push_back(static_cast<double>(i));
+        (a[i] == b[i] ? agree_y : dis_y).push_back(1.0);
+        plot.text(static_cast<double>(i), 1.35, std::string(1, a[i]), RGB{31, 41, 55}, 15.0);
+        plot.text(static_cast<double>(i), 0.65, std::string(1, b[i]),
+                  a[i] == b[i] ? RGB{31, 41, 55} : RGB{220, 38, 38}, 15.0);
+    }
+    if (!agree_x.empty()) plot.points(agree_x, agree_y, "agree", RGB{34, 197, 94}, 9.0);
+    if (!dis_x.empty()) plot.points(dis_x, dis_y, "disagree", RGB{220, 38, 38}, 12.0);
+    plot.title("Hamming distance: karolin vs kathrin (3 disagreeing columns)")
+        .x_label("position")
+        .y_label("")
+        .background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(a.size()) - 0.5);
+    plot.y_limits(0.3, 1.6);
+    plot.save_svg("build/org/hamming_distance.svg");
+    std::cout << "\nwrote hamming_distance.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hamming_distance_analysis.cpp <<'CPP'
+<<ham-includes>>
+
+int main() {
+<<ham-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hamming_distance_analysis.cpp -o build/org/hamming_distance_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hamming_distance_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Hamming distances ===
+  d_H("karolin", "kathrin") = 3
+  d_H("1011101", "1001001") = 2
+  d_H("GGACTG", "GGTCTA") = 2
+  d_H("identical", "identical") = 0
+
+Unequal lengths are a usage error:
+  threw std::invalid_argument: hamming_distance: strings must have equal length
+
+wrote hamming_distance.svg
+#+end_example
+
+The name pair disagrees in three columns, the binary codewords in two, the DNA
+hexamer in two, and identical strings in none. Requesting the distance of
+strings with different lengths raises =std::invalid_argument= -- Hamming distance
+is only meaningful position-by-position, so the library refuses to guess.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hamming_distance.svg]]
+
+Each column shows the two aligned characters; the red markers pick out precisely
+the three positions (2, 3, 4) where =karolin= and =kathrin= disagree, while the
+green markers mark the four agreeing positions. The Hamming distance is simply
+the count of red columns.

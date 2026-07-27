@@ -1,0 +1,207 @@
+#+title: Jaro and Jaro-Winkler Similarity: Matching Names
+#+subtitle: A literate C++ study of windowed character matching and prefix boosting with =datamunge='s =algorithms::jaro_winkler_similarity=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Record linkage -- deciding whether =MARTHA= and =MARHTA= name the same person --
+needs a similarity score that tolerates typos yet rewards a shared beginning,
+since people mistype the /ends/ of names far more than the starts. The *Jaro
+similarity* (Jaro, 1989) scores two strings in \([0,1]\) from the count of
+characters that match within a sliding window and the number that match out of
+order; the *Jaro-Winkler* refinement (Winkler, 1990) adds a bonus for a common
+prefix. This report implements both in =datamunge='s C++
+=algorithms::jaro_similarity= and =algorithms::jaro_winkler_similarity=, works the
+canonical =MARTHA=/=MARHTA= example by hand to its exact scores 0.9444 and
+0.9611, and compares the two measures across a set of name pairs.
+#+end_abstract
+
+* The Jaro similarity
+
+Given strings \(a\) and \(b\) with lengths \(|a|\) and \(|b|\), two characters are
+considered /matching/ if they are equal and lie no farther apart than
+
+\[
+\Bigl\lfloor \tfrac{\max(|a|,|b|)}{2} \Bigr\rfloor - 1
+\]
+
+positions. Each character is matched at most once, scanning left to right. Let
+\(m\) be the number of matching characters and \(t\) the number of
+/transpositions/ -- that is, half the number of matched characters that appear in
+a different order in the two strings. The Jaro similarity is
+
+\[
+\text{jaro}(a,b)=
+\begin{cases}
+0 & m=0,\\[4pt]
+\dfrac{1}{3}\left(\dfrac{m}{|a|}+\dfrac{m}{|b|}+\dfrac{m-t}{m}\right) & m>0.
+\end{cases}
+\]
+
+The three averaged terms reward, respectively, matching a large fraction of
+\(a\), matching a large fraction of \(b\), and matching characters in the right
+order. The score is 1 for identical strings and 0 when nothing matches; two empty
+strings are defined to score 1.
+
+* The Jaro-Winkler refinement
+
+Winkler observed that agreement in the first few characters is especially
+predictive for names. Let \(\ell\) be the length of the common prefix, capped at
+4, and \(p\) a scaling factor (the standard \(p=0.1\)). The Jaro-Winkler
+similarity boosts the Jaro score \(j\) toward 1 in proportion to the prefix:
+
+\[
+\text{jw}(a,b)=j+\ell\,p\,(1-j).
+\]
+
+With \(p=0.1\) and \(\ell\le 4\) the multiplier \(\ell p\le 0.4\), so the result
+stays within \([0,1]\), and the bonus vanishes when \(j=1\) (already identical)
+or \(\ell=0\) (no shared prefix).
+
+#+name: jw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+JARO(a, b):
+  if a and b both empty: return 1
+  if either is empty: return 0
+  window <- max(|a|, |b|) / 2 - 1        # clamped at 0
+  mark all positions unmatched
+  m <- 0
+  for i in 0 .. |a|-1:                    # find matches within the window
+      for j in max(0, i-window) .. min(|b|-1, i+window):
+          if b[j] unmatched and a[i] == b[j]:
+              mark a[i], b[j] matched; m <- m + 1; break
+  if m == 0: return 0
+  t <- 0                                  # count out-of-order matched pairs
+  k <- 0
+  for i in 0 .. |a|-1 with a[i] matched:
+      advance k to the next matched position in b
+      if a[i] != b[k]: t <- t + 1
+      k <- k + 1
+  transpositions <- t / 2
+  return ( m/|a| + m/|b| + (m - transpositions)/m ) / 3
+
+JARO-WINKLER(a, b, p = 0.1):
+  j <- JARO(a, b)
+  l <- length of common prefix of a and b, capped at 4
+  return j + l * p * (1 - j)
+#+end_example
+
+* Worked example: =MARTHA= versus =MARHTA=
+
+Both strings have length 6, so the matching window is
+\(\lfloor 6/2\rfloor-1 = 2\). Scanning =MARTHA= against =MARHTA=, every one of the
+six characters finds a partner (\(m=6\)): =M=, =A=, =R= line up exactly, and the
+=T=, =H= of =MARTHA= match the =H=, =T= of =MARHTA= within the window, as do the
+trailing =A='s. Two matched characters -- the =T= and =H= -- appear in swapped
+order, which is two out-of-order positions and hence one transposition
+(\(t=1\)). Therefore
+
+\[
+\text{jaro}=\tfrac{1}{3}\!\left(\tfrac{6}{6}+\tfrac{6}{6}+\tfrac{6-1}{6}\right)
+=\tfrac{1}{3}\!\left(1+1+\tfrac{5}{6}\right)=0.9444\ldots
+\]
+
+The common prefix =MAR= has length 3, so with \(p=0.1\),
+
+\[
+\text{jw}=0.9444+3(0.1)(1-0.9444)=0.9444+0.0167=0.9611\ldots
+\]
+
+The program reproduces both numbers and tabulates several further name pairs.
+
+#+name: jw-run
+#+begin_src c++ :eval no
+    const std::vector<std::pair<std::string, std::string>> pairs = {
+        {"MARTHA", "MARHTA"}, {"DIXON", "DICKSONX"}, {"DWAYNE", "DUANE"},
+        {"MARTHA", "MARDHA"}, {"abcde", "fghij"}};
+
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "=== Jaro and Jaro-Winkler similarity ===\n";
+    std::cout << "  pair                       Jaro     JW\n";
+    std::vector<double> idx, jaro, jw;
+    for (std::size_t k = 0; k < pairs.size(); ++k) {
+        const auto& [a, b] = pairs[k];
+        const double j  = jaro_similarity(a, b);
+        const double w  = jaro_winkler_similarity(a, b);
+        std::cout << "  \"" << a << "\" <-> \"" << b << "\"";
+        for (std::size_t s = (a.size() + b.size()); s < 18; ++s) std::cout << ' ';
+        std::cout << "   " << j << "   " << w << "\n";
+        idx.push_back(static_cast<double>(k));
+        jaro.push_back(j);
+        jw.push_back(w);
+    }
+
+    auto plot = RPlot::create();
+    plot.points(idx, jaro, "Jaro", RGB{37, 99, 235}, 11.0);
+    plot.points(idx, jw, "Jaro-Winkler", RGB{220, 38, 38}, 8.0);
+    plot.legend({"Jaro", "Jaro-Winkler"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Jaro-Winkler lifts Jaro by a common-prefix bonus")
+        .x_label("pair index")
+        .y_label("similarity")
+        .background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(pairs.size()) - 0.5);
+    plot.y_limits(0.0, 1.05);
+    plot.save_svg("build/org/jaro_winkler.svg");
+    std::cout << "\nwrote jaro_winkler.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/jaro_winkler_analysis.cpp <<'CPP'
+<<jw-includes>>
+
+int main() {
+<<jw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/jaro_winkler_analysis.cpp -o build/org/jaro_winkler_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/jaro_winkler_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Jaro and Jaro-Winkler similarity ===
+  pair                       Jaro     JW
+  "MARTHA" <-> "MARHTA"         0.9444   0.9611
+  "DIXON" <-> "DICKSONX"        0.7667   0.8133
+  "DWAYNE" <-> "DUANE"          0.8222   0.8400
+  "MARTHA" <-> "MARDHA"         0.8889   0.9222
+  "abcde" <-> "fghij"           0.0000   0.0000
+#+end_example
+
+The =MARTHA=/=MARHTA= row is exactly the 0.9444 and 0.9611 computed by hand. Every
+pair with a shared prefix is lifted by Jaro-Winkler -- most strongly when the
+prefix is long and the Jaro score already high -- while the wholly disjoint
+=abcde=/=fghij= pair scores 0 under both, since a bonus of \(\ell p(1-j)\)
+vanishes when there is no common prefix.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/jaro_winkler.svg]]
+
+The red Jaro-Winkler markers sit at or above the blue Jaro markers for every pair
+with a common prefix, and coincide with them for the disjoint pair -- the visual
+signature of a prefix-weighted similarity built for matching human names.

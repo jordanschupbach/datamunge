@@ -1,0 +1,244 @@
+#+title: The Levenshtein Distance: Editing One String Into Another
+#+subtitle: A literate C++ study of the Wagner-Fischer dynamic program with =datamunge='s =algorithms::levenshtein_distance=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How different are two strings? A natural answer counts the /edits/ -- single
+character insertions, deletions, and substitutions -- needed to turn one into
+the other. That count is the *Levenshtein distance* (Levenshtein, 1965), and it
+underlies spell-checkers, DNA alignment, =diff=, and fuzzy search. This report
+implements it in =datamunge='s C++ =algorithms::levenshtein_distance= and
+presents it as a literate program: the mathematics, the Wagner-Fischer dynamic
+program, its pseudo-code, and a worked example are all reproduced by a single
+compiled binary. We compute the canonical =kitten= \(\to\) =sitting= distance of
+3 by hand, print the full dynamic-programming table, and read the optimal edit
+script straight off its traceback.
+#+end_abstract
+
+* The edit-distance problem
+
+Fix a finite alphabet. Given two strings \(a\) of length \(n\) and \(b\) of
+length \(m\), an /edit operation/ is one of:
+
+- *insertion* of a single character,
+- *deletion* of a single character, or
+- *substitution* of one character for another.
+
+Each operation costs \(1\). The *Levenshtein distance* \(d(a,b)\) is the minimum
+total cost of a sequence of operations transforming \(a\) into \(b\). It is a
+true *metric*: \(d(a,b)=0\) iff \(a=b\), it is symmetric, and it satisfies the
+triangle inequality \(d(a,c)\le d(a,b)+d(b,c)\). It is bounded:
+\(\bigl|\,n-m\,\bigr| \le d(a,b) \le \max(n,m)\).
+
+=datamunge= exposes it as a single call returning the integer distance.
+
+#+name: lev-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The dynamic program
+
+Let \(D(i,j)\) be the Levenshtein distance between the length-\(i\) prefix
+\(a_{1..i}\) and the length-\(j\) prefix \(b_{1..j}\). The empty-prefix boundary
+is forced: turning the empty string into \(b_{1..j}\) needs \(j\) insertions, and
+\(a_{1..i}\) into the empty string needs \(i\) deletions, so
+
+\[
+D(i,0)=i,\qquad D(0,j)=j.
+\]
+
+For \(i,j>0\), consider the last operation on an optimal script. Exactly one of
+three things happens to the final characters:
+
+\[
+D(i,j)=\min\begin{cases}
+D(i-1,j)+1 & \text{delete } a_i,\\
+D(i,j-1)+1 & \text{insert } b_j,\\
+D(i-1,j-1)+\mathbf{1}[a_i\ne b_j] & \text{match or substitute.}
+\end{cases}
+\]
+
+The recurrence has *optimal substructure* (an optimal edit of the prefixes is
+built from optimal edits of shorter prefixes) and *overlapping subproblems*
+(each \(D(i,j)\) is reused by its three neighbours), so filling the table
+row-by-row solves every subproblem exactly once. The answer is \(D(n,m)\).
+
+Because row \(i\) depends only on rows \(i\) and \(i-1\), we keep just two rows
+and run in \(O(nm)\) time and \(O(\min(n,m))\) space -- the space bound comes
+from indexing the shorter string along the row.
+
+#+begin_example
+LEVENSHTEIN(a, b):                      # |a| = n, |b| = m
+  let prev[0..m], curr[0..m]
+  for j in 0..m: prev[j] <- j           # D(0, j) = j
+  for i in 1..n:
+      curr[0] <- i                      # D(i, 0) = i
+      for j in 1..m:
+          cost <- (a[i] == b[j]) ? 0 : 1
+          curr[j] <- min( prev[j]   + 1,        # deletion
+                          curr[j-1] + 1,        # insertion
+                          prev[j-1] + cost )    # match / substitution
+      swap(prev, curr)
+  return prev[m]
+#+end_example
+
+* Worked example: =kitten= \(\to\) =sitting=
+
+The textbook example transforms =kitten= into =sitting= in three edits:
+
+1. =kitten= \(\to\) =sitten= (substitute *k* \(\to\) *s*),
+2. =sitten= \(\to\) =sittin= (substitute *e* \(\to\) *i*),
+3. =sittin= \(\to\) =sitting= (insert *g* at the end).
+
+No shorter script exists, so \(d=3\). Filling the table \(D\) (rows =kitten=,
+columns =sitting=) and tracing back from the bottom-right corner recovers exactly
+this script: a diagonal step is a match or substitution, a step up is a deletion,
+a step left is an insertion.
+
+The program below computes the distance for several pairs, then rebuilds the full
+\(D\) table for =kitten=/=sitting= and renders it, so the hand computation and the
+machine agree cell for cell.
+
+#+name: lev-run
+#+begin_src c++ :eval no
+    const std::vector<std::pair<std::string, std::string>> pairs = {
+        {"kitten", "sitting"}, {"flaw", "lawn"}, {"saturday", "sunday"},
+        {"book", "back"}, {"", "abc"}, {"distance", "distance"}};
+
+    std::cout << "=== Levenshtein distances ===\n";
+    for (const auto& [a, b] : pairs)
+        std::cout << "  d(\"" << a << "\", \"" << b << "\") = "
+                  << levenshtein_distance(a, b) << "\n";
+
+    // Rebuild the full DP table for the canonical pair to display and plot it.
+    const std::string a = "kitten", b = "sitting";
+    const std::size_t n = a.size(), m = b.size();
+    std::vector<std::vector<std::size_t>> D(n + 1, std::vector<std::size_t>(m + 1));
+    for (std::size_t i = 0; i <= n; ++i) D[i][0] = i;
+    for (std::size_t j = 0; j <= m; ++j) D[0][j] = j;
+    for (std::size_t i = 1; i <= n; ++i)
+        for (std::size_t j = 1; j <= m; ++j) {
+            const std::size_t cost = (a[i - 1] == b[j - 1]) ? 0 : 1;
+            D[i][j] = std::min({D[i - 1][j] + 1, D[i][j - 1] + 1, D[i - 1][j - 1] + cost});
+        }
+
+    std::cout << "\nDP table for \"" << a << "\" -> \"" << b << "\" (answer = "
+              << D[n][m] << "):\n       ";
+    std::cout << "  _";
+    for (char c : b) std::cout << "  " << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i <= n; ++i) {
+        std::cout << "   " << (i == 0 ? '_' : a[i - 1]) << "  ";
+        for (std::size_t j = 0; j <= m; ++j) std::cout << std::setw(3) << D[i][j];
+        std::cout << "\n";
+    }
+
+    // Traceback from (n, m) to (0, 0), recording the grid cells on the optimal path.
+    std::vector<std::pair<std::size_t, std::size_t>> path;
+    for (std::size_t i = n, j = m;;) {
+        path.emplace_back(i, j);
+        if (i == 0 && j == 0) break;
+        const std::size_t cost = (i > 0 && j > 0 && a[i - 1] == b[j - 1]) ? 0 : 1;
+        if (i > 0 && j > 0 && D[i][j] == D[i - 1][j - 1] + cost) { --i; --j; }
+        else if (i > 0 && D[i][j] == D[i - 1][j] + 1) { --i; }
+        else { --j; }
+    }
+
+    // Render the table as a grid of numbers with the traceback drawn on top. We use screen-style
+    // coordinates: column j to the right, row i downward (plotted as y = -i).
+    auto plot = RPlot::create();
+    std::vector<double> px, py;
+    for (const auto& [i, j] : path) { px.push_back(static_cast<double>(j)); py.push_back(-static_cast<double>(i)); }
+    plot.line(px, py, "optimal edit path", RGB{220, 38, 38}, 2.5);
+    for (std::size_t i = 0; i <= n; ++i)
+        for (std::size_t j = 0; j <= m; ++j)
+            plot.text(static_cast<double>(j), -static_cast<double>(i), std::to_string(D[i][j]),
+                      RGB{31, 41, 55}, 13.0);
+    for (std::size_t j = 0; j < m; ++j)
+        plot.text(static_cast<double>(j + 1), 0.7, std::string(1, b[j]), RGB{37, 99, 235}, 14.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(-0.8, -static_cast<double>(i + 1), std::string(1, a[i]), RGB{22, 163, 74}, 14.0);
+    plot.title("Levenshtein DP table: kitten -> sitting (distance 3)")
+        .x_label("prefix of \"sitting\"")
+        .y_label("prefix of \"kitten\" (downward)")
+        .background({250, 250, 252});
+    plot.x_limits(-1.5, static_cast<double>(m) + 0.5);
+    plot.y_limits(-static_cast<double>(n) - 0.5, 1.5);
+    plot.save_svg("build/org/levenshtein_dp.svg");
+    std::cout << "\nwrote levenshtein_dp.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/levenshtein_analysis.cpp <<'CPP'
+<<lev-includes>>
+
+int main() {
+<<lev-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/levenshtein_analysis.cpp -o build/org/levenshtein_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/levenshtein_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Levenshtein distances ===
+  d("kitten", "sitting") = 3
+  d("flaw", "lawn") = 2
+  d("saturday", "sunday") = 3
+  d("book", "back") = 2
+  d("", "abc") = 3
+  d("distance", "distance") = 0
+
+DP table for "kitten" -> "sitting" (answer = 3):
+         _  s  i  t  t  i  n  g
+   _    0  1  2  3  4  5  6  7
+   k    1  1  2  3  4  5  6  7
+   i    2  2  1  2  3  4  5  6
+   t    3  3  2  1  2  3  4  5
+   t    4  4  3  2  1  2  3  4
+   e    5  5  4  3  2  2  3  4
+   n    6  6  5  4  3  3  2  3
+
+wrote levenshtein_dp.svg
+#+end_example
+
+The empty-string row and column count up 0,1,2,...; every interior cell is one
+plus the smallest of its three predecessors, unless the row and column letters
+agree (as at the =i= against =i= and the run of =t='s), where the free diagonal
+step keeps the value flat. The bottom-right cell holds 3, the distance we
+predicted, and =distance=/=distance= gives 0 -- the identity property of the
+metric.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/levenshtein_dp.svg]]
+
+The red curve is the traceback from the bottom-right corner to the origin. Each
+diagonal segment where the row and column letters coincide is a free match (the
+shared =itt= and the trailing =n=); the two diagonal steps across a value
+increase are the substitutions *k*\(\to\)*s* and *e*\(\to\)*i*; and the final
+horizontal step into the last column is the insertion of *g*. Reading the path
+off the grid /is/ the optimal edit script -- exactly the three edits found by
+hand.

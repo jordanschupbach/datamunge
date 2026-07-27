@@ -1,0 +1,171 @@
+#+title: The Sorensen-Dice Coefficient: Similarity by Shared Bigrams
+#+subtitle: A literate C++ study of bigram overlap with =datamunge='s =algorithms::dice_coefficient=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Edit distances read strings character by character; a complementary idea scores
+similarity by how many /pieces/ two strings share. The *Sorensen-Dice
+coefficient* over character bigrams -- adjacent letter pairs -- measures the
+overlap of the two strings' bigram multisets, giving a value in \([0,1]\) that is
+robust to small rearrangements and popular for fuzzy database search. This report
+implements it in =datamunge='s C++ =algorithms::dice_coefficient=, works the
+=night=/=nacht= example (coefficient \(0.25\)) by hand, and compares a range of
+word pairs to show how bigram overlap tracks intuitive similarity.
+#+end_abstract
+
+* Bigram overlap
+
+A /bigram/ of a string is a pair of adjacent characters; the string =night= has
+the four bigrams =ni=, =ig=, =gh=, =ht=. Let \(A\) and \(B\) be the /multisets/
+of bigrams of \(a\) and \(b\) (multisets, so a repeated bigram is counted with
+its multiplicity). The Sorensen-Dice coefficient is
+
+\[
+\text{dice}(a,b)=\frac{2\,\lvert A\cap B\rvert}{\lvert A\rvert+\lvert B\rvert},
+\]
+
+where the intersection counts each shared bigram as many times as it occurs in
+both. A string of length \(k\ge 2\) has \(k-1\) bigrams, so the denominator is
+\((|a|-1)+(|b|-1)\). The coefficient is 1 when the bigram multisets are equal and
+0 when they are disjoint.
+
+Dice is the harmonic-mean-flavoured cousin of the Jaccard index
+\(J=\lvert A\cap B\rvert/\lvert A\cup B\rvert\); the two are monotonically related
+by \(\text{dice}=2J/(1+J)\). Bigrams capture /local/ letter order -- so a metric
+built on them tolerates edits that leave most adjacent pairs intact while still
+punishing a genuinely different word. By convention, strings shorter than two
+characters have no bigrams: two identical such strings score 1, and a short
+string against any different string scores 0.
+
+#+name: dice-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+Count the bigrams of the first string in a hash map, then sweep the bigrams of
+the second, consuming a matching count for each shared bigram so that
+multiplicities are respected. The work is \(O(|a|+|b|)\) time.
+
+#+begin_example
+DICE(a, b):
+  if a == b: return 1                       # identical (covers both-empty)
+  if |a| < 2 or |b| < 2: return 0           # no bigrams and not equal
+  count <- empty map from bigram to integer
+  for i in 0 .. |a|-2: count[a[i..i+1]] += 1
+  shared <- 0
+  for i in 0 .. |b|-2:
+      bg <- b[i..i+1]
+      if count[bg] > 0:
+          count[bg] -= 1                    # consume, so multiplicity is respected
+          shared <- shared + 1
+  return 2 * shared / ( (|a|-1) + (|b|-1) )
+#+end_example
+
+* Worked example: =night= versus =nacht=
+
+The bigrams are
+
+: night :  ni  ig  gh  ht
+: nacht :  na  ac  ch  ht
+
+Each string contributes four bigrams, and they share exactly one, =ht=. Hence
+
+\[
+\text{dice}(\texttt{night},\texttt{nacht})=\frac{2\cdot 1}{4+4}=\frac{2}{8}=0.25.
+\]
+
+Even though both words end in the sound /-cht/-like cluster, only the literal
+adjacent pair =ht= is common, so the coefficient is a modest \(0.25\). The
+program confirms this and scores several other pairs whose overlap ranges from
+none to complete.
+
+#+name: dice-run
+#+begin_src c++ :eval no
+    const std::vector<std::pair<std::string, std::string>> pairs = {
+        {"night", "nacht"}, {"france", "french"}, {"healed", "sealed"},
+        {"night", "night"}, {"abc", "xyz"}};
+
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "=== Sorensen-Dice coefficient (bigrams) ===\n";
+    std::vector<double> idx, dice;
+    std::vector<std::string> labels;
+    for (std::size_t k = 0; k < pairs.size(); ++k) {
+        const auto& [a, b] = pairs[k];
+        const double d = dice_coefficient(a, b);
+        std::cout << "  dice(\"" << a << "\", \"" << b << "\") = " << d << "\n";
+        idx.push_back(static_cast<double>(k));
+        dice.push_back(d);
+        labels.push_back(a + "/" + b);
+    }
+
+    auto plot = RPlot::create();
+    plot.bars(idx, dice, "Dice", RGB{37, 99, 235});
+    for (std::size_t k = 0; k < labels.size(); ++k)
+        plot.text(idx[k], -0.06, labels[k], RGB{31, 41, 55}, 10.0);
+    plot.title("Sorensen-Dice similarity by shared bigrams")
+        .x_label("pair")
+        .y_label("Dice coefficient")
+        .background({250, 250, 252});
+    plot.x_limits(-0.6, static_cast<double>(pairs.size()) - 0.4);
+    plot.y_limits(-0.12, 1.05);
+    plot.save_svg("build/org/dice_coefficient.svg");
+    std::cout << "\nwrote dice_coefficient.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/dice_coefficient_analysis.cpp <<'CPP'
+<<dice-includes>>
+
+int main() {
+<<dice-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/dice_coefficient_analysis.cpp -o build/org/dice_coefficient_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/dice_coefficient_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sorensen-Dice coefficient (bigrams) ===
+  dice("night", "nacht") = 0.2500
+  dice("france", "french") = 0.4000
+  dice("healed", "sealed") = 0.8000
+  dice("night", "night") = 1.0000
+  dice("abc", "xyz") = 0.0000
+
+wrote dice_coefficient.svg
+#+end_example
+
+The coefficient rises smoothly with shared structure: =night=/=nacht= share only
+=ht= (0.25); =france=/=french= share =fr= and =nc= (0.40); =healed=/=sealed=
+differ only in their first letter and so share four of five bigrams (0.80); an
+identical pair scores 1; and =abc=/=xyz= share no bigram at all and score 0.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/dice_coefficient.svg]]
+
+The bar heights trace the intuition directly -- the more adjacent letter pairs
+two words hold in common, the taller the bar -- from the disjoint =abc=/=xyz= at
+zero to the identical =night=/=night= at one.
