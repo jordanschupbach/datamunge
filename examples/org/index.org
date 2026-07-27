@@ -613,6 +613,26 @@ We implement the secant method (=algorithms::secant=) and report it as a literat
 
 We implement Ridders' method (=algorithms::ridders=) and report it as a literate program. We derive its exponential correction that keeps a guaranteed bracket yet converges quadratically; sqrt(2) on [1,2] is found in a handful of iterations, its log-error plotted plunging far below bisection's linear descent.
 
+** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of polynomial interpolation using datamunge/
+
+We implement Lagrange interpolation (=algorithms::lagrange_interpolate=) and report it as a literate program. We give the basis-polynomial construction and its uniqueness, then stage Runge's phenomenon: a degree-10 interpolant through 11 equispaced samples of 1/(1+25x^2) matches at the nodes but oscillates with error ~1.9 between them.
+
+** [[./neville_analysis.html][Neville's Algorithm: Interpolation by a Triangular Table]] ([[./neville_analysis.pdf][PDF]])
+/A literate C++ study of stable polynomial evaluation using datamunge/
+
+We implement Neville's algorithm (=algorithms::neville_interpolate=) and report it as a literate program. We give the triangular recurrence that combines neighbouring lower-degree interpolants (and yields a free error estimate); cos(1.25) is estimated from a cosine table, the successive-degree estimates converging to five digits by degree 5.
+
+** [[./cubic_spline_analysis.html][The Natural Cubic Spline: Smooth Piecewise Interpolation]] ([[./cubic_spline_analysis.pdf][PDF]])
+/A literate C++ study of C2 spline interpolation using datamunge/
+
+We implement the natural cubic spline (=algorithms::natural_cubic_spline=, =cubic_spline_eval=) and report it as a literate program. We derive the C2 smoothness conditions, the tridiagonal moment system (Thomas algorithm), and the natural boundary; on the same Runge data that defeats the polynomial (error 1.9) the spline stays within 0.02.
+
+** [[./de_casteljau_analysis.html][De Casteljau's Algorithm: Bezier Curves by Repeated Lerping]] ([[./de_casteljau_analysis.pdf][PDF]])
+/A literate C++ study of Bezier evaluation using datamunge/
+
+We implement de Casteljau's algorithm (=algorithms::de_casteljau=) and report it as a literate program. We give the pyramid of linear interpolations, its equivalence to the Bernstein form, and the endpoint-interpolation and convex-hull properties; a cubic Bezier is evaluated with B(0.5)=(2,1.875) and the interpolation scaffold drawn.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

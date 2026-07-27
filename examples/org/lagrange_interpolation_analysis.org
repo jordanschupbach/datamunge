@@ -1,0 +1,148 @@
+#+title: Lagrange Interpolation: The Polynomial Through the Points
+#+subtitle: A literate C++ study of polynomial interpolation with =datamunge='s =algorithms::lagrange_interpolate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Through any \(n\) points with distinct abscissae there passes exactly one
+polynomial of degree \(<n\). *Lagrange interpolation* writes it down directly, as a
+weighted sum of *basis polynomials* that are 1 at their own node and 0 at every
+other. This report implements it in =datamunge='s C++
+=algorithms::lagrange_interpolate=, confirms the interpolant passes through its
+data, and stages the cautionary classic -- *Runge's phenomenon* -- where a
+high-degree interpolant through equally spaced points oscillates wildly near the
+ends, a warning that "more points" is not always "more accuracy".
+#+end_abstract
+
+* The Lagrange form
+
+Given nodes \((x_0,y_0),\dots,(x_{n-1},y_{n-1})\) with distinct \(x_j\), define the
+basis polynomials
+
+\[
+L_j(x)=\prod_{k\ne j}\frac{x-x_k}{x_j-x_k},\qquad
+L_j(x_i)=\begin{cases}1 & i=j\\ 0 & i\ne j.\end{cases}
+\]
+
+Then \(P(x)=\sum_{j} y_j\,L_j(x)\) is the interpolating polynomial: at each node
+\(x_i\) all terms vanish except the \(i\)-th, leaving \(y_i\). It is unique (two
+degree-\(<n\) polynomials agreeing at \(n\) points are identical). Each evaluation
+costs \(O(n^2)\). The construction is exact and elegant -- but interpolation error
+depends on the /node placement/, not just their number, which is where Runge's
+example bites.
+
+#+name: lg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LAGRANGE(xs, ys, x):                  # n nodes
+  sum <- 0
+  for j in 0 .. n-1:
+      term <- ys[j]
+      for k in 0 .. n-1, k != j:
+          term <- term * (x - xs[k]) / (xs[j] - xs[k])
+      sum <- sum + term
+  return sum
+#+end_example
+
+* Worked example: Runge's function
+
+We interpolate \(f(x)=\dfrac{1}{1+25x^2}\) on \([-1,1]\) at 11 *equally spaced*
+nodes. The interpolant matches \(f\) exactly at the nodes -- as it must -- but
+between the outermost nodes it swings far above and below the gentle true curve.
+The program verifies the node-matching and measures the large end oscillation.
+
+#+name: lg-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return 1.0 / (1.0 + 25.0 * x * x); };
+    const int n = 11;
+    std::vector<double> xs, ys;
+    for (int i = 0; i < n; ++i) { const double x = -1.0 + 2.0 * i / (n - 1); xs.push_back(x); ys.push_back(f(x)); }
+
+    std::cout << "=== Lagrange interpolation of 1/(1+25x^2), 11 equispaced nodes ===\n";
+    double max_node_err = 0.0;
+    for (std::size_t i = 0; i < xs.size(); ++i)
+        max_node_err = std::max(max_node_err, std::fabs(lagrange_interpolate(xs, ys, xs[i]) - ys[i]));
+    std::cout << "max error at the nodes: " << max_node_err << " (interpolant passes through them)\n";
+
+    double max_err = 0.0; double at = 0.0;
+    for (double x = -1.0; x <= 1.0; x += 0.001) {
+        const double e = std::fabs(lagrange_interpolate(xs, ys, x) - f(x));
+        if (e > max_err) { max_err = e; at = x; }
+    }
+    std::cout << "max error between nodes: " << max_err << " near x = " << at
+              << "  (Runge oscillation)\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> tx, tf, px, pf;
+    for (double x = -1.0; x <= 1.0001; x += 0.005) {
+        tx.push_back(x); tf.push_back(f(x));
+        px.push_back(x); pf.push_back(lagrange_interpolate(xs, ys, x));
+    }
+    plot.line(tx, tf, "true 1/(1+25x^2)", RGB{22, 163, 74}, 2.0);
+    plot.line(px, pf, "degree-10 interpolant", RGB{220, 38, 38}, 2.0);
+    plot.points(xs, ys, "nodes", RGB{37, 99, 235}, 8.0);
+    plot.legend({"true f", "interpolant", "nodes"}, {{22, 163, 74}, {220, 38, 38}, {37, 99, 235}});
+    plot.title("Runge's phenomenon: the interpolant oscillates near the ends")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.y_limits(-0.6, 1.3);
+    plot.save_svg("build/org/lagrange_interpolation.svg");
+    std::cout << "\nwrote lagrange_interpolation.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lagrange_interpolation_analysis.cpp <<'CPP'
+<<lg-includes>>
+
+int main() {
+<<lg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lagrange_interpolation_analysis.cpp -o build/org/lagrange_interpolation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lagrange_interpolation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lagrange interpolation of 1/(1+25x^2), 11 equispaced nodes ===
+max error at the nodes: 0 (interpolant passes through them)
+max error between nodes: 1.91564 near x = 0.94  (Runge oscillation)
+
+wrote lagrange_interpolation.svg
+#+end_example
+
+The interpolant reproduces the data exactly at the nodes (error ~0 there), yet its
+worst error /between/ nodes is enormous -- it overshoots the true curve badly near
+\(x=\pm1\). That is Runge's phenomenon: equally spaced high-degree polynomial
+interpolation is ill-conditioned, and the cure is either non-uniform (Chebyshev)
+nodes or piecewise interpolation such as the cubic spline.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/lagrange_interpolation.svg]]
+
+The green true curve is a mild bump; the red degree-10 interpolant threads every
+blue node exactly but rears up between the outer ones. The wild wings are not a
+bug in the interpolation -- it is the /unique/ polynomial through those points --
+but a lesson about node placement.

@@ -18,6 +18,7 @@
 #include <datamunge/algorithms/graph_layout.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>
+#include <datamunge/algorithms/interpolation.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/manacher.hpp>
