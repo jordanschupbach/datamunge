@@ -1,0 +1,247 @@
+#+title: MOEA/D: Multi-Objective Optimization by Decomposition
+#+subtitle: A literate C++ study of Pareto-front approximation with =datamunge='s =optim::MOEAD=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+NSGA-II and SPEA2 attack a multi-objective problem through Pareto dominance;
+*MOEA/D* -- the Multi-Objective Evolutionary Algorithm based on Decomposition
+of Zhang & Li (2007) -- takes a different route. It /decomposes/ the problem
+into a spread of ordinary single-objective scalar subproblems -- one per
+uniformly distributed weight vector -- and solves them all at once, letting
+each subproblem borrow good solutions from its neighbors (the subproblems
+with nearby weights). This report implements MOEA/D in =datamunge='s C++
+=optim::MOEAD= and presents it as a literate program: every number and
+figure is produced by the compiled binary whose source is the chunks shown.
+We build the weight vectors with the Das-Dennis simplex-lattice design,
+scalarize each subproblem with the ideal-point-anchored *Tchebycheff*
+aggregation \(g^{te}(x\mid\lambda,z^\star) = \max_k \lambda_k |f_k(x) -
+z^\star_k|\), and update each subproblem only from its weight-space
+neighborhood. We show numerically how different weight vectors steer the same
+population toward different parts of the front, then run MOEA/D on the ZDT1
+benchmark (30 variables, front \(f_2 = 1-\sqrt{f_1}\)), where the decomposed
+population converges to within \(\approx 1.4\times10^{-3}\) of the analytic
+front. Because MOEA/D replaces the \(O(mN^2)\) non-dominated sort with cheap
+neighborhood updates, it is often the most scalable of the three.
+#+end_abstract
+
+* Multi-objective optimization and Pareto dominance
+
+We minimize \(m\) objectives over a box \(\Omega\subset\mathbb{R}^n\),
+\(\min_{x\in\Omega} F(x) = (f_1(x),\dots,f_m(x))\). Point \(x\) *dominates*
+\(y\) iff \((\forall i:\ f_i(x)\le f_i(y)) \wedge (\exists j:\ f_j(x) <
+f_j(y))\); the non-dominated points form the Pareto set, their images the
+Pareto front. Where dominance-based algorithms /rank/ a population by this
+partial order, MOEA/D never sorts by dominance at all -- it converts the
+problem into scalar subproblems whose /total/ orders it can optimize
+directly. =datamunge='s =optim/multi_objective.hpp= still supplies
+=dominates()= and =non_dominated_front()=, which we use only at the end to
+extract the front from the final population.
+
+#+name: moead-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/moead.hpp>
+#include <datamunge/optim/multi_objective.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::optim;
+using namespace datamunge::plot;
+
+// ZDT1: convex Pareto front f2 = 1 - sqrt(f1), reached only when g(x)=1. Standard n=30 test.
+struct ZDT1 : MultiObjectiveFunction {
+    std::size_t n;
+    explicit ZDT1(std::size_t k) : n(k) {}
+    std::vector<double> evaluate(const std::vector<double>& x) override {
+        double f1 = x[0], s = 0.0;
+        for (std::size_t i = 1; i < n; ++i) s += x[i];
+        const double g = 1.0 + 9.0 * s / static_cast<double>(n - 1);
+        return {f1, g * (1.0 - std::sqrt(f1 / g))};
+    }
+};
+
+static std::vector<ParetoPoint> sorted_by_f1(std::vector<ParetoPoint> f) {
+    std::sort(f.begin(), f.end(), [](auto& a, auto& b) { return a.objectives[0] < b.objectives[0]; });
+    return f;
+}
+#+end_src
+
+* Decomposition: weight vectors and scalarization
+
+MOEA/D covers the front with \(N\) *weight vectors*
+\(\lambda^1,\dots,\lambda^N\), each on the unit simplex
+\(\{\lambda \ge 0 : \sum_k \lambda_k = 1\}\). =datamunge= places them on the
+*Das-Dennis simplex lattice*: for \(H\) divisions it enumerates every
+\(\lambda = (a_1,\dots,a_m)/H\) with nonnegative integers \(a_k\) summing to
+\(H\), giving \(\binom{H+m-1}{m-1}\) evenly spaced vectors. (For two
+objectives this is simply \(H+1\) points \((i/H,\, 1-i/H)\); the requested
+population size selects the largest lattice that fits.)
+
+Each weight vector \(\lambda^i\) defines a scalar subproblem. With the
+running *ideal point* \(z^\star_k = \min_x f_k(x)\) (the best value seen for
+each objective), MOEA/D uses the *Tchebycheff* aggregation
+\[
+  g^{te}\!\big(x \mid \lambda, z^\star\big)
+    \;=\; \max_{1\le k\le m}\ \lambda_k\, \big|\, f_k(x) - z^\star_k \,\big|,
+\]
+which is minimized to solve subproblem \(i\). Unlike a weighted sum, the
+Tchebycheff scalarization can reach solutions on /non-convex/ parts of a
+front, and as \(\lambda\) sweeps the simplex its minimizer sweeps the front:
+the axis weights \((1,0)\) and \((0,1)\) recover the individual objective
+optima at the ends, and interior weights pick out interior trade-offs. (A
+weighted-sum option, \(g^{ws} = \sum_k \lambda_k (f_k - z^\star_k)\), is also
+available.)
+
+The chunk below anchors \(z^\star = (0,0)\) and, for five weight vectors,
+reports which of five candidate front points minimizes the Tchebycheff
+scalarization -- exhibiting the decomposition steering different weights to
+different parts of the front:
+
+#+name: moead-decompose
+#+begin_src c++ :eval no
+    std::cout << "=== Tchebycheff decomposition: each weight selects a different front point ===\n";
+    std::cout << std::setprecision(3);
+    // Five points along the ZDT1 front f2 = 1 - sqrt(f1), and the ideal point z* = (0,0).
+    const std::vector<std::vector<double>> cand = {{0.00, 1.000}, {0.25, 0.500}, {0.50, 0.293},
+                                                   {0.75, 0.134}, {1.00, 0.000}};
+    const std::vector<std::vector<double>> weights = {{1.0, 0.0}, {0.7, 0.3}, {0.5, 0.5}, {0.3, 0.7}, {0.0, 1.0}};
+    auto tchebycheff = [](const std::vector<double>& f, const std::vector<double>& w) {
+        double g = 0.0;
+        for (std::size_t k = 0; k < f.size(); ++k) g = std::max(g, std::max(w[k], 1e-6) * std::fabs(f[k]));
+        return g;
+    };
+    std::cout << "  weight        -> chosen front point (min Tchebycheff g)\n";
+    for (const auto& w : weights) {
+        std::size_t best = 0;
+        for (std::size_t c = 1; c < cand.size(); ++c)
+            if (tchebycheff(cand[c], w) < tchebycheff(cand[best], w)) best = c;
+        std::cout << "  (" << w[0] << ", " << w[1] << ")  ->  (" << cand[best][0] << ", " << cand[best][1]
+                  << ")   g=" << std::setprecision(3) << tchebycheff(cand[best], w) << "\n";
+    }
+#+end_src
+
+* Neighborhoods and the update loop
+
+The subproblems are not solved in isolation: MOEA/D exploits the fact that
+neighboring weight vectors have neighboring optima. Each subproblem \(i\) is
+given a *neighborhood* \(B(i)\) of the \(T\) subproblems whose weight vectors
+are closest (in Euclidean distance) to \(\lambda^i\). One generation sweeps
+every subproblem \(i\) and:
+
+1. draws two parents from \(B(i)\), producing a child \(y\) by simulated
+   binary crossover and polynomial mutation (the shared real-coded operators
+   in =optim/multi_objective.hpp=);
+2. updates the ideal point, \(z^\star_k \leftarrow \min(z^\star_k, f_k(y))\);
+3. for every neighbor \(j \in B(i)\), replaces \(x^j\) with \(y\) whenever
+   \(y\) is at least as good on /that neighbor's/ subproblem,
+   \(g^{te}(y\mid\lambda^j, z^\star) \le g^{te}(x^j\mid\lambda^j, z^\star)\).
+
+Step 3 is how a good solution propagates: a child bred for subproblem \(i\)
+can improve any nearby subproblem it happens to suit. There is no global
+ranking and no archive -- just \(N\) scalar problems co-evolving through
+their overlapping neighborhoods -- so a generation costs \(O(N T)\)
+scalarization evaluations rather than \(O(m N^2)\) dominance comparisons. The
+final Pareto approximation is the non-dominated subset of the \(N\)
+subproblem solutions.
+
+* Example: ZDT1
+
+We minimize ZDT1 over \([0,1]^{30}\) with about 100 subproblems
+(neighborhood \(T = 20\)) for 250 generations, reporting \(f_1\) coverage and
+the mean vertical distance to the analytic front, and drawing the population
+against the true curve.
+
+#+name: moead-run
+#+begin_src c++ :eval no
+    std::cout << "\n=== MOEA/D on ZDT1 (n=30, ~100 subproblems, T=20, generations=250) ===\n";
+    ZDT1 problem(30);
+    const std::vector<double> lo(30, 0.0), hi(30, 1.0);
+    MOEADOptions opt;
+    opt.population_size = 100;
+    opt.neighborhood_size = 20;
+    opt.decomposition = "tchebycheff";
+    opt.max_generations = 250;
+    opt.seed = 1;
+    const auto front = sorted_by_f1(MOEAD(opt).optimize(problem, lo, hi));
+
+    double mn = 1e9, mx = -1e9, gap = 0.0;
+    for (const auto& p : front) {
+        const double f1 = p.objectives[0];
+        mn = std::min(mn, f1);
+        mx = std::max(mx, f1);
+        gap += p.objectives[1] - (1.0 - std::sqrt(std::max(0.0, f1)));
+    }
+    std::cout << front.size() << " non-dominated solutions; f1 coverage [" << std::setprecision(3) << mn << ", " << mx
+              << "]; mean gap to true front " << std::setprecision(5) << gap / front.size() << "\n";
+
+    std::vector<double> fx, fy, tx, ty;
+    for (const auto& p : front) { fx.push_back(p.objectives[0]); fy.push_back(p.objectives[1]); }
+    for (int i = 0; i <= 100; ++i) { const double a = i / 100.0; tx.push_back(a); ty.push_back(1.0 - std::sqrt(a)); }
+    auto plot = RPlot::create();
+    plot.line(tx, ty, "true Pareto front", {156, 163, 175}, 1.5);
+    plot.points(fx, fy, "MOEA/D solutions", {22, 163, 74}, 4.0);
+    plot.title("MOEA/D Pareto front on ZDT1").x_label("f1").y_label("f2").background({250, 250, 252});
+    plot.save_svg("build/org/moead_zdt1_front.svg");
+    std::cout << "wrote moead_zdt1_front.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/moead_analysis.cpp <<'CPP'
+<<moead-includes>>
+
+int main() {
+    std::cout << std::fixed;
+<<moead-decompose>>
+
+<<moead-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/moead_analysis.cpp -o build/org/moead_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/moead_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tchebycheff decomposition: each weight selects a different front point ===
+  weight        -> chosen front point (min Tchebycheff g)
+  (1.000, 0.000)  ->  (0.000, 1.000)   g=0.000
+  (0.700, 0.300)  ->  (0.250, 0.500)   g=0.175
+  (0.500, 0.500)  ->  (0.250, 0.500)   g=0.250
+  (0.300, 0.700)  ->  (0.500, 0.293)   g=0.205
+  (0.000, 1.000)  ->  (1.000, 0.000)   g=0.000
+
+=== MOEA/D on ZDT1 (n=30, ~100 subproblems, T=20, generations=250) ===
+81 non-dominated solutions; f1 coverage [0.000, 0.967]; mean gap to true front 0.00137
+wrote moead_zdt1_front.svg
+#+end_example
+
+The decomposition table makes MOEA/D's mechanism concrete: the axis weight
+\((1,0)\) selects the leftmost point (the \(f_1\) optimum), \((0,1)\) the
+rightmost (the \(f_2\) optimum), and the interior weights pick out interior
+trade-offs -- a hundred such weights tile the whole front. On ZDT1 the
+decomposed population converges tightly to the analytic front:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/moead_zdt1_front.svg]]
+
+The Das-Dennis lattice returns slightly fewer than the requested 100
+subproblems (the largest lattice that fits), and de-duplicating to the
+non-dominated set trims a few more, but the coverage and convergence match
+NSGA-II and SPEA2 at a lower per-generation cost, since MOEA/D never performs
+a non-dominated sort.

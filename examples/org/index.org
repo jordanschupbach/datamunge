@@ -15,6 +15,21 @@ typeset PDF alongside it.
 
 We fit Principal Component Analysis to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::PCA=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. =Species= is withheld entirely from the fit; PCA never sees it.
 
+** [[./kernel_pca_iris_analysis.html][Kernel PCA: Nonlinear Dimensionality Reduction via the Kernel Trick]] ([[./kernel_pca_iris_analysis.pdf][PDF]])
+/A literate C++ study of feature-space principal components using datamunge/
+
+We fit Kernel Principal Component Analysis (Scholkopf, Smola & Muller, 1998) to Fisher's (1936) iris measurements and to a synthetic two-concentric-circles dataset using =datamunge='s C++ =stats::KernelPCA=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. A linear kernel reproduces plain PCA exactly, an RBF kernel improves iris species separation, and on two rings that no linear axis can split, the first RBF component separates them perfectly -- the canonical demonstration of the kernel trick.
+
+** [[./factor_analysis_analysis.html][Factor Analysis: Modeling Shared Variance with Latent Factors]] ([[./factor_analysis_analysis.pdf][PDF]])
+/A literate C++ study of principal axis factoring and rotation using datamunge/
+
+We fit exploratory Factor Analysis (Spearman 1904; Thurstone 1947) by principal axis factoring, with an optional varimax rotation, using =datamunge='s C++ =stats::FactorAnalysis=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. On synthetic data drawn from a known two-factor model the method recovers the true loadings and communalities, varimax rotation turns a hard-to-read general factor into interpretable simple structure, the factor model reproduces the observed correlations' off-diagonals far better than a rank-matched PCA, and iris illustrates factor analysis's identifiability limits (a Heywood case at two factors).
+
+** [[./ica_analysis.html][Independent Component Analysis: Blind Source Separation via FastICA]] ([[./ica_analysis.pdf][PDF]])
+/A literate C++ study of the cocktail-party problem and non-Gaussianity using datamunge/
+
+We implement the deflationary FastICA algorithm (Hyvarinen & Oja, 1997) in =datamunge='s C++ =stats::ICA= and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. Three independent signals (sine, square, sawtooth) are linearly mixed and then recovered from the mixtures alone at a mean correlation of 0.9999 -- versus 0.7625 for a rank-matched PCA of the same data, since PCA removes only correlation while ICA removes all higher-order dependence by maximizing non-Gaussianity. A geometric example and a Gaussian-source control (where ICA's advantage over PCA vanishes, exactly as the theory requires) round out the study.
+
 ** [[./lda_iris_analysis.html][Linear Discriminant Analysis of Fisher's Iris Data]] ([[./lda_iris_analysis.pdf][PDF]])
 /A literate C++ study using datamunge/
 
@@ -77,6 +92,21 @@ We fit a regularized, second-order gradient boosting classifier -- the XGBoost a
 
 We fit a soft-margin, multi-class support vector machine to Fisher's (1936) iris data using =datamunge='s C++ =stats::SVM= class, and report it as a literate program: every code fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./neural_network_analysis.html][Feed-Forward Neural Networks: Backpropagation and Nonlinear Decision Boundaries]] ([[./neural_network_analysis.pdf][PDF]])
+/A literate C++ study of the multi-layer perceptron using datamunge/
+
+We implement a feed-forward neural network (multi-layer perceptron) trained by backpropagation in =datamunge='s C++ =stats::MLPClassifier= and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. On the XOR problem a linear classifier is stuck exactly at the chance floor (cross-entropy ln 2) while a single hidden layer reaches 100% accuracy; on two interleaving moons the network learns a curved decision boundary a linear model cannot; and on iris it classifies species from petal measurements. With an empty hidden-layer list the same class reduces exactly to multinomial logistic regression.
+
+** [[./cnn_analysis.html][Convolutional Neural Networks: Weight Sharing, Learned Filters, and Translation Invariance]] ([[./cnn_analysis.pdf][PDF]])
+/A literate C++ study of image classification with a convolutional network using datamunge/
+
+We implement a convolutional neural network (conv -> ReLU -> pool -> dense -> softmax), trained by backpropagation through the convolution and pooling layers, in =datamunge='s C++ =stats::CNNClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. It classifies synthetic images of horizontal and vertical bars at 100% test accuracy, learns interpretable edge-detector filters, explains individual predictions with layer-wise relevance propagation (90%+ of the evidence landing on the bar itself), and -- when shapes are shifted to positions never seen in training -- shows that translation invariance comes specifically from *global* pooling: a globally-pooled CNN generalizes to the new positions with just 258 parameters where a 4706-parameter fully-connected network cannot.
+
+** [[./explainable_ai_analysis.html][Model-Agnostic Explanations: LIME and SHAP]] ([[./explainable_ai_analysis.pdf][PDF]])
+/A literate C++ study of perturbation-based explanations, compared with LRP, using datamunge/
+
+We implement two model-agnostic explainable-AI methods -- LIME (a local linear surrogate) and SHAP (exact Shapley values from cooperative game theory) -- in =datamunge='s C++ =stats::LimeImageExplainer= and =stats::ShapImageExplainer=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. Both explain a CNN's bar-classification decisions by perturbing superpixels and watching the output, with SHAP satisfying the efficiency axiom exactly; LIME and SHAP agree strongly with each other (correlation up to 0.94), agree on the object with the model-specific LRP but at coarser resolution, and -- being model-agnostic -- explain a completely different fully-connected network with the same code.
+
 ** [[./knn_iris_analysis.html][K-Nearest-Neighbors Classification and Regression for Iris]] ([[./knn_iris_analysis.pdf][PDF]])
 /A literate C++ study using datamunge/
 
@@ -94,6 +124,11 @@ We fit a naive Bayes classifier to the Palmer Archipelago penguins data using =d
 
 We fit an ordinary-least-squares linear model predicting body mass from bill and flipper measurements in the Palmer Archipelago penguins data, using =datamunge='s C++ =stats::LM= class, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./quantile_regression_analysis.html][Quantile Regression: Modeling Conditional Distributions]] ([[./quantile_regression_analysis.pdf][PDF]])
+/A literate C++ study of pinball loss, ADMM, robustness, and heterogeneous effects using datamunge/
+
+We implement linear quantile regression in =datamunge::stats::QuantileRegression= and derive its check-loss objective and ADMM solver, then analyze heteroskedastic synthetic data, resistance to a vertical outlier, and the lower, median, and upper conditional body-mass distributions of Palmer penguins.
+
 ** [[./glm_iris_analysis.html][Generalized Linear Models for Iris Classification and Counts]] ([[./glm_iris_analysis.pdf][PDF]])
 /A literate C++ study of logistic and Poisson regression using datamunge/
 
@@ -108,6 +143,11 @@ We fit Ridge, Lasso, and Elastic Net regression -- three penalized variants of o
 /A literate C++ study of Nadaraya-Watson regression using datamunge/
 
 We fit Nadaraya-Watson kernel regression to predict iris petal length from petal width using =datamunge='s C++ =stats::KernelRegression=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./kernel_ridge_analysis.html][Kernel Ridge Regression: Nonlinear Regression, Regularization, and the Kernel Trick]] ([[./kernel_ridge_analysis.pdf][PDF]])
+/A literate C++ study of penalized least squares in an RKHS using datamunge/
+
+We implement Kernel Ridge Regression in =datamunge='s C++ =stats::KernelRidgeRegression= and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. From 120 noisy samples of a sine wave, an RBF-kernel fit with leave-one-out-cross-validated regularization recovers the true function to an RMSE of 0.0195; a bias-variance study dials the regularizer across four orders of magnitude, watching the effective degrees of freedom fall from 21.6 to 4.6; the RBF kernel beats a linear one on the nonlinear target (leave-one-out R^2 0.96 vs 0.62); and a linear kernel is shown to reproduce ordinary ridge regression exactly.
 
 ** [[./gaussian_process_regression_iris_analysis.html][Gaussian Process Regression for Iris Petal Length]] ([[./gaussian_process_regression_iris_analysis.pdf][PDF]])
 /A literate C++ study of Bayesian nonparametric regression using datamunge/
@@ -168,6 +208,11 @@ We fit a correlated bivariate Gaussian target -- deliberately unnormalized, with
 /A literate C++ study of thirteen inferential tests using datamunge/
 
 We apply thirteen classical hypothesis tests to the iris dataset using =datamunge='s C++ =stats= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./conformal_prediction_analysis.html][Conformal Prediction: Distribution-Free Coverage Guarantees]] ([[./conformal_prediction_analysis.pdf][PDF]])
+/A literate C++ study of prediction sets and intervals with a guarantee, on iris, using datamunge/
+
+We implement split conformal prediction -- for classification (=stats::SplitConformalClassifier=, prediction /sets/) and regression (=stats::SplitConformalRegressor=, prediction /intervals/) -- and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. Wrapping any base model, conformal prediction turns point predictions into sets that provably contain the truth with probability at least 1 - alpha, under only exchangeability. On iris species it returns a singleton {setosa} where the model is confident and a two-class {versicolor, virginica} set exactly at the overlapping boundary; averaged over 300 random splits its empirical coverage meets the 1 - alpha target at every level; and a regression example produces guaranteed prediction intervals for petal length.
 
 * Random Number Generation
 
@@ -248,6 +293,21 @@ We fit two second-order optimizers -- =Newton= and =TrustRegionNewton= -- agains
 /A literate C++ study of control-variate variance reduction for DifferentiableSeparableFunction using datamunge/
 
 We fit =datamunge='s C++ =optim= module's two variance-reduced stochastic gradient methods, =SVRG= and =SAGA=, to an ordinary-least-squares loss on the iris dataset -- the exact setup the companion =optimization_analysis.org= report's mini-batch =SGD= already fits -- and instrument every method with a real, compiled term-gradient-call counter to compare their cost on an apples-to-apples basis, not just a final answer.
+
+** [[./nsga2_analysis.html][NSGA-II: Elitist Multi-Objective Optimization by Non-Dominated Sorting]] ([[./nsga2_analysis.pdf][PDF]])
+/A literate C++ study of Pareto-front approximation via fast non-dominated sorting and crowding distance using datamunge/
+
+We implement NSGA-II (Deb et al. 2002) in =datamunge='s C++ =optim::NSGA2= and report it as a literate program: every number and figure below is a real, compiled, executed chunk of a single C++ binary. We derive Pareto dominance, fast non-dominated sorting, the crowding-distance density estimate, and the elitist \((\mu+\lambda)\) loop, then recover the whole Pareto front of the ZDT1 benchmark (30 variables) to within \(\approx1.5\times10^{-3}\).
+
+** [[./spea2_analysis.html][SPEA2: Strength Pareto Evolutionary Optimization with an External Archive]] ([[./spea2_analysis.pdf][PDF]])
+/A literate C++ study of strength/raw-fitness ranking, k-th-nearest-neighbor density, and archive truncation using datamunge/
+
+We implement SPEA2 (Zitzler, Laumanns & Thiele 2001) in =datamunge='s C++ =optim::SPEA2= and report it as a literate program: every number and figure below is real, compiled, executed output. We derive the strength, raw-fitness, and density terms and the nearest-neighbor truncation rule, verify the fitness bookkeeping on a hand example, and converge the archive to the ZDT1 front to within \(\approx1.8\times10^{-3}\).
+
+** [[./moead_analysis.html][MOEA/D: Multi-Objective Optimization by Decomposition]] ([[./moead_analysis.pdf][PDF]])
+/A literate C++ study of Das-Dennis weight vectors, Tchebycheff scalarization, and neighborhood updates using datamunge/
+
+We implement MOEA/D (Zhang & Li 2007) in =datamunge='s C++ =optim::MOEAD= and report it as a literate program: every number and figure below is real, compiled, executed output. We build the Das-Dennis weight lattice, derive the ideal-point-anchored Tchebycheff scalarization, show numerically how different weights steer to different parts of the front, and converge the decomposed population to the ZDT1 front to within \(\approx1.4\times10^{-3}\).
 
 * Numerical Methods & Linear Algebra
 
