@@ -40,8 +40,8 @@ Further information: Network theory
                 TrustRank
     Flow networks
         Dinic's algorithm: is a strongly polynomial algorithm for computing the maximum flow in a flow network.
-        Edmonds–Karp algorithm: implementation of Ford–Fulkerson
-        Ford–Fulkerson algorithm: computes the maximum flow in a graph
+        [x] Edmonds–Karp algorithm: implementation of Ford–Fulkerson  -- datamunge::algorithms::edmonds_karp (BFS shortest augmenting paths, O(VE^2)); report examples/org/edmonds_karp_analysis.org
+        [x] Ford–Fulkerson algorithm: computes the maximum flow in a graph  -- realized by datamunge::algorithms::edmonds_karp (the BFS-augmenting-path variant); report examples/org/edmonds_karp_analysis.org
         Karger's algorithm: a Monte Carlo method to compute the minimum cut of a connected graph
         Push–relabel algorithm: computes a maximum flow in a graph
 
@@ -52,14 +52,14 @@ Routing for graphs
     Longest path problem: find a simple path of maximum length in a given graph
     Minimum spanning tree
         Borůvka's algorithm
-        Kruskal's algorithm
-        Prim's algorithm
+        [x] Kruskal's algorithm  -- datamunge::algorithms::kruskal (union-find, O(E log E)); report examples/org/kruskal_analysis.org
+        [x] Prim's algorithm  -- datamunge::algorithms::prim (binary-heap, O(E log V)); report examples/org/prim_analysis.org
         Reverse-delete algorithm
     Nonblocking minimal spanning switch say, for a telephone exchange
     Shortest path problem
-        Bellman–Ford algorithm: computes shortest paths in a weighted graph (where some of the edge weights may be negative)
-        Dijkstra's algorithm: computes shortest paths in a graph with non-negative edge weights
-        Floyd–Warshall algorithm: solves the all pairs shortest path problem in a weighted, directed graph
+        [x] Bellman–Ford algorithm: computes shortest paths in a weighted graph (where some of the edge weights may be negative)  -- datamunge::algorithms::bellman_ford; report examples/org/bellman_ford_analysis.org
+        [x] Dijkstra's algorithm: computes shortest paths in a graph with non-negative edge weights  -- datamunge::algorithms::dijkstra; report examples/org/dijkstra_analysis.org
+        [x] Floyd–Warshall algorithm: solves the all pairs shortest path problem in a weighted, directed graph  -- datamunge::algorithms::floyd_warshall; report examples/org/floyd_warshall_analysis.org
         Johnson's algorithm: all pairs shortest path algorithm in sparse weighted directed graph
     Transitive closure problem: find the transitive closure of a given binary relation
     Traveling salesman problem

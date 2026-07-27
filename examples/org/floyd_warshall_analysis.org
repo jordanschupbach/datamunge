@@ -1,0 +1,301 @@
+#+title: The Floyd-Warshall Algorithm: All-Pairs Shortest Paths by Dynamic Programming
+#+subtitle: A literate C++ study of the all-pairs shortest-path problem with =datamunge='s =algorithms::floyd_warshall=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a road map, a currency-exchange table, or a network of latencies, how far
+apart is /every/ pair of points at once? The *Floyd-Warshall algorithm* (Floyd
+1962; Warshall 1962) answers this all-pairs shortest-path question for a weighted
+directed graph with a strikingly compact triple loop, tolerating negative edge
+weights and detecting negative cycles as a by-product. This report implements it
+in =datamunge='s C++ =algorithms::floyd_warshall= and presents it as a literate
+program: every number and figure is produced by a single compiled binary. We
+state the all-pairs problem, derive the dynamic-programming recurrence over the
+set of /intermediate vertices a path is allowed to use/, argue why the in-place
+update is correct, give pseudocode and the \(O(V^3)\) complexity, and explain the
+negative-cycle test. A deterministic five-vertex graph -- with one negative edge
+but no negative cycle -- has its entire \(5\times5\) shortest-path distance matrix
+computed by hand and reproduced exactly by the binary, and the cheapest route from
+vertex 0 to vertex 2, distance \(-3\) via \(0\to4\to3\to2\), is reconstructed from
+the algorithm's =next= matrix and drawn over the graph.
+#+end_abstract
+
+* The all-pairs shortest-path problem
+
+Model a network as a *weighted directed graph*: vertices \(\{0,\dots,n-1\}\), and
+a directed edge \(u \to v\) carrying a real *weight* \(w(u,v)\) -- a distance, a
+cost, a latency, possibly negative. The *shortest-path distance* \(\delta(i,j)\)
+is the least total weight of any directed path from \(i\) to \(j\), taken to be
+\(0\) when \(i=j\) and \(+\infty\) when no path exists. The *all-pairs* problem
+asks for \(\delta(i,j)\) for /every/ ordered pair at once -- an \(n\times n\)
+matrix -- together with enough bookkeeping to recover an actual shortest path for
+any pair.
+
+Negative weights are allowed and are exactly what make the problem interesting:
+a cheaper detour may pass through an edge that /lowers/ the running total. The
+one thing that must be excluded for the answer to be meaningful is a
+*negative-weight cycle* -- a directed cycle whose weights sum below zero -- for
+then a path could loop it forever and drive its cost to \(-\infty\). Floyd-Warshall
+does not merely require the absence of such a cycle; it *detects* one when
+present.
+
+=datamunge= represents the graph by a vertex count =n= and an edge list of
+=(from, to, weight)= tuples, and returns an =AllPairsShortestPaths= carrying the
+=distance= matrix (=+infinity= off the reachable set, =0= on the diagonal), a
+=next= matrix for path reconstruction, and a boolean =has_negative_cycle=. The
+free function =reconstruct_path= walks =next= to list the vertices of a shortest
+path.
+
+#+name: fw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/floyd_warshall.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <string>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The dynamic-programming recurrence
+
+Floyd-Warshall is a dynamic program over which vertices a path is permitted to
+pass /through/. Number the vertices \(0,\dots,n-1\) and let
+
+\[
+d^{(k)}[i][j] = \text{least weight of an } i\to j \text{ path whose intermediate
+vertices all lie in } \{0,\dots,k-1\},
+\]
+
+with \(d^{(0)}[i][j]\) using /no/ intermediates at all: it is the direct edge
+weight \(w(i,j)\), or \(0\) if \(i=j\), or \(+\infty\) if there is no edge. Now
+consider admitting one more intermediate, vertex \(k\). A shortest \(i\to j\)
+path that may use intermediates from \(\{0,\dots,k\}\) either
+
+- does *not* pass through \(k\) -- then it already lies in the smaller problem,
+  costing \(d^{(k)}[i][j]\); or
+- *does* pass through \(k\) -- and since (absent a negative cycle) no shortest
+  path repeats a vertex, it enters \(k\) exactly once, splitting into an
+  \(i\to k\) piece and a \(k\to j\) piece, each using only intermediates from
+  \(\{0,\dots,k-1\}\), for a total of \(d^{(k)}[i][k] + d^{(k)}[k][j]\).
+
+Taking the cheaper option gives the recurrence
+
+\[
+d^{(k+1)}[i][j] = \min\bigl(d^{(k)}[i][j],\; d^{(k)}[i][k] + d^{(k)}[k][j]\bigr).
+\]
+
+After \(k\) has ranged over all \(n\) vertices, every vertex is an admissible
+intermediate, so \(d^{(n)}[i][j] = \delta(i,j)\).
+
+*Why the in-place update is correct.* The implementation keeps a single matrix
+=dist= and overwrites it as \(k\) advances, rather than storing each layer
+separately. This is safe because at step \(k\) the two entries read on the right,
+=dist[i][k]= and =dist[k][j]=, cannot themselves change during that step: the
+\(k\)-th row and column are fixed, since \(d^{(k+1)}[i][k]=d^{(k)}[i][k]\) and
+\(d^{(k+1)}[k][j]=d^{(k)}[k][j]\) (a shortest path to or from \(k\) that is
+allowed to use \(k\) as an intermediate gains nothing by doing so -- that would
+mean visiting \(k\) twice). So reading the possibly-already-updated values is
+identical to reading the old ones, and one \(n\times n\) matrix suffices.
+
+To recover paths, we carry a parallel =next= matrix: =next[i][j]= is the first
+vertex after \(i\) on the current-best \(i\to j\) path. It starts at \(j\) for
+each direct edge, and whenever the relaxation through \(k\) improves \(i\to j\)
+we set =next[i][j] = next[i][k]= -- the new path begins by heading toward \(k\).
+
+#+begin_example
+FLOYD-WARSHALL(n, edges):
+  for all i, j:  dist[i][j] <- +infinity;  next[i][j] <- none
+  for all i:     dist[i][i] <- 0
+  for each edge (u, v, w) in edges:            # seed direct edges (keep the lightest parallel one)
+      if w < dist[u][v]:
+          dist[u][v] <- w;  next[u][v] <- v
+
+  for k in 0 .. n-1:                           # allow vertex k as an intermediate
+      for i in 0 .. n-1:
+          if dist[i][k] == +infinity: continue # guard +infinity arithmetic
+          for j in 0 .. n-1:
+              if dist[k][j] == +infinity: continue
+              if dist[i][k] + dist[k][j] < dist[i][j]:
+                  dist[i][j] <- dist[i][k] + dist[k][j]
+                  next[i][j] <- next[i][k]
+
+  has_negative_cycle <- (dist[i][i] < 0 for some i)
+  return (dist, next, has_negative_cycle)
+
+RECONSTRUCT-PATH(next, i, j):
+  if i == j: return [i]
+  if next[i][j] == none: return []             # j unreachable from i
+  path <- [i]
+  while i != j:
+      i <- next[i][j];  path.append(i)
+  return path
+#+end_example
+
+*Complexity.* Three nested loops over \(n\) vertices give \(\Theta(V^3)\) time
+and \(\Theta(V^2)\) space, independent of the number of edges. For a dense graph
+this matches running Dijkstra from every source, with far simpler code and no
+priority queue, and unlike Dijkstra it accepts negative edge weights.
+
+*Negative-cycle detection.* After the run, \(\texttt{dist}[i][i]\) is the least
+weight of any closed walk from \(i\) back to \(i\) using any intermediates.
+Absent a negative cycle that value stays \(0\); if some \(\texttt{dist}[i][i]<0\)
+then \(i\) sits on (or downstream of) a negative cycle. So a single scan of the
+diagonal is an exact test, and =datamunge= reports it in =has_negative_cycle=.
+
+* Example: a five-vertex network
+
+We take a fixed five-vertex directed graph (the classic textbook instance) with
+one negative edge, \(0\to4\) of weight \(-4\), but no negative cycle. Its edges
+are
+
+- \(0\to1\,(3)\), \(0\to2\,(8)\), \(0\to4\,(-4)\),
+- \(1\to3\,(1)\), \(1\to4\,(7)\),
+- \(2\to1\,(4)\),
+- \(3\to0\,(2)\), \(3\to2\,(-5)\), and
+- \(4\to3\,(6)\).
+
+Because the graph is strongly connected every pair has a finite distance. Working
+the recurrence by hand yields the full \(5\times5\) matrix reproduced in the
+Results below; for instance the shortest \(0\to2\) route is /not/ the direct edge
+of weight \(8\) but the detour \(0\to4\to3\to2\), costing \(-4+6-5=-3\), which the
+=next= matrix lets us reconstruct. We compute the matrix, confirm no negative
+cycle, reconstruct that path, and draw the graph with the path highlighted.
+
+#+name: fw-run
+#+begin_src c++ :eval no
+    const std::size_t n = 5;
+    const std::vector<std::tuple<std::size_t, std::size_t, double>> edges = {
+        {0, 1, 3.0}, {0, 2, 8.0}, {0, 4, -4.0}, {1, 3, 1.0}, {1, 4, 7.0},
+        {2, 1, 4.0}, {3, 0, 2.0}, {3, 2, -5.0}, {4, 3, 6.0}};
+
+    std::cout << "=== Floyd-Warshall all-pairs shortest paths (5 vertices) ===\n";
+    std::cout << "edges (from -> to : weight):\n";
+    for (const auto& [u, v, w] : edges)
+        std::cout << "  " << u << " -> " << v << " : " << std::setw(2) << static_cast<int>(w) << "\n";
+
+    const auto apsp = floyd_warshall(n, edges);
+    std::cout << "\nhas_negative_cycle: " << (apsp.has_negative_cycle ? "yes" : "no") << "\n";
+
+    std::cout << "\nall-pairs shortest-path distance matrix D[i][j] (. = +infinity):\n";
+    std::cout << "    ";
+    for (std::size_t j = 0; j < n; ++j) std::cout << std::setw(5) << j;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < n; ++i) {
+        std::cout << "  " << i << ":";
+        for (std::size_t j = 0; j < n; ++j) {
+            if (apsp.distance[i][j] == std::numeric_limits<double>::infinity())
+                std::cout << std::setw(5) << ".";
+            else
+                std::cout << std::setw(5) << static_cast<int>(apsp.distance[i][j]);
+        }
+        std::cout << "\n";
+    }
+
+    const auto path = reconstruct_path(apsp, 0, 2);
+    std::cout << "\nshortest path from 0 to 2 (distance " << static_cast<int>(apsp.distance[0][2]) << "):\n  ";
+    for (std::size_t s = 0; s < path.size(); ++s) std::cout << (s ? " -> " : "") << path[s];
+    std::cout << "\n";
+
+    // Draw the graph with the reconstructed 0->2 path highlighted in red.
+    const std::vector<double> px = {0.00, 1.90, 1.18, -1.18, -1.90};
+    const std::vector<double> py = {2.00, 0.62, -1.62, -1.62, 0.62};
+    auto on_path = [&](std::size_t u, std::size_t v) {
+        for (std::size_t s = 0; s + 1 < path.size(); ++s)
+            if (path[s] == u && path[s + 1] == v) return true;
+        return false;
+    };
+
+    auto plot = RPlot::create();
+    for (const auto& [u, v, w] : edges) {
+        (void)w;
+        const RGB    col   = on_path(u, v) ? RGB{220, 38, 38} : RGB{203, 213, 225};
+        const double width = on_path(u, v) ? 3.0 : 1.5;
+        plot.segments({px[u]}, {py[u]}, {px[v]}, {py[v]}, col, width);
+    }
+    std::vector<double> nx, ny;
+    for (std::size_t u = 0; u < n; ++u) { nx.push_back(px[u]); ny.push_back(py[u]); }
+    plot.points(nx, ny, "vertex", {37, 99, 235}, 11.0);
+    for (std::size_t u = 0; u < n; ++u)
+        plot.text(px[u], py[u] + 0.22, std::to_string(u), {17, 24, 39}, 13.0);
+    plot.title("Floyd-Warshall: shortest 0->2 path (red) has distance -3")
+        .x_label("").y_label("").hide_axes(true).background({250, 250, 252});
+    plot.save_svg("build/org/floyd_warshall_paths.svg");
+    std::cout << "\nwrote floyd_warshall_paths.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/floyd_warshall_analysis.cpp <<'CPP'
+<<fw-includes>>
+
+int main() {
+<<fw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/floyd_warshall_analysis.cpp -o build/org/floyd_warshall_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/floyd_warshall_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Floyd-Warshall all-pairs shortest paths (5 vertices) ===
+edges (from -> to : weight):
+  0 -> 1 :  3
+  0 -> 2 :  8
+  0 -> 4 : -4
+  1 -> 3 :  1
+  1 -> 4 :  7
+  2 -> 1 :  4
+  3 -> 0 :  2
+  3 -> 2 : -5
+  4 -> 3 :  6
+
+has_negative_cycle: no
+
+all-pairs shortest-path distance matrix D[i][j] (. = +infinity):
+        0    1    2    3    4
+  0:    0    1   -3    2   -4
+  1:    3    0   -4    1   -1
+  2:    7    4    0    5    3
+  3:    2   -1   -5    0   -2
+  4:    8    5    1    6    0
+
+shortest path from 0 to 2 (distance -3):
+  0 -> 4 -> 3 -> 2
+#+end_example
+
+The diagonal is exactly zero and =has_negative_cycle= is =no=, certifying that no
+directed cycle in this graph has negative total weight. The off-diagonal entries
+are the shortest-path distances, and several are negative -- the single \(-4\) edge
+out of vertex 0 propagates cheap routes across the whole network. The most vivid
+case is \(D[0][2] = -3\): the direct edge \(0\to2\) costs \(8\), yet the three-hop
+detour \(0\to4\to3\to2\) costs \(-4+6-5=-3\), and it is this detour that
+=reconstruct_path= recovers by following the =next= matrix. Every row was computed
+independently by the triple loop and matches the by-hand recurrence exactly.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/floyd_warshall_paths.svg]]
+
+The five vertices are drawn as blue nodes with the directed edges in grey; the red
+chain traces the reconstructed shortest \(0\to2\) path, \(0\to4\to3\to2\). It
+visibly ignores the direct \(0\to2\) edge in favor of the longer hop count, because
+the negative and small-positive weights along the detour sum to less than the
+single heavy edge -- the whole point of allowing negative weights, and precisely
+what a shortest-path algorithm restricted to nonnegative weights (Dijkstra) is
+built to assume away.

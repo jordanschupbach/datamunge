@@ -1,0 +1,325 @@
+#+title: The Edmonds-Karp Algorithm: Maximum Flow by Shortest Augmenting Paths
+#+subtitle: A literate C++ study of network flow and the max-flow min-cut theorem with =datamunge='s =algorithms::edmonds_karp=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How much water, traffic, or data can a network carry from a source to a sink
+when every pipe has a capacity? Ford and Fulkerson (1956) answered with a
+method -- repeatedly find a path with spare capacity and push flow along it --
+and a theorem: the maximum flow always equals the capacity of the cheapest
+"cut" separating source from sink. Left to pick paths carelessly, though, the
+method can crawl, or on irrational capacities never even finish. Edmonds and
+Karp (1972) fixed this with one disciplined choice: always augment along a
+/shortest/ path, found by breadth-first search. That single rule buys an
+\(O(VE^2)\) bound independent of the numbers involved. This report implements
+Edmonds-Karp in =datamunge='s C++ =algorithms::edmonds_karp= and presents it as
+a literate program: every number and figure below is produced by a single
+compiled binary. We define flow networks, feasible flows, residual graphs, and
+augmenting paths; state and use the max-flow min-cut theorem; explain why BFS
+delivers the polynomial bound; and work the classic six-node CLRS network by
+hand, whose maximum flow is \(23\) and whose minimum cut isolates
+\(\{s,v_1,v_2,v_4\}\) from \(\{v_3,t\}\) -- the algorithm recovers both exactly,
+and the source side it reports is verified to be a minimum cut.
+#+end_abstract
+
+* Flow networks and feasible flows
+
+A *flow network* is a directed graph on vertices \(\{0,\dots,n-1\}\) in which
+each edge \((u,v)\) carries a non-negative *capacity* \(c(u,v)\), together with
+two distinguished vertices: a *source* \(s\) and a *sink* \(t\). A *flow* is an
+assignment \(f(u,v)\) to the edges obeying two rules. First, the *capacity
+constraint*: \(0 \le f(u,v) \le c(u,v)\) -- no edge carries more than it can
+hold. Second, *flow conservation*: at every vertex other than \(s\) and \(t\),
+what comes in goes out, \(\sum_{\text{in}} f = \sum_{\text{out}} f\). The
+*value* of the flow is the net amount leaving the source, which conservation
+forces to equal the net amount entering the sink. The *maximum-flow problem*
+asks for a feasible flow of greatest value.
+
+=datamunge= represents a network by a vertex count =n=, a list of directed
+=edges= as =(from, to, capacity)= tuples, and the indices =source= and =sink=.
+=edmonds_karp= returns the maximum flow value, the flow on each input edge (in
+input order), and the source side of a minimum cut.
+
+#+name: ek-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/edmonds_karp.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Residual graphs and augmenting paths
+
+Given a flow \(f\), the *residual graph* \(G_f\) records where more flow could
+still go. Each original edge \((u,v)\) with flow \(f(u,v)\) contributes up to
+two *residual arcs*: a *forward* arc \(u\to v\) with residual capacity
+\(c(u,v)-f(u,v)\) (the unused headroom), and a *reverse* arc \(v\to u\) with
+residual capacity \(f(u,v)\) (the flow we could cancel by sending some back).
+An *augmenting path* is any path from \(s\) to \(t\) through arcs of strictly
+positive residual capacity. Its *bottleneck* is the smallest residual along it;
+pushing that much -- adding it to forward arcs, subtracting it from the paired
+reverse arcs -- yields a new feasible flow of strictly greater value. The
+Ford-Fulkerson method simply repeats this until no augmenting path remains.
+
+Keeping the forward and reverse residual as a /paired/ arc per input edge (not
+merging shared endpoints) makes *parallel* edges (two \(u\to v\) pipes) and
+*antiparallel* edges (\(u\to v\) alongside \(v\to u\)) behave correctly, and
+lets the per-edge flow be read back afterwards as
+\(f(u,v) = c(u,v) - \text{residual of the forward arc}\).
+
+* Max-flow min-cut, and why BFS
+
+An *s-t cut* \((S,T)\) splits the vertices with \(s\in S\) and \(t\in T\); its
+*capacity* is the total capacity of edges going from \(S\) to \(T\). Every flow
+value is at most every cut capacity (all the flow must cross the cut), so
+\(\max\text{-flow} \le \min\text{-cut}\). The *max-flow min-cut theorem*
+(Ford-Fulkerson 1956) says these are equal: when no augmenting path remains,
+let \(S\) be the vertices still reachable from \(s\) in \(G_f\). Then \(t\notin
+S\), every edge from \(S\) to \(T\) is saturated (\(f=c\)) and every edge from
+\(T\) to \(S\) is empty (\(f=0\)), so the flow across \((S,T)\) equals the cut's
+capacity -- and, being a flow, cannot be beaten. Hence that flow is maximum and
+that cut is minimum. This is why =edmonds_karp= can hand back a minimum cut for
+free: it is exactly the residual-reachable set at termination.
+
+/Generic/ Ford-Fulkerson leaves the choice of augmenting path open, and that
+choice matters. With integer capacities it terminates but may take up to the
+flow value \(f^\*\) augmentations -- pseudo-polynomial, exponential in the input
+size; a two-path gadget with capacities \(10^9\) and a middle edge of \(1\) can
+be forced into \(2\cdot 10^9\) augmentations. With /irrational/ capacities it
+can fail to terminate at all, converging to a value strictly below the true
+maximum. *Edmonds-Karp* removes the pathology by always augmenting along a
+/shortest/ augmenting path (fewest arcs), which BFS finds. One can show the BFS
+distance from \(s\) to every vertex never decreases across augmentations, and
+each edge can be the saturated bottleneck ("critical") only \(O(V)\) times;
+there are thus \(O(VE)\) augmentations, each an \(O(E)\) breadth-first search,
+for an \(O(VE^2)\) bound that depends on the graph's /size/ alone -- never on
+the magnitude of the capacities.
+
+#+begin_example
+EDMONDS-KARP(n, edges, s, t):
+  build residual graph G_f:
+      for each input edge (u, v, c):
+          add a forward arc u->v with residual c
+          add a reverse arc v->u with residual 0     # paired with the forward arc
+  flow <- 0
+  loop:
+      # BFS for a SHORTEST (fewest-arc) augmenting path in G_f
+      parent[*] <- none;  parent[s] <- s
+      Q <- queue holding s
+      while Q not empty and t not yet reached:
+          u <- pop(Q)
+          for each residual arc a = (u -> w) with residual(a) > 0 and parent[w] == none:
+              parent[w] <- a;  push(Q, w)
+      if parent[t] == none:                          # no augmenting path remains
+          break                                      #   -> current flow is maximum
+      b <- min residual(a) over the arcs a on the s->t path   # bottleneck
+      for each arc a on the path:
+          residual(a)       <- residual(a) - b       # consume forward headroom
+          residual(rev(a))  <- residual(rev(a)) + b  # open up the cancelling arc
+      flow <- flow + b
+
+  for each input edge i = (u, v, c):
+      edge_flow[i] <- c - residual(forward arc of edge i)
+  min_cut_source_side <- { vertices reachable from s in the final G_f }
+  return (flow, edge_flow, min_cut_source_side)
+#+end_example
+
+* Example: the CLRS network
+
+We run the canonical six-vertex network from Cormen, Leiserson, Rivest & Stein
+(/Introduction to Algorithms/, Fig. 26.1): source \(s=0\), sink \(t=5\), and
+intermediate vertices \(v_1,\dots,v_4\). By hand its maximum flow is \(23\). To
+see a matching cut, take \(S=\{s,v_1,v_2,v_4\}\); the only edges leaving \(S\)
+are \(v_1\!\to\!v_3\) (12), \(v_4\!\to\!v_3\) (7) and \(v_4\!\to\!t\) (4),
+totalling \(12+7+4=23\). Since some flow of value \(23\) exists and some cut has
+capacity \(23\), both are optimal -- and the two witnesses pin each other down.
+The program below confirms the value, prints the per-edge flows and the cut it
+recovers, and checks the crossing capacity equals the flow.
+
+#+name: ek-run
+#+begin_src c++ :eval no
+    // s=0, v1=1, v2=2, v3=3, v4=4, t=5
+    const std::size_t n = 6, source = 0, sink = 5;
+    const std::vector<std::tuple<std::size_t, std::size_t, double>> edges = {
+        {0, 1, 16}, // s  -> v1
+        {0, 2, 13}, // s  -> v2
+        {1, 2, 10}, // v1 -> v2
+        {2, 1, 4},  // v2 -> v1
+        {1, 3, 12}, // v1 -> v3
+        {3, 2, 9},  // v3 -> v2
+        {2, 4, 14}, // v2 -> v4
+        {4, 3, 7},  // v4 -> v3
+        {3, 5, 20}, // v3 -> t
+        {4, 5, 4},  // v4 -> t
+    };
+    const char* nm[] = {"s ", "v1", "v2", "v3", "v4", "t "};
+    auto name = [](std::size_t v) {
+        const char* n2[] = {"s", "v1", "v2", "v3", "v4", "t"};
+        return std::string(n2[v]);
+    };
+    auto R = [](double x) { return std::llround(x); };
+
+    std::cout << "=== CLRS max-flow network: 6 vertices, source s=0, sink t=5 ===\n";
+    std::cout << "edges (from -> to : capacity):\n";
+    for (const auto& [u, v, c] : edges)
+        std::cout << "  " << nm[u] << " -> " << nm[v] << " : " << R(c) << "\n";
+
+    const auto mf = edmonds_karp(n, edges, source, sink);
+
+    std::cout << "\nmaximum flow value: " << R(mf.max_flow) << "\n";
+
+    std::cout << "\nflow / capacity on each edge:\n";
+    for (std::size_t i = 0; i < edges.size(); ++i) {
+        const auto& [u, v, c] = edges[i];
+        const bool sat = std::llround(mf.edge_flow[i]) == R(c);
+        std::cout << "  " << nm[u] << " -> " << nm[v] << " : " << R(mf.edge_flow[i]) << " / " << R(c)
+                  << (sat ? "  (saturated)" : "") << "\n";
+    }
+
+    std::vector<char> in_s(n, 0);
+    for (const std::size_t v : mf.min_cut_source_side) in_s[v] = 1;
+
+    std::cout << "\nminimum cut:\n";
+    std::cout << "  source side S = {";
+    for (std::size_t k = 0; k < mf.min_cut_source_side.size(); ++k)
+        std::cout << (k ? ", " : " ") << name(mf.min_cut_source_side[k]);
+    std::cout << " }\n";
+    std::cout << "  sink side   T = {";
+    bool first = true;
+    for (std::size_t v = 0; v < n; ++v)
+        if (!in_s[v]) { std::cout << (first ? " " : ", ") << name(v); first = false; }
+    std::cout << " }\n";
+
+    std::cout << "  edges crossing S -> T (the cut):\n";
+    double cut_cap = 0.0;
+    for (const auto& [u, v, c] : edges)
+        if (in_s[u] && !in_s[v]) {
+            std::cout << "    " << nm[u] << " -> " << nm[v] << " : " << R(c) << "\n";
+            cut_cap += c;
+        }
+    std::cout << "  cut capacity = " << R(cut_cap) << "  ==  max flow = " << R(mf.max_flow)
+              << "   (max-flow min-cut verified)\n";
+
+    // ---- Draw the network: nodes by cut side, edges labeled flow/capacity, cut edges in red ----
+    const std::vector<double> px = {0.0, 1.3, 1.3, 2.7, 2.7, 4.0};
+    const std::vector<double> py = {1.0, 2.0, 0.0, 2.0, 0.0, 1.0};
+    auto plot = RPlot::create();
+    for (std::size_t i = 0; i < edges.size(); ++i) {
+        const auto& [u, v, c] = edges[i];
+        const bool cut = in_s[u] && !in_s[v];
+        const RGB col = cut ? RGB{220, 38, 38} : RGB{150, 160, 175};
+        plot.lines({px[u], px[v]}, {py[u], py[v]}, "", col, cut ? 3.0 : 1.5);
+        const double dx = px[v] - px[u], dy = py[v] - py[u];
+        const double len = std::sqrt(dx * dx + dy * dy);
+        const double nx = -dy / len, ny = dx / len; // unit normal, oriented by edge direction
+        plot.text(0.5 * (px[u] + px[v]) + 0.14 * nx, 0.5 * (py[u] + py[v]) + 0.14 * ny,
+                  std::to_string(R(mf.edge_flow[i])) + "/" + std::to_string(R(c)),
+                  cut ? RGB{220, 38, 38} : RGB{80, 90, 105}, 11.0);
+    }
+    std::vector<double> sx, sy, tx, ty;
+    for (std::size_t v = 0; v < n; ++v)
+        if (in_s[v]) { sx.push_back(px[v]); sy.push_back(py[v]); }
+        else { tx.push_back(px[v]); ty.push_back(py[v]); }
+    plot.points(sx, sy, "source side S", {22, 163, 74}, 16.0);
+    plot.points(tx, ty, "sink side T", {217, 119, 6}, 16.0);
+    const char* lab[] = {"s", "v1", "v2", "v3", "v4", "t"};
+    for (std::size_t v = 0; v < n; ++v) plot.text(px[v], py[v] + 0.24, lab[v], {17, 24, 39}, 14.0);
+    plot.title("CLRS max-flow network: flow/capacity per edge; min-cut edges in red")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.x_limits(-0.4, 4.4);
+    plot.y_limits(-0.7, 2.7);
+    plot.hide_axes(true);
+    plot.save_svg("build/org/edmonds_karp_flow.svg");
+    std::cout << "\nwrote edmonds_karp_flow.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/edmonds_karp_analysis.cpp <<'CPP'
+<<ek-includes>>
+
+int main() {
+<<ek-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/edmonds_karp_analysis.cpp -o build/org/edmonds_karp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/edmonds_karp_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== CLRS max-flow network: 6 vertices, source s=0, sink t=5 ===
+edges (from -> to : capacity):
+  s  -> v1 : 16
+  s  -> v2 : 13
+  v1 -> v2 : 10
+  v2 -> v1 : 4
+  v1 -> v3 : 12
+  v3 -> v2 : 9
+  v2 -> v4 : 14
+  v4 -> v3 : 7
+  v3 -> t  : 20
+  v4 -> t  : 4
+
+maximum flow value: 23
+
+flow / capacity on each edge:
+  s  -> v1 : 12 / 16
+  s  -> v2 : 11 / 13
+  v1 -> v2 : 0 / 10
+  v2 -> v1 : 0 / 4
+  v1 -> v3 : 12 / 12  (saturated)
+  v3 -> v2 : 0 / 9
+  v2 -> v4 : 11 / 14
+  v4 -> v3 : 7 / 7  (saturated)
+  v3 -> t  : 19 / 20
+  v4 -> t  : 4 / 4  (saturated)
+
+minimum cut:
+  source side S = { s, v1, v2, v4 }
+  sink side   T = { v3, t }
+  edges crossing S -> T (the cut):
+    v1 -> v3 : 12
+    v4 -> v3 : 7
+    v4 -> t  : 4
+  cut capacity = 23  ==  max flow = 23   (max-flow min-cut verified)
+#+end_example
+
+The algorithm pushes \(23\) units from \(s\) to \(t\). Reading the flows, the
+source ships \(12\) toward \(v_1\) and \(11\) toward \(v_2\); every unit is
+conserved at the interior vertices (into \(v_4\): \(11\) from \(v_2\), out:
+\(7+4\); into \(v_3\): \(12+7\), out: \(19\)) and arrives at the sink as
+\(19+4=23\). The three edges the algorithm leaves saturated -- \(v_1\!\to\!v_3\),
+\(v_4\!\to\!v_3\), \(v_4\!\to\!t\) -- are precisely the edges of the minimum
+cut, and their capacities \(12+7+4\) sum to the flow value. That equality is not
+a coincidence of this instance but the max-flow min-cut theorem made concrete:
+the flow is maximum because a cut of equal capacity blocks it, and the cut is
+minimum because a flow of equal value saturates it.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/edmonds_karp_flow.svg]]
+
+Green vertices are the source side \(S=\{s,v_1,v_2,v_4\}\) and orange the sink
+side \(T=\{v_3,t\}\); each edge is labeled with its flow and capacity. The three
+red edges cross from \(S\) to \(T\) and are exactly the saturated bottleneck --
+cut them and no flow reaches \(t\). The picture is a proof you can see: the
+narrowest place in the network, of total width \(23\), is what the maximum flow
+fills to the brim.

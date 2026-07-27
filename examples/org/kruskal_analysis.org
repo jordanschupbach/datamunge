@@ -1,0 +1,282 @@
+#+title: Kruskal's Algorithm: The Minimum Spanning Tree by Greedy Cycle Avoidance
+#+subtitle: A literate C++ study of the MST problem, the cut property, and union-find with =datamunge='s =algorithms::kruskal=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a weighted network -- power lines between towns, wires on a chip, roads
+to be paved -- what is the cheapest set of links that keeps everything
+connected? This is the *minimum spanning tree* (MST) problem, and Kruskal
+(1956) answered it with a single greedy rule: sort every edge from cheapest to
+dearest, and add each one that joins two so-far-separate pieces, skipping any
+that would merely close a loop. Nothing about that rule is obviously optimal --
+why should never-look-back greed find the global best? -- yet it always does,
+and the reason is the *cut property*: the lightest edge crossing any division of
+the vertices belongs to some MST. This report implements Kruskal in
+=datamunge='s C++ =algorithms::kruskal= and presents it as a literate program:
+every number and figure below is produced by a single compiled binary. We
+define spanning trees, prove the greedy rule correct via the cut property,
+explain the *union-find* structure that makes the cycle test almost free, give
+pseudocode and the O(E log E) complexity, and work a deterministic six-node
+graph with distinct weights -- whose unique MST of weight 20 the code recovers
+exactly -- drawing the tree over the full graph.
+#+end_abstract
+
+* The minimum spanning tree problem
+
+Take a connected, undirected graph on vertices \(\{0,\dots,n-1\}\) whose edges
+each carry a real *weight* (a length, cost, or resistance). A *spanning tree*
+is a subset of the edges that is *connected* (every vertex reachable from every
+other) and *acyclic* (no loops); equivalently, it touches all \(n\) vertices
+using exactly \(n-1\) edges. Its *weight* is the sum of its edge weights, and a
+*minimum spanning tree* is a spanning tree of least total weight. When the graph
+is /disconnected/ no single tree can span it; the natural analogue is a *minimum
+spanning forest* -- a minimum spanning tree of each connected component, and the
+cheapest acyclic connecting subgraph overall.
+
+=datamunge= represents the graph as a vertex count =n= plus an edge list of
+=(u, v, weight)= tuples, and returns a =MinimumSpanningTree= holding the chosen
+=edges= (in acceptance order), their =total_weight=, and a flag =is_connected=
+that is false exactly when the input was disconnected and =edges= is therefore a
+spanning /forest/.
+
+#+name: kruskal-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The greedy rule and why it works
+
+Kruskal's algorithm is greed at its purest. Sort all edges into non-decreasing
+weight order and walk the sorted list once. Maintain a partition of the vertices
+into *components* (initially each vertex alone). For the current edge \((u,v)\):
+if \(u\) and \(v\) are already in the same component, adding it would create a
+cycle -- *skip it*; otherwise it links two separate components into one --
+*accept it*. Stop once \(n-1\) edges have been accepted (a full tree) or the
+edges run out (a forest, if the graph was disconnected).
+
+** The cut property
+
+The correctness of "add the cheapest safe edge" rests on one lemma. A *cut* is a
+partition of the vertices into two non-empty sides \((S, V\setminus S)\); an edge
+*crosses* the cut if its endpoints fall on opposite sides.
+
+*Cut property.* /For any cut, a minimum-weight edge crossing it lies in some
+minimum spanning tree./ (With distinct weights, the lightest crossing edge lies
+in /the/ unique MST.)
+
+/Proof (exchange argument)./ Let \(e\) be a lightest edge crossing the cut, and
+let \(T\) be any MST. If \(e \in T\) we are done. Otherwise \(T \cup \{e\}\)
+contains a cycle, and that cycle must cross the cut a second time on some edge
+\(f\). Swapping them, \(T' = T - \{f\} + \{e\}\) is again a spanning tree, and
+since \(e\) is a lightest crossing edge \(w(e) \le w(f)\), so
+\(w(T') \le w(T)\). As \(T\) was minimum, \(w(T') = w(T)\): \(T'\) is also an MST,
+and it contains \(e\). \(\qquad\blacksquare\)
+
+Now Kruskal's every acceptance is justified: when it accepts \((u,v)\), consider
+the cut separating \(u\)'s current component from the rest. No edge inside that
+component crosses this cut, and every edge Kruskal already examined and *skipped*
+was internal to some single component (that is why it was skipped). So among all
+edges crossing this cut, \((u,v)\) -- the current, and therefore lightest
+not-yet-examined -- is a minimum-weight crossing edge, hence safe by the cut
+property. Every accepted edge is safe, so the final tree is minimum.
+
+** Union-find: the cycle test
+
+The whole algorithm hinges on one question asked once per edge: /are \(u\) and
+\(v\) already in the same component?/ A *disjoint-set* (union-find) structure
+answers it in almost constant time. It stores each component as a rooted tree;
+=find(x)= climbs to the root (a component id) and =unite(a,b)= links two roots.
+Two optimizations make it near-linear overall: *path compression* (=find=
+re-points nodes directly at the root as it climbs) and *union by rank* (always
+hang the shorter tree under the taller). Together they give an amortized cost of
+\(O(\alpha(n))\) per operation, where \(\alpha\) is the inverse Ackermann
+function -- at most 4 for any conceivable \(n\). The edge is a cycle iff
+=find(u) == find(v)=; otherwise =unite= merges the two and the edge is accepted.
+
+#+begin_example
+KRUSKAL(n, edges):
+  sort edges ascending by weight
+  parent[v] <- v      for each vertex v         # union-find: each vertex its own component
+  rank[v]   <- 0      for each vertex v
+  mst <- empty;  total <- 0
+
+  FIND(x):                                       # representative (root) of x's component
+      while parent[x] != x:
+          parent[x] <- parent[parent[x]]         # path compression (halving)
+          x <- parent[x]
+      return x
+
+  UNITE(a, b):                                   # returns true iff a and b were in different sets
+      ra <- FIND(a);  rb <- FIND(b)
+      if ra == rb: return false
+      if rank[ra] < rank[rb]: swap(ra, rb)       # union by rank
+      parent[rb] <- ra
+      if rank[ra] == rank[rb]: rank[ra] <- rank[ra] + 1
+      return true
+
+  for (u, v, w) in sorted edges:
+      if UNITE(u, v):                            # joins two components -> no cycle -> safe
+          append (u, v, w) to mst;  total <- total + w
+          if size(mst) == n - 1: break           # a spanning tree is complete
+
+  return (mst, total, size(mst) == n - 1)        # last flag false => disconnected => forest
+#+end_example
+
+*Complexity.* Sorting the \(E\) edges costs \(O(E \log E)\). The scan performs
+\(O(E)\) union-find operations at \(O(\alpha(n))\) amortized each, i.e.
+\(O(E\,\alpha(n))\), which is dominated by the sort. The total is *O(E log E)*
+(equivalently \(O(E \log V)\), since \(E < V^2\)).
+
+* Example: a six-node network with distinct weights
+
+We take six vertices at fixed 2D positions and nine weighted edges, choosing
+*all-distinct* integer weights so the minimum spanning tree is *unique*. Working
+it by hand, we sort the edges and accept greedily:
+
+- \(w=2\): \((4,5)\) -- joins \(\{4\},\{5\}\). *accept*
+- \(w=3\): \((3,4)\) -- joins \(\{3\},\{4,5\}\). *accept*
+- \(w=4\): \((2,5)\) -- joins \(\{2\},\{3,4,5\}\). *accept*
+- \(w=5\): \((0,3)\) -- joins \(\{0\},\{2,3,4,5\}\). *accept*
+- \(w=6\): \((1,4)\) -- joins \(\{1\},\{0,2,3,4,5\}\). *accept* (5 edges: tree complete)
+- \(w=7,8,9,10\): \((0,1),(1,2),(1,3),(2,4)\) -- all endpoints already joined. *skip*
+
+The MST is \(\{(4,5),(3,4),(2,5),(0,3),(1,4)\}\) with total weight
+\(2+3+4+5+6 = 20\). The algorithm reproduces this exactly and we draw the tree
+(thick blue) over the full graph (thin grey).
+
+#+name: kruskal-run
+#+begin_src c++ :eval no
+    const std::size_t n = 6;
+    // Undirected weighted graph as (u, v, weight). Distinct weights => the MST is unique.
+    const std::vector<std::tuple<std::size_t, std::size_t, double>> edges = {
+        {0, 1, 7.0},  {0, 3, 5.0}, {1, 2, 8.0}, {1, 3, 9.0}, {1, 4, 6.0},
+        {2, 4, 10.0}, {2, 5, 4.0}, {3, 4, 3.0}, {4, 5, 2.0}};
+
+    // Fixed 2D coordinates for drawing (index -> position).
+    const std::vector<double> px = {0.0, 2.0, 4.0, 1.0, 3.0, 5.0};
+    const std::vector<double> py = {2.0, 3.0, 2.5, 0.5, 0.5, 1.0};
+
+    std::cout << "=== Kruskal's minimum spanning tree: 6 nodes, 9 edges ===\n";
+    std::cout << "Graph edges (u -- v : weight):\n";
+    for (const auto& [u, v, w] : edges)
+        std::cout << "  " << u << " -- " << v << " : " << w << "\n";
+
+    const auto mst = kruskal(n, edges);
+
+    std::cout << "\nMST edges (in the order Kruskal adds them):\n";
+    for (const auto& [u, v, w] : mst.edges)
+        std::cout << "  " << u << " -- " << v << " : " << w << "\n";
+    std::cout << "\nTotal weight : " << mst.total_weight << "\n";
+    std::cout << "Connected    : " << (mst.is_connected ? "yes" : "no") << "\n";
+    std::cout << "Edges in tree: " << mst.edges.size() << " (n - 1 = " << n - 1 << ")\n";
+
+    // Draw: every graph edge thin grey, then the MST edges thick blue on top; nodes as labeled dots.
+    auto plot = RPlot::create();
+    for (const auto& [u, v, w] : edges) {
+        (void)w;
+        std::vector<double> ex = {px[u], px[v]};
+        std::vector<double> ey = {py[u], py[v]};
+        plot.lines(ex, ey, "", {203, 213, 225}, 1.0); // thin grey: a graph edge
+    }
+    for (const auto& [u, v, w] : mst.edges) {
+        (void)w;
+        std::vector<double> ex = {px[u], px[v]};
+        std::vector<double> ey = {py[u], py[v]};
+        plot.lines(ex, ey, "", {37, 99, 235}, 4.0); // thick blue: a tree edge
+    }
+    plot.points(px, py, "nodes", {30, 41, 59}, 11.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(px[i] + 0.12, py[i] + 0.14, std::to_string(i), {17, 24, 39}, 15.0);
+    plot.title("Kruskal MST (thick blue = tree edge, thin grey = graph edge)")
+        .x_label("x")
+        .y_label("y")
+        .background({250, 250, 252});
+    plot.x_limits(-0.4, 5.6);
+    plot.y_limits(-0.4, 3.6);
+    plot.save_svg("build/org/kruskal_mst.svg");
+    std::cout << "\nwrote kruskal_mst.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kruskal_analysis.cpp <<'CPP'
+<<kruskal-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(1);
+<<kruskal-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kruskal_analysis.cpp -o build/org/kruskal_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kruskal_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Kruskal's minimum spanning tree: 6 nodes, 9 edges ===
+Graph edges (u -- v : weight):
+  0 -- 1 : 7.0
+  0 -- 3 : 5.0
+  1 -- 2 : 8.0
+  1 -- 3 : 9.0
+  1 -- 4 : 6.0
+  2 -- 4 : 10.0
+  2 -- 5 : 4.0
+  3 -- 4 : 3.0
+  4 -- 5 : 2.0
+
+MST edges (in the order Kruskal adds them):
+  4 -- 5 : 2.0
+  3 -- 4 : 3.0
+  2 -- 5 : 4.0
+  0 -- 3 : 5.0
+  1 -- 4 : 6.0
+
+Total weight : 20.0
+Connected    : yes
+Edges in tree: 5 (n - 1 = 5)
+
+wrote kruskal_mst.svg
+#+end_example
+
+The five accepted edges are exactly the ones the hand computation predicted, in
+strictly ascending weight order -- \(2,3,4,5,6\) -- summing to a total weight of
+\(20\), and the four heaviest edges (\(7,8,9,10\)) are all correctly rejected as
+cycle-closing. Because the weights are distinct this tree is the /unique/ MST:
+no other spanning tree of this graph is as cheap. Five edges over six vertices
+confirms the spanning-tree edge count \(n-1\), and =is_connected= is true, so the
+result is a genuine tree rather than a forest.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/kruskal_mst.svg]]
+
+Every node sits at its fixed position; the thin grey segments are all nine graph
+edges, and the five thick blue segments are the minimum spanning tree. Reading
+the figure, the blue edges reach all six vertices without ever closing a loop --
+the visual signature of a tree -- while the graph's heavier chords (the grey
+edges left uncovered) are precisely those Kruskal skipped once their endpoints
+were already linked. This is the same object that lays out cheapest connecting
+networks in circuit design, clustering (single-linkage is Kruskal stopped early),
+and approximation algorithms for the traveling salesman; the union-find cycle
+test is what lets Kruskal build it in O(E log E).

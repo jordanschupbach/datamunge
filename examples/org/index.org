@@ -383,6 +383,36 @@ We implement Tarjan's off-line lowest-common-ancestors algorithm (=algorithms::t
 
 We implement greedy proper vertex coloring with the Welsh-Powell ordering (=algorithms::greedy_coloring=, plus =is_proper_coloring=) and report it as a literate program. We define proper colorings, the chromatic number chi(G) and its NP-hardness, give the degree-descending greedy rule with pseudocode and a proof it never exceeds Delta+1 colors, then color the 5-cycle with three colors and K4 with four (where the bound is tight).
 
+** [[./dijkstra_analysis.html][Dijkstra's Algorithm: Single-Source Shortest Paths by Settling the Nearest Frontier]] ([[./dijkstra_analysis.pdf][PDF]])
+/A literate C++ study of non-negative-weight shortest paths and the greedy settling invariant using datamunge/
+
+We implement Dijkstra's single-source shortest-path algorithm (=algorithms::dijkstra=, plus =reconstruct_path=) and report it as a literate program. We define the shortest-path problem, prove the "settle the nearest frontier vertex" invariant and show exactly why a negative edge would break it, give the relaxation step and binary-heap pseudocode with lazy deletion, and establish the O((V+E) log V) bound; a deterministic six-city road network is solved from a source, with the fastest route reconstructed and the shortest-path tree drawn over the map.
+
+** [[./bellman_ford_analysis.html][The Bellman-Ford Algorithm: Shortest Paths with Negative Weights]] ([[./bellman_ford_analysis.pdf][PDF]])
+/A literate C++ study of single-source shortest paths, negative edges, and negative-cycle detection using datamunge/
+
+We implement the Bellman-Ford single-source shortest-path algorithm (=algorithms::bellman_ford=) and report it as a literate program. We frame shortest paths as a dynamic program over the number of edges used, show why n-1 rounds of relaxing every edge converge when no negative cycle exists and how one more round detects a reachable one, and give the O(VE) method with pseudocode. A five-vertex graph with negative edges recovers the classic distances (0, 2, 4, 7, -2), while a graph whose cycle sums to -2 is correctly flagged as having no shortest paths.
+
+** [[./floyd_warshall_analysis.html][The Floyd-Warshall Algorithm: All-Pairs Shortest Paths by Dynamic Programming]] ([[./floyd_warshall_analysis.pdf][PDF]])
+/A literate C++ study of the all-pairs shortest-path problem, negative weights, and cycle detection using datamunge/
+
+We implement the Floyd-Warshall algorithm (=algorithms::floyd_warshall=, plus =reconstruct_path=) and report it as a literate program. We derive the dynamic-programming recurrence over the set of intermediate vertices a path may use, argue why the in-place O(V^3) update is correct, and explain how a negative diagonal entry detects a negative-weight cycle; a five-vertex graph with one negative edge has its entire 5x5 shortest-path matrix computed by hand and reproduced exactly, and a cheapest route ignoring a heavier direct edge is reconstructed from the next-hop matrix.
+
+** [[./kruskal_analysis.html][Kruskal's Algorithm: The Minimum Spanning Tree by Greedy Cycle Avoidance]] ([[./kruskal_analysis.pdf][PDF]])
+/A literate C++ study of the MST problem, the cut property, and union-find using datamunge/
+
+We implement Kruskal's minimum-spanning-tree algorithm (=algorithms::kruskal=) and report it as a literate program. We define spanning trees and forests, prove the greedy "add the cheapest safe edge" rule correct via the cut property, explain the path-compressed union-by-rank union-find that makes the cycle test near-constant, and give the O(E log E) pseudocode; a six-node graph with distinct weights recovers its unique MST of total weight 20, drawn as a thick tree over the thin-grey graph.
+
+** [[./prim_analysis.html][Prim's Algorithm: Minimum Spanning Trees by Growing One Tree]] ([[./prim_analysis.pdf][PDF]])
+/A literate C++ study of the minimum spanning tree problem and the cut property using datamunge/
+
+We implement Prim's minimum-spanning-tree algorithm (=algorithms::prim=) and report it as a literate program. We define spanning trees and cuts, prove the cut property that makes the greedy "cheapest edge leaving the tree" choice safe, give the binary-heap (lazy-deletion) frontier with pseudocode and its O(E log V) analysis, and contrast Prim (grow one tree) with Kruskal (sort all edges); a six-vertex graph with distinct weights is grown edge by edge to total weight 15, cross-checked against an independent Kruskal reference.
+
+** [[./edmonds_karp_analysis.html][The Edmonds-Karp Algorithm: Maximum Flow by Shortest Augmenting Paths]] ([[./edmonds_karp_analysis.pdf][PDF]])
+/A literate C++ study of network flow and the max-flow min-cut theorem using datamunge/
+
+We implement Edmonds-Karp -- the Ford-Fulkerson method augmenting along BFS shortest paths (=algorithms::edmonds_karp=) -- and report it as a literate program. We define flow networks, feasible flows, residual graphs, and augmenting paths, state the max-flow min-cut theorem, and explain why shortest augmenting paths give the O(VE^2) bound where generic Ford-Fulkerson can stall. The classic six-node CLRS network is worked by hand: maximum flow 23, minimum cut across three saturated edges 12 + 7 + 4 = 23, both recovered by the algorithm.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])
