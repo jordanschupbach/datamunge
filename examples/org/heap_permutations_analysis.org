@@ -1,0 +1,164 @@
+#+title: Heap's Algorithm: All Permutations by Single Swaps
+#+subtitle: A literate C++ study of minimal-swap permutation generation with =datamunge='s =algorithms::heap_permutations=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To visit /every/ ordering of \(n\) items, the cheapest possible schedule changes
+as little as possible between consecutive orderings. *Heap's algorithm*
+(B. R. Heap, 1963) generates all \(n!\) permutations using exactly \(n!-1\) swaps
+-- one single swap of two elements between each permutation and the next, the
+theoretical minimum. This report implements it in =datamunge='s C++
+=algorithms::heap_permutations=, explains the parity rule that drives its swaps,
+lists all 24 permutations of \(\{1,2,3,4\}\), and plots the value in each position
+as the permutation evolves.
+#+end_abstract
+
+* The recursive idea
+
+To generate all permutations of the first \(k\) elements (with the rest fixed),
+Heap's algorithm generates all permutations of the first \(k-1\), then performs a
+single swap to bring a new element into position \(k-1\), and repeats -- \(k\)
+blocks in all. The swap partner depends on the parity of \(k\):
+
+- if \(k\) is *even*, swap element \(i\) (the block counter) with element \(k-1\);
+- if \(k\) is *odd*, always swap element \(0\) with element \(k-1\).
+
+This parity rule is what guarantees that after generating the permutations of the
+\((k-1)\)-prefix, one swap suffices to set up the next block -- and that no
+permutation is ever repeated. The result is \(n!\) permutations produced with
+\(n!-1\) swaps total, each consecutive pair differing by exactly one
+transposition (not necessarily of adjacent positions).
+
+#+name: hp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/permutations.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GENERATE(k, A):                      # emit all permutations of A[0..k-1]
+  if k == 1: output(A); return
+  for i in 0 .. k-2:
+      GENERATE(k-1, A)
+      if k is even: swap(A[i],   A[k-1])
+      else:         swap(A[0],   A[k-1])
+  GENERATE(k-1, A)
+
+HEAP-PERMUTATIONS(A): GENERATE(length(A), A)
+#+end_example
+
+* Worked example: all permutations of {1, 2, 3, 4}
+
+There are \(4!=24\) of them. The program lists them in Heap's order and confirms
+that consecutive permutations differ in exactly two positions -- a single swap.
+
+#+name: hp-run
+#+begin_src c++ :eval no
+    const std::vector<int> items = {1, 2, 3, 4};
+    const auto perms = heap_permutations(items);
+
+    std::cout << "=== Heap's algorithm: " << perms.size() << " permutations of {1,2,3,4} ===\n";
+    for (std::size_t s = 0; s < perms.size(); ++s) {
+        std::cout << "  " << (s + 1 < 10 ? " " : "") << s + 1 << ": ";
+        for (int x : perms[s]) std::cout << x;
+        if (s > 0) {
+            int diffs = 0;
+            for (std::size_t p = 0; p < items.size(); ++p) diffs += (perms[s][p] != perms[s - 1][p]);
+            std::cout << "   (" << diffs << " positions changed)";
+        }
+        std::cout << "\n";
+    }
+
+    // Plot: value in each position (colour) as the permutation index advances downward.
+    auto plot = RPlot::create();
+    const std::vector<RGB> palette = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4}};
+    for (int v = 1; v <= static_cast<int>(items.size()); ++v) {
+        std::vector<double> xs, ys;
+        for (std::size_t s = 0; s < perms.size(); ++s)
+            for (std::size_t p = 0; p < perms[s].size(); ++p)
+                if (perms[s][p] == v) { xs.push_back(static_cast<double>(p)); ys.push_back(-static_cast<double>(s)); }
+        plot.points(xs, ys, "value " + std::to_string(v), palette[static_cast<std::size_t>(v - 1)], 9.0);
+    }
+    plot.legend({"1", "2", "3", "4"}, palette);
+    plot.title("Heap's order: value at each position over 24 permutations")
+        .x_label("position").y_label("permutation index (downward)").background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(items.size()) - 0.5);
+    plot.save_svg("build/org/heap_permutations.svg");
+    std::cout << "\nwrote heap_permutations.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/heap_permutations_analysis.cpp <<'CPP'
+<<hp-includes>>
+
+int main() {
+<<hp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/heap_permutations_analysis.cpp -o build/org/heap_permutations_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/heap_permutations_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Heap's algorithm: 24 permutations of {1,2,3,4} ===
+   1: 1234
+   2: 2134   (2 positions changed)
+   3: 3124   (2 positions changed)
+   4: 1324   (2 positions changed)
+   5: 2314   (2 positions changed)
+   6: 3214   (2 positions changed)
+   7: 4213   (2 positions changed)
+   8: 2413   (2 positions changed)
+   9: 1423   (2 positions changed)
+  10: 4123   (2 positions changed)
+  11: 2143   (2 positions changed)
+  12: 1243   (2 positions changed)
+  13: 1342   (2 positions changed)
+  14: 3142   (2 positions changed)
+  15: 4132   (2 positions changed)
+  16: 1432   (2 positions changed)
+  17: 3412   (2 positions changed)
+  18: 4312   (2 positions changed)
+  19: 4321   (2 positions changed)
+  20: 3421   (2 positions changed)
+  21: 2431   (2 positions changed)
+  22: 4231   (2 positions changed)
+  23: 3241   (2 positions changed)
+  24: 2341   (2 positions changed)
+
+wrote heap_permutations.svg
+#+end_example
+
+All 24 permutations appear exactly once, and every consecutive pair differs in
+exactly two positions -- confirming that Heap's algorithm advances by a single
+swap each step, the \(n!-1\) swaps that make it optimal in element movement.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/heap_permutations.svg]]
+
+Each row is a permutation (index increasing downward); the coloured dot in each
+column shows which value occupies that position. Reading down any column, the
+colours change only where that step's swap touched the column -- and because Heap's
+swaps are not restricted to adjacent positions, the changes can jump across the
+row, in contrast to the strictly local moves of the Steinhaus-Johnson-Trotter
+order.

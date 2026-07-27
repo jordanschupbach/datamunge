@@ -1,0 +1,164 @@
+#+title: The Steinhaus-Johnson-Trotter Algorithm: A Gray Code for Permutations
+#+subtitle: A literate C++ study of adjacent-transposition permutation generation with =datamunge='s =algorithms::sjt_permutations=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Heap's algorithm lists all permutations with one swap between neighbours, but that
+swap can be of any two positions. The *Steinhaus-Johnson-Trotter* (SJT) algorithm
+does something stronger: consecutive permutations differ by a single transposition
+of two /adjacent/ positions. It is a *Gray code* for permutations -- the ordering
+in which physical bell-ringers change a peal, and in which the largest element
+sweeps back and forth like a shuttle. This report implements it in =datamunge='s
+C++ =algorithms::sjt_permutations=, explains the "mobile element" rule, lists all
+24 permutations of \(\{1,2,3,4\}\), and plots each value's position over time to
+reveal the characteristic weaving of adjacent swaps.
+#+end_abstract
+
+* Mobile elements and directions
+
+Give every element a *direction*, initially pointing left. An element is *mobile*
+if the neighbour it points at exists and is smaller than it. One step of SJT is:
+
+1. find the *largest mobile element* \(m\);
+2. swap \(m\) with the (adjacent) neighbour it points at;
+3. reverse the direction of every element /greater/ than \(m\).
+
+Repeat until no element is mobile. Because step 2 only ever swaps adjacent
+positions, consecutive permutations differ by a single adjacent transposition.
+The direction-reversal in step 3 is what lets the largest elements repeatedly
+traverse the whole array: the biggest element marches to one wall, a smaller one
+ticks over, and the biggest marches back -- a permutation odometer. The process
+emits all \(n!\) permutations.
+
+#+name: sjt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/permutations.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SJT(n):
+  perm <- [1, 2, ..., n];  dir[v] <- LEFT for every value v
+  output(perm)
+  loop:
+      m <- largest value whose direction points at a smaller neighbour   # "mobile"
+      if no such value: stop
+      swap m with that neighbour
+      for every value v > m: reverse dir[v]
+      output(perm)
+#+end_example
+
+* Worked example: all permutations of {1, 2, 3, 4}
+
+The program lists all \(4!=24\) permutations in SJT order and checks that each
+consecutive pair differs by swapping two /adjacent/ positions.
+
+#+name: sjt-run
+#+begin_src c++ :eval no
+    const std::size_t n = 4;
+    const auto perms = sjt_permutations(n);
+
+    std::cout << "=== Steinhaus-Johnson-Trotter: " << perms.size() << " permutations of {1,2,3,4} ===\n";
+    for (std::size_t s = 0; s < perms.size(); ++s) {
+        std::cout << "  " << (s + 1 < 10 ? " " : "") << s + 1 << ": ";
+        for (int x : perms[s]) std::cout << x;
+        if (s > 0) {
+            std::size_t p = 0;
+            while (p < n && perms[s][p] == perms[s - 1][p]) ++p;
+            std::cout << "   (swapped adjacent positions " << p << "," << p + 1 << ")";
+        }
+        std::cout << "\n";
+    }
+
+    // Plot: the position of each value over the 24 steps -- adjacent swaps make ±1 zig-zags.
+    auto plot = RPlot::create();
+    const std::vector<RGB> palette = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4}};
+    for (int v = 1; v <= static_cast<int>(n); ++v) {
+        std::vector<double> xs, ys;
+        for (std::size_t s = 0; s < perms.size(); ++s)
+            for (std::size_t p = 0; p < n; ++p)
+                if (perms[s][p] == v) { xs.push_back(static_cast<double>(s)); ys.push_back(static_cast<double>(p)); }
+        plot.line(xs, ys, "value " + std::to_string(v), palette[static_cast<std::size_t>(v - 1)], 2.0);
+    }
+    plot.legend({"1", "2", "3", "4"}, palette);
+    plot.title("SJT: each value's position weaves by single adjacent swaps")
+        .x_label("permutation index").y_label("position").background({250, 250, 252});
+    plot.y_limits(-0.5, static_cast<double>(n) - 0.5);
+    plot.save_svg("build/org/steinhaus_johnson_trotter.svg");
+    std::cout << "\nwrote steinhaus_johnson_trotter.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/steinhaus_johnson_trotter_analysis.cpp <<'CPP'
+<<sjt-includes>>
+
+int main() {
+<<sjt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/steinhaus_johnson_trotter_analysis.cpp -o build/org/steinhaus_johnson_trotter_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/steinhaus_johnson_trotter_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Steinhaus-Johnson-Trotter: 24 permutations of {1,2,3,4} ===
+   1: 1234
+   2: 1243   (swapped adjacent positions 2,3)
+   3: 1423   (swapped adjacent positions 1,2)
+   4: 4123   (swapped adjacent positions 0,1)
+   5: 4132   (swapped adjacent positions 2,3)
+   6: 1432   (swapped adjacent positions 0,1)
+   7: 1342   (swapped adjacent positions 1,2)
+   8: 1324   (swapped adjacent positions 2,3)
+   9: 3124   (swapped adjacent positions 0,1)
+  10: 3142   (swapped adjacent positions 2,3)
+  11: 3412   (swapped adjacent positions 1,2)
+  12: 4312   (swapped adjacent positions 0,1)
+  13: 4321   (swapped adjacent positions 2,3)
+  14: 3421   (swapped adjacent positions 0,1)
+  15: 3241   (swapped adjacent positions 1,2)
+  16: 3214   (swapped adjacent positions 2,3)
+  17: 2314   (swapped adjacent positions 0,1)
+  18: 2341   (swapped adjacent positions 2,3)
+  19: 2431   (swapped adjacent positions 1,2)
+  20: 4231   (swapped adjacent positions 0,1)
+  21: 4213   (swapped adjacent positions 2,3)
+  22: 2413   (swapped adjacent positions 0,1)
+  23: 2143   (swapped adjacent positions 1,2)
+  24: 2134   (swapped adjacent positions 2,3)
+
+wrote steinhaus_johnson_trotter.svg
+#+end_example
+
+Every step swaps two /adjacent/ positions -- the defining property that makes SJT
+a Gray code for permutations, stronger than Heap's "any single swap". The value 4,
+being largest, is mobile most often and sweeps the full width of the array
+repeatedly, the permutation odometer's fastest wheel.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/steinhaus_johnson_trotter.svg]]
+
+Each coloured line is one value's position across the 24 permutations. Every line
+moves by at most one row per step -- the visual fingerprint of adjacent-only
+transpositions -- and the largest value (gold) traces the widest zig-zag, gliding
+from one end to the other and back as the smaller values tick over beneath it.

@@ -1,0 +1,200 @@
+#+title: The Schensted Algorithm: Permutations and Young Tableaux
+#+subtitle: A literate C++ study of the Robinson-Schensted correspondence with =datamunge='s =algorithms::rsk_insert=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Schensted algorithm* turns a permutation into a pair of *Young tableaux* by
+row insertion, realizing the Robinson-Schensted correspondence -- a bijection
+between permutations of \(\{1,\dots,n\}\) and pairs \((P,Q)\) of standard Young
+tableaux of the same shape. It is a jewel of algebraic combinatorics, and it comes
+with *Schensted's theorem*: the length of the first row of \(P\) is exactly the
+length of the longest increasing subsequence of the permutation (and the number of
+rows is the longest decreasing subsequence). This report implements it in
+=datamunge='s C++ =algorithms::rsk_insert=, inserts \([4,1,3,6,2,5]\) step by step,
+displays the resulting tableaux, and verifies the theorem against a direct
+longest-increasing-subsequence computation.
+#+end_abstract
+
+* Row insertion (bumping)
+
+To insert a value \(x\) into the insertion tableau \(P\):
+
+1. Look at the first row. If every entry is \(\le x\), append \(x\) at the end and
+   stop -- a new box is born.
+2. Otherwise find the *leftmost* entry strictly greater than \(x\), replace it with
+   \(x\), and take the entry it displaced ("bumped") down to the next row.
+3. Repeat the insertion of the bumped value in the next row, and so on. If a value
+   is bumped off the bottom, it starts a brand-new row.
+
+Each insertion adds exactly one box to the shape. The *recording tableau* \(Q\)
+writes, in the very box just added, the step number of the insertion -- so \(Q\)
+has the same shape as \(P\) and is a *standard* tableau (its entries \(1,\dots,n\)
+increase along rows and down columns). The map permutation \(\mapsto (P,Q)\) is a
+bijection; running it backwards ("reverse bumping") recovers the permutation.
+
+Because a value can only be bumped by a smaller one, the first row of \(P\) always
+holds, in each column, the smallest value that ends an increasing subsequence of a
+given length -- which is exactly patience sorting. Hence *Schensted's theorem*:
+\(\lvert\text{row}_1(P)\rvert\) equals the longest increasing subsequence length.
+
+#+name: sc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/permutations.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Longest strictly increasing subsequence length (patience sorting), computed independently.
+static std::size_t lis_length(const std::vector<int>& a) {
+    std::vector<int> tails;
+    for (int x : a) {
+        auto it = std::lower_bound(tails.begin(), tails.end(), x);
+        if (it == tails.end()) tails.push_back(x); else *it = x;
+    }
+    return tails.size();
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+RSK-INSERT(permutation):
+  P, Q <- empty
+  for step, x in enumerate(permutation, start=1):
+      row <- 0
+      loop:
+          if row is past the bottom of P:
+              start new rows P[row]=[x], Q[row]=[step];  break
+          if x >= last entry of P[row]:
+              append x to P[row], append step to Q[row];  break
+          j <- index of leftmost entry of P[row] greater than x
+          swap x with P[row][j]        # bump: x stays, displaced value continues
+          row <- row + 1
+  return (P, Q)
+#+end_example
+
+* Worked example: inserting [4, 1, 3, 6, 2, 5]
+
+Inserting the six values in turn:
+
+- =4=: \(P=\begin{smallmatrix}4\end{smallmatrix}\).
+- =1=: 1 bumps 4 to a new row.
+- =3=, =6=: both larger than the row-1 entries, appended: row 1 becomes =1 3 6=.
+- =2=: bumps the =3= (now row 1 is =1 2 6=), and the =3= bumps the =4= down, which
+  starts a third row.
+- =5=: bumps the =6= in row 1 (row 1 becomes =1 2 5=), and =6= is appended to row 2.
+
+The final \(P\) has first row =1 2 5= of length 3, and the longest increasing
+subsequence of \([4,1,3,6,2,5]\) (e.g. =1 3 6= or =1 2 5=) also has length 3 --
+Schensted's theorem. The program prints both tableaux and checks the theorem.
+
+#+name: sc-run
+#+begin_src c++ :eval no
+    const std::vector<int> perm = {4, 1, 3, 6, 2, 5};
+    const YoungTableaux t = rsk_insert(perm);
+
+    std::cout << "=== Schensted / RSK on [4,1,3,6,2,5] ===\n";
+    auto print_tableau = [](const char* name, const std::vector<std::vector<int>>& T) {
+        std::cout << name << ":\n";
+        for (const auto& row : T) {
+            std::cout << "  ";
+            for (int v : row) std::cout << v << " ";
+            std::cout << "\n";
+        }
+    };
+    print_tableau("insertion tableau P", t.p);
+    print_tableau("recording tableau Q", t.q);
+
+    std::cout << "\nfirst row of P has length " << t.p[0].size()
+              << ", longest increasing subsequence length is " << lis_length(perm)
+              << "  ->  Schensted's theorem holds: " << std::boolalpha
+              << (t.p[0].size() == lis_length(perm)) << "\n";
+
+    // Draw P and Q as boxed tableaux side by side.
+    auto plot = RPlot::create();
+    auto draw = [&](const std::vector<std::vector<int>>& T, double xoff, RGB text_col) {
+        std::vector<double> x0, y0, x1, y1;
+        for (std::size_t r = 0; r < T.size(); ++r)
+            for (std::size_t c = 0; c < T[r].size(); ++c) {
+                const double x = xoff + static_cast<double>(c), y = -static_cast<double>(r);
+                const double a = 0.46;
+                x0.insert(x0.end(), {x - a, x + a, x + a, x - a});
+                y0.insert(y0.end(), {y - a, y - a, y + a, y + a});
+                x1.insert(x1.end(), {x + a, x + a, x - a, x - a});
+                y1.insert(y1.end(), {y - a, y + a, y + a, y - a});
+                const bool first_row = (r == 0);
+                plot.text(x, y, std::to_string(T[r][c]), first_row ? RGB{202, 138, 4} : text_col, 15.0);
+            }
+        plot.segments(x0, y0, x1, y1, RGB{148, 163, 184}, 1.2);
+    };
+    draw(t.p, 0.0, RGB{37, 99, 235});
+    draw(t.q, static_cast<double>(t.p[0].size()) + 1.5, RGB{22, 163, 74});
+    plot.text(0.0, 1.1, "P (values)", RGB{37, 99, 235}, 13.0);
+    plot.text(static_cast<double>(t.p[0].size()) + 1.5, 1.1, "Q (steps)", RGB{22, 163, 74}, 13.0);
+    plot.title("Robinson-Schensted tableaux of [4,1,3,6,2,5]; gold = first row (LIS)")
+        .x_label("column").y_label("row (downward)").background({250, 250, 252});
+    plot.x_limits(-1.0, 2.0 * static_cast<double>(t.p[0].size()) + 2.5);
+    plot.y_limits(-static_cast<double>(t.p.size()) - 0.2, 1.8);
+    plot.save_svg("build/org/schensted.svg");
+    std::cout << "\nwrote schensted.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/schensted_analysis.cpp <<'CPP'
+<<sc-includes>>
+
+int main() {
+<<sc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/schensted_analysis.cpp -o build/org/schensted_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/schensted_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Schensted / RSK on [4,1,3,6,2,5] ===
+insertion tableau P:
+  1 2 5
+  3 6
+  4
+recording tableau Q:
+  1 3 4
+  2 6
+  5
+
+first row of P has length 3, longest increasing subsequence length is 3  ->  Schensted's theorem holds: true
+
+wrote schensted.svg
+#+end_example
+
+The two tableaux share the shape \((3,2,1)\); \(P\) holds the permutation's values
+arranged into increasing rows and columns, while \(Q\) records the insertion step
+of each box and is a standard tableau on \(1,\dots,6\). The first row of \(P\) has
+length 3, matching the independently computed longest-increasing-subsequence
+length -- Schensted's theorem, verified.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/schensted.svg]]
+
+Left is the insertion tableau \(P\), right the recording tableau \(Q\); both have
+the staircase shape \((3,2,1)\). The gold first row of \(P\) is the one whose
+length the longest increasing subsequence equals -- the combinatorial heart of the
+Robinson-Schensted correspondence rendered as two little grids of boxes.

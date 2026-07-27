@@ -24,6 +24,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
+#include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
