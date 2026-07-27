@@ -1,0 +1,215 @@
+#+title: U-statistics: Unbiased Estimation from Symmetric Kernels
+#+subtitle: A literate C++ study of complete, incomplete, and infinite-order U-statistics with =datamunge='s =stats::UStatistic=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *U-statistic* (Hoeffding 1948) is the average of a symmetric kernel over
+every subset of the data of a fixed size, and it is the minimum-variance
+unbiased estimator of whatever population quantity that kernel's expectation
+defines. A surprising number of familiar estimators are U-statistics -- the
+sample mean, the unbiased variance, Gini's mean difference, Kendall's tau --
+and the framework hands each one an asymptotic normal distribution and a
+variance for free. This report implements U-statistics in =datamunge='s C++
+=stats::UStatistic= and presents it as a literate program: every number and
+figure is produced by a single compiled binary. We derive the U-statistic,
+its unbiasedness, the Hoeffding decomposition and the resulting
+leading-order variance \(\mathrm{Var}(U_n)\approx m^2\zeta_1/n\), and the
+*incomplete* U-statistic that makes the method tractable when the number of
+subsets explodes -- the same device that recasts bagged predictors and
+random forests as *infinite-order* U-statistics. On iris =Sepal.Length= the
+degree-2 variance kernel reproduces the unbiased variance (\(0.6857\)) with
+an estimated standard error of \(0.067\), Gini's mean difference comes out at
+\(0.946\), and an incomplete U-statistic over a few thousand random pairs
+converges to the complete average over all \(11{,}175\) of them.
+#+end_abstract
+
+* Definition and examples
+
+Let \(h(x_1,\dots,x_m)\) be a *symmetric kernel* of degree \(m\) -- a
+function invariant under permutation of its arguments -- and let its
+expectation under the data-generating distribution be the estimand
+\[
+  \theta = \mathbb{E}\big[h(X_1,\dots,X_m)\big].
+\]
+The U-statistic averages the kernel over every size-\(m\) subset of the
+sample:
+\[
+  U_n = \binom{n}{m}^{-1}\!\!\sum_{i_1<\dots<i_m} h(x_{i_1},\dots,x_{i_m}).
+\]
+Every term is an unbiased draw of \(\theta\), so \(\mathbb{E}[U_n]=\theta\)
+exactly for all \(n\ge m\); averaging over all subsets makes \(U_n\) the
+unique minimum-variance unbiased estimator (it is a function of the order
+statistic, which is complete and sufficient). Familiar special cases:
+
+- \(m=1,\ h(a)=a\): the *sample mean*.
+- \(m=2,\ h(a,b)=\tfrac12(a-b)^2\): the *unbiased variance* (the identity \(\sum_{i<j}(x_i-x_j)^2 = n\sum_i(x_i-\bar x)^2\) makes \(U_n = \tfrac{1}{n-1}\sum_i(x_i-\bar x)^2\)).
+- \(m=2,\ h(a,b)=|a-b|\): *Gini's mean difference*, a robust scale measure.
+- \(m=2,\ h\) = a concordance indicator: *Kendall's \(\tau\)*.
+
+#+name: u-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/u_statistic.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::stats;
+using namespace datamunge::plot;
+#+end_src
+
+* The Hoeffding decomposition and the variance
+
+The variance of \(U_n\) comes from the *Hoeffding decomposition*, which
+projects the kernel onto the effect of \(c\) of its arguments at a time.
+Define \(h_1(x) = \mathbb{E}[h(x, X_2,\dots,X_m)] - \theta\), the first
+projection, and \(\zeta_1 = \mathrm{Var}(h_1(X_1))\) (and more generally
+\(\zeta_c\) from the \(c\)-argument projection). Then
+\[
+  \mathrm{Var}(U_n) = \binom{n}{m}^{-1}\sum_{c=1}^{m}\binom{m}{c}\binom{n-m}{m-c}\,\zeta_c,
+\]
+whose leading term as \(n\to\infty\) (when \(\zeta_1>0\)) is
+\[
+  \mathrm{Var}(U_n) \;\approx\; \frac{m^2}{n}\,\zeta_1,
+  \qquad
+  \sqrt{n}\,(U_n - \theta)\ \xrightarrow{d}\ \mathcal{N}\!\big(0,\ m^2\zeta_1\big).
+\]
+=datamunge= estimates \(\zeta_1\) from the first projection empirically:
+\(\hat g(x_i)\) is the average kernel value over all evaluated tuples that
+contain observation \(i\), and \(\hat\zeta_1\) is the sample variance of the
+\(\hat g(x_i)\); the reported standard error is \(\sqrt{m^2\hat\zeta_1/n}\).
+This is the same first-order variance that underlies the "infinitesimal
+jackknife" estimates for bagged learners.
+
+* Incomplete and infinite-order U-statistics
+
+When \(\binom{n}{m}\) is too large to enumerate -- already \(\binom{150}{5}
+\approx 6\times10^8\), and astronomically larger for the subsample sizes used
+in bagging -- one averages the kernel over only \(N\) randomly drawn
+\(m\)-subsets. This *incomplete* U-statistic is still unbiased for \(\theta\)
+and, for \(N\) growing with \(n\), has the same limiting distribution. The
+idea scales to kernels whose degree \(m=m_n\) *grows with* \(n\): a bagged
+predictor is exactly the average of a base learner over size-\(m_n\)
+subsamples, i.e. an incomplete *infinite-order* U-statistic, and its sampling
+variance is governed by the very same first projection \(\zeta_1\) (Mentch &
+Hooker 2016; Wager, Hastie & Efron 2014). Setting
+=UStatisticOptions::max_terms= switches from the complete to the incomplete
+estimator.
+
+* Example: iris Sepal.Length
+
+We compute the complete degree-2 variance and Gini U-statistics (with their
+\(\zeta_1\)-based standard errors and a normal confidence interval), then
+show an incomplete U-statistic for the variance kernel converging to the
+complete value as the number of random pairs grows.
+
+#+name: u-run
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> x;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) x.push_back(iris.double_at("Sepal.Length", i));
+
+    const SymmetricKernel var_kernel = [](const std::vector<double>& t) { return 0.5 * (t[0] - t[1]) * (t[0] - t[1]); };
+    const SymmetricKernel gini_kernel = [](const std::vector<double>& t) { return std::fabs(t[0] - t[1]); };
+
+    std::cout << "=== Complete U-statistics on iris Sepal.Length (n=" << x.size() << ", degree 2) ===\n";
+    const auto uvar = UStatistic(2).run(x, var_kernel);
+    std::cout << "variance kernel h(a,b)=(a-b)^2/2:\n";
+    std::cout << "  U = " << uvar.estimate << " (unbiased variance), terms=" << uvar.num_terms
+              << ", zeta1=" << uvar.zeta1 << ", SE=" << uvar.standard_error << "\n";
+    std::cout << "  95% normal CI: [" << uvar.estimate - 1.96 * uvar.standard_error << ", "
+              << uvar.estimate + 1.96 * uvar.standard_error << "]\n";
+    const auto ugini = UStatistic(2).run(x, gini_kernel);
+    std::cout << "Gini mean-difference kernel h(a,b)=|a-b|:\n";
+    std::cout << "  U = " << ugini.estimate << ", SE=" << ugini.standard_error << "\n";
+
+    std::cout << "\n=== Incomplete U-statistic converges to the complete one (variance kernel) ===\n";
+    std::cout << "   terms      U (incomplete)\n";
+    std::vector<double> tx, ty;
+    for (std::size_t terms : {25u, 50u, 100u, 250u, 500u, 1000u, 2500u, 5000u}) {
+        const auto ui = UStatistic(2, UStatisticOptions{terms, 2024}).run(x, var_kernel);
+        std::cout << "  " << std::setw(6) << terms << "      " << ui.estimate << "\n";
+        tx.push_back(std::log10(static_cast<double>(terms)));
+        ty.push_back(ui.estimate);
+    }
+    std::cout << "  complete (" << uvar.num_terms << " terms): " << uvar.estimate << "\n";
+
+    std::vector<double> cx = {tx.front(), tx.back()}, cy = {uvar.estimate, uvar.estimate};
+    auto plot = RPlot::create();
+    plot.line(cx, cy, "complete U", {156, 163, 175}, 1.5);
+    plot.points(tx, ty, "incomplete U", {37, 99, 235}, 4.0);
+    plot.lines(tx, ty, "", {37, 99, 235}, 1.0);
+    plot.title("Incomplete U-statistic converging to the complete U-statistic")
+        .x_label("log10(number of random m-subsets)").y_label("U estimate (variance)").background({250, 250, 252});
+    plot.save_svg("build/org/u_statistic_incomplete.svg");
+    std::cout << "\nwrote u_statistic_incomplete.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/u_statistic_analysis.cpp <<'CPP'
+<<u-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+<<u-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/u_statistic_analysis.cpp -o build/org/u_statistic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/u_statistic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Complete U-statistics on iris Sepal.Length (n=150, degree 2) ===
+variance kernel h(a,b)=(a-b)^2/2:
+  U = 0.6857 (unbiased variance), terms=11175, zeta1=0.1688, SE=0.0671
+  95% normal CI: [0.5542, 0.8172]
+Gini mean-difference kernel h(a,b)=|a-b|:
+  U = 0.9462, SE=0.0473
+
+=== Incomplete U-statistic converges to the complete one (variance kernel) ===
+   terms      U (incomplete)
+      25      0.7214
+      50      0.7074
+     100      0.6587
+     250      0.6925
+     500      0.7195
+    1000      0.7472
+    2500      0.7212
+    5000      0.6857
+  complete (11175 terms): 0.6857
+#+end_example
+
+The variance kernel reproduces the unbiased sample variance exactly
+(\(0.6857\), over all \(\binom{150}{2}=11{,}175\) pairs) and, via the first
+Hoeffding projection \(\hat\zeta_1 = 0.169\), attaches a standard error of
+\(0.067\) and a 95% confidence interval \([0.554, 0.817]\) -- inference the
+plug-in variance alone cannot supply. Gini's mean difference, an equally
+valid degree-2 U-statistic on the same data, estimates the scale at
+\(0.946\pm0.047\). The incomplete estimates wobble around the target while
+few pairs are sampled and tighten onto the complete value as the count grows:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/u_statistic_incomplete.svg]]
+
+This convergence is the whole point of the incomplete construction: for a
+degree-2 kernel the complete sum is cheap, but for the high-degree kernels of
+bagging -- where \(m\) is a subsample size and \(\binom{n}{m}\) is effectively
+infinite -- sampling a manageable number of subsets is the only option, and
+the resulting infinite-order U-statistic inherits both the unbiasedness and
+the \(m^2\zeta_1/n\) variance structure derived above.

@@ -1,0 +1,233 @@
+#+title: The Jackknife: Bias and Standard Error by Systematic Leave-One-Out
+#+subtitle: A literate C++ study of the delete-1 and delete-d jackknife with =datamunge='s =stats::jackknife=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *jackknife* (Quenouille 1949; Tukey 1958) is the bootstrap's older,
+deterministic cousin: instead of drawing random resamples, it recomputes a
+statistic on each of the \(n\) subsamples obtained by deleting one
+observation at a time, and reads off the statistic's bias and standard error
+from how those \(n\) leave-one-out values scatter. This report implements it
+in =datamunge='s C++ =stats::jackknife= (delete-1) and =jackknife_delete_d=,
+and presents it as a literate program: every number and figure is produced
+by a single compiled binary. We derive the leave-one-out replicates, the
+pseudo-values, and the bias and variance estimators, and demonstrate three
+things on iris =Sepal.Length=: the jackknife turns the biased plug-in
+variance (\(0.6811\)) into exactly the unbiased sample variance
+(\(0.6857\)); its standard error of the mean reproduces the closed-form
+\(s/\sqrt n = 0.0676\); and -- the cautionary tale -- the delete-1 jackknife
+*fails* on the median (returning a standard error of \(0\)), whereas the
+delete-d jackknife (Shao & Wu 1989) recovers a sensible \(0.100\), matching
+the bootstrap's \(0.101\). Non-smoothness, not the jackknife itself, is the
+culprit, and delete-d is the fix.
+#+end_abstract
+
+* Leave-one-out replicates and pseudo-values
+
+Let \(\hat\theta = T(x_1,\dots,x_n)\) be a statistic and let
+\(\hat\theta_{(i)} = T(x_1,\dots,x_{i-1},x_{i+1},\dots,x_n)\) be the same
+statistic with observation \(i\) deleted -- the \(i\)-th *leave-one-out
+replicate*. Write \(\hat\theta_{(\cdot)} = \tfrac1n\sum_i \hat\theta_{(i)}\)
+for their average. Tukey's *pseudo-values* rewrite each replicate as a
+contribution toward the estimate,
+\[
+  \tilde\theta_i = n\,\hat\theta - (n-1)\,\hat\theta_{(i)},
+\]
+and behave, for smooth statistics, almost like \(n\) independent
+observations of \(\theta\): their mean is the bias-corrected estimate and
+their scatter gives its standard error.
+
+* Bias and standard-error estimates
+
+Because deleting one of \(n\) points changes a smooth statistic by
+\(O(1/n)\), the difference \(\hat\theta_{(\cdot)} - \hat\theta\) is an
+\(O(1/n)\) probe of the estimator's bias; scaling it up by \(n-1\) gives the
+jackknife *bias estimate* and *bias-corrected estimate*
+\[
+  \widehat{\mathrm{bias}} = (n-1)\big(\hat\theta_{(\cdot)} - \hat\theta\big),
+  \qquad
+  \hat\theta_{\text{jack}} = \hat\theta - \widehat{\mathrm{bias}}
+    = n\hat\theta - (n-1)\hat\theta_{(\cdot)}.
+\]
+For a statistic whose bias is exactly \(c/n\) (like the plug-in variance,
+with \(c=-\sigma^2\)), this removes the bias entirely. The jackknife
+*standard error* is the (scaled) spread of the leave-one-out values,
+\[
+  \widehat{\mathrm{se}}_{\text{jack}}
+    = \sqrt{\frac{n-1}{n}\sum_{i=1}^{n}\big(\hat\theta_{(i)} - \hat\theta_{(\cdot)}\big)^2},
+\]
+the unusual \((n-1)/n\) inflation factor compensating for the fact that
+leave-one-out replicates vary far less than genuine resamples. For a linear
+statistic such as the mean this is /exact/: the bias is \(0\) and the
+standard error is precisely \(s/\sqrt n\).
+
+#+name: jk-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/bootstrap.hpp>
+#include <datamunge/stats/jackknife.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <vector>
+
+using namespace datamunge::stats;
+using namespace datamunge::plot;
+
+static double mean_of(const std::vector<double>& v) {
+    return std::accumulate(v.begin(), v.end(), 0.0) / static_cast<double>(v.size());
+}
+static double biased_var(const std::vector<double>& v) {
+    const double m = mean_of(v);
+    double s = 0.0;
+    for (double x : v) s += (x - m) * (x - m);
+    return s / static_cast<double>(v.size());
+}
+static double unbiased_var(const std::vector<double>& v) {
+    return biased_var(v) * static_cast<double>(v.size()) / static_cast<double>(v.size() - 1);
+}
+static double median_of(std::vector<double> v) {
+    std::sort(v.begin(), v.end());
+    const std::size_t n = v.size();
+    return n % 2 ? v[n / 2] : 0.5 * (v[n / 2 - 1] + v[n / 2]);
+}
+#+end_src
+
+* The delete-d jackknife
+
+The delete-1 jackknife needs the statistic to be /smooth/ (Hadamard
+differentiable): the median is not, and there the method breaks. Deleting a
+single point almost never moves the median off its central order statistic,
+so nearly all \(\hat\theta_{(i)}\) are identical and the estimated standard
+error collapses to (near) zero. The *delete-d jackknife* deletes \(d>1\)
+observations at a time, retaining \(n-d\); with \(d\to\infty\) and
+\(d/n\to 0\) this restores consistency for non-smooth statistics. Its
+variance estimator averages over the \(\binom{n}{d}\) deletion sets \(S\)
+(or, when that is too large, a Monte Carlo sample of them),
+\[
+  \widehat{\mathrm{var}}_{(d)}
+    = \frac{n-d}{d\binom{n}{d}} \sum_{|S|=n-d} \big(\hat\theta_S - \bar\theta\big)^2 .
+\]
+
+* Example: iris Sepal.Length
+
+We (1) jackknife the plug-in variance and watch the bias correction land on
+the unbiased variance; (2) jackknife the mean and match \(s/\sqrt n\); and
+(3) contrast the delete-1 and delete-d jackknife standard errors of the
+median, using the bootstrap as an independent reference. The figure is a
+jackknife *influence plot*: the leave-one-out variance against the value of
+the deleted observation, showing which points most affect the estimate.
+
+#+name: jk-run
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> x;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) x.push_back(iris.double_at("Sepal.Length", i));
+    const double n = static_cast<double>(x.size());
+
+    std::cout << "=== Jackknife bias-corrects the plug-in variance (iris Sepal.Length, n=" << x.size() << ") ===\n";
+    const auto jv = jackknife(x, biased_var);
+    std::cout << "plug-in variance (/n)      = " << jv.estimate << "\n";
+    std::cout << "jackknife bias estimate    = " << jv.bias << "\n";
+    std::cout << "bias-corrected variance    = " << jv.bias_corrected << "\n";
+    std::cout << "unbiased variance (/(n-1)) = " << unbiased_var(x) << "  (target)\n";
+
+    std::cout << "\n=== Jackknife SE of the mean vs closed-form s/sqrt(n) ===\n";
+    const auto jm = jackknife(x, mean_of);
+    std::cout << "jackknife bias   = " << jm.bias << "  (exactly 0 for a linear statistic)\n";
+    std::cout << "jackknife SE     = " << jm.standard_error << "\n";
+    std::cout << "closed-form s/vn = " << std::sqrt(unbiased_var(x) / n) << "\n";
+
+    std::cout << "\n=== Non-smooth statistic (median): delete-1 fails, delete-d works ===\n";
+    const auto j1 = jackknife(x, median_of);
+    DeleteDJackknifeOptions dd;
+    dd.d = 20;
+    dd.max_subsets = 3000;
+    dd.seed = 7;
+    const auto jd = jackknife_delete_d(x, median_of, dd);
+    Bootstrap boot(BootstrapOptions{4000, 0.95, 1});
+    const double boot_se = boot.run(x, median_of).standard_error;
+    std::cout << "delete-1 jackknife SE(median) = " << j1.standard_error << "  (inconsistent)\n";
+    std::cout << "delete-d (d=20)   SE(median)  = " << jd.standard_error << "  (subsets=" << jd.num_subsets << ")\n";
+    std::cout << "bootstrap         SE(median)  = " << boot_se << "  (reference)\n";
+
+    const auto jvar = jackknife(x, unbiased_var);
+    auto plot = RPlot::create();
+    plot.points(x, jvar.leave_one_out, "leave-one-out variance", {37, 99, 235}, 4.0);
+    plot.abline(jvar.estimate, 0.0, {220, 38, 38}, 1.5); // full-sample variance
+    plot.title("Jackknife influence: variance with observation i deleted")
+        .x_label("value of the deleted observation (cm)").y_label("leave-one-out variance").background({250, 250, 252});
+    plot.save_svg("build/org/jackknife_influence.svg");
+    std::cout << "\nwrote jackknife_influence.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/jackknife_analysis.cpp <<'CPP'
+<<jk-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+<<jk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/jackknife_analysis.cpp -o build/org/jackknife_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/jackknife_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Jackknife bias-corrects the plug-in variance (iris Sepal.Length, n=150) ===
+plug-in variance (/n)      = 0.6811
+jackknife bias estimate    = -0.0046
+bias-corrected variance    = 0.6857
+unbiased variance (/(n-1)) = 0.6857  (target)
+
+=== Jackknife SE of the mean vs closed-form s/sqrt(n) ===
+jackknife bias   = 0.0000  (exactly 0 for a linear statistic)
+jackknife SE     = 0.0676
+closed-form s/vn = 0.0676
+
+=== Non-smooth statistic (median): delete-1 fails, delete-d works ===
+delete-1 jackknife SE(median) = 0.0000  (inconsistent)
+delete-d (d=20)   SE(median)  = 0.1001  (subsets=3000)
+bootstrap         SE(median)  = 0.1013  (reference)
+
+wrote jackknife_influence.svg
+#+end_example
+
+The first two blocks show the jackknife working exactly as the theory
+predicts: the \((n-1)\)-scaled leave-one-out drift converts the plug-in
+variance \(0.6811\) into the unbiased variance \(0.6857\) to four decimals,
+and the mean's jackknife standard error is \(s/\sqrt n = 0.0676\) on the
+nose, with identically zero bias. The third block is the cautionary tale:
+the delete-1 jackknife reports a standard error of \emph{zero} for the
+median, because deleting any single one of 150 flowers leaves the central
+order statistic unchanged -- a textbook inconsistency. Deleting \(d=20\) at a
+time repairs it, yielding \(0.100\), essentially the bootstrap's \(0.101\).
+The influence plot shows why the variance is so stable to leave-one-out
+deletion, and which observations matter most:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/jackknife_influence.svg]]
+
+Each point is the sample variance recomputed with one flower removed, against
+that flower's =Sepal.Length=; the red line is the full-sample variance.
+Deleting a central observation barely moves the variance, while deleting one
+of the extreme (largest or smallest) values pulls it down most -- the U-shape
+is the squared-deviation influence function of the variance made visible.

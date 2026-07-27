@@ -1,0 +1,199 @@
+#+title: Permutation Tests: Exact Inference by Relabeling
+#+subtitle: A literate C++ study of the two-sample permutation test with =datamunge='s =stats::permutation_test_two_sample=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *permutation test* answers "could this difference be chance?" without
+assuming a distribution or deriving a null formula. If two groups really came
+from the same population, then the group labels carry no information and are
+freely *exchangeable*, so the sampling distribution of any test statistic can
+be reconstructed by recomputing it over many random relabelings of the pooled
+data. This report implements the two-sample permutation test in =datamunge='s
+C++ =stats::permutation_test_two_sample= and presents it as a literate
+program: every number and figure is produced by a single compiled binary. We
+derive exchangeability, the permutation null distribution, and the Monte
+Carlo p-value, then test whether iris setosa and versicolor differ in
+=Sepal.Length=. The observed mean difference of \(-0.93\) cm falls entirely
+outside the permutation null range \([-0.48, 0.42]\), giving \(p = 0.0001\)
+in agreement with Welch's t-test -- but, unlike the t-test, the same
+machinery delivers an identical verdict for the difference in *medians*, a
+statistic with no analytic null distribution at all.
+#+end_abstract
+
+* Exchangeability and the permutation null
+
+We observe two samples \(x = (x_1,\dots,x_{n_x})\) and \(y =
+(y_1,\dots,y_{n_y})\) and a test statistic \(T(x,y)\) measuring how different
+they are -- say the difference in means \(\bar x - \bar y\). The null
+hypothesis is that both come from the /same/ distribution,
+\(H_0: F_x = F_y\). Under \(H_0\) the pooled values
+\(z = (x_1,\dots,x_{n_x}, y_1,\dots,y_{n_y})\) are i.i.d., so which of them we
+happened to label "\(x\)" and which "\(y\)" is arbitrary: every way of
+splitting the \(N = n_x+n_y\) pooled values into groups of sizes \(n_x\) and
+\(n_y\) is equally likely. That is *exchangeability*.
+
+The *permutation null distribution* of \(T\) is therefore its value over all
+\(\binom{N}{n_x}\) such relabelings \(\pi\):
+\[
+  \big\{\, T(\pi) : \pi \text{ a relabeling of } z \text{ into groups of sizes } n_x, n_y \,\big\}.
+\]
+Enumerating all of them is exact but usually infeasible (\(\binom{100}{50}
+\approx 10^{29}\) here), so =datamunge= draws \(B\) relabelings uniformly at
+random -- a Monte Carlo permutation test.
+
+#+name: perm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/permutation_test.hpp>
+#include <datamunge/stats/t_test.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <vector>
+
+using namespace datamunge::stats;
+using namespace datamunge::plot;
+
+static double mean_of(const std::vector<double>& v) {
+    return std::accumulate(v.begin(), v.end(), 0.0) / static_cast<double>(v.size());
+}
+static double median_of(std::vector<double> v) {
+    std::sort(v.begin(), v.end());
+    const std::size_t n = v.size();
+    return n % 2 ? v[n / 2] : 0.5 * (v[n / 2 - 1] + v[n / 2]);
+}
+#+end_src
+
+* The p-value
+
+The observed statistic is \(T_{\text{obs}} = T(x, y)\). The two-sided p-value
+is the probability, under the permutation null, of a statistic at least as
+extreme as observed; estimated from \(B\) random relabelings with the +1
+correction that keeps it strictly positive and the test exact,
+\[
+  \hat p = \frac{1 + \#\{\, b : |T(\pi_b)| \ge |T_{\text{obs}}| \,\}}{B + 1}.
+\]
+(One-sided variants replace \(|T(\pi_b)| \ge |T_{\text{obs}}|\) with
+\(T(\pi_b) \ge T_{\text{obs}}\) or \(\le\).) Two properties make this
+attractive: it needs *no distributional assumption* -- validity rests only on
+exchangeability under \(H_0\) -- and it works for *any* statistic, including
+robust ones like the difference in medians or trimmed means for which no
+closed-form null exists. The kind of statistic is a free choice; the
+inference machinery is identical.
+
+* Example: setosa vs versicolor Sepal.Length
+
+We pool the 50 setosa and 50 versicolor sepal lengths and test the difference
+in means with \(B = 10{,}000\) permutations, comparing the permutation
+p-value to Welch's t-test. We then rerun the identical procedure with the
+difference in *medians* as the statistic, and draw the permutation null
+distribution of the mean difference.
+
+#+name: perm-run
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> setosa, versicolor;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const std::string sp = iris.string_at("Species", i);
+        const double v = iris.double_at("Sepal.Length", i);
+        if (sp == "setosa") setosa.push_back(v);
+        else if (sp == "versicolor") versicolor.push_back(v);
+    }
+
+    std::cout << "=== Two-sample permutation test: setosa vs versicolor Sepal.Length ===\n";
+    std::cout << "setosa mean = " << mean_of(setosa) << " (n=" << setosa.size() << "), versicolor mean = "
+              << mean_of(versicolor) << " (n=" << versicolor.size() << ")\n";
+
+    PermutationTestOptions opt{10000, Alternative::TwoSided, 20240915};
+    const auto diff_means = permutation_test_two_sample(setosa, versicolor, {}, opt);
+    std::cout << "\ndifference in MEANS:\n";
+    std::cout << "  observed        = " << diff_means.observed << "\n";
+    std::cout << "  permutation p   = " << diff_means.p_value << "  (" << opt.num_permutations << " permutations)\n";
+    std::cout << "  null mean/sd    = " << diff_means.null_mean << " / " << diff_means.null_sd << "\n";
+    const auto tt = t_test_two_sample(setosa, versicolor);
+    std::cout << "  Welch t-test p  = " << tt.p_value << "  (for comparison)\n";
+
+    const TwoSampleStatistic diff_median = [](const std::vector<double>& a, const std::vector<double>& b) {
+        return median_of(a) - median_of(b);
+    };
+    const auto dm = permutation_test_two_sample(setosa, versicolor, diff_median, opt);
+    std::cout << "\ndifference in MEDIANS (no analytic null distribution exists):\n";
+    std::cout << "  observed      = " << dm.observed << "\n";
+    std::cout << "  permutation p = " << dm.p_value << "\n";
+
+    auto plot = RPlot::hist(diff_means.null_distribution, 40, "permutation null");
+    plot.title("Permutation null distribution of the mean difference (setosa vs versicolor)")
+        .x_label("mean(setosa) - mean(versicolor) under relabeling").y_label("count").background({250, 250, 252});
+    plot.save_svg("build/org/permutation_null.svg");
+    std::cout << "\nobserved difference " << diff_means.observed << " lies entirely outside the null range ["
+              << *std::min_element(diff_means.null_distribution.begin(), diff_means.null_distribution.end()) << ", "
+              << *std::max_element(diff_means.null_distribution.begin(), diff_means.null_distribution.end())
+              << "]\nwrote permutation_null.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/permutation_analysis.cpp <<'CPP'
+<<perm-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+<<perm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/permutation_analysis.cpp -o build/org/permutation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/permutation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Two-sample permutation test: setosa vs versicolor Sepal.Length ===
+setosa mean = 5.0060 (n=50), versicolor mean = 5.9360 (n=50)
+
+difference in MEANS:
+  observed        = -0.9300
+  permutation p   = 0.0001  (10000 permutations)
+  null mean/sd    = -0.0007 / 0.1282
+  Welch t-test p  = 0.0000  (for comparison)
+
+difference in MEDIANS (no analytic null distribution exists):
+  observed      = -0.9000
+  permutation p = 0.0001
+
+observed difference -0.9300 lies entirely outside the null range [-0.4820, 0.4180]
+#+end_example
+
+Setosa sepals average \(5.01\) cm and versicolor \(5.94\) cm, an observed
+difference of \(-0.93\) cm. Under the permutation null the mean difference is
+centered at \(0\) (mean \(-0.0007\)) with a spread of \(0.13\), and across
+10,000 relabelings not one produced a difference as large as observed -- so
+the smallest attainable p-value, \(1/(B+1) = 0.0001\), is returned, matching
+Welch's t-test. The null distribution and the position of the observed
+statistic tell the story at a glance:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/permutation_null.svg]]
+
+The histogram is the permutation null of the mean difference -- a tidy bell
+centered on zero, spanning only \([-0.48, 0.42]\). The observed \(-0.93\)
+lies far to the left of everything the histogram covers, which is exactly why
+the p-value bottoms out. The decisive advantage over the t-test appears in
+the last block: swapping the difference in means for the difference in
+*medians* -- a statistic with no tractable null distribution -- needs no new
+theory, just a different function passed to the same routine, and returns the
+same emphatic \(p = 0.0001\).
