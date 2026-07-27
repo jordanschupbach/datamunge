@@ -1,0 +1,143 @@
+#+title: Kadane's Algorithm: The Maximum Subarray in One Pass
+#+subtitle: A literate C++ study of the maximum contiguous sum with =datamunge='s =algorithms::kadane=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given an array of numbers -- daily profits, signal strengths -- which /contiguous/
+stretch sums to the most? The brute-force answer tries all \(O(n^2)\) subarrays;
+*Kadane's algorithm* (Bentley 1984, after Kadane) does it in a single \(O(n)\)
+pass with a one-line insight: the best subarray ending at position \(i\) is either
+the element alone or that element joined to the best subarray ending at
+\(i-1\). This report implements it in =datamunge='s C++ =algorithms::kadane=,
+which returns the maximum sum /and/ the index range achieving it, works the
+textbook example whose answer is 6, and plots the winning window.
+#+end_abstract
+
+* The recurrence
+
+Let \(B_i\) be the largest sum of a subarray that *ends exactly at index* \(i\).
+Either we extend the best subarray ending at \(i-1\), or, if that running sum has
+gone negative, we are better off starting fresh at \(i\):
+
+\[
+B_i = \max(a_i,\; B_{i-1}+a_i),\qquad
+\text{answer}=\max_i B_i .
+\]
+
+Tracking where each fresh start began, and updating the global best, recovers not
+just the maximum sum but the subarray's index range in one sweep. Space is
+\(O(1)\). The algorithm is correct with negative numbers: for an all-negative
+array it returns the single least-negative element (the best /non-empty/
+subarray). It is the contiguous cousin of the Ruzzo-Tompa problem, which asks for
+/all/ maximal islands rather than just the single best.
+
+#+name: kd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/substrings.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+KADANE(a):                            # returns (sum, begin, end) of the best subarray
+  best <- a[0]; bb, be <- 0, 1
+  cur  <- a[0]; cb <- 0
+  for i in 1 .. n-1:
+      if cur < 0: cur <- a[i]; cb <- i          # running prefix hurts -> restart at i
+      else:       cur <- cur + a[i]              # extend the current subarray
+      if cur > best: best <- cur; bb, be <- cb, i+1
+  return (best, bb, be)
+#+end_example
+
+* Worked example
+
+For the classic array
+
+: -2  1  -3  4  -1  2  1  -5  4
+
+the maximum-sum contiguous subarray is =4 -1 2 1= at indices \([3,7)\), summing to
+\(6\). Any longer or shifted window scores less: including the leading =-2 1 -3=
+only subtracts, and appending =-5 4= nets \(-1\). The program confirms the sum and
+the range.
+
+#+name: kd-run
+#+begin_src c++ :eval no
+    const std::vector<int> a = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    const MaxSubarray r = kadane(a);
+
+    std::cout << "=== Kadane's maximum subarray ===\n";
+    std::cout << "array:";
+    for (int x : a) std::cout << " " << x;
+    std::cout << "\nbest sum = " << r.sum << " over [" << r.begin << ", " << r.end << ") = ";
+    for (std::size_t i = r.begin; i < r.end; ++i) std::cout << a[i] << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < a.size(); ++i) { xs.push_back(static_cast<double>(i)); ys.push_back(a[i]); }
+    plot.bars(xs, ys, "value", RGB{148, 163, 184});
+    std::vector<double> hx, hy;
+    for (std::size_t i = r.begin; i < r.end; ++i) { hx.push_back(static_cast<double>(i)); hy.push_back(a[i]); }
+    plot.bars(hx, hy, "best subarray", RGB{22, 163, 74});
+    plot.abline_h(0.0, RGB{100, 116, 139}, 1.0);
+    plot.text((r.begin + r.end - 1) / 2.0, 5.0, "sum " + std::to_string(static_cast<int>(r.sum)), RGB{22, 163, 74}, 13.0);
+    plot.title("Kadane: maximum-sum contiguous subarray (sum 6)")
+        .x_label("index").y_label("value").background({250, 250, 252});
+    plot.x_limits(-0.6, static_cast<double>(a.size()) - 0.4);
+    plot.y_limits(-5.5, 6.0);
+    plot.legend({"value", "best subarray"}, {{148, 163, 184}, {22, 163, 74}});
+    plot.save_svg("build/org/kadane.svg");
+    std::cout << "\nwrote kadane.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kadane_analysis.cpp <<'CPP'
+<<kd-includes>>
+
+int main() {
+<<kd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kadane_analysis.cpp -o build/org/kadane_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kadane_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Kadane's maximum subarray ===
+array: -2 1 -3 4 -1 2 1 -5 4
+best sum = 6 over [3, 7) = 4 -1 2 1
+
+wrote kadane.svg
+#+end_example
+
+The best subarray is =4 -1 2 1= summing to 6, exactly the hand answer, and Kadane
+finds it in one pass: the running sum is reset to zero-effect whenever it turns
+negative (after the =-3=), so the window that ultimately wins begins right at the
+=4=.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/kadane.svg]]
+
+Grey bars are the array (up for positive, down for negative); the green bars are
+the maximum-sum window =4 -1 2 1=. It tolerates the internal dip of =-1= because
+the surrounding positives more than pay for it -- the same trade-off Kadane makes
+implicitly by only restarting when the running sum would otherwise go negative.

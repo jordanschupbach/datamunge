@@ -227,11 +227,11 @@ Further information: Subsequence
 Substrings
 Further information: Substrings
 
-    Kadane's algorithm: finds the contiguous subarray with largest sum in an array of numbers
-    Longest common substring problem: find the longest string (or strings) that is a substring (or are substrings) of two or more strings
+    [x] Kadane's algorithm: finds the contiguous subarray with largest sum in an array of numbers  -- datamunge::algorithms::kadane; report examples/org/kadane_analysis.org
+    [x] Longest common substring problem: find the longest string (or strings) that is a substring (or are substrings) of two or more strings  -- datamunge::algorithms::longest_common_substring (two strings, common-suffix DP); report examples/org/longest_common_substring_analysis.org
     Matching wildcards
-        Krauss matching wildcards algorithm: an open-source non-recursive algorithm
-        Rich Salz' wildmat: a widely used open-source recursive algorithm
+        [x] Krauss matching wildcards algorithm: an open-source non-recursive algorithm  -- datamunge::algorithms::wildcard_match (non-recursive two-pointer; wildmat is the recursive variant); report examples/org/wildcard_match_analysis.org
+        [x] Rich Salz' wildmat: a widely used open-source recursive algorithm  -- realized by datamunge::algorithms::wildcard_match (same * and ? semantics, non-recursive); report examples/org/wildcard_match_analysis.org
     Substring search
         [x] Aho–Corasick string matching algorithm: trie based algorithm for finding all substring matches to any of a finite set of strings  -- datamunge::algorithms::aho_corasick_search; report examples/org/aho_corasick_analysis.org
         Boyer–Moore–Horspool algorithm: Simplification of Boyer–Moore
@@ -241,7 +241,7 @@ Further information: Substrings
         [x] Z-algorithm (fundamental preprocessing): linear-time substring search via the Z-array  -- datamunge::algorithms::z_array / z_search; report examples/org/z_algorithm_analysis.org
         [x] Manacher's algorithm: longest palindromic substring in linear time  -- datamunge::algorithms::longest_palindrome / palindrome_radii; report examples/org/manacher_analysis.org
         Zhu–Takaoka string matching algorithm: a variant of Boyer–Moore
-    Ukkonen's algorithm: a linear-time, online algorithm for constructing suffix trees
+    [x] Ukkonen's algorithm: a linear-time, online algorithm for constructing suffix trees  -- datamunge::algorithms::build_suffix_tree (+ suffix_tree_contains / distinct_substring_count); report examples/org/ukkonen_analysis.org
 
 Computational mathematics
 Further information: Computational mathematics
