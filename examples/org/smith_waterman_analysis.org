@@ -1,0 +1,230 @@
+#+title: The Smith-Waterman Algorithm: Optimal Local Sequence Alignment
+#+subtitle: A literate C++ study of local dynamic-programming alignment with =datamunge='s =algorithms::smith_waterman=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Global alignment forces the whole of both sequences into correspondence, paying
+for every unmatched flank. But often only a /region/ is homologous -- a conserved
+motif inside two otherwise-different proteins, a quotation embedded in two
+documents. The *Smith-Waterman algorithm* (Smith & Waterman, 1981) finds the
+highest-scoring pair of /substrings/: the optimal *local* alignment. It is a
+one-line modification of Needleman-Wunsch -- floor every cell at zero -- yet that
+change lets an alignment begin and end anywhere. This report implements it in
+=datamunge='s C++ =algorithms::smith_waterman=, works the example =AAGT= vs =AGT=
+by hand (local score 6, beating the global score 4), prints the scoring matrix,
+and shows the traceback that starts at the maximum cell and stops at the first
+zero.
+#+end_abstract
+
+* From global to local
+
+Smith-Waterman uses the same match/mismatch/gap scoring as Needleman-Wunsch (here
+the =datamunge= defaults \(+2/-1/-2\)) but answers a different question: over all
+pairs of substrings \(a'\) of \(a\) and \(b'\) of \(b\), maximize the alignment
+score of \(a'\) against \(b'\). Because a substring can start anywhere, a stretch
+of poor alignment should never be carried forward -- it is always at least as good
+to /restart/. That is exactly what flooring the recurrence at zero encodes.
+
+#+name: sw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sequence_alignment.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The dynamic program
+
+Let \(H(i,j)\) be the best score of a local alignment /ending/ at \(a_i\) and
+\(b_j\). The boundaries are all zero, \(H(i,0)=H(0,j)=0\), and
+
+\[
+H(i,j)=\max\begin{cases}
+0 & \text{start a fresh alignment here,}\\
+H(i-1,j-1)+s(a_i,b_j) & \text{extend with a (mis)match,}\\
+H(i-1,j)+s_{\text{gap}} & \text{extend with a gap in } b,\\
+H(i,j-1)+s_{\text{gap}} & \text{extend with a gap in } a.
+\end{cases}
+\]
+
+The optimal local score is the *maximum entry anywhere* in \(H\), not the corner.
+The traceback starts at that maximum cell and follows the choices backward until
+it reaches a cell of value \(0\), which marks the start of the local alignment.
+Everything outside that region is simply ignored -- never penalized -- so the
+local score can exceed the global score of the same two strings. Time and space
+are \(O(|a||b|)\).
+
+#+begin_example
+SMITH-WATERMAN(a, b, s):                 # |a| = n, |b| = m
+  H[i][0] <- 0;  H[0][j] <- 0
+  best, bi, bj <- 0, 0, 0
+  for i in 1..n:
+      for j in 1..m:
+          H[i][j] <- max( 0,
+                          H[i-1][j-1] + score(a[i], b[j], s),
+                          H[i-1][j]   + s.gap,
+                          H[i][j-1]   + s.gap )
+          if H[i][j] > best: best, bi, bj <- H[i][j], i, j
+  # traceback from the best cell until a zero cell
+  i, j <- bi, bj;  A, B <- "", ""
+  while i>0 and j>0 and H[i][j] > 0:
+      if H[i][j] == H[i-1][j-1] + score(a[i], b[j], s):
+          prepend a[i], b[j];  i, j <- i-1, j-1
+      elif H[i][j] == H[i-1][j] + s.gap:
+          prepend a[i], '-';   i <- i-1
+      else:
+          prepend '-', b[j];   j <- j-1
+  return (best, A, B)
+#+end_example
+
+* Worked example: =AAGT= versus =AGT=
+
+Under the defaults \(+2/-1/-2\), the best local alignment of =AAGT= and =AGT= is
+the three-character block
+
+: A G T
+: A G T
+
+scoring \(+6\). Its traceback starts at the maximum cell (bottom-right, value 6)
+and walks back along three matches to a zero cell -- the leading =A= of =AAGT= is
+/dropped/, not gap-penalized. Compare the *global* alignment of the same strings,
+which must place that extra =A= against a gap and so scores only \(4\). Local
+alignment wins by \(2\) precisely because it refuses to pay for the unmatched
+flank.
+
+#+name: sw-run
+#+begin_src c++ :eval no
+    const std::string a = "AAGT", b = "AGT";
+    const Alignment loc = smith_waterman(a, b);       // default scoring 2/-1/-2
+    const Alignment glo = needleman_wunsch(a, b);
+
+    std::cout << "=== Smith-Waterman local alignment ===\n";
+    std::cout << "local  (Smith-Waterman): score " << loc.score << "\n"
+              << "  " << loc.a_aligned << "\n  " << loc.b_aligned << "\n";
+    std::cout << "global (Needleman-Wunsch): score " << glo.score << "\n"
+              << "  " << glo.a_aligned << "\n  " << glo.b_aligned << "\n\n";
+
+    // A motif embedded in longer flanks: local alignment extracts just the motif.
+    const Alignment motif = smith_waterman("TTTGATTACAGGG", "CCGATTACAAA");
+    std::cout << "embedded motif: score " << motif.score << "\n"
+              << "  " << motif.a_aligned << "\n  " << motif.b_aligned << "\n";
+
+    // Rebuild H for the worked pair to display and plot (zeros floored).
+    const AlignmentScoring s{};
+    const std::size_t n = a.size(), m = b.size();
+    std::vector<std::vector<int>> H(n + 1, std::vector<int>(m + 1, 0));
+    int best = 0; std::size_t bi = 0, bj = 0;
+    for (std::size_t i = 1; i <= n; ++i)
+        for (std::size_t j = 1; j <= m; ++j) {
+            const int sc = (a[i - 1] == b[j - 1]) ? s.match : s.mismatch;
+            H[i][j] = std::max({0, H[i - 1][j - 1] + sc, H[i - 1][j] + s.gap, H[i][j - 1] + s.gap});
+            if (H[i][j] > best) { best = H[i][j]; bi = i; bj = j; }
+        }
+
+    std::cout << "\nDP matrix H for \"" << a << "\" vs \"" << b << "\" (max " << best << "):\n        _";
+    for (char c : b) std::cout << std::setw(4) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i <= n; ++i) {
+        std::cout << "   " << (i == 0 ? '_' : a[i - 1]) << " ";
+        for (std::size_t j = 0; j <= m; ++j) std::cout << std::setw(4) << H[i][j];
+        std::cout << "\n";
+    }
+
+    // Traceback from the best cell to a zero cell.
+    std::vector<std::pair<std::size_t, std::size_t>> path;
+    for (std::size_t i = bi, j = bj; i > 0 && j > 0 && H[i][j] > 0;) {
+        path.emplace_back(i, j);
+        const int sc = (a[i - 1] == b[j - 1]) ? s.match : s.mismatch;
+        if (H[i][j] == H[i - 1][j - 1] + sc) { --i; --j; }
+        else if (H[i][j] == H[i - 1][j] + s.gap) { --i; }
+        else { --j; }
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> px, py;
+    for (const auto& [i, j] : path) { px.push_back(static_cast<double>(j)); py.push_back(-static_cast<double>(i)); }
+    plot.line(px, py, "local traceback", RGB{220, 38, 38}, 2.5);
+    plot.points({static_cast<double>(bj)}, {-static_cast<double>(bi)}, "max cell", RGB{202, 138, 4}, 16.0);
+    for (std::size_t i = 0; i <= n; ++i)
+        for (std::size_t j = 0; j <= m; ++j)
+            plot.text(static_cast<double>(j), -static_cast<double>(i), std::to_string(H[i][j]), RGB{31, 41, 55}, 13.0);
+    for (std::size_t j = 0; j < m; ++j)
+        plot.text(static_cast<double>(j + 1), 0.7, std::string(1, b[j]), RGB{37, 99, 235}, 14.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(-0.8, -static_cast<double>(i + 1), std::string(1, a[i]), RGB{22, 163, 74}, 14.0);
+    plot.title("Smith-Waterman matrix: AAGT vs AGT (local score 6)")
+        .x_label("prefix of \"AGT\"").y_label("prefix of \"AAGT\" (downward)").background({250, 250, 252});
+    plot.x_limits(-1.5, static_cast<double>(m) + 0.5);
+    plot.y_limits(-static_cast<double>(n) - 0.5, 1.5);
+    plot.save_svg("build/org/smith_waterman_dp.svg");
+    std::cout << "\nwrote smith_waterman_dp.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/smith_waterman_analysis.cpp <<'CPP'
+<<sw-includes>>
+
+int main() {
+<<sw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/smith_waterman_analysis.cpp -o build/org/smith_waterman_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/smith_waterman_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Smith-Waterman local alignment ===
+local  (Smith-Waterman): score 6
+  AGT
+  AGT
+global (Needleman-Wunsch): score 4
+  AAGT
+  -AGT
+
+embedded motif: score 14
+  GATTACA
+  GATTACA
+
+DP matrix H for "AAGT" vs "AGT" (max 6):
+        _   A   G   T
+   _    0   0   0   0
+   A    0   2   0   0
+   A    0   2   1   0
+   G    0   0   4   2
+   T    0   0   2   6
+
+wrote smith_waterman_dp.svg
+#+end_example
+
+The local score 6 beats the global score 4 on the same strings: Smith-Waterman
+drops the leading =A= of =AAGT= instead of gap-penalizing it. The embedded-motif
+example makes the point vividly -- =GATTACA= is pulled out of two very different
+flanking contexts, which is exactly why local alignment is the workhorse of
+database homology search.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/smith_waterman_dp.svg]]
+
+The gold marker is the maximum cell where the traceback begins; the red path runs
+back along the three matching columns and stops the instant it reaches a zero
+cell. The whole upper-left region sits at zero -- the floor that lets an alignment
+restart -- so the leading =A= never enters the reported alignment at all.
