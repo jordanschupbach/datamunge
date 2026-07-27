@@ -633,6 +633,26 @@ We implement the Chudnovsky algorithm (=algorithms::chudnovsky_pi=) and report i
 
 We implement circular-mode CORDIC (=algorithms::cordic_sincos=) and report it as a literate program. We derive how choosing rotation angles arctan(2^-i) turns each step into a bit shift and add, with a single constant gain K~0.6073; sin/cos match std to many digits over a full range, and the rotating vector is drawn spiralling onto the unit circle.
 
+** [[./gram_schmidt_analysis.html][The Gram-Schmidt Process: Manufacturing an Orthonormal Basis]] ([[./gram_schmidt_analysis.pdf][PDF]])
+/A literate C++ study of vector orthogonalization using datamunge/
+
+We implement the modified Gram-Schmidt process (=algorithms::gram_schmidt=) and report it as a literate program. We give the subtract-projections-then-normalize recurrence and its stability; orthonormalizing (2,1) and (1,3) gives an orthogonal unit pair, with the projection-and-subtract step drawn geometrically.
+
+** [[./power_iteration_analysis.html][Power Iteration: Finding the Dominant Eigenvector by Repeated Multiplication]] ([[./power_iteration_analysis.pdf][PDF]])
+/A literate C++ study of the dominant eigenpair using datamunge/
+
+We implement power iteration (=algorithms::power_iteration=) and report it as a literate program. We show why repeated multiply-and-normalize aligns with the top eigenvector and the Rayleigh quotient gives the eigenvalue; on [[2,1],[1,2]] the estimate climbs 2, 2.8, 2.976, ... to the true 3 with eigenvector (1,1).
+
+** [[./strassen_analysis.html][The Strassen Algorithm: Matrix Multiplication in Seven Products]] ([[./strassen_analysis.pdf][PDF]])
+/A literate C++ study of sub-cubic matrix multiplication using datamunge/
+
+We implement Strassen's algorithm (=algorithms::strassen_multiply=) and report it as a literate program. We give the seven block products that replace the schoolbook eight, yielding O(n^2.807); it reproduces [[19,22],[43,50]] and agrees with the cubic method on a 100x100 product, with the two cost exponents plotted.
+
+** [[./freivalds_analysis.html][Freivalds' Algorithm: Verifying a Matrix Product Without Recomputing It]] ([[./freivalds_analysis.pdf][PDF]])
+/A literate C++ study of randomized verification using datamunge/
+
+We implement Freivalds' algorithm (=algorithms::freivalds_verify=) and report it as a literate program. We show the O(n^2)-per-round test A(Br)=Cr and its <= 2^-rounds error; a corrupted product is caught, and the measured false-accept rate is plotted halving each round (0.50, 0.24, 0.12, ...) alongside the 2^-rounds bound.
+
 ** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
 /A literate C++ study of bracketed root-finding using datamunge/
 

@@ -448,16 +448,16 @@ Further information: Numerical linear algebra
         Inverse iteration
         Jacobi method
         Lanczos iteration
-        Power iteration
+        [x] Power iteration  -- datamunge::algorithms::power_iteration; report examples/org/power_iteration_analysis.org
         QR algorithm
         Rayleigh quotient iteration
-    Gram–Schmidt process: orthogonalizes a set of vectors
+    [x] Gram–Schmidt process: orthogonalizes a set of vectors  -- datamunge::algorithms::gram_schmidt (modified, numerically stable); report examples/org/gram_schmidt_analysis.org
     Krylov methods (for large sparse matrix problems; third most-important numerical method class of the 20th century as ranked by SISC; after fast-fourier and fast-multipole)
     Matrix multiplication algorithms
         Cannon's algorithm: a distributed algorithm for matrix multiplication especially suitable for computers laid out in an N × N mesh
         Coppersmith–Winograd algorithm: square matrix multiplication
-        Freivalds' algorithm: a randomized algorithm used to verify matrix multiplication
-        Strassen algorithm: faster matrix multiplication
+        [x] Freivalds' algorithm: a randomized algorithm used to verify matrix multiplication  -- datamunge::algorithms::freivalds_verify; report examples/org/freivalds_analysis.org
+        [x] Strassen algorithm: faster matrix multiplication  -- datamunge::algorithms::strassen_multiply; report examples/org/strassen_analysis.org
 
     Solving systems of linear equations
         Biconjugate gradient method: solves systems of linear equations

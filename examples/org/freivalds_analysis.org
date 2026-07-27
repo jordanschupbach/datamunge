@@ -1,0 +1,161 @@
+#+title: Freivalds' Algorithm: Verifying a Matrix Product Without Recomputing It
+#+subtitle: A literate C++ study of randomized verification with =datamunge='s =algorithms::freivalds_verify=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Suppose an untrusted party hands you \(A\), \(B\), and a claimed product \(C\), and
+you want to know whether \(AB=C\). Recomputing \(AB\) costs \(O(n^3)\) (or
+\(O(n^{2.807})\) with Strassen). *Freivalds' algorithm* (1977) *verifies* it in only
+\(O(n^2)\) by a beautifully simple randomized test: multiply everything by a random
+0/1 vector and check consistency. If the product is right it always passes; if it is
+wrong, each round catches the error with probability at least one half. This report
+implements it in =datamunge='s C++ =algorithms::freivalds_verify= and measures the
+false-accept probability plummeting as \(2^{-\text{rounds}}\).
+#+end_abstract
+
+* One matrix-vector check per round
+
+Pick a random vector \(r\in\{0,1\}^n\). Compute \(A(Br)\) and \(Cr\) -- each is just
+two matrix-*vector* products, \(O(n^2)\) work, no matrix-matrix multiply anywhere.
+If \(AB=C\) then \(ABr=Cr\) for every \(r\), so the test always passes. If
+\(AB\ne C\), let \(D=AB-C\ne 0\); the test fails whenever \(Dr\ne 0\), and a nonzero
+matrix sends at least *half* of all 0/1 vectors to a nonzero result. So one round
+has failure-to-detect probability \(\le 1/2\), and \(k\) independent rounds drive it
+to \(\le 2^{-k}\) -- twenty rounds leave under a one-in-a-million chance of blessing a
+wrong product, at a total cost of \(O(kn^2)\), far below recomputing \(AB\).
+
+#+name: fv-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_algebra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::vector<std::vector<double>> naive(const std::vector<std::vector<double>>& A, const std::vector<std::vector<double>>& B) {
+    const std::size_t m = A.size(), k = A[0].size(), n = B[0].size();
+    std::vector<std::vector<double>> C(m, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < m; ++i) for (std::size_t p = 0; p < k; ++p) for (std::size_t j = 0; j < n; ++j) C[i][j] += A[i][p] * B[p][j];
+    return C;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FREIVALDS(A, B, C, rounds):
+  repeat rounds times:
+      r <- random vector in {0,1}^n
+      if A(Br) != Cr: return "not equal"       # O(n^2): two matrix-vector products each side
+  return "probably equal"                        # wrong with probability <= 2^-rounds
+#+end_example
+
+* Worked example and the error curve
+
+We build a correct product and a corrupted one (a single entry changed), confirm
+the verifier accepts the first and rejects the second, then measure empirically how
+often a single wrong entry slips past as the number of rounds grows.
+
+#+name: fv-run
+#+begin_src c++ :eval no
+    std::mt19937 rng(3);
+    std::uniform_int_distribution<int> v(-9, 9);
+    const std::size_t N = 40;
+    std::vector<std::vector<double>> A(N, std::vector<double>(N)), B(N, std::vector<double>(N));
+    for (auto& r : A) for (double& x : r) x = v(rng);
+    for (auto& r : B) for (double& x : r) x = v(rng);
+    const auto C = naive(A, B);
+    auto wrong = C; wrong[0][0] += 1.0;
+
+    std::cout << "=== Freivalds' verification (40x40) ===\n";
+    std::cout << "correct product accepted:  " << std::boolalpha << freivalds_verify(A, B, C) << "\n";
+    std::cout << "corrupted product accepted: " << freivalds_verify(A, B, wrong) << "\n\n";
+
+    // Empirical false-accept rate for the corrupted product vs number of rounds.
+    std::vector<double> xs, emp, bound;
+    const int trials = 4000;
+    for (int rounds = 1; rounds <= 12; ++rounds) {
+        int accepted = 0;
+        for (int t = 0; t < trials; ++t)
+            if (freivalds_verify(A, B, wrong, rounds, 1000u + static_cast<std::uint64_t>(t))) ++accepted;
+        const double rate = static_cast<double>(accepted) / trials;
+        xs.push_back(rounds);
+        emp.push_back(std::log10(std::max(rate, 1.0 / trials)));
+        bound.push_back(std::log10(std::pow(0.5, rounds)));
+        std::cout << "  rounds " << rounds << ": false-accept rate " << rate << "\n";
+    }
+
+    auto plot = RPlot::create();
+    plot.line(xs, bound, "2^-rounds bound", RGB{148, 163, 184}, 2.0);
+    plot.line(xs, emp, "measured", RGB{220, 38, 38}, 2.0);
+    plot.points(xs, emp, "measured", RGB{220, 38, 38}, 7.0);
+    plot.legend({"2^-rounds bound", "measured false-accept"}, {{148, 163, 184}, {220, 38, 38}});
+    plot.title("Freivalds: false-accept probability falls like 2^-rounds")
+        .x_label("rounds").y_label("log10 false-accept rate").background({250, 250, 252});
+    plot.save_svg("build/org/freivalds.svg");
+    std::cout << "\nwrote freivalds.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/freivalds_analysis.cpp <<'CPP'
+<<fv-includes>>
+
+int main() {
+<<fv-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/freivalds_analysis.cpp -o build/org/freivalds_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/freivalds_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Freivalds' verification (40x40) ===
+correct product accepted:  true
+corrupted product accepted: false
+
+  rounds 1: false-accept rate 0.4955
+  rounds 2: false-accept rate 0.23625
+  rounds 3: false-accept rate 0.11625
+  rounds 4: false-accept rate 0.06
+  rounds 5: false-accept rate 0.03075
+  rounds 6: false-accept rate 0.013
+  rounds 7: false-accept rate 0.00475
+  rounds 8: false-accept rate 0.00175
+  rounds 9: false-accept rate 0.001
+  rounds 10: false-accept rate 0.00025
+  rounds 11: false-accept rate 0
+  rounds 12: false-accept rate 0
+
+wrote freivalds.svg
+#+end_example
+
+The verifier always accepts the correct product and rejects the corrupted one at
+the default twenty rounds. The empirical false-accept rate for a single wrong entry
+halves with each added round, tracking the \(2^{-\text{rounds}}\) guarantee -- so a
+handful of \(O(n^2)\) rounds gives confidence a full \(O(n^3)\) recomputation would,
+at a fraction of the cost.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/freivalds.svg]]
+
+The red measured false-accept rate falls in a straight line on the log scale,
+shadowing the grey \(2^{-\text{rounds}}\) bound -- each extra round roughly halves the
+chance a wrong product sneaks through. That exponential decay for linear extra work
+is what makes randomized verification so much cheaper than recomputation.
