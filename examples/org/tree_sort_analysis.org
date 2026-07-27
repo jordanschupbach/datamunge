@@ -1,0 +1,166 @@
+#+title: Tree Sort: Sorting by Building a Binary Search Tree
+#+subtitle: A literate C++ study of BST-based sorting with =datamunge='s =algorithms::tree_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *binary search tree* keeps its keys so that an *in-order traversal* visits them
+in ascending order. *Tree sort* exploits this directly: insert every element into a
+BST, then traverse it in order to read out the sorted sequence. With a balanced
+tree it is \(O(n\log n)\); with a plain BST it averages \(O(n\log n)\) but
+degenerates to \(O(n^2)\) on already-sorted input, when the tree becomes a linked
+list. This report implements it in =datamunge='s C++ =algorithms::tree_sort=, draws
+the tree it builds from a small array, and confirms the in-order walk is the sort.
+#+end_abstract
+
+* Insert, then traverse in order
+
+Insert elements one by one: at each node go left if the new key is smaller, right
+if it is greater or equal (so duplicates are kept, on the right). The BST invariant
+-- every key in a left subtree is \(\le\) the node, every key in a right subtree is
+\(\ge\) it -- means the *in-order* traversal (left subtree, node, right subtree)
+emits the keys in non-decreasing order. So sorting is just: build the tree
+(\(O(n\log n)\) for \(n\) insertions into a balanced tree), then traverse it
+(\(O(n)\)). The catch is balance: feeding sorted data to a naive BST produces a
+right-leaning chain of depth \(n\), so insertions cost \(O(n^2)\) -- which is why
+production tree sorts use self-balancing trees (AVL, red-black). The traversal here
+is *iterative* with an explicit stack, so even a degenerate chain is walked without
+overflowing the call stack.
+
+#+name: tr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TREE-SORT(a):
+  build an empty BST
+  for x in a: insert x (go left if x < node, else right)
+  return IN-ORDER(root)          # left subtree, node, right subtree -> ascending
+#+end_example
+
+* Worked example: the BST of [5, 3, 8, 1, 9, 2, 7]
+
+We build the search tree for \([5,3,8,1,9,2,7]\) and lay it out with each node at
+its /in-order/ position on the horizontal axis -- which is precisely its rank in the
+sorted order, so the tree's leaves-to-root structure sits directly above the sorted
+sequence. The in-order traversal then reads the sorted array off left to right.
+
+#+name: tr-run
+#+begin_src c++ :eval no
+    const std::vector<int> data = {5, 3, 8, 1, 9, 2, 7};
+
+    std::cout << "=== Tree sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted (library): ";
+    for (int v : tree_sort(data)) std::cout << v << " ";
+    std::cout << "\n";
+
+    // Rebuild the BST to draw it.
+    std::vector<int> val, left, right;
+    auto make_node = [&](int x) { val.push_back(x); left.push_back(-1); right.push_back(-1); return static_cast<int>(val.size()) - 1; };
+    const int root = make_node(data[0]);
+    for (std::size_t i = 1; i < data.size(); ++i) {
+        int cur = root; const int x = data[i];
+        while (true) {
+            const bool go_left = x < val[static_cast<std::size_t>(cur)];
+            const int  child   = go_left ? left[static_cast<std::size_t>(cur)] : right[static_cast<std::size_t>(cur)];
+            if (child == -1) {
+                const int nn = make_node(x); // note: make_node may realloc, so assign the slot after
+                if (go_left) left[static_cast<std::size_t>(cur)] = nn; else right[static_cast<std::size_t>(cur)] = nn;
+                break;
+            }
+            cur = child;
+        }
+    }
+    const std::size_t N = val.size();
+    std::vector<double> X(N), Y(N);
+    std::vector<int> parent(N, -1);
+    int counter = 0;
+    std::function<void(int, int)> inorder = [&](int u, int depth) {
+        if (u == -1) return;
+        Y[static_cast<std::size_t>(u)] = -static_cast<double>(depth);
+        if (left[static_cast<std::size_t>(u)] != -1) parent[static_cast<std::size_t>(left[static_cast<std::size_t>(u)])] = u;
+        inorder(left[static_cast<std::size_t>(u)], depth + 1);
+        X[static_cast<std::size_t>(u)] = counter++;            // in-order index = sorted rank
+        if (right[static_cast<std::size_t>(u)] != -1) parent[static_cast<std::size_t>(right[static_cast<std::size_t>(u)])] = u;
+        inorder(right[static_cast<std::size_t>(u)], depth + 1);
+    };
+    inorder(root, 0);
+    std::cout << "in-order (= sorted): ";
+    { std::vector<std::pair<double,int>> byx; for (std::size_t i=0;i<N;++i) byx.push_back({X[i], val[i]}); std::sort(byx.begin(), byx.end());
+      for (auto& p : byx) std::cout << p.second << " "; std::cout << "\n"; }
+
+    auto plot = RPlot::create();
+    std::vector<double> ex0, ey0, ex1, ey1;
+    for (std::size_t v = 0; v < N; ++v) if (parent[v] != -1) {
+        ex0.push_back(X[static_cast<std::size_t>(parent[v])]); ey0.push_back(Y[static_cast<std::size_t>(parent[v])]);
+        ex1.push_back(X[v]); ey1.push_back(Y[v]);
+    }
+    plot.segments(ex0, ey0, ex1, ey1, RGB{148, 163, 184}, 1.5);
+    plot.points(X, Y, "nodes", RGB{37, 99, 235}, 16.0);
+    for (std::size_t v = 0; v < N; ++v) plot.text(X[v], Y[v] + 0.18, std::to_string(val[v]), RGB{31, 41, 55}, 13.0);
+    plot.title("BST of [5,3,8,1,9,2,7]; x = in-order rank, in-order walk = sorted")
+        .x_label("in-order position (sorted rank)").y_label("depth (downward)").background({250, 250, 252});
+    plot.y_limits(-3.6, 0.8);
+    plot.save_svg("build/org/tree_sort.svg");
+    std::cout << "\nwrote tree_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tree_sort_analysis.cpp <<'CPP'
+<<tr-includes>>
+#include <algorithm>
+#include <utility>
+
+int main() {
+<<tr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tree_sort_analysis.cpp -o build/org/tree_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tree_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tree sort of [5,3,8,1,9,2,7] ===
+sorted (library): 1 2 3 5 7 8 9
+in-order (= sorted): 1 2 3 5 7 8 9
+
+wrote tree_sort.svg
+#+end_example
+
+The in-order traversal yields the sorted array, matching the library's output. Laid
+out with each node at its in-order rank, the tree sits neatly above the sorted
+sequence -- the geometric statement of why an in-order walk of a BST is sorted.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/tree_sort.svg]]
+
+The tree drawn: 5 at the root, smaller keys branching left and larger ones right,
+each node placed horizontally at its sorted rank. Reading the nodes left to right
+-- the in-order traversal -- gives 1 2 3 5 7 8 9. Feed this same insert routine an
+already-sorted array and the tree would collapse into a right-leaning chain, the
+\(O(n^2)\) worst case that balanced trees exist to prevent.

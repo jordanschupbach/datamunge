@@ -1,0 +1,135 @@
+#+title: Pigeonhole Sort: One Hole per Value
+#+subtitle: A literate C++ study of small-range integer sorting with =datamunge='s =algorithms::pigeonhole_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When the keys are integers drawn from a small range, sorting need not compare at
+all. *Pigeonhole sort* allocates one "hole" for every value in \([\min,\max]\),
+drops each element straight into its hole, and reads the holes back in order. It
+runs in \(O(n+\text{range})\) -- exact and stable -- and is unbeatable when the
+range is comparable to the number of elements, but wasteful when the range dwarfs
+them. This report implements it in =datamunge='s C++
+=algorithms::pigeonhole_sort=, sorts a small array, and shows the hole occupancy
+that /is/ the sorted histogram of the data.
+#+end_abstract
+
+* Holes, not comparisons
+
+Let the values lie in \([\min,\max]\), a range of \(R=\max-\min+1\). Create \(R\)
+holes, one per possible value. Pass over the input once, putting each \(x\) into
+hole \(x-\min\); then walk the holes in increasing order, emitting their contents.
+Because holes are visited in order and elements keep their arrival order within a
+hole, the output is sorted and stable, in \(O(n+R)\) time and space. The kinship
+with counting sort is close -- counting sort tallies occurrences, pigeonhole sort
+moves the actual elements, which matters when each key carries satellite data. The
+method shines when \(R=O(n)\) and is a poor fit when \(R\gg n\) (a handful of values
+spread across a billion-wide range would allocate a billion empty holes).
+
+#+name: ph-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+PIGEONHOLE-SORT(a):
+  min, max <- range of a ; R <- max - min + 1
+  hole[0 .. R-1] <- empty
+  for x in a: append x to hole[x - min]
+  output <- concatenation of hole[0], hole[1], ..., hole[R-1]
+  return output
+#+end_example
+
+* Worked example and hole-occupancy view
+
+We sort \([5,3,8,1,9,2,7]\), then drop 200 values from a small range into their
+holes; the occupancy of the holes, read left to right, is exactly the sorted data's
+histogram.
+
+#+name: ph-run
+#+begin_src c++ :eval no
+    std::cout << "=== Pigeonhole sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : pigeonhole_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\n";
+
+    const int n = 200;
+    std::mt19937 rng(2);
+    std::uniform_int_distribution<int> val(1, 20); // small range R = 20
+    std::vector<int> a(n);
+    for (int& x : a) x = val(rng);
+    const int mn = *std::min_element(a.begin(), a.end()), mx = *std::max_element(a.begin(), a.end());
+    const int R = mx - mn + 1;
+    std::vector<int> occ(static_cast<std::size_t>(R), 0);
+    for (int x : a) ++occ[static_cast<std::size_t>(x - mn)];
+    std::cout << n << " items, range R = " << R << " (holes); cost ~ O(n + R) = O(" << n + R << ")\n";
+    std::cout << "hole occupancy: ";
+    for (int c : occ) std::cout << c << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> xs, ys;
+    for (int i = 0; i < R; ++i) { xs.push_back(mn + i); ys.push_back(occ[static_cast<std::size_t>(i)]); }
+    plot.bars(xs, ys, "occupancy", RGB{37, 99, 235});
+    plot.title("Pigeonhole occupancy: one hole per value, read left to right = sorted")
+        .x_label("value (hole)").y_label("items in hole").background({250, 250, 252});
+    plot.save_svg("build/org/pigeonhole_sort.svg");
+    std::cout << "\nwrote pigeonhole_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pigeonhole_sort_analysis.cpp <<'CPP'
+<<ph-includes>>
+
+int main() {
+<<ph-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pigeonhole_sort_analysis.cpp -o build/org/pigeonhole_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pigeonhole_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pigeonhole sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+
+200 items, range R = 20 (holes); cost ~ O(n + R) = O(220)
+hole occupancy: 8 7 6 4 10 16 10 12 17 8 7 14 5 6 11 12 8 14 12 13
+
+wrote pigeonhole_sort.svg
+#+end_example
+
+With 200 items in a range of 20, pigeonhole sort touches each item once and each
+hole once -- \(O(n+R)\) -- and needs no comparisons at all. The occupancy vector is
+the sorted data's histogram: emitting hole 1's items, then hole 2's, and so on,
+produces the fully ordered sequence directly.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/pigeonhole_sort.svg]]
+
+Each bar is a hole; its height is how many items carry that value. Sweeping the
+holes left to right and pouring out their contents /is/ the sort -- no comparison
+ever happens. This is ideal when the range (number of bars) is comparable to the
+item count and wasteful when it is vastly larger.

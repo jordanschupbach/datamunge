@@ -1,0 +1,143 @@
+#+title: Bucket Sort: Scatter, Sort Small, Gather
+#+subtitle: A literate C++ study of distribution sorting with =datamunge='s =algorithms::bucket_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Comparison sorts cannot beat \(O(n\log n)\); distribution sorts sidestep the bound
+by exploiting the /values/ rather than only comparing them. *Bucket sort* scatters
+the input into ordered *buckets* by value range, sorts each small bucket, and
+concatenates them. On roughly uniform data the buckets stay tiny and the whole
+thing runs in expected \(O(n)\) -- but if the data clump into one bucket it
+degrades to \(O(n^2)\). This report implements it in =datamunge='s C++
+=algorithms::bucket_sort=, sorts a small array, and shows how bucket occupancy --
+balanced or lopsided -- decides its speed.
+#+end_abstract
+
+* Scatter by value, sort within, gather in order
+
+With \(n\) items spanning \([\min,\max]\), create \(k\) buckets and send value
+\(x\) to bucket \(\lfloor (x-\min)\,k/(\max-\min+1)\rfloor\), so lower buckets hold
+smaller values. Sort each bucket (here by insertion sort, cheap because buckets are
+short), then read the buckets out in order -- the result is fully sorted. Using
+\(k=n\) buckets, uniformly distributed data puts on average one item per bucket, so
+the per-bucket sorting is \(O(1)\) amortized and the total is \(O(n)\) expected.
+The assumption is everything: adversarial or heavily skewed data can pile into a
+single bucket, collapsing bucket sort back to the \(O(n^2)\) of its inner sort.
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BUCKET-SORT(a):
+  find min, max ; k <- n buckets
+  for x in a:
+      idx <- floor((x - min) * k / (max - min + 1))
+      append x to bucket[idx]
+  for each bucket in order:
+      insertion-sort(bucket)
+      append bucket to output
+  return output
+#+end_example
+
+* Worked example and occupancy experiment
+
+We sort \([5,3,8,1,9,2,7]\), then compare bucket occupancy for uniformly
+distributed data (balanced -- the good case) against clustered data (lopsided --
+the bad case), since occupancy is what governs the running time.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    std::cout << "=== Bucket sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : bucket_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n\n";
+
+    const int n = 100;
+    std::mt19937 rng(1);
+    std::uniform_int_distribution<int> uni(0, 999);
+    std::normal_distribution<double>   clu(500.0, 4.0); // a tight cluster around 500
+    std::vector<int> u(n), c(n);
+    for (int i = 0; i < n; ++i) { u[static_cast<std::size_t>(i)] = uni(rng); c[static_cast<std::size_t>(i)] = std::clamp(static_cast<int>(clu(rng)), 0, 999); }
+    c[0] = 0; c[1] = 999; // two outliers stretch [min,max], so the cluster collapses into one bucket
+
+    auto occupancy = [&](const std::vector<int>& v) {
+        const int mn = *std::min_element(v.begin(), v.end()), mx = *std::max_element(v.begin(), v.end());
+        const long long span = static_cast<long long>(mx) - mn + 1;
+        std::vector<int> occ(static_cast<std::size_t>(n), 0);
+        for (int x : v) ++occ[static_cast<std::size_t>(static_cast<long long>(x - mn) * n / span)];
+        return occ;
+    };
+    const auto ou = occupancy(u), oc = occupancy(c);
+    std::cout << "max bucket occupancy: uniform=" << *std::max_element(ou.begin(), ou.end())
+              << ", clustered=" << *std::max_element(oc.begin(), oc.end()) << " (of " << n << " items)\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> xs, yu, yc;
+    for (int i = 0; i < n; ++i) { xs.push_back(i); yu.push_back(ou[static_cast<std::size_t>(i)]); yc.push_back(oc[static_cast<std::size_t>(i)]); }
+    plot.bars(xs, yc, "clustered", RGB{220, 38, 38});
+    plot.bars(xs, yu, "uniform", RGB{37, 99, 235});
+    plot.legend({"uniform (balanced)", "clustered (lopsided)"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Bucket occupancy decides the speed: balanced vs clustered")
+        .x_label("bucket index").y_label("items in bucket").background({250, 250, 252});
+    plot.save_svg("build/org/bucket_sort.svg");
+    std::cout << "\nwrote bucket_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bucket_sort_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bucket_sort_analysis.cpp -o build/org/bucket_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bucket_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bucket sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+
+max bucket occupancy: uniform=4, clustered=52 (of 100 items)
+
+wrote bucket_sort.svg
+#+end_example
+
+Uniform data spreads roughly one item per bucket, so every bucket's insertion sort
+is trivial and the total cost is linear. Clustered data crams many items into a few
+buckets, and those buckets' insertion sorts dominate -- the same algorithm swinging
+between \(O(n)\) and \(O(n^2)\) purely on how the values are distributed.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/bucket_sort.svg]]
+
+The blue uniform bars hover near one item per bucket across the whole range; the
+red clustered bars pile up into a narrow spike of tall buckets and leave the rest
+empty. Bucket sort is fast exactly when the blue picture holds and slow when the
+red one does.
