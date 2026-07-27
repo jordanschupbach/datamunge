@@ -128,6 +128,11 @@ datamunge/stats/image_explainers
 datamunge/stats/conformal
 datamunge/stats/sammon_mapping
 datamunge/stats/umap
+datamunge/stats/bootstrap
+datamunge/stats/jackknife
+datamunge/stats/u_statistic
+datamunge/stats/v_statistic
+datamunge/stats/permutation_test
 datamunge/fem/mesh1d
 datamunge/fem/mesh2d
 datamunge/fem/fem1d

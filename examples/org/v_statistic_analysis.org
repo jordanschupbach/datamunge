@@ -1,0 +1,179 @@
+#+title: V-statistics: Plug-in Estimation and its Finite-Sample Bias
+#+subtitle: A literate C++ study of von Mises statistics with =datamunge='s =stats::VStatistic=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *V-statistic* (von Mises 1947) is the plug-in estimator that results from
+applying a symmetric kernel's expectation to the empirical distribution --
+equivalently, averaging the kernel over *all* \(n^m\) index tuples, including
+the "diagonal" tuples that reuse an observation. It uses the identical kernel
+as the corresponding U-statistic but keeps those diagonal terms, which makes
+it biased at finite \(n\) yet asymptotically equivalent. This report
+implements V-statistics in =datamunge='s C++ =stats::VStatistic= and presents
+it as a literate program: every number is produced by a single compiled
+binary. We derive the V-statistic as a plug-in functional, relate it term by
+term to the U-statistic, and show that its bias is \(O(1/n)\). On a simulated
+\(\mathcal{N}(0,4)\) sample the degree-2 variance kernel makes this concrete:
+the V-statistic is exactly the \(\div n\) (biased) sample variance and the
+U-statistic the \(\div(n-1)\) (unbiased) one, so \(V_n = \frac{n-1}{n}U_n\)
+to the digit at every sample size, and the gap \(V_n - U_n\) shrinks from
+\(-1.69\) at \(n=5\) to \(-0.02\) at \(n=160\) as both converge on the true
+variance \(4\).
+#+end_abstract
+
+* The plug-in / von Mises functional
+
+For a symmetric kernel \(h\) of degree \(m\) with estimand
+\(\theta = \mathbb{E}[h(X_1,\dots,X_m)] = \int\!\cdots\!\int h\,dF\cdots dF\),
+the *V-statistic* is the plug-in estimate obtained by replacing \(F\) with the
+empirical distribution \(\hat F_n\):
+\[
+  V_n \;=\; \int\!\cdots\!\int h \,d\hat F_n \cdots d\hat F_n
+       \;=\; \frac{1}{n^m}\sum_{i_1=1}^{n}\cdots\sum_{i_m=1}^{n} h(x_{i_1},\dots,x_{i_m}).
+\]
+Every index runs independently over all \(n\) observations, so the sum ranges
+over all \(n^m\) tuples drawn *with replacement*. This is exactly the shape of
+a "plug-in" estimator: whatever population quantity \(\theta = T(F)\) the
+kernel defines, \(V_n = T(\hat F_n)\). Many everyday estimators are
+V-statistics -- the biased (\(\div n\)) sample variance and the plug-in
+central moments among them -- as are the Cramér-von Mises goodness-of-fit
+functionals from which V-statistics take their name.
+
+#+name: v-includes
+#+begin_src c++ :eval no
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/u_statistic.hpp>
+#include <datamunge/stats/v_statistic.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::stats;
+using namespace datamunge::plot;
+#+end_src
+
+* Relation to the U-statistic and the \(O(1/n)\) bias
+
+The U- and V-statistics share the kernel but differ in which tuples they
+average. The U-statistic uses only tuples with \(m\) *distinct* indices; the
+V-statistic adds the *diagonal* tuples in which indices coincide. Splitting
+the V-statistic's sum into its off-diagonal and diagonal parts,
+\[
+  V_n = \frac{\text{(number of distinct-index tuples)}}{n^m}\,U_n \;+\; \frac{1}{n^m}\big(\text{diagonal terms}\big),
+\]
+shows that \(V_n\) and \(U_n\) agree up to a correction of order \(1/n\), so
+\(V_n\) is biased at finite \(n\) but consistent, with the same limiting
+normal distribution as \(U_n\). For the degree-2 variance kernel
+\(h(a,b)=\tfrac12(a-b)^2\) the diagonal terms vanish (\(h(a,a)=0\)), and the
+relation collapses to the clean identity
+\[
+  V_n = \frac{n(n-1)}{n^2}\,U_n = \frac{n-1}{n}\,U_n,
+  \qquad\text{i.e. } V_n - U_n = -\frac{U_n}{n},
+\]
+the familiar difference between the \(\div n\) and \(\div(n-1)\) variances.
+
+* Example: variance kernel on a growing sample
+
+We draw one \(\mathcal{N}(0, 4)\) sample and, on its nested prefixes of size
+\(n = 5, 10, \dots, 160\), compute both \(V_n\) and \(U_n\) for the variance
+kernel. We tabulate \(V_n\), \(U_n\), their difference, and the predicted
+\(\frac{n-1}{n}U_n\), and plot both against \(n\) with the true variance
+\(\sigma^2 = 4\).
+
+#+name: v-run
+#+begin_src c++ :eval no
+    std::mt19937_64 rng(20240915);
+    std::normal_distribution<double> gauss(0.0, 2.0); // sd 2 => variance 4
+    std::vector<double> full(200);
+    for (auto& z : full) z = gauss(rng);
+
+    const SymmetricKernel var_kernel = [](const std::vector<double>& t) { return 0.5 * (t[0] - t[1]) * (t[0] - t[1]); };
+
+    std::cout << "=== V-statistic vs U-statistic for the variance kernel, as n grows ===\n";
+    std::cout << "(true sigma^2 = 4; V_n is the /n plug-in variance, U_n the /(n-1) unbiased one)\n";
+    std::cout << "    n        U_n        V_n      V_n-U_n    (n-1)/n*U_n\n";
+    std::vector<double> nx, vy, uy;
+    for (std::size_t n : {5u, 10u, 20u, 40u, 80u, 160u}) {
+        std::vector<double> s(full.begin(), full.begin() + static_cast<std::ptrdiff_t>(n));
+        const double u = UStatistic(2).run(s, var_kernel).estimate;
+        const double v = VStatistic(2).run(s, var_kernel).estimate;
+        std::cout << "  " << std::setw(4) << n << "    " << std::setw(8) << u << "   " << std::setw(8) << v << "   "
+                  << std::setw(8) << (v - u) << "   " << std::setw(8)
+                  << (static_cast<double>(n - 1) / static_cast<double>(n) * u) << "\n";
+        nx.push_back(static_cast<double>(n));
+        uy.push_back(u);
+        vy.push_back(v);
+    }
+
+    std::vector<double> tx = {nx.front(), nx.back()}, ty = {4.0, 4.0};
+    auto plot = RPlot::create();
+    plot.line(tx, ty, "true variance = 4", {156, 163, 175}, 1.5);
+    plot.points(nx, uy, "U-statistic (unbiased)", {37, 99, 235}, 4.0);
+    plot.lines(nx, uy, "", {37, 99, 235}, 1.0);
+    plot.points(nx, vy, "V-statistic (plug-in)", {220, 38, 38}, 4.0);
+    plot.lines(nx, vy, "", {220, 38, 38}, 1.0);
+    plot.title("V- and U-statistics converge as n grows (variance kernel)")
+        .x_label("sample size n").y_label("variance estimate").background({250, 250, 252});
+    plot.save_svg("build/org/v_statistic_convergence.svg");
+    std::cout << "\nwrote v_statistic_convergence.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/v_statistic_analysis.cpp <<'CPP'
+<<v-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+<<v-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/v_statistic_analysis.cpp -o build/org/v_statistic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/v_statistic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== V-statistic vs U-statistic for the variance kernel, as n grows ===
+(true sigma^2 = 4; V_n is the /n plug-in variance, U_n the /(n-1) unbiased one)
+    n        U_n        V_n      V_n-U_n    (n-1)/n*U_n
+     5      8.4337     6.7470    -1.6867     6.7470
+    10      5.0624     4.5562    -0.5062     4.5562
+    20      4.0677     3.8643    -0.2034     3.8643
+    40      3.7236     3.6305    -0.0931     3.6305
+    80      3.2429     3.2024    -0.0405     3.2024
+   160      3.6455     3.6227    -0.0228     3.6227
+#+end_example
+
+Two things are visible at once. First, the \(V_n\) column equals the
+\(\frac{n-1}{n}U_n\) column to every printed digit, confirming the identity
+\(V_n = \frac{n-1}{n}U_n\) for this kernel exactly -- the V-statistic really
+is the plug-in (\(\div n\)) variance and the U-statistic the unbiased
+(\(\div(n-1)\)) one. Second, their difference \(V_n - U_n = -U_n/n\) is the
+finite-sample bias, and it decays like \(1/n\): from \(-1.69\) at \(n=5\)
+(where the \(\div n\) versus \(\div(n-1)\) distinction is a 20% effect) to
+\(-0.02\) at \(n=160\) (a fraction of a percent). Both estimators converge to
+the true variance \(4\):
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/v_statistic_convergence.svg]]
+
+The U- and V-curves are all but indistinguishable once \(n\) passes a few
+dozen -- the practical message being that the choice between a U- and a
+V-statistic matters only in small samples, while asymptotically they carry
+the same information. (The estimates themselves fluctuate around \(4\)
+because this is a single finite sample, not because of any bias in the
+estimators.)

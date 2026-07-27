@@ -214,6 +214,33 @@ We apply thirteen classical hypothesis tests to the iris dataset using =datamung
 
 We implement split conformal prediction -- for classification (=stats::SplitConformalClassifier=, prediction /sets/) and regression (=stats::SplitConformalRegressor=, prediction /intervals/) -- and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document. Wrapping any base model, conformal prediction turns point predictions into sets that provably contain the truth with probability at least 1 - alpha, under only exchangeability. On iris species it returns a singleton {setosa} where the model is confident and a two-class {versicolor, virginica} set exactly at the overlapping boundary; averaged over 300 random splits its empirical coverage meets the 1 - alpha target at every level; and a regression example produces guaranteed prediction intervals for petal length.
 
+* Resampling & Nonparametric Inference
+
+** [[./bootstrap_analysis.html][The Bootstrap: Standard Errors and Confidence Intervals by Resampling]] ([[./bootstrap_analysis.pdf][PDF]])
+/A literate C++ study of Efron's nonparametric bootstrap -- SE, bias, and percentile/basic/normal/BCa intervals -- using datamunge/
+
+We implement the nonparametric bootstrap (=stats::Bootstrap=) and report it as a literate program: every number and figure comes from a single compiled, executed C++ binary. We derive the plug-in principle, the resampling estimates of standard error and bias, and four confidence intervals (percentile, basic, normal, BCa), then bootstrap the median of iris Sepal.Length; as a calibration check the bootstrap SE of the mean (0.067) reproduces the closed-form s/sqrt(n) (0.068).
+
+** [[./jackknife_analysis.html][The Jackknife: Bias and Standard Error by Systematic Leave-One-Out]] ([[./jackknife_analysis.pdf][PDF]])
+/A literate C++ study of the delete-1 and delete-d jackknife using datamunge/
+
+We implement the delete-1 jackknife (=stats::jackknife=) and delete-d jackknife (=jackknife_delete_d=) and report it as a literate program. The jackknife converts the plug-in variance into the unbiased variance exactly and reproduces s/sqrt(n) for the mean; the delete-1 jackknife then visibly *fails* on the median (SE 0), while the delete-d jackknife recovers the bootstrap's answer -- a concrete lesson in smoothness.
+
+** [[./u_statistic_analysis.html][U-statistics: Unbiased Estimation from Symmetric Kernels]] ([[./u_statistic_analysis.pdf][PDF]])
+/A literate C++ study of complete, incomplete, and infinite-order U-statistics using datamunge/
+
+We implement U-statistics (=stats::UStatistic=) and report it as a literate program. We derive the U-statistic, its unbiasedness, the Hoeffding decomposition and the leading-order variance m^2 zeta_1 / n, and the incomplete U-statistic underlying "infinite-order" bagged estimators; on iris the variance and Gini kernels are computed with standard errors, and an incomplete U-statistic converges to the complete average over all 11,175 pairs.
+
+** [[./v_statistic_analysis.html][V-statistics: Plug-in Estimation and its Finite-Sample Bias]] ([[./v_statistic_analysis.pdf][PDF]])
+/A literate C++ study of von Mises statistics using datamunge/
+
+We implement V-statistics (=stats::VStatistic=) and report it as a literate program. We derive the von Mises plug-in functional, relate it term-by-term to the U-statistic, and show its O(1/n) bias: for the variance kernel V_n = (n-1)/n U_n exactly, and the two converge as n grows.
+
+** [[./permutation_analysis.html][Permutation Tests: Exact Inference by Relabeling]] ([[./permutation_analysis.pdf][PDF]])
+/A literate C++ study of the two-sample permutation test using datamunge/
+
+We implement the two-sample permutation test (=stats::permutation_test_two_sample=) and report it as a literate program. We derive exchangeability, the permutation null distribution, and the Monte Carlo p-value, then test setosa vs versicolor Sepal.Length: the observed mean difference falls entirely outside the null distribution (p = 0.0001, matching Welch's t-test), and the identical routine handles the difference in medians for which no analytic null exists.
+
 * Random Number Generation
 
 ** [[./random_generation.html][Reproducible Random Variate Generation]] ([[./random_generation.pdf][PDF]])

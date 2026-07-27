@@ -40,10 +40,15 @@
 #include <datamunge/stats/lle.hpp>
 #include <datamunge/stats/lm.hpp>
 #include <datamunge/stats/lmm.hpp>
+#include <datamunge/stats/bootstrap.hpp>
+#include <datamunge/stats/jackknife.hpp>
 #include <datamunge/stats/mds.hpp>
 #include <datamunge/stats/mlp_classifier.hpp>
 #include <datamunge/stats/naive_bayes_classifier.hpp>
 #include <datamunge/stats/pca.hpp>
+#include <datamunge/stats/permutation_test.hpp>
+#include <datamunge/stats/u_statistic.hpp>
+#include <datamunge/stats/v_statistic.hpp>
 #include <datamunge/stats/normality_test.hpp>
 #include <datamunge/stats/p_adjust.hpp>
 #include <datamunge/stats/proportion_test.hpp>
