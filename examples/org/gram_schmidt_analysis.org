@@ -1,0 +1,147 @@
+#+title: The Gram-Schmidt Process: Manufacturing an Orthonormal Basis
+#+subtitle: A literate C++ study of vector orthogonalization with =datamunge='s =algorithms::gram_schmidt=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Orthonormal bases make linear algebra easy -- coordinates are just dot products,
+and projections are trivial. The *Gram-Schmidt process* builds one from any set of
+linearly independent vectors: take each vector, subtract off its components along
+the directions already fixed, and normalize what remains. This report implements
+the numerically stable *modified* form in =datamunge='s C++
+=algorithms::gram_schmidt=, orthonormalizes a pair of 2-D vectors, and draws the
+projection-and-subtract step that makes the new direction perpendicular.
+#+end_abstract
+
+* Subtract the overlap, normalize the rest
+
+Given vectors \(v_1,\dots,v_k\), produce orthonormal \(q_1,\dots,q_k\) with the
+same span. Set \(q_1=v_1/\lVert v_1\rVert\). For each later \(v_j\), remove its
+projection onto every earlier \(q_i\):
+
+\[
+u_j=v_j-\sum_{i<j}(v_j\!\cdot q_i)\,q_i,\qquad q_j=\frac{u_j}{\lVert u_j\rVert}.
+\]
+
+Because \(u_j\) is what is left of \(v_j\) after deleting all overlap with the
+previous directions, it is orthogonal to every \(q_i\), \(i<j\). The *modified*
+Gram-Schmidt subtracts the projections one at a time (updating \(u_j\) as it goes)
+rather than all at once; algebraically identical, it is far less sensitive to
+rounding. If a vector is linearly dependent on the earlier ones its remainder is
+zero and it is dropped, so the output is always an orthonormal basis of the span.
+
+#+name: gs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_algebra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GRAM-SCHMIDT(v_1..v_k):
+  Q <- []
+  for v in v_1..v_k:
+      u <- v
+      for q in Q: u <- u - (u . q) * q       # subtract each projection (modified order)
+      if ||u|| > 0: append u / ||u|| to Q     # normalize; skip if dependent
+  return Q
+#+end_example
+
+* Worked example: orthonormalizing (2,1) and (1,3)
+
+\(q_1\) points along \(v_1=(2,1)\). For \(v_2=(1,3)\), its projection onto \(q_1\)
+has length \(v_2\!\cdot q_1=\sqrt5\); subtracting it leaves \((-1,2)\), which is
+perpendicular to \(v_1\), and normalizing gives \(q_2\). The program prints the
+orthonormal pair and confirms \(q_1\!\cdot q_2=0\).
+
+#+name: gs-run
+#+begin_src c++ :eval no
+    const std::vector<std::vector<double>> V = {{2.0, 1.0}, {1.0, 3.0}};
+    const auto Q = gram_schmidt(V);
+
+    std::cout << "=== Gram-Schmidt of (2,1), (1,3) ===\n";
+    for (std::size_t i = 0; i < Q.size(); ++i)
+        std::cout << "  q" << i + 1 << " = (" << Q[i][0] << ", " << Q[i][1] << ")\n";
+    std::cout << "q1 . q2 = " << Q[0][0] * Q[1][0] + Q[0][1] * Q[1][1] << " (orthogonal)\n";
+    std::cout << "|q1| = " << std::sqrt(Q[0][0] * Q[0][0] + Q[0][1] * Q[0][1])
+              << ", |q2| = " << std::sqrt(Q[1][0] * Q[1][0] + Q[1][1] * Q[1][1]) << "\n";
+
+    // Figure: the vectors, the projection of v2 onto q1, and the perpendicular remainder.
+    const std::vector<double> v1 = V[0], v2 = V[1], q1 = Q[0], q2 = Q[1];
+    const double coef = v2[0] * q1[0] + v2[1] * q1[1];
+    const std::vector<double> proj = {coef * q1[0], coef * q1[1]};
+
+    auto plot = RPlot::create();
+    plot.segments({0, 0}, {0, 0}, {v1[0], v2[0]}, {v1[1], v2[1]}, RGB{148, 163, 184}, 2.0); // v1, v2
+    plot.segments({0.0}, {0.0}, {q1[0]}, {q1[1]}, RGB{37, 99, 235}, 2.5);                   // q1
+    plot.segments({0.0}, {0.0}, {q2[0]}, {q2[1]}, RGB{220, 38, 38}, 2.5);                   // q2
+    plot.segments({0.0}, {0.0}, {proj[0]}, {proj[1]}, RGB{202, 138, 4}, 1.5);               // projection of v2 on q1
+    plot.segments({proj[0]}, {proj[1]}, {v2[0]}, {v2[1]}, RGB{22, 163, 74}, 1.5);           // perpendicular remainder
+    plot.text(v1[0], v1[1] + 0.1, "v1", RGB{100, 116, 139}, 12.0);
+    plot.text(v2[0], v2[1] + 0.1, "v2", RGB{100, 116, 139}, 12.0);
+    plot.text(q1[0] + 0.05, q1[1] - 0.15, "q1", RGB{37, 99, 235}, 12.0);
+    plot.text(q2[0] - 0.35, q2[1], "q2", RGB{220, 38, 38}, 12.0);
+    plot.legend({"v1, v2", "q1", "q2", "projection", "remainder"},
+                {{148, 163, 184}, {37, 99, 235}, {220, 38, 38}, {202, 138, 4}, {22, 163, 74}});
+    plot.title("Gram-Schmidt: subtract v2's projection on q1 to get the perpendicular q2")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.x_limits(-1.5, 2.6); plot.y_limits(-0.5, 3.4);
+    plot.save_svg("build/org/gram_schmidt.svg");
+    std::cout << "\nwrote gram_schmidt.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gram_schmidt_analysis.cpp <<'CPP'
+<<gs-includes>>
+#include <cmath>
+
+int main() {
+<<gs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gram_schmidt_analysis.cpp -o build/org/gram_schmidt_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gram_schmidt_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Gram-Schmidt of (2,1), (1,3) ===
+  q1 = (0.894427, 0.447214)
+  q2 = (-0.447214, 0.894427)
+q1 . q2 = -1.25949e-17 (orthogonal)
+|q1| = 1, |q2| = 1
+
+wrote gram_schmidt.svg
+#+end_example
+
+The two output vectors are unit length and exactly orthogonal, and they span the
+same plane as the inputs. The key step is visible in the numbers: \(v_2\)'s
+component along \(q_1\) is removed, leaving a remainder perpendicular to \(q_1\),
+which becomes \(q_2\) after scaling to length one.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/gram_schmidt.svg]]
+
+The grey arrows are the original \(v_1,v_2\). The gold segment is \(v_2\)'s
+projection onto \(q_1\); the green segment is the perpendicular remainder
+\(v_2-\text{proj}\). Normalizing \(q_1\) (blue) and that remainder (red \(q_2\))
+gives the orthonormal basis -- two unit arrows meeting at a right angle, built from
+the skew originals by nothing more than a dot product and a subtraction.

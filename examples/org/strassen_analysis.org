@@ -1,0 +1,151 @@
+#+title: The Strassen Algorithm: Matrix Multiplication in Seven Products
+#+subtitle: A literate C++ study of sub-cubic matrix multiplication with =datamunge='s =algorithms::strassen_multiply=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Multiplying two \(n\times n\) matrices the schoolbook way costs \(n^3\)
+multiplications, and for a long time that was assumed optimal. In 1969 Volker
+Strassen shattered the belief: by combining the four \(2\times2\) block products
+cleverly, he multiplied blocks with only *seven* recursive multiplications instead
+of eight, dropping the exponent to \(\log_2 7\approx2.807\). This report implements
+it in =datamunge='s C++ =algorithms::strassen_multiply=, verifies it against the
+schoolbook product, and plots the asymptotic gap the missing multiplication opens.
+#+end_abstract
+
+* Seven products, not eight
+
+Split each matrix into \(2\times2\) blocks. The product's blocks are the eight
+schoolbook block products \(A_{11}B_{11}+A_{12}B_{21}\), etc. Strassen forms instead
+seven cleverly chosen products of block sums and differences:
+
+\[
+\begin{aligned}
+M_1&=(A_{11}{+}A_{22})(B_{11}{+}B_{22}) & M_2&=(A_{21}{+}A_{22})B_{11} & M_3&=A_{11}(B_{12}{-}B_{22})\\
+M_4&=A_{22}(B_{21}{-}B_{11}) & M_5&=(A_{11}{+}A_{12})B_{22} & M_6&=(A_{21}{-}A_{11})(B_{11}{+}B_{12})\\
+M_7&=(A_{12}{-}A_{22})(B_{21}{+}B_{22}),
+\end{aligned}
+\]
+
+from which the result blocks are \(C_{11}=M_1{+}M_4{-}M_5{+}M_7\),
+\(C_{12}=M_3{+}M_5\), \(C_{21}=M_2{+}M_4\), \(C_{22}=M_1{-}M_2{+}M_3{+}M_6\). Each
+\(M_i\) is one multiplication; applied recursively, \(T(n)=7\,T(n/2)+O(n^2)\)
+solves to \(O(n^{\log_2 7})=O(n^{2.807})\). The extra additions make it slower than
+schoolbook on small matrices, so real implementations (and this one) fall back to
+the cubic method below a threshold.
+
+#+name: st-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_algebra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::vector<std::vector<double>> naive(const std::vector<std::vector<double>>& A, const std::vector<std::vector<double>>& B) {
+    const std::size_t m = A.size(), k = A[0].size(), n = B[0].size();
+    std::vector<std::vector<double>> C(m, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < m; ++i) for (std::size_t p = 0; p < k; ++p) for (std::size_t j = 0; j < n; ++j) C[i][j] += A[i][p] * B[p][j];
+    return C;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+STRASSEN(A, B):                       # square, size a power of two
+  if n <= threshold: return schoolbook(A, B)
+  split A, B into 2x2 blocks
+  M1 = STRASSEN(A11+A22, B11+B22)     ... M7 = STRASSEN(A12-A22, B21+B22)   # 7 products
+  C11 = M1+M4-M5+M7 ; C12 = M3+M5 ; C21 = M2+M4 ; C22 = M1-M2+M3+M6
+  return assembled C
+#+end_example
+
+* Worked example and the cost curve
+
+We multiply a \(2\times2\) example by hand-checkable numbers, confirm Strassen and
+the schoolbook method agree on a larger random product, and plot the two operation
+counts.
+
+#+name: st-run
+#+begin_src c++ :eval no
+    const std::vector<std::vector<double>> A = {{1, 2}, {3, 4}}, B = {{5, 6}, {7, 8}};
+    const auto C = strassen_multiply(A, B);
+    std::cout << "=== Strassen matrix multiplication ===\n";
+    std::cout << "[[1,2],[3,4]] * [[5,6],[7,8]] = [[" << C[0][0] << "," << C[0][1] << "],["
+              << C[1][0] << "," << C[1][1] << "]]  (expected [[19,22],[43,50]])\n";
+
+    std::mt19937 rng(1);
+    std::uniform_int_distribution<int> v(-9, 9);
+    std::vector<std::vector<double>> P(100, std::vector<double>(100)), Q(100, std::vector<double>(100));
+    for (auto& r : P) for (double& x : r) x = v(rng);
+    for (auto& r : Q) for (double& x : r) x = v(rng);
+    std::cout << "100x100 random: Strassen == schoolbook? " << std::boolalpha
+              << (strassen_multiply(P, Q) == naive(P, Q)) << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> lg, cubic, stra;
+    for (int e = 1; e <= 12; ++e) {
+        const double n = std::pow(2.0, e);
+        lg.push_back(e);
+        cubic.push_back(std::log10(std::pow(n, 3.0)));
+        stra.push_back(std::log10(std::pow(n, std::log(7.0) / std::log(2.0))));
+    }
+    plot.line(lg, cubic, "schoolbook n^3", RGB{220, 38, 38}, 2.0);
+    plot.line(lg, stra, "Strassen n^2.807", RGB{37, 99, 235}, 2.0);
+    plot.legend({"schoolbook n^3", "Strassen n^2.807"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Strassen's smaller exponent: log10 operations vs log2 n")
+        .x_label("log2 n").y_label("log10 multiplications").background({250, 250, 252});
+    plot.save_svg("build/org/strassen.svg");
+    std::cout << "\nwrote strassen.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/strassen_analysis.cpp <<'CPP'
+<<st-includes>>
+
+int main() {
+<<st-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/strassen_analysis.cpp -o build/org/strassen_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/strassen_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Strassen matrix multiplication ===
+[[1,2],[3,4]] * [[5,6],[7,8]] = [[19,22],[43,50]]  (expected [[19,22],[43,50]])
+100x100 random: Strassen == schoolbook? true
+
+wrote strassen.svg
+#+end_example
+
+The \(2\times2\) product is exactly \([[19,22],[43,50]]\), and Strassen agrees with
+the schoolbook method on a 100\(\times\)100 random product -- the seven-product
+recursion computes the same answer as eight. The saving is asymptotic: one fewer
+multiplication per level compounds into a genuinely smaller growth exponent.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/strassen.svg]]
+
+Plotted as \(\log_{10}\) operations against \(\log_2 n\), both costs are straight
+lines -- but the red schoolbook line has slope 3 and the blue Strassen line slope
+\(\log_2 7\approx2.807\). The ever-widening vertical gap is the payoff: at
+\(n=4096\) Strassen does on the order of ten times fewer multiplications, and its
+faster descendants (Coppersmith-Winograd and beyond) push the exponent lower still.
