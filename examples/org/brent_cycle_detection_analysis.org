@@ -1,0 +1,220 @@
+#+title: Brent's Algorithm: Cycle Detection in Function Iteration
+#+subtitle: A literate C++ study of period-finding with =datamunge='s =algorithms::brent_cycle_detection=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Iterate any function on a finite set -- \(x_0,\ f(x_0),\ f(f(x_0)),\dots\) --
+and the sequence must eventually repeat, tracing the Greek letter \(\rho\): a
+straight /tail/ of transient states running into a /cycle/ it then circles
+forever. *Brent's algorithm* (Brent 1980) finds the length \(\lambda\) of
+that cycle and the index \(\mu\) at which it starts, using only two state
+variables and no memory of the states visited. This report implements it in
+=datamunge='s C++ =algorithms::brent_cycle_detection= and presents it as a
+literate program: every number and figure is produced by a single compiled
+binary. We describe the rho structure, give Brent's two-phase
+"powers-of-two" method with pseudocode and a correctness argument, and note
+why it beats Floyd's classic tortoise-and-hare on function-evaluation count.
+Two direct applications follow: a hand functional graph whose tail
+(\(\mu=3\)) and 4-cycle (\(\lambda=4\)) it recovers exactly, and the
+classification of *happy numbers* -- where iterating the sum of squared
+digits either collapses to the fixed point \(1\) (\(\lambda=1\)) or falls
+into the universal 8-cycle at \(4\) -- decided purely from the cycle Brent
+reports.
+#+end_abstract
+
+* Eventually periodic sequences
+
+Let \(f\) map a finite set to itself and consider the *functional-graph*
+iteration
+\[
+  x_0,\quad x_1 = f(x_0),\quad x_2 = f(x_1),\quad \dots,\quad x_{i+1} = f(x_i).
+\]
+Because the state space is finite, some value must recur; once it does, the
+sequence is trapped in a repeating loop. There is a smallest index
+\(\mu \ge 0\) -- the *tail length* -- and a smallest period \(\lambda \ge 1\)
+-- the *cycle length* -- such that
+\[
+  x_{\,i+\lambda} = x_i \quad\text{for all } i \ge \mu,
+  \qquad\text{and } \mu,\lambda \text{ are the least such values.}
+\]
+The states \(x_0,\dots,x_{\mu-1}\) are the transient tail; \(x_\mu,\dots,
+x_{\mu+\lambda-1}\) are the cycle. Finding \((\lambda,\mu)\) without storing
+the whole trajectory is the cycle-detection problem, and it powers Pollard's
+rho factorization, period-testing of pseudorandom generators, and loop
+detection in linked structures.
+
+#+name: brent-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/cycle_detection.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Brent's algorithm
+
+Floyd's classic detector advances a slow pointer one step and a fast pointer
+two steps until they collide. Brent's insight is to instead keep a stationary
+reference and let a single pointer run ahead in bursts whose lengths are
+*successive powers of two*. Phase 1 finds \(\lambda\); phase 2 finds \(\mu\).
+
+#+begin_example
+BRENT(f, x0):
+  # Phase 1 -- cycle length lambda
+  power <- 1;  lambda <- 1
+  tortoise <- x0
+  hare <- f(x0)
+  while tortoise != hare:
+      if power == lambda:          # step budget spent: teleport, double it
+          tortoise <- hare
+          power <- 2 * power
+          lambda <- 0
+      hare <- f(hare)
+      lambda <- lambda + 1
+
+  # Phase 2 -- cycle-start index mu
+  tortoise <- x0;  hare <- x0
+  repeat lambda times: hare <- f(hare)   # put the hare one full lap ahead
+  mu <- 0
+  while tortoise != hare:
+      tortoise <- f(tortoise)
+      hare <- f(hare)
+      mu <- mu + 1
+
+  return (lambda, mu)
+#+end_example
+
+*Why phase 1 is correct.* The tortoise sits at some point \(x_p\) whose index
+\(p\) is a power of two, while the hare walks forward. As soon as \(p \ge
+\mu\) (the tortoise is on the cycle) and the budget \(2^k\) between teleports
+is at least \(\lambda\), the hare -- running up to \(2^k\) steps -- is
+guaranteed to lap around and land on the tortoise's value; the steps counted
+since the last teleport are then exactly \(\lambda\). Doubling the budget
+means this happens after \(O(\lambda + \mu)\) evaluations. *Phase 2* uses the
+key fact that two pointers exactly \(\lambda\) apart, started together at
+\(x_0\) and advanced in lockstep, first agree precisely when the rear pointer
+reaches \(x_\mu\) -- the first state of the cycle.
+
+*Cost.* Both phases run in \(O(\mu + \lambda)\) time and, crucially, \(O(1)\)
+space -- only the two states are ever held. Brent's method also uses fewer
+applications of \(f\) than Floyd's (which re-walks the fast pointer at double
+speed): typically around \(\lambda + \mu\) versus Floyd's larger constant,
+which matters when \(f\) is expensive. =datamunge= returns \((\lambda,\mu)\)
+as a =CycleResult=.
+
+* Examples
+
+We run Brent on (1) an explicit seven-state functional graph with a visible
+rho shape, and (2) the /happy number/ map \(f(x) = \sum_i d_i^2\) over the
+decimal digits \(d_i\) of \(x\): a number is *happy* when this iteration
+reaches the fixed point \(1\), and otherwise it is caught in the unique
+8-cycle \(4\to16\to37\to58\to89\to145\to42\to20\to4\). Whether a number is
+happy is decided entirely by the cycle Brent finds -- \(\lambda=1\) ending at
+\(1\) means happy -- with the cycle's first state recovered by iterating
+\(f\) exactly \(\mu\) times.
+
+#+name: brent-run
+#+begin_src c++ :eval no
+    const std::vector<std::uint64_t> next = {1, 2, 3, 4, 5, 6, 3}; // 0->1->2->3->4->5->6->3
+    auto f = [&](std::uint64_t x) { return next[x]; };
+    const auto r = brent_cycle_detection(0, f);
+    std::cout << "=== Functional graph 0->1->2->3->4->5->6->3 ===\n";
+    std::cout << "tail length mu = " << r.mu << ", cycle length lambda = " << r.lambda << "\n";
+    std::cout << "  (Brent detects the tail 0,1,2 and the 4-cycle 3,4,5,6)\n";
+
+    std::vector<double> si, sx, ti, tx, ci, cx;
+    std::uint64_t x = 0;
+    for (std::size_t i = 0; i < 12; ++i) {
+        si.push_back(static_cast<double>(i));
+        sx.push_back(static_cast<double>(x));
+        if (i < r.mu) { ti.push_back(static_cast<double>(i)); tx.push_back(static_cast<double>(x)); }
+        else { ci.push_back(static_cast<double>(i)); cx.push_back(static_cast<double>(x)); }
+        x = f(x);
+    }
+    auto plot = RPlot::create();
+    plot.lines(si, sx, "", {156, 163, 175}, 1.0);
+    plot.points(ti, tx, "tail (transient)", {37, 99, 235}, 6.0);
+    plot.points(ci, cx, "cycle (periodic)", {220, 38, 38}, 6.0);
+    plot.title("Brent cycle detection: a rho-shaped iteration (mu=3, lambda=4)")
+        .x_label("iteration index i").y_label("state x_i").background({250, 250, 252});
+    plot.save_svg("build/org/brent_rho.svg");
+
+    auto ssd = [](std::uint64_t x) {
+        std::uint64_t s = 0;
+        while (x) { const std::uint64_t d = x % 10; s += d * d; x /= 10; }
+        return s;
+    };
+    std::cout << "\n=== Happy numbers via cycle detection on f(x) = sum of squared digits ===\n";
+    std::cout << "  (happy iff the iteration reaches the fixed point 1; else it falls into the 8-cycle at 4)\n";
+    for (std::uint64_t n : {7u, 19u, 23u, 4u, 116u, 999u}) {
+        const auto c = brent_cycle_detection(n, ssd);
+        std::uint64_t entry = n; // recover x_mu, the first state of the cycle
+        for (std::size_t i = 0; i < c.mu; ++i) entry = ssd(entry);
+        const bool happy = (c.lambda == 1 && entry == 1);
+        std::cout << "  " << n << ": tail mu=" << c.mu << ", cycle len=" << c.lambda << ", enters cycle at "
+                  << entry << "  ->  " << (happy ? "HAPPY" : "unhappy") << "\n";
+    }
+    std::cout << "\nwrote brent_rho.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/brent_cycle_detection_analysis.cpp <<'CPP'
+<<brent-includes>>
+
+int main() {
+<<brent-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/brent_cycle_detection_analysis.cpp -o build/org/brent_cycle_detection_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/brent_cycle_detection_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Functional graph 0->1->2->3->4->5->6->3 ===
+tail length mu = 3, cycle length lambda = 4
+  (Brent detects the tail 0,1,2 and the 4-cycle 3,4,5,6)
+
+=== Happy numbers via cycle detection on f(x) = sum of squared digits ===
+  (happy iff the iteration reaches the fixed point 1; else it falls into the 8-cycle at 4)
+  7: tail mu=5, cycle len=1, enters cycle at 1  ->  HAPPY
+  19: tail mu=4, cycle len=1, enters cycle at 1  ->  HAPPY
+  23: tail mu=3, cycle len=1, enters cycle at 1  ->  HAPPY
+  4: tail mu=0, cycle len=8, enters cycle at 4  ->  unhappy
+  116: tail mu=3, cycle len=8, enters cycle at 58  ->  unhappy
+  999: tail mu=4, cycle len=8, enters cycle at 89  ->  unhappy
+#+end_example
+
+On the explicit graph Brent recovers exactly what we built in: a tail of
+length \(\mu=3\) (the states \(0,1,2\)) feeding a cycle of length
+\(\lambda=4\) (the states \(3,4,5,6\)). Plotting the iterates makes the rho
+shape literal -- the blue transient runs in, and the red states then repeat
+with period four:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/brent_rho.svg]]
+
+The happy-number table shows the algorithm doing real classification work.
+For \(7, 19, 23\) the digit-square-sum iteration ends at the fixed point
+\(1\) -- cycle length \(1\), so /happy/ -- after tails of length \(5, 4, 3\).
+For \(4, 116, 999\) it instead enters the universal length-8 cycle (at \(4\),
+\(58\), \(89\) respectively) and never reaches \(1\) -- /unhappy/. In every
+case the verdict is read directly off the \((\lambda,\mu)\) Brent returns
+plus the recovered cycle entry \(x_\mu\), with no need to store the
+trajectory or bound its length in advance.
