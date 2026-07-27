@@ -1,0 +1,158 @@
+#+title: The Binary GCD Algorithm: Greatest Common Divisor Without Division
+#+subtitle: A literate C++ study of Stein's algorithm with =datamunge='s =algorithms::binary_gcd=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Euclid's algorithm finds the greatest common divisor with repeated /division/ --
+but division is the slowest arithmetic operation on most hardware. *Stein's
+binary GCD algorithm* (1967) computes the same answer using only *subtraction*,
+*comparison*, and *bit shifts*, exploiting the binary representation directly.
+This report implements it in =datamunge='s C++ =algorithms::binary_gcd=, explains
+its three reduction rules, and traces the shrinking operand pair as it computes
+\(\gcd(1071,462)=21\).
+#+end_abstract
+
+* Three rules, no division
+
+The binary GCD rests on three identities:
+
+1. if \(a\) and \(b\) are both even, \(\gcd(a,b)=2\,\gcd(a/2,b/2)\) -- pull out a
+   common factor of two;
+2. if exactly one is even, that factor of two is not shared:
+   \(\gcd(a,b)=\gcd(a/2,b)\) when \(a\) is even;
+3. if both are odd, then \(\gcd(a,b)=\gcd(\lvert a-b\rvert,\min(a,b))\), and
+   \(a-b\) is even, so rule 2 applies next.
+
+Dividing by two is a right shift; the "how many factors of two" is a
+count-trailing-zeros instruction. So the whole computation is shifts,
+subtractions, and comparisons -- no division at all -- in
+\(O(\log\max(a,b))\) steps. The common power of two stripped by rule 1 at the
+start is restored at the end with a single left shift.
+
+#+name: bg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <bit>
+#include <numeric>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BINARY-GCD(a, b):
+  if a == 0: return b
+  if b == 0: return a
+  shift <- count_trailing_zeros(a | b)      # common factors of two
+  a <- a >> count_trailing_zeros(a)
+  repeat:
+      b <- b >> count_trailing_zeros(b)     # b is now odd
+      if a > b: swap(a, b)
+      b <- b - a                            # both odd -> difference is even
+  until b == 0
+  return a << shift
+#+end_example
+
+* Worked example: gcd(1071, 462)
+
+Both share no factor of two (\(1071\) is odd), so =shift= is 0. The algorithm
+strips twos from the even operand and subtracts, marching the pair down toward
+\((21,0)\); the surviving value 21 is the gcd. The program traces each
+subtraction and confirms the result against the standard library.
+
+#+name: bg-run
+#+begin_src c++ :eval no
+    const std::uint64_t A = 1071, B = 462;
+    std::cout << "=== Binary GCD ===\n";
+    std::cout << "binary_gcd(" << A << ", " << B << ") = " << binary_gcd(A, B)
+              << "   (std::gcd = " << std::gcd(A, B) << ")\n\n";
+
+    // Re-trace the (a, b) pair after each subtraction for the figure.
+    std::vector<double> ax, bx;
+    {
+        std::uint64_t a = A, b = B;
+        const int shift = std::countr_zero(a | b);
+        a >>= std::countr_zero(a);
+        ax.push_back(static_cast<double>(a)); bx.push_back(static_cast<double>(b));
+        do {
+            b >>= std::countr_zero(b);
+            if (a > b) std::swap(a, b);
+            b -= a;
+            ax.push_back(static_cast<double>(a)); bx.push_back(static_cast<double>(b));
+        } while (b != 0);
+        std::cout << "trace (a, b) after each step:\n";
+        for (std::size_t i = 0; i < ax.size(); ++i)
+            std::cout << "  (" << static_cast<std::uint64_t>(ax[i]) << ", " << static_cast<std::uint64_t>(bx[i]) << ")\n";
+        std::cout << "common power of two (shift) = " << shift << "\n";
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> step;
+    for (std::size_t i = 0; i < ax.size(); ++i) step.push_back(static_cast<double>(i));
+    plot.line(step, ax, "a", RGB{37, 99, 235}, 2.0);
+    plot.points(step, ax, "a", RGB{37, 99, 235}, 8.0);
+    plot.line(step, bx, "b", RGB{220, 38, 38}, 2.0);
+    plot.points(step, bx, "b", RGB{220, 38, 38}, 8.0);
+    plot.legend({"a", "b"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Binary GCD of 1071 and 462: the pair shrinks to (21, 0)")
+        .x_label("step").y_label("operand value").background({250, 250, 252});
+    plot.save_svg("build/org/binary_gcd.svg");
+    std::cout << "\nwrote binary_gcd.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/binary_gcd_analysis.cpp <<'CPP'
+<<bg-includes>>
+
+int main() {
+<<bg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/binary_gcd_analysis.cpp -o build/org/binary_gcd_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/binary_gcd_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Binary GCD ===
+binary_gcd(1071, 462) = 21   (std::gcd = 21)
+
+trace (a, b) after each step:
+  (1071, 462)
+  (231, 840)
+  (105, 126)
+  (63, 42)
+  (21, 42)
+  (21, 0)
+common power of two (shift) = 0
+
+wrote binary_gcd.svg
+#+end_example
+
+The binary GCD returns 21, agreeing with =std::gcd=, using only shifts and
+subtractions along the way. The trace shows the pair descending as twos are
+stripped and the larger odd operand is repeatedly reduced by the smaller.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/binary_gcd.svg]]
+
+The blue and red curves are the two operands after each step; they converge as one
+is driven to zero, leaving the other holding the gcd (21). Every move is a shift or
+a subtraction -- the whole point of Stein's algorithm is that it never divides.

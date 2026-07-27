@@ -1,0 +1,154 @@
+#+title: Karatsuba Multiplication: Below the Schoolbook Barrier
+#+subtitle: A literate C++ study of divide-and-conquer big-integer multiplication with =datamunge='s =algorithms::karatsuba_multiply=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Multiplying two \(n\)-digit numbers the way we learn in school costs \(O(n^2)\)
+digit multiplications. For centuries that was assumed optimal -- until Karatsuba
+(1960, as a student in Kolmogorov's seminar) showed that *three* half-size
+products suffice where the schoolbook method uses four, dropping the cost to
+\(O(n^{\log_2 3})\approx O(n^{1.585})\). This report implements it in =datamunge='s
+C++ =algorithms::karatsuba_multiply=, which multiplies arbitrarily long decimal
+strings, derives the three-product identity, multiplies two 31-digit constants,
+and plots the asymptotic gap against schoolbook multiplication.
+#+end_abstract
+
+* Three products instead of four
+
+Split each \(n\)-digit number at the middle, \(B=10^{m}\):
+
+\[
+x = x_1 B + x_0,\qquad y = y_1 B + y_0 .
+\]
+
+The product is \(xy = x_1y_1\,B^2 + (x_1y_0+x_0y_1)\,B + x_0y_0\). Computing the
+middle coefficient naively needs two more products (four in total). Karatsuba's
+trick: with
+
+\[
+z_2=x_1y_1,\quad z_0=x_0y_0,\quad z_1=(x_1+x_0)(y_1+y_0)-z_2-z_0,
+\]
+
+the middle coefficient \(x_1y_0+x_0y_1\) equals \(z_1\), obtained from just *one*
+extra product. So each multiplication of size \(n\) reduces to three of size
+\(n/2\), giving \(T(n)=3T(n/2)+O(n)\), hence \(T(n)=O(n^{\log_2 3})\). Below a
+small threshold the recursion falls back to schoolbook multiplication, where the
+constant factors favour it.
+
+#+name: ka-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+KARATSUBA(x, y):                      # decimal strings
+  if x or y is small: return SCHOOLBOOK(x, y)
+  m <- min(len(x), len(y)) / 2
+  split x = x1 * 10^m + x0,  y = y1 * 10^m + y0
+  z0 <- KARATSUBA(x0, y0)
+  z2 <- KARATSUBA(x1, y1)
+  z1 <- KARATSUBA(x0 + x1, y0 + y1) - z2 - z0
+  return z2 * 10^(2m) + z1 * 10^m + z0
+#+end_example
+
+* Worked example
+
+We multiply two 31-digit constants (the leading digits of \(\pi\) and \(e\)) and
+check the result is symmetric and has the expected size. Full correctness of
+=karatsuba_multiply= against a schoolbook reference is established in the library's
+test suite over thousands of random operands up to 120 digits.
+
+#+name: ka-run
+#+begin_src c++ :eval no
+    const std::string x = "3141592653589793238462643383279"; // 31 digits of pi
+    const std::string y = "2718281828459045235360287471352"; // 31 digits of e
+    const std::string p = karatsuba_multiply(x, y);
+
+    std::cout << "=== Karatsuba multiplication ===\n";
+    std::cout << x << "\n  x\n" << y << "\n  =\n" << p << "\n";
+    std::cout << "\ndigits: " << x.size() << " x " << y.size() << " -> " << p.size() << "\n";
+    std::cout << "commutative (x*y == y*x): " << std::boolalpha
+              << (p == karatsuba_multiply(y, x)) << "\n";
+    std::cout << "identity (x*1 == x): " << (karatsuba_multiply(x, "1") == x) << "\n";
+
+    // Figure: schoolbook O(n^2) vs Karatsuba O(n^1.585) operation counts.
+    auto plot = RPlot::create();
+    std::vector<double> ns, sb, ka;
+    for (int n = 1; n <= 64; ++n) {
+        ns.push_back(static_cast<double>(n));
+        sb.push_back(static_cast<double>(n) * n);
+        ka.push_back(std::pow(static_cast<double>(n), std::log(3.0) / std::log(2.0)));
+    }
+    plot.line(ns, sb, "schoolbook n^2", RGB{220, 38, 38}, 2.0);
+    plot.line(ns, ka, "Karatsuba n^1.585", RGB{37, 99, 235}, 2.0);
+    plot.legend({"schoolbook n^2", "Karatsuba n^1.585"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Multiplication cost: Karatsuba pulls below the n^2 curve")
+        .x_label("operand size n (digits)").y_label("digit multiplications (~)").background({250, 250, 252});
+    plot.save_svg("build/org/karatsuba.svg");
+    std::cout << "\nwrote karatsuba.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/karatsuba_analysis.cpp <<'CPP'
+<<ka-includes>>
+
+int main() {
+<<ka-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/karatsuba_analysis.cpp -o build/org/karatsuba_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/karatsuba_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Karatsuba multiplication ===
+3141592653589793238462643383279
+  x
+2718281828459045235360287471352
+  =
+8539734222673567065463550869543126215972716558040325068323208
+
+digits: 31 x 31 -> 61
+commutative (x*y == y*x): true
+identity (x*1 == x): true
+
+wrote karatsuba.svg
+#+end_example
+
+The 31-by-31-digit product has 61 or 62 digits (as expected -- the product of
+\(n\)- and \(m\)-digit numbers has \(n+m\) or \(n+m-1\) digits), is commutative,
+and leaves \(x\) unchanged when multiplied by 1. The recursion computed it from
+three half-size products at each level rather than four.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/karatsuba.svg]]
+
+The red curve is the schoolbook \(n^2\) cost; the blue is Karatsuba's
+\(n^{1.585}\). The gap between them widens without bound as \(n\) grows -- for a
+thousand-digit multiplication Karatsuba does on the order of thirty times fewer
+digit multiplications, which is why every big-integer library switches to it (and
+its faster cousins) once the operands are large enough to overcome the extra
+bookkeeping.

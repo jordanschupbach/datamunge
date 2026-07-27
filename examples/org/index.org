@@ -573,6 +573,26 @@ We implement wildcard matching (=algorithms::wildcard_match=, the non-recursive 
 
 We implement Ukkonen's algorithm (=algorithms::build_suffix_tree=, plus =suffix_tree_contains= and =distinct_substring_count=) and report it as a literate program. We explain the three tricks -- global leaf end, active point, and suffix links -- that make construction linear and online; the suffix tree of =banana= (11 nodes, 15 distinct substrings) is built, queried, and drawn as a labelled tree.
 
+** [[./binary_gcd_analysis.html][The Binary GCD Algorithm: Greatest Common Divisor Without Division]] ([[./binary_gcd_analysis.pdf][PDF]])
+/A literate C++ study of Stein's algorithm using datamunge/
+
+We implement the binary GCD (=algorithms::binary_gcd=) and report it as a literate program. We give Stein's three reduction rules -- strip common twos, halve an even operand, subtract two odds -- so the gcd is computed with only shifts, comparisons, and subtractions (no division); gcd(1071,462)=21 is traced step by step.
+
+** [[./tonelli_shanks_analysis.html][The Tonelli-Shanks Algorithm: Square Roots Modulo a Prime]] ([[./tonelli_shanks_analysis.pdf][PDF]])
+/A literate C++ study of modular square roots using datamunge/
+
+We implement Tonelli-Shanks (=algorithms::tonelli_shanks=) and report it as a literate program. We give Euler's residue test, the p ≡ 3 (mod 4) shortcut, and the 2-adic refinement for the hard case; sqrt(10) ≡ 6 (mod 13) is computed and the two-valued square-root folding of the residues modulo 101 plotted.
+
+** [[./karatsuba_analysis.html][Karatsuba Multiplication: Below the Schoolbook Barrier]] ([[./karatsuba_analysis.pdf][PDF]])
+/A literate C++ study of divide-and-conquer big-integer multiplication using datamunge/
+
+We implement Karatsuba multiplication (=algorithms::karatsuba_multiply=) and report it as a literate program. We derive the three-product identity that turns four half-size products into three, giving O(n^1.585); two 31-digit constants are multiplied and the asymptotic gap against schoolbook O(n^2) plotted.
+
+** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
+/A literate C++ study of Shanks's discrete-log algorithm using datamunge/
+
+We implement baby-step giant-step (=algorithms::baby_step_giant_step=) and report it as a literate program. We split x = im + j to separate the unknown into a tabulated baby-step half and a giant-step half, giving O(sqrt p); 2^x ≡ 17 (mod 101) is solved as x = 30, with the baby/giant collision drawn.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 
