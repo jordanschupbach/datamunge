@@ -1,0 +1,173 @@
+#+title: The Lucas Primality Test: A Deterministic Certificate of Primality
+#+subtitle: A literate C++ study of the converse of Fermat with =datamunge='s =algorithms::lucas_primality_test=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Fermat's test can be fooled; the *Lucas primality test* (Lucas 1876, refined by
+Lehmer) cannot -- it is a *deterministic* proof of primality. The idea is the
+converse of Fermat: \(n\) is prime iff there is a base \(a\) whose multiplicative
+order modulo \(n\) is exactly \(n-1\), i.e. \(a^{n-1}\equiv 1\) but
+\(a^{(n-1)/q}\not\equiv 1\) for every prime \(q\mid n-1\). Such an \(a\) (a
+*primitive root*) exists precisely when the group of units is cyclic of order
+\(n-1\), which forces \(n\) prime. This report implements it in =datamunge='s C++
+=algorithms::lucas_primality_test=, certifies a prime step by step, and plots the
+smallest primitive root -- the smallest Lucas witness -- of the primes.
+#+end_abstract
+
+* Order exactly n-1
+
+The units modulo \(n\) form a group of size \(\varphi(n)\), and \(\varphi(n)=n-1\)
+iff \(n\) is prime. If some \(a\) has order exactly \(n-1\), the group contains an
+element of order \(n-1\), so it has \(\ge n-1\) elements, forcing
+\(\varphi(n)=n-1\) and \(n\) prime. To certify order \(n-1\) without listing all
+powers, factor \(n-1=\prod q_i^{e_i}\) and check
+
+\[
+a^{n-1}\equiv 1\pmod n \quad\text{and}\quad a^{(n-1)/q_i}\not\equiv 1\pmod n\ \text{ for each }q_i.
+\]
+
+The first says the order divides \(n-1\); the second rules out every /proper/
+divisor (any proper divisor of \(n-1\) divides some \((n-1)/q_i\)), so the order is
+exactly \(n-1\). Searching bases from 2 upward finds such a witness quickly when
+\(n\) is prime; if none exists, \(n\) is composite -- with certainty. The cost is
+the factorization of \(n-1\), which is why Lucas's test is used to certify specific
+numbers rather than to sieve.
+
+#+name: lc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::uint64_t powmod(std::uint64_t b, std::uint64_t e, std::uint64_t m) {
+    std::uint64_t r = 1 % m; b %= m;
+    while (e) { if (e & 1) r = static_cast<std::uint64_t>((static_cast<__uint128_t>(r) * b) % m); b = static_cast<std::uint64_t>((static_cast<__uint128_t>(b) * b) % m); e >>= 1; }
+    return r;
+}
+static std::vector<std::uint64_t> distinct_factors(std::uint64_t x) {
+    std::vector<std::uint64_t> f;
+    for (std::uint64_t d = 2; d * d <= x; ++d) if (x % d == 0) { f.push_back(d); while (x % d == 0) x /= d; }
+    if (x > 1) f.push_back(x);
+    return f;
+}
+static long smallest_witness(std::uint64_t n) { // smallest primitive root, or -1 if composite
+    if (n < 3) return n == 2 ? 1 : -1;
+    const auto fac = distinct_factors(n - 1);
+    for (std::uint64_t a = 2; a < n; ++a) {
+        if (powmod(a, n - 1, n) != 1) continue;
+        bool ok = true;
+        for (std::uint64_t q : fac) if (powmod(a, (n - 1) / q, n) == 1) { ok = false; break; }
+        if (ok) return static_cast<long>(a);
+    }
+    return -1;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LUCAS(n):
+  if n < 2: return composite ; if n == 2: return prime ; if n even: return composite
+  factor n-1 into distinct primes q_1, ..., q_r
+  for a in 2 .. n-1:
+      if a^(n-1) mod n != 1: continue
+      if a^((n-1)/q_i) mod n != 1 for every i:   # order is exactly n-1
+          return prime  (a is a witness / primitive root)
+  return composite
+#+end_example
+
+* Worked example: certifying 1009
+
+Here \(n-1=1008=2^4\cdot 3^2\cdot 7\), so the distinct prime factors are
+\(\{2,3,7\}\). The program finds the smallest witness \(a\) and shows it satisfies
+\(a^{1008}\equiv 1\) yet \(a^{504},a^{336},a^{144}\not\equiv 1\pmod{1009}\) --
+certifying order 1008 and hence primality. It then rejects a composite, and plots
+the smallest witness of each prime up to 300.
+
+#+name: lc-run
+#+begin_src c++ :eval no
+    const std::uint64_t n = 1009;
+    std::cout << "=== Lucas primality test ===\n";
+    std::cout << "lucas_primality_test(1009) = " << std::boolalpha << lucas_primality_test(n) << "\n";
+    const long a = smallest_witness(n);
+    std::cout << "smallest witness a = " << a << "; n-1 = 1008 = 2^4 * 3^2 * 7\n";
+    std::cout << "  a^1008 mod 1009 = " << powmod(static_cast<std::uint64_t>(a), 1008, n) << " (must be 1)\n";
+    for (std::uint64_t q : {2u, 3u, 7u})
+        std::cout << "  a^(1008/" << q << ") mod 1009 = " << powmod(static_cast<std::uint64_t>(a), 1008 / q, n)
+                  << " (must NOT be 1)\n";
+    std::cout << "lucas_primality_test(1001 = 7*11*13) = " << lucas_primality_test(1001) << "\n\n";
+
+    // Smallest witness (least primitive root) of each prime up to 300.
+    auto is_prime = [](std::uint64_t m) { if (m < 2) return false; for (std::uint64_t d = 2; d * d <= m; ++d) if (m % d == 0) return false; return true; };
+    std::vector<double> px, py;
+    for (std::uint64_t p = 3; p <= 300; ++p) if (is_prime(p)) { px.push_back(static_cast<double>(p)); py.push_back(static_cast<double>(smallest_witness(p))); }
+    std::cout << "smallest witnesses stay small; largest up to 300 = "
+              << *std::max_element(py.begin(), py.end()) << "\n";
+
+    auto plot = RPlot::create();
+    plot.points(px, py, "smallest witness", RGB{37, 99, 235}, 6.0);
+    plot.title("Lucas: smallest witness (least primitive root) of the primes")
+        .x_label("prime p").y_label("smallest witness a").background({250, 250, 252});
+    plot.save_svg("build/org/lucas_primality.svg");
+    std::cout << "wrote lucas_primality.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lucas_primality_analysis.cpp <<'CPP'
+<<lc-includes>>
+#include <algorithm>
+
+int main() {
+<<lc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lucas_primality_analysis.cpp -o build/org/lucas_primality_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lucas_primality_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lucas primality test ===
+lucas_primality_test(1009) = true
+smallest witness a = 11; n-1 = 1008 = 2^4 * 3^2 * 7
+  a^1008 mod 1009 = 1 (must be 1)
+  a^(1008/2) mod 1009 = 1008 (must NOT be 1)
+  a^(1008/3) mod 1009 = 374 (must NOT be 1)
+  a^(1008/7) mod 1009 = 935 (must NOT be 1)
+lucas_primality_test(1001 = 7*11*13) = false
+
+smallest witnesses stay small; largest up to 300 = 19
+wrote lucas_primality.svg
+#+end_example
+
+The witness certifies 1009 exactly: its 1008-th power is 1 while none of the three
+"one prime removed" powers is, so its order is precisely 1008 -- a proof, not a
+probable-prime guess. The composite 1001 has no such witness and is rejected with
+certainty.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/lucas_primality.svg]]
+
+Each point is a prime's smallest Lucas witness -- its least primitive root. They
+stay small (mostly under 20 even out to 300), so the search for a witness terminates
+almost immediately, making the deterministic test cheap once \(n-1\) is factored.
+The scattered heights are a genuine irregularity of the primes: the least primitive
+root is a famously erratic, if always modest, quantity.

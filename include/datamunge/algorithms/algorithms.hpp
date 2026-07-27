@@ -30,6 +30,7 @@
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
+#include <datamunge/algorithms/primality.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>

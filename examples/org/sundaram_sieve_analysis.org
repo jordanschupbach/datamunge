@@ -1,0 +1,137 @@
+#+title: The Sieve of Sundaram: Primes Without the Evens
+#+subtitle: A literate C++ study of a half-space prime sieve with =datamunge='s =algorithms::sundaram_primes=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every prime above 2 is odd, so a sieve that never even represents the even numbers
+starts with half the work. The *Sieve of Sundaram* (S. P. Sundaram, 1934) does
+exactly this: it sieves the indices \(i\) that can be written as \(i+j+2ij\), and
+the /survivors/ \(k\) map to the odd primes \(2k+1\). This report implements it in
+=datamunge='s C++ =algorithms::sundaram_primes=, explains why the strange marking
+rule works, and visualizes which indices are struck out and which bloom into
+primes.
+#+end_abstract
+
+* Why i + j + 2ij?
+
+Write an odd number as \(2k+1\). It is *composite* iff it factors as a product of
+two odd numbers \((2i+1)(2j+1)\) with \(i,j\ge 1\). Multiplying out,
+
+\[
+(2i+1)(2j+1)=4ij+2i+2j+1=2\,(i+j+2ij)+1,
+\]
+
+so \(2k+1\) is composite exactly when \(k=i+j+2ij\) for some \(i,j\ge 1\). Turn
+that around: mark every index of the form \(i+j+2ij\); the *unmarked* indices \(k\)
+give exactly the odd primes \(2k+1\). Prepend 2 and you have all primes up to the
+limit. Because only indices \(k\le (\text{limit}-1)/2\) are represented, the sieve
+uses about half the memory of the Sieve of Eratosthenes, in
+\(O(\text{limit}\log\text{limit})\) time.
+
+#+name: sd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SUNDARAM(limit):
+  k <- (limit - 1) / 2
+  marked[1..k] <- false
+  for i in 1 .. k:
+      for j in i;  i + j + 2ij <= k;  j++:
+          marked[i + j + 2ij] <- true
+  primes <- [2]
+  for i in 1 .. k:
+      if not marked[i]: primes.append(2i + 1)
+  return primes
+#+end_example
+
+* Worked example and the marking picture
+
+We list the primes up to 100, then draw, for each index \(i\), whether it was
+marked (so \(2i+1\) is composite) or survived (so \(2i+1\) is prime).
+
+#+name: sd-run
+#+begin_src c++ :eval no
+    std::cout << "=== Sieve of Sundaram ===\n";
+    const auto primes = sundaram_primes(100);
+    std::cout << "primes up to 100 (" << primes.size() << "): ";
+    for (std::uint64_t p : primes) std::cout << p << " ";
+    std::cout << "\n";
+
+    // Reconstruct the marks for the figure.
+    const std::uint64_t limit = 100, k = (limit - 1) / 2;
+    std::vector<bool> marked(k + 1, false);
+    for (std::uint64_t i = 1; i <= k; ++i)
+        for (std::uint64_t j = i; i + j + 2 * i * j <= k; ++j) marked[i + j + 2 * i * j] = true;
+
+    auto plot = RPlot::create();
+    std::vector<double> mx, my, px, py;
+    for (std::uint64_t i = 1; i <= k; ++i) {
+        if (marked[i]) { mx.push_back(static_cast<double>(i)); my.push_back(0.0); }
+        else { px.push_back(static_cast<double>(i)); py.push_back(1.0); }
+    }
+    std::cout << "of indices 1.." << k << ": " << px.size() << " survive (odd primes), "
+              << mx.size() << " marked (odd composites)\n";
+    plot.points(mx, my, "marked -> 2i+1 composite", RGB{203, 213, 225}, 7.0);
+    plot.points(px, py, "survivor -> 2i+1 prime", RGB{22, 163, 74}, 8.0);
+    plot.legend({"marked (composite)", "survivor (prime)"}, {{203, 213, 225}, {22, 163, 74}});
+    plot.title("Sundaram sieve: unmarked index i yields the odd prime 2i+1")
+        .x_label("index i").y_label("marked (0) vs survivor (1)").background({250, 250, 252});
+    plot.y_limits(-0.5, 1.5);
+    plot.save_svg("build/org/sundaram_sieve.svg");
+    std::cout << "\nwrote sundaram_sieve.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sundaram_sieve_analysis.cpp <<'CPP'
+<<sd-includes>>
+
+int main() {
+<<sd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sundaram_sieve_analysis.cpp -o build/org/sundaram_sieve_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sundaram_sieve_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sieve of Sundaram ===
+primes up to 100 (25): 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+of indices 1..49: 24 survive (odd primes), 25 marked (odd composites)
+
+wrote sundaram_sieve.svg
+#+end_example
+
+The sieve produces the 25 primes up to 100 without ever touching an even number.
+Each surviving index \(i\) is one for which \(2i+1\) cannot be written as
+\((2a+1)(2b+1)\), so it is prime; each marked index is a composite in disguise.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/sundaram_sieve.svg]]
+
+The lower grey row is the marked indices (their \(2i+1\) is composite); the upper
+green row is the survivors (their \(2i+1\) is prime). Reading the green indices and
+doubling-plus-one recovers all the odd primes up to 100 -- half the array of a
+classical sieve, doing the same job.

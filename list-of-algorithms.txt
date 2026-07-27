@@ -345,12 +345,12 @@ Further information: Number theory
     Primality tests: determining whether a given number is prime
         AKS primality test
         Baillie–PSW primality test
-        Fermat primality test
-        Lucas primality test
+        [x] Fermat primality test  -- datamunge::algorithms::fermat_probable_prime; report examples/org/fermat_primality_analysis.org
+        [x] Lucas primality test  -- datamunge::algorithms::lucas_primality_test (deterministic); report examples/org/lucas_primality_analysis.org
         Miller–Rabin primality test
-        Sieve of Atkin
+        [x] Sieve of Atkin  -- datamunge::algorithms::atkin_primes; report examples/org/atkin_sieve_analysis.org
         [x] Sieve of Eratosthenes  -- datamunge::algorithms::prime_sieve / primes_up_to; report examples/org/sieve_of_eratosthenes_analysis.org
-        Sieve of Sundaram
+        [x] Sieve of Sundaram  -- datamunge::algorithms::sundaram_primes; report examples/org/sundaram_sieve_analysis.org
 
 Numerical algorithms
 Further information: List of numerical analysis topics and Numerical analysis
