@@ -488,6 +488,31 @@ We implement Hirschberg's algorithm (=algorithms::hirschberg=) and report it as 
 
 We implement Dynamic Time Warping (=geometry::dynamic_time_warping=) and report it as a literate program. We define the warping path and the D(i,j)=|a_i-b_j|+min(...) recurrence; =[1,2,3]= vs =[1,1,2,3]= is worked to distance 0, and a sinusoid warped by u->u^1.6 shows DTW distance (1.41) collapsing a difference that the rigid L1 distance (12.27) inflates.
 
+** [[./binary_search_analysis.html][Binary Search: Locating a Key by Halving]] ([[./binary_search_analysis.pdf][PDF]])
+/A literate C++ study of logarithmic search on a sorted sequence using datamunge/
+
+We implement binary search (=algorithms::binary_search=) and report it as a literate program. We derive the halving invariant and the overflow-safe midpoint, and count probes; searching 13 in =[1,3,...,19]= takes four probes (indices 4,7,5,6), traced and plotted as the interval halves.
+
+** [[./jump_search_analysis.html][Jump Search: Block Stepping Through a Sorted Sequence]] ([[./jump_search_analysis.pdf][PDF]])
+/A literate C++ study of sqrt(n) block search using datamunge/
+
+We implement jump (block) search (=algorithms::jump_search=) and report it as a literate program. We show why the block size sqrt(n) minimizes n/s+s and gives O(sqrt n) with a purely forward access pattern; searching 13 in =[1,3,...,19]= probes block boundaries 2,5,8 then scans to index 6.
+
+** [[./interpolation_search_analysis.html][Interpolation Search: Guessing Where the Key Lives]] ([[./interpolation_search_analysis.pdf][PDF]])
+/A literate C++ study of value-aware search on sorted data using datamunge/
+
+We implement interpolation (predictive) search (=algorithms::interpolation_search=) and report it as a literate program. We derive the linear-interpolation probe and its O(log log n) expected / O(n) worst-case behaviour; on uniform =[1,3,...,19]= it finds 13 in a single probe, while a skewed array exposes the degradation (9 probes vs binary's 3).
+
+** [[./fibonacci_search_analysis.html][Fibonacci Search: Narrowing With the Golden Numbers]] ([[./fibonacci_search_analysis.pdf][PDF]])
+/A literate C++ study of division-free logarithmic search using datamunge/
+
+We implement Fibonacci search (=algorithms::fibonacci_search=) and report it as a literate program. We show how a sliding Fibonacci trio narrows the interval by golden-ratio fractions using only additions and subtractions -- no midpoint division; searching 13 in =[1,3,...,19]= takes four probes at Fibonacci-spaced positions.
+
+** [[./eytzinger_search_analysis.html][Eytzinger Binary Search: A Cache-Friendly Layout]] ([[./eytzinger_search_analysis.pdf][PDF]])
+/A literate C++ study of the BFS/heap array order using datamunge/
+
+We implement the Eytzinger layout and search (=algorithms::eytzinger_layout=, =eytzinger_search=) and report it as a literate program. We build the BFS-order array of a binary search tree (median at the root) via in-order fill, and search it by a division-free 2k/2k+1 child walk; the layout of =[1,3,...,19]= is =[13,7,17,3,11,15,19,1,5,9]=, 13 found in one probe and 9 in four.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

@@ -1,0 +1,177 @@
+#+title: Jump Search: Block Stepping Through a Sorted Sequence
+#+subtitle: A literate C++ study of sqrt(n) block search with =datamunge='s =algorithms::jump_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Binary search is optimal in comparisons but jumps around: it may leap from the
+middle of an array to a quarter to an eighth, each step landing far from the last.
+*Jump search* (also /block search/) trades a little asymptotic speed for a purely
+*forward* access pattern: step ahead in fixed blocks of \(\sqrt{n}\) elements
+until overshooting the key, then scan the last block linearly. Its \(O(\sqrt n)\)
+comparisons beat a linear scan while never requiring a backward jump -- the
+historically relevant case of sequential media. This report implements it in
+=datamunge='s C++ =algorithms::jump_search=, works the search for 13 in
+\([1,3,\dots,19]\) by hand, and plots the block boundaries it probes and the final
+linear sweep.
+#+end_abstract
+
+* Why blocks of sqrt(n)
+
+Fix a block size \(s\). Jump search probes the /last/ element of block 1, block 2,
+\(\dots\), advancing until it finds the first block whose last element is
+\(\ge x\); the key, if present, must lie inside that block. It then scans the
+block's up-to-\(s\) elements one by one. The two phases cost about \(n/s\) and
+\(s\) comparisons respectively, and the sum \(n/s+s\) is minimized at
+\(s=\sqrt n\), giving \(O(\sqrt n)\) total. Every access moves strictly forward,
+which is what distinguishes jump search from binary search.
+
+#+name: js-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+JUMP-SEARCH(a, x):                   # a sorted ascending, |a| = n
+  s <- floor(sqrt(n))                # block size
+  prev, end <- 0, s
+  while prev < n:                    # find the block that may contain x
+      last <- min(end, n) - 1
+      if a[last] >= x: break         # x, if present, is in [prev, last]
+      prev, end <- end, end + s
+      if prev >= n: return NOT-FOUND # x exceeds every element
+  for i in prev .. min(end, n) - 1:  # linear scan of the block
+      if a[i] == x: return i
+      if a[i] >  x: break            # passed where x would be
+  return NOT-FOUND
+#+end_example
+
+* Worked example: find 13 in [1, 3, 5, ..., 19]
+
+With \(n=10\), the block size is \(s=\lfloor\sqrt{10}\rfloor=3\), giving blocks
+\([0,3),[3,6),[6,9),[9,10)\). Jump search probes each block's last element:
+
+- block \([0,3)\), last index 2, \(a_2=5<13\): jump on;
+- block \([3,6)\), last index 5, \(a_5=11<13\): jump on;
+- block \([6,9)\), last index 8, \(a_8=17\ge13\): stop -- 13 is in this block.
+
+It then scans the block from index 6: \(a_6=13\) -- found immediately, for four
+probes in all. The program confirms this and records the probed indices.
+
+#+name: js-run
+#+begin_src c++ :eval no
+    const std::vector<int> a = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+
+    std::cout << "=== Jump search in [1,3,...,19] (block size 3) ===\n";
+    for (int key : {13, 1, 19, 8, 20}) {
+        const SearchResult r = jump_search(a, key);
+        std::cout << "  key " << key << ": " << (r.found ? "found at index " + std::to_string(r.index)
+                                                          : std::string("not found"))
+                  << " (" << r.probes << " probes)\n";
+    }
+
+    // Re-trace the probes for key = 13.
+    const int key = 13;
+    const std::size_t n = a.size();
+    const std::size_t s = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
+    std::vector<int> boundary_idx, linear_idx;
+    {
+        std::size_t prev = 0, end = s;
+        while (prev < n) {
+            const std::size_t last = std::min(end, n) - 1;
+            boundary_idx.push_back(static_cast<int>(last));
+            if (a[last] >= key) break;
+            prev = end; end += s;
+            if (prev >= n) break;
+        }
+        for (std::size_t i = prev; i < std::min(end, n); ++i) {
+            linear_idx.push_back(static_cast<int>(i));
+            if (a[i] == key || a[i] > key) break;
+        }
+    }
+    std::cout << "\nblock-boundary probes:";
+    for (int i : boundary_idx) std::cout << " " << i << ":" << a[static_cast<std::size_t>(i)];
+    std::cout << "\nlinear-scan probes:";
+    for (int i : linear_idx) std::cout << " " << i << ":" << a[static_cast<std::size_t>(i)];
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ax, ay;
+    for (std::size_t i = 0; i < n; ++i) { ax.push_back(static_cast<double>(i)); ay.push_back(a[i]); }
+    plot.points(ax, ay, "elements", RGB{148, 163, 184}, 7.0);
+    plot.abline_h(static_cast<double>(key), RGB{203, 213, 225}, 1.0); // the key level
+    std::vector<double> bx, by;
+    for (int i : boundary_idx) { bx.push_back(i); by.push_back(a[static_cast<std::size_t>(i)]); }
+    std::vector<double> lx, ly;
+    for (int i : linear_idx) { lx.push_back(i); ly.push_back(a[static_cast<std::size_t>(i)]); }
+    plot.points(bx, by, "block boundaries", RGB{37, 99, 235}, 11.0);
+    plot.points(lx, ly, "linear scan", RGB{220, 38, 38}, 11.0);
+    plot.legend({"elements", "block boundaries", "linear scan"},
+                {{148, 163, 184}, {37, 99, 235}, {220, 38, 38}});
+    plot.title("Jump search for 13: probe every 3rd, then scan the block")
+        .x_label("array index").y_label("value").background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(n) - 0.5);
+    plot.save_svg("build/org/jump_search.svg");
+    std::cout << "\nwrote jump_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/jump_search_analysis.cpp <<'CPP'
+<<js-includes>>
+
+int main() {
+<<js-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/jump_search_analysis.cpp -o build/org/jump_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/jump_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Jump search in [1,3,...,19] (block size 3) ===
+  key 13: found at index 6 (4 probes)
+  key 1: found at index 0 (2 probes)
+  key 19: found at index 9 (5 probes)
+  key 8: not found (4 probes)
+  key 20: not found (4 probes)
+
+block-boundary probes: 2:5 5:11 8:17
+linear-scan probes: 6:13
+
+wrote jump_search.svg
+#+end_example
+
+Jump search finds 13 in four probes here too, but by a different route than binary
+search: three forward hops to block boundaries followed by one linear step,
+never once moving backward. On this small array the probe count matches binary
+search; the \(\sqrt n\) versus \(\log n\) gap only opens up as \(n\) grows.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/jump_search.svg]]
+
+The blue points are the block-boundary probes at indices 2, 5, 8 -- stepping
+forward by three until the value clears the key level (grey line) -- and the red
+point is the single linear-scan step that lands on 13 at index 6. All motion is
+left to right.

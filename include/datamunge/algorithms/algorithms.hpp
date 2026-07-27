@@ -33,6 +33,7 @@
 #include <datamunge/algorithms/search_batch.hpp>
 #include <datamunge/algorithms/search_more.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
+#include <datamunge/algorithms/sorted_search.hpp>
 #include <datamunge/algorithms/stable_matching.hpp>
 #include <datamunge/algorithms/string_metrics.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>

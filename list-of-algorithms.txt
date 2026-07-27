@@ -133,11 +133,11 @@ Sequence search
     Linear search: locates an item in an unsorted sequence
     Selection algorithm: finds the kth largest item in a sequence
     Sorted lists
-        Binary search algorithm: locates an item in a sorted sequence
-        Eytzinger binary search: cache friendly binary search algorithm [7]
-        Fibonacci search technique: search a sorted sequence using a divide and conquer algorithm that narrows down possible locations with the aid of Fibonacci numbers
-        Jump search (or block search): linear search on a smaller subset of the sequence
-        Predictive search: binary-like search which factors in magnitude of search term versus the high and low values in the search. Sometimes called dictionary search or interpolated search.
+        [x] Binary search algorithm: locates an item in a sorted sequence  -- datamunge::algorithms::binary_search; report examples/org/binary_search_analysis.org
+        [x] Eytzinger binary search: cache friendly binary search algorithm [7]  -- datamunge::algorithms::eytzinger_layout / eytzinger_search; report examples/org/eytzinger_search_analysis.org
+        [x] Fibonacci search technique: search a sorted sequence using a divide and conquer algorithm that narrows down possible locations with the aid of Fibonacci numbers  -- datamunge::algorithms::fibonacci_search; report examples/org/fibonacci_search_analysis.org
+        [x] Jump search (or block search): linear search on a smaller subset of the sequence  -- datamunge::algorithms::jump_search; report examples/org/jump_search_analysis.org
+        [x] Predictive search: binary-like search which factors in magnitude of search term versus the high and low values in the search. Sometimes called dictionary search or interpolated search.  -- datamunge::algorithms::interpolation_search; report examples/org/interpolation_search_analysis.org
         Uniform binary search: an optimization of the classic binary search algorithm
     Ternary search: a technique for finding the minimum or maximum of a function that is either strictly increasing and then strictly decreasing or vice versa
 

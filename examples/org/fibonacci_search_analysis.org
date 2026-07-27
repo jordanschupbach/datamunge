@@ -1,0 +1,176 @@
+#+title: Fibonacci Search: Narrowing With the Golden Numbers
+#+subtitle: A literate C++ study of division-free logarithmic search with =datamunge='s =algorithms::fibonacci_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Binary search splits an interval in half -- but computing the midpoint needs a
+division (a shift, at best). *Fibonacci search* achieves the same \(O(\log n)\)
+behaviour using only additions and subtractions, by narrowing the interval along
+consecutive *Fibonacci numbers* instead of powers of two. It was prized on early
+hardware where division was slow, and it probes points that partition the interval
+in the golden ratio. This report implements it in =datamunge='s C++
+=algorithms::fibonacci_search=, works the search for 13 in \([1,3,\dots,19]\) by
+hand, and plots the Fibonacci-spaced probe positions.
+#+end_abstract
+
+* Fibonacci numbers as an interval schedule
+
+Recall \(F_0=0,\ F_1=1,\ F_k=F_{k-1}+F_{k-2}\). To search \(n\) elements,
+Fibonacci search first finds the smallest \(F_k\ge n\) and keeps a sliding trio
+\((F_{k-2},F_{k-1},F_k)\). At each step it probes the element \(F_{k-2}\) past an
+`offset` marking the eliminated prefix:
+
+- if that element is *less* than the key, the key lies in the larger
+  \(F_{k-1}\)-sized upper part: slide the trio down to
+  \((F_{k-1})\) and advance the offset;
+- if it is *greater*, the key lies in the smaller \(F_{k-2}\)-sized lower part:
+  slide the trio to \((F_{k-2})\);
+- if equal, done.
+
+Because \(F_{k-2}/F_k\to 1-1/\varphi\) and \(F_{k-1}/F_k\to 1/\varphi\) (with
+\(\varphi\) the golden ratio), each probe removes a golden-ratio fraction of the
+interval, giving \(O(\log n)\) probes -- all computed with \(+\) and \(-\) only,
+never a division.
+
+#+name: fs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FIBONACCI-SEARCH(a, x):              # a sorted ascending, |a| = n
+  (f2, f1, f) <- (0, 1, 1)
+  while f < n: (f2, f1, f) <- (f1, f, f1 + f)   # smallest Fibonacci f >= n
+  offset <- -1
+  while f > 1:
+      i <- min(offset + f2, n - 1)
+      if   a[i] < x: (f, f1, f2) <- (f1, f2, f1 - f2);  offset <- i   # go to upper part
+      elif a[i] > x: (f, f1, f2) <- (f2, f1 - f2, 2*f2 - f1)          # go to lower part
+      else: return i
+  if f1 == 1 and offset + 1 < n and a[offset + 1] == x: return offset + 1
+  return NOT-FOUND
+#+end_example
+
+* Worked example: find 13 in [1, 3, 5, ..., 19]
+
+For \(n=10\) the smallest Fibonacci \(\ge 10\) is \(F_7=13\), with
+\(F_6=8,\ F_5=5\). Starting at =offset= \(=-1\):
+
+- \(i=\min(-1+5,9)=4\), \(a_4=9<13\): go up; trio \((f,f_1,f_2)\) becomes
+  \((8,5,3)\), =offset= \(=4\).
+- \(i=\min(4+3,9)=7\), \(a_7=15>13\): go down; trio becomes \((3,2,1)\).
+- \(i=\min(4+1,9)=5\), \(a_5=11<13\): go up; trio becomes \((2,1,1)\), =offset= \(=5\).
+- \(i=\min(5+1,9)=6\), \(a_6=13\): found, in four probes.
+
+The program confirms the outcome and records the Fibonacci-spaced probe indices.
+
+#+name: fs-run
+#+begin_src c++ :eval no
+    const std::vector<int> a = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+
+    std::cout << "=== Fibonacci search in [1,3,...,19] ===\n";
+    for (int key : {13, 1, 19, 8, 20}) {
+        const SearchResult r = fibonacci_search(a, key);
+        std::cout << "  key " << key << ": " << (r.found ? "found at index " + std::to_string(r.index)
+                                                          : std::string("not found"))
+                  << " (" << r.probes << " probes)\n";
+    }
+
+    // Re-trace probes for key = 13.
+    const int key = 13;
+    const std::size_t n = a.size();
+    std::vector<int> probe_idx;
+    {
+        std::size_t f2 = 0, f1 = 1, f = 1;
+        while (f < n) { f2 = f1; f1 = f; f = f1 + f2; }
+        long offset = -1;
+        while (f > 1) {
+            const std::size_t i = std::min<std::size_t>(static_cast<std::size_t>(offset) + f2, n - 1);
+            probe_idx.push_back(static_cast<int>(i));
+            if (a[i] < key) { f = f1; f1 = f2; f2 = f - f1; offset = static_cast<long>(i); }
+            else if (a[i] > key) { f = f2; f1 = f1 - f2; f2 = f - f1; }
+            else break;
+        }
+    }
+    std::cout << "\nprobe sequence for key " << key << " (index:value):";
+    for (int i : probe_idx) std::cout << " " << i << ":" << a[static_cast<std::size_t>(i)];
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ax, ay;
+    for (std::size_t i = 0; i < n; ++i) { ax.push_back(static_cast<double>(i)); ay.push_back(a[i]); }
+    plot.points(ax, ay, "elements", RGB{148, 163, 184}, 7.0);
+    std::vector<double> px, py;
+    for (std::size_t s = 0; s < probe_idx.size(); ++s) {
+        px.push_back(probe_idx[s]); py.push_back(a[static_cast<std::size_t>(probe_idx[s])]);
+        plot.text(probe_idx[s], a[static_cast<std::size_t>(probe_idx[s])] + 1.1, std::to_string(s + 1), RGB{220, 38, 38}, 13.0);
+    }
+    plot.points(px, py, "probes (in order)", RGB{220, 38, 38}, 11.0);
+    plot.points({static_cast<double>(probe_idx.back())}, {static_cast<double>(a[static_cast<std::size_t>(probe_idx.back())])},
+                "found", RGB{202, 138, 4}, 15.0);
+    plot.title("Fibonacci search for 13: golden-ratio probe spacing")
+        .x_label("array index").y_label("value").background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(n) - 0.5);
+    plot.save_svg("build/org/fibonacci_search.svg");
+    std::cout << "\nwrote fibonacci_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fibonacci_search_analysis.cpp <<'CPP'
+<<fs-includes>>
+
+int main() {
+<<fs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fibonacci_search_analysis.cpp -o build/org/fibonacci_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fibonacci_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fibonacci search in [1,3,...,19] ===
+  key 13: found at index 6 (4 probes)
+  key 1: found at index 0 (3 probes)
+  key 19: found at index 9 (3 probes)
+  key 8: not found (5 probes)
+  key 20: not found (5 probes)
+
+probe sequence for key 13 (index:value): 4:9 7:15 5:11 6:13
+
+wrote fibonacci_search.svg
+#+end_example
+
+Fibonacci search finds 13 in four probes, using only additions and subtractions to
+slide the Fibonacci trio -- no midpoint division anywhere. On this array it happens
+to inspect the same indices as binary search, but the mechanism is different: the
+interval shrinks by golden-ratio fractions rather than exact halves.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fibonacci_search.svg]]
+
+The numbered red points are the probes in order; each is placed a Fibonacci
+offset past the eliminated prefix, so successive probes carve the interval in the
+golden ratio until the search closes on 13 (gold) at index 6.

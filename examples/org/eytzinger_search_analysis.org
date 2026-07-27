@@ -1,0 +1,189 @@
+#+title: Eytzinger Binary Search: A Cache-Friendly Layout
+#+subtitle: A literate C++ study of the BFS/heap array order with =datamunge='s =algorithms::eytzinger_layout= and =eytzinger_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Ordinary binary search is optimal in /comparisons/ but pessimal in /cache
+behaviour/: its first few probes -- the middle, a quarter, an eighth -- are far
+apart in memory, each a near-certain cache miss. The *Eytzinger layout* stores
+the same sorted data in the breadth-first order of a binary search tree, so that a
+node's two children sit adjacent in memory and the hot top of the tree packs into
+a handful of cache lines. Searching it is a branch on \(2k\) versus \(2k+1\) with
+no midpoint arithmetic at all. This report implements the layout and its search in
+=datamunge='s C++ =algorithms::eytzinger_layout= and =algorithms::eytzinger_search=,
+builds the layout of \([1,3,\dots,19]\) by hand, and traces a lookup down the
+implicit tree.
+#+end_abstract
+
+* The Eytzinger (BFS) layout
+
+Number the nodes of a complete binary tree in breadth-first order starting at 1:
+the root is node 1, and node \(k\) has children \(2k\) and \(2k+1\). Store node
+\(k\) at array position \(k-1\). Now fill the nodes by an /in-order/ traversal
+with the sorted values -- the in-order sequence of a binary search tree is exactly
+the sorted order, so this places the correct value at every node. The result is
+the sorted data permuted into tree order, with the *median at the root*.
+
+Searching is then a tree walk with no division: start at the root (position 0);
+if the key is larger, go to the right child \(2k+1\), otherwise the left child
+\(2k\); stop on a match or when the index leaves the array. Each of the
+\(O(\log n)\) steps reads one node, but because children are contiguous and the
+top levels are tiny, the memory accesses are far friendlier to the cache than
+binary search's scattered probes -- the practical win that makes Eytzinger search
+faster on large arrays despite doing the same number of comparisons.
+
+#+name: ez-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+EYTZINGER-LAYOUT(sorted):            # produce the BFS-order array
+  out <- array of size n
+  idx <- 0
+  FILL(k):                           # in-order traversal of node k (1-based)
+      if k <= n:
+          FILL(2k)
+          out[k-1] <- sorted[idx];  idx <- idx + 1
+          FILL(2k+1)
+  FILL(1)
+  return out
+
+EYTZINGER-SEARCH(layout, x):
+  k <- 1                             # node 1 == array position 0
+  while k <= n:
+      if layout[k-1] == x: return k-1
+      k <- 2k + (layout[k-1] < x ? 1 : 0)   # right child if node too small, else left
+  return NOT-FOUND
+#+end_example
+
+* Worked example: layout of [1, 3, 5, ..., 19]
+
+The in-order traversal of the 10-node tree visits nodes
+\(8,4,9,2,10,5,1,6,3,7\), so the sorted values \(1,3,\dots,19\) are placed there in
+turn. Reading the nodes back in BFS order \(1,2,\dots,10\) gives the layout
+
+: index :  0   1   2   3   4   5   6   7   8   9
+: value : 13   7  17   3  11  15  19   1   5   9
+
+The median 13 sits at the root (index 0). Looking up 9: at node 1 the value 13 is
+too big, go left to node 2; there 7 is too small, go right to node 5; there 11 is
+too big, go left to node 10; there 9 matches -- found after four reads at array
+positions \(0,1,4,9\). Looking up 13 needs a single read, since it /is/ the root.
+
+#+name: ez-run
+#+begin_src c++ :eval no
+    const std::vector<int> sorted = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    const std::vector<int> layout = eytzinger_layout(sorted);
+
+    std::cout << "=== Eytzinger layout of [1,3,...,19] ===\n  index:";
+    for (std::size_t i = 0; i < layout.size(); ++i) std::cout << " " << i;
+    std::cout << "\n  value:";
+    for (int v : layout) std::cout << " " << v;
+    std::cout << "\n\n";
+
+    for (int key : {13, 9, 1, 19, 8}) {
+        const SearchResult r = eytzinger_search(layout, key);
+        std::cout << "  key " << key << ": "
+                  << (r.found ? "found at layout index " + std::to_string(r.index) : std::string("not found"))
+                  << " (" << r.probes << " probes)\n";
+    }
+
+    // Trace the tree walk for key = 9.
+    const int key = 9;
+    std::vector<int> path;
+    {
+        std::size_t k = 1;
+        while (k <= layout.size()) {
+            path.push_back(static_cast<int>(k - 1));
+            if (layout[k - 1] == key) break;
+            k = 2 * k + (layout[k - 1] < key ? 1 : 0);
+        }
+    }
+    std::cout << "\ntree walk for key " << key << " (layout index:value):";
+    for (int p : path) std::cout << " " << p << ":" << layout[static_cast<std::size_t>(p)];
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ax, ay;
+    for (std::size_t i = 0; i < layout.size(); ++i) { ax.push_back(static_cast<double>(i)); ay.push_back(layout[i]); }
+    plot.points(ax, ay, "layout (BFS order)", RGB{148, 163, 184}, 8.0);
+    std::vector<double> px, py;
+    for (std::size_t s = 0; s < path.size(); ++s) {
+        px.push_back(path[s]); py.push_back(layout[static_cast<std::size_t>(path[s])]);
+        plot.text(path[s], layout[static_cast<std::size_t>(path[s])] + 1.1, std::to_string(s + 1), RGB{220, 38, 38}, 13.0);
+    }
+    plot.points(px, py, "walk for key 9", RGB{220, 38, 38}, 11.0);
+    plot.points({static_cast<double>(path.back())}, {static_cast<double>(layout[static_cast<std::size_t>(path.back())])},
+                "found", RGB{202, 138, 4}, 15.0);
+    plot.title("Eytzinger layout of [1..19]: median 13 at the root (index 0)")
+        .x_label("layout index (BFS node order)").y_label("value").background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(layout.size()) - 0.5);
+    plot.save_svg("build/org/eytzinger_search.svg");
+    std::cout << "\nwrote eytzinger_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/eytzinger_search_analysis.cpp <<'CPP'
+<<ez-includes>>
+
+int main() {
+<<ez-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/eytzinger_search_analysis.cpp -o build/org/eytzinger_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/eytzinger_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Eytzinger layout of [1,3,...,19] ===
+  index: 0 1 2 3 4 5 6 7 8 9
+  value: 13 7 17 3 11 15 19 1 5 9
+
+  key 13: found at layout index 0 (1 probes)
+  key 9: found at layout index 9 (4 probes)
+  key 1: found at layout index 7 (4 probes)
+  key 19: found at layout index 6 (3 probes)
+  key 8: not found (4 probes)
+
+tree walk for key 9 (layout index:value): 0:13 1:7 4:11 9:9
+
+wrote eytzinger_search.svg
+#+end_example
+
+The layout matches the hand computation, median at the root; looking up 13 costs
+one probe and 9 costs four, walking down the implicit tree with a single
+child-index update per level and no midpoint division. The comparison count is the
+same as binary search's -- the payoff, on arrays too big for cache, is the memory
+/access pattern/, not the arithmetic.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/eytzinger_search.svg]]
+
+Plotted in BFS order the values look scrambled -- that is the whole point: the
+sorted sequence has been permuted so that the tree's levels are laid out
+contiguously. The numbered red points trace the lookup of 9 down the tree from the
+root (index 0), each step jumping to a child index \(2k\) or \(2k+1\) until it
+lands on 9 (gold) at index 9.
