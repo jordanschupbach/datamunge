@@ -1,0 +1,292 @@
+#+title: The Bellman-Ford Algorithm: Shortest Paths with Negative Weights
+#+subtitle: A literate C++ study of single-source shortest paths and negative-cycle detection with =datamunge='s =algorithms::bellman_ford=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Dijkstra's algorithm finds shortest paths quickly, but it silently breaks the
+moment an edge weight goes negative -- and negative weights are everywhere the
+"cost" of an edge can be a gain: arbitrage in a currency graph, rewards along a
+route, potentials in a flow network. Bellman (1958) and Ford (1956) gave an
+algorithm that handles them. It computes single-source shortest paths on a
+directed graph whose weights may be negative and, crucially, *detects* the one
+situation in which no shortest path exists at all: a reachable *negative
+cycle*, a loop of negative total weight one can circle forever to drive costs
+to \(-\infty\). This report implements it in =datamunge='s C++
+=algorithms::bellman_ford= and presents it as a literate program: every number
+and figure is produced by a single compiled binary. We frame shortest paths as
+a dynamic program over the number of edges used, show why \(n-1\) rounds of
+relaxing every edge suffice when no negative cycle exists and how one more
+round exposes a negative cycle, and give the \(O(VE)\) method with pseudocode.
+A five-vertex worked example with negative edges recovers the classic
+distances \((0,2,4,7,-2)\) and its shortest-path tree; a three-vertex example
+whose cycle \(1\to2\to1\) sums to \(-2\) is correctly flagged as having no
+shortest paths.
+#+end_abstract
+
+* Shortest paths when weights can be negative
+
+Take a directed graph on vertices \(\{0,\dots,n-1\}\) with a list of weighted
+edges \((u,v,w)\); the weight \(w\) *may be negative*. The weight of a path is
+the sum of its edge weights, and \(\delta(s,v)\) -- the shortest-path distance
+from a fixed *source* \(s\) to \(v\) -- is the minimum weight over all paths
+from \(s\) to \(v\) (or \(+\infty\) if none exists).
+
+Negative edges are not merely a nuisance; they change what "shortest" means.
+If some cycle reachable from \(s\) has negative total weight, then for any
+vertex \(v\) reachable *through* that cycle there is no shortest path at all:
+each extra lap around the cycle lowers the weight without bound, so
+\(\delta(s,v)=-\infty\). Bellman-Ford's job is therefore twofold: return the
+true distances when they exist, and otherwise *report* that a reachable
+negative cycle makes them undefined. (A single negative *edge* is fine; only a
+negative *cycle* is fatal -- which is exactly why Dijkstra, whose greedy
+"finalize the closest frontier vertex" step assumes moving never lowers cost,
+cannot be patched to cope.)
+
+=datamunge= represents the graph as a vertex count =n= and an edge list of
+=(from, to, weight)= tuples, and returns a =BellmanFordResult= carrying the
+=distance= vector (with =+infinity= for unreachable vertices), a =predecessor=
+tree for path reconstruction, and a =has_negative_cycle= flag.
+
+#+name: bf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bellman_ford.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Relaxation and the dynamic-programming view
+
+The whole algorithm is built from one primitive, *relaxation*: given a
+tentative distance \(d[u]\) and an edge \((u,v,w)\), if going to \(v\) via \(u\)
+would be cheaper than the current \(d[v]\), lower it.
+
+#+begin_example
+RELAX(u, v, w):
+    if d[u] + w < d[v]:
+        d[v]   <- d[u] + w
+        pred[v] <- u
+#+end_example
+
+Why does repeatedly relaxing *every* edge converge to the true distances? Think
+of it as a dynamic program over the number of edges a path is allowed to use.
+Let \(D_k[v]\) be the weight of the shortest *walk* from \(s\) to \(v\) using at
+most \(k\) edges. Then \(D_0[s]=0\), \(D_0[v]=\infty\) otherwise, and
+
+\[ D_k[v] \;=\; \min\!\Big( D_{k-1}[v],\; \min_{(u,v,w)} D_{k-1}[u] + w \Big). \]
+
+One full pass of relaxing all edges over the array \(d\) performs exactly this
+step for every vertex at once: after pass \(k\), \(d[v] \le D_k[v]\), and in
+fact \(d[v]\) equals the best walk of \(\le k\) edges found so far.
+
+Now the key fact: *if there is no negative cycle*, a shortest path never
+repeats a vertex (revisiting one could only be justified by a negative cycle),
+so it uses at most \(n-1\) edges. Hence \(D_{n-1}=\delta\), and **\(n-1\) passes
+suffice** -- after them, \(d[v]=\delta(s,v)\) for every reachable \(v\).
+
+That also hands us a negative-cycle test for free. Run *one more* -- the
+\(n\)-th -- pass. If distances have truly converged, no edge can relax and
+nothing changes. But if some edge \((u,v,w)\) still satisfies \(d[u]+w<d[v]\)
+after \(n-1\) passes, then a shortest \(\le n-1\)-edge walk was *not* optimal --
+which can only happen when a negative cycle, reachable from \(s\), lets paths
+keep improving past \(n-1\) edges. Guarding the test with \(d[u]\neq\infty\)
+restricts it to cycles the source can actually reach; an unreachable negative
+cycle leaves its vertices at \(+\infty\) and is correctly ignored.
+
+* The algorithm
+
+#+begin_example
+BELLMAN-FORD(n, edges, s):
+    d[*]    <- +infinity;   d[s] <- 0
+    pred[*] <- none
+
+    repeat n - 1 times:                 # each pass extends best walks by one edge
+        relaxed <- false
+        for each edge (u, v, w) in edges:
+            if d[u] != +infinity and d[u] + w < d[v]:
+                d[v]    <- d[u] + w
+                pred[v] <- u
+                relaxed <- true
+        if not relaxed: break           # converged early -> no negative cycle
+
+    has_negative_cycle <- false         # one extra pass: can anything still relax?
+    for each edge (u, v, w) in edges:
+        if d[u] != +infinity and d[u] + w < d[v]:
+            has_negative_cycle <- true
+            break
+
+    return (d, pred, has_negative_cycle)
+#+end_example
+
+*Correctness.* By the dynamic-programming argument above, after \(n-1\) passes
+\(d[v]=\delta(s,v)\) for every vertex whenever no reachable negative cycle
+exists; the extra pass then relaxes nothing and reports =false=. If a reachable
+negative cycle *does* exist, some edge on it can always still relax after
+\(n-1\) passes (its endpoints' distances never stabilize), so the extra pass
+reports =true=.
+
+*Complexity.* Each pass scans all \(E\) edges, and there are \(n-1\approx V\)
+passes plus one, so the running time is \(O(VE)\) with \(O(V)\) extra space.
+The =relaxed= early-exit makes it finish in a single extra pass on graphs that
+converge quickly, without affecting the worst case. This is asymptotically
+slower than Dijkstra's \(O(E\log V)\), the price paid for tolerating negative
+weights and certifying their cycles.
+
+* A worked example with a negative edge
+
+We run the canonical five-vertex instance (CLRS Figure 24.4): vertices
+\(s,t,x,y,z\) indexed \(0..4\), several negative edges, but no negative cycle.
+We print the recovered distances, the predecessor tree, and each shortest path,
+then a second three-vertex graph whose cycle \(1\to2\to1\) has weight \(-2\) to
+exercise negative-cycle detection.
+
+#+name: bf-run
+#+begin_src c++ :eval no
+    // ---- Example 1: shortest paths with negative edges (CLRS Fig. 24.4) ----
+    const std::size_t n1 = 5;
+    const char* name[] = {"s", "t", "x", "y", "z"};
+    std::vector<std::tuple<std::size_t, std::size_t, double>> edges = {
+        {0, 1, 6},  {0, 3, 7},  {1, 2, 5},  {1, 3, 8}, {1, 4, -4},
+        {2, 1, -2}, {3, 2, -3}, {3, 4, 9},  {4, 0, 2}, {4, 2, 7},
+    };
+
+    std::cout << "=== Example 1: shortest paths with a negative edge (CLRS Fig. 24.4) ===\n";
+    std::cout << "directed edges (from -> to : weight):\n";
+    for (const auto& [u, v, w] : edges)
+        std::cout << "  " << u << " -> " << v << " : " << w << "\n";
+
+    const auto r = bellman_ford(n1, edges, 0);
+    std::cout << "\nsingle-source shortest paths from vertex 0:\n";
+    std::cout << "  negative cycle reachable: " << (r.has_negative_cycle ? "yes" : "no") << "\n";
+    for (std::size_t v = 0; v < n1; ++v) {
+        std::vector<std::size_t> path; // walk predecessors back to the source, then reverse
+        for (std::size_t at = v; at != kNoPredecessor; at = r.predecessor[at]) path.push_back(at);
+        std::reverse(path.begin(), path.end());
+        std::cout << "  vertex " << v << ": dist = " << r.distance[v] << ", pred = ";
+        if (r.predecessor[v] == kNoPredecessor) std::cout << "none";
+        else std::cout << r.predecessor[v];
+        std::cout << ", path =";
+        for (std::size_t k = 0; k < path.size(); ++k) std::cout << (k ? " ->" : "") << " " << path[k];
+        std::cout << "\n";
+    }
+
+    // ---- Example 2: a reachable negative cycle ----
+    std::cout << "\n=== Example 2: a reachable negative cycle ===\n";
+    std::vector<std::tuple<std::size_t, std::size_t, double>> cyc = {
+        {0, 1, 1}, {1, 2, -1}, {2, 1, -1},
+    };
+    std::cout << "directed edges (from -> to : weight):\n";
+    for (const auto& [u, v, w] : cyc)
+        std::cout << "  " << u << " -> " << v << " : " << w << "\n";
+    const auto rc = bellman_ford(3, cyc, 0);
+    std::cout << "\nsingle-source shortest paths from vertex 0:\n";
+    std::cout << "  negative cycle reachable: " << (rc.has_negative_cycle ? "yes" : "no") << "\n";
+    if (rc.has_negative_cycle)
+        std::cout << "  -> no shortest paths exist: the cycle 1 -> 2 -> 1 has weight -2 < 0,\n"
+                  << "     so looping it drives reachable distances toward -infinity\n";
+
+    // ---- Figure: the shortest-path tree of Example 1 ----
+    std::vector<double> px = {0, 1, 2, 1, 2}; // 2D positions of s, t, x, y, z
+    std::vector<double> py = {1, 2, 2, 0, 0};
+    auto plot = RPlot::create();
+    for (const auto& [u, v, w] : edges) { // every edge as a light-grey line
+        (void)w;
+        plot.segments({px[u]}, {py[u]}, {px[v]}, {py[v]}, {203, 213, 225}, 1.5);
+    }
+    for (std::size_t v = 0; v < n1; ++v) // shortest-path tree edges (pred[v] -> v) in red
+        if (r.predecessor[v] != kNoPredecessor) {
+            const std::size_t u = r.predecessor[v];
+            plot.segments({px[u]}, {py[u]}, {px[v]}, {py[v]}, {220, 38, 38}, 3.0);
+        }
+    plot.points(px, py, "vertex", {37, 99, 235}, 11.0);
+    for (std::size_t v = 0; v < n1; ++v)
+        plot.text(px[v], py[v] + 0.13, name[v], {17, 24, 39}, 13.0);
+    plot.title("Bellman-Ford shortest-path tree from s (red = tree edges, grey = all edges)")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.save_svg("build/org/bellman_ford_tree.svg");
+    std::cout << "\nwrote bellman_ford_tree.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bellman_ford_analysis.cpp <<'CPP'
+<<bf-includes>>
+
+int main() {
+<<bf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bellman_ford_analysis.cpp -o build/org/bellman_ford_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bellman_ford_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Example 1: shortest paths with a negative edge (CLRS Fig. 24.4) ===
+directed edges (from -> to : weight):
+  0 -> 1 : 6
+  0 -> 3 : 7
+  1 -> 2 : 5
+  1 -> 3 : 8
+  1 -> 4 : -4
+  2 -> 1 : -2
+  3 -> 2 : -3
+  3 -> 4 : 9
+  4 -> 0 : 2
+  4 -> 2 : 7
+
+single-source shortest paths from vertex 0:
+  negative cycle reachable: no
+  vertex 0: dist = 0, pred = none, path = 0
+  vertex 1: dist = 2, pred = 2, path = 0 -> 3 -> 2 -> 1
+  vertex 2: dist = 4, pred = 3, path = 0 -> 3 -> 2
+  vertex 3: dist = 7, pred = 0, path = 0 -> 3
+  vertex 4: dist = -2, pred = 1, path = 0 -> 3 -> 2 -> 1 -> 4
+
+=== Example 2: a reachable negative cycle ===
+directed edges (from -> to : weight):
+  0 -> 1 : 1
+  1 -> 2 : -1
+  2 -> 1 : -1
+
+single-source shortest paths from vertex 0:
+  negative cycle reachable: yes
+  -> no shortest paths exist: the cycle 1 -> 2 -> 1 has weight -2 < 0,
+     so looping it drives reachable distances toward -infinity
+
+wrote bellman_ford_tree.svg
+#+end_example
+
+Example 1 recovers exactly the textbook distances \((0,2,4,7,-2)\). Notice that
+the shortest way to reach \(t\) (vertex 1) is *not* the direct edge \(s\to t\)
+of weight 6, but the roundabout \(s\to y\to x\to t = 7 + (-3) + (-2) = 2\):
+negative edges make detours pay, precisely the behavior a greedy method
+mishandles. The predecessor tree \(s\to y\to x\to t\to z\) is the shortest-path
+tree, drawn in red below over the full edge set in grey.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bellman_ford_tree.svg]]
+
+Example 2 exercises the detection logic: the cycle \(1\to2\to1\) has total
+weight \(-2\), and because vertex 0 can reach it (via \(0\to1\)), Bellman-Ford
+sets =has_negative_cycle= and warns that the distances would spiral to
+\(-\infty\). Had the same cycle sat in a component the source could not reach,
+the \(d[u]\neq\infty\) guard on the final pass would leave the flag =false= --
+the difference between "no shortest path exists" and "this part of the graph is
+simply irrelevant to the source."

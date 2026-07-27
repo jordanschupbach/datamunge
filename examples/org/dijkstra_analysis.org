@@ -1,0 +1,269 @@
+#+title: Dijkstra's Algorithm: Single-Source Shortest Paths by Settling the Nearest Frontier
+#+subtitle: A literate C++ study of non-negative-weight shortest paths with =datamunge='s =algorithms::dijkstra=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a road network with non-negative travel times, what is the fastest route
+from one city to every other -- and which roads make up those routes? Dijkstra
+(1959) answered this with an algorithm of remarkable economy: grow a set of
+/settled/ vertices whose shortest distance is already known, each step pulling
+in the single closest vertex still outside it. Under non-negative weights that
+greedy choice is provably final, so no vertex is ever revisited. This report
+implements it in =datamunge='s C++ =algorithms::dijkstra= and presents it as a
+literate program: every number and figure is produced by a single compiled
+binary. We state the shortest-path problem, prove the "settle the nearest
+frontier vertex" invariant and show precisely why a negative edge would break
+it, give the relaxation step and pseudocode, and establish the
+O((V+E) log V) binary-heap bound. A deterministic six-city road network,
+solved by hand and reproduced by the code, shows every shortest distance from
+the source, one fully reconstructed route, and the shortest-path tree drawn
+over the map.
+#+end_abstract
+
+* The shortest-path problem
+
+A weighted directed graph has \(n\) vertices \(\{0,\dots,n-1\}\) and edges
+\((u,v,w)\) meaning "one may travel from \(u\) to \(v\) at cost \(w \ge 0\)".
+The *length* of a path is the sum of its edge weights, and the *shortest-path
+distance* \(\delta(s,v)\) from a fixed *source* \(s\) to a vertex \(v\) is the
+minimum length over all \(s\)-to-\(v\) paths (or \(+\infty\) if none exists).
+The single-source shortest-path problem asks for \(\delta(s,v)\) for every
+\(v\), /and/ a shortest path realizing each -- compactly stored as a
+*predecessor* \(\pi(v)\), the vertex just before \(v\) on one shortest path, so
+that following \(\pi\) from \(v\) back to \(s\) and reversing yields the route.
+
+=datamunge= represents the graph by a vertex count =n= and an edge list of
+=(from, to, weight)= tuples, and returns a =ShortestPathResult= holding
+=distance[v]= (\(+\infty\) if unreachable) and =predecessor[v]=
+(=kNoPredecessor= for the source and for unreachable vertices). An /undirected/
+road is modeled by adding the edge in both directions.
+
+#+name: dijkstra-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dijkstra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <limits>
+#include <string>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Settling the frontier, and the relaxation step
+
+The algorithm maintains a tentative distance =dist[v]= for every vertex --
+initially \(0\) for the source and \(+\infty\) for the rest -- that is always an
+over-estimate of \(\delta(s,v)\), together with a set \(S\) of *settled*
+vertices whose tentative distance is known to be exact. At each step it picks
+the *closest unsettled vertex* \(u\) -- the one minimizing =dist[u]= over
+\(v \notin S\) -- declares it settled, and *relaxes* each outgoing edge
+\((u,v,w)\):
+
+#+begin_example
+if dist[u] + w < dist[v]:
+    dist[v]   <- dist[u] + w        # a shorter route to v, through u, was found
+    pred[v]   <- u
+#+end_example
+
+Relaxation is the only way a distance ever changes: it asks "is going to
+\(u\) first, then taking this one edge, cheaper than the best route to \(v\)
+found so far?" and if so records the improvement.
+
+*The settling invariant (why the greedy choice is safe).* Claim: when \(u\) is
+chosen as the closest unsettled vertex, its tentative =dist[u]= already equals
+\(\delta(s,u)\). Suppose not, and let \(P\) be a genuinely shorter path from
+\(s\) to \(u\). Walk along \(P\) from \(s\) (which is settled) until it first
+leaves \(S\); call that first unsettled vertex \(y\), reached from a settled
+predecessor whose outgoing edges have all been relaxed, so
+=dist[y]= \(\le \delta(s,y)\). Because every edge weight is non-negative, the
+remainder of \(P\) from \(y\) to \(u\) has length \(\ge 0\), hence
+\(\delta(s,y) \le \text{length}(P) < \) =dist[u]=. Combining,
+=dist[y]= \(<\) =dist[u]= -- but then \(y\), not \(u\), was the closest
+unsettled vertex, contradicting the choice of \(u\). So no shorter path exists
+and =dist[u]= is final. Settling it -- and never reconsidering it -- is
+therefore correct.
+
+*Why negative edges break it.* The argument used non-negativity exactly once,
+to claim the tail of \(P\) from \(y\) to \(u\) cannot reduce the cost below
+\(\delta(s,y)\). With a negative edge that tail /can/ be cheaper, so a vertex
+settled early -- as the current minimum -- may still be improved later by a
+route through a farther, as-yet-unsettled vertex. The greedy commitment is then
+unsound, and =dijkstra= rejects negative weights outright; Bellman-Ford, which
+relaxes every edge \(n-1\) times and makes no early commitment, is the tool for
+that case.
+
+*Binary-heap implementation with lazy deletion.* Finding the closest unsettled
+vertex by linear scan costs \(O(V)\) per step, i.e. \(O(V^2)\) overall. A binary
+min-heap keyed by tentative distance yields the minimum in \(O(\log V)\).
+Rather than decrease-key an existing heap entry, we simply *push a new*
+=(dist, v)= pair whenever =dist[v]= improves; the heap thus holds stale
+duplicates, which are discarded on pop by the *lazy-deletion* test "if the
+popped key exceeds the settled =dist[v]=, skip it."
+
+#+begin_example
+DIJKSTRA(n, edges, s):
+  build adjacency[u] = list of (v, w) from edges     # reject any w < 0
+  dist[*]  <- +infinity;   dist[s] <- 0
+  pred[*]  <- none
+  heap     <- min-heap keyed by distance; push (0, s)
+
+  while heap not empty:
+      (d, u) <- pop-min(heap)
+      if d > dist[u]:  continue                       # stale entry: u already settled
+      for each (v, w) in adjacency[u]:                # relax u's outgoing edges
+          if d + w < dist[v]:
+              dist[v] <- d + w
+              pred[v] <- u
+              push (dist[v], v) onto heap
+
+  return (dist, pred)
+#+end_example
+
+* Complexity
+
+Each vertex is settled once, and each edge is relaxed once from its settled
+tail, so at most \(E\) heap pushes occur; every push and pop costs
+\(O(\log V)\) (the heap holds \(O(E)\) entries, and \(\log E = O(\log V)\) for
+simple graphs). The total is *O((V + E) log V)* time and \(O(V + E)\) space --
+the standard binary-heap bound, and a decisive improvement over the \(O(V^2)\)
+linear-scan version on sparse graphs.
+
+* Example: a six-city road network
+
+We solve a deterministic six-city network -- cities =A= through =F= -- with the
+source at =A=. Distances are computed, one full route is reconstructed by
+following the predecessor tree, and the shortest-path tree is drawn over the
+map. The instance is small enough to check entirely by hand: the shortest
+distances from =A= are \(0, 3, 2, 8, 9, 11\) for =A,B,C,D,E,F=, with the fastest
+=A=-to-=F= route running =A -> C -> B -> D -> F= at length \(11\).
+
+#+name: dijkstra-run
+#+begin_src c++ :eval no
+    const std::size_t n = 6;
+    const std::vector<std::string> name = {"A", "B", "C", "D", "E", "F"};
+    // Directed roads (from, to, travel time); all weights non-negative.
+    const std::vector<std::tuple<std::size_t, std::size_t, double>> roads = {
+        {0, 1, 4.0}, {0, 2, 2.0}, {2, 1, 1.0}, {1, 3, 5.0}, {2, 3, 8.0},
+        {2, 4, 10.0}, {1, 4, 6.0}, {3, 5, 3.0}, {4, 5, 4.0}, {3, 4, 2.0},
+    };
+    const std::size_t source = 0;
+
+    const auto sp = dijkstra(n, roads, source);
+
+    std::cout << "=== Shortest paths in a 6-node road network from " << name[source] << " ===\n";
+    std::cout << "distances from " << name[source] << " (INF = unreachable):\n";
+    for (std::size_t v = 0; v < n; ++v) {
+        std::cout << "  " << name[v] << ": ";
+        if (sp.distance[v] == std::numeric_limits<double>::infinity()) std::cout << "INF";
+        else std::cout << sp.distance[v];
+        std::cout << "\n";
+    }
+
+    const auto path = reconstruct_path(sp, 5); // A -> ... -> F
+    std::cout << "shortest path " << name[source] << " -> " << name[5] << ": ";
+    for (std::size_t k = 0; k < path.size(); ++k)
+        std::cout << (k ? " -> " : "") << name[path[k]];
+    std::cout << "  (length " << sp.distance[5] << ")\n";
+
+    std::cout << "shortest-path tree edges (predecessor -> vertex):\n";
+    for (std::size_t v = 0; v < n; ++v)
+        if (sp.predecessor[v] != kNoPredecessor)
+            std::cout << "  " << name[sp.predecessor[v]] << " -> " << name[v] << "\n";
+
+    // ---- Draw the network: nodes at fixed coordinates, all roads grey, tree edges thick blue.
+    const std::vector<double> nx = {0.0, 2.0, 2.0, 4.0, 4.0, 6.0};
+    const std::vector<double> ny = {2.0, 3.0, 1.0, 3.0, 1.0, 2.0};
+
+    std::vector<double> gx0, gy0, gx1, gy1; // all road segments (grey)
+    for (const auto& [u, v, w] : roads) {
+        (void)w;
+        gx0.push_back(nx[u]); gy0.push_back(ny[u]);
+        gx1.push_back(nx[v]); gy1.push_back(ny[v]);
+    }
+    std::vector<double> tx0, ty0, tx1, ty1; // shortest-path tree segments (thick blue)
+    for (std::size_t v = 0; v < n; ++v)
+        if (sp.predecessor[v] != kNoPredecessor) {
+            const std::size_t u = sp.predecessor[v];
+            tx0.push_back(nx[u]); ty0.push_back(ny[u]);
+            tx1.push_back(nx[v]); ty1.push_back(ny[v]);
+        }
+
+    auto plot = RPlot::create();
+    plot.segments(gx0, gy0, gx1, gy1, {180, 184, 190}, 1.5);     // all roads, grey
+    plot.segments(tx0, ty0, tx1, ty1, {37, 99, 235}, 4.0);       // shortest-path tree, thick blue
+    plot.points(nx, ny, "", {17, 24, 39}, 9.0);                  // city markers
+    for (std::size_t v = 0; v < n; ++v)
+        plot.text(nx[v] + 0.12, ny[v] + 0.14, name[v], {17, 24, 39}, 16.0);
+    plot.title("Six-city road network with shortest-path tree from A (thick blue)")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.x_limits(-0.5, 6.7).y_limits(0.3, 3.7).hide_axes(true).show_grid(false);
+    plot.save_svg("build/org/dijkstra_tree.svg");
+    std::cout << "wrote dijkstra_tree.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/dijkstra_analysis.cpp <<'CPP'
+<<dijkstra-includes>>
+
+int main() {
+<<dijkstra-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/dijkstra_analysis.cpp -o build/org/dijkstra_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/dijkstra_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Shortest paths in a 6-node road network from A ===
+distances from A (INF = unreachable):
+  A: 0
+  B: 3
+  C: 2
+  D: 8
+  E: 9
+  F: 11
+shortest path A -> F: A -> C -> B -> D -> F  (length 11)
+shortest-path tree edges (predecessor -> vertex):
+  C -> B
+  A -> C
+  B -> D
+  B -> E
+  D -> F
+wrote dijkstra_tree.svg
+#+end_example
+
+Every distance matches the hand computation. From =A=, the cheapest way to
+reach =B= is not the direct road =A -> B= (length \(4\)) but the detour
+=A -> C -> B= (length \(2 + 1 = 3\)) -- the first place the greedy settling
+order pays off, settling =C= at distance \(2\) before ever finalizing =B=. That
+improved distance to =B= then propagates: both =D= (via =B -> D=) and =E= (via
+=B -> E=) are reached through =B=, and =F= is reached through =D=, giving the
+full route =A -> C -> B -> D -> F= at length \(11\) -- cheaper than the
+=A -> C -> B -> E -> F= alternative (\(3 + 6 + 4 = 13\)) that the algorithm
+correctly never commits to. The predecessor pointers, one per settled vertex,
+are exactly the shortest-path tree:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/dijkstra_tree.svg]]
+
+The thin grey segments are all ten roads; the thick blue segments are the five
+tree edges =A -> C=, =C -> B=, =B -> D=, =B -> E=, =D -> F= that carry the
+shortest routes. Every city hangs off =A= through exactly one blue path, and
+reading any city's blue path back to =A= reconstructs its fastest route -- the
+whole point of storing a predecessor rather than just a distance.

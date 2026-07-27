@@ -8,6 +8,12 @@ datamunge/algorithms/hopcroft_karp
 datamunge/algorithms/hungarian
 datamunge/algorithms/tarjan_lca
 datamunge/algorithms/graph_coloring
+datamunge/algorithms/dijkstra
+datamunge/algorithms/bellman_ford
+datamunge/algorithms/floyd_warshall
+datamunge/algorithms/kruskal
+datamunge/algorithms/prim
+datamunge/algorithms/edmonds_karp
 datamunge/plot
 datamunge/plot/ggplot
 datamunge/random

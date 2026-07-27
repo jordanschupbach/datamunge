@@ -1,0 +1,262 @@
+#+title: Prim's Algorithm: Minimum Spanning Trees by Growing One Tree
+#+subtitle: A literate C++ study of the minimum spanning tree problem with =datamunge='s =algorithms::prim=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a network of sites and the cost of laying a cable between each connectable
+pair, how do we wire every site together for the least total cost? The answer
+is a *minimum spanning tree*: a cycle-free subset of the links that connects
+everything as cheaply as possible. Prim's algorithm (Jarnik 1930; Prim 1957;
+Dijkstra 1959) finds one by a strikingly simple greedy rule -- start anywhere
+and repeatedly reach out along the cheapest link leaving the part already
+built. This report implements it in =datamunge='s C++ =algorithms::prim= and
+presents it as a literate program: every number and figure is produced by a
+single compiled binary. We define spanning trees and cuts, prove the *cut
+property* that makes the greedy choice safe, give the binary-heap frontier with
+pseudocode and its O(E log V) analysis, and contrast Prim with Kruskal. A
+hand-checkable six-vertex graph with all-distinct weights -- so its minimum
+spanning tree is unique -- is grown edge by edge from vertex 0 to a total
+weight of 15, and a figure draws the chosen tree in red over the full graph in
+grey.
+#+end_abstract
+
+* The minimum spanning tree problem
+
+Let \(G = (V, E)\) be a connected, weighted, *undirected* graph on \(n\)
+vertices \(V = \{0, \dots, n-1\}\), each edge \(\{u, v\}\) carrying a real
+weight \(w(u,v)\). A *spanning tree* is a subset of \(n-1\) edges that is both
+*connected* (a path joins every pair of vertices) and *acyclic* -- equivalently,
+a tree that touches every vertex. Its *weight* is the sum of its edge weights,
+and a *minimum spanning tree* (MST) is a spanning tree of least total weight.
+MSTs answer the cheapest-wiring question above, and appear inside clustering,
+network design, and approximation algorithms for harder problems.
+
+A *cut* \((S, V \setminus S)\) is any partition of the vertices into two
+nonempty sides; an edge *crosses* the cut if its endpoints lie on opposite
+sides. The whole theory rests on one fact about cuts, proved below.
+
+=datamunge= represents the graph by its vertex count =n= and an edge list of
+=(u, v, weight)= tuples, each treated as undirected (used in both directions).
+The result carries the chosen edges (in the order they are added), their total
+weight, and whether the tree reached every vertex.
+
+#+name: prim-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/prim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Growing one tree: Prim's algorithm
+
+Prim maintains a single growing tree. It picks a start vertex, puts it alone in
+the in-tree set \(S\), and then repeats: among all edges crossing the cut
+\((S, V \setminus S)\) -- edges with exactly one endpoint in the tree -- take a
+*cheapest* one, add it, and move its outside endpoint into \(S\). Each step
+attaches exactly one new vertex, so after \(n-1\) steps every vertex is in the
+tree and the algorithm stops.
+
+*The cut property (why the greedy choice is safe).* Fix any cut
+\((S, V \setminus S)\) that no already-chosen tree edge crosses, and let \(e\)
+be a minimum-weight edge crossing it. Then \(e\) belongs to some minimum
+spanning tree. /Proof./ Take any MST \(T\). If it already contains \(e\), done.
+Otherwise \(T + e\) has a cycle, and that cycle must cross the cut a second
+time, on some other edge \(f\). Since \(e\) is a cheapest crossing edge,
+\(w(e) \le w(f)\). Swap them: \(T' = T - f + e\) is still a spanning tree (we
+broke the unique cycle) and \(w(T') = w(T) - w(f) + w(e) \le w(T)\). As \(T\)
+was minimum, \(w(T') = w(T)\), so \(T'\) is also an MST -- and it contains
+\(e\). \(\blacksquare\)
+
+Every edge Prim adds is a cheapest edge crossing the cut between its current
+tree \(S\) and the rest, a cut no earlier tree edge crosses. By the cut
+property each such edge lies in some MST; an inductive argument (every prefix of
+Prim's choices extends to an MST) shows the final tree is itself an MST.
+
+*The heap-based frontier.* Scanning all crossing edges from scratch each step
+would be wasteful. Instead we keep a *frontier* min-heap of candidate edges: a
+=std::priority_queue= keyed by weight. When a vertex joins the tree we push its
+edges to still-outside neighbors. To take the next tree edge we pop the minimum
+-- but a popped edge may point to a vertex already pulled in by a cheaper edge,
+so we use *lazy deletion*: skip any popped edge whose outside endpoint is
+already in the tree, and keep popping until a genuinely crossing edge surfaces.
+
+#+begin_example
+PRIM(n, edges, start):
+  build undirected adjacency lists adj[*]        # each {u,v,w} stored on both u and v
+  in_tree[*] <- false
+  frontier   <- empty min-heap keyed by edge weight
+
+  in_tree[start] <- true
+  for (v, w) in adj[start]:  push (w, start, v) onto frontier
+
+  mst <- empty list;  total <- 0
+  while frontier not empty:
+      (w, u, v) <- pop-min(frontier)
+      if in_tree[v]:  continue                    # lazy deletion: v already attached, more cheaply
+      in_tree[v] <- true                          # (u,v) is the cheapest edge crossing the cut
+      append (u, v, w) to mst;  total <- total + w
+      for (x, wx) in adj[v]:
+          if not in_tree[x]:  push (wx, v, x) onto frontier
+
+  is_connected <- (size(mst) == n - 1)            # false => graph was disconnected
+  return (mst, total, is_connected)
+#+end_example
+
+*Complexity.* Each undirected edge is pushed at most twice (once from each
+endpoint), so the heap holds O(E) entries; every push and pop costs
+O(log E) = O(log V) (since E < V^2, log E < 2 log V). The total is
+*O(E log V)*, with O(V + E) space for the adjacency list and heap.
+
+*Termination and disconnection.* Each pop either adds a new vertex or is
+skipped; a vertex is added at most once, so at most \(n-1\) additions happen and
+the loop drains the finite heap. If the graph is *disconnected*, the frontier
+empties once =start='s component is fully absorbed, having added fewer than
+\(n-1\) edges; we then report =is_connected = false=. (Spanning every component
+-- a minimum spanning /forest/ -- would simply restart the growth from each
+still-unvisited vertex.)
+
+*Prim versus Kruskal.* Both are greedy and both are correct via the cut
+property, but they grow the tree differently. *Prim* grows /one/ tree outward
+from a seed, always choosing the cheapest edge on its frontier; with a heap it
+runs in O(E log V) and, because it only ever looks at edges touching the current
+tree, it is a natural fit for *dense* graphs (and reaches O(E + V log V) with a
+Fibonacci heap). *Kruskal* instead sorts /all/ edges once and adds each that
+joins two different components, using a union-find to detect cycles; it costs
+O(E log E) dominated by the sort and shines on *sparse*, edge-list graphs. On a
+graph with all-distinct weights both return the same unique MST -- a fact this
+report's test suite exploits, cross-checking Prim against an independent Kruskal
+reference.
+
+* Example: a six-vertex network
+
+We wire six sites together. The graph below has nine edges, all with *distinct*
+weights, so its minimum spanning tree is unique. Growing from vertex 0, Prim's
+frontier hands us the edges in a fixed order: first \(0\!-\!1\) (weight 3), then
+\(0\!-\!3\) (4), then \(1\!-\!2\) (5), then \(2\!-\!4\) (2), and finally
+\(4\!-\!5\) (1) -- five edges for six vertices, total weight
+\(3+4+5+2+1 = 15\). Edge \(2\!-\!4\) (weight 2) and \(4\!-\!5\) (weight 1) are
+cheap but only become reachable once their nearer endpoint has itself joined the
+tree, which is exactly why Prim discovers them late even though they are the two
+lightest edges in the whole graph.
+
+#+name: prim-run
+#+begin_src c++ :eval no
+    const std::size_t n = 6;
+    const std::vector<std::tuple<std::size_t, std::size_t, double>> graph = {
+        {0, 1, 3.0}, {0, 3, 4.0}, {1, 2, 5.0}, {1, 3, 6.0}, {1, 4, 7.0},
+        {2, 4, 2.0}, {2, 5, 8.0}, {3, 4, 9.0}, {4, 5, 1.0}};
+
+    std::cout << "=== Prim's MST on a 6-vertex weighted graph (start = 0) ===\n";
+    std::cout << "edges (u -- v : weight):\n";
+    for (const auto& [u, v, w] : graph)
+        std::cout << "  " << u << " -- " << v << " : " << w << "\n";
+
+    const auto mst = prim(n, graph, 0);
+    std::cout << "\nMST edges, in the order Prim attaches them:\n";
+    for (const auto& [u, v, w] : mst.edges)
+        std::cout << "  " << u << " -> " << v << "  (weight " << w << ")\n";
+    std::cout << "total weight: " << mst.total_weight << "\n";
+    std::cout << "spanning: " << mst.edges.size() << " edges over " << n << " vertices"
+              << (mst.is_connected ? "  (connected)\n" : "  (DISCONNECTED)\n");
+
+    // ---- Draw the graph: all edges thin grey, the MST edges thick red, over 2D positions ----
+    const std::vector<std::pair<double, double>> pos = {
+        {0.0, 2.0}, {2.0, 3.0}, {4.0, 2.0}, {1.0, 0.0}, {3.0, 0.0}, {5.0, 1.0}};
+    auto plot = RPlot::create();
+    for (const auto& e : graph) // every edge, thin grey, beneath the tree
+        plot.lines({pos[std::get<0>(e)].first, pos[std::get<1>(e)].first},
+                   {pos[std::get<0>(e)].second, pos[std::get<1>(e)].second}, "", {200, 200, 200}, 1.0);
+    for (const auto& e : mst.edges) // the chosen tree, thick red, on top
+        plot.lines({pos[std::get<0>(e)].first, pos[std::get<1>(e)].first},
+                   {pos[std::get<0>(e)].second, pos[std::get<1>(e)].second}, "", {220, 38, 38}, 3.5);
+    std::vector<double> nx, ny;
+    for (const auto& p : pos) { nx.push_back(p.first); ny.push_back(p.second); }
+    plot.points(nx, ny, "", {37, 99, 235}, 12.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(pos[i].first + 0.12, pos[i].second + 0.12, std::to_string(i), {17, 24, 39}, 14.0);
+    plot.title("Prim's minimum spanning tree (red) over the graph (grey), total weight 15")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.x_limits(-0.6, 5.8);
+    plot.y_limits(-0.8, 3.8);
+    plot.hide_axes(true);
+    plot.save_svg("build/org/prim_mst.svg");
+    std::cout << "\nwrote prim_mst.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/prim_analysis.cpp <<'CPP'
+<<prim-includes>>
+
+int main() {
+<<prim-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/prim_analysis.cpp -o build/org/prim_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/prim_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Prim's MST on a 6-vertex weighted graph (start = 0) ===
+edges (u -- v : weight):
+  0 -- 1 : 3
+  0 -- 3 : 4
+  1 -- 2 : 5
+  1 -- 3 : 6
+  1 -- 4 : 7
+  2 -- 4 : 2
+  2 -- 5 : 8
+  3 -- 4 : 9
+  4 -- 5 : 1
+
+MST edges, in the order Prim attaches them:
+  0 -> 1  (weight 3)
+  0 -> 3  (weight 4)
+  1 -> 2  (weight 5)
+  2 -> 4  (weight 2)
+  4 -> 5  (weight 1)
+total weight: 15
+spanning: 5 edges over 6 vertices  (connected)
+
+wrote prim_mst.svg
+#+end_example
+
+Prim adds exactly five edges to span the six vertices and reports the tree
+connected, with the hand-computed total weight of 15. The order tells the
+story of the frontier: from vertex 0 the only offers are \(0\!-\!1\) (3) and
+\(0\!-\!3\) (4), so the lighter is taken; vertex 1 then exposes \(1\!-\!2\) (5),
+the cheapest thing now crossing the cut, and so on. The two globally lightest
+edges, \(4\!-\!5\) (weight 1) and \(2\!-\!4\) (weight 2), are added *last* --
+not because they are expensive but because neither endpoint is reachable until
+the tree has grown across to that side of the graph. That is the essential
+difference from Kruskal, which would grab those two cheapest edges *first*; both
+routes arrive at the same unique tree.
+
+#+attr_html: :width 560
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/prim_mst.svg]]
+
+The red tree threads every vertex with no cycle, using \(n-1 = 5\) of the nine
+grey edges. It visibly avoids the heaviest links -- \(3\!-\!4\) (9), \(2\!-\!5\)
+(8), \(1\!-\!4\) (7) -- keeping only what is needed to stay connected at least
+cost. Every vertex is one red path away from every other, which is exactly what
+a spanning tree guarantees, and no cheaper set of five edges can connect all six
+sites: that optimality is the cut property, made concrete.
