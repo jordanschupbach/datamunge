@@ -25,6 +25,7 @@
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
+#include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>

@@ -1,0 +1,143 @@
+#+title: The Gauss-Seidel Method: Iterating to a Linear Solution
+#+subtitle: A literate C++ study of stationary iteration with =datamunge='s =algorithms::gauss_seidel=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+For large sparse systems, factoring the matrix (Gaussian elimination) is expensive;
+an *iterative* method that only ever multiplies by the matrix can be far cheaper.
+The *Gauss-Seidel method* sweeps the equations, solving each for its own unknown
+using the *most recently updated* values of the others -- so improvements propagate
+within a single sweep, converging about twice as fast as the simultaneous-update
+Jacobi method. This report implements it in =datamunge='s C++
+=algorithms::gauss_seidel=, solves a diagonally dominant system, and watches the
+residual shrink geometrically.
+#+end_abstract
+
+* Solve each equation in turn, in place
+
+The \(i\)-th equation \(\sum_j a_{ij}x_j=b_i\) can be rearranged to isolate
+\(x_i\):
+
+\[
+x_i \leftarrow \frac{1}{a_{ii}}\Bigl(b_i-\sum_{j\ne i} a_{ij}\,x_j\Bigr).
+\]
+
+Gauss-Seidel applies this update for \(i=1,2,\dots,n\), and crucially uses the
+*already-updated* \(x_j\) for \(j<i\) within the same sweep (whereas Jacobi would use
+last sweep's values throughout). Splitting \(A=L+D+U\) into lower, diagonal, and
+upper parts, one sweep is \(x\leftarrow(D+L)^{-1}(b-Ux)\), a fixed-point iteration
+whose error is multiplied each sweep by the *iteration matrix* \(-(D+L)^{-1}U\).
+Convergence is guaranteed (for any start) when \(A\) is strictly diagonally dominant
+or symmetric positive-definite, and is *linear*: the residual falls by a roughly
+constant factor per sweep, so the error decays geometrically.
+
+#+name: gsx-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GAUSS-SEIDEL(A, b):
+  x <- 0
+  repeat until ||A x - b|| < tol:
+      for i in 0 .. n-1:
+          x[i] <- ( b[i] - sum_{j != i} A[i][j] * x[j] ) / A[i][i]   # in place
+  return x
+#+end_example
+
+* Worked example: a diagonally dominant 3x3 system
+
+We solve
+\(4x-y+z=7,\ 4x-8y+z=-21,\ -2x+y+5z=15\), whose solution is \((2,4,3)\). The system
+is strictly diagonally dominant, so Gauss-Seidel converges; we record the residual
+after each sweep.
+
+#+name: gsx-run
+#+begin_src c++ :eval no
+    const std::vector<std::vector<double>> A = {{4, -1, 1}, {4, -8, 1}, {-2, 1, 5}};
+    const std::vector<double> b = {7, -21, 15};
+    const auto sol = gauss_seidel(A, b);
+
+    std::cout << "=== Gauss-Seidel ===\n";
+    std::cout << "solution x = (" << sol.x[0] << ", " << sol.x[1] << ", " << sol.x[2]
+              << ")  (expected (2, 4, 3))\n";
+    std::cout << "converged in " << sol.iterations << " sweeps, residual " << sol.residual << "\n\n";
+
+    // Trace the residual per sweep.
+    const std::size_t n = A.size();
+    std::vector<double> x(n, 0.0), sweep, logres;
+    auto resnorm = [&]() { double s = 0; for (std::size_t i = 0; i < n; ++i) { double ax = 0; for (std::size_t j = 0; j < n; ++j) ax += A[i][j] * x[j]; s += (ax - b[i]) * (ax - b[i]); } return std::sqrt(s); };
+    for (int it = 1; it <= 20; ++it) {
+        for (std::size_t i = 0; i < n; ++i) {
+            double s = b[i];
+            for (std::size_t j = 0; j < n; ++j) if (j != i) s -= A[i][j] * x[j];
+            x[i] = s / A[i][i];
+        }
+        const double r = resnorm();
+        sweep.push_back(it); logres.push_back(std::log10(std::max(r, 1e-16)));
+        if (r < 1e-12) break;
+    }
+
+    auto plot = RPlot::create();
+    plot.line(sweep, logres, "residual", RGB{37, 99, 235}, 2.0);
+    plot.points(sweep, logres, "residual", RGB{37, 99, 235}, 7.0);
+    plot.title("Gauss-Seidel: the residual decays geometrically (a straight log line)")
+        .x_label("sweep").y_label("log10 ||A x - b||").background({250, 250, 252});
+    plot.save_svg("build/org/gauss_seidel.svg");
+    std::cout << "wrote gauss_seidel.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gauss_seidel_analysis.cpp <<'CPP'
+<<gsx-includes>>
+
+int main() {
+<<gsx-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gauss_seidel_analysis.cpp -o build/org/gauss_seidel_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gauss_seidel_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Gauss-Seidel ===
+solution x = (2, 4, 3)  (expected (2, 4, 3))
+converged in 13 sweeps, residual 3.72223e-11
+
+wrote gauss_seidel.svg
+#+end_example
+
+Gauss-Seidel reaches \((2,4,3)\) to full tolerance in a modest number of sweeps, and
+the residual trace is a straight line on the log scale -- the constant per-sweep
+reduction factor of a convergent stationary iteration. Diagonal dominance is what
+guarantees that factor is below 1.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/gauss_seidel.svg]]
+
+The \(\log_{10}\) residual falls along a straight line, one roughly-constant step per
+sweep -- the visual signature of *linear* convergence. The slope is set by the
+spectral radius of the iteration matrix; the more diagonally dominant the system,
+the steeper that line and the fewer sweeps to a solution.

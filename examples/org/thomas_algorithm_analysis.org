@@ -1,0 +1,141 @@
+#+title: The Thomas Algorithm: Tridiagonal Systems in Linear Time
+#+subtitle: A literate C++ study of the tridiagonal solver with =datamunge='s =algorithms::thomas_solve=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *tridiagonal* system -- nonzero only on the main diagonal and its two neighbours --
+arises whenever a problem couples each unknown to just its immediate neighbours:
+cubic splines, 1-D finite differences, implicit time steps for the heat equation.
+Running general Gaussian elimination on it would waste \(O(n^3)\) work on zeros; the
+*Thomas algorithm* exploits the structure to solve it in *linear time* \(O(n)\).
+This report implements it in =datamunge='s C++ =algorithms::thomas_solve= and uses
+it to solve a boundary-value problem by finite differences, recovering \(\sin(\pi
+x)\).
+#+end_abstract
+
+* A banded forward sweep
+
+Store the three diagonals: sub-diagonal \(a_i\), main diagonal \(b_i\),
+super-diagonal \(c_i\), and right-hand side \(d_i\). A *forward sweep* eliminates
+each sub-diagonal entry using the row above -- for \(i=1,\dots,n-1\), subtract
+\(a_i/b_{i-1}\) times row \(i-1\) from row \(i\), which updates \(b_i\) and \(d_i\)
+only (the fill stays within the band). That leaves an upper-bidiagonal system,
+solved by *back substitution*: \(x_{n-1}=d_{n-1}/b_{n-1}\) and
+\(x_i=(d_i-c_i x_{i+1})/b_i\). Each entry is touched a constant number of times, so
+the cost is \(O(n)\) in time and space -- and when the matrix is diagonally dominant
+(as the ones from splines and finite differences are) no pivoting is needed and the
+sweep is numerically stable.
+
+#+name: th-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static constexpr double PI = 3.14159265358979323846;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+THOMAS(a, b, c, d):                   # sub, diag, super, rhs
+  for i in 1 .. n-1:                  # forward sweep
+      w <- a[i] / b[i-1]
+      b[i] <- b[i] - w * c[i-1]
+      d[i] <- d[i] - w * d[i-1]
+  x[n-1] <- d[n-1] / b[n-1]           # back substitution
+  for i in n-2 down to 0:
+      x[i] <- (d[i] - c[i] * x[i+1]) / b[i]
+  return x
+#+end_example
+
+* Worked example: a boundary-value problem
+
+We solve \(-u''(x)=\pi^2\sin(\pi x)\) on \([0,1]\) with \(u(0)=u(1)=0\), whose exact
+solution is \(u(x)=\sin(\pi x)\). A central finite difference on \(N=49\) interior
+points turns it into a tridiagonal system with diagonal \(2/h^2\) and off-diagonals
+\(-1/h^2\); Thomas solves it in one linear pass, and we compare to the exact curve.
+
+#+name: th-run
+#+begin_src c++ :eval no
+    const int N = 49;                 // interior points
+    const double h = 1.0 / (N + 1);
+    std::vector<double> sub(N), diag(N), super(N), rhs(N);
+    for (int i = 0; i < N; ++i) {
+        const double x = (i + 1) * h;
+        sub[i]   = (i == 0) ? 0.0 : -1.0 / (h * h);
+        super[i] = (i + 1 == N) ? 0.0 : -1.0 / (h * h);
+        diag[i]  = 2.0 / (h * h);
+        rhs[i]   = PI * PI * std::sin(PI * x); // -u'' = pi^2 sin(pi x)
+    }
+    const std::vector<double> u = thomas_solve(sub, diag, super, rhs);
+
+    double max_err = 0.0;
+    for (int i = 0; i < N; ++i) max_err = std::max(max_err, std::fabs(u[i] - std::sin(PI * (i + 1) * h)));
+    std::cout << "=== Thomas algorithm: -u'' = pi^2 sin(pi x), u(0)=u(1)=0 ===\n";
+    std::cout << N << " interior points; max |numerical - sin(pi x)| = " << max_err << "\n";
+    std::cout << "u at x=0.5 = " << u[(N - 1) / 2] << " (exact sin(pi/2) = 1)\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> ex_x, ex_y, nx, ny;
+    for (double x = 0.0; x <= 1.0001; x += 0.01) { ex_x.push_back(x); ex_y.push_back(std::sin(PI * x)); }
+    for (int i = 0; i < N; ++i) { nx.push_back((i + 1) * h); ny.push_back(u[i]); }
+    plot.line(ex_x, ex_y, "exact sin(pi x)", RGB{22, 163, 74}, 2.0);
+    plot.points(nx, ny, "Thomas solution", RGB{37, 99, 235}, 6.0);
+    plot.legend({"exact sin(pi x)", "Thomas solution"}, {{22, 163, 74}, {37, 99, 235}});
+    plot.title("Thomas solves the finite-difference BVP: it recovers sin(pi x)")
+        .x_label("x").y_label("u(x)").background({250, 250, 252});
+    plot.save_svg("build/org/thomas_algorithm.svg");
+    std::cout << "\nwrote thomas_algorithm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/thomas_algorithm_analysis.cpp <<'CPP'
+<<th-includes>>
+
+int main() {
+<<th-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/thomas_algorithm_analysis.cpp -o build/org/thomas_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/thomas_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Thomas algorithm: -u'' = pi^2 sin(pi x), u(0)=u(1)=0 ===
+49 interior points; max |numerical - sin(pi x)| = 0.000329052
+u at x=0.5 = 1.00033 (exact sin(pi/2) = 1)
+
+wrote thomas_algorithm.svg
+#+end_example
+
+The Thomas solution matches \(\sin(\pi x)\) to a small discretization error (which
+shrinks like \(h^2\) as the grid is refined), and the midpoint value is essentially
+1. All of it comes from a single linear-time forward-and-back sweep -- no cubic-cost
+elimination on a matrix that is almost entirely zeros.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/thomas_algorithm.svg]]
+
+The green curve is the exact \(\sin(\pi x)\); the blue points are the finite-
+difference solution the Thomas algorithm produced. They lie essentially on top of
+each other -- the tridiagonal solver reconstructs the smooth solution of the
+differential equation from its discretized, banded linear system in \(O(n)\) work.

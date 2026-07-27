@@ -461,14 +461,14 @@ Further information: Numerical linear algebra
 
     Solving systems of linear equations
         Biconjugate gradient method: solves systems of linear equations
-        Conjugate gradient: an algorithm for the numerical solution of particular systems of linear equations
+        [x] Conjugate gradient: an algorithm for the numerical solution of particular systems of linear equations  -- datamunge::algorithms::conjugate_gradient; report examples/org/conjugate_gradient_analysis.org
         Gauss–Jordan elimination: solves systems of linear equations
-        Gauss–Seidel method: solves systems of linear equations iteratively
-        Gaussian elimination
+        [x] Gauss–Seidel method: solves systems of linear equations iteratively  -- datamunge::algorithms::gauss_seidel; report examples/org/gauss_seidel_analysis.org
+        [x] Gaussian elimination  -- datamunge::algorithms::gaussian_elimination (partial pivoting); report examples/org/gaussian_elimination_analysis.org
         Levinson recursion: solves equation involving a Toeplitz matrix
         Stone's method: also known as the strongly implicit procedure or SIP, is an algorithm for solving a sparse linear system of equations
         Successive over-relaxation (SOR): method used to speed up convergence of the Gauss–Seidel method
-        Tridiagonal matrix algorithm (Thomas algorithm): solves systems of tridiagonal equations
+        [x] Tridiagonal matrix algorithm (Thomas algorithm): solves systems of tridiagonal equations  -- datamunge::algorithms::thomas_solve; report examples/org/thomas_algorithm_analysis.org
     SMAWK Algorithm
     Sparse matrix algorithms
         Cuthill–McKee algorithm: reduce the bandwidth of a symmetric sparse matrix
