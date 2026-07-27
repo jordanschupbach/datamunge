@@ -593,6 +593,26 @@ We implement Karatsuba multiplication (=algorithms::karatsuba_multiply=) and rep
 
 We implement baby-step giant-step (=algorithms::baby_step_giant_step=) and report it as a literate program. We split x = im + j to separate the unknown into a tabulated baby-step half and a giant-step half, giving O(sqrt p); 2^x ≡ 17 (mod 101) is solved as x = 30, with the baby/giant collision drawn.
 
+** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
+/A literate C++ study of bracketed root-finding using datamunge/
+
+We implement the bisection method (=algorithms::bisection=) and report it as a literate program. We give the bracketing invariant from the Intermediate Value Theorem and its linear (one-bit-per-step) convergence; sqrt(2) is found as a root of x^2-2 on [1,2] in 29 iterations, with the bracket squeezing shut plotted.
+
+** [[./newton_raphson_analysis.html][Newton's Method: Quadratic Convergence by Tangent Lines]] ([[./newton_raphson_analysis.pdf][PDF]])
+/A literate C++ study of derivative-based root-finding using datamunge/
+
+We implement Newton's method (=algorithms::newton_raphson=) and report it as a literate program. We derive the tangent-step recurrence and its quadratic convergence (and its connection to the Babylonian square-root rule); from x0=2 it reaches sqrt(2) in four tangent steps, with the tangents drawn sliding onto the root.
+
+** [[./secant_analysis.html][The Secant Method: Newton Without a Derivative]] ([[./secant_analysis.pdf][PDF]])
+/A literate C++ study of superlinear root-finding using datamunge/
+
+We implement the secant method (=algorithms::secant=) and report it as a literate program. We replace Newton's tangent with a finite-difference secant, giving golden-ratio (order 1.618) convergence at one evaluation per step and needing no derivative; sqrt(2) is found from {1,2} with the secant chords drawn.
+
+** [[./ridders_analysis.html][Ridders' Method: Bracketed Root-Finding, Quadratically Fast]] ([[./ridders_analysis.pdf][PDF]])
+/A literate C++ study of exponential-correction root-finding using datamunge/
+
+We implement Ridders' method (=algorithms::ridders=) and report it as a literate program. We derive its exponential correction that keeps a guaranteed bracket yet converges quadratically; sqrt(2) on [1,2] is found in a handful of iterations, its log-error plotted plunging far below bisection's linear descent.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

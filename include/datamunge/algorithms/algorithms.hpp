@@ -30,6 +30,7 @@
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/search_batch.hpp>

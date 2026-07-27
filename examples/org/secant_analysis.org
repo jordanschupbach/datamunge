@@ -1,0 +1,155 @@
+#+title: The Secant Method: Newton Without a Derivative
+#+subtitle: A literate C++ study of superlinear root-finding with =datamunge='s =algorithms::secant=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Newton's method is fast but demands the derivative \(f'\). When \(f'\) is
+unavailable or expensive, the *secant method* replaces the tangent with the
+*secant line* through the two most recent points -- a finite-difference stand-in
+for the derivative. It keeps most of Newton's speed, converging *superlinearly*
+with order \(\varphi\approx1.618\) (the golden ratio), at one function evaluation
+per step. This report implements it in =datamunge='s C++ =algorithms::secant=,
+finds \(\sqrt2\) from the two starting points \(1\) and \(2\), and draws the secant
+chords stepping onto the root.
+#+end_abstract
+
+* From tangent to secant
+
+Newton uses \(x_{n+1}=x_n-f(x_n)/f'(x_n)\). Approximating the derivative by the
+slope of the line through the last two iterates,
+\(f'(x_n)\approx\dfrac{f(x_n)-f(x_{n-1})}{x_n-x_{n-1}}\), gives the secant
+recurrence
+
+\[
+x_{n+1}=x_n-f(x_n)\,\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})} .
+\]
+
+Geometrically, \(x_{n+1}\) is where the secant line through
+\((x_{n-1},f(x_{n-1}))\) and \((x_n,f(x_n))\) crosses the axis. Its convergence
+order is the golden ratio \(\varphi\approx1.618\): slower than Newton's quadratic
+2, but each step costs only one new \(f\) evaluation (no \(f'\)), which often makes
+it faster in wall-clock terms. Unlike bisection it need not bracket the root and
+so is not guaranteed to converge from arbitrary starts.
+
+#+name: se-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SECANT(f, x0, x1, tol):
+  f0, f1 <- f(x0), f(x1)
+  repeat:
+      if |f1| < tol: return x1
+      if f1 == f0: fail (horizontal secant)
+      x2 <- x1 - f1 * (x1 - x0) / (f1 - f0)
+      x0, f0 <- x1, f1
+      x1, f1 <- x2, f(x2)
+#+end_example
+
+* Worked example: sqrt(2) from 1 and 2
+
+Seeding with \(x_0=1\) and \(x_1=2\), the secant chords produce
+\(1.\overline{3} \to 1.4 \to 1.41\overline{4}\ldots\), homing in on \(\sqrt2\)
+without ever computing a derivative. The program reports the converged root and
+traces the iterates.
+
+#+name: se-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return x * x - 2.0; };
+    const RootResult r = secant(f, 1.0, 2.0);
+    std::cout << "=== Secant on x^2 - 2, x0 = 1, x1 = 2 ===\n";
+    std::cout << "root = " << r.root << "  (sqrt2 = " << std::sqrt(2.0) << ")\n";
+    std::cout << "iterations = " << r.iterations << ", residual = " << r.residual << "\n\n";
+
+    std::vector<double> xs;
+    {
+        double x0 = 1.0, x1 = 2.0, f0 = f(x0), f1 = f(x1);
+        xs.push_back(x0); xs.push_back(x1);
+        for (int i = 0; i < 6 && std::fabs(f1) > 1e-12; ++i) {
+            const double x2 = x1 - f1 * (x1 - x0) / (f1 - f0);
+            x0 = x1; f0 = f1; x1 = x2; f1 = f(x2);
+            xs.push_back(x1);
+        }
+    }
+    std::cout << "iterates: ";
+    for (double x : xs) std::cout << x << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> cx, cy;
+    for (double x = 0.9; x <= 2.1; x += 0.02) { cx.push_back(x); cy.push_back(f(x)); }
+    plot.line(cx, cy, "f(x) = x^2 - 2", RGB{100, 116, 139}, 2.0);
+    plot.abline_h(0.0, RGB{148, 163, 184}, 1.0);
+    std::vector<double> sx0, sy0, sx1, sy1, px, py;
+    for (std::size_t i = 0; i + 1 < xs.size(); ++i) {
+        sx0.push_back(xs[i]); sy0.push_back(f(xs[i]));
+        sx1.push_back(xs[i + 1]); sy1.push_back(f(xs[i + 1]));
+    }
+    for (double x : xs) { px.push_back(x); py.push_back(f(x)); }
+    plot.segments(sx0, sy0, sx1, sy1, RGB{220, 38, 38}, 1.3);
+    plot.points(px, py, "iterates", RGB{37, 99, 235}, 9.0);
+    plot.abline_v(std::sqrt(2.0), RGB{22, 163, 74}, 1.2);
+    plot.legend({"f(x)", "secant chords", "iterate"}, {{100, 116, 139}, {220, 38, 38}, {37, 99, 235}});
+    plot.title("Secant method: chords step from {1, 2} onto sqrt(2)")
+        .x_label("x").y_label("f(x)").background({250, 250, 252});
+    plot.save_svg("build/org/secant.svg");
+    std::cout << "\nwrote secant.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/secant_analysis.cpp <<'CPP'
+<<se-includes>>
+
+int main() {
+<<se-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/secant_analysis.cpp -o build/org/secant_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/secant_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Secant on x^2 - 2, x0 = 1, x1 = 2 ===
+root = 1.41421  (sqrt2 = 1.41421)
+iterations = 7, residual = 9.01469e-16
+
+iterates: 1 2 1.33333 1.4 1.41463 1.41421 1.41421 1.41421
+
+wrote secant.svg
+#+end_example
+
+The secant method reaches \(\sqrt2\) in a few more iterations than Newton but with
+no derivative at all -- only function values. Its golden-ratio convergence order
+sits between bisection's linear 1 and Newton's quadratic 2, a sweet spot when the
+derivative is costly or unknown.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/secant.svg]]
+
+Each red chord connects two successive iterates on the curve; its crossing of the
+x-axis is the next iterate (blue). The chords tilt to match the curve better and
+better as the points close in on the green \(\sqrt2\) line -- a secant standing in
+for the tangent Newton would have used.

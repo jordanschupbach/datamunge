@@ -1,0 +1,165 @@
+#+title: Ridders' Method: Bracketed Root-Finding, Quadratically Fast
+#+subtitle: A literate C++ study of exponential-correction root-finding with =datamunge='s =algorithms::ridders=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Bisection is safe but slow; Newton and secant are fast but can diverge.
+*Ridders' method* (1979) gets both: it keeps a guaranteed bracket around the root,
+yet converges *quadratically*. The trick is to evaluate the function at the
+interval midpoint and then apply an *exponential correction* that straightens the
+curve into a line, landing dramatically closer to the root than a plain halving.
+This report implements it in =datamunge='s C++ =algorithms::ridders=, finds
+\(\sqrt2\) on \([1,2]\), and plots its error collapsing far faster than bisection's.
+#+end_abstract
+
+* The exponential correction
+
+Given a bracket \([a,b]\) with midpoint \(c=\tfrac{a+b}{2}\), Ridders assumes the
+root of \(f\) coincides with the root of \(f(x)e^{Q(x-c)}\) for some constant
+\(Q\) that makes the three points \(a,c,b\) fall on a straight line after the
+exponential twist. Solving for that \(Q\) yields the update
+
+\[
+d = c + (c-a)\,\frac{\operatorname{sign}(f(a)-f(b))\,f(c)}{\sqrt{f(c)^2-f(a)f(b)}} ,
+\]
+
+which is guaranteed to stay inside \([a,b]\). The new point \(d\) (and the old
+\(a,c,b\)) are then used to re-bracket the root for the next step. Each iteration
+spends *two* function evaluations (at \(c\) and \(d\)) and roughly *squares* the
+error, so the effective convergence order per evaluation is \(\sqrt2\approx1.41\)
+-- and, crucially, it can never leave the bracket, so it cannot diverge the way
+Newton can.
+
+#+name: ri-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+RIDDERS(f, a, b, tol):
+  fa, fb <- f(a), f(b)
+  if fa*fb > 0: fail (no bracket)
+  repeat:
+      c <- (a + b) / 2 ; fc <- f(c)
+      s <- sqrt(fc*fc - fa*fb) ; if s == 0: return c
+      d <- c + (c - a) * sign(fa - fb) * fc / s
+      fd <- f(d)
+      if |fd| < tol: return d
+      re-bracket the root among {a, c, d} using the signs of fa, fc, fd
+#+end_example
+
+* Worked example: sqrt(2) on [1, 2]
+
+Ridders brackets \(\sqrt2\) in \([1,2]\) and converges to full double precision in
+only a handful of iterations -- versus roughly fifty for bisection -- while never
+letting the estimate escape a valid bracket. The program reports the root and
+compares its per-iteration error against bisection's.
+
+#+name: ri-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return x * x - 2.0; };
+    const double root = std::sqrt(2.0);
+    const RootResult r = ridders(f, 1.0, 2.0);
+    std::cout << "=== Ridders on x^2 - 2, [1, 2] ===\n";
+    std::cout << "root = " << r.root << "  (sqrt2 = " << root << ")\n";
+    std::cout << "iterations = " << r.iterations << ", residual = " << r.residual << "\n\n";
+
+    auto safe_log10 = [](double e) { return std::log10(std::max(e, 1e-17)); };
+
+    // Trace Ridders errors.
+    std::vector<double> ri_it, ri_err;
+    {
+        double a = 1.0, b = 2.0, fa = f(a), fb = f(b);
+        for (int i = 1; i <= 8; ++i) {
+            const double c = 0.5 * (a + b), fc = f(c);
+            const double s = std::sqrt(fc * fc - fa * fb);
+            if (s == 0.0) break;
+            const double d = c + (c - a) * ((fa >= fb ? 1.0 : -1.0) * fc / s), fd = f(d);
+            ri_it.push_back(i); ri_err.push_back(safe_log10(std::fabs(d - root)));
+            if (std::fabs(fd) < 1e-15) break;
+            if ((fc < 0) != (fd < 0)) { a = c; fa = fc; b = d; fb = fd; }
+            else if ((fa < 0) != (fd < 0)) { b = d; fb = fd; }
+            else { a = d; fa = fd; }
+        }
+    }
+    // Trace bisection errors.
+    std::vector<double> bi_it, bi_err;
+    {
+        double a = 1.0, b = 2.0, fa = f(a);
+        for (int i = 1; i <= 50; ++i) {
+            const double c = 0.5 * (a + b), fc = f(c);
+            bi_it.push_back(i); bi_err.push_back(safe_log10(std::fabs(c - root)));
+            if ((fc < 0) == (fa < 0)) { a = c; fa = fc; } else { b = c; }
+        }
+    }
+    std::cout << "Ridders reached |error| < 1e-15 in " << ri_it.size() << " iterations; "
+              << "bisection needs ~50.\n";
+
+    auto plot = RPlot::create();
+    plot.line(bi_it, bi_err, "bisection", RGB{220, 38, 38}, 2.0);
+    plot.points(bi_it, bi_err, "bisection", RGB{220, 38, 38}, 5.0);
+    plot.line(ri_it, ri_err, "Ridders", RGB{37, 99, 235}, 2.0);
+    plot.points(ri_it, ri_err, "Ridders", RGB{37, 99, 235}, 7.0);
+    plot.legend({"bisection (linear)", "Ridders (quadratic)"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Ridders vs bisection: log10 error against iteration")
+        .x_label("iteration").y_label("log10 |x_n - sqrt2|").background({250, 250, 252});
+    plot.save_svg("build/org/ridders.svg");
+    std::cout << "\nwrote ridders.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ridders_analysis.cpp <<'CPP'
+<<ri-includes>>
+
+int main() {
+<<ri-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ridders_analysis.cpp -o build/org/ridders_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ridders_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ridders on x^2 - 2, [1, 2] ===
+root = 1.41421  (sqrt2 = 1.41421)
+iterations = 3, residual = 4.28639e-11
+
+Ridders reached |error| < 1e-15 in 4 iterations; bisection needs ~50.
+
+wrote ridders.svg
+#+end_example
+
+Ridders reaches full precision in a handful of iterations while bisection grinds
+through dozens for the same accuracy -- yet Ridders retains bisection's safety net
+of an always-valid bracket. It is often the best default when the derivative is
+unavailable but a bracket is known.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/ridders.svg]]
+
+The red bisection error descends in a straight line -- a fixed number of bits per
+step, linear convergence -- while the blue Ridders error plunges, each step roughly
+doubling the correct digits. The vertical gap between the curves is the practical
+payoff of the exponential correction over plain halving.

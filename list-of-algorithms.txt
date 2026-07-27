@@ -490,14 +490,14 @@ Further information: Numerical integration
 Root finding
 Main article: Root-finding algorithm
 
-    Bisection method
+    [x] Bisection method  -- datamunge::algorithms::bisection; report examples/org/bisection_analysis.org
     False position method: and Illinois method: 2-point, bracketing
     Halley's method: uses first and second derivatives
     ITP method: minmax optimal and superlinear convergence simultaneously
     Muller's method: 3-point, quadratic interpolation
-    Newton's method: finds zeros of functions with calculus
-    Ridder's method: 3-point, exponential scaling
-    Secant method: 2-point, 1-sided
+    [x] Newton's method: finds zeros of functions with calculus  -- datamunge::algorithms::newton_raphson; report examples/org/newton_raphson_analysis.org
+    [x] Ridder's method: 3-point, exponential scaling  -- datamunge::algorithms::ridders; report examples/org/ridders_analysis.org
+    [x] Secant method: 2-point, 1-sided  -- datamunge::algorithms::secant; report examples/org/secant_analysis.org
 
 Optimization algorithms
 Main article: Mathematical optimization
