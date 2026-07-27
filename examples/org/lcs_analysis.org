@@ -1,0 +1,195 @@
+#+title: The Longest Common Subsequence: What Two Sequences Share
+#+subtitle: A literate C++ study of the LCS dynamic program with =datamunge='s =algorithms::longest_common_subsequence=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When =diff= compares two files, or a biologist compares two DNA strands, the
+question is: what is the longest run of items -- not necessarily contiguous -- that
+appears in the same order in both? That is the *longest common subsequence* (LCS).
+It is the close cousin of edit distance (its complement, in fact), solved by the
+same Wagner-Fischer dynamic program. This report implements it in =datamunge='s
+C++ =algorithms::longest_common_subsequence=, works the classic
+=ABCBDAB= vs =BDCAB= example by hand, prints the dynamic-programming table, and
+draws the traceback whose diagonal steps spell out the shared subsequence.
+#+end_abstract
+
+* Subsequences and the recurrence
+
+A /subsequence/ of a string keeps some of its characters in their original order
+but may drop others; =BCB= is a subsequence of =ABCBDAB=. The LCS of \(a\) and
+\(b\) is a longest string that is a subsequence of both. Let \(C(i,j)\) be the LCS
+length of the length-\(i\) prefix of \(a\) and the length-\(j\) prefix of \(b\).
+Aligning the last characters, either they match and extend the LCS, or one of them
+is dropped:
+
+\[
+C(i,j)=\begin{cases}
+0 & i=0 \text{ or } j=0,\\
+C(i-1,j-1)+1 & a_i=b_j,\\
+\max\bigl(C(i-1,j),\,C(i,j-1)\bigr) & a_i\ne b_j.
+\end{cases}
+\]
+
+The optimal length is \(C(|a|,|b|)\); tracing back from that corner -- taking a
+diagonal step (and emitting the shared character) on a match, otherwise stepping
+toward the larger neighbour -- reconstructs one LCS. Time and space are
+\(O(|a||b|)\). The LCS length and the edit distance are two sides of the same
+coin: with only insertions and deletions allowed, the edit distance is
+\(|a|+|b|-2\,|\text{LCS}|\).
+
+#+name: lcs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/subsequences.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::vector<int> to_seq(const std::string& s) { return {s.begin(), s.end()}; }
+static std::string      to_str(const std::vector<int>& v) { return {v.begin(), v.end()}; }
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LCS(a, b):                            # |a| = n, |b| = m
+  for i in 0..n: C[i][0] <- 0
+  for j in 0..m: C[0][j] <- 0
+  for i in 1..n:
+      for j in 1..m:
+          if a[i] == b[j]: C[i][j] <- C[i-1][j-1] + 1
+          else:            C[i][j] <- max(C[i-1][j], C[i][j-1])
+  # traceback from (n, m)
+  i, j <- n, m;  L <- ""
+  while i > 0 and j > 0:
+      if a[i] == b[j]:            prepend a[i] to L;  i, j <- i-1, j-1
+      elif C[i-1][j] >= C[i][j-1]: i <- i-1
+      else:                        j <- j-1
+  return L
+#+end_example
+
+* Worked example: =ABCBDAB= and =BDCAB=
+
+The two strings share several length-4 subsequences -- =BCAB= and =BDAB= among
+them -- and no length-5 one, so the LCS length is 4. Filling \(C\) and tracing from
+the bottom-right corner recovers one of these. The program prints the table and
+the recovered subsequence.
+
+#+name: lcs-run
+#+begin_src c++ :eval no
+    const std::string as = "ABCBDAB", bs = "BDCAB";
+    const std::vector<int> a = to_seq(as), b = to_seq(bs);
+    const std::vector<int> lcs = longest_common_subsequence(a, b);
+
+    std::cout << "=== Longest common subsequence ===\n";
+    std::cout << "a = " << as << "\nb = " << bs << "\n";
+    std::cout << "LCS = " << to_str(lcs) << "  (length " << lcs.size() << ")\n\n";
+
+    // Rebuild C for display and the traceback figure.
+    const std::size_t n = a.size(), m = b.size();
+    std::vector<std::vector<int>> C(n + 1, std::vector<int>(m + 1, 0));
+    for (std::size_t i = 1; i <= n; ++i)
+        for (std::size_t j = 1; j <= m; ++j)
+            C[i][j] = (a[i - 1] == b[j - 1]) ? C[i - 1][j - 1] + 1 : std::max(C[i - 1][j], C[i][j - 1]);
+
+    std::cout << "DP table C (rows a, cols b):\n      _";
+    for (char c : bs) std::cout << "  " << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i <= n; ++i) {
+        std::cout << "  " << (i == 0 ? '_' : as[i - 1]) << " ";
+        for (std::size_t j = 0; j <= m; ++j) std::cout << std::setw(3) << C[i][j];
+        std::cout << "\n";
+    }
+
+    std::vector<std::pair<std::size_t, std::size_t>> path, matches;
+    for (std::size_t i = n, j = m;;) {
+        path.emplace_back(i, j);
+        if (i == 0 || j == 0) break;
+        if (a[i - 1] == b[j - 1]) { matches.emplace_back(i, j); --i; --j; }
+        else if (C[i - 1][j] >= C[i][j - 1]) --i;
+        else --j;
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> px, py;
+    for (const auto& [i, j] : path) { px.push_back(static_cast<double>(j)); py.push_back(-static_cast<double>(i)); }
+    plot.line(px, py, "traceback", RGB{148, 163, 184}, 2.0);
+    for (std::size_t i = 0; i <= n; ++i)
+        for (std::size_t j = 0; j <= m; ++j)
+            plot.text(static_cast<double>(j), -static_cast<double>(i), std::to_string(C[i][j]), RGB{31, 41, 55}, 12.0);
+    std::vector<double> mx, my;
+    for (const auto& [i, j] : matches) { mx.push_back(static_cast<double>(j)); my.push_back(-static_cast<double>(i)); }
+    plot.points(mx, my, "matched (LCS)", RGB{220, 38, 38}, 13.0);
+    for (std::size_t j = 0; j < m; ++j) plot.text(static_cast<double>(j + 1), 0.7, std::string(1, bs[j]), RGB{37, 99, 235}, 14.0);
+    for (std::size_t i = 0; i < n; ++i) plot.text(-0.8, -static_cast<double>(i + 1), std::string(1, as[i]), RGB{22, 163, 74}, 14.0);
+    plot.title("LCS table for ABCBDAB vs BDCAB (length 4)")
+        .x_label("prefix of b").y_label("prefix of a (downward)").background({250, 250, 252});
+    plot.x_limits(-1.5, static_cast<double>(m) + 0.5);
+    plot.y_limits(-static_cast<double>(n) - 0.5, 1.5);
+    plot.save_svg("build/org/lcs.svg");
+    std::cout << "\nwrote lcs.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lcs_analysis.cpp <<'CPP'
+<<lcs-includes>>
+#include <iomanip>
+
+int main() {
+<<lcs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lcs_analysis.cpp -o build/org/lcs_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lcs_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Longest common subsequence ===
+a = ABCBDAB
+b = BDCAB
+LCS = BCAB  (length 4)
+
+DP table C (rows a, cols b):
+      _  B  D  C  A  B
+  _   0  0  0  0  0  0
+  A   0  0  0  0  1  1
+  B   0  1  1  1  1  2
+  C   0  1  1  2  2  2
+  B   0  1  1  2  2  3
+  D   0  1  2  2  2  3
+  A   0  1  2  2  3  3
+  B   0  1  2  2  3  4
+
+wrote lcs.svg
+#+end_example
+
+The recovered subsequence has length 4, matching the hand analysis, and it is a
+subsequence of both inputs. The table grows by one exactly along the diagonal
+matches and otherwise inherits the larger of its upper/left neighbour, the
+signature of the LCS recurrence.
+
+#+attr_html: :width 560
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/lcs.svg]]
+
+The grey path is the traceback from the corner; the red points are its diagonal
+(matching) steps, and reading their letters top-to-bottom spells the LCS. Every
+red point sits where a row letter (green) equals a column letter (blue) and the
+table ticked up by one.

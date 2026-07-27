@@ -533,6 +533,26 @@ We implement the Steinhaus-Johnson-Trotter algorithm (=algorithms::sjt_permutati
 
 We implement the Schensted / RSK row insertion (=algorithms::rsk_insert=) and report it as a literate program. We describe bumping, the insertion tableau P and recording tableau Q, and Schensted's theorem (first-row length = longest increasing subsequence); inserting [4,1,3,6,2,5] yields shape (3,2,1) with first row 1 2 5 of length 3, matching the LIS.
 
+** [[./lcs_analysis.html][The Longest Common Subsequence: What Two Sequences Share]] ([[./lcs_analysis.pdf][PDF]])
+/A literate C++ study of the LCS dynamic program using datamunge/
+
+We implement the longest common subsequence (=algorithms::longest_common_subsequence=) and report it as a literate program. We give the Wagner-Fischer recurrence and traceback, and its duality with edit distance; =ABCBDAB= vs =BDCAB= yields the length-4 LCS =BCAB=, with the DP table printed and the matching diagonal steps drawn.
+
+** [[./lis_analysis.html][The Longest Increasing Subsequence: Patience Sorting]] ([[./lis_analysis.pdf][PDF]])
+/A literate C++ study of the O(n log n) LIS using datamunge/
+
+We implement the longest increasing subsequence (=algorithms::longest_increasing_subsequence=) and report it as a literate program. We explain patience sorting -- binary-searching each element into piles of increasing tails, with predecessor links for reconstruction -- giving O(n log n); a 16-element sequence yields the length-6 LIS =0 2 6 9 11 15=, plotted as an ascending chain.
+
+** [[./ruzzo_tompa_analysis.html][The Ruzzo-Tompa Algorithm: All Maximal Scoring Subsequences]] ([[./ruzzo_tompa_analysis.pdf][PDF]])
+/A literate C++ study of linear-time signal-island finding using datamunge/
+
+We implement the Ruzzo-Tompa algorithm (=algorithms::ruzzo_tompa=) and report it as a literate program. We define maximal-scoring subsequences and give the linear-time incremental-merge rule (absorb leftward only when it raises the score); scores =3 -2 5 -6 4 -1 2 -8 7= split into three islands (6, 5, 7) since the -6 and -8 valleys are too deep to bridge.
+
+** [[./scs_analysis.html][The Shortest Common Supersequence: Merging Two Sequences]] ([[./scs_analysis.pdf][PDF]])
+/A literate C++ study of the SCS via LCS using datamunge/
+
+We implement the shortest common supersequence (=algorithms::shortest_common_supersequence=) and report it as a literate program. We derive |SCS| = |a|+|b|-|LCS| and the LCS-table walk that shares the backbone and interleaves the private elements; =AGGTAB= and =GXTXAYB= merge into the length-9 =AGXGTXAYB=, coloured by element origin.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

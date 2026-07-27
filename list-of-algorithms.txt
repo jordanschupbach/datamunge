@@ -219,10 +219,10 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
 Subsequences
 Further information: Subsequence
 
-    Longest common subsequence problem: Find the longest subsequence common to all sequences in a set of sequences
-    Longest increasing subsequence problem: Find the longest increasing subsequence of a given sequence
-    Ruzzo–Tompa algorithm: Find all non-overlapping, contiguous, maximal scoring subsequences in a sequence of real numbers
-    Shortest common supersequence problem: Find the shortest supersequence that contains two or more sequences as subsequences
+    [x] Longest common subsequence problem: Find the longest subsequence common to all sequences in a set of sequences  -- datamunge::algorithms::longest_common_subsequence (two sequences); report examples/org/lcs_analysis.org
+    [x] Longest increasing subsequence problem: Find the longest increasing subsequence of a given sequence  -- datamunge::algorithms::longest_increasing_subsequence (patience sorting, O(n log n)); report examples/org/lis_analysis.org
+    [x] Ruzzo–Tompa algorithm: Find all non-overlapping, contiguous, maximal scoring subsequences in a sequence of real numbers  -- datamunge::algorithms::ruzzo_tompa; report examples/org/ruzzo_tompa_analysis.org
+    [x] Shortest common supersequence problem: Find the shortest supersequence that contains two or more sequences as subsequences  -- datamunge::algorithms::shortest_common_supersequence (two sequences); report examples/org/scs_analysis.org
 
 Substrings
 Further information: Substrings
