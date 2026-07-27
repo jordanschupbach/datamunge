@@ -37,6 +37,7 @@
 #include <datamunge/algorithms/sorted_search.hpp>
 #include <datamunge/algorithms/stable_matching.hpp>
 #include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/algorithms/subsequences.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
 #include <datamunge/algorithms/tour_search.hpp>

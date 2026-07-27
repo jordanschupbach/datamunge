@@ -1,0 +1,165 @@
+#+title: The Ruzzo-Tompa Algorithm: All Maximal Scoring Subsequences
+#+subtitle: A literate C++ study of linear-time signal-island finding with =datamunge='s =algorithms::ruzzo_tompa=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Score each position of a genome for how "interesting" it looks -- positive for
+signal, negative for noise -- and the biologically meaningful regions are the
+contiguous stretches whose total score stands out. The *Ruzzo-Tompa algorithm*
+(Ruzzo & Tompa, 1999) finds *all* such maximal-scoring subsequences at once, in a
+single linear-time pass, rather than the quadratic cost of testing every window.
+This report implements it in =datamunge='s C++ =algorithms::ruzzo_tompa=, explains
+its incremental merge rule, and works an example whose deep and shallow valleys
+show when neighbouring islands stay separate and when they fuse.
+#+end_abstract
+
+* Maximal scoring subsequences
+
+Given real scores \(x_1,\dots,x_n\), a contiguous subsequence is *maximal scoring*
+if (i) its total is positive, (ii) no sub-subsequence scores strictly higher, and
+(iii) it is not contained in a longer subsequence with those properties. The
+output is a set of *disjoint* "islands" -- extend one and its score would fall;
+shrink it and you would miss part of the signal.
+
+The naive approach scores all \(O(n^2)\) windows. Ruzzo-Tompa instead reads left
+to right, keeping an ordered list of candidate segments. Each new positive score
+seeds a one-element segment; the algorithm then merges it leftward -- absorbing
+earlier segments whenever the merge /raises/ the score -- and otherwise leaves it
+standing. Using cumulative prefix sums \(L\) (just before a segment) and \(R\) (at
+its end), the merge test is a pair of comparisons, and each segment is created and
+absorbed at most once, so the whole pass is \(O(n)\).
+
+#+name: rt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/subsequences.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+RUZZO-TOMPA(x):
+  list <- []                          # each segment holds (begin, end, L, R), score = R - L
+  cum <- 0
+  for i in 0 .. n-1:
+      before <- cum ; cum <- cum + x[i]
+      if x[i] <= 0: continue          # only positive scores seed a segment
+      seg <- (i, i+1, before, cum)
+      loop:
+          j <- rightmost segment with list[j].L < seg.L
+          if no such j: break                       # keep seg as its own island
+          if list[j].R >= seg.R: break              # predecessor already scores >= : stop
+          seg.begin <- list[j].begin ; seg.L <- list[j].L ; drop list[j..end]   # absorb & retry
+      append seg to list
+  return [ (s.begin, s.end, s.R - s.L) for s in list ]
+#+end_example
+
+The rule "absorb when =list[j].R < seg.R=" is exactly "merging raises the score":
+bridging the valley between the two segments is worth it only if the later
+segment's cumulative end exceeds the earlier one's.
+
+* Worked example
+
+Score the sequence
+
+: 3  -2  5  -6  4  -1  2  -8  7
+
+By eye there are three positive islands: =3 -2 5= (total 6), =4 -1 2= (total 5),
+and =7= (total 7). The valley of \(-6\) between the first two is too deep to bridge
+(joining them would score \(6-6+5=5<6\)), and the \(-8\) before the last is deeper
+still, so all three islands stay separate. The program confirms the segmentation.
+
+#+name: rt-run
+#+begin_src c++ :eval no
+    const std::vector<double> scores = {3, -2, 5, -6, 4, -1, 2, -8, 7};
+    const auto segs = ruzzo_tompa(scores);
+
+    std::cout << "=== Ruzzo-Tompa maximal scoring subsequences ===\n";
+    std::cout << "scores:";
+    for (double s : scores) std::cout << " " << s;
+    std::cout << "\n\n" << segs.size() << " maximal segment(s):\n";
+    for (const auto& s : segs) {
+        std::cout << "  [" << s.begin << ", " << s.end << ")  score " << s.score << "  values:";
+        for (std::size_t i = s.begin; i < s.end; ++i) std::cout << " " << scores[i];
+        std::cout << "\n";
+    }
+
+    // Figure: bars for each score, with a bracket over each maximal segment.
+    auto plot = RPlot::create();
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < scores.size(); ++i) { xs.push_back(static_cast<double>(i)); ys.push_back(scores[i]); }
+    plot.bars(xs, ys, "score", RGB{96, 165, 250});
+    plot.abline_h(0.0, RGB{100, 116, 139}, 1.0);
+    const std::vector<RGB> palette = {{220, 38, 38}, {22, 163, 74}, {202, 138, 4}, {124, 58, 237}};
+    std::vector<double> bx0, by0, bx1, by1;
+    for (std::size_t k = 0; k < segs.size(); ++k) {
+        const double y = 8.0;
+        bx0.push_back(static_cast<double>(segs[k].begin) - 0.4); by0.push_back(y);
+        bx1.push_back(static_cast<double>(segs[k].end) - 0.6);   by1.push_back(y);
+        plot.text((segs[k].begin + segs[k].end - 1) / 2.0, 9.0,
+                  "score " + std::to_string(static_cast<int>(segs[k].score)),
+                  palette[k % palette.size()], 12.0);
+    }
+    plot.segments(bx0, by0, bx1, by1, RGB{220, 38, 38}, 3.0);
+    plot.title("Ruzzo-Tompa: three islands survive the deep valleys")
+        .x_label("position").y_label("score").background({250, 250, 252});
+    plot.x_limits(-0.6, static_cast<double>(scores.size()) - 0.4);
+    plot.y_limits(-9.0, 10.5);
+    plot.save_svg("build/org/ruzzo_tompa.svg");
+    std::cout << "\nwrote ruzzo_tompa.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ruzzo_tompa_analysis.cpp <<'CPP'
+<<rt-includes>>
+
+int main() {
+<<rt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ruzzo_tompa_analysis.cpp -o build/org/ruzzo_tompa_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ruzzo_tompa_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ruzzo-Tompa maximal scoring subsequences ===
+scores: 3 -2 5 -6 4 -1 2 -8 7
+
+3 maximal segment(s):
+  [0, 3)  score 6  values: 3 -2 5
+  [4, 7)  score 5  values: 4 -1 2
+  [8, 9)  score 7  values: 7
+
+wrote ruzzo_tompa.svg
+#+end_example
+
+The three islands are reported separately: the valleys of \(-6\) and \(-8\) are too
+deep to make bridging worthwhile, so no merge occurs. Had the first valley been a
+mere \(-1\), the two flanking islands would have fused into one higher-scoring
+segment -- the single comparison =list[j].R < seg.R= that decides it.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/ruzzo_tompa.svg]]
+
+The bars are the per-position scores (up for positive, down for negative); the red
+brackets above mark the maximal-scoring segments Ruzzo-Tompa returns. Each bracket
+spans a run whose positive mass outweighs its internal dips, and the gaps between
+brackets are exactly the valleys deep enough to keep the islands apart.
