@@ -513,6 +513,26 @@ We implement Fibonacci search (=algorithms::fibonacci_search=) and report it as 
 
 We implement the Eytzinger layout and search (=algorithms::eytzinger_layout=, =eytzinger_search=) and report it as a literate program. We build the BFS-order array of a binary search tree (median at the root) via in-order fill, and search it by a division-free 2k/2k+1 child walk; the layout of =[1,3,...,19]= is =[13,7,17,3,11,15,19,1,5,9]=, 13 found in one probe and 9 in four.
 
+** [[./fisher_yates_analysis.html][The Fisher-Yates Shuffle: An Unbiased Random Permutation]] ([[./fisher_yates_analysis.pdf][PDF]])
+/A literate C++ study of the Knuth shuffle using datamunge/
+
+We implement the Fisher-Yates (Knuth) shuffle (=algorithms::fisher_yates_shuffle=) and report it as a literate program. We explain the shrinking-interval draw that makes the n! outcomes a bijection onto permutations (and why the naive [0,n-1] variant is biased); 60,000 seeded shuffles put each value in position 0 within ~1% of the uniform 1/6, using the seedable SplitMix64 engine for reproducibility.
+
+** [[./heap_permutations_analysis.html][Heap's Algorithm: All Permutations by Single Swaps]] ([[./heap_permutations_analysis.pdf][PDF]])
+/A literate C++ study of minimal-swap permutation generation using datamunge/
+
+We implement Heap's algorithm (=algorithms::heap_permutations=) and report it as a literate program. We give the parity-driven swap rule that generates all n! permutations with only n!-1 swaps; all 24 permutations of {1,2,3,4} are listed and each consecutive pair shown to differ by a single (not necessarily adjacent) swap.
+
+** [[./steinhaus_johnson_trotter_analysis.html][The Steinhaus-Johnson-Trotter Algorithm: A Gray Code for Permutations]] ([[./steinhaus_johnson_trotter_analysis.pdf][PDF]])
+/A literate C++ study of adjacent-transposition permutation generation using datamunge/
+
+We implement the Steinhaus-Johnson-Trotter algorithm (=algorithms::sjt_permutations=) and report it as a literate program. We give the mobile-element / direction-reversal rule under which consecutive permutations differ by a single adjacent transposition -- a Gray code for permutations; all 24 permutations of {1,2,3,4} are generated and each value's weaving position plotted.
+
+** [[./schensted_analysis.html][The Schensted Algorithm: Permutations and Young Tableaux]] ([[./schensted_analysis.pdf][PDF]])
+/A literate C++ study of the Robinson-Schensted correspondence using datamunge/
+
+We implement the Schensted / RSK row insertion (=algorithms::rsk_insert=) and report it as a literate program. We describe bumping, the insertion tableau P and recording tableau Q, and Schensted's theorem (first-row length = longest increasing subsequence); inserting [4,1,3,6,2,5] yields shape (3,2,1) with first row 1 2 5 of length 3, matching the LIS.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

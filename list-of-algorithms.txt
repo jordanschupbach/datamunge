@@ -151,10 +151,10 @@ Main article: Merge algorithm
 Sequence permutations
 Further information: Permutation
 
-    Fisher–Yates shuffle (also known as the Knuth shuffle): randomly shuffle a finite set
-    Heap's permutation generation algorithm: interchange elements to generate next permutation
-    Schensted algorithm: constructs a pair of Young tableaux from a permutation
-    Steinhaus–Johnson–Trotter algorithm (also known as the Johnson–Trotter algorithm): generates permutations by transposing elements
+    [x] Fisher–Yates shuffle (also known as the Knuth shuffle): randomly shuffle a finite set  -- datamunge::algorithms::fisher_yates_shuffle (Durstenfeld, SplitMix64); report examples/org/fisher_yates_analysis.org
+    [x] Heap's permutation generation algorithm: interchange elements to generate next permutation  -- datamunge::algorithms::heap_permutations; report examples/org/heap_permutations_analysis.org
+    [x] Schensted algorithm: constructs a pair of Young tableaux from a permutation  -- datamunge::algorithms::rsk_insert (Robinson-Schensted); report examples/org/schensted_analysis.org
+    [x] Steinhaus–Johnson–Trotter algorithm (also known as the Johnson–Trotter algorithm): generates permutations by transposing elements  -- datamunge::algorithms::sjt_permutations; report examples/org/steinhaus_johnson_trotter_analysis.org
 
 Sequence combinations
 Further information: Combination
