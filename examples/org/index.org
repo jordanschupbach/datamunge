@@ -593,6 +593,26 @@ We implement Karatsuba multiplication (=algorithms::karatsuba_multiply=) and rep
 
 We implement baby-step giant-step (=algorithms::baby_step_giant_step=) and report it as a literate program. We split x = im + j to separate the unknown into a tabulated baby-step half and a giant-step half, giving O(sqrt p); 2^x ≡ 17 (mod 101) is solved as x = 30, with the baby/giant collision drawn.
 
+** [[./fermat_primality_analysis.html][The Fermat Primality Test: Fast, Fallible, and Fooled by Carmichael Numbers]] ([[./fermat_primality_analysis.pdf][PDF]])
+/A literate C++ study of probabilistic primality using datamunge/
+
+We implement the Fermat primality test (=algorithms::fermat_probable_prime=) and report it as a literate program. We use Fermat's little theorem as a one-sided test and expose its blind spot: the liar fraction is 1 for the prime 97 but also 1 for the Carmichael numbers 561 and 1105 (all coprime bases lie), versus below 0.5 for ordinary composites.
+
+** [[./lucas_primality_analysis.html][The Lucas Primality Test: A Deterministic Certificate of Primality]] ([[./lucas_primality_analysis.pdf][PDF]])
+/A literate C++ study of the converse of Fermat using datamunge/
+
+We implement the Lucas primality test (=algorithms::lucas_primality_test=) and report it as a literate program. We prove n prime by exhibiting a base of order exactly n-1 (a^(n-1)=1 but a^((n-1)/q)!=1 for each prime q|n-1); 1009 is certified with witness a=11, and the least primitive root of primes to 300 is plotted (all <= 19).
+
+** [[./sundaram_sieve_analysis.html][The Sieve of Sundaram: Primes Without the Evens]] ([[./sundaram_sieve_analysis.pdf][PDF]])
+/A literate C++ study of a half-space prime sieve using datamunge/
+
+We implement the Sieve of Sundaram (=algorithms::sundaram_primes=) and report it as a literate program. We derive why marking indices i+j+2ij removes exactly the composite (2a+1)(2b+1), so unmarked i give the odd primes 2i+1; the 25 primes up to 100 are produced in half a classical sieve's space, with the marked/survivor indices drawn.
+
+** [[./atkin_sieve_analysis.html][The Sieve of Atkin: A Modern Prime Sieve]] ([[./atkin_sieve_analysis.pdf][PDF]])
+/A literate C++ study of quadratic-form sieving using datamunge/
+
+We implement the Sieve of Atkin (=algorithms::atkin_primes=) and report it as a literate program. We give the three quadratic-form toggle rules and the square-removal pass; the primes it produces match the Prime Number Theorem -- pi(10000)=1229 against x/ln x = 1086 -- with pi(x) plotted against x/ln x.
+
 ** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
 /A literate C++ study of bracketed root-finding using datamunge/
 

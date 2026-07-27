@@ -1,0 +1,147 @@
+#+title: The Sieve of Atkin: A Modern Prime Sieve
+#+subtitle: A literate C++ study of quadratic-form sieving with =datamunge='s =algorithms::atkin_primes=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Sieve of Eratosthenes crosses off multiples; the *Sieve of Atkin* (Atkin &
+Bernstein, 2003) instead marks primes by counting solutions to certain *quadratic
+forms* modulo 60, then removes squares of primes. With wheel optimization it has a
+lower asymptotic operation count than Eratosthenes, and it is the fastest known
+sieve for very large ranges. This report implements it in =datamunge='s C++
+=algorithms::atkin_primes=, explains the three quadratic-form rules, and checks the
+primes it produces against the Prime Number Theorem's estimate
+\(\pi(x)\approx x/\ln x\).
+#+end_abstract
+
+* Three quadratic forms
+
+Atkin's sieve rests on a theorem: after removing multiples of squares, a number
+\(n>3\) (coprime to 6) is prime iff the number of representations by a particular
+quadratic form is *odd*. Concretely, toggle a candidate's flag once per solution
+\((x,y)\) of:
+
+- \(4x^2+y^2=n\) with \(n\equiv 1\) or \(5\pmod{12}\);
+- \(3x^2+y^2=n\) with \(n\equiv 7\pmod{12}\);
+- \(3x^2-y^2=n\) (with \(x>y\)) and \(n\equiv 11\pmod{12}\).
+
+A candidate ending with an odd number of toggles is a *prime candidate*; a final
+pass then un-marks every multiple of a prime square \(r^2\) (those are never prime).
+Prepending 2 and 3 gives all primes up to the limit. The work is proportional to
+the range (each quadratic form is enumerated in \(O(\text{limit})\) hits), and the
+theory behind the toggle parity is what lets it skip the repeated multiple-marking
+of Eratosthenes.
+
+#+name: at-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ATKIN(limit):
+  sieve[5..limit] <- false
+  for x in 1.. while x^2 <= limit:
+      for y in 1.. while y^2 <= limit:
+          n <- 4x^2 + y^2 ; if n <= limit and n%12 in {1,5}: flip sieve[n]
+          n <- 3x^2 + y^2 ; if n <= limit and n%12 == 7:     flip sieve[n]
+          if x > y: n <- 3x^2 - y^2 ; if n <= limit and n%12 == 11: flip sieve[n]
+  for r in 5.. while r^2 <= limit:
+      if sieve[r]: for m = r^2, 2r^2, ... <= limit: sieve[m] <- false
+  return [2, 3] ++ [ n : sieve[n] ]
+#+end_example
+
+* Worked example and the Prime Number Theorem
+
+We list the primes up to 100, then count \(\pi(x)\) -- the number of primes \(\le
+x\) -- as \(x\) grows to 10,000 and compare it to the estimate \(x/\ln x\).
+
+#+name: at-run
+#+begin_src c++ :eval no
+    std::cout << "=== Sieve of Atkin ===\n";
+    const auto small = atkin_primes(100);
+    std::cout << "primes up to 100 (" << small.size() << "): ";
+    for (std::uint64_t p : small) std::cout << p << " ";
+    std::cout << "\n\n";
+
+    const std::uint64_t limit = 10000;
+    const auto primes = atkin_primes(limit);
+    for (std::uint64_t x : {std::uint64_t(100), std::uint64_t(1000), std::uint64_t(10000)}) {
+        const auto pi = static_cast<double>(std::upper_bound(primes.begin(), primes.end(), x) - primes.begin());
+        std::cout << "pi(" << x << ") = " << static_cast<long>(pi) << ",  x/ln x = "
+                  << x / std::log(static_cast<double>(x)) << "\n";
+    }
+
+    auto plot = RPlot::create();
+    std::vector<double> xs, pis, approx;
+    for (std::uint64_t x = 10; x <= limit; x += 50) {
+        xs.push_back(static_cast<double>(x));
+        pis.push_back(static_cast<double>(std::upper_bound(primes.begin(), primes.end(), x) - primes.begin()));
+        approx.push_back(x / std::log(static_cast<double>(x)));
+    }
+    plot.line(xs, pis, "pi(x) from Atkin", RGB{37, 99, 235}, 2.0);
+    plot.line(xs, approx, "x / ln x", RGB{220, 38, 38}, 2.0);
+    plot.legend({"pi(x) (Atkin sieve)", "x / ln x (PNT)"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Atkin's primes match the Prime Number Theorem's x / ln x")
+        .x_label("x").y_label("number of primes <= x").background({250, 250, 252});
+    plot.save_svg("build/org/atkin_sieve.svg");
+    std::cout << "\nwrote atkin_sieve.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/atkin_sieve_analysis.cpp <<'CPP'
+<<at-includes>>
+
+int main() {
+<<at-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/atkin_sieve_analysis.cpp -o build/org/atkin_sieve_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/atkin_sieve_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sieve of Atkin ===
+primes up to 100 (25): 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+
+pi(100) = 25,  x/ln x = 21.7147
+pi(1000) = 168,  x/ln x = 144.765
+pi(10000) = 1229,  x/ln x = 1085.74
+
+wrote atkin_sieve.svg
+#+end_example
+
+Atkin's sieve produces the same primes any correct sieve would; the point is /how/
+it marks them -- by quadratic-form parity rather than multiple-crossing. The count
+\(\pi(x)\) tracks \(x/\ln x\) closely and pulls slightly above it, exactly as the
+Prime Number Theorem predicts (the estimate is a slight undercount that
+\(\pi(x)/(x/\ln x)\to 1\) only in the limit).
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/atkin_sieve.svg]]
+
+The blue \(\pi(x)\) counted from Atkin's primes and the red \(x/\ln x\) estimate
+rise together, the blue staying a little above the red across the whole range. That
+the raw output of a quadratic-form sieve so faithfully traces the Prime Number
+Theorem is a small, satisfying cross-check of both the sieve and the theorem.

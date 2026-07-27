@@ -1,0 +1,169 @@
+#+title: The Fermat Primality Test: Fast, Fallible, and Fooled by Carmichael Numbers
+#+subtitle: A literate C++ study of probabilistic primality with =datamunge='s =algorithms::fermat_probable_prime=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Fermat's little theorem gives a cheap probabilistic primality test: if \(n\) is
+prime then \(a^{n-1}\equiv 1\pmod n\) for every base \(a\) coprime to \(n\), so a
+base that /fails/ this proves \(n\) composite. Try a few random bases; if all pass,
+\(n\) is a *probable prime*. The catch is the *Carmichael numbers* -- rare
+composites (561, 1105, 1729, ...) that satisfy the congruence for /every/ coprime
+base, so no amount of testing with coprime bases exposes them. This report
+implements the test in =datamunge='s C++ =algorithms::fermat_probable_prime= and
+shows exactly how a Carmichael number defeats it, motivating the stronger
+Miller-Rabin test.
+#+end_abstract
+
+* Fermat's little theorem as a test
+
+If \(n\) is prime, then for any \(a\) with \(1<a<n\), \(a^{n-1}\equiv 1\pmod n\).
+Contrapositive: if some \(a\) gives \(a^{n-1}\not\equiv 1\pmod n\), then \(n\) is
+*certainly composite* -- \(a\) is a *Fermat witness*. The test picks random bases
+and looks for a witness; finding none after \(k\) rounds suggests (but does not
+prove) primality. For a "typical" composite at least half of the coprime bases are
+witnesses, so \(k\) rounds miss it with probability \(\le 2^{-k}\).
+
+The exception is a *Carmichael number*: a composite \(n\) for which
+\(a^{n-1}\equiv 1\pmod n\) for /every/ \(a\) coprime to \(n\). For these there are
+*no* coprime Fermat witnesses at all, so a Fermat test that happens to pick only
+coprime bases is fooled every time -- the test's fatal blind spot, and the reason
+practical code uses Miller-Rabin instead.
+
+#+name: fm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::uint64_t powmod(std::uint64_t b, std::uint64_t e, std::uint64_t m) {
+    std::uint64_t r = 1 % m; b %= m;
+    while (e) { if (e & 1) r = static_cast<std::uint64_t>((static_cast<__uint128_t>(r) * b) % m); b = static_cast<std::uint64_t>((static_cast<__uint128_t>(b) * b) % m); e >>= 1; }
+    return r;
+}
+// Fraction of bases coprime to n that pass Fermat's congruence (are "liars").
+static double liar_fraction(std::uint64_t n) {
+    long coprime = 0, liars = 0;
+    for (std::uint64_t a = 2; a < n; ++a)
+        if (std::gcd(a, n) == 1) { ++coprime; if (powmod(a, n - 1, n) == 1) ++liars; }
+    return coprime == 0 ? 0.0 : static_cast<double>(liars) / coprime;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FERMAT(n, rounds):
+  if n < 2: return composite
+  if n == 2 or 3: return prime
+  if n even: return composite
+  repeat rounds times:
+      a <- random base in [2, n-2]
+      if a^(n-1) mod n != 1: return composite      # a is a witness
+  return probable prime
+#+end_example
+
+* Worked example: a prime, a composite, and a Carmichael number
+
+We test 97 (prime -- always passes), 91 = 7·13 (an ordinary composite -- witnesses
+abound), and 561 = 3·11·17 (a Carmichael number). Then we measure, for each, the
+fraction of coprime bases that /lie/ (pass the congruence): 1 for a prime, small
+for an ordinary composite, but also 1 for a Carmichael number -- the tell-tale
+signature.
+
+#+name: fm-run
+#+begin_src c++ :eval no
+    std::cout << "=== Fermat probable-prime test ===\n";
+    for (std::uint64_t n : {97u, 91u, 561u})
+        std::cout << "  fermat_probable_prime(" << n << ") = " << std::boolalpha
+                  << fermat_probable_prime(n) << "\n";
+    std::cout << "\nfraction of coprime bases that are Fermat liars:\n";
+
+    struct Case { std::uint64_t n; const char* label; };
+    const std::vector<Case> cases = {{97, "97 prime"}, {45, "45 = 3^2*5"}, {91, "91 = 7*13"},
+                                     {561, "561 Carmichael"}, {1105, "1105 Carmichael"}};
+    std::vector<double> xs, ys;
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < cases.size(); ++i) {
+        const double f = liar_fraction(cases[i].n);
+        std::cout << "  " << cases[i].label << ": " << f << "\n";
+        xs.push_back(static_cast<double>(i)); ys.push_back(f); labels.push_back(cases[i].label);
+    }
+
+    auto plot = RPlot::create();
+    std::vector<RGB> cols;
+    for (const auto& c : cases) cols.push_back(liar_fraction(c.n) > 0.999 && c.n != 97 ? RGB{220, 38, 38}
+                                              : (c.n == 97 ? RGB{22, 163, 74} : RGB{37, 99, 235}));
+    plot.bars(xs, ys, "liar fraction", RGB{37, 99, 235});
+    plot.abline_h(1.0, RGB{148, 163, 184}, 1.0);
+    for (std::size_t i = 0; i < labels.size(); ++i) plot.text(xs[i], -0.06, labels[i], RGB{31, 41, 55}, 9.0);
+    plot.title("Carmichael numbers lie like primes: all coprime bases pass")
+        .x_label("").y_label("fraction of coprime bases passing").background({250, 250, 252});
+    plot.x_limits(-0.6, static_cast<double>(cases.size()) - 0.4);
+    plot.y_limits(-0.12, 1.15);
+    plot.save_svg("build/org/fermat_primality.svg");
+    std::cout << "\nwrote fermat_primality.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fermat_primality_analysis.cpp <<'CPP'
+<<fm-includes>>
+
+int main() {
+<<fm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fermat_primality_analysis.cpp -o build/org/fermat_primality_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fermat_primality_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fermat probable-prime test ===
+  fermat_probable_prime(97) = true
+  fermat_probable_prime(91) = false
+  fermat_probable_prime(561) = false
+
+fraction of coprime bases that are Fermat liars:
+  97 prime: 1
+  45 = 3^2*5: 0.304348
+  91 = 7*13: 0.492958
+  561 Carmichael: 1
+  1105 Carmichael: 1
+
+wrote fermat_primality.svg
+#+end_example
+
+The prime 97 passes; the ordinary composites 45 and 91 have many coprime witnesses,
+so only a fraction of bases lie and a few random rounds expose them. But 561 and
+1105 are Carmichael numbers: /every/ coprime base lies, so their liar fraction is 1,
+indistinguishable from a prime's. Our random-base test can still stumble onto a base
+that shares a small factor with 561, but the underlying congruence is powerless --
+which is precisely why Miller-Rabin, which also checks for non-trivial square roots
+of 1, replaced it.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/fermat_primality.svg]]
+
+The bars are the fraction of coprime bases that pass Fermat's congruence. The prime
+(97) sits at 1, as it must; the ordinary composites (45, 91) sit well below, so
+witnesses are easy to find; but the Carmichael numbers (561, 1105) also sit at 1 --
+they mimic a prime perfectly under this test. That flat-topped deception is the
+whole reason the Fermat test is not trusted alone.
