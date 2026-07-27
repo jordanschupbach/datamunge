@@ -4,16 +4,16 @@ General combinatorial algorithms
     [x] Floyd's cycle-finding algorithm: finds a cycle in function value iterations[3]  -- datamunge::algorithms::floyd_cycle_detection; report examples/org/floyd_cycle_detection_analysis.org
     [x] Gale–Shapley algorithm: solves the stable matching problem[4][5][6]  -- datamunge::algorithms::gale_shapley; report examples/org/gale_shapley_analysis.org
     Pseudorandom number generators (uniformly distributed—see also List of pseudorandom number generators for other PRNGs with varying degrees of convergence and varying statistical quality):[citation needed]
-        ACORN generator
-        Blum Blum Shub
-        Lagged Fibonacci generator
-        Linear congruential generator
-        Mersenne Twister
+        [x] ACORN generator  -- datamunge::random::Acorn64; report examples/org/acorn_generator_analysis.org
+        [x] Blum Blum Shub  -- datamunge::random::BlumBlumShub; report examples/org/blum_blum_shub_analysis.org
+        [x] Lagged Fibonacci generator  -- datamunge::random::LaggedFibonacci64; report examples/org/lagged_fibonacci_analysis.org
+        [x] Linear congruential generator  -- datamunge::random::LinearCongruential64; report examples/org/linear_congruential_analysis.org
+        [x] Mersenne Twister  -- datamunge::random::MersenneTwister64 (MT19937-64); report examples/org/mersenne_twister64.org
 
 Graph algorithms
 Further information: Category:Graph algorithms and Graph theory
 
-    Blossom algorithm: algorithm for constructing maximum-cardinality matching on graphs.
+    [x] Blossom algorithm: algorithm for constructing maximum-cardinality matching on graphs.  -- datamunge::algorithms::blossom_maximum_matching (Edmonds, O(V^3)); report examples/org/blossom_matching_analysis.org
     [x] Coloring algorithm: algorithms for graph (vertex or edge) coloring (subject to constraints, e.g. proper coloring or list coloring)  -- datamunge::algorithms::greedy_coloring (greedy Welsh-Powell proper vertex coloring); report examples/org/graph_coloring_analysis.org
     [x] Hopcroft–Karp algorithm: convert a bipartite graph to a maximum-cardinality matching  -- datamunge::algorithms::hopcroft_karp; report examples/org/hopcroft_karp_analysis.org
     [x] Hungarian algorithm: algorithm for finding a perfect matching  -- datamunge::algorithms::hungarian (Kuhn-Munkres min-cost assignment); report examples/org/hungarian_analysis.org
@@ -24,69 +24,69 @@ Further information: Category:Graph algorithms and Graph theory
 Graph drawing
 Further information: Graph drawing
 
-    Coin graph drawing algorithms for finite connected planar graphs (approximately computing the theoretical circle-packing given by the Koebe-Andreev-Thurston theorem). See also Fáry's theorem on straight-line drawings of planar graphs.
-    Force-based algorithms (also known as force-directed algorithms or spring-based algorithms)
-    Spectral layout
+    [x] Coin graph drawing algorithms for finite connected planar graphs (approximately computing the theoretical circle-packing given by the Koebe-Andreev-Thurston theorem). See also Fáry's theorem on straight-line drawings of planar graphs.  -- datamunge::algorithms::circle_packing_layout; report examples/org/circle_packing_layout_analysis.org
+    [x] Force-based algorithms (also known as force-directed algorithms or spring-based algorithms)  -- datamunge::algorithms::force_directed_layout (Fruchterman-Reingold); report examples/org/force_directed_layout_analysis.org
+    [x] Spectral layout  -- datamunge::algorithms::spectral_layout (Laplacian eigenvectors); report examples/org/spectral_layout_analysis.org
 
 Network theory
 Further information: Network theory
 
     Network analysis
         Link analysis
-            Girvan–Newman algorithm: detect communities in complex systems
+            [x] Girvan–Newman algorithm: detect communities in complex systems  -- datamunge::algorithms::girvan_newman; report examples/org/girvan_newman_analysis.org
             Web link analysis
-                Hyperlink-Induced Topic Search (HITS) (also known as Hubs and authorities)
-                PageRank
-                TrustRank
+                [x] Hyperlink-Induced Topic Search (HITS) (also known as Hubs and authorities)  -- datamunge::algorithms::hits; report examples/org/hits_analysis.org
+                [x] PageRank  -- datamunge::algorithms::page_rank; report examples/org/page_rank_analysis.org
+                [x] TrustRank  -- datamunge::algorithms::trust_rank; report examples/org/trust_rank_analysis.org
     Flow networks
-        Dinic's algorithm: is a strongly polynomial algorithm for computing the maximum flow in a flow network.
+        [x] Dinic's algorithm: is a strongly polynomial algorithm for computing the maximum flow in a flow network.  -- datamunge::algorithms::dinic_max_flow; report examples/org/dinic_analysis.org
         [x] Edmonds–Karp algorithm: implementation of Ford–Fulkerson  -- datamunge::algorithms::edmonds_karp (BFS shortest augmenting paths, O(VE^2)); report examples/org/edmonds_karp_analysis.org
         [x] Ford–Fulkerson algorithm: computes the maximum flow in a graph  -- realized by datamunge::algorithms::edmonds_karp (the BFS-augmenting-path variant); report examples/org/edmonds_karp_analysis.org
-        Karger's algorithm: a Monte Carlo method to compute the minimum cut of a connected graph
-        Push–relabel algorithm: computes a maximum flow in a graph
+        [x] Karger's algorithm: a Monte Carlo method to compute the minimum cut of a connected graph  -- datamunge::algorithms::karger_min_cut; report examples/org/karger_min_cut_analysis.org
+        [x] Push–relabel algorithm: computes a maximum flow in a graph  -- datamunge::algorithms::push_relabel_max_flow; report examples/org/push_relabel_analysis.org
 
 Routing for graphs
 
-    Edmonds' algorithm (also known as Chu–Liu/Edmonds' algorithm): find maximum or minimum branchings
-    Euclidean minimum spanning tree: algorithms for computing the minimum spanning tree of a set of points in the plane
-    Longest path problem: find a simple path of maximum length in a given graph
+    [x] Edmonds' algorithm (also known as Chu–Liu/Edmonds' algorithm): find maximum or minimum branchings  -- datamunge::algorithms::chu_liu_edmonds (minimum branching); report examples/org/chu_liu_edmonds_analysis.org
+    [x] Euclidean minimum spanning tree: algorithms for computing the minimum spanning tree of a set of points in the plane  -- datamunge::algorithms::euclidean_minimum_spanning_tree; report examples/org/euclidean_mst_analysis.org
+    [x] Longest path problem: find a simple path of maximum length in a given graph  -- datamunge::algorithms::dag_longest_paths (exact for DAGs); report examples/org/dag_longest_path_analysis.org
     Minimum spanning tree
-        Borůvka's algorithm
+        [x] Borůvka's algorithm  -- datamunge::algorithms::boruvka; report examples/org/boruvka_analysis.org
         [x] Kruskal's algorithm  -- datamunge::algorithms::kruskal (union-find, O(E log E)); report examples/org/kruskal_analysis.org
         [x] Prim's algorithm  -- datamunge::algorithms::prim (binary-heap, O(E log V)); report examples/org/prim_analysis.org
-        Reverse-delete algorithm
-    Nonblocking minimal spanning switch say, for a telephone exchange
+        [x] Reverse-delete algorithm  -- datamunge::algorithms::reverse_delete; report examples/org/reverse_delete_analysis.org
+    [x] Nonblocking minimal spanning switch say, for a telephone exchange  -- datamunge::algorithms::nonblocking_switch_routes (two-middle Clos rearrangement); report examples/org/nonblocking_switch_analysis.org
     Shortest path problem
         [x] Bellman–Ford algorithm: computes shortest paths in a weighted graph (where some of the edge weights may be negative)  -- datamunge::algorithms::bellman_ford; report examples/org/bellman_ford_analysis.org
         [x] Dijkstra's algorithm: computes shortest paths in a graph with non-negative edge weights  -- datamunge::algorithms::dijkstra; report examples/org/dijkstra_analysis.org
         [x] Floyd–Warshall algorithm: solves the all pairs shortest path problem in a weighted, directed graph  -- datamunge::algorithms::floyd_warshall; report examples/org/floyd_warshall_analysis.org
-        Johnson's algorithm: all pairs shortest path algorithm in sparse weighted directed graph
-    Transitive closure problem: find the transitive closure of a given binary relation
+        [x] Johnson's algorithm: all pairs shortest path algorithm in sparse weighted directed graph  -- datamunge::algorithms::johnson_all_pairs_shortest_paths; report examples/org/johnson_apsp_analysis.org
+    [x] Transitive closure problem: find the transitive closure of a given binary relation  -- datamunge::algorithms::transitive_closure (Warshall); report examples/org/transitive_closure_analysis.org
     Traveling salesman problem
-        Christofides algorithm
-        Nearest neighbour algorithm
+        [x] Christofides algorithm  -- datamunge::algorithms::christofides_tsp; report examples/org/christofides_analysis.org
+        [x] Nearest neighbour algorithm  -- datamunge::algorithms::nearest_neighbor_tsp; report examples/org/nearest_neighbor_tsp_analysis.org
     Vehicle routing problem
-        Clarke and Wright Saving algorithm
-    Warnsdorff's rule: a heuristic method for solving the Knight's tour problem
+        [x] Clarke and Wright Saving algorithm  -- datamunge::algorithms::clarke_wright_savings; report examples/org/clarke_wright_analysis.org
+    [x] Warnsdorff's rule: a heuristic method for solving the Knight's tour problem  -- datamunge::algorithms::warnsdorff_knight_tour; report examples/org/warnsdorff_analysis.org
 
 Graph search
 Further information: Graph search algorithm and State space search
 
-    A*: special case of best-first search that uses heuristics to improve speed
-    B*: a best-first graph search algorithm that finds the least-cost path from a given initial node to any goal node (out of one or more possible goals)
-    Backtracking: abandons partial solutions when they are found not to satisfy a complete solution
-    Beam search: is a heuristic search algorithm that is an optimization of best-first search that reduces its memory requirement
-    Beam stack search: integrates backtracking with beam search
-    Best-first search: traverses a graph in the order of likely importance using a priority queue
-    Bidirectional search: find the shortest path from an initial vertex to a goal vertex in a directed graph
-    Breadth-first search: traverses a graph level by level
-    Brute-force search: an exhaustive and reliable search method, but computationally inefficient in many applications
-    D*: an incremental heuristic search algorithm
-    Depth-first search: traverses a graph branch by branch
+    [x] A*: special case of best-first search that uses heuristics to improve speed  -- datamunge::algorithms::a_star_search; report examples/org/a_star_analysis.org
+    [x] B*: a best-first graph search algorithm that finds the least-cost path from a given initial node to any goal node (out of one or more possible goals)  -- datamunge::algorithms::b_star_search (multi-goal best-first); report examples/org/b_star_analysis.org
+    [x] Backtracking: abandons partial solutions when they are found not to satisfy a complete solution  -- datamunge::algorithms::backtracking_search; report examples/org/backtracking_search_analysis.org
+    [x] Beam search: is a heuristic search algorithm that is an optimization of best-first search that reduces its memory requirement  -- datamunge::algorithms::beam_search; report examples/org/beam_search_analysis.org
+    [x] Beam stack search: integrates backtracking with beam search  -- datamunge::algorithms::beam_stack_search; report examples/org/beam_stack_search_analysis.org
+    [x] Best-first search: traverses a graph in the order of likely importance using a priority queue  -- datamunge::algorithms::best_first_search; report examples/org/best_first_search_analysis.org
+    [x] Bidirectional search: find the shortest path from an initial vertex to a goal vertex in a directed graph  -- datamunge::algorithms::bidirectional_search (undirected graph); report examples/org/bidirectional_search_analysis.org
+    [x] Breadth-first search: traverses a graph level by level  -- datamunge::algorithms::breadth_first_search; report examples/org/breadth_first_search_analysis.org
+    [x] Brute-force search: an exhaustive and reliable search method, but computationally inefficient in many applications  -- datamunge::algorithms::brute_force_search; report examples/org/brute_force_search_analysis.org
+    [x] D*: an incremental heuristic search algorithm  -- datamunge::algorithms::d_star_replan (grid replanning kernel); report examples/org/d_star_analysis.org
+    [x] Depth-first search: traverses a graph branch by branch  -- datamunge::algorithms::depth_first_search; report examples/org/depth_first_search_analysis.org
     Dijkstra's algorithm: a special case of A* for which no heuristic function is used
-    General Problem Solver: a seminal theorem-proving algorithm intended to work as a universal problem solver machine.
-    Iterative deepening depth-first search (IDDFS): a state space search strategy
-    Jump point search: an optimization to A* which may reduce computation time by an order of magnitude using further heuristics
+    [x] General Problem Solver: a seminal theorem-proving algorithm intended to work as a universal problem solver machine.  -- datamunge::algorithms::general_problem_solver (STRIPS means-ends planner); report examples/org/general_problem_solver_analysis.org
+    [x] Iterative deepening depth-first search (IDDFS): a state space search strategy  -- datamunge::algorithms::iterative_deepening_dfs; report examples/org/iddfs_analysis.org
+    [x] Jump point search: an optimization to A* which may reduce computation time by an order of magnitude using further heuristics  -- datamunge::algorithms::jump_point_search (orthogonal grid); report examples/org/jump_point_search_analysis.org
     Lexicographic breadth-first search (also known as Lex-BFS): a linear time algorithm for ordering the vertices of a graph
     SSS*: state space search traversing a game tree in a best-first fashion similar to that of the A* search algorithm
     Uniform-cost search: a tree search that finds the lowest-cost route where costs vary
@@ -115,11 +115,11 @@ Approximate sequence matching
         NYSIIS: phonetic algorithm, improves on Soundex
         Soundex: a phonetic algorithm for indexing names by sound, as pronounced in English
     String metrics: computes a similarity or dissimilarity (distance) score between two pairs of text strings
-        Damerau–Levenshtein distance: computes a distance measure between two strings, improves on Levenshtein distance
-        Dice's coefficient (also known as the Dice coefficient): a similarity measure related to the Jaccard index
-        Hamming distance: sum number of positions which are different
-        Jaro–Winkler distance: is a measure of similarity between two strings
-        Levenshtein edit distance: computes a metric for the amount of difference between two sequences
+        [x] Damerau–Levenshtein distance: computes a distance measure between two strings, improves on Levenshtein distance  -- datamunge::algorithms::damerau_levenshtein_distance (true/unrestricted Lowrance-Wagner); report examples/org/damerau_levenshtein_analysis.org
+        [x] Dice's coefficient (also known as the Dice coefficient): a similarity measure related to the Jaccard index  -- datamunge::algorithms::dice_coefficient (bigram Sorensen-Dice); report examples/org/dice_coefficient_analysis.org
+        [x] Hamming distance: sum number of positions which are different  -- datamunge::algorithms::hamming_distance; report examples/org/hamming_distance_analysis.org
+        [x] Jaro–Winkler distance: is a measure of similarity between two strings  -- datamunge::algorithms::jaro_similarity / jaro_winkler_similarity; report examples/org/jaro_winkler_analysis.org
+        [x] Levenshtein edit distance: computes a metric for the amount of difference between two sequences  -- datamunge::algorithms::levenshtein_distance (Wagner-Fischer); report examples/org/levenshtein_analysis.org
     Trigram search: search for text when the exact syntax or spelling of the target object is not precisely known
 
 Selection algorithms
@@ -316,16 +316,17 @@ Further information: Number theory
         Index calculus algorithm
         Pohlig–Hellman algorithm
         Pollard's rho algorithm for logarithms
-    Euclidean algorithm: computes the greatest common divisor
-    Extended Euclidean algorithm: also solves the equation ax + by = c
-    Integer factorization: breaking an integer into its prime factors
+    [x] Euclidean algorithm: computes the greatest common divisor  -- datamunge::algorithms::extended_gcd (returns gcd); report examples/org/extended_euclidean_analysis.org
+    [x] Extended Euclidean algorithm: also solves the equation ax + by = c  -- datamunge::algorithms::extended_gcd (+ modular_inverse); report examples/org/extended_euclidean_analysis.org
+    [x] Chinese Remainder Theorem: solves simultaneous congruences (general, non-coprime moduli)  -- datamunge::algorithms::chinese_remainder; report examples/org/chinese_remainder_analysis.org
+    [x] Integer factorization: breaking an integer into its prime factors  -- datamunge::algorithms::factorize / pollard_rho_factor; report examples/org/pollard_rho_analysis.org
         Congruence of squares
         Dixon's algorithm
         Fermat's factorization method
         General number field sieve
         Lenstra elliptic curve factorization
         Pollard's p − 1 algorithm
-        Pollard's rho algorithm
+        [x] Pollard's rho algorithm  -- datamunge::algorithms::pollard_rho_factor / factorize (Brent variant); report examples/org/pollard_rho_analysis.org
         prime factorization algorithm
         Quadratic sieve
         Shor's algorithm
@@ -348,7 +349,7 @@ Further information: Number theory
         Lucas primality test
         Miller–Rabin primality test
         Sieve of Atkin
-        Sieve of Eratosthenes
+        [x] Sieve of Eratosthenes  -- datamunge::algorithms::prime_sieve / primes_up_to; report examples/org/sieve_of_eratosthenes_analysis.org
         Sieve of Sundaram
 
 Numerical algorithms
@@ -386,7 +387,7 @@ Further information: Special functions
         SRT division
     Exponentiation:
         Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications
-        Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number
+        [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
     Hyperbolic and Trigonometric Functions:
         BKM algorithm: computes elementary functions using a table of logarithms
         CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents
@@ -573,5 +574,3 @@ Hybrid Algorithms
     Simulated annealing
     Stochastic tunneling
     Subset sum algorithm
-
-

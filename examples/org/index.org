@@ -443,6 +443,61 @@ We implement Manacher's algorithm (=algorithms::longest_palindrome=, plus =palin
 
 We implement Aho-Corasick multi-pattern search (=algorithms::aho_corasick_search=) and report it as a literate program. We build the automaton -- a trie (goto), KMP-style failure links, and output/dictionary-suffix links -- and give BFS-construction and single-pass-scan pseudocode showing it reports every occurrence in O(|text| + #matches) after O(sum|patterns|) preprocessing; the classic dictionary {he, she, his, hers} scanned over "ushers" recovers she@1, he@2, and hers@2 from one left-to-right sweep.
 
+** [[./levenshtein_analysis.html][The Levenshtein Distance: Editing One String Into Another]] ([[./levenshtein_analysis.pdf][PDF]])
+/A literate C++ study of the Wagner-Fischer dynamic program using datamunge/
+
+We implement the Levenshtein edit distance (=algorithms::levenshtein_distance=) and report it as a literate program. We derive the Wagner-Fischer recurrence D(i,j) from its three edit moves, prove the metric properties and O(nm)-time/O(min(n,m))-space two-row implementation, and work =kitten= -> =sitting= = 3 by hand; the full DP table is printed and its traceback drawn, reading the optimal three-edit script straight off the grid.
+
+** [[./damerau_levenshtein_analysis.html][The Damerau-Levenshtein Distance: Edit Distance With Transpositions]] ([[./damerau_levenshtein_analysis.pdf][PDF]])
+/A literate C++ study of the unrestricted Lowrance-Wagner algorithm using datamunge/
+
+We implement the true (unrestricted) Damerau-Levenshtein distance (=algorithms::damerau_levenshtein_distance=) and report it as a literate program. We add the adjacent-transposition operation, give the Lowrance-Wagner table with its infinity border and last-occurrence array, and distinguish the genuine metric from the optimal-string-alignment shortcut using the witness =CA= <-> =ABC= (true distance 2, OSA 3); swap pairs cost one edit where plain Levenshtein pays two.
+
+** [[./hamming_distance_analysis.html][The Hamming Distance: Counting Positional Disagreements]] ([[./hamming_distance_analysis.pdf][PDF]])
+/A literate C++ study of the simplest string metric using datamunge/
+
+We implement the Hamming distance (=algorithms::hamming_distance=) and report it as a literate program. We define it as the number of disagreeing positions between equal-length strings, note it is a metric and an upper bound on Levenshtein, and explain why unequal lengths raise =std::invalid_argument=; =karolin= vs =kathrin= = 3 and the codewords =1011101= vs =1001001= = 2 are worked and their disagreeing columns highlighted.
+
+** [[./jaro_winkler_analysis.html][Jaro and Jaro-Winkler Similarity: Matching Names]] ([[./jaro_winkler_analysis.pdf][PDF]])
+/A literate C++ study of windowed character matching and prefix boosting using datamunge/
+
+We implement Jaro and Jaro-Winkler similarity (=algorithms::jaro_similarity=, =jaro_winkler_similarity=) and report it as a literate program. We define the matching window, the count m of matches and t of transpositions, the three-term Jaro average, and Winkler's capped common-prefix bonus; =MARTHA= vs =MARHTA= is worked by hand to exactly 0.9444 (Jaro) and 0.9611 (Jaro-Winkler), and several name pairs compared.
+
+** [[./dice_coefficient_analysis.html][The Sorensen-Dice Coefficient: Similarity by Shared Bigrams]] ([[./dice_coefficient_analysis.pdf][PDF]])
+/A literate C++ study of bigram overlap using datamunge/
+
+We implement the Sorensen-Dice coefficient over character bigrams (=algorithms::dice_coefficient=) and report it as a literate program. We define it as 2|A∩B|/(|A|+|B|) on bigram multisets, relate it to the Jaccard index, and give the O(|a|+|b|) counting algorithm; =night= vs =nacht= = 0.25 is worked by hand and word pairs from disjoint to identical are compared.
+
+** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
+/Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
+
+We implement =algorithms::extended_gcd= and =algorithms::modular_inverse= and report it as a literate program. We augment the classic remainder recurrence with coefficients tracking each remainder as a combination of the inputs, so it returns integers x, y with a*x + b*y = gcd(a,b); we derive why coprimality makes x the modular inverse and argue the O(log min(a,b)) time. A hand-traced gcd(240,46) = 2 = 240*(-9) + 46*47, the inverse 3^-1 = 4 (mod 11), and a plot of the collapsing remainder sequence are all produced by one compiled binary.
+
+** [[./modular_exponentiation_analysis.html][Modular Exponentiation: Fast Powers by Square-and-Multiply]] ([[./modular_exponentiation_analysis.pdf][PDF]])
+/A literate C++ study of computing a^b mod m in O(log b) time with datamunge/
+
+We implement modular exponentiation by square-and-multiply (=algorithms::mod_pow=) and report it as a literate program. We explain why naive repeated multiplication is infeasible for cryptographic exponents, derive the binary square-and-multiply method with mod-m reduction at every step, and pin down the 64-bit overflow point a 128-bit intermediate multiply cures. A hand-traced 7^13 mod 1000 = 407 shows the running base and result at each bit, Fermat's little theorem confirms the arithmetic, and a scatter of 3^k mod 17 exhibits the cyclic structure behind the discrete-logarithm problem.
+
+** [[./sieve_of_eratosthenes_analysis.html][The Sieve of Eratosthenes: All Primes up to N]] ([[./sieve_of_eratosthenes_analysis.pdf][PDF]])
+/A literate C++ study of the ancient prime sieve, its p^2/sqrt(n) shortcuts, and the Prime Number Theorem using datamunge/
+
+We implement the Sieve of Eratosthenes (=algorithms::prime_sieve=, plus =primes_up_to=) and report it as a literate program. We describe the crossing-out procedure, justify starting each prime's strikes at p^2 and stopping the outer scan at sqrt(n), and derive the O(n log log n) time from the sum of reciprocals of the primes; a worked sieve up to 30 leaves 2,3,5,7,11,13,17,19,23,29, and pi(n) at 10/100/1000/10000 (4/25/168/1229) is plotted against the Prime Number Theorem estimate n/ln(n).
+
+** [[./miller_rabin_analysis.html][The Miller-Rabin Primality Test: Deterministic Prime Testing for 64-bit Integers]] ([[./miller_rabin_analysis.pdf][PDF]])
+/A literate C++ study of strong probable primes, witnesses, and Carmichael numbers using datamunge/
+
+We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) and report it as a literate program. We derive Fermat's test and its failure on Carmichael numbers, refine it via strong probable primes (n-1 = d*2^s and the fact that a prime has only +/-1 as square roots of 1), and explain why a fixed twelve-base witness set makes the test deterministic over all uint64. Three rounds are worked by hand: 13 passes, 15 falls in one step, and 561's sequence 263, 166, 67, 1 exposes 67 as a nontrivial square root of 1 -- the Fermat liar unmasked.
+
+** [[./pollard_rho_analysis.html][Pollard's Rho: Integer Factorization by Cycle Detection]] ([[./pollard_rho_analysis.pdf][PDF]])
+/A literate C++ study of Brent's rho factorization, the birthday paradox, and O(n^(1/4)) splitting using datamunge/
+
+We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
+
+** [[./chinese_remainder_analysis.html][The Chinese Remainder Theorem: Solving Simultaneous Congruences by Pairwise Merging]] ([[./chinese_remainder_analysis.pdf][PDF]])
+/A literate C++ study of general (non-coprime) CRT via extended-gcd pairwise merging using datamunge/
+
+We implement the Chinese Remainder Theorem in general form -- moduli need not be coprime -- as =algorithms::chinese_remainder=, and report it as a literate program. We state the classical coprime theorem and the general consistency condition, derive the constructive pairwise merge via the extended Euclidean algorithm with its solvability criterion gcd(m1,m2) | (r1 - r2), and give pseudocode. Sun-Tzu's system is solved by hand -- merging x=2(3) and x=3(5) into x=8(15), then folding in x=2(7) to reach 23 (mod 105) -- alongside a consistent non-coprime system and an inconsistent one the solver rejects, with a grid figure drawing the bijection Z/15 <-> Z/3 x Z/5.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])

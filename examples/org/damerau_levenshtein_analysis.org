@@ -1,0 +1,205 @@
+#+title: The Damerau-Levenshtein Distance: Edit Distance With Transpositions
+#+subtitle: A literate C++ study of the unrestricted Lowrance-Wagner algorithm with =datamunge='s =algorithms::damerau_levenshtein_distance=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The single most common human typing error is transposing two adjacent letters --
+typing =recieve= for =receive=, =teh= for =the=. Plain Levenshtein distance
+charges two edits for such a slip (one substitution each way); the
+*Damerau-Levenshtein distance* (Damerau, 1964) adds a fourth edit operation, the
+transposition of two adjacent characters, so that a swap costs just one. This
+report implements the /true, unrestricted/ Damerau-Levenshtein distance -- a
+genuine metric, computed by the Lowrance-Wagner dynamic program -- in
+=datamunge='s C++ =algorithms::damerau_levenshtein_distance=, contrasts it with
+plain Levenshtein on transposition-heavy pairs, and pins down the subtle
+difference between the true distance and the widely-implemented "optimal string
+alignment" shortcut using the witness =CA= \(\leftrightarrow\) =ABC=.
+#+end_abstract
+
+* Four edit operations
+
+Damerau observed that over 80% of human spelling errors are a single insertion,
+deletion, substitution, /or transposition of two adjacent characters/. The
+Damerau-Levenshtein distance is therefore the minimum number of
+
+- insertions,
+- deletions,
+- substitutions, and
+- *transpositions of two adjacent characters*
+
+that transform \(a\) into \(b\). Since it only /adds/ an operation to
+Levenshtein's repertoire, it never exceeds the Levenshtein distance:
+\(d_{DL}(a,b)\le d_{L}(a,b)\), with strict inequality exactly when a
+transposition can replace two substitutions.
+
+There are two distinct measures sharing the name:
+
+- The *optimal string alignment* (OSA) distance restricts scripts so that no
+  substring is edited more than once. It is easy to code but is /not/ a metric --
+  it can violate the triangle inequality.
+- The *true (unrestricted) Damerau-Levenshtein* distance allows any script and
+  /is/ a metric. It is what =datamunge= computes.
+
+The two disagree on =CA= \(\leftrightarrow\) =ABC=: the true distance is 2
+(transpose =CA=\(\to\)=AC=, then insert =B=), while OSA reports 3 because its
+one-edit-per-substring rule forbids reusing the transposed letters. We verify
+this below.
+
+#+name: dl-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The Lowrance-Wagner dynamic program
+
+The true distance needs to remember, for the transposition move, /where/ each
+character last occurred, because the two swapped characters may be separated by a
+block that is itself deleted. Lowrance and Wagner (1975) solve this with a table
+\(D\) that carries a one-cell "infinity" border and an auxiliary array \(da\)
+mapping each alphabet symbol to the last row at which it appeared in \(a\).
+
+For each cell \((i,j)\) we take the best of the usual three moves plus a
+transposition move that jumps back to the last row \(i'\) where \(b_j\) occurred
+in \(a\) and the last column \(j'\) where \(a_i\) occurred in \(b\), paying for
+the block of characters skipped between the swapped pair:
+
+\[
+D(i,j)=\min\begin{cases}
+D(i-1,j-1)+\mathbf{1}[a_i\ne b_j] & \text{match / substitute}\\
+D(i-1,j)+1 & \text{delete}\\
+D(i,j-1)+1 & \text{insert}\\
+D(i'-1,j'-1)+(i-i'-1)+1+(j-j'-1) & \text{transpose.}
+\end{cases}
+\]
+
+The infinity border makes the transposition branch inert until a real earlier
+occurrence exists. The whole computation is \(O(nm)\) time and space plus a
+constant-size (256-entry, one per byte) alphabet table.
+
+#+begin_example
+DAMERAU-LEVENSHTEIN(a, b):              # |a| = n, |b| = m
+  INF <- n + m
+  D[0..n+1][0..m+1]; D[0][0] <- INF
+  for i in 0..n: D[i+1][0] <- INF; D[i+1][1] <- i
+  for j in 0..m: D[0][j+1] <- INF; D[1][j+1] <- j
+  da[c] <- 0 for every byte c            # last row in a holding byte c
+  for i in 1..n:
+      db <- 0                            # last column in b that matched a[1..i]
+      for j in 1..m:
+          i1 <- da[b[j]]                 # last row where b[j] appeared in a
+          j1 <- db
+          if a[i] == b[j]: cost <- 0; db <- j
+          else:            cost <- 1
+          D[i+1][j+1] <- min(
+              D[i][j]     + cost,                         # substitute / match
+              D[i+1][j]   + 1,                            # insert
+              D[i][j+1]   + 1,                            # delete
+              D[i1][j1] + (i-i1-1) + 1 + (j-j1-1) )       # transpose
+      da[a[i]] <- i
+  return D[n+1][m+1]
+#+end_example
+
+* Levenshtein versus Damerau-Levenshtein
+
+The program compares the two distances on pairs that differ by an adjacent swap,
+then checks the =CA=/=ABC= witness that separates the true distance from OSA.
+
+#+name: dl-run
+#+begin_src c++ :eval no
+    const std::vector<std::pair<std::string, std::string>> pairs = {
+        {"ab", "ba"}, {"abcd", "abdc"}, {"receive", "recieve"},
+        {"data", "adta"}, {"CA", "ABC"}};
+
+    std::cout << "=== Levenshtein vs Damerau-Levenshtein ===\n";
+    std::cout << "  pair                       Lev   DL\n";
+    std::vector<double> idx, lev, dl;
+    for (std::size_t k = 0; k < pairs.size(); ++k) {
+        const auto& [a, b] = pairs[k];
+        const std::size_t l = levenshtein_distance(a, b);
+        const std::size_t d = damerau_levenshtein_distance(a, b);
+        std::cout << "  \"" << a << "\" <-> \"" << b << "\"";
+        for (std::size_t s = (a.size() + b.size()); s < 18; ++s) std::cout << ' ';
+        std::cout << "   " << l << "    " << d << "\n";
+        idx.push_back(static_cast<double>(k));
+        lev.push_back(static_cast<double>(l));
+        dl.push_back(static_cast<double>(d));
+    }
+
+    std::cout << "\nWitness that the *true* distance beats optimal string alignment:\n";
+    std::cout << "  DL(\"CA\", \"ABC\") = " << damerau_levenshtein_distance("CA", "ABC")
+              << "  (OSA would report 3)\n";
+
+    auto plot = RPlot::create();
+    plot.points(idx, lev, "Levenshtein", RGB{220, 38, 38}, 11.0);
+    plot.points(idx, dl, "Damerau-Levenshtein", RGB{37, 99, 235}, 8.0);
+    plot.legend({"Levenshtein", "Damerau-Levenshtein"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("A transposition costs 1 for Damerau-Levenshtein, 2 for Levenshtein")
+        .x_label("pair index")
+        .y_label("distance")
+        .background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(pairs.size()) - 0.5);
+    plot.y_limits(0.0, 3.5);
+    plot.save_svg("build/org/damerau_levenshtein.svg");
+    std::cout << "\nwrote damerau_levenshtein.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/damerau_levenshtein_analysis.cpp <<'CPP'
+<<dl-includes>>
+
+int main() {
+<<dl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/damerau_levenshtein_analysis.cpp -o build/org/damerau_levenshtein_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/damerau_levenshtein_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Levenshtein vs Damerau-Levenshtein ===
+  pair                       Lev   DL
+  "ab" <-> "ba"                 2    1
+  "abcd" <-> "abdc"             2    1
+  "receive" <-> "recieve"       2    1
+  "data" <-> "adta"             2    1
+  "CA" <-> "ABC"                3    2
+
+Witness that the *true* distance beats optimal string alignment:
+  DL("CA", "ABC") = 2  (OSA would report 3)
+
+wrote damerau_levenshtein.svg
+#+end_example
+
+Every adjacent-swap pair costs two Levenshtein edits but only one
+Damerau-Levenshtein edit, because the transposition operation collapses the two
+substitutions into a single move. The last row is the telling one: the true,
+unrestricted distance of =CA= and =ABC= is 2, one less than the optimal
+string-alignment shortcut would give -- the practical reason to pay for the full
+Lowrance-Wagner table when a genuine metric is required.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/damerau_levenshtein.svg]]
+
+The red markers (Levenshtein) sit a full unit above the blue markers
+(Damerau-Levenshtein) for the four swap pairs, and one unit above on the =CA=/=ABC=
+witness -- a picture of exactly what the extra transposition operation buys.
