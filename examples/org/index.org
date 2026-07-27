@@ -343,6 +343,11 @@ We implement MOEA/D (Zhang & Li 2007) in =datamunge='s C++ =optim::MOEAD= and re
 
 We implement Brent's cycle-detection algorithm (=algorithms::brent_cycle_detection=) and report it as a literate program: every number and figure comes from a single compiled, executed C++ binary. We describe the rho structure of a functional-graph iteration, give Brent's two-phase powers-of-two method with pseudocode and a correctness argument, and apply it to an explicit rho graph (recovering tail mu=3 and cycle lambda=4) and to classifying happy numbers by the cycle their digit-square-sum iteration reaches.
 
+** [[./floyd_cycle_detection_analysis.html][Floyd's Algorithm: The Tortoise and the Hare]] ([[./floyd_cycle_detection_analysis.pdf][PDF]])
+/A literate C++ study of tortoise-and-hare cycle finding, benchmarked against Brent, using datamunge/
+
+We implement Floyd's cycle-detection algorithm (=algorithms::floyd_cycle_detection=) and report it as a literate program. We give the three-phase tortoise-and-hare method with pseudocode and the modular-arithmetic argument for the meeting point, then race it against Brent on Pollard-rho iterations: both return identical (lambda, mu), but Floyd spends 1.1-1.6x as many function evaluations, quantifying why Brent is preferred when the transition is expensive.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])
