@@ -1,0 +1,264 @@
+#+title: Greedy Graph Coloring: The Welsh-Powell Heuristic
+#+subtitle: A literate C++ study of proper vertex coloring with =datamunge='s =algorithms::greedy_coloring=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Color the vertices of a graph so that no edge joins two vertices of the same
+color, using as few colors as possible. This innocent-sounding puzzle -- the
+*proper vertex coloring* problem -- underlies exam timetabling, register
+allocation in compilers, and frequency assignment in wireless networks, and
+its optimum, the *chromatic number* chi(G), is NP-hard to compute. This report
+implements a fast, classical heuristic in =datamunge='s C++
+=algorithms::greedy_coloring= and presents it as a literate program: every
+number and figure is produced by a single compiled binary. We define proper
+colorings and the chromatic number, give the greedy /Welsh-Powell/ rule --
+color vertices in order of descending degree, each with the smallest color no
+neighbor has yet taken -- and prove it never uses more than Delta + 1 colors,
+where Delta is the maximum degree. A hand-checkable worked example colors the
+5-cycle with three colors (the odd cycle's true chromatic number) and the
+complete graph \(K_4\) with four (where the Delta + 1 bound is tight), and a
+figure draws the 5-cycle laid out on a circle with each vertex tinted by its
+assigned color.
+#+end_abstract
+
+* The graph coloring problem
+
+Let \(G = (V, E)\) be an undirected graph on \(n\) vertices
+\(V = \{0, \dots, n-1\}\). A *(proper) vertex coloring* is a map assigning each
+vertex a color such that every edge \(\{u, v\} \in E\) has its endpoints in
+/different/ colors. Any graph can be colored trivially with \(n\) colors --
+one per vertex -- so the interesting quantity is the *chromatic number*
+chi(G): the smallest number of colors admitting a proper coloring. Deciding
+whether chi(G) \(\le k\) is NP-complete for every fixed \(k \ge 3\), and
+computing chi(G) exactly is NP-hard; no polynomial algorithm is known.
+
+Two easy landmarks bound chi(G). A *complete graph* \(K_n\), in which every
+pair of vertices is adjacent, forces all \(n\) vertices apart, so
+chi(K_n) = n. An *edgeless* graph needs a single color, and more generally any
+*bipartite* graph -- one whose vertices split into two sides with edges only
+between them, equivalently one with no odd cycle -- has chi = 2. The odd
+cycles are the smallest graphs that break the bipartite ceiling: the 5-cycle
+\(C_5\) has chi = 3.
+
+=datamunge= represents a graph by its vertex count =n= and an edge list of
+index pairs, and exposes =is_proper_coloring= to certify that a candidate
+coloring has no monochromatic edge. Self-loops (an edge from a vertex to
+itself) are ignored -- they can never be satisfied -- and endpoints must be
+valid vertex indices.
+
+#+name: gc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_coloring.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The greedy / Welsh-Powell heuristic
+
+The *greedy* coloring processes vertices in some fixed order and gives each
+vertex the smallest color not already worn by one of its /already-colored/
+neighbors. Whatever the order, the result is always proper: a vertex is never
+handed a color a neighbor already holds. The order, however, decides how many
+colors get used -- and a bad order can be arbitrarily wasteful.
+
+The *Welsh-Powell* rule (Welsh & Powell, 1967) chooses a good order cheaply:
+sort the vertices by *descending degree*, breaking ties by ascending index,
+and color them in that sequence. High-degree vertices are the most
+constrained, so coloring them first -- while the palette is still empty --
+tends to pack the coloring into few colors.
+
+#+begin_example
+GREEDY-COLORING-WELSH-POWELL(n, edges):
+  build undirected adjacency lists adj[*]      # drop self-loops; reject endpoints >= n
+  degree[v] <- |adj[v]|  for all v
+  order <- vertices 0..n-1 sorted by (degree DESC, index ASC)   # Welsh-Powell order
+  color[*] <- UNCOLORED
+
+  for v in order:                              # color the hardest vertices first
+      used <- empty set of colors
+      for w in adj[v]:
+          if color[w] != UNCOLORED:
+              add color[w] to used
+      color[v] <- smallest c >= 0 with c not in used
+
+  num_colors <- (number of distinct values in color)
+  return (color, num_colors)
+#+end_example
+
+*Properness.* When a vertex \(v\) is colored, every already-colored neighbor's
+color is in =used=, and \(v\) avoids all of them. A later neighbor \(w\) that
+is colored /after/ \(v\) will in turn see \(v\)'s color and avoid it. So no
+edge ever ends up monochromatic.
+
+*The Delta + 1 bound.* Let Delta be the maximum degree. When \(v\) is colored
+it has at most \(\deg(v) \le \Delta\) neighbors, hence at most Delta distinct
+colors in =used=. Among the Delta + 1 colors \(\{0, 1, \dots, \Delta\}\) at
+least one is therefore free, so \(v\) receives a color \(\le \Delta\). Every
+vertex is colored from \(\{0, \dots, \Delta\}\), and the greedy uses colors
+contiguously from 0, so
+\[ \text{num\_colors} \le \Delta + 1. \]
+This bound is tight for a complete graph and for an odd cycle, but on most
+graphs the degree-descending order does strictly better -- often far better --
+than Delta + 1, which is exactly why Welsh-Powell is worth the sort.
+
+* Example: coloring the 5-cycle and \(K_4\)
+
+We color two small graphs by hand and in code. The *5-cycle* \(C_5\) has
+vertices \(0\)-\(1\)-\(2\)-\(3\)-\(4\)-\(0\); every vertex has degree \(2\), so
+Delta + 1 = 3. Because \(C_5\) is an odd cycle its true chromatic number is
+also \(3\), and Welsh-Powell attains it. With all degrees equal the order is
+just \(0, 1, 2, 3, 4\), and the smallest-available rule gives \(v_0 \to 0\),
+\(v_1 \to 1\) (neighbor \(v_0\) is 0), \(v_2 \to 0\) (neighbor \(v_1\) is 1),
+\(v_3 \to 1\) (neighbor \(v_2\) is 0), and finally \(v_4 \to 2\) (its
+neighbors \(v_0, v_3\) hold 0 and 1) -- three colors. The complete graph
+\(K_4\) forces a fresh color at every step, so the greedy spends all four,
+matching chi(K_4) = 4 and showing the Delta + 1 bound tight (Delta = 3).
+
+#+name: gc-run
+#+begin_src c++ :eval no
+    // ---- A small, hand-checkable graph: the 5-cycle C5 ----
+    const std::size_t n = 5;
+    const std::vector<std::pair<std::size_t, std::size_t>> c5 = {
+        {0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 0}};
+
+    std::cout << "=== Greedy (Welsh-Powell) coloring of the 5-cycle C5 ===\n";
+    std::vector<std::size_t> degree(n, 0);
+    for (const auto& [u, v] : c5) { ++degree[u]; ++degree[v]; }
+    std::cout << "vertex degrees:\n";
+    for (std::size_t v = 0; v < n; ++v)
+        std::cout << "  v" << v << ": degree " << degree[v] << "\n";
+
+    const auto coloring = greedy_coloring(n, c5);
+    std::cout << "\nassigned colors (order: descending degree, ties by index):\n";
+    for (std::size_t v = 0; v < n; ++v)
+        std::cout << "  v" << v << " -> color " << coloring.color[v] << "\n";
+    std::cout << "colors used: " << coloring.num_colors << "\n";
+    std::cout << "proper coloring: " << (is_proper_coloring(n, c5, coloring.color) ? "yes" : "NO") << "\n";
+    const std::size_t delta = *std::max_element(degree.begin(), degree.end());
+    std::cout << "Delta + 1 upper bound: " << delta + 1 << "\n";
+
+    // ---- The complete graph K4 forces exactly four colors ----
+    const std::size_t m = 4;
+    std::vector<std::pair<std::size_t, std::size_t>> k4;
+    for (std::size_t a = 0; a < m; ++a)
+        for (std::size_t b = a + 1; b < m; ++b) k4.emplace_back(a, b);
+    const auto k4coloring = greedy_coloring(m, k4);
+    std::cout << "\n=== Complete graph K4 (every vertex adjacent to every other) ===\n";
+    for (std::size_t v = 0; v < m; ++v)
+        std::cout << "  v" << v << " -> color " << k4coloring.color[v] << "\n";
+    std::cout << "colors used: " << k4coloring.num_colors << " (chi(K4) = 4)\n";
+    std::cout << "proper coloring: " << (is_proper_coloring(m, k4, k4coloring.color) ? "yes" : "NO") << "\n";
+
+    // ---- Draw C5 on a circle, each vertex tinted by its assigned color ----
+    const double pi = 3.14159265358979323846;
+    std::vector<double> px(n), py(n);
+    for (std::size_t v = 0; v < n; ++v) {
+        const double angle = pi / 2.0 - 2.0 * pi * static_cast<double>(v) / static_cast<double>(n);
+        px[v] = std::cos(angle);
+        py[v] = std::sin(angle);
+    }
+    auto plot = RPlot::create();
+    // edges first, drawn as grey lines beneath the vertices
+    for (const auto& [u, v] : c5)
+        plot.lines({px[u], px[v]}, {py[u], py[v]}, "", {180, 180, 180}, 1.5);
+    // vertices, one points() call per color group
+    const std::vector<RGB> palette = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4}};
+    for (std::size_t c = 0; c < coloring.num_colors; ++c) {
+        std::vector<double> gx, gy;
+        for (std::size_t v = 0; v < n; ++v)
+            if (coloring.color[v] == c) { gx.push_back(px[v]); gy.push_back(py[v]); }
+        plot.points(gx, gy, "color " + std::to_string(c), palette[c % palette.size()], 12.0);
+    }
+    for (std::size_t v = 0; v < n; ++v)
+        plot.text(px[v] * 1.18, py[v] * 1.18, "v" + std::to_string(v), {17, 24, 39}, 14.0);
+    plot.title("Welsh-Powell 3-coloring of the 5-cycle C5")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.x_limits(-1.4, 1.4);
+    plot.y_limits(-1.4, 1.4);
+    plot.hide_axes(true);
+    plot.save_svg("build/org/graph_coloring.svg");
+    std::cout << "\nwrote graph_coloring.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/graph_coloring_analysis.cpp <<'CPP'
+<<gc-includes>>
+
+int main() {
+<<gc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/graph_coloring_analysis.cpp -o build/org/graph_coloring_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/graph_coloring_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Greedy (Welsh-Powell) coloring of the 5-cycle C5 ===
+vertex degrees:
+  v0: degree 2
+  v1: degree 2
+  v2: degree 2
+  v3: degree 2
+  v4: degree 2
+
+assigned colors (order: descending degree, ties by index):
+  v0 -> color 0
+  v1 -> color 1
+  v2 -> color 0
+  v3 -> color 1
+  v4 -> color 2
+colors used: 3
+proper coloring: yes
+Delta + 1 upper bound: 3
+
+=== Complete graph K4 (every vertex adjacent to every other) ===
+  v0 -> color 0
+  v1 -> color 1
+  v2 -> color 2
+  v3 -> color 3
+colors used: 4 (chi(K4) = 4)
+proper coloring: yes
+
+wrote graph_coloring.svg
+#+end_example
+
+The 5-cycle is colored with three colors and certified proper: no two adjacent
+vertices share a color. Three is both the Delta + 1 ceiling here (every degree
+is \(2\)) and the true chromatic number, since an odd cycle cannot be
+2-colored -- walk around it alternating two colors and the last edge closes
+onto a clash. The complete graph \(K_4\) spends one color per vertex, the most
+the bound allows, because every vertex is adjacent to every other and no color
+can be reused. The figure lays \(C_5\) out on a circle, edges in grey, each
+vertex filled with the color the greedy assigned:
+
+#+attr_html: :width 520
+#+attr_latex: :width 0.6\linewidth
+[[file:../../build/org/graph_coloring.svg]]
+
+Reading around the pentagon the colors go blue, red, blue, red, then green:
+the alternation the two-color attempt would want, broken by the fifth vertex
+that neighbors both a blue and a red and so must reach for a third color. That
+single extra color is the whole difference between a bipartite even cycle and
+an odd one -- and a concrete picture of why the greedy, cheap as it is, has to
+settle for Delta + 1 in the worst case even when the optimum is only a little
+smaller.

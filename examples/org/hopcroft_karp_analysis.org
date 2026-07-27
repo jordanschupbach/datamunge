@@ -1,0 +1,269 @@
+#+title: The Hopcroft-Karp Algorithm: Maximum Bipartite Matching in O(E sqrt(V))
+#+subtitle: A literate C++ study of layered augmenting paths with =datamunge='s =algorithms::hopcroft_karp=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a bipartite graph -- applicants and jobs, students and projects, machines
+and tasks -- how many disjoint pairs can we form so that no applicant and no job
+is used twice? This is the *maximum-cardinality bipartite matching* problem, and
+its classical answer is a chain of *augmenting paths*: as long as one exists, the
+matching is not maximum (Berge's theorem). The naive method finds them one at a
+time in \(O(V E)\); Hopcroft & Karp (1973) showed how to find many at once. Their
+algorithm alternates a breadth-first search, which layers the graph by the length
+of the *shortest* augmenting path, with a depth-first search that greedily
+extracts a *maximal set of vertex-disjoint* shortest augmenting paths and augments
+along all of them in a single phase. Because that shortest length strictly grows
+from phase to phase, only \(O(\sqrt{V})\) phases run, for an overall
+\(O(E\sqrt{V})\). This report implements it in =datamunge='s C++
+=algorithms::hopcroft_karp= and presents it as a literate program: every number
+and figure below is produced by one compiled binary. We define matchings and
+augmenting paths, state Berge's theorem, give the layered algorithm with
+pseudocode, and work a small five-applicant, four-job instance by hand -- whose
+maximum matching of size four (every job filled, one applicant left out) the code
+reproduces exactly.
+#+end_abstract
+
+* The maximum bipartite matching problem
+
+A *bipartite graph* has its vertices split into two disjoint sides -- here a
+/left/ set \(\{0,\dots,n_{left}-1\}\) and a /right/ set
+\(\{0,\dots,n_{right}-1\}\) -- with every edge joining a left vertex to a right
+vertex. A *matching* \(M\) is a set of edges no two of which share an endpoint;
+its *size* is the number of edges (equivalently, the number of matched vertices
+on either side). A *maximum matching* is one of largest possible size. A vertex
+is *free* (unmatched) if no edge of \(M\) touches it.
+
+Given a matching \(M\), an *alternating path* is a path whose edges alternate
+between \(M\) and non-\(M\) edges. An *augmenting path* is an alternating path
+whose two endpoints are both /free/. Its usefulness is that flipping matched and
+unmatched along it -- the *symmetric difference* \(M \oplus P\) -- turns the one
+extra unmatched edge at each end into a net gain of exactly one, enlarging the
+matching by one while keeping it valid.
+
+*Berge's theorem (1957).* A matching \(M\) is maximum if and only if it admits no
+augmenting path. So the whole problem reduces to: repeatedly find an augmenting
+path and flip it, stopping when none remains.
+
+=datamunge= takes the graph as =(left_index, right_index)= edge pairs and returns
+a =BipartiteMatchingResult= holding both orientations, =match_left= and
+=match_right= (each entry =kBipartiteUnmatched= when free), plus the matching
+=size=.
+
+#+name: hk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hopcroft_karp.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Layered augmenting paths
+
+The simple augmenting-path method (Kuhn's algorithm) searches for /one/
+augmenting path per iteration, so it can spend \(O(V)\) searches each costing
+\(O(E)\): \(O(VE)\) overall. Hopcroft-Karp restructures the search into *phases*.
+
+Each phase begins with one breadth-first search that starts simultaneously from
+*all* free left vertices and expands alternately (unmatched edge forward to a
+right vertex, matched edge back to a left vertex). This assigns every left vertex
+a *layer* =dist[u]= equal to the length, in such alternating steps, of the
+shortest alternating path reaching it from a free left vertex, and detects
+whether any augmenting path exists at all -- it does exactly when the BFS reaches
+a free right vertex.
+
+The phase then runs a depth-first search that only ever steps from layer =dist[u]=
+to layer =dist[u] + 1=, so it walks *shortest* augmenting paths only. Crucially,
+whenever the DFS fails out of a vertex it marks that vertex dead
+(=dist[u] <- INF=) so no later search revisits it this phase; and whenever it
+succeeds it consumes the vertices on that path. The net effect of one DFS sweep
+over all free left vertices is to augment along a *maximal set of
+vertex-disjoint shortest augmenting paths* at once.
+
+The payoff is a counting argument: the length of the shortest augmenting path is
+strictly larger in every successive phase, and once it exceeds \(\sqrt{V}\) only
+\(O(\sqrt{V})\) further augmentations remain in total. So there are
+\(O(\sqrt{V})\) phases, each \(O(E)\), giving \(O(E\sqrt{V})\).
+
+#+begin_example
+HOPCROFT-KARP(n_left, n_right, edges):
+  build adj[u] = { right neighbours of left vertex u }
+  match_left[*]  <- NONE
+  match_right[*] <- NONE
+  size <- 0
+
+  repeat:
+      # ---- BFS: layer left vertices by shortest alternating distance from a free vertex ----
+      queue <- empty
+      for each left vertex u:
+          if match_left[u] == NONE: dist[u] <- 0;   push(queue, u)
+          else                    : dist[u] <- INF
+      found <- false
+      while queue not empty:
+          u <- pop(queue)
+          for each v in adj[u]:
+              w <- match_right[v]                    # left vertex matched to v, or NONE
+              if   w == NONE:      found <- true      # reached a free right vertex
+              elif dist[w] == INF: dist[w] <- dist[u] + 1;  push(queue, w)
+      if not found: break                             # no augmenting path -> matching is maximum
+
+      # ---- DFS: augment a MAXIMAL set of vertex-disjoint SHORTEST augmenting paths ----
+      for each free left vertex u:
+          if DFS(u): size <- size + 1
+
+  return (match_left, match_right, size)
+
+DFS(u):
+  for each v in adj[u]:
+      w <- match_right[v]
+      if w == NONE or (dist[w] == dist[u] + 1 and DFS(w)):
+          match_right[v] <- u;  match_left[u] <- v    # flip this edge into the matching
+          return true
+  dist[u] <- INF                                       # dead end: do not revisit this phase
+  return false
+#+end_example
+
+*Correctness.* By Berge's theorem the loop is correct to stop precisely when the
+BFS finds no augmenting path, and each successful =DFS= strictly increases the
+matching by flipping one augmenting path. *Termination* is immediate: every phase
+either grows the matching (bounded by \(\min(n_{left}, n_{right})\)) or breaks the
+loop.
+
+* Example: assigning applicants to jobs
+
+We take five applicants (left vertices) and four jobs (right vertices) with the
+eligibility edges below, and ask for the largest set of applicant-job pairs.
+Working it by hand: the four jobs can all be filled -- assign =A1-J0=, =A0-J1=,
+=A2-J2=, =A3-... = -- more carefully, =J0<-A1=, =J1<-A0=, =J2<-A2=, =J3<-A4=
+saturates all four jobs, so the maximum matching has *size four* and exactly one
+applicant is left unmatched. The algorithm confirms this and reports which
+applicant is the odd one out.
+
+#+name: hk-run
+#+begin_src c++ :eval no
+    const std::size_t n_left = 5;
+    const std::size_t n_right = 4;
+    const std::vector<std::pair<std::size_t, std::size_t>> edges = {
+        {0, 0}, {0, 1}, {1, 0}, {2, 1}, {2, 2}, {3, 2}, {3, 3}, {4, 3}};
+
+    // Left-side adjacency, purely for display (edges grouped by applicant, in input order).
+    std::vector<std::vector<std::size_t>> jobs_of(n_left);
+    for (const auto& [a, j] : edges) jobs_of[a].push_back(j);
+
+    std::cout << "=== Assigning 5 applicants to 4 jobs (bipartite matching) ===\n";
+    std::cout << "Applicant -> eligible jobs:\n";
+    for (std::size_t a = 0; a < n_left; ++a) {
+        std::cout << "  A" << a << ":";
+        for (const auto j : jobs_of[a]) std::cout << " J" << j;
+        std::cout << "\n";
+    }
+
+    const auto m = hopcroft_karp(n_left, n_right, edges);
+
+    std::cout << "\nMaximum matching (size " << m.size << "):\n";
+    for (std::size_t a = 0; a < n_left; ++a) {
+        std::cout << "  A" << a << " -- ";
+        if (m.match_left[a] == kBipartiteUnmatched) std::cout << "(unmatched)\n";
+        else std::cout << "J" << m.match_left[a] << "\n";
+    }
+    std::size_t filled = 0;
+    for (std::size_t j = 0; j < n_right; ++j) filled += (m.match_right[j] != kBipartiteUnmatched);
+    std::cout << "Jobs filled: " << filled << " of " << n_right << "\n";
+
+    // Draw the bipartite graph: applicants at x = 0, jobs at x = 1, vertex index on the y axis.
+    // Every eligibility edge is a thin grey line; the matched edges are thick and blue on top.
+    auto plot = RPlot::create();
+    for (const auto& [a, j] : edges) {
+        std::vector<double> ex = {0.0, 1.0};
+        std::vector<double> ey = {static_cast<double>(a), static_cast<double>(j)};
+        plot.lines(ex, ey, "", {203, 213, 225}, 1.0); // thin grey: eligible
+    }
+    for (std::size_t a = 0; a < n_left; ++a) {
+        if (m.match_left[a] == kBipartiteUnmatched) continue;
+        std::vector<double> ex = {0.0, 1.0};
+        std::vector<double> ey = {static_cast<double>(a), static_cast<double>(m.match_left[a])};
+        plot.lines(ex, ey, "", {37, 99, 235}, 4.0); // thick blue: matched
+    }
+    std::vector<double> ax(n_left, 0.0), ay(n_left);
+    for (std::size_t a = 0; a < n_left; ++a) ay[a] = static_cast<double>(a);
+    std::vector<double> jx(n_right, 1.0), jy(n_right);
+    for (std::size_t j = 0; j < n_right; ++j) jy[j] = static_cast<double>(j);
+    plot.points(ax, ay, "applicants", {30, 41, 59}, 9.0);
+    plot.points(jx, jy, "jobs", {220, 38, 38}, 9.0);
+    plot.title("Maximum bipartite matching (thick blue = matched, thin grey = eligible)")
+        .x_label("side (0 = applicants, 1 = jobs)")
+        .y_label("vertex index")
+        .background({250, 250, 252});
+    plot.x_limits(-0.3, 1.3);
+    plot.save_svg("build/org/hopcroft_karp_matching.svg");
+    std::cout << "\nwrote hopcroft_karp_matching.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hopcroft_karp_analysis.cpp <<'CPP'
+<<hk-includes>>
+
+int main() {
+<<hk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hopcroft_karp_analysis.cpp -o build/org/hopcroft_karp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hopcroft_karp_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Assigning 5 applicants to 4 jobs (bipartite matching) ===
+Applicant -> eligible jobs:
+  A0: J0 J1
+  A1: J0
+  A2: J1 J2
+  A3: J2 J3
+  A4: J3
+
+Maximum matching (size 4):
+  A0 -- J0
+  A1 -- (unmatched)
+  A2 -- J1
+  A3 -- J2
+  A4 -- J3
+Jobs filled: 4 of 4
+
+wrote hopcroft_karp_matching.svg
+#+end_example
+
+The algorithm fills all four jobs, so the matching has size four -- the largest
+possible, since there are only four jobs. With five applicants and four jobs at
+most four pairs can ever be formed, and here that bound is met: exactly one
+applicant, =A1=, is left out. That =A1= (eligible only for =J0=) loses is no
+accident of tie-breaking but a consequence of the structure: =J0= is the only job
+open to both =A1= and (partly) =A0=, and giving it to =A0= would strand =A0='s
+other option chain, so the maximum instead routes =A1='s single edge aside.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hopcroft_karp_matching.svg]]
+
+Applicants sit on the left (x = 0), jobs on the right (x = 1), each at its index
+on the vertical axis. Every thin grey segment is an eligibility edge; the four
+thick blue segments are the maximum matching. Reading the figure, all four
+right-hand job vertices have a blue edge landing on them while the applicant
+=A1= alone has only grey -- the visual signature of a maximum matching that
+saturates the smaller side. This is the same object the National Resident
+Match, task-scheduling, and network-flow bipartite subroutines compute at scale;
+Hopcroft-Karp is what makes computing it cost \(O(E\sqrt{V})\) rather than
+\(O(VE)\).

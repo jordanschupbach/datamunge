@@ -1,0 +1,296 @@
+#+title: The Hungarian Algorithm: Minimum-Cost Assignment by Kuhn-Munkres
+#+subtitle: A literate C++ study of the assignment problem with =datamunge='s =algorithms::hungarian=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given \(n\) workers, \(n\) tasks, and the cost of letting each worker do each
+task, how do we hand out the tasks -- one per worker -- as cheaply as possible?
+This is the *assignment problem*, and Kuhn (1955) and Munkres (1957) gave it a
+polynomial-time solution now known as the *Hungarian algorithm*. This report
+implements the \(O(n^3)\) primal-dual form in =datamunge='s C++
+=algorithms::hungarian= and presents it as a literate program: every number and
+figure is produced by a single compiled binary. We state the problem, derive
+the linear-programming dual -- row potentials \(u_i\) and column potentials
+\(v_j\) with \(u_i + v_j \le c_{ij}\) -- and the complementary-slackness
+condition that makes a perfect matching of *tight* edges provably optimal; we
+give the augmenting-path algorithm with pseudocode and its complexity; and we
+solve a small three-worker, three-task instance by hand and by machine. The
+optimizer assigns worker 0 to task 1, worker 1 to task 0, and worker 2 to task
+2, for a total cost of \(9\) -- confirmed against an exhaustive search over all
+\(3! = 6\) permutations.
+#+end_abstract
+
+* The assignment problem
+
+We are given an \(n \times n\) matrix of real costs \(c_{ij}\): the cost of
+assigning row \(i\) (a /worker/) to column \(j\) (a /task/). An *assignment* is
+a one-to-one pairing of workers with tasks -- a permutation \(\pi\) of
+\(\{0,\dots,n-1\}\) -- and its cost is \(\sum_i c_{i,\pi(i)}\). We want the
+permutation of *minimum* total cost. Equivalently, viewing the workers and
+tasks as the two sides of a complete weighted bipartite graph, we seek a
+*minimum-cost perfect matching*.
+
+The naive approach -- try all \(n!\) permutations -- is hopeless past small
+\(n\). The Hungarian algorithm solves the problem in \(O(n^3)\) time by
+exploiting linear-programming duality rather than brute enumeration.
+
+=datamunge= exposes it as =algorithms::hungarian=, taking a square cost matrix
+and returning an =AssignmentResult= whose =assignment[i]= is the column given to
+row \(i\) and whose =cost= is the optimal total.
+
+#+name: hu-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hungarian.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <numeric>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Duality and complementary slackness
+
+Write a candidate solution as a 0/1 matrix \(x_{ij}\) with \(x_{ij} = 1\) iff
+worker \(i\) is assigned task \(j\). The assignment problem is the linear
+program
+
+\[
+\min \sum_{i,j} c_{ij} x_{ij}
+\quad\text{s.t.}\quad
+\sum_j x_{ij} = 1,\;\;
+\sum_i x_{ij} = 1,\;\;
+x_{ij} \ge 0 .
+\]
+
+(The constraint matrix is totally unimodular, so the \(x_{ij}\) come out
+integral for free -- we may drop the \(x \le 1\) upper bounds.) Its *dual*
+assigns a *potential* \(u_i\) to each worker's row-constraint and \(v_j\) to
+each task's column-constraint:
+
+\[
+\max \sum_i u_i + \sum_j v_j
+\quad\text{s.t.}\quad
+u_i + v_j \le c_{ij}\;\;\text{for all } i,j .
+\]
+
+Read the dual constraint as a *reduced cost*: every edge \((i,j)\) has slack
+\(c_{ij} - u_i - v_j \ge 0\). An edge with *zero* slack -- where
+\(u_i + v_j = c_{ij}\) exactly -- is called *tight*, and the tight edges form
+the *equality subgraph*. Weak duality says any feasible assignment costs at
+least \(\sum_i u_i + \sum_j v_j\); *complementary slackness* says the two are
+equal -- and hence both optimal -- exactly when the assignment uses only tight
+edges. So the goal is concrete:
+
+#+begin_quote
+Find dual potentials \(u, v\) that are feasible (\(u_i + v_j \le c_{ij}\)) whose
+equality subgraph admits a *perfect* matching. That matching is a minimum-cost
+assignment, certified optimal by the potentials.
+#+end_quote
+
+The Hungarian algorithm builds exactly this: it keeps the potentials feasible
+at all times, grows a matching within the tight edges, and whenever it gets
+stuck it nudges the potentials -- by the smallest slack available -- to expose a
+new tight edge, never breaking feasibility, until the matching becomes perfect.
+
+* The algorithm
+
+We add the workers one at a time. To bring worker \(i\) into the matching we
+search for an *augmenting path* -- an alternating chain of unmatched/matched
+tight edges from \(i\) to some currently-unassigned task. If the equality
+subgraph does not (yet) contain such a path, we compute the minimum slack
+\(\delta\) across the frontier of the search, add \(\delta\) to the potentials
+of the workers reached and subtract it from the tasks reached. This keeps
+\(u_i + v_j \le c_{ij}\) everywhere, drives at least one frontier edge to
+tightness, and lets the search continue. Because each of the \(n\)
+augmentations does \(O(n)\) potential updates each scanning \(O(n)\) columns,
+the whole solve is \(O(n^3)\).
+
+#+begin_example
+HUNGARIAN(cost[1..n][1..n]):                  # minimize; u,v are dual potentials
+  u[1..n] <- 0;  v[1..n] <- 0                 # dual feasible: u_i + v_j <= cost[i][j]
+  match[1..n] <- none                         # match[j] = row currently assigned to column j
+
+  for i in 1..n:                              # bring worker i in via an augmenting path
+      minslack[j] <- +inf, parent[j] <- none, used[j] <- false   for all columns j
+      j0 <- virtual start column holding worker i
+      repeat:
+          used[j0] <- true;  i0 <- match at j0 (worker i on the first step)
+          delta <- +inf
+          for each column j with used[j] = false:      # relax slacks from row i0
+              slack <- cost[i0][j] - u[i0] - v[j]
+              if slack < minslack[j]:  minslack[j] <- slack;  parent[j] <- j0
+              if minslack[j] < delta:  delta <- minslack[j];  j1 <- j
+          for each column j:                            # re-price by the minimum slack
+              if used[j]:  u[match[j]] += delta;  v[j] -= delta
+              else:        minslack[j] -= delta
+          j0 <- j1                                      # step onto the newly tightened column
+      until match[j0] == none                            # reached a free task: path complete
+
+      repeat:                                            # flip the path: unmatched <-> matched
+          j1 <- parent[j0];  match[j0] <- match[j1];  j0 <- j1
+      until j0 == virtual start
+
+  for each column j:  assignment[ match[j] ] <- j
+  return assignment,  total cost = sum_i cost[i][assignment[i]]
+#+end_example
+
+*Feasibility is an invariant.* Potentials start at \(u = v = 0\) with all costs
+non-negative (and for general real costs the same argument holds relative to
+the starting slacks), and every re-pricing step shifts \(u\) up and \(v\) down
+by the same \(\delta\) chosen as the minimum frontier slack, so no constraint
+\(u_i + v_j \le c_{ij}\) is ever violated.
+
+*Termination and optimality.* Each of the \(n\) outer iterations ends by
+augmenting the matching by one edge along a path of tight edges, so after \(n\)
+iterations the matching is perfect and lives entirely in the equality subgraph.
+By complementary slackness its cost equals the dual objective, so it is a
+minimum-cost assignment and the potentials are its optimality certificate.
+
+* Example: three workers, three tasks
+
+We hand the algorithm a deliberately small, fully deterministic instance -- three
+workers \(W_0, W_1, W_2\) and three tasks \(T_0, T_1, T_2\) -- print the cost
+matrix, solve it, and cross-check the answer against an exhaustive search over
+all \(3! = 6\) permutations. By hand: the only assignments worth considering
+pair the cheap cells \(c_{01}=2\), \(c_{22}=1\); completing with \(c_{10}=6\)
+gives \(2+6+1 = 9\), and no other permutation beats it (the runner-up costs
+\(10\)).
+
+#+name: hu-run
+#+begin_src c++ :eval no
+    const std::vector<std::vector<double>> cost = {
+        {9, 2, 7},
+        {6, 4, 3},
+        {5, 8, 1},
+    };
+    const std::size_t n = cost.size();
+
+    std::cout << "=== Assignment problem: 3 workers x 3 tasks ===\n";
+    std::cout << "Cost matrix (rows = workers, cols = tasks):\n";
+    std::cout << "    ";
+    for (std::size_t j = 0; j < n; ++j) std::cout << std::setw(6) << ("T" + std::to_string(j));
+    std::cout << "\n";
+    for (std::size_t i = 0; i < n; ++i) {
+        std::cout << "  W" << i;
+        for (std::size_t j = 0; j < n; ++j) std::cout << std::setw(6) << cost[i][j];
+        std::cout << "\n";
+    }
+
+    const auto r = hungarian(cost);
+
+    std::cout << "\nMinimum-cost assignment (Hungarian / Kuhn-Munkres):\n";
+    for (std::size_t i = 0; i < n; ++i)
+        std::cout << "  W" << i << " -> T" << r.assignment[i]
+                  << "   (cost " << cost[i][r.assignment[i]] << ")\n";
+    std::cout << "  total cost: " << r.cost << "\n";
+
+    // Independent brute-force cross-check over all n! permutations.
+    std::vector<std::size_t> perm(n);
+    std::iota(perm.begin(), perm.end(), 0);
+    double best = std::numeric_limits<double>::infinity();
+    do {
+        double c = 0.0;
+        for (std::size_t i = 0; i < n; ++i) c += cost[i][perm[i]];
+        best = std::min(best, c);
+    } while (std::next_permutation(perm.begin(), perm.end()));
+    std::cout << "\nBrute-force check over all 3! = 6 permutations: min cost = " << best
+              << "  (" << (best == r.cost ? "agrees" : "DISAGREES") << ")\n";
+
+    // Draw the cost grid: every cell a point, the chosen assignment cells highlighted.
+    std::vector<double> all_x, all_y, sel_x, sel_y;
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < n; ++j) {
+            all_x.push_back(static_cast<double>(j));
+            all_y.push_back(static_cast<double>(n - 1 - i)); // row 0 drawn at the top
+        }
+    for (std::size_t i = 0; i < n; ++i) {
+        sel_x.push_back(static_cast<double>(r.assignment[i]));
+        sel_y.push_back(static_cast<double>(n - 1 - i));
+    }
+    auto plot = RPlot::create();
+    plot.points(all_x, all_y, "cost cell", {203, 213, 225}, 26.0);
+    plot.points(sel_x, sel_y, "chosen assignment", {37, 99, 235}, 30.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < n; ++j)
+            plot.text(static_cast<double>(j), static_cast<double>(n - 1 - i),
+                      std::to_string(static_cast<int>(cost[i][j])), {17, 24, 39}, 13.0);
+    plot.title("Assignment cost grid (rows = workers top->bottom; blue = chosen)")
+        .x_label("task (column)")
+        .y_label("worker (row; top = W0)")
+        .background({250, 250, 252});
+    plot.x_limits(-0.5, static_cast<double>(n) - 0.5);
+    plot.y_limits(-0.5, static_cast<double>(n) - 0.5);
+    plot.save_svg("build/org/hungarian_assignment.svg");
+    std::cout << "\nwrote hungarian_assignment.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hungarian_analysis.cpp <<'CPP'
+<<hu-includes>>
+
+int main() {
+<<hu-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hungarian_analysis.cpp -o build/org/hungarian_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hungarian_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Assignment problem: 3 workers x 3 tasks ===
+Cost matrix (rows = workers, cols = tasks):
+        T0    T1    T2
+  W0     9     2     7
+  W1     6     4     3
+  W2     5     8     1
+
+Minimum-cost assignment (Hungarian / Kuhn-Munkres):
+  W0 -> T1   (cost 2)
+  W1 -> T0   (cost 6)
+  W2 -> T2   (cost 1)
+  total cost: 9
+
+Brute-force check over all 3! = 6 permutations: min cost = 9  (agrees)
+
+wrote hungarian_assignment.svg
+#+end_example
+
+The Hungarian algorithm returns \(W_0 \to T_1\), \(W_1 \to T_0\),
+\(W_2 \to T_2\) at a total cost of \(9\), and an exhaustive search over all six
+permutations confirms nothing cheaper exists. Notice that the greedy instinct
+-- give each worker its individually cheapest task -- would send both \(W_0\)
+and \(W_1\) after their favorites and \(W_2\) to \(T_2\); but \(W_0\) and
+\(W_1\) both rank \(T_1\)/\(T_0\) closely, and only the global trade the
+algorithm finds -- \(W_1\) taking the pricier \(T_0\) so \(W_0\) can have the
+cheap \(T_1\) -- reaches the optimum. That coupling across rows is exactly what
+the dual potentials coordinate.
+
+#+attr_html: :width 520
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/hungarian_assignment.svg]]
+
+Each grey dot is a cell of the cost matrix (its cost printed on top), laid out
+with worker \(W_0\) on the top row and task \(T_0\) in the left column; the blue
+dots mark the three cells the algorithm selected -- exactly one per row and one
+per column, the defining shape of a permutation. The chosen cells are not simply
+the three smallest numbers in the grid (that would collide on columns); they are
+the cheapest set that still forms a perfect matching, the constraint that makes
+the assignment problem more than a sort.

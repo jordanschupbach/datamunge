@@ -2,6 +2,12 @@ datamunge/datamunge
 datamunge/datamunge_c
 datamunge/algorithms/cycle_detection
 datamunge/algorithms/stable_matching
+datamunge/algorithms/topological_sort
+datamunge/algorithms/prufer
+datamunge/algorithms/hopcroft_karp
+datamunge/algorithms/hungarian
+datamunge/algorithms/tarjan_lca
+datamunge/algorithms/graph_coloring
 datamunge/plot
 datamunge/plot/ggplot
 datamunge/random
