@@ -1,0 +1,139 @@
+#+title: Pancake Sorting: Ordering a Stack With a Spatula
+#+subtitle: A literate C++ study of prefix-reversal sorting with =datamunge='s =algorithms::pancake_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Imagine a messy stack of pancakes of different sizes and a spatula that can only
+*flip* some top portion of the stack. How do you sort them, largest at the bottom?
+This is the *pancake sorting* problem -- the one algorithms question Bill Gates ever
+published a paper on -- and it models settings where the sole operation is reversing
+a prefix. The greedy method sorts in at most \(2(n-1)\) flips: repeatedly bring the
+biggest unsorted pancake to the top, then flip it down to its place. This report
+implements it in =datamunge='s C++ =algorithms::pancake_sort=, which returns the flip
+sequence, and visualizes the stack coming to order flip by flip.
+#+end_abstract
+
+* Sorting by prefix reversal
+
+The only move is @c flip(k): reverse the top \(k\) elements. The greedy algorithm
+sorts the array from the bottom up. For the current unsorted region \([0,size)\):
+find the index of its maximum; flip the prefix ending there to bring the maximum to
+the very top (position 0); then flip the whole prefix of length \(size\) to send it
+to the bottom of the unsorted region, its final home. Shrink \(size\) and repeat.
+Each element costs at most two flips, so the total is at most \(2(n-1)\) -- and the
+number of *flips*, not comparisons, is the cost that matters here, because a flip is
+the expensive physical operation. (Finding the fewest possible flips for a given
+stack is a different, famously hard problem; this greedy bound is what a simple
+strategy guarantees.)
+
+#+name: pk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exchange_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+PANCAKE-SORT(a):
+  for size in n down to 2:
+      m <- index of the maximum in a[0..size-1]
+      if m == size-1: continue          # already in place
+      if m != 0: flip(m+1)              # bring the max to the top
+      flip(size)                        # flip it down to its final position
+  # flip(k) reverses the prefix of length k and is recorded
+#+end_example
+
+* Worked example: flipping [5, 3, 8, 1, 9, 2, 7] into order
+
+The program sorts the stack, prints the flip sequence, and shows the array after
+each flip. Watch the largest remaining pancake rise to the top and then drop to the
+bottom of the still-unsorted part.
+
+#+name: pk-run
+#+begin_src c++ :eval no
+    const std::vector<int> original = {5, 3, 8, 1, 9, 2, 7};
+    const PancakeResult res = pancake_sort(original);
+
+    std::cout << "=== Pancake sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : res.sorted) std::cout << v << " ";
+    std::cout << "\nflip sequence (prefix lengths): ";
+    for (std::size_t k : res.flips) std::cout << k << " ";
+    std::cout << "\n(" << res.flips.size() << " flips; bound 2(n-1) = " << 2 * (original.size() - 1) << ")\n";
+
+    // Replay the flips to capture the array after each one, for the figure.
+    std::vector<std::vector<int>> states{original};
+    std::vector<int> cur = original;
+    for (std::size_t k : res.flips) { std::reverse(cur.begin(), cur.begin() + static_cast<std::ptrdiff_t>(k)); states.push_back(cur); }
+
+    auto plot = RPlot::create();
+    for (std::size_t s = 0; s < states.size(); ++s)
+        for (std::size_t p = 0; p < states[s].size(); ++p)
+            plot.text(static_cast<double>(p), -static_cast<double>(s), std::to_string(states[s][p]),
+                      states[s][p] == 9 ? RGB{220, 38, 38} : RGB{37, 99, 235}, 13.0);
+    for (std::size_t s = 1; s < states.size(); ++s)
+        plot.text(-1.3, -static_cast<double>(s), "flip " + std::to_string(res.flips[s - 1]), RGB{31, 41, 55}, 10.0);
+    plot.text(-1.3, 0.0, "start", RGB{31, 41, 55}, 10.0);
+    plot.title("Pancake sort: the array after each prefix flip (9 in red)")
+        .x_label("position").y_label("flip step (downward)").background({250, 250, 252});
+    plot.x_limits(-2.0, static_cast<double>(original.size()));
+    plot.y_limits(-static_cast<double>(states.size()), 0.8);
+    plot.save_svg("build/org/pancake_sort.svg");
+    std::cout << "\nwrote pancake_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pancake_sort_analysis.cpp <<'CPP'
+<<pk-includes>>
+
+int main() {
+<<pk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pancake_sort_analysis.cpp -o build/org/pancake_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pancake_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pancake sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+flip sequence (prefix lengths): 5 7 5 6 2 5 2 4
+(8 flips; bound 2(n-1) = 12)
+
+wrote pancake_sort.svg
+#+end_example
+
+The stack is sorted using only prefix reversals, within the \(2(n-1)\) budget. Each
+pair of flips fixes one more pancake at the bottom: the first flip lifts the current
+largest to the top, the second drops it into place -- exactly the greedy strategy the
+bound is built on.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/pancake_sort.svg]]
+
+Each row is the array after one flip (time running downward), with the largest value
+9 in red so its journey is easy to follow: it rises to the top of the stack and then
+is flipped all the way to the bottom, after which the algorithm forgets it and works
+on the shorter stack above. Reading the bottom row left to right gives the sorted
+sequence.

@@ -172,10 +172,10 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
 
     Exchange sorts
         Bubble sort: for each pair of indices, swap the items if out of order
-        Cocktail shaker sort or bidirectional bubble sort, a bubble sort traversing the list alternately from front to back and back to front
+        [x] Cocktail shaker sort or bidirectional bubble sort, a bubble sort traversing the list alternately from front to back and back to front  -- datamunge::algorithms::cocktail_shaker_sort; report examples/org/cocktail_shaker_sort_analysis.org
         [x] Comb sort  -- datamunge::algorithms::comb_sort; report examples/org/comb_sort_analysis.org
-        Gnome sort
-        Odd–even sort
+        [x] Gnome sort  -- datamunge::algorithms::gnome_sort; report examples/org/gnome_sort_analysis.org
+        [x] Odd–even sort  -- datamunge::algorithms::odd_even_sort; report examples/org/odd_even_sort_analysis.org
         Quicksort: divide list into two, with all items on the first list coming before all items on the second list.; then sort the two lists. Often the method of choice
     Humorous or ineffective
         Bogosort: the list is randomly shuffled until it happens to be sorted
@@ -210,7 +210,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Smoothsort
     Other
         Bitonic sorter
-        Pancake sorting
+        [x] Pancake sorting  -- datamunge::algorithms::pancake_sort (returns the flip sequence); report examples/org/pancake_sort_analysis.org
         Spaghetti sort
         Topological sort
     Unknown class

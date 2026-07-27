@@ -1,0 +1,139 @@
+#+title: Cocktail Shaker Sort: Bubble Sort Both Ways
+#+subtitle: A literate C++ study of bidirectional bubbling with =datamunge='s =algorithms::cocktail_shaker_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Plain bubble sort only ever pushes large values rightward, so a small value stuck
+near the end -- a "turtle" -- creeps forward just one step per pass. *Cocktail shaker
+sort* (bidirectional bubble sort) fixes this by alternating direction: a
+left-to-right pass floats the largest element up, then a right-to-left pass sinks
+the smallest down, and the sorted region grows from *both* ends. It roughly halves
+the passes of bubble sort though it stays \(O(n^2)\). This report implements it in
+=datamunge='s C++ =algorithms::cocktail_shaker_sort= and shows the unsorted window
+closing from both sides.
+#+end_abstract
+
+* Shrinking the window from both ends
+
+Maintain an unsorted window \([lo,hi]\). A forward pass compares adjacent pairs from
+\(lo\) to \(hi\), carrying the largest element to \(hi\); then \(hi\) shrinks by
+one. A backward pass compares from \(hi\) down to \(lo\), carrying the smallest to
+\(lo\); then \(lo\) grows by one. Each full cycle fixes one element at each end, so
+the window closes twice as fast as bubble sort's single-ended shrink -- and turtles,
+which bubble sort drags forward one position per pass, are swept down in the
+backward pass. If a pass makes no swaps the array is sorted and the algorithm stops
+early. The comparison count is still \(O(n^2)\), but the constant is better and the
+early exit makes it fast on nearly-sorted data.
+
+#+name: ck-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exchange_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+COCKTAIL-SHAKER-SORT(a):
+  lo, hi <- 0, n-1
+  repeat:
+      swapped <- false
+      for i in lo .. hi-1: if a[i] > a[i+1]: swap; swapped <- true    # float largest up
+      if not swapped: stop
+      hi <- hi - 1
+      for i in hi .. lo+1 (downward): if a[i-1] > a[i]: swap; swapped <- true  # sink smallest
+      lo <- lo + 1
+  until not swapped
+#+end_example
+
+* Worked example: the window closing
+
+We sort \([5,3,8,1,9,2,7]\) and record the unsorted window \([lo,hi]\) after each
+full back-and-forth cycle; the two bounds march toward each other from opposite
+directions.
+
+#+name: ck-run
+#+begin_src c++ :eval no
+    std::cout << "=== Cocktail shaker sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : cocktail_shaker_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n";
+
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    std::size_t lo = 0, hi = a.size() - 1; bool swapped = true;
+    std::vector<double> cyc, los, his; int c = 0;
+    while (swapped) {
+        swapped = false;
+        for (std::size_t i = lo; i < hi; ++i) if (a[i] > a[i + 1]) { std::swap(a[i], a[i + 1]); swapped = true; }
+        if (!swapped) break;
+        --hi;
+        swapped = false;
+        for (std::size_t i = hi; i > lo; --i) if (a[i - 1] > a[i]) { std::swap(a[i - 1], a[i]); swapped = true; }
+        ++lo;
+        cyc.push_back(c++); los.push_back(static_cast<double>(lo)); his.push_back(static_cast<double>(hi));
+    }
+    std::cout << "cycles: " << c << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(cyc, los, "lo", RGB{37, 99, 235}, 2.0);
+    plot.points(cyc, los, "lo", RGB{37, 99, 235}, 7.0);
+    plot.line(cyc, his, "hi", RGB{220, 38, 38}, 2.0);
+    plot.points(cyc, his, "hi", RGB{220, 38, 38}, 7.0);
+    plot.legend({"lo (sorted from left)", "hi (sorted from right)"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Cocktail shaker: the unsorted window [lo,hi] closes from both ends")
+        .x_label("back-and-forth cycle").y_label("window bound").background({250, 250, 252});
+    plot.save_svg("build/org/cocktail_shaker_sort.svg");
+    std::cout << "\nwrote cocktail_shaker_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cocktail_shaker_sort_analysis.cpp <<'CPP'
+<<ck-includes>>
+
+int main() {
+<<ck-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cocktail_shaker_sort_analysis.cpp -o build/org/cocktail_shaker_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cocktail_shaker_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cocktail shaker sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+cycles: 2
+
+wrote cocktail_shaker_sort.svg
+#+end_example
+
+The two bounds converge toward each other, one element fixed at each end per cycle,
+so the whole array is sorted in about half the passes plain bubble sort would take.
+The bidirectional sweep is what clears turtles -- the backward pass drags a stranded
+small value down many positions instead of one.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/cocktail_shaker_sort.svg]]
+
+The blue =lo= bound rises and the red =hi= bound falls, closing the unsorted window
+from both sides until they meet and the array is sorted. That two-sided closure --
+versus bubble sort's single shrinking end -- is the whole idea, and the reason
+cocktail shaker sort disposes of end-stranded turtles so much faster.
