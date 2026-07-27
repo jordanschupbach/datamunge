@@ -308,11 +308,11 @@ Further information: Computational geometry
 Number theoretic algorithms
 Further information: Number theory
 
-    Binary GCD algorithm: Efficient way of calculating GCD.
+    [x] Binary GCD algorithm: Efficient way of calculating GCD.  -- datamunge::algorithms::binary_gcd (Stein, shifts & subtraction); report examples/org/binary_gcd_analysis.org
     Booth's multiplication algorithm
     Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation
     Discrete logarithm:
-        Baby-step giant-step
+        [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
         Index calculus algorithm
         Pohlig–Hellman algorithm
         Pollard's rho algorithm for logarithms
@@ -336,9 +336,9 @@ Further information: Number theory
     Modular square root: computing square roots modulo a prime number
         Berlekamp's root finding algorithm
         Cipolla's algorithm
-        Tonelli–Shanks algorithm
+        [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
-        Karatsuba algorithm
+        [x] Karatsuba algorithm  -- datamunge::algorithms::karatsuba_multiply (decimal strings, O(n^1.585)); report examples/org/karatsuba_analysis.org
         Schönhage–Strassen algorithm
         Toom–Cook multiplication
     Odlyzko–Schönhage algorithm: calculates nontrivial zeroes of the Riemann zeta function

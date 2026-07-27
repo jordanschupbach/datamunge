@@ -1,0 +1,150 @@
+#+title: The Tonelli-Shanks Algorithm: Square Roots Modulo a Prime
+#+subtitle: A literate C++ study of modular square roots with =datamunge='s =algorithms::tonelli_shanks=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Solving \(r^2\equiv n \pmod p\) -- a square root in a finite field -- is a
+workhorse of cryptography (elliptic-curve point decompression) and factoring (the
+quadratic sieve). Half the nonzero residues have no square root at all; for the
+rest, the *Tonelli-Shanks algorithm* finds one in expected \(O(\log^2 p)\) time.
+This report implements it in =datamunge='s C++ =algorithms::tonelli_shanks=,
+explains Euler's solvability test and the factor-of-two refinement at the heart of
+the method, computes \(\sqrt{10}\equiv 6 \pmod{13}\), and plots the two-valued
+square-root "folding" of the residues modulo 101.
+#+end_abstract
+
+* Residues, Euler's criterion, and the 2-adic structure
+
+An \(n\not\equiv 0\) is a *quadratic residue* modulo an odd prime \(p\) iff it has
+a square root, and *Euler's criterion* tests this in one modular exponentiation:
+
+\[
+n^{(p-1)/2}\equiv \begin{cases}+1 & n \text{ is a residue,}\\ -1 & n \text{ is a non-residue.}\end{cases}
+\]
+
+When \(p\equiv 3\pmod 4\) a root is immediate: \(r=n^{(p+1)/4}\). The hard case is
+\(p\equiv 1\pmod 4\), where \(p-1=Q\cdot 2^S\) has \(S\ge 2\) factors of two.
+Tonelli-Shanks then keeps a candidate root \(R\) and an "error" term \(t\) (with
+\(t\) a \(2^{S}\)-th power of unity), and at each step finds the least \(i\) with
+\(t^{2^{i}}=1\), using a fixed quadratic *non-residue* to halve the order of \(t\)
+until \(t=1\) -- at which point \(R\) is an exact root. Each iteration strictly
+decreases \(S\), so it terminates quickly.
+
+#+name: ts-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TONELLI-SHANKS(n, p):                 # p an odd prime
+  n <- n mod p
+  if n == 0: return 0
+  if n^((p-1)/2) mod p != 1: return NONE          # Euler: non-residue
+  if p % 4 == 3: return n^((p+1)/4) mod p          # direct shortcut
+  write p-1 = Q * 2^S with Q odd
+  z <- a quadratic non-residue (z^((p-1)/2) == -1)
+  M, c, t, R <- S, z^Q, n^Q, n^((Q+1)/2)           # all mod p
+  while t != 1:
+      i <- least i in (0, M) with t^(2^i) == 1
+      b <- c^(2^(M-i-1))
+      M, c, t, R <- i, b^2, t*b^2, R*b              # all mod p
+  return R
+#+end_example
+
+* Worked example: sqrt(10) mod 13
+
+Since \(13\equiv 1\pmod 4\) the shortcut does not apply. Euler's criterion gives
+\(10^{6}\equiv 1\pmod{13}\), so 10 is a residue; Tonelli-Shanks returns \(R=6\),
+and indeed \(6^2=36\equiv 10\pmod{13}\) (the other root is \(13-6=7\)). The program
+verifies this and a \(p\equiv 1\pmod 8\) case, then rejects a non-residue.
+
+#+name: ts-run
+#+begin_src c++ :eval no
+    std::cout << "=== Tonelli-Shanks modular square roots ===\n";
+    for (auto [n, p] : std::vector<std::pair<std::uint64_t, std::uint64_t>>{{10, 13}, {2, 17}, {5, 7}}) {
+        const ModSqrt r = tonelli_shanks(n, p);
+        std::cout << "  sqrt(" << n << ") mod " << p << ": ";
+        if (r.exists)
+            std::cout << r.root << "  (check " << r.root << "^2 mod " << p << " = "
+                      << (r.root * r.root) % p << ")\n";
+        else
+            std::cout << "no root (non-residue)\n";
+    }
+
+    // Figure: both square roots of every quadratic residue modulo 101.
+    const std::uint64_t p = 101;
+    auto plot = RPlot::create();
+    std::vector<double> nx, r1, r2;
+    for (std::uint64_t n = 0; n < p; ++n) {
+        const ModSqrt r = tonelli_shanks(n, p);
+        if (r.exists) {
+            nx.push_back(static_cast<double>(n));
+            r1.push_back(static_cast<double>(r.root));
+            r2.push_back(static_cast<double>(p - r.root == p ? 0 : p - r.root));
+        }
+    }
+    plot.points(nx, r1, "root r", RGB{37, 99, 235}, 6.0);
+    plot.points(nx, r2, "root p-r", RGB{220, 38, 38}, 6.0);
+    plot.legend({"root r", "root p - r"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Square roots modulo 101: each residue has two, at r and p - r")
+        .x_label("quadratic residue n").y_label("square root").background({250, 250, 252});
+    plot.save_svg("build/org/tonelli_shanks.svg");
+    std::cout << "\nresidues modulo 101 with a root: " << nx.size() << " of " << p << "\n";
+    std::cout << "wrote tonelli_shanks.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tonelli_shanks_analysis.cpp <<'CPP'
+<<ts-includes>>
+
+int main() {
+<<ts-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tonelli_shanks_analysis.cpp -o build/org/tonelli_shanks_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tonelli_shanks_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tonelli-Shanks modular square roots ===
+  sqrt(10) mod 13: 6  (check 6^2 mod 13 = 10)
+  sqrt(2) mod 17: 6  (check 6^2 mod 17 = 2)
+  sqrt(5) mod 7: no root (non-residue)
+
+residues modulo 101 with a root: 51 of 101
+wrote tonelli_shanks.svg
+#+end_example
+
+The residue 10 has root 6 modulo 13, and 2 has root 6 modulo 17 (a
+\(p\equiv 1\pmod 8\) case that exercises the full loop); the non-residue 5 modulo 7
+is correctly rejected. Exactly \((p-1)/2 + 1 = 51\) of the 101 residues modulo 101
+have a square root -- the quadratic residues plus zero.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/tonelli_shanks.svg]]
+
+Each quadratic residue \(n\) (horizontal) has /two/ square roots, \(r\) (blue) and
+\(p-r\) (red), which are mirror images about \(p/2\); together they trace the
+folded parabola \(r\mapsto r^2\) seen "sideways". The residues with no point are
+the non-residues -- half of the nonzero values -- for which no square root exists.
