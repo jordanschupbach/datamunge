@@ -348,6 +348,11 @@ We implement Brent's cycle-detection algorithm (=algorithms::brent_cycle_detecti
 
 We implement Floyd's cycle-detection algorithm (=algorithms::floyd_cycle_detection=) and report it as a literate program. We give the three-phase tortoise-and-hare method with pseudocode and the modular-arithmetic argument for the meeting point, then race it against Brent on Pollard-rho iterations: both return identical (lambda, mu), but Floyd spends 1.1-1.6x as many function evaluations, quantifying why Brent is preferred when the transition is expensive.
 
+** [[./gale_shapley_analysis.html][The Gale-Shapley Algorithm: Stable Matching by Deferred Acceptance]] ([[./gale_shapley_analysis.pdf][PDF]])
+/A literate C++ study of the stable marriage problem and proposer-optimality using datamunge/
+
+We implement Gale-Shapley deferred acceptance (=algorithms::gale_shapley=, plus =is_stable=) and report it as a literate program. We define stability and blocking pairs, give the proposal-rejection pseudocode with termination/completeness/stability arguments, and state proposer-optimality; a five-resident, five-hospital match shows residents averaging their 1.2nd choice when they propose versus 3.2nd when hospitals propose -- both stable -- the asymmetry behind applicant-proposing residency matches.
+
 * Numerical Methods & Linear Algebra
 
 ** [[./dense_linear_algebra.html][Dense Linear Algebra]] ([[./dense_linear_algebra.pdf][PDF]])

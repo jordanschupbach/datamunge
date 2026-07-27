@@ -1,0 +1,276 @@
+#+title: The Gale-Shapley Algorithm: Stable Matching by Deferred Acceptance
+#+subtitle: A literate C++ study of the stable marriage problem with =datamunge='s =algorithms::gale_shapley=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given two groups -- residents and hospitals, students and schools, workers and
+firms -- each ranking the other, can we pair them so that no two agents would
+both rather abandon their assigned partners for each other? Gale & Shapley
+(1962) proved the answer is always yes, and gave a beautifully simple
+algorithm to find such a *stable matching*: *deferred acceptance*. This
+report implements it in =datamunge='s C++ =algorithms::gale_shapley= and
+presents it as a literate program: every number and figure is produced by a
+single compiled binary. We define stability and blocking pairs, give the
+proposal-and-rejection algorithm with pseudocode and arguments for its
+termination, completeness, and stability, and state the *proposer-optimality*
+theorem. A worked five-resident, five-hospital match makes the theory
+tangible: when residents propose, four of five land their first-choice
+hospital (mean rank \(1.2\)); when hospitals propose instead, the residents'
+mean rank degrades to \(3.2\) -- both matchings stable, but each side does
+best when it is the side that proposes. This asymmetry is exactly why the
+real National Resident Matching Program runs the algorithm with the
+applicants proposing.
+#+end_abstract
+
+* The stable matching problem
+
+Take two equal-sized sides, /proposers/ \(\{0,\dots,n-1\}\) and /reviewers/
+\(\{0,\dots,n-1\}\); each agent has a strict complete ranking of the other
+side. A *matching* is a one-to-one pairing of proposers with reviewers. A pair
+\((i,j)\) that is /not/ matched together is a *blocking pair* if they prefer
+each other to their assigned partners -- proposer \(i\) ranks reviewer \(j\)
+above its own partner /and/ reviewer \(j\) ranks proposer \(i\) above its own
+partner. A matching is *stable* when it contains no blocking pair: nobody can
+defect to a mutually-preferable partner. Gale and Shapley proved a stable
+matching always exists, constructively, via the algorithm below.
+
+=datamunge= represents preferences as =proposer_preferences[i]= and
+=reviewer_preferences[j]=, each a full ranking (most preferred first) of the
+other side's indices, and exposes =is_stable= to certify a matching has no
+blocking pair.
+
+#+name: gs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/stable_matching.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Deferred acceptance
+
+The algorithm proceeds in rounds. Every *free* proposer proposes to the
+most-preferred reviewer who has not yet rejected it. Each reviewer, presented
+with proposals, /tentatively/ holds onto the best proposer seen so far and
+rejects the rest -- but never commits, so a later, better proposer can bump
+the one currently held. Because reviewers only ever trade up and proposers
+only ever move down their lists, the process converges.
+
+#+begin_example
+GALE-SHAPLEY(proposer_prefs, reviewer_prefs):
+  match_of_proposer[*] <- none
+  match_of_reviewer[*] <- none
+  next[i] <- 0  for all proposers i           # index of i's next reviewer to try
+  free <- queue containing all proposers
+
+  while free is not empty:
+      i <- pop(free)
+      j <- proposer_prefs[i][ next[i] ];  next[i] <- next[i] + 1
+      held <- match_of_reviewer[j]
+      if held == none:                        # reviewer j is free: tentatively accept i
+          match_of_reviewer[j] <- i;  match_of_proposer[i] <- j
+      else if reviewer j prefers i to held:   # j upgrades to i, dumping held
+          match_of_proposer[held] <- none;  push(free, held)
+          match_of_reviewer[j] <- i;  match_of_proposer[i] <- j
+      else:                                   # j rejects i; i stays free for its next choice
+          push(free, i)
+
+  return match_of_proposer
+#+end_example
+
+*Termination.* Each proposer proposes strictly down its list and never to the
+same reviewer twice, so there are at most \(n^2\) proposals; the loop halts.
+
+*Everyone is matched.* Once a reviewer is matched it stays matched (it only
+ever swaps to a better proposer). If some proposer finished free, it would
+have been rejected by all \(n\) reviewers, so all \(n\) reviewers are matched
+-- to \(n\) distinct proposers -- leaving no partner for the free one, a
+contradiction. So the matching is perfect.
+
+*Stability.* Suppose \((i,j)\) were a blocking pair: \(i\) prefers \(j\) to its
+partner. Then \(i\) proposed to \(j\) at some point (it proposes to everyone it
+prefers over its final partner before settling). Reviewer \(j\) either rejected
+\(i\) then or dumped it later, in both cases ending up with a proposer it
+ranks /above/ \(i\). So \(j\) does /not/ prefer \(i\) to its partner --
+contradicting that \((i,j)\) blocks. Hence the matching is stable.
+
+*Proposer-optimality.* Among /all/ stable matchings, deferred acceptance gives
+every proposer the best partner it attains in any of them (and, dually, every
+reviewer its worst). Which side proposes therefore decides who the mechanism
+favors.
+
+* Example: a residency match
+
+We generate five residents (proposers) and five hospitals (reviewers) with
+random strict preferences, then run the algorithm twice -- once with residents
+proposing, once with hospitals proposing -- verifying both matchings are
+stable and comparing, from the residents' point of view, the preference rank
+of the hospital each is assigned (rank 1 = first choice).
+
+#+name: gs-run
+#+begin_src c++ :eval no
+    const std::size_t n = 5;
+    std::mt19937_64 rng(20240927);
+    auto rand_prefs = [&]() {
+        std::vector<std::vector<std::size_t>> p(n, std::vector<std::size_t>(n));
+        for (auto& l : p) { std::iota(l.begin(), l.end(), 0); std::shuffle(l.begin(), l.end(), rng); }
+        return p;
+    };
+    const auto residents = rand_prefs();
+    const auto hospitals = rand_prefs();
+    auto rank = [](const std::vector<std::size_t>& pref, std::size_t t) {
+        return static_cast<std::size_t>(std::find(pref.begin(), pref.end(), t) - pref.begin());
+    };
+
+    std::cout << "=== Residency match: 5 residents (proposers) vs 5 hospitals (reviewers) ===\n";
+    std::cout << "resident preferences (favorite first):\n";
+    for (std::size_t i = 0; i < n; ++i) {
+        std::cout << "  R" << i << ": ";
+        for (auto h : residents[i]) std::cout << "H" << h << " ";
+        std::cout << "\n";
+    }
+    std::cout << "hospital preferences (favorite first):\n";
+    for (std::size_t j = 0; j < n; ++j) {
+        std::cout << "  H" << j << ": ";
+        for (auto rr : hospitals[j]) std::cout << "R" << rr << " ";
+        std::cout << "\n";
+    }
+
+    const auto ro = gale_shapley(residents, hospitals); // residents propose
+    const auto ho = gale_shapley(hospitals, residents); // hospitals propose
+
+    std::cout << "\nResident-optimal matching (residents propose):\n";
+    double avg_ro = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        const std::size_t h = ro.proposer_match[i];
+        std::cout << "  R" << i << " -- H" << h << "   (resident's #" << rank(residents[i], h) + 1 << " choice)\n";
+        avg_ro += static_cast<double>(rank(residents[i], h) + 1);
+    }
+    avg_ro /= static_cast<double>(n);
+    std::cout << "  proposals made: " << ro.proposals << ";  stable: " << (is_stable(ro, residents, hospitals) ? "yes" : "NO")
+              << "\n";
+
+    StableMatchingResult ho_r; // re-express hospital-proposing result in resident orientation
+    ho_r.proposer_match.assign(n, kUnmatched);
+    ho_r.reviewer_match.assign(n, kUnmatched);
+    for (std::size_t i = 0; i < n; ++i) ho_r.proposer_match[i] = ho.reviewer_match[i];
+    for (std::size_t j = 0; j < n; ++j) ho_r.reviewer_match[j] = ho.proposer_match[j];
+
+    std::cout << "\nHospital-optimal matching (hospitals propose):\n";
+    double avg_ho = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        const std::size_t h = ho.reviewer_match[i];
+        std::cout << "  R" << i << " -- H" << h << "   (resident's #" << rank(residents[i], h) + 1 << " choice)\n";
+        avg_ho += static_cast<double>(rank(residents[i], h) + 1);
+    }
+    avg_ho /= static_cast<double>(n);
+    std::cout << "  stable: " << (is_stable(ho_r, residents, hospitals) ? "yes" : "NO") << "\n";
+
+    std::cout << "\nMean rank of assigned hospital, residents' view (1 = first choice, lower is better):\n";
+    std::cout << "  residents propose: " << avg_ro << ";   hospitals propose: " << avg_ho << "\n";
+    std::cout << "  -> every resident does at least as well when THEY propose (proposer-optimality)\n";
+
+    std::vector<double> ix, ry, hy;
+    for (std::size_t i = 0; i < n; ++i) {
+        ix.push_back(static_cast<double>(i));
+        ry.push_back(static_cast<double>(rank(residents[i], ro.proposer_match[i]) + 1));
+        hy.push_back(static_cast<double>(rank(residents[i], ho.reviewer_match[i]) + 1));
+    }
+    auto plot = RPlot::create();
+    plot.points(ix, ry, "residents propose", {37, 99, 235}, 6.0);
+    plot.lines(ix, ry, "", {37, 99, 235}, 1.0);
+    plot.points(ix, hy, "hospitals propose", {220, 38, 38}, 6.0);
+    plot.lines(ix, hy, "", {220, 38, 38}, 1.0);
+    plot.title("Rank of assigned hospital per resident (1 = first choice; lower is better)")
+        .x_label("resident index").y_label("preference rank of match").background({250, 250, 252});
+    plot.save_svg("build/org/gale_shapley_ranks.svg");
+    std::cout << "\nwrote gale_shapley_ranks.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gale_shapley_analysis.cpp <<'CPP'
+<<gs-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(2);
+<<gs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gale_shapley_analysis.cpp -o build/org/gale_shapley_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gale_shapley_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Residency match: 5 residents (proposers) vs 5 hospitals (reviewers) ===
+resident preferences (favorite first):
+  R0: H0 H1 H4 H3 H2
+  R1: H3 H2 H4 H0 H1
+  R2: H2 H1 H4 H0 H3
+  R3: H4 H2 H3 H1 H0
+  R4: H0 H4 H2 H3 H1
+hospital preferences (favorite first):
+  H0: R1 R3 R4 R2 R0
+  H1: R4 R3 R0 R1 R2
+  H2: R2 R1 R3 R0 R4
+  H3: R3 R1 R2 R4 R0
+  H4: R2 R0 R4 R1 R3
+
+Resident-optimal matching (residents propose):
+  R0 -- H1   (resident's #2 choice)
+  R1 -- H3   (resident's #1 choice)
+  R2 -- H2   (resident's #1 choice)
+  R3 -- H4   (resident's #1 choice)
+  R4 -- H0   (resident's #1 choice)
+  proposals made: 6;  stable: yes
+
+Hospital-optimal matching (hospitals propose):
+  R0 -- H4   (resident's #3 choice)
+  R1 -- H0   (resident's #4 choice)
+  R2 -- H2   (resident's #1 choice)
+  R3 -- H3   (resident's #3 choice)
+  R4 -- H1   (resident's #5 choice)
+  stable: yes
+
+Mean rank of assigned hospital, residents' view (1 = first choice, lower is better):
+  residents propose: 1.20;   hospitals propose: 3.20
+  -> every resident does at least as well when THEY propose (proposer-optimality)
+#+end_example
+
+Both matchings are certified stable -- neither contains a resident and
+hospital who would jointly defect -- yet they are strikingly different for the
+residents. When residents propose, four of the five are handed their
+first-choice hospital and the fifth its second, for a mean rank of \(1.2\),
+and the whole thing settles in just six proposals. When hospitals propose, the
+same residents get their 3rd, 4th, 1st, 3rd, and 5th choices -- mean rank
+\(3.2\). No resident is ever worse off proposing, and most are strictly
+better, exactly as the proposer-optimality theorem promises:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/gale_shapley_ranks.svg]]
+
+The blue markers (residents propose) sit at or below the red markers
+(hospitals propose) for every resident -- a per-agent picture of
+proposer-optimality. It is not a subtlety of tie-breaking or a quirk of this
+instance: it is a theorem, and it is why the mechanism's designers must decide,
+as a matter of policy, which side gets to propose. The National Resident
+Matching Program famously switched to the applicant-proposing version so that
+the algorithm's optimality would work in the applicants' favor.
