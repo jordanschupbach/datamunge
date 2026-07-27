@@ -1,0 +1,298 @@
+#+title: NSGA-II: Elitist Multi-Objective Optimization by Non-Dominated Sorting
+#+subtitle: A literate C++ study of Pareto-front approximation with =datamunge='s =optim::NSGA2=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Most real optimization problems trade off several incompatible goals at
+once -- speed against cost, return against risk, accuracy against model
+size -- and there is then no single best solution but a whole /front/ of
+non-dominated compromises. This report implements *NSGA-II*, the
+Non-dominated Sorting Genetic Algorithm II of Deb, Pratap, Agarwal &
+Meyarivan (2002), in =datamunge='s C++ =optim::NSGA2=, and presents it as a
+literate program: every number and figure below is produced by the single
+compiled binary whose source is the concatenation of the code chunks shown.
+NSGA-II approximates the Pareto front by evolving a population of
+real-valued solutions with three ideas working together: *fast
+non-dominated sorting* ranks the population into nested Pareto fronts in
+\(O(mN^2)\) time; *crowding distance* estimates how isolated each solution
+is along its front, so selection can spread solutions out evenly without any
+user-set niche parameter; and an *elitist* \((\mu+\lambda)\) survival step
+merges parents with offspring and keeps the best fronts, guaranteeing that
+no non-dominated solution is ever lost. We derive Pareto dominance, the
+non-dominated sort, the crowding-distance formula, and the crowded-comparison
+operator, then run NSGA-II on the classic ZDT1 benchmark (30 decision
+variables, analytic front \(f_2 = 1-\sqrt{f_1}\)): from a random start it
+recovers a hundred well-spread solutions covering the entire front with a
+mean vertical distance to it of about \(1.5\times10^{-3}\).
+#+end_abstract
+
+* The multi-objective problem
+
+We minimize a vector of \(m\) objectives over a box-constrained decision
+space \(\Omega = \prod_{j=1}^{n}[\ell_j, u_j] \subset \mathbb{R}^n\):
+\[
+  \min_{x \in \Omega} F(x) = \big(f_1(x), f_2(x), \dots, f_m(x)\big).
+\]
+(Any objective to be maximized is negated.) With \(m>1\) the objectives
+generally conflict, so "minimize all of them" has no single minimizer. The
+ordering that replaces "\(\le\)" is *Pareto dominance*: a point \(x\)
+/dominates/ \(y\) (written \(x \prec y\)) iff it is no worse in every
+objective and strictly better in at least one,
+\[
+  x \prec y \;\iff\;
+  \big(\forall i:\ f_i(x) \le f_i(y)\big)\ \wedge\
+  \big(\exists j:\ f_j(x) < f_j(y)\big).
+\]
+The solutions dominated by nothing in \(\Omega\) form the *Pareto set*
+\(\mathcal{P} = \{x\in\Omega : \nexists\, y\in\Omega,\ y \prec x\}\), and its
+image \(F(\mathcal{P})\) is the *Pareto front*. A multi-objective optimizer
+returns a finite set of mutually non-dominated points that should be both
+/converged/ (close to the true front) and /diverse/ (spread across it).
+
+=datamunge= exposes dominance directly; the header =optim/multi_objective.hpp=
+declares =dominates()=, the =MultiObjectiveFunction= interface every
+algorithm consumes, and =non_dominated_front()=, which extracts the
+non-dominated subset of a set of evaluated points.
+
+#+name: nsga2-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/multi_objective.hpp>
+#include <datamunge/optim/nsga2.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::optim;
+using namespace datamunge::plot;
+
+// ZDT1 (Zitzler-Deb-Thiele #1): a scalable two-objective benchmark whose Pareto front is the
+// convex curve f2 = 1 - sqrt(f1) over f1 in [0,1], reached only when every variable but the
+// first is 0 (so g(x) = 1). With n=30 variables it is a standard convergence + diversity test.
+struct ZDT1 : MultiObjectiveFunction {
+    std::size_t n;
+    explicit ZDT1(std::size_t k) : n(k) {}
+    std::vector<double> evaluate(const std::vector<double>& x) override {
+        double f1 = x[0], s = 0.0;
+        for (std::size_t i = 1; i < n; ++i) s += x[i];
+        const double g = 1.0 + 9.0 * s / static_cast<double>(n - 1);
+        return {f1, g * (1.0 - std::sqrt(f1 / g))};
+    }
+};
+
+static std::vector<ParetoPoint> sorted_by_f1(std::vector<ParetoPoint> f) {
+    std::sort(f.begin(), f.end(), [](auto& a, auto& b) { return a.objectives[0] < b.objectives[0]; });
+    return f;
+}
+#+end_src
+
+* Non-dominated sorting
+
+The engine of NSGA-II is a total stratification of the population into
+Pareto /fronts/. Front \(\mathcal{F}_1\) is the set of non-dominated
+individuals; \(\mathcal{F}_2\) is what becomes non-dominated once
+\(\mathcal{F}_1\) is removed; and so on. Deb et al.'s *fast non-dominated
+sort* computes all fronts in one pass by bookkeeping, for each individual
+\(p\), the domination count \(n_p = |\{q : q \prec p\}|\) and the set
+\(S_p = \{q : p \prec q\}\) of individuals it dominates:
+
+1. every \(p\) with \(n_p = 0\) has rank \(1\) and enters \(\mathcal{F}_1\);
+2. for each \(p\) in the current front and each \(q \in S_p\), decrement
+   \(n_q\); when \(n_q\) hits \(0\), \(q\) joins the next front.
+
+This costs \(O(mN^2)\) objective comparisons and \(O(N^2)\) memory for a
+population of \(N\). Every individual receives an integer *rank* equal to
+its front index -- the primary sorting key for selection.
+
+The tiny example below evaluates six objective vectors and uses the public
+=dominates()= / =non_dominated_front()= calls to exhibit \(\mathcal{F}_1\):
+
+#+name: nsga2-dominance
+#+begin_src c++ :eval no
+    std::cout << "=== Pareto dominance on six objective vectors (minimize both) ===\n";
+    std::vector<ParetoPoint> pts = {
+        {{}, {0.1, 0.9}}, {{}, {0.3, 0.4}}, {{}, {0.6, 0.2}},
+        {{}, {0.9, 0.1}}, {{}, {0.5, 0.6}}, {{}, {0.8, 0.5}},
+    };
+    const char* names[] = {"A", "B", "C", "D", "E", "F"};
+    for (std::size_t i = 0; i < pts.size(); ++i) {
+        std::cout << "  " << names[i] << " = (" << pts[i].objectives[0] << ", " << pts[i].objectives[1] << ")  dominated by:";
+        bool any = false;
+        for (std::size_t j = 0; j < pts.size(); ++j)
+            if (i != j && dominates(pts[j].objectives, pts[i].objectives)) { std::cout << " " << names[j]; any = true; }
+        std::cout << (any ? "" : " (none -- on front F1)") << "\n";
+    }
+    std::cout << "  first non-dominated front F1 has " << non_dominated_front(pts).size() << " of 6 points\n";
+#+end_src
+
+* Crowding distance and the crowded-comparison operator
+
+Rank alone cannot choose /within/ a front, where all solutions are equally
+non-dominated. NSGA-II breaks ties by favoring solutions in less crowded
+regions, so the returned front spreads out. The *crowding distance* of a
+solution is the sum over objectives of the normalized gap between its two
+neighbors when the front is sorted on that objective. For a front sorted on
+objective \(k\) as \(x^{[1]},\dots,x^{[F]}\),
+\[
+  d_i \;=\; \sum_{k=1}^{m}
+    \frac{f_k\!\big(x^{[i+1]}\big) - f_k\!\big(x^{[i-1]}\big)}
+         {f_k^{\max} - f_k^{\min}},
+\]
+with the two boundary solutions of each objective assigned \(d = \infty\) so
+the extremes of the front are always retained. This is a
+parameter-free density estimate -- no niche radius to tune. Selection then
+uses the *crowded-comparison operator* \(\prec_n\): prefer lower rank, and
+among equal ranks prefer larger crowding distance,
+\[
+  i \prec_n j \;\iff\;
+  \big(\mathrm{rank}_i < \mathrm{rank}_j\big)\ \vee\
+  \big(\mathrm{rank}_i = \mathrm{rank}_j \ \wedge\ d_i > d_j\big).
+\]
+Binary tournaments under \(\prec_n\) supply the parents of each generation.
+
+* The elitist loop, and variation operators
+
+NSGA-II is *elitist* by construction. Each generation forms offspring
+\(Q_t\) of size \(N\) from the parents \(P_t\) by tournament selection,
+simulated binary crossover, and polynomial mutation; it then ranks the
+combined pool \(R_t = P_t \cup Q_t\) (size \(2N\)) by non-dominated sorting
+and fills the next parents \(P_{t+1}\) one whole front at a time. The single
+front that overflows the population is sorted by crowding distance and only
+its most isolated members are admitted. Because the best fronts of the union
+always survive, a solution once on the global front can never be lost.
+
+Variation acts on the real-valued vectors (bound to \([\ell,u]\)). *Simulated
+binary crossover* (SBX) recombines two parents with a spread controlled by a
+distribution index \(\eta_c\); *polynomial mutation* perturbs each variable
+with probability \(1/n\) and index \(\eta_m\). Both operators are provided in
+=optim/multi_objective.hpp= and shared with SPEA2 and MOEA/D. NSGA-II's per-
+generation cost is dominated by the \(O(mN^2)\) sort.
+
+* Example: ZDT1
+
+We minimize ZDT1 over \([0,1]^{30}\) with a population of 100 for 250
+generations. We report how much of the front's \(f_1\) range is covered and
+the mean vertical distance from the returned points to the analytic front
+\(f_2 = 1-\sqrt{f_1}\) (a convergence measure), print the front thinned to
+every eighth point, and draw it against the true curve.
+
+#+name: nsga2-run
+#+begin_src c++ :eval no
+    std::cout << "\n=== NSGA-II on ZDT1 (n=30, population=100, generations=250) ===\n";
+    ZDT1 problem(30);
+    const std::vector<double> lo(30, 0.0), hi(30, 1.0);
+    NSGA2Options opt;
+    opt.population_size = 100;
+    opt.max_generations = 250;
+    opt.seed = 1;
+    const auto front = sorted_by_f1(NSGA2(opt).optimize(problem, lo, hi));
+
+    double mn = 1e9, mx = -1e9, gap = 0.0;
+    for (const auto& p : front) {
+        const double f1 = p.objectives[0];
+        mn = std::min(mn, f1);
+        mx = std::max(mx, f1);
+        gap += p.objectives[1] - (1.0 - std::sqrt(std::max(0.0, f1)));
+    }
+    std::cout << front.size() << " non-dominated solutions; f1 coverage [" << std::fixed << std::setprecision(3) << mn
+              << ", " << mx << "]; mean gap to true front " << std::setprecision(5) << gap / front.size() << "\n";
+
+    std::cout << "\n   f1        f2       (every 8th point)\n";
+    for (std::size_t i = 0; i < front.size(); i += 8)
+        std::cout << "  " << std::setw(7) << std::setprecision(4) << front[i].objectives[0] << "   " << std::setw(7)
+                  << front[i].objectives[1] << "\n";
+
+    std::vector<double> fx, fy, tx, ty;
+    for (const auto& p : front) { fx.push_back(p.objectives[0]); fy.push_back(p.objectives[1]); }
+    for (int i = 0; i <= 100; ++i) { const double a = i / 100.0; tx.push_back(a); ty.push_back(1.0 - std::sqrt(a)); }
+    auto plot = RPlot::create();
+    plot.line(tx, ty, "true Pareto front", {156, 163, 175}, 1.5);
+    plot.points(fx, fy, "NSGA-II solutions", {37, 99, 235}, 4.0);
+    plot.title("NSGA-II Pareto front on ZDT1").x_label("f1").y_label("f2").background({250, 250, 252});
+    plot.save_svg("build/org/nsga2_zdt1_front.svg");
+    std::cout << "\nwrote nsga2_zdt1_front.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+The block below is the only one that runs: file-scope includes and helpers,
+then every other chunk in order inside =main=, compiled against the installed
+=datamunge= via =pkg-config= and executed.
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/nsga2_analysis.cpp <<'CPP'
+<<nsga2-includes>>
+
+int main() {
+    std::cout << std::fixed;
+<<nsga2-dominance>>
+
+<<nsga2-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/nsga2_analysis.cpp -o build/org/nsga2_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/nsga2_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pareto dominance on six objective vectors (minimize both) ===
+  A = (0.100000, 0.900000)  dominated by: (none -- on front F1)
+  B = (0.300000, 0.400000)  dominated by: (none -- on front F1)
+  C = (0.600000, 0.200000)  dominated by: (none -- on front F1)
+  D = (0.900000, 0.100000)  dominated by: (none -- on front F1)
+  E = (0.500000, 0.600000)  dominated by: B
+  F = (0.800000, 0.500000)  dominated by: B C
+  first non-dominated front F1 has 4 of 6 points
+
+=== NSGA-II on ZDT1 (n=30, population=100, generations=250) ===
+100 non-dominated solutions; f1 coverage [0.000, 1.000]; mean gap to true front 0.00149
+
+   f1        f2       (every 8th point)
+   0.0000    1.0010
+   0.0186    0.8659
+   0.0686    0.7405
+   0.1223    0.6524
+   0.2052    0.5483
+   0.2774    0.4742
+   0.3640    0.3982
+   0.4519    0.3284
+   0.5428    0.2641
+   0.6227    0.2126
+   0.7390    0.1411
+   0.8456    0.0813
+   0.9503    0.0260
+
+wrote nsga2_zdt1_front.svg
+#+end_example
+
+The dominance table shows four of the six sample points (\(A\), \(B\),
+\(C\), \(D\)) are mutually non-dominated and form \(\mathcal{F}_1\), while
+\(E\) is dominated by \(B\) and \(F\) by both \(B\) and \(C\); these two
+would be pushed to a later front. On
+ZDT1, NSGA-II converges from a uniform random start to 100 solutions whose
+\(f_1\) values cover essentially the whole \([0,1]\) range and whose mean
+distance above the analytic front is \(\approx 1.5\times10^{-3}\) -- visually
+indistinguishable from the exact curve:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/nsga2_zdt1_front.svg]]
+
+The even spacing of the points along the front is the visible payoff of the
+crowding-distance selection: with no niche parameter to set, NSGA-II fills
+the front uniformly. The boundary solutions (the two extremes) are preserved
+because their crowding distance is infinite, so the front's endpoints -- the
+single-objective optima -- are never crowded out.

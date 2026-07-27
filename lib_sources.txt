@@ -69,6 +69,10 @@ datamunge/optim/grey_wolf_optimizer
 datamunge/optim/harmony_search
 datamunge/optim/parallel_tempering
 datamunge/optim/whale_optimization
+datamunge/optim/multi_objective
+datamunge/optim/nsga2
+datamunge/optim/spea2
+datamunge/optim/moead
 datamunge/bayes/autodiff_model
 datamunge/bayes/map
 datamunge/bayes/hmc

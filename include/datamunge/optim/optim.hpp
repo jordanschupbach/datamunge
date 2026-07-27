@@ -29,10 +29,13 @@
 #include <datamunge/optim/interior_point.hpp>
 #include <datamunge/optim/lbfgs.hpp>
 #include <datamunge/optim/levenberg_marquardt.hpp>
+#include <datamunge/optim/moead.hpp>
+#include <datamunge/optim/multi_objective.hpp>
 #include <datamunge/optim/nelder_mead.hpp>
 #include <datamunge/optim/nesterov_accelerated_gradient.hpp>
 #include <datamunge/optim/nadam.hpp>
 #include <datamunge/optim/newton.hpp>
+#include <datamunge/optim/nsga2.hpp>
 #include <datamunge/optim/parallel_tempering.hpp>
 #include <datamunge/optim/pso.hpp>
 #include <datamunge/optim/proximal_gradient.hpp>
@@ -41,6 +44,7 @@
 #include <datamunge/optim/rbf_gaussian_process_surrogate.hpp>
 #include <datamunge/optim/sgd.hpp>
 #include <datamunge/optim/simulated_annealing.hpp>
+#include <datamunge/optim/spea2.hpp>
 #include <datamunge/optim/saga.hpp>
 #include <datamunge/optim/svrg.hpp>
 #include <datamunge/optim/sqp.hpp>

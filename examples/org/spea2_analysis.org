@@ -1,0 +1,243 @@
+#+title: SPEA2: Strength Pareto Evolutionary Optimization with an External Archive
+#+subtitle: A literate C++ study of Pareto-front approximation with =datamunge='s =optim::SPEA2=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When several objectives conflict, the solution is a whole /Pareto front/ of
+non-dominated compromises rather than a single optimum. This report
+implements *SPEA2*, the Strength Pareto Evolutionary Algorithm 2 of Zitzler,
+Laumanns & Thiele (2001), in =datamunge='s C++ =optim::SPEA2=, and presents
+it as a literate program: every number and figure is produced by the single
+compiled binary whose source is the code chunks shown. SPEA2 keeps an
+external *archive* of the best solutions found and scores every individual
+with a fitness of two parts. The *raw* part sums the /strengths/ -- the
+domination counts -- of all solutions that dominate it, so a non-dominated
+solution scores \(0\) and a solution buried behind many strong dominators
+scores high (fitness is minimized). The *density* part, based on the
+distance to the \(k\)-th nearest neighbor in objective space, breaks ties
+among equally non-dominated solutions and keeps the archive evenly spread.
+Environmental selection copies the non-dominated set into the next archive
+and then either fills it with the best dominated solutions or truncates its
+most crowded members, holding the archive at a fixed size. We derive the
+strength, raw-fitness, and density terms and the truncation rule, verify the
+fitness bookkeeping on a tiny hand example, and run SPEA2 on the ZDT1
+benchmark (30 variables, front \(f_2 = 1-\sqrt{f_1}\)), where it returns a
+hundred well-spread solutions lying within \(\approx 1.8\times10^{-3}\) of
+the analytic front.
+#+end_abstract
+
+* Multi-objective optimization and Pareto dominance
+
+We minimize \(m\) objectives over a box \(\Omega \subset \mathbb{R}^n\),
+\(\min_{x\in\Omega} F(x) = (f_1(x),\dots,f_m(x))\). Point \(x\) *dominates*
+\(y\) (\(x \prec y\)) iff it is no worse in every objective and strictly
+better in one:
+\[
+  x \prec y \iff (\forall i:\ f_i(x)\le f_i(y)) \wedge (\exists j:\ f_j(x) < f_j(y)).
+\]
+The non-dominated points of \(\Omega\) form the Pareto set; their images form
+the Pareto front. An algorithm returns a finite, mutually non-dominated
+approximation that should be both converged and diverse. =datamunge='s
+=optim/multi_objective.hpp= supplies =dominates()=, the
+=MultiObjectiveFunction= interface, and =non_dominated_front()=.
+
+#+name: spea2-includes
+#+begin_src c++ :eval no
+#include <datamunge/optim/multi_objective.hpp>
+#include <datamunge/optim/spea2.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::optim;
+using namespace datamunge::plot;
+
+// ZDT1: convex Pareto front f2 = 1 - sqrt(f1), reached only when g(x)=1 (all variables but the
+// first are 0). A standard convergence + diversity test at n=30 variables.
+struct ZDT1 : MultiObjectiveFunction {
+    std::size_t n;
+    explicit ZDT1(std::size_t k) : n(k) {}
+    std::vector<double> evaluate(const std::vector<double>& x) override {
+        double f1 = x[0], s = 0.0;
+        for (std::size_t i = 1; i < n; ++i) s += x[i];
+        const double g = 1.0 + 9.0 * s / static_cast<double>(n - 1);
+        return {f1, g * (1.0 - std::sqrt(f1 / g))};
+    }
+};
+
+static std::vector<ParetoPoint> sorted_by_f1(std::vector<ParetoPoint> f) {
+    std::sort(f.begin(), f.end(), [](auto& a, auto& b) { return a.objectives[0] < b.objectives[0]; });
+    return f;
+}
+#+end_src
+
+* Strength, raw fitness, and density
+
+SPEA2 assigns each individual \(i\) in the combined population-plus-archive
+pool a fitness \(F(i)\) it seeks to /minimize/. First, every individual gets
+a *strength* equal to how many others it dominates,
+\[
+  S(i) = \big|\{\, j : i \prec j \,\}\big|.
+\]
+The *raw fitness* of \(i\) is then the total strength of everything that
+dominates it,
+\[
+  R(i) = \sum_{j \,\prec\, i} S(j),
+\]
+so \(R(i) = 0\) exactly when \(i\) is non-dominated, and a solution shielded
+behind many high-strength dominators is heavily penalized. Raw fitness alone,
+however, cannot distinguish among the many solutions with \(R = 0\). SPEA2
+adds a *density* term based on the distance \(\sigma_i^{k}\) to the \(k\)-th
+nearest neighbor in objective space, with \(k = \lfloor\sqrt{|\text{pool}|}\rfloor\):
+\[
+  D(i) = \frac{1}{\sigma_i^{k} + 2}, \qquad F(i) = R(i) + D(i).
+\]
+Since \(0 < D(i) < 1\), density only breaks ties: it never lets a dominated
+solution outrank a non-dominated one, but among non-dominated solutions it
+prefers the more isolated (lower-density) ones, spreading the archive out.
+
+The chunk below computes \(S\) and \(R\) directly from =dominates()= on a
+tiny six-point set, confirming that the raw fitness is \(0\) for precisely
+the non-dominated points:
+
+#+name: spea2-fitness
+#+begin_src c++ :eval no
+    std::cout << "=== SPEA2 strength S(i) and raw fitness R(i) on six points (minimize both) ===\n";
+    std::vector<std::vector<double>> f = {{0.1, 0.9}, {0.3, 0.4}, {0.6, 0.2}, {0.9, 0.1}, {0.5, 0.6}, {0.8, 0.5}};
+    const char* names[] = {"A", "B", "C", "D", "E", "F"};
+    const std::size_t P = f.size();
+    std::vector<int> S(P, 0);
+    for (std::size_t i = 0; i < P; ++i)
+        for (std::size_t j = 0; j < P; ++j)
+            if (i != j && dominates(f[i], f[j])) ++S[i];
+    for (std::size_t i = 0; i < P; ++i) {
+        int raw = 0;
+        for (std::size_t j = 0; j < P; ++j)
+            if (dominates(f[j], f[i])) raw += S[j];
+        std::cout << "  " << names[i] << " = (" << f[i][0] << ", " << f[i][1] << ")   S=" << S[i] << "   R=" << raw
+                  << (raw == 0 ? "   (non-dominated)" : "") << "\n";
+    }
+#+end_src
+
+* Environmental selection
+
+The heart of SPEA2 is the update of the fixed-size archive \(\bar N\). Given
+the fitness of the whole pool (previous archive \(\cup\) current population),
+environmental selection builds the next archive as follows:
+
+1. copy every non-dominated solution (fitness \(< 1\)) into the new archive;
+2. if too /few/ (fewer than \(\bar N\)), fill the remaining slots with the
+   best dominated solutions, sorted by ascending fitness;
+3. if too /many/ (more than \(\bar N\)), *truncate*: repeatedly remove the
+   solution with the smallest distance to its nearest neighbor, breaking ties
+   by the second nearest, and so on.
+
+Truncation is what makes SPEA2's spread so uniform: the density estimate is
+recomputed each removal, so clusters are thinned one point at a time rather
+than in a single density pass. Parents for the next generation come from
+binary tournaments on the archive (lower fitness wins), followed by simulated
+binary crossover and polynomial mutation -- the same real-coded operators
+that NSGA-II and MOEA/D use, from =optim/multi_objective.hpp=. The final
+result is the non-dominated subset of the last archive.
+
+* Example: ZDT1
+
+We minimize ZDT1 over \([0,1]^{30}\) with a population and archive of 100
+each for 250 generations, reporting \(f_1\) coverage and the mean vertical
+distance to the analytic front \(f_2 = 1-\sqrt{f_1}\), and drawing the
+archive against the true curve.
+
+#+name: spea2-run
+#+begin_src c++ :eval no
+    std::cout << "\n=== SPEA2 on ZDT1 (n=30, population=archive=100, generations=250) ===\n";
+    ZDT1 problem(30);
+    const std::vector<double> lo(30, 0.0), hi(30, 1.0);
+    SPEA2Options opt;
+    opt.population_size = 100;
+    opt.archive_size = 100;
+    opt.max_generations = 250;
+    opt.seed = 1;
+    const auto front = sorted_by_f1(SPEA2(opt).optimize(problem, lo, hi));
+
+    double mn = 1e9, mx = -1e9, gap = 0.0;
+    for (const auto& p : front) {
+        const double f1 = p.objectives[0];
+        mn = std::min(mn, f1);
+        mx = std::max(mx, f1);
+        gap += p.objectives[1] - (1.0 - std::sqrt(std::max(0.0, f1)));
+    }
+    std::cout << front.size() << " non-dominated solutions; f1 coverage [" << std::setprecision(3) << mn << ", " << mx
+              << "]; mean gap to true front " << std::setprecision(5) << gap / front.size() << "\n";
+
+    std::vector<double> fx, fy, tx, ty;
+    for (const auto& p : front) { fx.push_back(p.objectives[0]); fy.push_back(p.objectives[1]); }
+    for (int i = 0; i <= 100; ++i) { const double a = i / 100.0; tx.push_back(a); ty.push_back(1.0 - std::sqrt(a)); }
+    auto plot = RPlot::create();
+    plot.line(tx, ty, "true Pareto front", {156, 163, 175}, 1.5);
+    plot.points(fx, fy, "SPEA2 archive", {220, 38, 38}, 4.0);
+    plot.title("SPEA2 Pareto front on ZDT1").x_label("f1").y_label("f2").background({250, 250, 252});
+    plot.save_svg("build/org/spea2_zdt1_front.svg");
+    std::cout << "wrote spea2_zdt1_front.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/spea2_analysis.cpp <<'CPP'
+<<spea2-includes>>
+
+int main() {
+    std::cout << std::fixed;
+<<spea2-fitness>>
+
+<<spea2-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/spea2_analysis.cpp -o build/org/spea2_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/spea2_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== SPEA2 strength S(i) and raw fitness R(i) on six points (minimize both) ===
+  A = (0.100000, 0.900000)   S=0   R=0   (non-dominated)
+  B = (0.300000, 0.400000)   S=2   R=0   (non-dominated)
+  C = (0.600000, 0.200000)   S=1   R=0   (non-dominated)
+  D = (0.900000, 0.100000)   S=0   R=0   (non-dominated)
+  E = (0.500000, 0.600000)   S=0   R=2
+  F = (0.800000, 0.500000)   S=0   R=3
+
+=== SPEA2 on ZDT1 (n=30, population=archive=100, generations=250) ===
+100 non-dominated solutions; f1 coverage [0.000, 1.000]; mean gap to true front 0.00180
+wrote spea2_zdt1_front.svg
+#+end_example
+
+The raw fitnesses confirm the mechanism: \(A\), \(B\), \(C\), \(D\) are
+non-dominated and score \(R = 0\); the dominated \(E\) inherits \(R = 2\)
+(dominated only by \(B\), whose strength is \(2\)) and \(F\) scores
+\(R = 3\) (dominated by \(B\) and \(C\), strengths \(2\) and \(1\)). Density
+then orders the four \(R = 0\) solutions by isolation. On ZDT1, SPEA2's
+archive converges to the analytic front, its truncation operator keeping the
+hundred solutions almost uniformly spaced:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/spea2_zdt1_front.svg]]
+
+Compared with NSGA-II's crowding distance, SPEA2's nearest-neighbor
+truncation is a finer (if costlier) density control -- it recomputes
+distances after each removal instead of once per generation -- which is why
+its archive spread is typically very even.
