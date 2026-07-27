@@ -2,7 +2,7 @@ General combinatorial algorithms
 
     [x] Brent's algorithm: finds a cycle in function value iterations using only two iterators[2]  -- datamunge::algorithms::brent_cycle_detection; report examples/org/brent_cycle_detection_analysis.org
     [x] Floyd's cycle-finding algorithm: finds a cycle in function value iterations[3]  -- datamunge::algorithms::floyd_cycle_detection; report examples/org/floyd_cycle_detection_analysis.org
-    Gale–Shapley algorithm: solves the stable matching problem[4][5][6]
+    [x] Gale–Shapley algorithm: solves the stable matching problem[4][5][6]  -- datamunge::algorithms::gale_shapley; report examples/org/gale_shapley_analysis.org
     Pseudorandom number generators (uniformly distributed—see also List of pseudorandom number generators for other PRNGs with varying degrees of convergence and varying statistical quality):[citation needed]
         ACORN generator
         Blum Blum Shub
