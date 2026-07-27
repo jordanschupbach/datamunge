@@ -1,0 +1,205 @@
+#+title: Floyd's Algorithm: The Tortoise and the Hare
+#+subtitle: A literate C++ study of cycle finding with =datamunge='s =algorithms::floyd_cycle_detection=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Iterating a function on a finite set -- \(x_0, f(x_0), f(f(x_0)),\dots\) --
+always produces an eventually periodic sequence shaped like the Greek letter
+\(\rho\): a transient tail of \(\mu\) states running into a cycle of length
+\(\lambda\). *Floyd's algorithm*, the celebrated "tortoise and the hare"
+(attributed to Robert Floyd; popularized by Knuth 1969), finds
+\((\lambda,\mu)\) in \(O(1)\) memory by running one pointer at single speed
+and another at double speed until they collide, then using two more lockstep
+walks to locate the cycle's entrance and measure its length. This report
+implements it in =datamunge='s C++ =algorithms::floyd_cycle_detection= and
+presents it as a literate program: every number and figure is produced by a
+single compiled binary. We give the three-phase method with pseudocode and
+the modular-arithmetic argument for why the pointers meet where they do, then
+run it head-to-head against the companion =brent_cycle_detection= on
+Pollard-rho iterations \(g(x)=(x^2+1)\bmod m\). Both return identical answers,
+but the eval-count table quantifies the folklore: Floyd's hare, re-treading
+ground at double speed, spends \(1.1\)-\(1.6\times\) as many function
+evaluations as Brent's -- the price of its elegant simplicity.
+#+end_abstract
+
+* The setup
+
+For \(f\) mapping a finite set to itself, the iteration \(x_{i+1}=f(x_i)\)
+must eventually repeat, so there are least values \(\mu\ge0\) (tail length)
+and \(\lambda\ge1\) (cycle length) with \(x_{i+\lambda}=x_i\) for all
+\(i\ge\mu\). Cycle detection recovers \((\lambda,\mu)\) without storing the
+trajectory. (The companion report on Brent's algorithm develops this rho
+structure in more detail; here we focus on Floyd's method and how it
+compares.)
+
+#+name: floyd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/cycle_detection.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Floyd's algorithm
+
+Two pointers start together and move through the sequence, the *hare* twice as
+fast as the *tortoise*. Because the hare gains one step on the tortoise per
+round, once both are inside the cycle the gap between them sweeps through every
+residue modulo \(\lambda\) and must hit \(0\): they collide. Three phases
+extract the answer.
+
+#+begin_example
+FLOYD(f, x0):
+  # Phase 1 -- find a meeting point inside the cycle
+  tortoise <- f(x0)
+  hare     <- f(f(x0))
+  while tortoise != hare:
+      tortoise <- f(tortoise)          # speed 1
+      hare     <- f(f(hare))           # speed 2
+
+  # Phase 2 -- find mu (cycle-start index)
+  mu <- 0
+  tortoise <- x0
+  while tortoise != hare:
+      tortoise <- f(tortoise)          # both now move at speed 1
+      hare     <- f(hare)
+      mu <- mu + 1
+
+  # Phase 3 -- find lambda (cycle length)
+  lambda <- 1
+  hare <- f(tortoise)
+  while tortoise != hare:
+      hare <- f(hare)
+      lambda <- lambda + 1
+
+  return (lambda, mu)
+#+end_example
+
+*Why the meeting point locates \(\mu\).* Suppose the pointers first meet after
+the tortoise has taken \(k\) steps (so the hare has taken \(2k\)). Both are on
+the cycle, and the hare is \(k\) steps ahead of the tortoise around a loop of
+length \(\lambda\); being at the same place means \(k \equiv 0 \pmod\lambda\).
+Now restart one pointer at \(x_0\) and leave the other at the meeting point,
+and advance both at speed \(1\). After \(\mu\) steps the restarted pointer
+reaches the cycle entrance \(x_\mu\); the other, having moved \(\mu\) more
+steps from a position that was a multiple of \(\lambda\) around the cycle,
+lands on that same entrance. So they first coincide exactly at \(x_\mu\),
+giving \(\mu\). Phase 3 then fixes one pointer and walks the other once around
+until it returns, counting \(\lambda\).
+
+*Cost, and the contrast with Brent.* All three phases are \(O(\mu+\lambda)\)
+time and \(O(1)\) space. Floyd's charm is its brevity, but the double-speed
+hare in phase 1 evaluates \(f\) three times per round (once for the tortoise,
+twice for the hare) and re-walks ground it has already covered; Brent's
+powers-of-two scheme evaluates \(f\) once per round and typically finishes in
+fewer total evaluations. When \(f\) is the expensive part -- a modular squaring
+in Pollard's rho, a full PRNG transition -- that constant matters.
+
+* Example: agreement, and the evaluation-count race
+
+We first confirm Floyd returns the same \((\lambda,\mu)\) as Brent on the
+explicit rho graph, then instrument the transition function with an
+evaluation counter and race the two detectors on the Pollard-rho iteration
+\(g(x) = (x^2+1)\bmod m\) for a range of moduli \(m\), tabulating and plotting
+how many times each calls \(g\).
+
+#+name: floyd-run
+#+begin_src c++ :eval no
+    const std::vector<std::uint64_t> next = {1, 2, 3, 4, 5, 6, 3};
+    auto f = [&](std::uint64_t x) { return next[x]; };
+    const auto rf = floyd_cycle_detection(0, f);
+    const auto rb = brent_cycle_detection(0, f);
+    std::cout << "=== Floyd on 0->1->2->3->4->5->6->3 ===\n";
+    std::cout << "Floyd:  mu = " << rf.mu << ", lambda = " << rf.lambda << "\n";
+    std::cout << "Brent:  mu = " << rb.mu << ", lambda = " << rb.lambda << "  (same answer)\n";
+
+    std::cout << "\n=== f-evaluations to detect the cycle of g(x) = (x^2 + 1) mod m, x0 = 2 ===\n";
+    std::cout << "        m     lambda+mu   Floyd evals   Brent evals   Floyd/Brent\n";
+    std::vector<double> mx, fy, by;
+    for (std::uint64_t m : {1009u, 5003u, 10007u, 50021u, 100003u, 500009u, 1000003u}) {
+        std::size_t cf = 0, cb = 0;
+        std::function<std::uint64_t(std::uint64_t)> gf = [&](std::uint64_t x) { ++cf; return (x * x + 1) % m; };
+        std::function<std::uint64_t(std::uint64_t)> gb = [&](std::uint64_t x) { ++cb; return (x * x + 1) % m; };
+        const auto a = floyd_cycle_detection(2, gf);
+        const auto b = brent_cycle_detection(2, gb);
+        std::cout << "  " << std::setw(8) << m << "   " << std::setw(9) << (a.lambda + a.mu) << "   " << std::setw(11)
+                  << cf << "   " << std::setw(11) << cb << "   " << std::fixed << std::setprecision(2)
+                  << static_cast<double>(cf) / static_cast<double>(cb) << "\n";
+        mx.push_back(static_cast<double>(m));
+        fy.push_back(static_cast<double>(cf));
+        by.push_back(static_cast<double>(cb));
+    }
+
+    auto plot = RPlot::create();
+    plot.points(mx, fy, "Floyd", {220, 38, 38}, 5.0);
+    plot.lines(mx, fy, "", {220, 38, 38}, 1.0);
+    plot.points(mx, by, "Brent", {37, 99, 235}, 5.0);
+    plot.lines(mx, by, "", {37, 99, 235}, 1.0);
+    plot.title("Function evaluations to find the cycle: Floyd vs Brent")
+        .x_label("modulus m").y_label("evaluations of f").background({250, 250, 252});
+    plot.save_svg("build/org/floyd_vs_brent.svg");
+    std::cout << "\nwrote floyd_vs_brent.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/floyd_cycle_detection_analysis.cpp <<'CPP'
+<<floyd-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(2);
+<<floyd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/floyd_cycle_detection_analysis.cpp -o build/org/floyd_cycle_detection_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/floyd_cycle_detection_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Floyd on 0->1->2->3->4->5->6->3 ===
+Floyd:  mu = 3, lambda = 4
+Brent:  mu = 3, lambda = 4  (same answer)
+
+=== f-evaluations to detect the cycle of g(x) = (x^2 + 1) mod m, x0 = 2 ===
+        m     lambda+mu   Floyd evals   Brent evals   Floyd/Brent
+      1009          49           196           161   1.22
+      5003         113           352           289   1.22
+     10007          44           203           151   1.34
+     50021         421          1514          1353   1.12
+    100003         570          2620          1651   1.59
+    500009        1089          4473          3201   1.40
+   1000003        1289          6290          4625   1.36
+#+end_example
+
+On the hand graph Floyd returns \((\mu,\lambda)=(3,4)\), identical to Brent --
+as it must, since both compute the same well-defined quantities. The race
+makes the difference concrete. Across moduli spanning three orders of
+magnitude, Floyd and Brent agree on every \(\lambda+\mu\), but Floyd always
+calls \(g\) more often, by a factor between \(1.12\) and \(1.59\):
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/floyd_vs_brent.svg]]
+
+Both curves grow like \(\sqrt m\) -- the birthday-paradox length of a random
+quadratic-map cycle -- but Floyd's sits consistently above Brent's. The
+tortoise-and-hare is unbeatable for clarity and is the right choice when the
+transition is cheap; when it is not, Brent's fewer evaluations are the reason
+it, not Floyd, sits inside production Pollard-rho factorizers.
