@@ -713,6 +713,26 @@ We implement cycle sort (=algorithms::cycle_sort=) and report it as a literate p
 
 We implement tree sort (=algorithms::tree_sort=) and report it as a literate program. We show that an in-order traversal of a BST emits its keys in order, so insert-then-traverse sorts; the BST of [5,3,8,1,9,2,7] is drawn with each node at its in-order rank, and the degenerate O(n^2) sorted-input case noted.
 
+** [[./gnome_sort_analysis.html][Gnome Sort: One Rule, One Loop]] ([[./gnome_sort_analysis.pdf][PDF]])
+/A literate C++ study of the simplest sort using datamunge/
+
+We implement gnome sort (=algorithms::gnome_sort=) and report it as a literate program. We give its single rule -- step forward if the pair is ordered, else swap and step back -- and its insertion-sort-like behaviour; sorting [5,3,8,1,9,2,7] takes 27 steps, and the pointer's forward-and-back walk is traced.
+
+** [[./cocktail_shaker_sort_analysis.html][Cocktail Shaker Sort: Bubble Sort Both Ways]] ([[./cocktail_shaker_sort_analysis.pdf][PDF]])
+/A literate C++ study of bidirectional bubbling using datamunge/
+
+We implement cocktail shaker sort (=algorithms::cocktail_shaker_sort=) and report it as a literate program. We show the alternating forward/backward passes that shrink the unsorted window from both ends and clear end-stranded turtles; the [lo,hi] bounds are plotted closing toward each other.
+
+** [[./odd_even_sort_analysis.html][Odd-Even Sort: A Parallel Sorting Network]] ([[./odd_even_sort_analysis.pdf][PDF]])
+/A literate C++ study of brick sort using datamunge/
+
+We implement odd-even (brick) sort (=algorithms::odd_even_sort=) and report it as a literate program. We show the two phases of disjoint comparators that make it a parallel sorting network -- O(n) phases on parallel hardware; the comparator network for eight wires is drawn with odd/even phases coloured.
+
+** [[./pancake_sort_analysis.html][Pancake Sorting: Ordering a Stack With a Spatula]] ([[./pancake_sort_analysis.pdf][PDF]])
+/A literate C++ study of prefix-reversal sorting using datamunge/
+
+We implement pancake sort (=algorithms::pancake_sort=) and report it as a literate program. We give the greedy strategy that sorts using only prefix reversals in at most 2(n-1) flips; sorting [5,3,8,1,9,2,7] uses 8 flips (bound 12), with the stack drawn after each flip and the largest pancake tracked.
+
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/
 

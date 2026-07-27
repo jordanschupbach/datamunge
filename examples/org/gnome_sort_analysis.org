@@ -1,0 +1,123 @@
+#+title: Gnome Sort: One Rule, One Loop
+#+subtitle: A literate C++ study of the simplest sort with =datamunge='s =algorithms::gnome_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Gnome sort* is arguably the simplest sorting algorithm to state: a garden gnome
+arranging flower pots looks at the pot in front of him; if it and the one behind
+are in order he steps forward, otherwise he swaps them and steps back. That single
+rule -- no nested loops, no boundary indices -- sorts the whole array. It behaves
+like insertion sort (adaptive, \(O(n)\) on nearly-sorted data, \(O(n^2)\) worst
+case). This report implements it in =datamunge='s C++ =algorithms::gnome_sort= and
+traces the gnome's tell-tale forward-and-back walk.
+#+end_abstract
+
+* The whole algorithm
+
+Keep one index \(i\). If \(i=0\) or \(a_{i-1}\le a_i\), the pair is in order: step
+forward, \(i\leftarrow i+1\). Otherwise swap \(a_{i-1}\) and \(a_i\) and step back,
+\(i\leftarrow i-1\). Stop when \(i\) reaches the end. Stepping back after a swap
+lets the moved element keep sinking until it settles -- exactly the shifting an
+insertion sort does, but expressed as a single pointer wandering back and forth.
+Each forward step either advances into already-sorted territory or is undone by a
+later back step; the total number of steps is \(O(n^2)\) in the worst case and
+\(O(n)\) when the array is almost sorted.
+
+#+name: gn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exchange_sorts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GNOME-SORT(a):
+  i <- 0
+  while i < n:
+      if i == 0 or a[i-1] <= a[i]: i <- i + 1     # in order: step forward
+      else: swap(a[i-1], a[i]); i <- i - 1        # out of order: swap, step back
+#+end_example
+
+* Worked example: the gnome's walk
+
+We sort \([5,3,8,1,9,2,7]\) and record the pointer \(i\) at every step. Each descent
+in the trace is the gnome walking an out-of-place value backward to where it
+belongs; each climb is progress into the sorted prefix.
+
+#+name: gn-run
+#+begin_src c++ :eval no
+    std::cout << "=== Gnome sort of [5,3,8,1,9,2,7] ===\n";
+    std::cout << "sorted: ";
+    for (int v : gnome_sort({5, 3, 8, 1, 9, 2, 7})) std::cout << v << " ";
+    std::cout << "\n";
+
+    std::vector<int> a = {5, 3, 8, 1, 9, 2, 7};
+    std::vector<double> step, pos;
+    std::size_t i = 0; int s = 0;
+    while (i < a.size()) {
+        step.push_back(s++); pos.push_back(static_cast<double>(i));
+        if (i == 0 || a[i - 1] <= a[i]) ++i; else { std::swap(a[i - 1], a[i]); --i; }
+    }
+    std::cout << "total steps: " << s << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(step, pos, "pointer i", RGB{37, 99, 235}, 1.8);
+    plot.points(step, pos, "pointer i", RGB{37, 99, 235}, 5.0);
+    plot.title("Gnome sort: the pointer i walks forward and back until sorted")
+        .x_label("step").y_label("pointer position i").background({250, 250, 252});
+    plot.save_svg("build/org/gnome_sort.svg");
+    std::cout << "\nwrote gnome_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gnome_sort_analysis.cpp <<'CPP'
+<<gn-includes>>
+#include <utility>
+
+int main() {
+<<gn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gnome_sort_analysis.cpp -o build/org/gnome_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gnome_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Gnome sort of [5,3,8,1,9,2,7] ===
+sorted: 1 2 3 5 7 8 9
+total steps: 27
+
+wrote gnome_sort.svg
+#+end_example
+
+The array is sorted by the one rule, and the step trace shows the gnome repeatedly
+advancing then retreating to escort a misplaced value home -- the same total work as
+an insertion sort, achieved with a single loop and a single index.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/gnome_sort.svg]]
+
+The pointer \(i\) climbs as the gnome moves into sorted territory and dips each time
+a swap sends him back to sink an element further. The overall upward drift with
+local backtracks is the visual signature of gnome sort: forward progress
+interrupted by exactly as much backtracking as the disorder demands.
