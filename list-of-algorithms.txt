@@ -120,7 +120,7 @@ Approximate sequence matching
         [x] Hamming distance: sum number of positions which are different  -- datamunge::algorithms::hamming_distance; report examples/org/hamming_distance_analysis.org
         [x] Jaro–Winkler distance: is a measure of similarity between two strings  -- datamunge::algorithms::jaro_similarity / jaro_winkler_similarity; report examples/org/jaro_winkler_analysis.org
         [x] Levenshtein edit distance: computes a metric for the amount of difference between two sequences  -- datamunge::algorithms::levenshtein_distance (Wagner-Fischer); report examples/org/levenshtein_analysis.org
-    Trigram search: search for text when the exact syntax or spelling of the target object is not precisely known
+    [x] Trigram search: search for text when the exact syntax or spelling of the target object is not precisely known  -- datamunge::algorithms::trigram_search (Jaccard of trigram sets); report examples/org/trigram_search_analysis.org
 
 Selection algorithms
 Main article: Selection algorithm
@@ -138,7 +138,7 @@ Sequence search
         [x] Fibonacci search technique: search a sorted sequence using a divide and conquer algorithm that narrows down possible locations with the aid of Fibonacci numbers  -- datamunge::algorithms::fibonacci_search; report examples/org/fibonacci_search_analysis.org
         [x] Jump search (or block search): linear search on a smaller subset of the sequence  -- datamunge::algorithms::jump_search; report examples/org/jump_search_analysis.org
         [x] Predictive search: binary-like search which factors in magnitude of search term versus the high and low values in the search. Sometimes called dictionary search or interpolated search.  -- datamunge::algorithms::interpolation_search; report examples/org/interpolation_search_analysis.org
-        Uniform binary search: an optimization of the classic binary search algorithm
+        [x] Uniform binary search: an optimization of the classic binary search algorithm  -- datamunge::algorithms::uniform_binary_search (fixed power-of-two step schedule); report examples/org/uniform_binary_search_analysis.org
     [x] Ternary search: a technique for finding the minimum or maximum of a function that is either strictly increasing and then strictly decreasing or vice versa  -- datamunge::algorithms::ternary_search_max / ternary_search_min; report examples/org/ternary_search_analysis.org
 
 Sequence merging

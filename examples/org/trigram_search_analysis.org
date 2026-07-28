@@ -1,0 +1,138 @@
+#+title: Trigram Search: Fuzzy Matching by Shared Substrings
+#+subtitle: A literate C++ study of typo-tolerant search with =datamunge='s =algorithms::trigram_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When you do not know the exact spelling of what you are looking for, exact matching fails but *trigram
+search* succeeds. Represent each string by the set of its three-character substrings; two strings are
+similar when those sets overlap, measured by the Jaccard index. Misspellings, insertions, and
+transpositions change only a few trigrams, so the score degrades gracefully -- the basis of
+PostgreSQL's =pg_trgm= and countless "did you mean?" features. This report drives =datamunge='s
+=algorithms::trigram_search=, verified to score identical strings at 1, disjoint strings at 0, and to
+rank the closest candidate first.
+#+end_abstract
+
+* Strings as bags of trigrams
+
+Pad a (lower-cased) string with two leading and one trailing space and slide a width-3 window across
+it; the resulting set of 3-grams is the string's *trigram set* \(T(s)\). Padding captures the start
+and end, so =apple= yields \({\;\;a,\ \;ap,\ app,\ ppl,\ ple,\ le\;}\) and so on. Similarity is the
+*Jaccard index* of two trigram sets,
+
+\[ \operatorname{sim}(a,b)=\frac{|T(a)\cap T(b)|}{|T(a)\cup T(b)|}\in[0,1], \]
+
+which is \(1\) for identical strings and \(0\) for strings sharing no three consecutive characters. A
+single typo alters only the two or three trigrams spanning the changed letter, so a near-match keeps a
+high score, while unrelated strings score near zero. Searching is then just: compute the query's
+trigram set once and rank the candidates by their Jaccard similarity. Because trigram sets can be
+indexed (an inverted index from trigram to the strings containing it), only candidates sharing at
+least one trigram need be scored -- which is how databases make fuzzy search fast over millions of
+rows.
+
+#+name: tg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/trigram_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TRIGRAM-SEARCH(candidates, query):
+  Tq = trigram set of query
+  for each candidate c:
+      score[c] = |trigrams(c) ∩ Tq| / |trigrams(c) ∪ Tq|     # Jaccard
+  return candidates sorted by score, descending
+#+end_example
+
+* Worked example: "did you mean?"
+
+We search a small dictionary for a misspelled query and rank the candidates by trigram similarity.
+
+#+name: tg-run
+#+begin_src c++ :eval no
+    const std::vector<std::string> dict = {
+        "algorithm", "logarithm", "rhythm", "arithmetic", "altruism", "allegory", "alignment"};
+    const std::string query = "algorithim"; // misspelled "algorithm"
+
+    std::cout << "=== trigram search ===\n";
+    std::cout << "query: \"" << query << "\"\n\n";
+    const auto ranked = trigram_search(dict, query);
+    std::cout << "rank  similarity  candidate\n";
+    std::vector<double> heights; std::vector<std::string> labels;
+    int rank = 0;
+    for (auto [score, idx] : ranked) {
+        std::printf("%3d   %9.3f   %s\n", ++rank, score, dict[idx].c_str());
+        heights.push_back(score); labels.push_back(dict[idx]);
+    }
+    std::cout << "\nbest match: \"" << dict[ranked.front().second] << "\"\n";
+
+    auto plot = RPlot::barplot(heights, labels, "sim", RGB{5, 150, 105});
+    plot.title("Trigram similarity of dictionary words to the query \"algorithim\"")
+        .x_label("candidate (ranked)").y_label("Jaccard similarity").background({250, 250, 252});
+    plot.save_svg("build/org/trigram_search.svg");
+    std::cout << "\nwrote trigram_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/trigram_search_analysis.cpp <<'CPP'
+<<tg-includes>>
+
+int main() {
+<<tg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/trigram_search_analysis.cpp -o build/org/trigram_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/trigram_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== trigram search ===
+query: "algorithim"
+
+rank  similarity  candidate
+  1       0.615   algorithm
+  2       0.176   allegory
+  3       0.158   arithmetic
+  4       0.111   altruism
+  5       0.105   logarithm
+  6       0.105   alignment
+  7       0.000   rhythm
+
+best match: "algorithm"
+
+wrote trigram_search.svg
+#+end_example
+
+Despite the transposed letters in =algorithim=, the correct word =algorithm= ranks first by a wide
+margin -- 0.615 versus the next candidate's 0.18 -- because the misspelling disturbs only a couple of
+trigrams. The remaining words score far lower, sharing only a few letters with the query, and
+=rhythm=, which shares no trigram at all, scores exactly zero. The test suite confirms the score is 1
+for an exact match, 0 for disjoint strings, and that the closest candidate always ranks first.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/trigram_search.svg]]
+
+The bars fall off sharply from the true match: a couple of disturbed trigrams cost the misspelling only
+a little similarity, while words that merely share a prefix or a few letters score far lower. That
+graceful degradation -- and the fact that only candidates sharing a trigram need be scored at all -- is
+what makes trigram indexing the backbone of fuzzy text search in databases and search boxes.
