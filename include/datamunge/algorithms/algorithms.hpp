@@ -52,6 +52,7 @@
 #include <datamunge/algorithms/number_theory_extra.hpp>
 #include <datamunge/algorithms/number_theory_advanced.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
+#include <datamunge/algorithms/odds_algorithm.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/permutations.hpp>
@@ -77,6 +78,7 @@
 #include <datamunge/algorithms/string_metrics.hpp>
 #include <datamunge/algorithms/string_search_extra.hpp>
 #include <datamunge/algorithms/subsequences.hpp>
+#include <datamunge/algorithms/subset_sum.hpp>
 #include <datamunge/algorithms/substrings.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>

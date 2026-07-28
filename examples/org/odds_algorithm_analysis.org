@@ -1,0 +1,151 @@
+#+title: Bruss's Odds Algorithm: Optimal Stopping Made Simple
+#+subtitle: A literate C++ study of the odds theorem with =datamunge='s =algorithms::odds_algorithm=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+You observe a sequence of independent events one at a time; each is a "success" with a known
+probability, and you want to stop on the *last* success -- but you cannot see the future. Bruss's 2000
+*odds algorithm* solves this optimal-stopping problem with a rule of startling simplicity: sum the
+*odds* of the remaining events from the end backward until the total reaches one, and start accepting
+successes from there. It is provably optimal and generalises the famous secretary problem. This report
+drives =datamunge='s =algorithms::odds_algorithm=, verified to match the best of all threshold
+strategies over thousands of random instances and to reproduce the \(1/e\) law.
+#+end_abstract
+
+* Sum the odds until they reach one
+
+Let event \(i\) succeed with probability \(p_i\); write \(q_i=1-p_i\) and the *odds*
+\(r_i=p_i/q_i\). A *threshold rule* with threshold \(s\) ignores everything before index \(s\) and
+then stops at the first success at or after \(s\). Its probability of stopping on the last success is
+
+\[ P(\text{win}\mid s)=\Big(\prod_{i\ge s} q_i\Big)\Big(\sum_{i\ge s} r_i\Big). \]
+
+Bruss's *odds theorem* says the optimum is the threshold
+
+\[ s=\sup\Big\{\,t : \textstyle\sum_{i\ge t} r_i \ge 1\,\Big\}, \]
+
+found by accumulating \(r_i\) from the last event backward until the running sum first reaches \(1\).
+The intuition: each extra event you wait through multiplies the chance that the *current* candidate is
+not the last success (that is the \(\sum r_i\) term) but also risks the streak ending early (the
+\(\prod q_i\) term); the odds-sum-equals-one point is exactly where those forces balance. The whole
+computation is a single backward pass -- \(O(n)\) time, \(O(1)\) memory -- and no dynamic programming
+is needed.
+
+#+name: od-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/odds_algorithm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static double win_prob(const std::vector<double>& p, std::size_t t) {
+    double prod = 1.0, sum = 0.0;
+    for (std::size_t i = t; i < p.size(); ++i) { const double q = 1 - p[i]; prod *= q; sum += p[i] / q; }
+    return prod * sum;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ODDS(p_1..p_n):
+  sum = 0
+  for i = n down to 1:
+      sum += p_i / (1 - p_i)          # accumulate odds from the end
+      s = i
+      if sum >= 1: break
+  return threshold s and P(win) = (prod_{i>=s}(1-p_i)) * (sum_{i>=s} p_i/(1-p_i))
+#+end_example
+
+* Worked example: a stopping curve and the secretary problem
+
+We take a random instance, plot the win probability of every threshold to see the odds rule sits at
+the peak, then run the secretary problem (\(p_i=1/i\)) and watch the value approach \(1/e\).
+
+#+name: od-run
+#+begin_src c++ :eval no
+    std::vector<double> p = {0.10, 0.15, 0.05, 0.30, 0.20, 0.40, 0.25, 0.35, 0.12, 0.28};
+    const auto r = odds_algorithm(p);
+    std::cout << "=== Bruss odds algorithm ===\n";
+    std::cout << "instance of " << p.size() << " events\n";
+    std::cout << "optimal threshold s = " << r.threshold << " (start accepting the first success from event " << r.threshold << ")\n";
+    std::cout << "win probability = " << r.win_probability << "\n\n";
+
+    std::vector<double> tx, wp;
+    for (std::size_t t = 0; t < p.size(); ++t) { tx.push_back((double)(t + 1)); wp.push_back(win_prob(p, t)); }
+
+    std::cout << "secretary problem p_i = 1/i:\n";
+    for (int n : {10, 100, 1000}) {
+        std::vector<double> sp(n);
+        for (int i = 0; i < n; ++i) sp[i] = 1.0 / (i + 1);
+        const auto sr = odds_algorithm(sp);
+        std::printf("  n=%-5d threshold=%-5zu win=%.4f   (1/e = %.4f)\n", n, sr.threshold, sr.win_probability, 1.0 / std::exp(1.0));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(tx, wp, "w", RGB{37, 99, 235}, 2.0);
+    plot.points(tx, wp, "w", RGB{37, 99, 235}, 6.0);
+    plot.abline_v((double)r.threshold, RGB{220, 38, 38}, 1.5);
+    plot.legend({"P(win | threshold)", "odds-algorithm threshold"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Win probability peaks exactly at the odds-algorithm threshold")
+        .x_label("threshold s").y_label("P(win)").background({250, 250, 252});
+    plot.save_svg("build/org/odds_algorithm.svg");
+    std::cout << "\nwrote odds_algorithm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/odds_algorithm_analysis.cpp <<'CPP'
+<<od-includes>>
+
+int main() {
+<<od-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/odds_algorithm_analysis.cpp -o build/org/odds_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/odds_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bruss odds algorithm ===
+instance of 10 events
+optimal threshold s = 8 (start accepting the first success from event 8)
+win probability = 0.43808
+
+secretary problem p_i = 1/i:
+  n=10    threshold=4     win=0.3987   (1/e = 0.3679)
+  n=100   threshold=38    win=0.3710   (1/e = 0.3679)
+  n=1000  threshold=369   win=0.3682   (1/e = 0.3679)
+
+wrote odds_algorithm.svg
+#+end_example
+
+The odds rule lands exactly on the threshold that maximises the win probability -- the test suite
+confirms this against the best of all thresholds over thousands of random instances. The secretary
+problem, recovered by \(p_i=1/i\), converges to the celebrated value \(1/e\approx0.368\): wait through
+about the first \(n/e\) candidates, then take the next record-breaker.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/odds_algorithm.svg]]
+
+The blue curve is the win probability as a function of where you start accepting; the red line is the
+threshold the odds algorithm computes, sitting right at the peak. That a single backward sum of odds
+pinpoints the optimum -- with no search over strategies and no dynamic program -- is what makes Bruss's
+theorem a small marvel of applied probability, used in secretary-style hiring, sequential auctions,
+and last-arrival detection.

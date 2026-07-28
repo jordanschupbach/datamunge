@@ -508,7 +508,7 @@ Hybrid Algorithms
     [x] Alpha–beta pruning: search to reduce number of nodes in minimax algorithm  -- datamunge::algorithms::minimax / alpha_beta; report examples/org/alpha_beta_analysis.org
     A hybrid BFGS-Like method (see more https://doi.org/10.1016/j.cam.2024.115857)
     [x] Branch and bound  -- datamunge::algorithms::knapsack_branch_and_bound (0/1 knapsack, LP bound); report examples/org/branch_and_bound_analysis.org
-    Bruss algorithm: see odds algorithm
+    [x] Bruss algorithm: see odds algorithm  -- datamunge::algorithms::odds_algorithm; report examples/org/odds_algorithm_analysis.org
     [x] Chain matrix multiplication  -- datamunge::algorithms::matrix_chain_order (O(n^3) DP); report examples/org/matrix_chain_analysis.org
     Combinatorial optimization: optimization problems where the set of feasible solutions is discrete
         Greedy randomized adaptive search procedure (GRASP): successive constructions of a greedy randomized solution and subsequent iterative improvements of it through a local search
@@ -570,8 +570,8 @@ Hybrid Algorithms
         Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems
         Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems
         Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm
-    Odds algorithm (Bruss algorithm): Finds the optimal strategy to predict a last specific event in a random sequence event
+    [x] Odds algorithm (Bruss algorithm): Finds the optimal strategy to predict a last specific event in a random sequence event  -- datamunge::algorithms::odds_algorithm (optimal stopping); report examples/org/odds_algorithm_analysis.org
     Random Search
     Simulated annealing
     Stochastic tunneling
-    Subset sum algorithm
+    [x] Subset sum algorithm  -- datamunge::algorithms::subset_sum (meet-in-the-middle, O(2^(n/2))); report examples/org/subset_sum_analysis.org
