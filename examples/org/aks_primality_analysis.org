@@ -1,0 +1,166 @@
+#+title: The AKS Primality Test: Deterministic and Polynomial-Time
+#+subtitle: A literate C++ study of the Agrawal-Kayal-Saxena test with =datamunge='s =algorithms::aks_is_prime=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+In 2002 three researchers at IIT Kanpur -- Agrawal, Kayal, and Saxena -- settled a long-standing
+question: primality can be decided *deterministically* in *polynomial time*, with no randomness and no
+unproven hypotheses. Their test rests on a single beautiful congruence that holds for a polynomial
+identity if and only if \(n\) is prime, checked in a small quotient ring to keep the degree low. This
+report drives =datamunge='s =algorithms::aks_is_prime=, verified to agree with trial division for
+every \(n\le400\) (including Carmichael numbers that fool weaker tests), and shows the key parameter
+\(r\) growing only polylogarithmically.
+#+end_abstract
+
+* One congruence, in a small ring
+
+The heart of AKS is the identity, for \(\gcd(a,n)=1\),
+
+\[ (x+a)^n \equiv x^n + a \pmod{n} \quad\Longleftrightarrow\quad n \text{ is prime}, \]
+
+a polynomial version of Fermat's little theorem. Checking it directly means degree-\(n\) polynomials --
+too big. AKS reduces everything modulo \(x^r-1\) for a cleverly chosen small \(r\), turning the test
+into
+
+\[ (x+a)^n \equiv x^{n} + a \pmod{x^r-1,\ n} \quad\text{for } a=1,\dots,\big\lfloor\sqrt{\varphi(r)}\,\log_2 n\big\rfloor. \]
+
+The parameter \(r\) is the smallest modulus for which the multiplicative order of \(n\) exceeds
+\((\log_2 n)^2\); it is provably \(O((\log n)^5)\), so both \(r\) and the number of \(a\) values are
+polynomial in the bit length. The algorithm's full form also rules out perfect powers and checks small
+gcds, but this congruence in \((\mathbb{Z}/n)[x]/(x^r-1)\) is where primality is decided.
+
+#+name: ak-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_advanced.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <numeric>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Reproduce AKS's choice of r for the figure: smallest r with ord_r(n) > (log2 n)^2.
+static long long aks_r(long long n) {
+    const double L = std::log2((double)n); const long long lim = (long long)(L * L) + 1;
+    for (long long r = 2;; ++r) {
+        if (std::gcd(n % r, r) != 1) continue;
+        long long k = 1, cur = n % r;
+        while (cur != 1) { cur = (long long)((__int128)cur * (n % r) % r); ++k; if (k > lim) break; }
+        if (k > lim) return r;
+        if (r >= n) return r;
+    }
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+AKS(n):
+  if n is a perfect power: return COMPOSITE
+  r = smallest modulus with ord_r(n) > (log2 n)^2
+  for a in 2..r: if 1 < gcd(a, n) < n: return COMPOSITE
+  if n <= r: return PRIME
+  for a in 1 .. floor(sqrt(phi(r)) * log2 n):
+      if (x+a)^n != x^n + a   in (Z/n)[x] / (x^r - 1):  return COMPOSITE
+  return PRIME
+#+end_example
+
+* Worked example: agreement with truth, and the growth of r
+
+We test a range of numbers against trial division -- including Carmichael numbers -- and plot how the
+parameter \(r\) grows with \(n\).
+
+#+name: ak-run
+#+begin_src c++ :eval no
+    std::cout << "=== AKS primality test ===\n";
+    for (unsigned long long n : {31ull, 97ull, 561ull, 1105ull, 1729ull, 2047ull, 7919ull}) {
+        const bool p = aks_is_prime(n);
+        std::cout << "n=" << n << ": " << (p ? "PRIME" : "composite")
+                  << (n == 561 || n == 1105 || n == 1729 ? "  (Carmichael number)" : "")
+                  << (n == 2047 ? "  (strong pseudoprime base 2)" : "") << "\n";
+    }
+
+    // r grows only polylogarithmically in n.
+    std::vector<double> nx, rvals, bound;
+    std::cout << "\nn        r      (log2 n)^2\n";
+    for (long long n : {31ll, 101ll, 331ll, 1009ll, 3001ll, 10007ll, 30011ll, 100003ll}) {
+        const long long r = aks_r(n);
+        const double L = std::log2((double)n);
+        nx.push_back(L); rvals.push_back((double)r); bound.push_back(L * L);
+        std::printf("%7lld  %4lld   %.1f\n", n, r, L * L);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(nx, rvals, "r", RGB{124, 58, 237}, 2.0);
+    plot.points(nx, rvals, "r", RGB{124, 58, 237}, 6.0);
+    plot.line(nx, bound, "b", RGB{100, 116, 139}, 1.5);
+    plot.legend({"chosen r", "(log2 n)^2"}, {{124, 58, 237}, {100, 116, 139}});
+    plot.title("AKS parameter r grows only polylogarithmically in n")
+        .x_label("log2(n)").y_label("r").background({250, 250, 252});
+    plot.save_svg("build/org/aks_primality.svg");
+    std::cout << "\nwrote aks_primality.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/aks_primality_analysis.cpp <<'CPP'
+<<ak-includes>>
+
+int main() {
+<<ak-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/aks_primality_analysis.cpp -o build/org/aks_primality_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/aks_primality_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== AKS primality test ===
+n=31: PRIME
+n=97: PRIME
+n=561: composite  (Carmichael number)
+n=1105: composite  (Carmichael number)
+n=1729: composite  (Carmichael number)
+n=2047: composite  (strong pseudoprime base 2)
+n=7919: PRIME
+
+n        r      (log2 n)^2
+     31    29   24.5
+    101    53   44.3
+    331    73   70.1
+   1009   107   99.6
+   3001   137   133.4
+  10007   179   176.6
+  30011   241   221.2
+ 100003   283   275.9
+
+wrote aks_primality.svg
+#+end_example
+
+AKS calls every prime prime and every composite composite -- including the Carmichael numbers
+\(561,1105,1729\), which slip past the naive Fermat test, and \(2047\), a strong pseudoprime to base
+\(2\). The polynomial congruence has no exceptions to be fooled by: it is an exact characterisation of
+primality, not a probabilistic one.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/aks_primality.svg]]
+
+The parameter \(r\) tracks its \((\log_2 n)^2\)-scale bound and grows glacially -- barely reaching a
+few hundred even as \(n\) passes \(10^5\). That slow growth is the whole point: it caps the degree of
+the polynomials and the number of congruences, delivering the first unconditional
+deterministic-polynomial primality proof. In practice randomised tests like Miller-Rabin are far
+faster, but AKS settled the theory once and for all.

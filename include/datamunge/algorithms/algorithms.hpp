@@ -48,6 +48,7 @@
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/number_theory_advanced.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>

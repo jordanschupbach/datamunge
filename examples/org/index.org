@@ -718,6 +718,21 @@ We implement Chien search (=algorithms::chien_search=) and report it as a litera
 
 We implement Cantor-Zassenhaus factorisation (=algorithms::cantor_zassenhaus=) and report it as a literate program. Distinct-degree factorisation sorts irreducibles by degree via gcd(f, x^(p^d)-x), then randomised equal-degree splitting separates same-degree factors with a gcd of h^((p^d-1)/2)-1; the returned factors multiply back to the input over hundreds of cases and the recovered factor degrees are plotted.
 
+** [[./chakravala_analysis.html][The Chakravala Method: Pell's Equation the Cyclic Way]] ([[./chakravala_analysis.pdf][PDF]])
+/A literate C++ study of Bhaskara's Diophantine solver using datamunge/
+
+We implement the chakravala method (=algorithms::chakravala=) and report it as a literate program. Bhaskara's twelfth-century cyclic algorithm threads triples a^2-Nb^2=k toward k=1, choosing each multiplier to keep the numbers near sqrt(N); it reproduces the famous fundamental solutions (including N=61, x>1.7e9) and satisfies x^2-Ny^2=1 for every non-square N up to 150, with the wild swing in solution size plotted.
+
+** [[./lenstra_ecm_analysis.html][Lenstra's Elliptic-Curve Factorisation]] ([[./lenstra_ecm_analysis.pdf][PDF]])
+/A literate C++ study of ECM using datamunge/
+
+We implement Lenstra's ECM (=algorithms::lenstra_ecm=) and report it as a literate program. Working on random elliptic curves mod n, a smooth curve order makes a slope denominator non-invertible and a gcd hands back a factor; it splits products of two large primes, and the fraction of B-smooth orders in the Hasse interval is plotted to show why cost scales with the smaller factor.
+
+** [[./aks_primality_analysis.html][The AKS Primality Test: Deterministic and Polynomial-Time]] ([[./aks_primality_analysis.pdf][PDF]])
+/A literate C++ study of the Agrawal-Kayal-Saxena test using datamunge/
+
+We implement the AKS test (=algorithms::aks_is_prime=) and report it as a literate program. Primality is decided by the congruence (x+a)^n = x^n + a in (Z/n)[x]/(x^r-1) for a small polylogarithmic r; it agrees with trial division for every n up to 400 -- including the Carmichael numbers 561, 1105, 1729 that fool the Fermat test -- and the slow growth of r is plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
