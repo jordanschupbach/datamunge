@@ -25,6 +25,7 @@
 #include <datamunge/algorithms/interpolation.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/manacher.hpp>

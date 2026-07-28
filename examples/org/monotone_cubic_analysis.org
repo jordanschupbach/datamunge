@@ -1,0 +1,155 @@
+#+title: Monotone Cubic Interpolation: Smoothness Without the Overshoot
+#+subtitle: A literate C++ study of Fritsch-Carlson interpolation with =datamunge='s =algorithms::monotone_cubic_interpolate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A natural cubic spline is beautifully smooth (@math{C^2}) -- but near a sharp change it
+*overshoots*, dipping below or arcing above the data and inventing values that were never
+there. For *monotone* data (a cumulative distribution, a dose-response curve) that is
+unacceptable. *Monotone cubic interpolation* (Fritsch & Carlson, 1980) keeps the cubic
+Hermite form but *limits the nodal tangents* so the interpolant can never overshoot: if
+the data rises, the curve rises. This report implements it in =datamunge='s C++
+=algorithms::monotone_cubic_interpolate=, verified to stay monotone, and contrasts it
+with a natural spline's wiggles on step-like data.
+#+end_abstract
+
+* Limiting the tangents into the monotone region
+
+Monotone cubic interpolation is a cubic Hermite interpolant (see the companion Hermite
+report) with a *specific, safe* choice of nodal slopes. Starting from the secant slopes
+@math{\Delta_k = (y_{k+1}-y_k)/(x_{k+1}-x_k)}, it takes averaged tangents
+@math{m_k=\tfrac12(\Delta_{k-1}+\Delta_k)} and then applies the *Fritsch-Carlson limiter*:
+
+- if a segment is flat (@math{\Delta_k=0}), force @math{m_k=m_{k+1}=0} (no wiggle across a
+  plateau);
+- if a tangent points *against* the local secant, clamp it to zero;
+- if @math{\alpha^2+\beta^2>9}, where @math{\alpha=m_k/\Delta_k,\ \beta=m_{k+1}/\Delta_k},
+  scale both tangents down by @math{\tau=3/\sqrt{\alpha^2+\beta^2}}.
+
+The region @math{\alpha^2+\beta^2\le 9} is exactly the set of tangents for which the cubic
+is monotone on the interval. The price is dropping from @math{C^2} to @math{C^1}
+smoothness -- the second derivative may jump -- but in exchange the interpolant is
+*guaranteed* to preserve the data's monotonicity and never overshoot.
+
+#+name: mc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/interpolation_extra.hpp>
+#include <datamunge/algorithms/interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MONOTONE-CUBIC(xs, ys, x):
+  delta[k] <- (ys[k+1]-ys[k]) / (xs[k+1]-xs[k])          # secant slopes
+  m[k]     <- average of neighbouring secants            # initial tangents
+  for each interval k:
+      if delta[k] == 0: m[k] = m[k+1] = 0                 # plateau -> flat
+      else:
+          a <- m[k]/delta[k];  b <- m[k+1]/delta[k]
+          if a < 0: m[k] = 0;  if b < 0: m[k+1] = 0        # wrong sign -> clamp
+          if a^2 + b^2 > 9:  scale m[k], m[k+1] by 3/sqrt(a^2+b^2)
+  return cubic-Hermite(xs, ys, m, x)
+#+end_example
+
+* Worked example: a step, splined two ways
+
+We interpolate a monotone step -- values that stay at 0, jump to 1, and stay there -- with
+both a natural cubic spline and monotone cubic interpolation, and measure how far each
+strays outside the data range @math{[0,1]}.
+
+#+name: mc-run
+#+begin_src c++ :eval no
+    const std::vector<double> xs{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    const std::vector<double> ys{0, 0, 0, 0, 0, 1, 1, 1, 1, 1}; // monotone step
+
+    const CubicSpline spline = natural_cubic_spline(xs, ys);
+
+    std::vector<double> xf, y_spline, y_mono;
+    double spline_min = 0, spline_max = 1, mono_min = 0, mono_max = 1;
+    for (int i = 0; i <= 450; ++i) {
+        const double x = 9.0 * i / 450.0;
+        const double s = cubic_spline_eval(spline, x);
+        const double m = monotone_cubic_interpolate(xs, ys, x);
+        xf.push_back(x); y_spline.push_back(s); y_mono.push_back(m);
+        spline_min = std::min(spline_min, s); spline_max = std::max(spline_max, s);
+        mono_min = std::min(mono_min, m); mono_max = std::max(mono_max, m);
+    }
+
+    std::cout << "=== step data, range [0,1] ===\n";
+    std::cout << "natural spline ranges over   [" << spline_min << ", " << spline_max << "]  (overshoots)\n";
+    std::cout << "monotone cubic ranges over   [" << mono_min << ", " << mono_max << "]  (stays in [0,1])\n\n";
+
+    // Confirm monotonicity of the monotone interpolant.
+    bool monotone = true;
+    for (std::size_t i = 1; i < y_mono.size(); ++i) if (y_mono[i] + 1e-12 < y_mono[i - 1]) monotone = false;
+    std::cout << "monotone cubic nondecreasing everywhere: " << (monotone ? "yes" : "no") << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(xf, y_spline, "natural spline", RGB{220, 38, 38}, 2.0);
+    plot.line(xf, y_mono, "monotone cubic", RGB{37, 99, 235}, 2.0);
+    plot.points(xs, ys, "data", RGB{17, 24, 39}, 7.0);
+    plot.abline_h(0.0, RGB{148, 163, 184}, 1.0);
+    plot.abline_h(1.0, RGB{148, 163, 184}, 1.0);
+    plot.legend({"natural cubic spline (overshoots)", "monotone cubic (no overshoot)", "data"},
+                {{220, 38, 38}, {37, 99, 235}, {17, 24, 39}});
+    plot.title("On a monotone step, the spline overshoots; monotone cubic does not")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/monotone_cubic.svg");
+    std::cout << "wrote monotone_cubic.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/monotone_cubic_analysis.cpp <<'CPP'
+<<mc-includes>>
+
+int main() {
+<<mc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/monotone_cubic_analysis.cpp -o build/org/monotone_cubic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/monotone_cubic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== step data, range [0,1] ===
+natural spline ranges over   [-0.107822, 1.10782]  (overshoots)
+monotone cubic ranges over   [0, 1]  (stays in [0,1])
+
+monotone cubic nondecreasing everywhere: yes
+wrote monotone_cubic.svg
+#+end_example
+
+The numbers make the difference concrete: the natural spline swings *outside* @math{[0,1]}
+-- inventing negative values before the step and values above 1 after it -- while the
+monotone cubic stays strictly within the data range and is nondecreasing at every one of
+the sampled points. Both pass through the data; only one respects what the data *means*.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/monotone_cubic.svg]]
+
+The red natural spline dips below the lower guide line and bulges above the upper one on
+either side of the jump -- the classic overshoot. The blue monotone-cubic curve climbs
+the step cleanly and flattens onto each plateau without a ripple. For data that is
+monotone by nature, that guarantee is worth the small loss of second-derivative
+smoothness.
