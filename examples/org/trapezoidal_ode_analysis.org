@@ -1,0 +1,144 @@
+#+title: The Trapezoidal Rule for ODEs: Second-Order and A-Stable
+#+subtitle: A literate C++ study of the implicit trapezoidal integrator with =datamunge='s =algorithms::trapezoidal_ode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Backward Euler is stable but only first-order; the explicit trapezoidal-like methods are
+second-order but not unconditionally stable. The *trapezoidal rule for ODEs* -- integrate
+\(y'=f(t,y)\) by averaging the slope at both ends of the step -- is the rare combination of
+*second-order accuracy* and *A-stability*. It is the time-stepping twin of Crank-Nicolson, and the
+member of the Adams-Moulton family that pairs best accuracy with unconditional stability. This
+report drives =datamunge='s =algorithms::trapezoidal_ode=, verified against an exact solution with
+second-order convergence, and shows it holding steady on a stiff problem.
+#+end_abstract
+
+* Average the endpoint slopes
+
+Integrating \(y'=f\) over one step and approximating the integral by the *trapezoidal rule* gives
+the implicit update
+
+\[ y_{n+1}=y_n+\frac{h}{2}\bigl(f(t_n,y_n)+f(t_{n+1},y_{n+1})\bigr). \]
+
+Because \(y_{n+1}\) appears on both sides, each step solves an implicit equation (here by Newton's
+iteration for a scalar). The symmetric averaging cancels the leading error term, so the method is
+*second-order* (\(O(h^2)\)), and its amplification factor for the test equation \(y'=\lambda y\) is
+\(\dfrac{1+h\lambda/2}{1-h\lambda/2}\), which has magnitude \(\le1\) for *every* \(\lambda\) with
+\(\operatorname{Re}\lambda\le0\) -- i.e. it is *A-stable*. So it delivers backward Euler's
+unconditional stability *and* an extra order of accuracy, at the same cost of one implicit solve
+per step. (On very stiff problems its lack of *L*-stability lets fast modes ring rather than damp,
+which is why BDF2 is sometimes preferred -- but for most work the trapezoidal rule is ideal.)
+
+#+name: tr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pde_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TRAPEZOIDAL-ODE(f, y0, t0, t1, steps):
+  h <- (t1-t0)/steps;  y <- y0;  t <- t0
+  repeat steps times:
+      solve  Y = y + (h/2)(f(t,y) + f(t+h,Y))  for Y   (Newton)
+      y <- Y;  t <- t+h
+  return the trajectory
+#+end_example
+
+* Worked example: convergence order, and stiff stability
+
+We integrate \(y'=-y\) (exact \(e^{-t}\)) and measure the error as the step halves -- expecting an
+\(O(h^2)\) factor-of-four drop -- then apply it to a *stiff* problem with a large step.
+
+#+name: tr-run
+#+begin_src c++ :eval no
+    auto f = [](double, double y) { return -y; };
+    const double exact = std::exp(-1.0);
+
+    std::cout << "=== y' = -y on [0,1], exact e^-1 ===\n";
+    std::cout << "steps    h         error       ratio\n";
+    std::vector<double> logh, logerr; double prev = 0;
+    for (int steps = 4; steps <= 256; steps *= 2) {
+        const double err = std::fabs(trapezoidal_ode(f, 1.0, 0.0, 1.0, steps).back().second - exact);
+        std::printf("%-6d   %.5f   %.3e   %s\n", steps, 1.0 / steps, err, prev > 0 ? std::to_string(prev / err).c_str() : "-");
+        logh.push_back(std::log10(1.0 / steps)); logerr.push_back(std::log10(err)); prev = err;
+    }
+    const double order = (logerr.front() - logerr[1]) / (logh.front() - logh[1]);
+    std::cout << "empirical order ~ " << order << "\n\n";
+
+    // Stiff: y' = -50 y with h=0.1 (h*lambda = 5). Trapezoidal stays bounded; forward Euler would blow up.
+    const auto stiff = trapezoidal_ode([](double, double y) { return -50.0 * y; }, 1.0, 0.0, 1.0, 10);
+    std::cout << "stiff y'=-50y, h=0.1: final y = " << stiff.back().second << " (bounded, decaying)\n";
+
+    auto plot = RPlot::create();
+    plot.line(logh, logerr, "error", RGB{37, 99, 235}, 2.0);
+    plot.points(logh, logerr, "error", RGB{37, 99, 235}, 6.0);
+    std::vector<double> ref; for (double lh : logh) ref.push_back(2.0 * lh + (logerr.front() - 2.0 * logh.front()));
+    plot.line(logh, ref, "slope 2", RGB{148, 163, 184}, 1.5);
+    plot.legend({"trapezoidal error", "slope-2 reference"}, {{37, 99, 235}, {148, 163, 184}});
+    plot.title("Trapezoidal rule is second order: error vs step size (log-log slope 2)")
+        .x_label("log10 h").y_label("log10 error").background({250, 250, 252});
+    plot.save_svg("build/org/trapezoidal_ode.svg");
+    std::cout << "wrote trapezoidal_ode.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/trapezoidal_ode_analysis.cpp <<'CPP'
+<<tr-includes>>
+
+int main() {
+<<tr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/trapezoidal_ode_analysis.cpp -o build/org/trapezoidal_ode_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/trapezoidal_ode_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== y' = -y on [0,1], exact e^-1 ===
+steps    h         error       ratio
+4        0.25000   1.929e-03   -
+8        0.12500   4.798e-04   4.020506
+16       0.06250   1.198e-04   4.005090
+32       0.03125   2.994e-05   4.001270
+64       0.01562   7.485e-06   4.000317
+128      0.00781   1.871e-06   4.000079
+256      0.00391   4.678e-07   4.000020
+empirical order ~ 2.00738
+
+stiff y'=-50y, h=0.1: final y = 0.000209041 (bounded, decaying)
+wrote trapezoidal_ode.svg
+#+end_example
+
+The error-ratio column sits near four and the empirical order near two -- the trapezoidal rule is
+genuinely second-order, one order better than backward Euler for the same implicit cost. And on
+the stiff problem, where a large explicit step would explode, it stays bounded and decays: the
+A-stability the averaging guarantees.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/trapezoidal_ode.svg]]
+
+The blue error points fall along the grey slope-2 reference line -- the log-log signature of
+second-order convergence. Combining that accuracy with unconditional stability is what makes the
+trapezoidal rule (and its PDE twin, Crank-Nicolson) the default choice when a problem is both
+stiff and demands more than first-order accuracy.

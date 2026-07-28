@@ -47,6 +47,7 @@
 #include <datamunge/algorithms/number_theory_extra.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/ode.hpp>
+#include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
