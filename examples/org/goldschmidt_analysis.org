@@ -1,0 +1,141 @@
+#+title: Goldschmidt Division: Driving the Denominator to One
+#+subtitle: A literate C++ study of parallel multiplicative division with =datamunge='s =algorithms::goldschmidt_division=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Like Newton-Raphson division, *Goldschmidt division* computes a quotient with only
+multiplications -- but it arranges them so the two multiplies of each step are *independent*
+and can execute in parallel, which is why pipelined floating-point units (and the IBM
+System/360 Model 91 that introduced it) favour it. The trick: scale numerator *and*
+denominator by the same factor \(f=2-D\) each step, driving the denominator \(D\to1\) while the
+numerator becomes the quotient. This report drives =datamunge='s
+=algorithms::goldschmidt_division=, verified against true division, and traces the quadratic
+collapse of the denominator.
+#+end_abstract
+
+* Scale both, together
+
+Write \(q=N/D\). If we multiply top and bottom by the same \(f\), the ratio is unchanged --
+so we are free to choose \(f\) to push \(D\) toward 1, at which point \(N\) *is* the quotient.
+Scale \(D\) into \((0,1]\) first (via the floating-point exponent), then iterate
+
+\[ f = 2 - D, \qquad N \leftarrow N f, \qquad D \leftarrow D f. \]
+
+If \(D=1-\delta\) then \(f=1+\delta\) and the new \(D=(1-\delta)(1+\delta)=1-\delta^2\): the
+error is *squared* each step -- quadratic convergence, doubling the correct digits. The
+essential difference from Newton's \(x\leftarrow x(2-Dx)\) is *data flow*: Goldschmidt's
+\(Nf\) and \(Df\) depend only on the previous \(N,D,f\), not on each other, so a superscalar
+unit issues them in the same cycle. Same iteration count, better hardware utilisation.
+
+#+name: gs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/arithmetic_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GOLDSCHMIDT(N, D):
+  scale D into (0,1] (and N by the same power of two)
+  repeat:
+      f <- 2 - D
+      N <- N * f          # these two multiplies are independent
+      D <- D * f
+  until D ~ 1
+  return N
+#+end_example
+
+* Worked example: 22/7, and the denominator collapsing
+
+We divide and check a few quotients, then trace \(|D-1|\) each step for \(D\) scaled from
+\(7\), showing the quadratic descent.
+
+#+name: gs-run
+#+begin_src c++ :eval no
+    for (auto pr : {std::pair{1.0, 3.0}, std::pair{22.0, 7.0}, std::pair{-5.0, 1024.0}, std::pair{2.0, 1e-6}})
+        std::cout << pr.first << " / " << pr.second << " = " << goldschmidt_division(pr.first, pr.second)
+                  << "  (true " << pr.first / pr.second << ")\n";
+    std::cout << "\n";
+
+    // Trace the denominator error for D scaled from 7 into [0.5,1).
+    int e; const double m = std::frexp(7.0, &e); // 7 = m * 2^e
+    double D = m, N = std::ldexp(22.0, -e);
+    std::cout << "denominator error |D - 1| per step (dividing 22/7):\n";
+    std::vector<double> it, logerr;
+    for (int i = 0; i <= 6; ++i) {
+        const double err = std::fabs(D - 1.0);
+        it.push_back(i); logerr.push_back(std::log10(std::max(err, 1e-18)));
+        std::printf("  step %d: D=%.15f  |D-1|=%.3e  (N=%.10f)\n", i, D, err, N);
+        const double f = 2.0 - D; N *= f; D *= f;
+    }
+
+    auto plot = RPlot::create();
+    plot.line(it, logerr, "error", RGB{37, 99, 235}, 2.0);
+    plot.points(it, logerr, "error", RGB{37, 99, 235}, 7.0);
+    plot.legend({"|D - 1| (denominator error)"}, {{37, 99, 235}});
+    plot.title("Goldschmidt drives the denominator to 1 quadratically")
+        .x_label("iteration").y_label("log10 |D - 1|").background({250, 250, 252});
+    plot.save_svg("build/org/goldschmidt.svg");
+    std::cout << "\nwrote goldschmidt.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/goldschmidt_analysis.cpp <<'CPP'
+<<gs-includes>>
+
+int main() {
+<<gs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/goldschmidt_analysis.cpp -o build/org/goldschmidt_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/goldschmidt_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+1 / 3 = 0.333333  (true 0.333333)
+22 / 7 = 3.14286  (true 3.14286)
+-5 / 1024 = -0.00488281  (true -0.00488281)
+2 / 1e-06 = 2e+06  (true 2e+06)
+
+denominator error |D - 1| per step (dividing 22/7):
+  step 0: D=0.875000000000000  |D-1|=1.250e-01  (N=2.7500000000)
+  step 1: D=0.984375000000000  |D-1|=1.562e-02  (N=3.0937500000)
+  step 2: D=0.999755859375000  |D-1|=2.441e-04  (N=3.1420898438)
+  step 3: D=0.999999940395355  |D-1|=5.960e-08  (N=3.1428569555)
+  step 4: D=0.999999999999996  |D-1|=3.553e-15  (N=3.1428571429)
+  step 5: D=1.000000000000000  |D-1|=0.000e+00  (N=3.1428571429)
+
+wrote goldschmidt.svg
+#+end_example
+
+The quotients are correct across magnitudes, and the trace shows the denominator error being
+squared each step -- \(10^{-1},10^{-2},10^{-4},10^{-8},\dots\) -- reaching machine precision in
+about five iterations, exactly like Newton but with the parallel-friendly data flow.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/goldschmidt.svg]]
+
+The error plunges faster and faster on the log axis -- the steepening curve of quadratic
+convergence. Newton and Goldschmidt take the same number of steps to divide; Goldschmidt's
+advantage is that each step's two multiplications do not wait on one another, so real hardware
+finishes them sooner.

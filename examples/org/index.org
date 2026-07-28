@@ -1038,6 +1038,26 @@ We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) a
 
 We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
 
+** [[./goldschmidt_analysis.html][Goldschmidt Division: Driving the Denominator to One]] ([[./goldschmidt_analysis.pdf][PDF]])
+/A literate C++ study of parallel multiplicative division using datamunge/
+
+We implement Goldschmidt division (=algorithms::goldschmidt_division=) and report it as a literate program. We scale numerator and denominator by the same f=2-D so D->1 quadratically (the two multiplies each step being independent, unlike Newton's), reaching machine precision in about five steps; the denominator error 1e-1,1e-2,1e-4,1e-8,... is traced dividing 22/7.
+
+** [[./montgomery_analysis.html][Montgomery Reduction: Modular Arithmetic Without Division]] ([[./montgomery_analysis.pdf][PDF]])
+/A literate C++ study of REDC using datamunge/
+
+We implement Montgomery multiplication (=algorithms::montgomery_multiply=) and report it as a literate program. We give the REDC reduction that replaces the division by n with a multiply and a shift (n'=-n^{-1} mod R by Newton, R^2 mod n precomputed); it reproduces a*b mod n over 200k cases and, used inside modular exponentiation, runs a toy RSA round-trip (123 -> 855 -> 123) with no division in the hot loop.
+
+** [[./cipolla_analysis.html][Cipolla's Algorithm: Square Roots Modulo a Prime via F_{p^2}]] ([[./cipolla_analysis.pdf][PDF]])
+/A literate C++ study of modular square roots using datamunge/
+
+We implement Cipolla's algorithm (=algorithms::cipolla_sqrt=) and report it as a literate program. We test the residue by Euler's criterion, pick a with a^2-n a non-residue, and raise (a+sqrt(w)) to (p+1)/2 in the quadratic field F_{p^2}; roots mod 1009 are found and verified (each residue has two roots r and p-r summing to p, exactly 504 of 1008 classes being residues), the two-branch fold plotted.
+
+** [[./addition_chain_analysis.html][Addition-Chain Exponentiation: The Fewest Multiplications for a Power]] ([[./addition_chain_analysis.pdf][PDF]])
+/A literate C++ study of optimal power chains using datamunge/
+
+We implement shortest addition-chain search (=algorithms::addition_chain=) and report it as a literate program. Each chain term is a sum of two earlier ones = one multiplication; a bounded DFS finds the optimum for small e, beating binary square-and-multiply (x^15 in 5 not 6, x^255 in 10 not 14), saving 35 multiplications total over e=1..100.
+
 ** [[./trial_division_analysis.html][Trial Division: Factoring by Brute Force]] ([[./trial_division_analysis.pdf][PDF]])
 /A literate C++ study of the simplest factorization using datamunge/
 

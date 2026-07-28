@@ -335,7 +335,7 @@ Further information: Number theory
     Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time
     Modular square root: computing square roots modulo a prime number
         Berlekamp's root finding algorithm
-        Cipolla's algorithm
+        [x] Cipolla's algorithm  -- datamunge::algorithms::cipolla_sqrt (modular sqrt via F_{p^2}); report examples/org/cipolla_analysis.org
         [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
         [x] Karatsuba algorithm  -- datamunge::algorithms::karatsuba_multiply (decimal strings, O(n^1.585)); report examples/org/karatsuba_analysis.org
@@ -379,19 +379,19 @@ Further information: Special functions
         [x] Chudnovsky algorithm: a fast method for calculating the digits of π  -- datamunge::algorithms::chudnovsky_pi; report examples/org/chudnovsky_pi_analysis.org
         [x] Gauss–Legendre algorithm: computes the digits of pi  -- datamunge::algorithms::gauss_legendre_pi; report examples/org/gauss_legendre_pi_analysis.org
     Division algorithms: for computing quotient and/or remainder of two numbers
-        Goldschmidt division
+        [x] Goldschmidt division  -- datamunge::algorithms::goldschmidt_division; report examples/org/goldschmidt_analysis.org
         Long division
         [x] Newton–Raphson division: uses Newton's method to find the reciprocal of D, and multiply that reciprocal by N to find the final quotient Q.  -- datamunge::algorithms::newton_raphson_division; report examples/org/newton_division_analysis.org
         Non-restoring division
         Restoring division
         SRT division
     Exponentiation:
-        Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications
+        [x] Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications  -- datamunge::algorithms::addition_chain; report examples/org/addition_chain_analysis.org
         [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
     Hyperbolic and Trigonometric Functions:
         BKM algorithm: computes elementary functions using a table of logarithms
         [x] CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents  -- datamunge::algorithms::cordic_sincos; report examples/org/cordic_analysis.org
-    Montgomery reduction: an algorithm that allows modular arithmetic to be performed efficiently when the modulus is large
+    [x] Montgomery reduction: an algorithm that allows modular arithmetic to be performed efficiently when the modulus is large  -- datamunge::algorithms::montgomery_multiply; report examples/org/montgomery_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
         Booth's multiplication algorithm: a multiplication algorithm that multiplies two signed binary numbers in two's complement notation
         Fürer's algorithm: an integer multiplication algorithm for very large numbers possessing a very low asymptotic complexity
