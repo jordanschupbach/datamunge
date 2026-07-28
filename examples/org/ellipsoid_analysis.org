@@ -1,0 +1,156 @@
+#+title: The Ellipsoid Method: Convex Optimization by Shrinking Volumes
+#+subtitle: A literate C++ study of subgradient minimization with =datamunge='s =algorithms::ellipsoid_minimize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *ellipsoid method* is the algorithm that made history: Khachiyan used it in 1979 to prove
+that *linear programming is solvable in polynomial time*. Its idea is geometric and general.
+Keep an ellipsoid known to contain a minimizer; evaluate a *subgradient* at its centre; that
+subgradient's halfspace says which half of the ellipsoid to throw away; replace the surviving
+half by the smallest ellipsoid enclosing it. The volume shrinks by a fixed factor every step,
+so the centre closes in on the optimum *geometrically*, for *any* convex objective -- even a
+nonsmooth one. This report drives =datamunge='s =algorithms::ellipsoid_minimize=, verified
+against known optima, and traces the objective plunging.
+#+end_abstract
+
+* Cut the ellipsoid in half, re-enclose
+
+At iterate centre @math{c} with ellipsoid shape matrix @math{P}, a subgradient @math{g} of the
+convex objective satisfies @math{g^\top(x-c)\ge 0 \Rightarrow f(x)\ge f(c)}: the minimizer lies
+in the *opposite* halfspace @math{g^\top(x-c)\le 0}. The smallest ellipsoid enclosing that
+half-ellipsoid has the closed-form update
+
+\[
+\tilde g = \frac{Pg}{\sqrt{g^\top P g}},\quad
+c \leftarrow c - \frac{1}{n+1}\tilde g,\quad
+P \leftarrow \frac{n^2}{n^2-1}\Bigl(P - \frac{2}{n+1}\tilde g\,\tilde g^\top\Bigr).
+\]
+
+Each step multiplies the ellipsoid's *volume* by @math{e^{-1/(2n)}<1}, so after @math{O(n^2\log
+\frac{1}{\varepsilon})} steps the ellipsoid -- and thus the distance to the optimum -- has
+shrunk below @math{\varepsilon}. The method needs only a *subgradient oracle*, making it work
+on nondifferentiable convex problems where gradient descent stalls, and its convergence is
+independent of conditioning. In practice it is slow (interior-point methods dominate), but as a
+*theoretical* guarantee of polynomial-time convex optimization it is a landmark.
+
+#+name: el-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ellipsoid.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ELLIPSOID-MINIMIZE(f, subgradient, c, R):
+  P <- R^2 * I
+  repeat:
+      g <- subgradient(c)
+      g~ <- P g / sqrt(g^T P g)
+      c <- c - 1/(n+1) * g~
+      P <- n^2/(n^2-1) * ( P - 2/(n+1) * g~ g~^T )
+      track the best f(c) seen
+  return the best point
+#+end_example
+
+* Worked example: a 2-D quadratic, and geometric convergence
+
+We minimize @math{f(x,y)=(x-3)^2+5(y+1)^2} (min @math{0} at @math{(3,-1)}) from a ball of
+radius 10, tracing the objective at each step to expose the geometric decay.
+
+#+name: el-run
+#+begin_src c++ :eval no
+    auto f = [](const std::vector<double>& p) { return (p[0] - 3) * (p[0] - 3) + 5 * (p[1] + 1) * (p[1] + 1); };
+    auto grad = [](const std::vector<double>& p) { return std::vector<double>{2 * (p[0] - 3), 10 * (p[1] + 1)}; };
+
+    const EllipsoidResult r = ellipsoid_minimize(f, grad, {0.0, 0.0}, 10.0, 500);
+    std::cout << "=== minimize (x-3)^2 + 5(y+1)^2 ===\n";
+    std::cout << "found x* = (" << r.x[0] << ", " << r.x[1] << "), value = " << r.value
+              << " (true min 0 at (3,-1)), iterations = " << r.iterations << "\n\n";
+
+    // Instrumented replay to trace best-so-far objective per step.
+    std::vector<double> it, logf;
+    {
+        const int n = 2; std::vector<double> c{0.0, 0.0};
+        std::vector<std::vector<double>> P{{100, 0}, {0, 100}};
+        double best = f(c);
+        for (int k = 0; k < 120; ++k) {
+            const auto g = grad(c);
+            std::vector<double> Pg{P[0][0] * g[0] + P[0][1] * g[1], P[1][0] * g[0] + P[1][1] * g[1]};
+            const double gPg = g[0] * Pg[0] + g[1] * Pg[1];
+            if (gPg < 1e-18) break;
+            const double inv = 1.0 / std::sqrt(gPg);
+            std::vector<double> gh{Pg[0] * inv, Pg[1] * inv};
+            for (int i = 0; i < 2; ++i) c[i] -= gh[i] / (n + 1);
+            const double scale = (double)(n * n) / (n * n - 1), coef = 2.0 / (n + 1);
+            for (int i = 0; i < 2; ++i) for (int j = 0; j < 2; ++j) P[i][j] = scale * (P[i][j] - coef * gh[i] * gh[j]);
+            best = std::min(best, f(c));
+            it.push_back(k); logf.push_back(std::log10(std::max(best, 1e-16)));
+        }
+    }
+    std::cout << "objective after 120 steps: 1e" << logf.back() << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(it, logf, "objective", RGB{5, 150, 105}, 2.0);
+    plot.points(it, logf, "objective", RGB{5, 150, 105}, 4.0);
+    plot.legend({"best objective f(c)"}, {{5, 150, 105}});
+    plot.title("Ellipsoid method: the objective decays geometrically (log scale)")
+        .x_label("iteration").y_label("log10 f (best so far)").background({250, 250, 252});
+    plot.save_svg("build/org/ellipsoid.svg");
+    std::cout << "wrote ellipsoid.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ellipsoid_analysis.cpp <<'CPP'
+<<el-includes>>
+
+int main() {
+<<el-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ellipsoid_analysis.cpp -o build/org/ellipsoid_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ellipsoid_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== minimize (x-3)^2 + 5(y+1)^2 ===
+found x* = (2.99999, -0.999996), value = 1.60903e-10 (true min 0 at (3,-1)), iterations = 77
+
+objective after 120 steps: 1e-8.77287
+wrote ellipsoid.svg
+#+end_example
+
+The method converges to the true optimum @math{(3,-1)} with objective driven to essentially
+zero, using nothing but subgradient evaluations and the ellipsoid update. The objective trace
+falls in a roughly straight line on the log scale -- the signature of *geometric* convergence,
+the volume of the enclosing ellipsoid (and with it the distance to the optimum) shrinking by a
+constant factor each step.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/ellipsoid.svg]]
+
+The green objective descends steadily and near-linearly on the log axis: every step discards
+half of the current ellipsoid, so progress is exponential in the iteration count. It is not
+the fastest convex solver, but it is the one that first proved such problems can be solved in
+polynomial time at all -- and it asks only for a subgradient, so it works where smooth methods
+cannot.

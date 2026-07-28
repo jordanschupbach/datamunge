@@ -1,0 +1,156 @@
+#+title: Min-Conflicts: Solving a Million Queens by Local Repair
+#+subtitle: A literate C++ study of CSP local search with =datamunge='s =algorithms::min_conflicts_nqueens=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Backtracking builds a solution one careful choice at a time; *min-conflicts* does the
+opposite -- it starts with a *complete* (messy) assignment and *repairs* it. Repeatedly it
+picks a variable in conflict and moves it to the value that causes the *fewest* conflicts.
+This trivially simple heuristic (Minton et al., 1992) famously solves the *million-queens*
+problem in seconds, with a runtime that barely depends on @math{n} -- because solutions are
+densely scattered and a short greedy walk usually stumbles onto one. This report drives
+=datamunge='s =algorithms::min_conflicts_nqueens=, verified to place non-attacking queens,
+and shows the near-flat effort as @math{n} grows.
+#+end_abstract
+
+* Repair the worst, greedily
+
+The @math{n}-queens CSP puts one queen per row and asks that no two share a column or
+diagonal. Min-conflicts:
+
+1. starts from a complete assignment (here a greedy-random one, one queen per row);
+2. while any queen is attacked, picks a *conflicted* queen and moves it within its row to the
+   column that minimizes the number of conflicts (ties broken at random);
+3. stops when no queen is attacked -- a solution -- or a step budget is exhausted (restart).
+
+It is *hill-climbing on the conflict count*, and like all hill-climbing it can stall in local
+minima (the random tie-breaking and restarts are what shake it loose). What makes it startling
+is the empirics: for @math{n}-queens the number of repair steps to a solution is *roughly
+constant* in @math{n}, so million-queens is no harder per-queen than eight-queens. Most large,
+sparse CSPs share this "solutions are everywhere" structure, which is why min-conflicts and its
+relatives underpin practical schedulers and configurators.
+
+#+name: mc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/min_conflicts.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MIN-CONFLICTS-NQUEENS(n, max_steps):
+  place one queen per row (greedy-random, few conflicts)
+  repeat up to max_steps:
+      if no queen is attacked: return the placement
+      pick a conflicted queen (random)
+      move it within its row to the column with the fewest conflicts (ties random)
+  return failure (restart)
+#+end_example
+
+* Worked example: an 8-queens solution, and effort versus n
+
+We solve @math{8}-queens and print the board, then measure the repair steps needed as
+@math{n} climbs from 8 to 2000.
+
+#+name: mc-run
+#+begin_src c++ :eval no
+    const NQueensResult q8 = min_conflicts_nqueens(8, 1000, 42);
+    std::cout << "=== 8-queens (solved: " << (q8.solved ? "yes" : "no") << ", steps " << q8.steps << ") ===\n";
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) std::cout << (q8.queens[r] == c ? "Q " : ". ");
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+
+    std::vector<double> ns, steps;
+    std::cout << "n       repair steps\n";
+    for (int n : {8, 20, 50, 100, 250, 500, 1000, 2000}) {
+        const NQueensResult r = min_conflicts_nqueens(n, 50 * n, 7u + n);
+        ns.push_back(n);
+        steps.push_back(static_cast<double>(r.steps));
+        std::printf("%-6d  %-6d  (%s)\n", n, r.steps, r.solved ? "solved" : "FAILED");
+    }
+
+    // 8-queens board points for the figure.
+    std::vector<double> qx, qy;
+    for (int r = 0; r < 8; ++r) { qx.push_back(q8.queens[r] + 0.5); qy.push_back(7 - r + 0.5); }
+
+    auto plot = RPlot::create();
+    plot.line(ns, steps, "steps", RGB{124, 58, 237}, 2.0);
+    plot.points(ns, steps, "steps", RGB{124, 58, 237}, 6.0);
+    plot.legend({"repair steps to solve"}, {{124, 58, 237}});
+    plot.title("Min-conflicts effort grows far slower than n (n-queens)")
+        .x_label("board size n").y_label("repair steps").background({250, 250, 252});
+    plot.save_svg("build/org/min_conflicts.svg");
+    std::cout << "\nwrote min_conflicts.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/min_conflicts_analysis.cpp <<'CPP'
+<<mc-includes>>
+
+int main() {
+<<mc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/min_conflicts_analysis.cpp -o build/org/min_conflicts_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/min_conflicts_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== 8-queens (solved: yes, steps 1) ===
+. . . . . . Q .
+. . . . Q . . .
+. . Q . . . . .
+Q . . . . . . .
+. . . . . Q . .
+. . . . . . . Q
+. Q . . . . . .
+. . . Q . . . .
+
+n       repair steps
+8       7       (solved)
+20      24      (solved)
+50      93      (solved)
+100     38      (solved)
+250     46      (solved)
+500     16      (solved)
+1000    32      (solved)
+2000    52      (solved)
+
+wrote min_conflicts.svg
+#+end_example
+
+The eight-queens board is a valid solution -- one queen per row and column, none sharing a
+diagonal -- and the step table is the striking part: as @math{n} grows from 8 to 2000, a
+factor of 250, the number of repair moves stays *bounded and small* -- indeed @math{n=2000}
+needed fewer repairs than @math{n=50}. There is no exponential blow-up; local repair walks
+almost straight to a solution regardless of scale.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/min_conflicts.svg]]
+
+The step count stays low and jagged across a huge range of board sizes, showing no upward
+trend with @math{n} -- close to the famous result that min-conflicts solves @math{n}-queens
+in near-constant work per attempt. That scalability, on a problem that defeats systematic
+search at large @math{n}, is why conflict-minimizing local search is a staple of real-world
+constraint solving.

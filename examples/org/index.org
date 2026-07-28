@@ -893,6 +893,26 @@ We implement minimax and alpha-beta pruning (=algorithms::minimax=, =alpha_beta=
 
 We implement DPLL (=algorithms::dpll_sat=) and report it as a literate program. We give unit propagation, pure-literal elimination, and branching; a small formula is solved and a contradiction rejected, and a random 3-SAT sweep reproduces the satisfiability phase transition, the fraction-satisfiable curve dropping through one-half near the m/n = 4.26 threshold.
 
+** [[./ac3_analysis.html][AC-3: Shrinking a CSP by Arc Consistency]] ([[./ac3_analysis.pdf][PDF]])
+/A literate C++ study of constraint propagation using datamunge/
+
+We implement AC-3 arc consistency (=algorithms::ac3=) and report it as a literate program. We give the revise/re-enqueue worklist that deletes unsupported values; on the ordering chain x0<x1<x2<x3<x4 over domains 1..9, propagation alone contracts every nine-value domain to a five-value band, leaving all arcs consistent.
+
+** [[./exact_cover_analysis.html][Exact Cover and Dancing Links: Knuth's Algorithm X]] ([[./exact_cover_analysis.pdf][PDF]])
+/A literate C++ study of DLX using datamunge/
+
+We implement exact cover via Dancing Links (=algorithms::exact_cover=) and report it as a literate program. We give Algorithm X and the reversible cover/uncover pointer surgery of DLX; Knuth's example is solved and a 4x6 board is tiled by 12 dominoes encoded as an exact-cover instance and drawn.
+
+** [[./min_conflicts_analysis.html][Min-Conflicts: Solving a Million Queens by Local Repair]] ([[./min_conflicts_analysis.pdf][PDF]])
+/A literate C++ study of CSP local search using datamunge/
+
+We implement the min-conflicts heuristic for n-queens (=algorithms::min_conflicts_nqueens=) and report it as a literate program. We give the greedy conflict-minimizing repair walk; an 8-queens board is solved and the repair-step count stays bounded and small as n grows from 8 to 2000 (n=2000 needing fewer repairs than n=50).
+
+** [[./ellipsoid_analysis.html][The Ellipsoid Method: Convex Optimization by Shrinking Volumes]] ([[./ellipsoid_analysis.pdf][PDF]])
+/A literate C++ study of subgradient minimization using datamunge/
+
+We implement the ellipsoid method (=algorithms::ellipsoid_minimize=) and report it as a literate program. We give the subgradient half-cut and the closed-form ellipsoid update whose volume shrinks by e^(-1/2n) per step; a 2-D quadratic is minimized to its optimum (3,-1) with the objective decaying geometrically on a log scale.
+
 ** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
 /A literate C++ study of polynomial interpolation using datamunge/
 

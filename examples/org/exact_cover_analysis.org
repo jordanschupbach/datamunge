@@ -1,0 +1,156 @@
+#+title: Exact Cover and Dancing Links: Knuth's Algorithm X
+#+subtitle: A literate C++ study of DLX with =datamunge='s =algorithms::exact_cover=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *exact cover* problem -- pick rows of a 0/1 matrix so that every column is covered
+*exactly once* -- is the hidden skeleton behind Sudoku, polyomino tiling, and N-queens.
+Knuth's *Algorithm X* solves it by the obvious recursion; his *Dancing Links* (DLX) makes it
+fly, representing the matrix as a mesh of doubly-linked nodes where removing and restoring a
+row or column is four pointer assignments that *undo themselves perfectly* on backtrack. This
+report drives =datamunge='s =algorithms::exact_cover=, verified against brute force, and uses
+it to tile a board with dominoes.
+#+end_abstract
+
+* Cover, recurse, uncover -- without copying
+
+Algorithm X is nondeterministic search: while columns remain, pick one, try each row that
+covers it, and recurse on the reduced matrix. Its cost is dominated by *maintaining* that
+reduced matrix under repeated tentative removals and restorations. Dancing Links is the trick:
+store the matrix as circular doubly-linked lists (each 1 a node linked to its neighbours up,
+down, left, right, plus a header per column with a running size). To *cover* a column,
+
+#+begin_example
+L[R[c]] <- L[c];  R[L[c]] <- R[c]      # splice the column header out
+#+end_example
+
+and splice out every row that used it. To *uncover* on backtrack, run the exact inverse in
+reverse order -- the nodes are still there, pointing at their old neighbours, so
+@math{L[R[c]]\leftarrow c} snaps them back. *Nothing is copied.* Choosing the column with the
+fewest remaining rows (the S-heuristic) keeps the branching factor low. The result is a solver
+fast enough that Knuth famously used it to enumerate polyomino tilings and Sudoku solutions by
+the million.
+
+#+name: ec-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exact_cover.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SEARCH():                                  # Algorithm X with Dancing Links
+  if the matrix has no columns: report the current rows as a solution
+  choose column c with the fewest rows (S-heuristic)
+  cover(c)
+  for each row r covering c:
+      add r to the partial solution
+      for each other column j in r: cover(j)
+      SEARCH()
+      for each other column j in r: uncover(j)    # dancing links: exact undo
+      remove r from the partial solution
+  uncover(c)
+#+end_example
+
+* Worked example: a domino tiling as exact cover
+
+Tiling a board with dominoes is exact cover: the *columns* are the board cells (each must be
+covered once), and the *rows* are the possible domino placements (each covering two adjacent
+cells). We tile a @math{4\times6} board and draw the result.
+
+#+name: ec-run
+#+begin_src c++ :eval no
+    // Knuth's textbook instance first (7 columns).
+    const std::vector<std::vector<int>> knuth{{0, 3, 6}, {0, 3}, {3, 4, 6}, {2, 4, 5}, {1, 6}, {2, 5}};
+    const ExactCoverResult kr = exact_cover(7, knuth);
+    std::cout << "=== Knuth's 7-column example ===\n";
+    std::cout << "solved: " << (kr.solved ? "yes" : "no") << ", chosen rows:";
+    for (int r : kr.rows) std::cout << " " << r;
+    std::cout << "\n\n";
+
+    // Domino tiling of a 4x6 board.
+    const int R = 4, C = 6;
+    auto cell = [&](int r, int c) { return r * C + c; };
+    std::vector<std::vector<int>>              rows;
+    std::vector<std::pair<int, int>>           cells; // (cellA, cellB) for each row, for drawing
+    for (int r = 0; r < R; ++r)
+        for (int c = 0; c < C; ++c) {
+            if (c + 1 < C) { rows.push_back({cell(r, c), cell(r, c + 1)}); cells.push_back({cell(r, c), cell(r, c + 1)}); }
+            if (r + 1 < R) { rows.push_back({cell(r, c), cell(r + 1, c)}); cells.push_back({cell(r, c), cell(r + 1, c)}); }
+        }
+    const ExactCoverResult tiling = exact_cover(R * C, rows);
+    std::cout << "=== 4x6 domino tiling ===\n";
+    std::cout << "solved: " << (tiling.solved ? "yes" : "no") << ", dominoes used: " << tiling.rows.size()
+              << " (expected " << R * C / 2 << ")\n";
+
+    auto plot = RPlot::create();
+    const RGB palette[] = {{147, 197, 253}, {167, 243, 208}, {253, 224, 71}, {252, 165, 165}};
+    int idx = 0;
+    for (int r : tiling.rows) {
+        const int a = cells[r].first, b = cells[r].second;
+        const int ra = a / C, ca = a % C, rb = b / C, cb = b % C;
+        const double x0 = std::min(ca, cb), y0 = std::min(R - 1 - ra, R - 1 - rb);
+        const double x1 = std::max(ca, cb) + 1, y1 = std::max(R - 1 - ra, R - 1 - rb) + 1;
+        plot.polygon({x0, x1, x1, x0}, {y0, y0, y1, y1}, palette[idx++ % 4], true);
+        plot.polygon({x0, x1, x1, x0}, {y0, y0, y1, y1}, RGB{30, 41, 59}, false);
+    }
+    plot.title("A domino tiling of a 4x6 board, found as an exact cover")
+        .x_label("column").y_label("row").background({250, 250, 252});
+    plot.save_svg("build/org/exact_cover.svg");
+    std::cout << "wrote exact_cover.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/exact_cover_analysis.cpp <<'CPP'
+<<ec-includes>>
+
+int main() {
+<<ec-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/exact_cover_analysis.cpp -o build/org/exact_cover_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/exact_cover_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Knuth's 7-column example ===
+solved: yes, chosen rows: 4 1 3
+
+=== 4x6 domino tiling ===
+solved: yes, dominoes used: 12 (expected 12)
+wrote exact_cover.svg
+#+end_example
+
+Knuth's instance is solved to its unique cover, and the @math{4\times6} board is perfectly
+tiled by @math{12} dominoes -- every cell covered exactly once, no overlaps, no gaps -- which
+is precisely the exact-cover condition read back as a tiling. The same solver, on a much
+larger matrix, is what tiles pentominoes or fills a Sudoku.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/exact_cover.svg]]
+
+Each coloured rectangle is one domino from the chosen rows; together they cover the board
+completely and disjointly. Dancing Links found this arrangement by trying placements and
+un-trying them with perfectly reversible pointer surgery -- the elegant mechanism that makes
+exhaustive exact-cover search practical.
