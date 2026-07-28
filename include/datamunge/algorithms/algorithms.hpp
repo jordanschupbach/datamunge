@@ -17,6 +17,7 @@
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/algorithms/division.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>

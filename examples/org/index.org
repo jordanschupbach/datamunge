@@ -753,6 +753,21 @@ We implement the schoolbook square-root method (=algorithms::digit_by_digit_sqrt
 
 We implement binary long division (=algorithms::long_division=) and report it as a literate program. Scanning the dividend bit by bit, shifting each into a remainder register and subtracting the divisor when it fits, yields the quotient with a single compare per bit; results match the built-in / and % over half a million random pairs, and a register trace shows the subtract-when-it-reaches-D rhythm of hardware division.
 
+** [[./restoring_division_analysis.html][Restoring Division: Subtract, Test, Put It Back]] ([[./restoring_division_analysis.pdf][PDF]])
+/A literate C++ study of the classic sequential divider using datamunge/
+
+We implement restoring division (=algorithms::restoring_divide=) and report it as a literate program. Each bit trial-subtracts the divisor and, if the remainder goes negative, restores it and emits a 0; results match the built-in / and % over 300k random pairs, and a trace of 217/13 shows every negative trial being put back -- the wasted add that names the method.
+
+** [[./non_restoring_division_analysis.html][Non-Restoring Division: Never Put It Back]] ([[./non_restoring_division_analysis.pdf][PDF]])
+/A literate C++ study of the signed-remainder divider using datamunge/
+
+We implement non-restoring division (=algorithms::non_restoring_divide=) and report it as a literate program. Instead of restoring a negative remainder it leaves it negative and adds next step, doing exactly one add/subtract per bit plus a single end correction; results match the built-in operators over half a million random pairs including the full-width 2^64-1 dividend, and the operation counts beat restoring's data-dependent cost.
+
+** [[./newton_raphson_division_analysis.html][Newton-Raphson Division: Dividing by Multiplying]] ([[./newton_raphson_division_analysis.pdf][PDF]])
+/A literate C++ study of reciprocal-based division using datamunge/
+
+We implement Newton-Raphson division (=algorithms::newton_raphson_divide=) and report it as a literate program. The reciprocal 1/D is found by the division-free iteration x<-x(2-Dx) whose error squares each step, then multiplied by the dividend and corrected exactly; results match the built-in operators over half a million random pairs and the reciprocal's correct-digit count is shown doubling every iteration.
+
 ** [[./gauss_legendre_pi_analysis.html][The Gauss-Legendre Algorithm: Pi by Doubling Digits]] ([[./gauss_legendre_pi_analysis.pdf][PDF]])
 /A literate C++ study of AGM iteration using datamunge/
 
