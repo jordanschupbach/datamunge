@@ -1038,6 +1038,26 @@ We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) a
 
 We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
 
+** [[./finite_difference_analysis.html][The Finite Difference Method: Turning a Differential Equation Into a Matrix]] ([[./finite_difference_analysis.pdf][PDF]])
+/A literate C++ study of the Poisson BVP using datamunge/
+
+We implement the finite difference method for -u''=f (=algorithms::finite_difference_poisson=) and report it as a literate program. The central second difference turns the BVP into a tridiagonal system solved by Thomas in O(n); -u''=pi^2 sin(pi x) recovers sin(pi x) with error falling 8e-3 -> 3e-5 as the grid refines (O(h^2)), plus exact linear solutions for f=0.
+
+** [[./crank_nicolson_analysis.html][The Crank-Nicolson Method: Stable, Second-Order Diffusion]] ([[./crank_nicolson_analysis.pdf][PDF]])
+/A literate C++ study of the heat equation using datamunge/
+
+We implement Crank-Nicolson for u_t=D u_xx (=algorithms::crank_nicolson_heat=) and report it as a literate program. Averaging the explicit and implicit stencils gives an unconditionally stable, second-order scheme (a tridiagonal solve per step); a sine profile diffuses at the analytic e^{-pi^2 t} rate, matched to a few parts in 10^5 even at time steps an explicit method could not take.
+
+** [[./lax_wendroff_analysis.html][The Lax-Wendroff Scheme: Second-Order Advection Without the Smear]] ([[./lax_wendroff_analysis.pdf][PDF]])
+/A literate C++ study of the advection equation using datamunge/
+
+We implement Lax-Wendroff for u_t+a u_x=0 (=algorithms::lax_wendroff_advection=) and report it as a literate program. A time-Taylor step converting u_tt into a^2 u_xx gives a second-order explicit update stable under CFL |nu|<=1; a Gaussian pulse advected a full periodic lap returns with max error 0.008 and mass conserved to 9 digits, far less smeared than first-order upwind.
+
+** [[./trapezoidal_ode_analysis.html][The Trapezoidal Rule for ODEs: Second-Order and A-Stable]] ([[./trapezoidal_ode_analysis.pdf][PDF]])
+/A literate C++ study of the implicit trapezoidal integrator using datamunge/
+
+We implement the implicit trapezoidal ODE integrator (=algorithms::trapezoidal_ode=) and report it as a literate program. Averaging the endpoint slopes gives a second-order, A-stable method (the ODE twin of Crank-Nicolson); on y'=-y the error quarters per step-halving (empirical order 2.007), and a stiff y'=-50y with a large step stays bounded and decaying.
+
 ** [[./cuthill_mckee_analysis.html][The Cuthill-McKee Algorithm: Pulling Nonzeros Toward the Diagonal]] ([[./cuthill_mckee_analysis.pdf][PDF]])
 /A literate C++ study of bandwidth reduction using datamunge/
 

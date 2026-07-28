@@ -362,12 +362,12 @@ Further information: Differential equation
     Linear multistep methods
     Multigrid methods (MG methods), a group of algorithms for solving differential equations using a hierarchy of discretizations
     Partial differential equation:
-        Crank–Nicolson method for diffusion equations
-        Finite difference method
-        Lax–Wendroff for wave equations
+        [x] Crank–Nicolson method for diffusion equations  -- datamunge::algorithms::crank_nicolson_heat; report examples/org/crank_nicolson_analysis.org
+        [x] Finite difference method  -- datamunge::algorithms::finite_difference_poisson; report examples/org/finite_difference_analysis.org
+        [x] Lax–Wendroff for wave equations  -- datamunge::algorithms::lax_wendroff_advection; report examples/org/lax_wendroff_analysis.org
     [x] Runge–Kutta methods  -- datamunge::algorithms::runge_kutta4 (classical RK4, 4th order); report examples/org/runge_kutta4_analysis.org
         Euler integration
-    Trapezoidal rule (differential equations)
+    [x] Trapezoidal rule (differential equations)  -- datamunge::algorithms::trapezoidal_ode; report examples/org/trapezoidal_ode_analysis.org
     [x] Verlet integration (French pronunciation: [vɛʁˈlɛ]): integrate Newton's equations of motion  -- datamunge::algorithms::velocity_verlet (symplectic); report examples/org/verlet_analysis.org
 
 Elementary and special functions

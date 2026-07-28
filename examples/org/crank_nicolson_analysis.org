@@ -1,0 +1,129 @@
+#+title: The Crank-Nicolson Method: Stable, Second-Order Diffusion
+#+subtitle: A literate C++ study of the heat equation with =datamunge='s =algorithms::crank_nicolson_heat=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The heat (diffusion) equation \(u_t=D\,u_{xx}\) can be marched forward in time explicitly, but
+only under a punishing step-size limit \(\Delta t\lesssim\Delta x^2\). The *Crank-Nicolson method*
+(1947) removes that limit by *averaging* the explicit and implicit spatial stencils at the two
+time levels: the scheme is *unconditionally stable* and *second-order accurate in both time and
+space*. Each step solves a tridiagonal system. This report drives =datamunge='s
+=algorithms::crank_nicolson_heat=, verified against the analytic decay
+\(e^{-\pi^2 t}\sin(\pi x)\), and watches the profile diffuse.
+#+end_abstract
+
+* Average the two Euler stencils
+
+Forward Euler evaluates \(u_{xx}\) at the *old* time (explicit, cheap, conditionally stable);
+backward Euler at the *new* time (implicit, unconditionally stable, first order). Crank-Nicolson
+takes their *average*. With \(r=\dfrac{D\,\Delta t}{2\,\Delta x^2}\), the update for interior
+point \(i\) is
+
+\[ -r\,u_{i-1}^{n+1}+(1+2r)\,u_i^{n+1}-r\,u_{i+1}^{n+1}
+   \;=\; r\,u_{i-1}^{n}+(1-2r)\,u_i^{n}+r\,u_{i+1}^{n}. \]
+
+The left side is a *tridiagonal* system solved each step by the Thomas algorithm; the right side
+is a cheap explicit combination of the current values. Averaging the time levels makes the local
+truncation error \(O(\Delta t^2+\Delta x^2)\) and -- because the amplification factor stays below
+1 in magnitude for *every* \(r\) -- the method never blows up, so \(\Delta t\) is chosen for
+*accuracy*, not stability. It is the standard workhorse for parabolic PDEs.
+
+#+name: cn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pde_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CRANK-NICOLSON(u0, D, nx, dt, nsteps):
+  r <- D dt / (2 dx^2)
+  u <- sample u0 on the interior grid
+  repeat nsteps times:
+      rhs_i <- r u_{i-1} + (1-2r) u_i + r u_{i+1}
+      solve  (-r, 1+2r, -r) tridiagonal system for the new u   (Thomas)
+  return u
+#+end_example
+
+* Worked example: a sine profile decaying
+
+The initial profile \(\sin(\pi x)\) diffuses as \(u(x,t)=e^{-\pi^2 t}\sin(\pi x)\). We advance to
+\(t=0.1\) and compare to the exact decay at several times.
+
+#+name: cn-run
+#+begin_src c++ :eval no
+    auto u0 = [](double x) { return std::sin(M_PI * x); };
+    const int nx = 60; const double dt = 0.001; const double dx = 1.0 / (nx + 1);
+
+    auto plot = RPlot::create();
+    const RGB cols[] = {{16, 185, 129}, {37, 99, 235}, {124, 58, 237}};
+    const double times[] = {0.0, 0.05, 0.1};
+    std::cout << "=== heat equation u_t = u_xx, u0 = sin(pi x) ===\n";
+    for (int k = 0; k < 3; ++k) {
+        const int steps = (int)std::lround(times[k] / dt);
+        const auto u = crank_nicolson_heat(u0, 1.0, 1.0, nx, dt, steps);
+        double err = 0; for (int i = 0; i <= nx + 1; ++i) err = std::max(err, std::fabs(u[i] - std::exp(-M_PI * M_PI * times[k]) * std::sin(M_PI * i * dx)));
+        std::printf("t=%.2f: peak = %.5f (exact %.5f), max error %.2e\n", times[k], u[nx / 2], std::exp(-M_PI * M_PI * times[k]) * std::sin(M_PI * (nx / 2 + 1) * dx), err);
+        std::vector<double> gx, gy; for (int i = 0; i <= nx + 1; ++i) { gx.push_back(i * dx); gy.push_back(u[i]); }
+        plot.line(gx, gy, "t", cols[k], 2.0);
+    }
+    plot.legend({"t = 0.00", "t = 0.05", "t = 0.10"}, {cols[0], cols[1], cols[2]});
+    plot.title("Crank-Nicolson: a sine profile diffusing (exact rate e^{-pi^2 t})")
+        .x_label("x").y_label("u(x,t)").background({250, 250, 252});
+    plot.save_svg("build/org/crank_nicolson.svg");
+    std::cout << "\nwrote crank_nicolson.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/crank_nicolson_analysis.cpp <<'CPP'
+<<cn-includes>>
+
+int main() {
+<<cn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/crank_nicolson_analysis.cpp -o build/org/crank_nicolson_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/crank_nicolson_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== heat equation u_t = u_xx, u0 = sin(pi x) ===
+t=0.00: peak = 0.99967 (exact 0.99967), max error 4.44e-16
+t=0.05: peak = 0.61036 (exact 0.61030), max error 6.41e-05
+t=0.10: peak = 0.37266 (exact 0.37258), max error 7.83e-05
+
+wrote crank_nicolson.svg
+#+end_example
+
+At each time the numerical peak matches the analytic \(e^{-\pi^2 t}\) decay to a few parts in
+\(10^{5}\), and the profile stays a clean sine as it shrinks -- no oscillation, no blow-up, even
+though the step size is far larger than an explicit scheme could tolerate. That is the payoff of
+the implicit average.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/crank_nicolson.svg]]
+
+The three curves are the same sine shape at successively lower amplitude -- the diffusion draining
+energy out at exactly the predicted exponential rate. Crank-Nicolson delivers this with a
+tridiagonal solve per step and no stability limit, which is why it is the default integrator for
+diffusion, option pricing (the Black-Scholes PDE), and heat transfer.
