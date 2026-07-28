@@ -358,6 +358,21 @@ We implement Gale-Shapley deferred acceptance (=algorithms::gale_shapley=, plus 
 
 We implement Kahn's topological-sort algorithm (=algorithms::topological_sort=, plus =is_topological_order=) and report it as a literate program. We define directed acyclic graphs and topological order, give the in-degree/queue pseudocode with termination and correctness arguments, and note how emitting fewer than n vertices doubles as an exact cycle test; a six-course computer-science prerequisite DAG is sorted into a legal study plan and drawn as a layered left-to-right layout in the returned order.
 
+** [[./kosaraju_analysis.html][Kosaraju's Algorithm: Strongly Connected Components in Two Passes]] ([[./kosaraju_analysis.pdf][PDF]])
+/A literate C++ study of SCCs by DFS and transpose using datamunge/
+
+We implement Kosaraju's algorithm (=algorithms::kosaraju_scc=) and report it as a literate program. A first DFS records finishing order, then a DFS of the transpose graph in reverse finishing order peels off each strongly connected component in O(V+E); it agrees with Tarjan's algorithm and a reachability brute force over thousands of random graphs, with the component sizes plotted.
+
+** [[./tarjan_scc_analysis.html][Tarjan's SCC Algorithm: Components in a Single DFS]] ([[./tarjan_scc_analysis.pdf][PDF]])
+/A literate C++ study of low-link component finding using datamunge/
+
+We implement Tarjan's SCC algorithm (=algorithms::tarjan_scc=) and report it as a literate program. A single DFS with discovery times, low-links, and a stack pops off a component whenever a vertex's low-link equals its discovery time; it recovers the same partition as Kosaraju in one pass, verified over thousands of random graphs, with the component sizes plotted.
+
+** [[./bron_kerbosch_analysis.html][The Bron-Kerbosch Algorithm: All Maximal Cliques]] ([[./bron_kerbosch_analysis.pdf][PDF]])
+/A literate C++ study of clique enumeration using datamunge/
+
+We implement Bron-Kerbosch with pivoting (=algorithms::bron_kerbosch=) and report it as a literate program. Recursing over the clique-so-far, candidate, and excluded sets -- reporting only when both candidate and excluded are empty (maximality), and pivoting to prune redundant branches -- enumerates every maximal clique; it matches a brute-force enumeration over thousands of random graphs, with the clique-size histogram plotted.
+
 ** [[./prufer_analysis.html][Prüfer Coding: A Bijection Between Labeled Trees and Integer Sequences]] ([[./prufer_analysis.pdf][PDF]])
 /A literate C++ study of tree encoding, the labeled-tree bijection, and Cayley's formula using datamunge/
 

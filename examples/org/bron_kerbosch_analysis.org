@@ -1,0 +1,135 @@
+#+title: The Bron-Kerbosch Algorithm: All Maximal Cliques
+#+subtitle: A literate C++ study of clique enumeration with =datamunge='s =algorithms::bron_kerbosch=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *clique* is a set of vertices all pairwise adjacent; a *maximal* clique is one no vertex can extend.
+Listing every maximal clique is a core task in social-network analysis, bioinformatics, and pattern
+matching. The Bron-Kerbosch algorithm (1973) does it with an elegant recursion over three sets --
+the clique being built, the candidates that can still extend it, and those already excluded -- sharpened
+by a *pivot* that avoids exploring redundant branches. This report drives =datamunge='s
+=algorithms::bron_kerbosch=, verified against a brute-force enumeration over thousands of random graphs.
+#+end_abstract
+
+* Recurse on R, P, X -- with a pivot
+
+Maintain three disjoint vertex sets:
+
+- \(R\): the clique built so far (all mutually adjacent),
+- \(P\): candidates -- vertices adjacent to everything in \(R\) that could still extend it,
+- \(X\): vertices already adjacent to all of \(R\) but *already reported* in some earlier clique.
+
+The recursion:
+
+\[ \textbf{BK}(R,P,X):\quad \text{if } P=X=\varnothing,\ \text{report } R \text{ (maximal);} \]
+
+otherwise, for each candidate \(v\in P\), recurse with \(v\) added to the clique and both \(P\) and
+\(X\) restricted to \(v\)'s neighbours, then move \(v\) from \(P\) to \(X\). Reporting only when both
+\(P\) and \(X\) are empty guarantees *maximality* (a nonempty \(X\) means some vertex could extend
+\(R\), so it is not maximal). The refinement that makes it fast is the *pivot*: pick a vertex \(u\) from
+\(P\cup X\) with many neighbours in \(P\), and only branch on candidates *not* adjacent to \(u\) --
+because any maximal clique must either contain \(u\) or omit one of its non-neighbours, so those are the
+only branches that can yield something new. Pivoting slashes the recursion tree and gives worst-case
+time \(O(3^{n/3})\), matching the maximum possible number of maximal cliques.
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_connectivity.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BRON-KERBOSCH(R, P, X):
+  if P and X are both empty: report R as a maximal clique; return
+  choose a pivot u in P ∪ X maximising |P ∩ N(u)|
+  for each v in P \ N(u):
+      BRON-KERBOSCH(R ∪ {v}, P ∩ N(v), X ∩ N(v))
+      move v from P to X
+#+end_example
+
+* Worked example: cliques of a small social graph
+
+We enumerate the maximal cliques of a hand-built graph and plot how many cliques there are of each
+size.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    // 7 vertices: a triangle {0,1,2}, a 4-clique {2,3,4,5}, and a pendant 5-6.
+    std::vector<std::vector<int>> adj = {
+        {1, 2}, {0, 2}, {0, 1, 3, 4, 5}, {2, 4, 5}, {2, 3, 5}, {2, 3, 4, 6}, {5}};
+    const int n = 7;
+    auto cliques = bron_kerbosch(n, adj);
+    std::cout << "=== Bron-Kerbosch maximal cliques ===\n";
+    std::cout << cliques.size() << " maximal cliques:\n";
+    std::vector<int> bysize(n + 2, 0);
+    for (const auto& cl : cliques) {
+        std::cout << "  {";
+        for (std::size_t i = 0; i < cl.size(); ++i) std::cout << (i ? "," : "") << cl[i];
+        std::cout << "}  (size " << cl.size() << ")\n";
+        bysize[cl.size()]++;
+    }
+    std::vector<double> heights; std::vector<std::string> labels;
+    for (int sz = 1; sz <= n; ++sz) if (bysize[sz]) { heights.push_back(bysize[sz]); labels.push_back("size " + std::to_string(sz)); }
+
+    auto plot = RPlot::barplot(heights, labels, "count", RGB{5, 150, 105});
+    plot.title("Bron-Kerbosch: number of maximal cliques of each size")
+        .x_label("clique size").y_label("count").background({250, 250, 252});
+    plot.save_svg("build/org/bron_kerbosch.svg");
+    std::cout << "\nwrote bron_kerbosch.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bron_kerbosch_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bron_kerbosch_analysis.cpp -o build/org/bron_kerbosch_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bron_kerbosch_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bron-Kerbosch maximal cliques ===
+3 maximal cliques:
+  {0,1,2}  (size 3)
+  {2,3,4,5}  (size 4)
+  {5,6}  (size 2)
+
+wrote bron_kerbosch.svg
+#+end_example
+
+Bron-Kerbosch finds every maximal clique -- the triangle, the 4-clique, and the pendant edge -- and
+nothing that is contained in a larger one, matching the brute-force enumeration the test suite runs
+over thousands of random graphs.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/bron_kerbosch.svg]]
+
+The size histogram shows the graph's clique structure at a glance: a lone \(4\)-clique, a triangle, and
+the pendant edge that cannot join either. Reporting a clique only when both the candidate and excluded
+sets are empty is what enforces maximality, and the pivot is what keeps the search from wandering down
+branches that can only rediscover cliques already found -- the combination that makes Bron-Kerbosch the
+standard maximal-clique enumerator.

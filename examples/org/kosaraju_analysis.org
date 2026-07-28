@@ -1,0 +1,135 @@
+#+title: Kosaraju's Algorithm: Strongly Connected Components in Two Passes
+#+subtitle: A literate C++ study of SCCs by DFS and transpose with =datamunge='s =algorithms::kosaraju_scc=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *strongly connected component* (SCC) of a directed graph is a maximal set of vertices all mutually
+reachable. Kosaraju's algorithm finds them all with two depth-first searches and a graph transpose --
+strikingly simple for such a fundamental decomposition. The trick: DFS the graph recording finishing
+times, then DFS the *reversed* graph in decreasing finishing-time order; each tree of the second search
+is exactly one SCC. This report drives =datamunge='s =algorithms::kosaraju_scc=, verified against a
+reachability brute force and against Tarjan's algorithm over thousands of random graphs.
+#+end_abstract
+
+* Finish, reverse, and peel off components
+
+The algorithm runs in two phases plus a transpose:
+
+1. *First DFS* on \(G\): explore every vertex, and when a vertex finishes (all its descendants done)
+   push it onto a stack. The stack ends in *reverse topological order of the components*.
+2. *Transpose* \(G\) to \(G^{T}\) (reverse every edge). Reversing edges preserves each SCC (mutual
+   reachability is symmetric) but reverses the order between different components.
+3. *Second DFS* on \(G^{T}\), taking start vertices by popping the stack (decreasing finishing time).
+   Each DFS tree can reach only within its own SCC -- it cannot escape to another component, because in
+   \(G^{T}\) the components that came "after" have been visited already. So each tree is one SCC.
+
+The correctness rests on a lemma: the vertex with the largest finishing time lies in a *source*
+component of the condensation (the DAG of SCCs). Starting the transpose search there, it captures
+exactly that component, then the next-largest unvisited finish time gives the next source of what
+remains, and so on. Two linear-time DFS passes give the whole decomposition in \(O(V+E)\).
+
+#+name: ks-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_connectivity.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+KOSARAJU(G):
+  DFS all of G; push each vertex on a stack when it finishes
+  build G^T (reverse every edge)
+  while the stack is nonempty:
+      pop u; if u unassigned:
+          DFS u in G^T, labelling every reached unassigned vertex a new component
+  return the component label of each vertex
+#+end_example
+
+* Worked example: components of a directed graph
+
+We decompose a small directed graph and report its SCCs and their sizes.
+
+#+name: ks-run
+#+begin_src c++ :eval no
+    // 8 vertices: cycle 0->1->2->0, cycle 3->4->5->3, bridge 2->3, tail 5->6, 6->7.
+    std::vector<std::vector<int>> adj = {{1}, {2}, {0, 3}, {4}, {5}, {3, 6}, {7}, {}};
+    const int n = 8;
+    const auto comp = kosaraju_scc(n, adj);
+    std::cout << "=== Kosaraju SCC ===\n";
+    int k = *std::max_element(comp.begin(), comp.end()) + 1;
+    std::cout << n << " vertices -> " << k << " components\n";
+    std::vector<std::vector<int>> members(k);
+    for (int v = 0; v < n; ++v) members[comp[v]].push_back(v);
+    std::vector<double> sizes; std::vector<std::string> labels;
+    for (int c = 0; c < k; ++c) {
+        std::cout << "  component " << c << ": {";
+        for (std::size_t i = 0; i < members[c].size(); ++i) std::cout << (i ? "," : "") << members[c][i];
+        std::cout << "}\n";
+        sizes.push_back((double)members[c].size()); labels.push_back("C" + std::to_string(c));
+    }
+    std::cout << "matches Tarjan partition: " << ([&]{ auto tc = tarjan_scc(n, adj); std::vector<int> a(n),b(n),ra(n,-1),rb(n,-1); for(int v=0;v<n;++v){ if(ra[comp[v]]<0) ra[comp[v]]=v; if(rb[tc[v]]<0) rb[tc[v]]=v; } for(int v=0;v<n;++v){a[v]=ra[comp[v]];b[v]=rb[tc[v]];} return a==b?"yes":"no"; }()) << "\n";
+
+    auto plot = RPlot::barplot(sizes, labels, "size", RGB{37, 99, 235});
+    plot.title("Kosaraju: sizes of the strongly connected components")
+        .x_label("component").y_label("vertices").background({250, 250, 252});
+    plot.save_svg("build/org/kosaraju.svg");
+    std::cout << "\nwrote kosaraju.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kosaraju_analysis.cpp <<'CPP'
+<<ks-includes>>
+
+int main() {
+<<ks-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kosaraju_analysis.cpp -o build/org/kosaraju_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kosaraju_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Kosaraju SCC ===
+8 vertices -> 4 components
+  component 0: {0,1,2}
+  component 1: {3,4,5}
+  component 2: {6}
+  component 3: {7}
+matches Tarjan partition: yes
+
+wrote kosaraju.svg
+#+end_example
+
+Kosaraju cleanly separates the two 3-cycles from the singleton tail vertices, and its partition matches
+Tarjan's algorithm exactly -- the test suite confirms both against a reachability brute force over
+thousands of random graphs.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/kosaraju.svg]]
+
+The two size-3 bars are the cycles \(\{0,1,2\}\) and \(\{3,4,5\}\); the size-1 bars are the tail
+vertices \(6\) and \(7\), each its own component. Reversing the graph and re-searching in finishing
+order is all it takes to peel the components off one source at a time -- a two-pass, linear-time
+decomposition that underlies 2-SAT solving, dependency analysis, and condensation of any directed
+graph into its DAG of components.
