@@ -45,6 +45,7 @@
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>

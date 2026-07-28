@@ -1,0 +1,164 @@
+#+title: Pollard's Rho for Discrete Logarithms: Low-Memory Collision Search
+#+subtitle: A literate C++ study of the rho method for logs with =datamunge='s =algorithms::pollard_rho_log=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *discrete logarithm problem* -- recover \(x\) from \(g^x\equiv h\pmod p\) -- underlies
+Diffie-Hellman and DSA. Baby-step giant-step solves it in \(O(\sqrt{n})\) time but also
+\(O(\sqrt{n})\) *memory*. *Pollard's rho for logarithms* matches the \(O(\sqrt{n})\) time with
+only \(O(1)\) memory, by a pseudo-random walk that must eventually collide (the birthday
+paradox), each element carried as \(g^a h^b\) so a collision yields a solvable congruence for
+\(x\). This report drives =datamunge='s =algorithms::pollard_rho_log=, verified to recover the
+exponent, and measures its \(\sqrt{n}\) collision time.
+#+end_abstract
+
+* A random walk that has to repeat
+
+Partition the group into three parts and define a step that, from an element \(y=g^a h^b\),
+produces another of the same known form:
+
+- multiply by \(h\) (so \(b\to b+1\)), or
+- square (so \(a\to2a,\ b\to2b\)), or
+- multiply by \(g\) (so \(a\to a+1\)),
+
+chosen by \(y\bmod3\). The sequence wanders through the group, and because the group is finite
+it must revisit a value -- the walk closes into a \(\rho\) shape. Floyd's tortoise-and-hare
+finds the collision \(g^{a_1}h^{b_1}=g^{a_2}h^{b_2}\) using @c O(1) storage. Taking logs base
+\(g\): \(a_1-a_2\equiv x\,(b_2-b_1)\pmod n\), a linear congruence solved for \(x\) (handling
+\(\gcd(b_2-b_1,n)\) by testing the few candidates). By the birthday bound a collision appears
+after about \(\sqrt{\pi n/2}\) steps, so the method is \(O(\sqrt n)\) time -- the same as
+baby-step giant-step but with essentially no memory.
+
+#+name: pr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_more.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+POLLARD-RHO-LOG(g, h, p, n):          # n = order of g
+  walk from a random y = g^a h^b, stepping by y mod 3 (mul h / square / mul g)
+  run tortoise (1 step) and hare (2 steps) until their y collide
+  from g^{a1}h^{b1} = g^{a2}h^{b2}:  (a1-a2) = x*(b2-b1) mod n
+  solve the congruence for x (test the gcd candidates); return x with g^x = h
+#+end_example
+
+* Worked example: recover an exponent, and the sqrt(n) collision time
+
+We solve a discrete log, then measure the average number of walk steps to a collision as the
+group order grows, comparing it to \(\sqrt{n}\).
+
+#+name: pr-run
+#+begin_src c++ :eval no
+    auto powmod = [](std::uint64_t a, std::uint64_t e, std::uint64_t m) {
+        std::uint64_t r = 1 % m; a %= m;
+        while (e) { if (e & 1) r = (std::uint64_t)(( __uint128_t)r * a % m); a = (std::uint64_t)(( __uint128_t)a * a % m); e >>= 1; }
+        return r;
+    };
+
+    const std::uint64_t p = 104729, g = 6, secret = 31337 % (p - 1);
+    const std::uint64_t h = powmod(g, secret, p);
+    const long long x = pollard_rho_log(g, h, p, p - 1);
+    std::cout << "=== solve 6^x = " << h << " (mod " << p << ") ===\n";
+    std::cout << "recovered x = " << x << " (secret " << secret << "), check 6^x mod p = " << powmod(g, x, p) << "\n\n";
+
+    // Measure average collision steps vs sqrt(order) over several primes.
+    // Instrumented plain rho walk (fixed seed for reproducibility).
+    struct PG { std::uint64_t p, g; };
+    const PG tab[] = {{1019, 2}, {2039, 7}, {5087, 5}, {10007, 5}, {20707, 5}, {50021, 3}};
+    std::cout << "prime      sqrt(order)   avg collision steps\n";
+    std::vector<double> sq, steps;
+    for (const PG& e : tab) {
+        long long total = 0; const int trials = 40;
+        for (int t = 0; t < trials; ++t) {
+            const std::uint64_t sx = (1234567ULL * (t + 1)) % (e.p - 1);
+            const std::uint64_t hh = powmod(e.g, sx, e.p);
+            // Start away from the identity (1 is a fixed point of the squaring branch).
+            const std::uint64_t a0 = 1 + (std::uint64_t)t % (e.p - 2), b0 = 1;
+            std::uint64_t y = (std::uint64_t)(( __uint128_t)powmod(e.g, a0, e.p) * powmod(hh, b0, e.p) % e.p);
+            std::uint64_t a = a0, b = b0, Y = y, A = a0, B = b0; long long st = 0;
+            auto step = [&](std::uint64_t& y, std::uint64_t& a, std::uint64_t& b) {
+                switch (y % 3) {
+                case 0: y = (std::uint64_t)(( __uint128_t)y * hh % e.p); b = (b + 1) % (e.p - 1); break;
+                case 1: y = (std::uint64_t)(( __uint128_t)y * y % e.p); a = 2 * a % (e.p - 1); b = 2 * b % (e.p - 1); break;
+                default: y = (std::uint64_t)(( __uint128_t)y * e.g % e.p); a = (a + 1) % (e.p - 1); break; }
+            };
+            for (; st < 100000; ++st) { step(y, a, b); step(Y, A, B); step(Y, A, B); if (y == Y) break; }
+            total += st;
+        }
+        sq.push_back(std::sqrt((double)(e.p - 1)));
+        steps.push_back((double)total / trials);
+        std::printf("%-9llu  %-12.1f  %.1f\n", (unsigned long long)e.p, std::sqrt((double)(e.p - 1)), (double)total / trials);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(sq, steps, "steps", RGB{37, 99, 235}, 2.0);
+    plot.points(sq, steps, "steps", RGB{37, 99, 235}, 6.0);
+    plot.legend({"avg collision steps"}, {{37, 99, 235}});
+    plot.title("Pollard rho for logs: collision time grows like sqrt(order)")
+        .x_label("sqrt(order)").y_label("walk steps to collision").background({250, 250, 252});
+    plot.save_svg("build/org/pollard_rho_log.svg");
+    std::cout << "\nwrote pollard_rho_log.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pollard_rho_log_analysis.cpp <<'CPP'
+<<pr-includes>>
+
+int main() {
+<<pr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pollard_rho_log_analysis.cpp -o build/org/pollard_rho_log_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pollard_rho_log_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== solve 6^x = 97237 (mod 104729) ===
+recovered x = 31337 (secret 31337), check 6^x mod p = 97237
+
+prime      sqrt(order)   avg collision steps
+1019       31.9          38.4
+2039       45.1          59.3
+5087       71.3          72.1
+10007      100.0         124.5
+20707      143.9         176.2
+50021      223.7         234.8
+
+wrote pollard_rho_log.svg
+#+end_example
+
+The secret exponent is recovered exactly -- \(6^x\bmod p\) reproduces the target -- with only a
+constant amount of state, no giant table. The collision-step measurements grow in step with
+\(\sqrt{\text{order}}\): a straight-line relationship, confirming the birthday-paradox
+\(O(\sqrt n)\) running time.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pollard_rho_log.svg]]
+
+The measured collision time rises linearly against \(\sqrt{\text{order}}\), the hallmark of a
+birthday-bound search. Pollard rho buys the same \(O(\sqrt n)\) time as baby-step giant-step
+while replacing its \(O(\sqrt n)\) table with a couple of registers -- the reason it, not BSGS,
+is the practical attack (and, parallelised, the record-setting one) on discrete logs.

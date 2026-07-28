@@ -1,0 +1,145 @@
+#+title: Pohlig-Hellman: Discrete Logs Are Easy When the Order Is Smooth
+#+subtitle: A literate C++ study of subgroup-and-CRT discrete logs with =datamunge='s =algorithms::pohlig_hellman_log=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Pohlig-Hellman algorithm* reduces one hard discrete logarithm to several *tiny* ones. If
+the group order \(n\) factors as \(\prod q_i^{e_i}\), it computes \(x\bmod q_i^{e_i}\) inside each
+prime-power subgroup -- where a discrete log costs only \(O(e_i\sqrt{q_i})\) -- and reassembles
+\(x\) with the Chinese Remainder Theorem. So a *smooth* order (all small prime factors) makes the
+whole discrete log easy, no matter how large \(p\) is. This is the reason cryptographic groups are
+chosen with order divisible by a *large* prime. This report drives =datamunge='s
+=algorithms::pohlig_hellman_log=, verified to recover the exponent, and shows the hard problem
+shattering into small pieces.
+#+end_abstract
+
+* Divide the order, conquer each subgroup
+
+Let \(g\) have order \(n=\prod q_i^{e_i}\). For each prime power \(q^e\):
+
+- \(\gamma=g^{n/q}\) has order \(q\); it generates the order-\(q\) subgroup.
+- Recover the base-\(q\) digits of \(x\bmod q^e\) one at a time: at step \(k\),
+  \((h\,g^{-x_k})^{\,n/q^{k+1}}\) is an element of the order-\(q\) subgroup, and its small
+  discrete log base \(\gamma\) gives the next digit.
+
+Each subgroup log is a \(\sqrt{q}\)-sized search (baby-step giant-step or brute force), repeated
+\(e\) times -- \(O(e\sqrt q)\). Finally CRT stitches the residues \(x\bmod q_i^{e_i}\) into
+\(x\bmod n\). The total cost is \(O\!\big(\sum e_i\sqrt{q_i}\big)\), dominated by the *largest*
+prime factor of \(n\); if that factor is small, the discrete log is trivial. Only a large prime
+factor in \(n\) keeps the problem hard -- which is exactly what secure parameters guarantee.
+
+#+name: ph-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_more.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+POHLIG-HELLMAN(g, h, p, n):           # n = order of g = prod q_i^{e_i}
+  for each prime power q^e dividing n:
+      gamma <- g^(n/q)                 # order q
+      recover x mod q^e digit by digit via small logs base gamma
+  x <- CRT of the residues (x mod q_i^{e_i})
+  return x        # g^x = h
+#+end_example
+
+* Worked example: a smooth-order log, split into its prime powers
+
+We solve a discrete log modulo \(p=1009\) (order \(1008=2^4\cdot3^2\cdot7\)) and compare the
+per-subgroup work \(\sqrt{q^e}\) to the naive whole-group \(\sqrt{n}\).
+
+#+name: ph-run
+#+begin_src c++ :eval no
+    auto powmod = [](std::uint64_t a, std::uint64_t e, std::uint64_t m) {
+        std::uint64_t r = 1 % m; a %= m;
+        while (e) { if (e & 1) r = (std::uint64_t)(( __uint128_t)r * a % m); a = (std::uint64_t)(( __uint128_t)a * a % m); e >>= 1; }
+        return r;
+    };
+
+    const std::uint64_t p = 1009, g = 11, order = 1008, secret = 777;
+    const std::uint64_t h = powmod(g, secret, p);
+    const long long x = pohlig_hellman_log(g, h, p, order);
+    std::cout << "=== solve 11^x = " << h << " (mod " << p << "), order = 1008 = 2^4*3^2*7 ===\n";
+    std::cout << "recovered x = " << x << " (secret " << secret << "), check = " << powmod(g, x, p) << "\n\n";
+
+    // Prime-power factorization of the order and per-subgroup work.
+    std::vector<std::pair<std::uint64_t,int>> f;
+    { std::uint64_t m = order; for (std::uint64_t d = 2; d * d <= m; ++d) if (m % d == 0) { int e = 0; while (m % d == 0) { m /= d; ++e; } f.push_back({d, e}); } if (m > 1) f.push_back({m, 1}); }
+
+    std::vector<double> heights; std::vector<std::string> labels;
+    std::cout << "prime power   sqrt(q^e)\n";
+    for (auto [q, e] : f) {
+        std::uint64_t qe = 1; for (int i = 0; i < e; ++i) qe *= q;
+        heights.push_back(std::sqrt((double)qe));
+        labels.push_back(std::to_string(q) + "^" + std::to_string(e));
+        std::printf(" %llu^%d = %-6llu %.2f\n", (unsigned long long)q, e, (unsigned long long)qe, std::sqrt((double)qe));
+    }
+    heights.push_back(std::sqrt((double)order)); labels.push_back("naive");
+    std::cout << "naive whole-group sqrt(order) = " << std::sqrt((double)order) << "\n";
+
+    auto plot = RPlot::barplot(heights, labels, "sqrt work", RGB{37, 99, 235});
+    plot.title("Pohlig-Hellman work per subgroup vs the naive whole-group search")
+        .x_label("prime-power subgroup (rightmost = naive)").y_label("sqrt(subgroup size)").background({250, 250, 252});
+    plot.save_svg("build/org/pohlig_hellman.svg");
+    std::cout << "\nwrote pohlig_hellman.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pohlig_hellman_analysis.cpp <<'CPP'
+<<ph-includes>>
+
+int main() {
+<<ph-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pohlig_hellman_analysis.cpp -o build/org/pohlig_hellman_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pohlig_hellman_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== solve 11^x = 990 (mod 1009), order = 1008 = 2^4*3^2*7 ===
+recovered x = 777 (secret 777), check = 990
+
+prime power   sqrt(q^e)
+ 2^4 = 16     4.00
+ 3^2 = 9      3.00
+ 7^1 = 7      2.65
+naive whole-group sqrt(order) = 31.749
+
+wrote pohlig_hellman.svg
+#+end_example
+
+The exponent is recovered exactly, and the work breakdown is the point: the naive whole-group
+search would scan about \(\sqrt{1008}\approx32\) elements, but Pohlig-Hellman only ever searches
+the small subgroups -- \(\sqrt{16},\sqrt{9},\sqrt7\), a handful each. The cost is set by the
+*largest* prime factor (here \(7\)), not by \(n\) itself.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pohlig_hellman.svg]]
+
+The three small subgroup bars are dwarfed by the rightmost naive bar: splitting the order turns
+one \(\sqrt n\) search into several tiny ones. Push the largest prime factor up and the tallest
+subgroup bar rises with it -- which is why a single large prime factor in the group order is what
+stands between an attacker and the secret exponent.

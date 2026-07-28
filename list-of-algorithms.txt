@@ -314,8 +314,8 @@ Further information: Number theory
     Discrete logarithm:
         [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
         Index calculus algorithm
-        Pohlig–Hellman algorithm
-        Pollard's rho algorithm for logarithms
+        [x] Pohlig–Hellman algorithm  -- datamunge::algorithms::pohlig_hellman_log; report examples/org/pohlig_hellman_analysis.org
+        [x] Pollard's rho algorithm for logarithms  -- datamunge::algorithms::pollard_rho_log; report examples/org/pollard_rho_log_analysis.org
     [x] Euclidean algorithm: computes the greatest common divisor  -- datamunge::algorithms::extended_gcd (returns gcd); report examples/org/extended_euclidean_analysis.org
     [x] Extended Euclidean algorithm: also solves the equation ax + by = c  -- datamunge::algorithms::extended_gcd (+ modular_inverse); report examples/org/extended_euclidean_analysis.org
     [x] Chinese Remainder Theorem: solves simultaneous congruences (general, non-coprime moduli)  -- datamunge::algorithms::chinese_remainder; report examples/org/chinese_remainder_analysis.org
@@ -344,7 +344,7 @@ Further information: Number theory
     Odlyzko–Schönhage algorithm: calculates nontrivial zeroes of the Riemann zeta function
     Primality tests: determining whether a given number is prime
         AKS primality test
-        Baillie–PSW primality test
+        [x] Baillie–PSW primality test  -- datamunge::algorithms::baillie_psw (strong MR base 2 + strong Lucas); report examples/org/baillie_psw_analysis.org
         [x] Fermat primality test  -- datamunge::algorithms::fermat_probable_prime; report examples/org/fermat_primality_analysis.org
         [x] Lucas primality test  -- datamunge::algorithms::lucas_primality_test (deterministic); report examples/org/lucas_primality_analysis.org
         Miller–Rabin primality test

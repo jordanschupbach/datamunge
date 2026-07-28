@@ -1038,6 +1038,21 @@ We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) a
 
 We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
 
+** [[./pollard_rho_log_analysis.html][Pollard's Rho for Discrete Logarithms: Low-Memory Collision Search]] ([[./pollard_rho_log_analysis.pdf][PDF]])
+/A literate C++ study of the rho method for discrete logs using datamunge/
+
+We implement Pollard's rho for discrete logs (=algorithms::pollard_rho_log=) and report it as a literate program. A three-partition pseudo-random walk carries each element as g^a h^b, Floyd cycle detection finds a collision, and the exponents solve a congruence for x; 6^x=97237 mod 104729 recovers x=31337, and measured collision time grows linearly with sqrt(order) in O(1) memory.
+
+** [[./pohlig_hellman_analysis.html][Pohlig-Hellman: Discrete Logs Are Easy When the Order Is Smooth]] ([[./pohlig_hellman_analysis.pdf][PDF]])
+/A literate C++ study of subgroup-and-CRT discrete logs using datamunge/
+
+We implement Pohlig-Hellman (=algorithms::pohlig_hellman_log=) and report it as a literate program. It solves x mod each prime-power subgroup of the order and CRT-combines them; on order 1008=2^4*3^2*7 the whole-group sqrt(1008)~32 search shatters into subgroup searches of sqrt(16),sqrt(9),sqrt(7), the cost set by the largest prime factor -- the reason secure orders need a large prime factor.
+
+** [[./baillie_psw_analysis.html][The Baillie-PSW Primality Test: Two Tests With No Common Liar]] ([[./baillie_psw_analysis.pdf][PDF]])
+/A literate C++ study of combined primality testing using datamunge/
+
+We implement the Baillie-PSW test (=algorithms::baillie_psw=) and report it as a literate program. It pairs a strong Miller-Rabin base-2 test with a strong Lucas test (Selfridge parameters), whose pseudoprimes are believed disjoint (none below 2^64 fools both); it matches trial division over 200k, certifies the 19-digit 2^63-25 prime, and rejects all 16 strong base-2 pseudoprimes below 100000 that Miller-Rabin(2) alone would pass.
+
 ** [[./goldschmidt_analysis.html][Goldschmidt Division: Driving the Denominator to One]] ([[./goldschmidt_analysis.pdf][PDF]])
 /A literate C++ study of parallel multiplicative division using datamunge/
 
