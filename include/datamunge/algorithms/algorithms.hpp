@@ -7,6 +7,7 @@
 #include <datamunge/algorithms/arc_consistency.hpp>
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
+#include <datamunge/algorithms/berlekamp.hpp>
 #include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
@@ -38,6 +39,7 @@
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
 #include <datamunge/algorithms/merge.hpp>
@@ -55,6 +57,7 @@
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
+#include <datamunge/algorithms/pollard_kangaroo.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
 #include <datamunge/algorithms/polynomial_gf.hpp>
 #include <datamunge/algorithms/primality.hpp>

@@ -733,6 +733,21 @@ We implement Lenstra's ECM (=algorithms::lenstra_ecm=) and report it as a litera
 
 We implement the AKS test (=algorithms::aks_is_prime=) and report it as a literate program. Primality is decided by the congruence (x+a)^n = x^n + a in (Z/n)[x]/(x^r-1) for a small polylogarithmic r; it agrees with trial division for every n up to 400 -- including the Carmichael numbers 561, 1105, 1729 that fool the Fermat test -- and the slow growth of r is plotted.
 
+** [[./lll_analysis.html][The LLL Algorithm: Short, Nearly Orthogonal Lattice Bases]] ([[./lll_analysis.pdf][PDF]])
+/A literate C++ study of lattice reduction using datamunge/
+
+We implement LLL reduction (=algorithms::lll_reduce=) and report it as a literate program. Size reduction plus the Lovasz swap turn a skewed basis into a short, nearly orthogonal one in polynomial time; the output is verified LLL-reduced and shown to span the same lattice (equal Gram determinant) over hundreds of random bases, with the norm shrinkage plotted.
+
+** [[./berlekamp_analysis.html][Berlekamp's Root Finding over a Finite Field]] ([[./berlekamp_analysis.pdf][PDF]])
+/A literate C++ study of the Berlekamp-Rabin algorithm using datamunge/
+
+We implement Berlekamp-Rabin root finding (=algorithms::berlekamp_roots=) and report it as a literate program. Roots are isolated by gcd(f, x^p-x) and split by the residue test gcd(g, (x+d)^((p-1)/2)-1); results match brute-force evaluation over thousands of polynomials, and the special case f=x^2-a computes modular square roots.
+
+** [[./pollard_kangaroo_analysis.html][Pollard's Kangaroo: Discrete Logs in an Interval]] ([[./pollard_kangaroo_analysis.pdf][PDF]])
+/A literate C++ study of the lambda method using datamunge/
+
+We implement Pollard's kangaroo (=algorithms::pollard_kangaroo=) and report it as a literate program. A tame kangaroo lays a trail from g^b and a wild one from h=g^x jumps until it collides, revealing x from the shared distance; it recovers the log across many primes and intervals in O(sqrt(b-a)) jumps, with the sqrt scaling plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
