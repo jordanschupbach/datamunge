@@ -1,0 +1,146 @@
+#+title: Gauss-Jordan Elimination: Solving and Inverting at Once
+#+subtitle: A literate C++ study of full reduction with =datamunge='s =algorithms::gauss_jordan=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Gaussian elimination stops at an upper triangle and back-substitutes. *Gauss-Jordan
+elimination* keeps going -- clearing the entries /above/ each pivot too -- until the
+coefficient matrix becomes the identity. Doing this to the augmented matrix
+\([A\mid I]\) turns the identity block into \(A^{-1}\), so Gauss-Jordan yields the
+full *matrix inverse* as a by-product of solving. This report implements it in
+=datamunge='s C++ =algorithms::gauss_jordan=, solves a 3x3 system, and shows the
+inverse it produces satisfying \(AA^{-1}=I\).
+#+end_abstract
+
+* Reduce all the way to the identity
+
+Augment the system as \([A\mid I\mid b]\). For each column, pivot (partial pivoting),
+scale the pivot row so the pivot becomes 1, then subtract multiples of it from
+*every other* row -- above and below -- to zero the rest of the column. After
+processing all columns the left block is the identity, so by the row operations'
+logic the middle block has become \(A^{-1}\) and the right block the solution \(x\).
+Because it eliminates in both directions, Gauss-Jordan does roughly 50% more
+arithmetic than Gaussian elimination (still \(O(n^3)\)); it earns that cost only
+when the inverse itself is wanted -- solving alone is cheaper by back substitution.
+
+#+name: gj-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdio>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GAUSS-JORDAN(A, b):                   # augmented [A | I | b]
+  for col in 0 .. n-1:
+      pivot the largest |A[.][col]| into row col (swap in A, I, b)
+      scale row col so A[col][col] = 1
+      for every other row r:
+          subtract A[r][col] * (row col) from row r      # clears above AND below
+  # now left block = I, middle block = A^{-1}, right = x
+  return x, A^{-1}
+#+end_example
+
+* Worked example: solve and invert a 3x3
+
+We reuse \(2x+y-z=8,\ -3x-y+2z=-11,\ -2x+y+2z=-3\) (solution \((2,3,-1)\)) and print
+both the solution and the inverse Gauss-Jordan builds, then verify \(AA^{-1}=I\).
+
+#+name: gj-run
+#+begin_src c++ :eval no
+    const std::vector<std::vector<double>> A = {{2, 1, -1}, {-3, -1, 2}, {-2, 1, 2}};
+    const std::vector<double> b = {8, -11, -3};
+    const auto r = gauss_jordan(A, b);
+    const std::size_t n = A.size();
+
+    std::cout << "=== Gauss-Jordan elimination ===\n";
+    std::cout << "solution x = (" << r.x[0] << ", " << r.x[1] << ", " << r.x[2] << ")  (expected (2,3,-1))\n";
+    std::cout << std::fixed << std::setprecision(3) << "inverse A^-1:\n";
+    for (std::size_t i = 0; i < n; ++i) { std::cout << " "; for (std::size_t j = 0; j < n; ++j) std::cout << std::setw(9) << r.inverse[i][j]; std::cout << "\n"; }
+
+    // Verify A * A^-1 = I.
+    std::vector<std::vector<double>> prod(n, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < n; ++i) for (std::size_t j = 0; j < n; ++j) for (std::size_t k = 0; k < n; ++k) prod[i][j] += A[i][k] * r.inverse[k][j];
+    std::cout << "A * A^-1 (should be I):\n";
+    for (std::size_t i = 0; i < n; ++i) { std::cout << " "; for (std::size_t j = 0; j < n; ++j) std::cout << std::setw(9) << (std::fabs(prod[i][j]) < 1e-9 ? 0.0 : prod[i][j]); std::cout << "\n"; }
+
+    auto plot = RPlot::create();
+    auto grid = [&](const std::vector<std::vector<double>>& M, double xoff, const char* label) {
+        for (std::size_t i = 0; i < n; ++i) for (std::size_t j = 0; j < n; ++j) {
+            char buf[16]; std::snprintf(buf, sizeof buf, "%.2f", std::fabs(M[i][j]) < 1e-9 ? 0.0 : M[i][j]);
+            plot.text(xoff + 1.4 * j, -static_cast<double>(i), buf, RGB{31, 41, 55}, 10.0);
+        }
+        plot.text(xoff + 1.0, 0.9, label, RGB{31, 41, 55}, 12.0);
+    };
+    grid(A, 0.0, "A");
+    grid(r.inverse, 5.5, "A^-1");
+    grid(prod, 11.0, "A * A^-1 = I");
+    plot.title("Gauss-Jordan yields the inverse; A times A^-1 is the identity")
+        .x_label("").y_label("").background({250, 250, 252});
+    plot.x_limits(-0.8, 16.5); plot.y_limits(-static_cast<double>(n), 1.5);
+    plot.save_svg("build/org/gauss_jordan.svg");
+    std::cout << "\nwrote gauss_jordan.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gauss_jordan_analysis.cpp <<'CPP'
+<<gj-includes>>
+#include <cstdio>
+
+int main() {
+<<gj-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gauss_jordan_analysis.cpp -o build/org/gauss_jordan_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gauss_jordan_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Gauss-Jordan elimination ===
+solution x = (2, 3, -1)  (expected (2,3,-1))
+inverse A^-1:
+     4.000    3.000   -1.000
+    -2.000   -2.000    1.000
+     5.000    4.000   -1.000
+A * A^-1 (should be I):
+     1.000    0.000    0.000
+     0.000    1.000    0.000
+     0.000    0.000    1.000
+
+wrote gauss_jordan.svg
+#+end_example
+
+The solution is \((2,3,-1)\), and the inverse Gauss-Jordan produced multiplies with
+\(A\) to give the identity to machine precision -- confirming that the middle block
+of the fully reduced augmented matrix really is \(A^{-1}\).
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/gauss_jordan.svg]]
+
+Three matrices: the original \(A\), the inverse \(A^{-1}\) that Gauss-Jordan builds
+in the identity block, and their product -- a clean identity. The inverse falls out
+for free precisely because the elimination drives \(A\)'s block to \(I\), and
+whatever row operations do that to \(A\) turn the accompanying \(I\) into \(A^{-1}\).

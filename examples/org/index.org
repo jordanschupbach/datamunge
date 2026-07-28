@@ -673,6 +673,26 @@ We implement conjugate gradient (=algorithms::conjugate_gradient=) and report it
 
 We implement the Thomas algorithm (=algorithms::thomas_solve=) and report it as a literate program. We give the banded forward-sweep and back-substitution that solve a tridiagonal system in O(n); a finite-difference BVP -u''=pi^2 sin(pi x) is solved, recovering sin(pi x) to O(h^2) error.
 
+** [[./gauss_jordan_analysis.html][Gauss-Jordan Elimination: Solving and Inverting at Once]] ([[./gauss_jordan_analysis.pdf][PDF]])
+/A literate C++ study of full reduction using datamunge/
+
+We implement Gauss-Jordan elimination (=algorithms::gauss_jordan=) and report it as a literate program. We show that reducing [A|I|b] all the way to [I|A^-1|x] yields the inverse as a by-product; a 3x3 system gives (2,3,-1) and an inverse verified by A A^-1 = I.
+
+** [[./sor_analysis.html][Successive Over-Relaxation: Tuning Gauss-Seidel for Speed]] ([[./sor_analysis.pdf][PDF]])
+/A literate C++ study of the relaxation factor using datamunge/
+
+We implement SOR (=algorithms::sor=) and report it as a literate program. We give the over-relaxed blend (1-omega)x + omega*(Gauss-Seidel) and its optimal omega for SPD systems; on a 30x30 Laplacian, omega=1 needs 1949 sweeps but omega*~1.82 needs 123, the iterations-vs-omega valley plotted.
+
+** [[./biconjugate_gradient_analysis.html][The Biconjugate Gradient Method: Krylov Solving Without Symmetry]] ([[./biconjugate_gradient_analysis.pdf][PDF]])
+/A literate C++ study of BiCG using datamunge/
+
+We implement biconjugate gradient (=algorithms::biconjugate_gradient=) and report it as a literate program. We give the two coupled A / A^T recurrences that keep the residuals bi-orthogonal, extending CG to non-symmetric matrices; a 30x30 non-symmetric system converges in 16 iterations, the residual plotted.
+
+** [[./levinson_analysis.html][Levinson Recursion: Toeplitz Systems in Quadratic Time]] ([[./levinson_analysis.pdf][PDF]])
+/A literate C++ study of structured solving using datamunge/
+
+We implement Levinson recursion (=algorithms::levinson_solve=) and report it as a literate program. We show how the constant-diagonal (Toeplitz) structure lets the solution grow one dimension at a time in O(n^2); an 8x8 symmetric Toeplitz solve matches a dense Gaussian solve to 1e-16, with the matrix's constant diagonals drawn.
+
 ** [[./bisection_analysis.html][The Bisection Method: Root-Finding by Halving]] ([[./bisection_analysis.pdf][PDF]])
 /A literate C++ study of bracketed root-finding using datamunge/
 
