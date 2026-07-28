@@ -29,6 +29,7 @@
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
 #include <datamunge/algorithms/game_search.hpp>
+#include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_connectivity.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
@@ -39,6 +40,7 @@
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
@@ -94,4 +96,5 @@
 #include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/uniform_binary_search.hpp>
+#include <datamunge/algorithms/uniform_cost_search.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>

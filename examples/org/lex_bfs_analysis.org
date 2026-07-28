@@ -1,0 +1,151 @@
+#+title: Lexicographic BFS: Ordering Vertices by Partition Refinement
+#+subtitle: A literate C++ study of Lex-BFS with =datamunge='s =algorithms::lex_bfs=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Lexicographic breadth-first search (Lex-BFS) is a refinement of BFS that produces a very special vertex
+ordering in linear time. Instead of a plain queue, it maintains an *ordered partition* of the yet-to-be-
+visited vertices and, each time it outputs a vertex, splits every block so that neighbours of that
+vertex come first. The resulting order underlies fast recognition of chordal and interval graphs -- its
+*reverse* is a perfect elimination ordering exactly when the graph is chordal. This report drives
+=datamunge='s =algorithms::lex_bfs=, verified to satisfy the Lex-BFS characterisation over thousands of
+random graphs, and shows the partition refining.
+#+end_abstract
+
+* Refine the partition, output from the front
+
+Keep the unvisited vertices in an *ordered list of sets* -- initially one set with everything. Repeat:
+
+1. Remove a vertex \(v\) from the *first* (highest-priority) set and append it to the output order.
+2. *Refine*: for every remaining set \(S\), split it into \(S\cap N(v)\) (the neighbours of \(v\))
+   placed immediately *before* \(S\setminus N(v)\). Empty pieces are dropped.
+
+Prioritising neighbours of already-output vertices is what makes the order "lexicographic": each vertex
+carries, implicitly, the sorted list of its earlier neighbours as a label, and Lex-BFS visits vertices
+in decreasing order of those labels. Done with the right data structure the whole process is
+\(O(V+E)\). The payoff is a structural guarantee: for a *chordal* graph, reversing the Lex-BFS order
+yields a *perfect elimination ordering* -- an order in which each vertex's later neighbours form a
+clique -- which makes optimal colouring, maximum clique, and treewidth computations easy on chordal
+graphs, and gives a linear-time chordality test.
+
+#+name: lx-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lex_bfs.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <list>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LEX-BFS(G):
+  partition = [ {all vertices} ]      # an ordered list of sets
+  while partition nonempty:
+      v = remove a vertex from the first set; output v
+      for each remaining set S (in order):
+          replace S by  (S ∩ N(v))  then  (S \ N(v))   # neighbours first, drop empties
+  return the output order
+#+end_example
+
+* Worked example: an ordering, and the refining partition
+
+We run Lex-BFS on a small graph, print the order, and track how many sets the partition holds at each
+step as refinement splits it.
+
+#+name: lx-run
+#+begin_src c++ :eval no
+    // 7-vertex graph.
+    std::vector<std::vector<int>> adj = {
+        {1, 2}, {0, 2, 3}, {0, 1, 3}, {1, 2, 4, 5}, {3, 5}, {3, 4, 6}, {5}};
+    const int n = 7;
+    const auto order = lex_bfs(n, adj);
+    std::cout << "=== Lex-BFS ===\n";
+    std::cout << "ordering: ";
+    for (int v : order) std::cout << v << " ";
+    std::cout << "\n\n";
+
+    // Reproduce the run, counting partition blocks each step.
+    std::vector<std::vector<char>> nb(n, std::vector<char>(n, 0));
+    for (int u = 0; u < n; ++u) for (int v : adj[u]) { nb[u][v] = nb[v][u] = 1; }
+    std::list<std::vector<int>> parts; std::vector<int> all(n); for (int i = 0; i < n; ++i) all[i] = i; parts.push_back(all);
+    std::vector<double> step, blocks;
+    int s = 0; step.push_back(0); blocks.push_back(parts.size());
+    std::cout << "step   partition blocks\n";
+    while (!parts.empty()) {
+        int v = parts.front().back(); parts.front().pop_back(); if (parts.front().empty()) parts.pop_front();
+        std::list<std::vector<int>> next;
+        for (auto& S : parts) { std::vector<int> in, out; for (int u : S) (nb[v][u] ? in : out).push_back(u); if (!in.empty()) next.push_back(in); if (!out.empty()) next.push_back(out); }
+        parts.swap(next);
+        ++s; step.push_back(s); blocks.push_back(parts.size());
+        std::printf("%3d    %d\n", s, (int)parts.size());
+    }
+
+    auto plot = RPlot::create();
+    plot.line(step, blocks, "b", RGB{124, 58, 237}, 2.0);
+    plot.points(step, blocks, "b", RGB{124, 58, 237}, 6.0);
+    plot.legend({"partition blocks"}, {{124, 58, 237}});
+    plot.title("Lex-BFS refines one partition into ever-finer blocks")
+        .x_label("step").y_label("number of blocks").background({250, 250, 252});
+    plot.save_svg("build/org/lex_bfs.svg");
+    std::cout << "\nwrote lex_bfs.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lex_bfs_analysis.cpp <<'CPP'
+<<lx-includes>>
+
+int main() {
+<<lx-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lex_bfs_analysis.cpp -o build/org/lex_bfs_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lex_bfs_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lex-BFS ===
+ordering: 6 5 4 3 2 1 0
+
+step   partition blocks
+  1    2
+  2    2
+  3    2
+  4    2
+  5    2
+  6    1
+  7    0
+
+wrote lex_bfs.svg
+#+end_example
+
+Lex-BFS produces a valid ordering -- the test suite confirms it satisfies the four-point Lex-BFS
+characterisation over thousands of random graphs -- by refining a single starting partition: each
+output vertex splits the remaining blocks by adjacency, and the blocks are then consumed as vertices
+are emitted.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/lex_bfs.svg]]
+
+The single starting block splits into neighbour and non-neighbour parts as the first vertices are
+output, then the blocks are whittled away as the remaining vertices are emitted. Every split sharpens
+the priorities of the vertices still to come, and it is this refinement discipline -- not a plain FIFO
+queue -- that encodes the lexicographic labels and makes Lex-BFS the linear-time engine behind chordal-
+and interval-graph recognition.
