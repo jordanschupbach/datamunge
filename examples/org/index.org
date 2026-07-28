@@ -548,6 +548,26 @@ We drive the minimum-area bounding rectangle (=geometry::minimum_bounding_rectan
 
 We drive nearest-neighbor search (=geometry::KDTree2D=) and report it as a literate program. We give the axis-alternating binary tree and the plane-distance pruning that yields O(log n) average queries; the tree's nearest to (10,10) among 200 points matches a brute-force scan exactly, and the 5 nearest are returned in increasing distance.
 
+** [[./delaunay_analysis.html][Delaunay Triangulation: The Triangulation That Avoids Slivers]] ([[./delaunay_analysis.pdf][PDF]])
+/A literate C++ study of the empty-circumcircle triangulation using datamunge/
+
+We drive the Delaunay triangulation (=geometry::delaunay_triangulation=, Bowyer-Watson) and report it as a literate program. We give the empty-circumcircle property, its max-min-angle optimality, and the 2n-2-h triangle count; a square-plus-center gives exactly 4 triangles and a 30-point cloud gives 47, drawn as a sliver-free mesh.
+
+** [[./voronoi_analysis.html][The Voronoi Diagram: Carving the Plane Into Territories]] ([[./voronoi_analysis.pdf][PDF]])
+/A literate C++ study of nearest-site regions using datamunge/
+
+We drive the Voronoi diagram (=geometry::voronoi_diagram=, dual of Delaunay) and report it as a literate program. We define the nearest-site cells and their duality with Delaunay (a Voronoi vertex per triangle circumcenter); 24 sites yield 36 vertices and a cell polygon per site, drawn as the territory map.
+
+** [[./polygon_triangulation_analysis.html][Polygon Triangulation: Cutting a Polygon Into Triangles]] ([[./polygon_triangulation_analysis.pdf][PDF]])
+/A literate C++ study of ear clipping using datamunge/
+
+We drive polygon triangulation (=geometry::triangulate_polygon=, ear clipping) and report it as a literate program. We give the ear definition, the two-ears theorem, and the n-2 triangle count; a 7-vertex concave polygon is clipped into exactly 5 triangles tiling its interior.
+
+** [[./min_enclosing_circle_analysis.html][The Smallest Enclosing Circle: Welzl's Randomized Algorithm]] ([[./min_enclosing_circle_analysis.pdf][PDF]])
+/A literate C++ study of the minimum enclosing circle using datamunge/
+
+We drive the minimum enclosing circle (=geometry::min_enclosing_circle=, Welzl) and report it as a literate program. We give the at-most-three-determining-points fact and the expected-linear randomized recursion; the smallest circle of 80 points contains all of them (0 outside) with 2 exactly on the rim.
+
 ** [[./binary_search_analysis.html][Binary Search: Locating a Key by Halving]] ([[./binary_search_analysis.pdf][PDF]])
 /A literate C++ study of logarithmic search on a sorted sequence using datamunge/
 

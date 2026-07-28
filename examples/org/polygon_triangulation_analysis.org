@@ -1,0 +1,131 @@
+#+title: Polygon Triangulation: Cutting a Polygon Into Triangles
+#+subtitle: A literate C++ study of ear clipping with =datamunge='s =geometry::triangulate_polygon=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Graphics hardware draws triangles, not polygons -- so every filled shape must first be
+*triangulated*. Any simple polygon with @math{n} vertices decomposes into exactly
+@math{n-2} triangles, and the classic way to find them is *ear clipping*: repeatedly snip
+off a convex corner whose triangle contains no other vertex. This report drives =datamunge='s
+=geometry::triangulate_polygon=, verifies the @math{n-2} triangle count, and draws the
+triangulation of a concave polygon.
+#+end_abstract
+
+* Snipping ears
+
+An *ear* of a simple polygon is a vertex @math{v} whose two neighbours can be joined by a
+diagonal lying entirely inside the polygon -- equivalently, @math{v} is *convex* and the
+triangle formed by @math{v} and its neighbours contains no other polygon vertex. The
+*two ears theorem* guarantees every simple polygon with more than three vertices has at
+least two ears, so:
+
+1. find an ear, output its triangle, and *remove* its tip vertex;
+2. repeat on the smaller polygon until only a triangle remains.
+
+Each clip removes one vertex and emits one triangle, so an @math{n}-gon yields exactly
+@math{n-2} triangles. The naive implementation is @math{O(n^2)} (rescan for ears after each
+clip), which is the right simplicity/speed tradeoff for the modest polygons this module
+targets; specialised @math{O(n\log n)} and even @math{O(n)} methods exist for large or
+degenerate inputs. Triangles are returned as index triples into the polygon's vertex list.
+
+#+name: pt-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/polygon_triangulation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TRIANGULATE-POLYGON(polygon):               # ear clipping
+  triangles <- []
+  while polygon has more than 3 vertices:
+      find an ear vertex v (convex, and its triangle holds no other vertex)
+      output triangle (prev(v), v, next(v)); remove v
+  output the final remaining triangle
+  return triangles                          # exactly n-2 of them
+#+end_example
+
+* Worked example: a concave "arrow" polygon
+
+We triangulate a seven-vertex concave polygon and confirm it yields @math{7-2=5} triangles,
+then draw them.
+
+#+name: pt-run
+#+begin_src c++ :eval no
+    // A concave arrow-like polygon (7 vertices).
+    const std::vector<Point2D> poly{{0, 0}, {4, 2}, {8, 0}, {6, 4}, {8, 8}, {4, 6}, {0, 8}};
+    const std::vector<Triangle> tris = triangulate_polygon(poly);
+    std::cout << "=== triangulating a 7-vertex concave polygon ===\n";
+    std::cout << "triangles: " << tris.size() << " (expected n-2 = " << poly.size() - 2 << ")\n";
+    for (const Triangle& t : tris) std::cout << "  (" << t.a << "," << t.b << "," << t.c << ")\n";
+
+    std::vector<double> ox, oy;
+    for (const Point2D& p : poly) { ox.push_back(p.x); oy.push_back(p.y); }
+    ox.push_back(poly[0].x); oy.push_back(poly[0].y); // close the outline
+
+    auto plot = RPlot::create();
+    for (const Triangle& t : tris)
+        plot.polygon({poly[t.a].x, poly[t.b].x, poly[t.c].x},
+                     {poly[t.a].y, poly[t.b].y, poly[t.c].y}, RGB{167, 243, 208}, false);
+    plot.line(ox, oy, "polygon", RGB{17, 24, 39}, 2.5);
+    plot.points(ox, oy, "vertices", RGB{220, 38, 38}, 7.0);
+    plot.legend({"triangulation", "polygon boundary"}, {{167, 243, 208}, {17, 24, 39}});
+    plot.title("Ear-clipping triangulation of a concave polygon (5 triangles)")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/polygon_triangulation.svg");
+    std::cout << "wrote polygon_triangulation.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/polygon_triangulation_analysis.cpp <<'CPP'
+<<pt-includes>>
+
+int main() {
+<<pt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/polygon_triangulation_analysis.cpp -o build/org/polygon_triangulation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/polygon_triangulation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== triangulating a 7-vertex concave polygon ===
+triangles: 5 (expected n-2 = 5)
+  (6,0,1)
+  (6,1,2)
+  (6,2,3)
+  (3,4,5)
+  (3,5,6)
+wrote polygon_triangulation.svg
+#+end_example
+
+The seven-vertex polygon splits into exactly five triangles, as @math{n-2} promises, and
+together they tile the polygon's interior with no overlaps and no coverage of the concave
+notch's exterior. Ear clipping found a valid diagonal at each step without ever cutting
+outside the shape.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/polygon_triangulation.svg]]
+
+The green triangles fill the black polygon boundary exactly, meeting along interior
+diagonals. Every filled polygon your screen draws is decomposed like this first -- ear
+clipping is the workhorse behind =GL_TRIANGLES=, font rendering, and 2-D physics colliders.
