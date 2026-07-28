@@ -199,10 +199,10 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
     Non-comparison sorts
         [x] Bead sort  -- datamunge::algorithms::bead_sort (gravity sort, non-negative ints); report examples/org/bead_sort_analysis.org
         [x] Bucket sort  -- datamunge::algorithms::bucket_sort; report examples/org/bucket_sort_analysis.org
-        Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output
+        [x] Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output  -- datamunge::algorithms::burstsort; report examples/org/burstsort_analysis.org
         Counting sort
         [x] Pigeonhole sort  -- datamunge::algorithms::pigeonhole_sort; report examples/org/pigeonhole_sort_analysis.org
-        Postman sort: variant of Bucket sort which takes advantage of hierarchical structure
+        [x] Postman sort: variant of Bucket sort which takes advantage of hierarchical structure  -- datamunge::algorithms::postman_sort (MSD radix); report examples/org/postman_sort_analysis.org
         Radix sort: sorts strings letter by letter
     Selection sorts
         Heapsort: convert the list into a heap, keep removing the largest element from the heap and adding it to the end of the list
@@ -214,7 +214,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Spaghetti sort
         Topological sort
     Unknown class
-        Samplesort
+        [x] Samplesort  -- datamunge::algorithms::samplesort (splitter bucketing, recursive); report examples/org/samplesort_analysis.org
 
 Subsequences
 Further information: Subsequence

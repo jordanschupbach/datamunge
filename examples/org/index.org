@@ -1153,6 +1153,21 @@ We implement Shell sort (=algorithms::shell_sort=) and report it as a literate p
 
 We implement comb sort (=algorithms::comb_sort=) and report it as a literate program. We explain turtles and the 1.3 shrink factor that lets distant swaps clear them; at n=400 comb sort makes 7106 comparisons versus bubble sort's 147630.
 
+** [[./samplesort_analysis.html][Samplesort: Quicksort with Many Pivots]] ([[./samplesort_analysis.pdf][PDF]])
+/A literate C++ study of splitter-based bucketing using datamunge/
+
+We implement samplesort (=algorithms::samplesort=) and report it as a literate program. Drawing k-1 splitters from an oversampled sort, bucketing every element by them, and sorting buckets recursively gives a balanced, parallel- and external-sort-friendly partition; it matches std::sort over thousands of random and adversarial arrays, with the near-balanced bucket sizes plotted.
+
+** [[./postman_sort_analysis.html][Postman Sort: Hierarchical Bucketing (MSD Radix)]] ([[./postman_sort_analysis.pdf][PDF]])
+/A literate C++ study of most-significant-digit radix sort using datamunge/
+
+We implement postman sort (=algorithms::postman_sort=) and report it as a literate program. Bucketing 32-bit keys by their most significant byte and recursing per bucket on the next byte -- the country/city/street filing a post office uses -- sorts without comparisons in O(n*d); it matches std::sort over thousands of random arrays, with the balanced top-byte buckets plotted.
+
+** [[./burstsort_analysis.html][Burstsort: Cache-Friendly String Sorting]] ([[./burstsort_analysis.pdf][PDF]])
+/A literate C++ study of the burst trie using datamunge/
+
+We implement burstsort (=algorithms::burstsort=) and report it as a literate program. A shallow trie whose leaves are small string buckets that "burst" into deeper nodes only when they overflow keeps the structure cache-friendly; an in-order traversal emits the sorted strings. It matches std::sort over thousands of random string arrays (shared prefixes, empties, duplicates), with the bursting top-level slots plotted.
+
 ** [[./timsort_analysis.html][Timsort: The Adaptive Merge Sort of the Real World]] ([[./timsort_analysis.pdf][PDF]])
 /A literate C++ study of run-based hybrid sorting using datamunge/
 
