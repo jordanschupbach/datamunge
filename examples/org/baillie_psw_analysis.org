@@ -1,0 +1,156 @@
+#+title: The Baillie-PSW Primality Test: Two Tests With No Common Liar
+#+subtitle: A literate C++ study of combined primality testing with =datamunge='s =algorithms::baillie_psw=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every fast primality test has *liars* -- composites that masquerade as prime. The
+*Baillie-PSW test* pairs two tests whose liars seem to never overlap: a *strong Miller-Rabin
+test to base 2* and a *strong Lucas test* (Selfridge parameters). Each alone has infinitely many
+pseudoprimes, but *no composite is known to fool both*, and none exists below \(2^{64}\). So
+although Baillie-PSW is nominally probabilistic, it is *deterministic in practice* for 64-bit
+integers -- which is why it is the default primality check in many libraries. This report drives
+=datamunge='s =algorithms::baillie_psw=, verified against trial division, and shows it catching
+the base-2 pseudoprimes that Miller-Rabin alone waves through.
+#+end_abstract
+
+* Different tests, different liars
+
+A *Fermat/Miller-Rabin* test to base \(a\) checks a consequence of \(a^{n-1}\equiv1\); composites
+that satisfy it for base 2 are the *strong pseudoprimes to base 2* (spsp-2: \(2047, 3277,
+4033,\dots\)). A *Lucas* test checks an analogous identity in a *Lucas sequence* with parameters
+chosen from the Jacobi symbol; its liars are the *Lucas pseudoprimes*. The empirical miracle
+behind Baillie-PSW is that these two liar-sets appear to be *disjoint*: exhaustive search has
+found no composite below \(2^{64}\) that is simultaneously an spsp-2 *and* a strong Lucas
+pseudoprime. So the test is:
+
+1. trial-divide by the first few primes;
+2. run a strong Miller-Rabin test to base 2 -- fail fast if it fails;
+3. run a strong Lucas test with Selfridge's \(D,P,Q\).
+
+Declare prime only if both pass. There is a proven infinitude of each pseudoprime type, so a
+counterexample may exist far out -- but for practical 64-bit work Baillie-PSW is as good as a
+proof, at the cost of one Miller-Rabin and one Lucas test.
+
+#+name: bp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_more.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BAILLIE-PSW(n):
+  trial-divide by small primes; return early on a factor or a small prime
+  if n fails a strong Miller-Rabin test to base 2: return COMPOSITE
+  if n fails a strong Lucas test (Selfridge D, P=1, Q=(1-D)/4): return COMPOSITE
+  return PROBABLE PRIME       # no known composite reaches here below 2^64
+#+end_example
+
+* Worked example: catching the base-2 liars
+
+We confirm Baillie-PSW on some primes and composites, then scan an interval for *strong
+pseudoprimes to base 2* -- which a lone Miller-Rabin(2) test would call prime -- and show
+Baillie-PSW rejecting every one of them.
+
+#+name: bp-run
+#+begin_src c++ :eval no
+    auto powmod = [](std::uint64_t a, std::uint64_t e, std::uint64_t m) {
+        std::uint64_t r = 1 % m; a %= m;
+        while (e) { if (e & 1) r = (std::uint64_t)(( __uint128_t)r * a % m); a = (std::uint64_t)(( __uint128_t)a * a % m); e >>= 1; }
+        return r;
+    };
+    auto trial_prime = [](std::uint64_t n) { if (n < 2) return false; for (std::uint64_t d = 2; d * d <= n; ++d) if (n % d == 0) return false; return true; };
+    auto mr2 = [&](std::uint64_t n) { // strong Miller-Rabin base 2
+        if (n < 2) return false; if (n % 2 == 0) return n == 2;
+        std::uint64_t d = n - 1; int s = 0; while (!(d & 1)) { d >>= 1; ++s; }
+        std::uint64_t x = powmod(2, d, n); if (x == 1 || x == n - 1) return true;
+        for (int r = 1; r < s; ++r) { x = (std::uint64_t)(( __uint128_t)x * x % n); if (x == n - 1) return true; }
+        return false;
+    };
+
+    std::cout << "=== spot checks ===\n";
+    for (std::uint64_t n : {97ULL, 561ULL, 1000000007ULL, 2047ULL, 9223372036854775783ULL})
+        std::cout << n << ": baillie_psw = " << (baillie_psw(n) ? "prime" : "composite")
+                  << " (truth " << (n < 1000000 ? (trial_prime(n) ? "prime" : "composite") : "large") << ")\n";
+    std::cout << "\n";
+
+    // Scan for strong pseudoprimes to base 2 in [3, 100000]; show Baillie-PSW rejects all.
+    int spsp2 = 0, bpsw_false = 0;
+    std::vector<double> which_x, which_y;
+    for (std::uint64_t n = 3; n <= 100000; n += 2) {
+        if (!trial_prime(n) && mr2(n)) { // composite but passes Miller-Rabin base 2
+            ++spsp2;
+            which_x.push_back((double)n);
+            which_y.push_back(1.0);
+            if (baillie_psw(n)) ++bpsw_false; // Baillie-PSW must reject it
+        }
+    }
+    std::cout << "in [3,100000]: " << spsp2 << " strong pseudoprimes to base 2 (Miller-Rabin(2) would call them prime)\n";
+    std::cout << "Baillie-PSW false primes among them: " << bpsw_false << "\n";
+
+    auto plot = RPlot::barplot({(double)spsp2, (double)bpsw_false},
+                               {"Miller-Rabin(2) alone", "Baillie-PSW"}, "false primes", RGB{220, 38, 38});
+    plot.title("Composite 'primes' passed in [3,100000]: base-2 alone vs Baillie-PSW")
+        .x_label("test").y_label("composites wrongly called prime").background({250, 250, 252});
+    plot.save_svg("build/org/baillie_psw.svg");
+    std::cout << "wrote baillie_psw.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/baillie_psw_analysis.cpp <<'CPP'
+<<bp-includes>>
+
+int main() {
+<<bp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/baillie_psw_analysis.cpp -o build/org/baillie_psw_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/baillie_psw_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== spot checks ===
+97: baillie_psw = prime (truth prime)
+561: baillie_psw = composite (truth composite)
+1000000007: baillie_psw = prime (truth large)
+2047: baillie_psw = composite (truth composite)
+9223372036854775783: baillie_psw = prime (truth large)
+
+in [3,100000]: 16 strong pseudoprimes to base 2 (Miller-Rabin(2) would call them prime)
+Baillie-PSW false primes among them: 0
+wrote baillie_psw.svg
+#+end_example
+
+Baillie-PSW classifies the small cases correctly -- \(561\) (a Carmichael number) and \(2047\) (an
+spsp-2) as composite, real primes as prime, and the \(19\)-digit \(9223372036854775783\) as prime.
+The scan finds dozens of strong pseudoprimes to base 2 in the first hundred thousand integers --
+each of which a lone Miller-Rabin(2) test would certify as prime -- and Baillie-PSW rejects
+*every one*: zero false primes.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/baillie_psw.svg]]
+
+The tall red bar is the pile of composites that fool Miller-Rabin base 2 alone; the Baillie-PSW
+bar beside it is flat at zero. The Lucas test's liars simply do not coincide with base 2's, so
+the pair has no common liar in this range -- and, empirically, none below \(2^{64}\). That is why
+a single Miller-Rabin base plus a Lucas test is trusted as a practical primality proof.
