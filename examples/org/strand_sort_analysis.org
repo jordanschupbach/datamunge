@@ -1,0 +1,157 @@
+#+title: Strand Sort: Pulling Out Sorted Runs
+#+subtitle: A literate C++ study of natural-merge sorting with =datamunge='s =algorithms::strand_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Strand sort teases a list apart into already-sorted *strands* and merges them one by one into the
+result. Each pass sweeps the remaining input, greedily collecting an increasing subsequence -- a
+strand -- and merges it into the growing sorted output. On data that is already nearly ordered it
+finishes in a few long strands; on random data it degrades to \(O(n^2)\). This report drives
+=datamunge='s =algorithms::strand_sort=, verified against =std::sort= over thousands of random arrays,
+and shows how the number of strands falls as the input becomes more ordered.
+#+end_abstract
+
+* Extract an increasing subsequence, then merge
+
+Keep an =input= list and a sorted =result= (initially empty). Repeatedly:
+
+1. Start a =strand= with the first remaining element. Scan the rest; whenever an element is \(\ge\)
+   the strand's last element, append it to the strand and remove it from =input=. The strand is an
+   increasing subsequence, hence already sorted.
+2. Merge the strand into =result= with a standard two-way merge.
+
+Because each strand is sorted and =result= stays sorted, the merges are linear, and every element is
+removed from =input= exactly once. The number of *passes* is the number of strands: one if the input
+is already increasing, up to \(n\) if it is strictly decreasing (each element forms its own strand).
+So strand sort is *adaptive* -- its cost, \(O(s\cdot n)\) for \(s\) strands, rewards
+presortedness, much like a natural merge sort discovers existing runs.
+
+#+name: sd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorting_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Count the strands strand sort would extract from `v`.
+static int count_strands(std::vector<int> input) {
+    int strands = 0;
+    while (!input.empty()) {
+        ++strands;
+        std::vector<int> remaining; int last = input[0];
+        for (std::size_t i = 1; i < input.size(); ++i) { if (input[i] >= last) last = input[i]; else remaining.push_back(input[i]); }
+        input.swap(remaining);
+    }
+    return strands;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+STRAND-SORT(input):
+  result = empty
+  while input not empty:
+      strand = [ input.pop_front ]
+      for each remaining x in order:
+          if x >= strand.last: move x from input into strand
+      result = MERGE(result, strand)
+  return result
+#+end_example
+
+* Worked example: sorting, and adaptivity
+
+We sort a scrambled array, then count strands for inputs ranging from fully reversed to fully sorted,
+showing the pass count collapse as order increases.
+
+#+name: sd-run
+#+begin_src c++ :eval no
+    std::vector<int> a = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9};
+    auto s = a; strand_sort(s);
+    std::cout << "=== strand sort ===\n";
+    std::cout << "input:  "; for (int x : a) std::cout << x << " "; std::cout << "\n";
+    std::cout << "sorted: "; for (int x : s) std::cout << x << " "; std::cout << "\n";
+    std::cout << "strands extracted: " << count_strands(a) << "\n\n";
+
+    // Strands vs presortedness: start sorted, then shuffle a growing fraction.
+    std::mt19937_64 rng(7);
+    const int n = 400;
+    std::vector<int> base(n); for (int i = 0; i < n; ++i) base[i] = i;
+    std::vector<double> frac, strands;
+    std::cout << "shuffled fraction   strands\n";
+    for (int pct = 0; pct <= 100; pct += 10) {
+        std::vector<int> v = base;
+        const int k = n * pct / 100;
+        std::shuffle(v.begin(), v.begin() + k, rng); // disorder the first k elements
+        frac.push_back(pct / 100.0); strands.push_back(count_strands(v));
+        if (pct % 20 == 0) std::printf("  %3d%%              %d\n", pct, count_strands(v));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(frac, strands, "s", RGB{5, 150, 105}, 2.0);
+    plot.points(frac, strands, "s", RGB{5, 150, 105}, 6.0);
+    plot.legend({"strands (passes)"}, {{5, 150, 105}});
+    plot.title("Strand sort is adaptive: fewer strands when the input is more ordered")
+        .x_label("fraction of the array shuffled").y_label("number of strands").background({250, 250, 252});
+    plot.save_svg("build/org/strand_sort.svg");
+    std::cout << "\nwrote strand_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/strand_sort_analysis.cpp <<'CPP'
+<<sd-includes>>
+
+int main() {
+<<sd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/strand_sort_analysis.cpp -o build/org/strand_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/strand_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== strand sort ===
+input:  3 1 4 1 5 9 2 6 5 3 5 8 9 7 9
+sorted: 1 1 2 3 3 4 5 5 5 6 7 8 9 9 9
+strands extracted: 4
+
+shuffled fraction   strands
+    0%              1
+   20%              17
+   40%              21
+   60%              28
+   80%              33
+  100%              37
+
+wrote strand_sort.svg
+#+end_example
+
+The sort is correct -- matching =std::sort= across the test suite -- and the strand count grows with
+disorder: a nearly sorted array is swallowed in a handful of long strands, while a thoroughly shuffled
+one fractures into many. That is the adaptive payoff strand sort shares with natural merge sorts.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/strand_sort.svg]]
+
+The strand-count curve rises with the shuffled fraction: order in the input translates directly into
+fewer, longer strands and thus fewer merge passes. Strand sort is not the fastest general method --
+random data pushes it to \(O(n^2)\) -- but its ability to exploit existing runs makes it a tidy
+illustration of adaptive, merge-based sorting.
