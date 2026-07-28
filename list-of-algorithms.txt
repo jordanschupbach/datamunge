@@ -94,12 +94,12 @@ Further information: Graph search algorithm and State space search
 Subgraphs
 
     Cliques
-        Bron–Kerbosch algorithm: a technique for finding maximal cliques in an undirected graph
+        [x] Bron–Kerbosch algorithm: a technique for finding maximal cliques in an undirected graph  -- datamunge::algorithms::bron_kerbosch (pivoting); report examples/org/bron_kerbosch_analysis.org
         MaxCliqueDyn maximum clique algorithm: find a maximum clique in an undirected graph
     Strongly connected components
-        Kosaraju's algorithm
+        [x] Kosaraju's algorithm  -- datamunge::algorithms::kosaraju_scc (SCC via DFS + transpose); report examples/org/kosaraju_analysis.org
         Path-based strong component algorithm
-        Tarjan's strongly connected components algorithm
+        [x] Tarjan's strongly connected components algorithm  -- datamunge::algorithms::tarjan_scc (single-DFS low-link); report examples/org/tarjan_scc_analysis.org
     Subgraph isomorphism problem
 
 Sequence algorithms

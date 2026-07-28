@@ -1,0 +1,142 @@
+#+title: Tarjan's SCC Algorithm: Components in a Single DFS
+#+subtitle: A literate C++ study of low-link component finding with =datamunge='s =algorithms::tarjan_scc=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Kosaraju finds strongly connected components in two depth-first searches; Tarjan (1972) does it in
+*one*. A single DFS assigns each vertex a discovery time and a *low-link* -- the earliest vertex
+reachable from its subtree via at most one back-edge -- and maintains a stack of the current path.
+When a vertex's low-link equals its own discovery time, it is the *root* of an SCC, and everything
+above it on the stack is popped off as that component. This report drives =datamunge='s
+=algorithms::tarjan_scc=, verified to agree with Kosaraju and a reachability brute force over thousands
+of random graphs.
+#+end_abstract
+
+* Discovery times, low-links, and the stack
+
+Run a DFS, numbering vertices by *discovery time* \(\mathrm{disc}[u]\) as they are first visited, and
+keep every vertex on an explicit *stack* while its component is still being explored. Define the
+*low-link*
+
+\[ \mathrm{low}[u]=\min\Big(\mathrm{disc}[u],\ \min_{u\to v,\ v\text{ on stack}}\mathrm{disc}[v],\ \min_{u\to v\text{ tree edge}}\mathrm{low}[v]\Big), \]
+
+the smallest discovery time reachable from \(u\)'s DFS subtree without leaving the current stack. After
+exploring all of \(u\)'s successors, test:
+
+\[ \mathrm{low}[u]=\mathrm{disc}[u]\ \Longrightarrow\ u \text{ is an SCC root.} \]
+
+If so, pop the stack down to and including \(u\); those vertices form one strongly connected component.
+The intuition: if some descendant could reach a vertex discovered earlier than \(u\) (a smaller
+low-link), then \(u\) is part of a larger cycle and is *not* a root; only when nothing in the subtree
+escapes below \(u\) is \(u\) the entry point of its component. Each vertex and edge is examined once,
+so the whole decomposition is \(O(V+E)\) -- the same bound as Kosaraju, in a single elegant pass.
+
+#+name: tj-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_connectivity.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TARJAN(G):
+  DFS from every unvisited vertex:
+      on first visit: disc[u] = low[u] = timer++; push u
+      for each edge u->v:
+          if v unvisited: recurse; low[u] = min(low[u], low[v])
+          elif v on stack: low[u] = min(low[u], disc[v])
+      if low[u] == disc[u]:            # u is an SCC root
+          pop the stack down to u; that set is one component
+#+end_example
+
+* Worked example: components of a directed graph
+
+We decompose the same directed graph Kosaraju handled and confirm the two algorithms agree.
+
+#+name: tj-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<int>> adj = {{1}, {2}, {0, 3}, {4}, {5}, {3, 6}, {7}, {}};
+    const int n = 8;
+    const auto comp = tarjan_scc(n, adj);
+    std::cout << "=== Tarjan SCC ===\n";
+    int k = *std::max_element(comp.begin(), comp.end()) + 1;
+    std::cout << n << " vertices -> " << k << " components (single DFS)\n";
+    std::vector<std::vector<int>> members(k);
+    for (int v = 0; v < n; ++v) members[comp[v]].push_back(v);
+    std::vector<double> sizes; std::vector<std::string> labels;
+    for (int c = 0; c < k; ++c) {
+        std::cout << "  component " << c << ": {";
+        for (std::size_t i = 0; i < members[c].size(); ++i) std::cout << (i ? "," : "") << members[c][i];
+        std::cout << "}\n";
+        sizes.push_back((double)members[c].size()); labels.push_back("C" + std::to_string(c));
+    }
+    auto ks = kosaraju_scc(n, adj);
+    std::vector<int> a(n), b(n), ra(n, -1), rb(n, -1);
+    for (int v = 0; v < n; ++v) { if (ra[comp[v]] < 0) ra[comp[v]] = v; if (rb[ks[v]] < 0) rb[ks[v]] = v; }
+    for (int v = 0; v < n; ++v) { a[v] = ra[comp[v]]; b[v] = rb[ks[v]]; }
+    std::cout << "matches Kosaraju partition: " << (a == b ? "yes" : "no") << "\n";
+
+    auto plot = RPlot::barplot(sizes, labels, "size", RGB{124, 58, 237});
+    plot.title("Tarjan: sizes of the strongly connected components (single pass)")
+        .x_label("component").y_label("vertices").background({250, 250, 252});
+    plot.save_svg("build/org/tarjan_scc.svg");
+    std::cout << "\nwrote tarjan_scc.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tarjan_scc_analysis.cpp <<'CPP'
+<<tj-includes>>
+
+int main() {
+<<tj-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tarjan_scc_analysis.cpp -o build/org/tarjan_scc_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tarjan_scc_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tarjan SCC ===
+8 vertices -> 4 components (single DFS)
+  component 0: {7}
+  component 1: {6}
+  component 2: {3,4,5}
+  component 3: {0,1,2}
+matches Kosaraju partition: yes
+
+wrote tarjan_scc.svg
+#+end_example
+
+Tarjan recovers the same components as Kosaraju -- the two cycles and the two tail singletons -- but in
+a single depth-first traversal, and the partitions match exactly, as the test suite confirms over
+thousands of random graphs.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/tarjan_scc.svg]]
+
+The component sizes are identical to Kosaraju's -- \(3,3,1,1\) -- because both compute the same
+mathematical object. Tarjan's advantage is doing so in one pass with only discovery times, low-links,
+and a stack, never building the transpose graph. That single-DFS elegance, and its natural extension to
+articulation points and bridges, is why Tarjan's low-link technique is the one most often taught and
+implemented.
