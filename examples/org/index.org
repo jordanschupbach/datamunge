@@ -508,6 +508,26 @@ We implement Hirschberg's algorithm (=algorithms::hirschberg=) and report it as 
 
 We implement Dynamic Time Warping (=geometry::dynamic_time_warping=) and report it as a literate program. We define the warping path and the D(i,j)=|a_i-b_j|+min(...) recurrence; =[1,2,3]= vs =[1,1,2,3]= is worked to distance 0, and a sinusoid warped by u->u^1.6 shows DTW distance (1.41) collapsing a difference that the rigid L1 distance (12.27) inflates.
 
+** [[./convex_hull_analysis.html][The Convex Hull: The Rubber Band Around a Point Set]] ([[./convex_hull_analysis.pdf][PDF]])
+/A literate C++ study of Andrew's monotone chain using datamunge/
+
+We drive the convex hull (=geometry::convex_hull=, Andrew's monotone chain) and report it as a literate program. We give the sort-then-two-sweep construction with the cross-product turn test in O(n log n); a square-plus-interior set returns exactly its four corners, and a 40-point random cloud reduces to an 8-vertex hull, drawn wrapping the cloud.
+
+** [[./closest_pair_analysis.html][The Closest Pair Problem: Finding the Two Nearest Points]] ([[./closest_pair_analysis.pdf][PDF]])
+/A literate C++ study of nearest-pair search using datamunge/
+
+We drive the closest-pair search (=geometry::closest_pair=, brute-force O(n^2)) and report it as a literate program. We contrast the all-pairs scan with the O(n log n) divide-and-conquer strip method; a pair planted 0.036 apart near (5,5) is recovered from a cloud of 62 points and highlighted.
+
+** [[./shoelace_analysis.html][The Shoelace Formula: A Polygon's Area From Its Corners]] ([[./shoelace_analysis.pdf][PDF]])
+/A literate C++ study of the surveyor's area formula using datamunge/
+
+We drive the shoelace area (=geometry::signed_polygon_area=, =polygon_area=) and report it as a literate program. We give the cross-product sum, its sign-encodes-winding property, and its exactness; a unit square gives +1 (CCW) / -1 (CW), a 4x3 right triangle gives 6, and a non-convex chevron is measured to area 18 in one pass.
+
+** [[./point_in_polygon_analysis.html][Point in Polygon: The Even-Odd Ray-Casting Rule]] ([[./point_in_polygon_analysis.pdf][PDF]])
+/A literate C++ study of the PNPOLY containment test using datamunge/
+
+We drive the point-in-polygon test (=geometry::point_in_polygon=, Franklin's PNPOLY) and report it as a literate program. We give the even-odd ray-crossing rule that needs no convexity; on a concave chevron the notch point (3,3) is correctly outside while body points are inside, and a 875-point grid is classified and drawn.
+
 ** [[./binary_search_analysis.html][Binary Search: Locating a Key by Halving]] ([[./binary_search_analysis.pdf][PDF]])
 /A literate C++ study of logarithmic search on a sorted sequence using datamunge/
 

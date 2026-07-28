@@ -270,10 +270,10 @@ Geometry
 Main category: Geometric algorithms
 Further information: Computational geometry
 
-    Closest pair problem: find the pair of points (from a set of points) with the smallest distance between them
+    [x] Closest pair problem: find the pair of points (from a set of points) with the smallest distance between them  -- datamunge::geometry::closest_pair (brute-force O(n^2)); report examples/org/closest_pair_analysis.org
     Collision detection algorithms: check for the collision or intersection of two given solids
     Cone algorithm: identify surface points
-    Convex hull algorithms: determining the convex hull of a set of points
+    [x] Convex hull algorithms: determining the convex hull of a set of points  -- datamunge::geometry::convex_hull (Andrew's monotone chain, O(n log n)); report examples/org/convex_hull_analysis.org
         Chan's algorithm
         Gift wrapping algorithm or Jarvis march
         Graham scan
@@ -290,10 +290,10 @@ Further information: Computational geometry
     Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points
     Nearest neighbor search: find the nearest point or points to a query point
     Nesting algorithm: make the most efficient use of material or space
-    Point in polygon algorithms: tests whether a given point lies within a given polygon
+    [x] Point in polygon algorithms: tests whether a given point lies within a given polygon  -- datamunge::geometry::point_in_polygon (PNPOLY even-odd ray casting); report examples/org/point_in_polygon_analysis.org
     Point set registration algorithms: finds the transformation between two point sets to optimally align them.
     Rotating calipers: determine all antipodal pairs of points and vertices on a convex polygon or convex hull.
-    Shoelace algorithm: determine the area of a polygon whose vertices are described by ordered pairs in the plane
+    [x] Shoelace algorithm: determine the area of a polygon whose vertices are described by ordered pairs in the plane  -- datamunge::geometry::signed_polygon_area / polygon_area; report examples/org/shoelace_analysis.org
     Triangulation
         Delaunay triangulation
             Chew's second algorithm: create quality constrained Delaunay triangulations

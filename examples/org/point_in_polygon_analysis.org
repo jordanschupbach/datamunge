@@ -1,0 +1,144 @@
+#+title: Point in Polygon: The Even-Odd Ray-Casting Rule
+#+subtitle: A literate C++ study of the PNPOLY test with =datamunge='s =geometry::point_in_polygon=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Is a point inside a polygon? This deceptively simple question -- behind hit-testing, GIS
+containment, and flood fill -- has an elegant answer: shoot a ray from the point to
+infinity and *count how many polygon edges it crosses*. Odd means inside, even means
+outside, and it works for any simple polygon, convex or wildly concave, with no
+triangulation. =datamunge= implements Franklin's compact *PNPOLY* form of this even-odd
+rule. This report drives =geometry::point_in_polygon=, verified on hand-picked points, and
+maps the inside/outside verdict across a grid over a concave polygon.
+#+end_abstract
+
+* Count the crossings
+
+Cast a horizontal ray from the query point in the @math{+x} direction. Each time it crosses
+a polygon edge it passes from outside to inside or back, so:
+
+- an *odd* number of crossings means the point is *inside*;
+- an *even* number means *outside*.
+
+Franklin's PNPOLY collapses this into one loop over the edges @math{(v_j, v_i)}: an edge is
+a candidate crossing only if it *straddles* the point's @math{y} (one endpoint above, one
+not), and then a single comparison places the crossing to the right of the point. Each such
+edge toggles an @c inside flag. The whole test is @math{O(n)} with no divisions beyond the
+edge-slope term and no trigonometry.
+
+The even-odd rule needs no convexity: for a concave or many-armed polygon the ray simply
+crosses more edges, and the parity still tells the truth. (A point lying *exactly* on an
+edge is a genuine ambiguity for every ray-casting scheme -- it may report either way
+depending on rounding -- so boundary points are treated as unspecified.)
+
+#+name: pp-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/polygon.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+POINT-IN-POLYGON(p, vertices):                 # PNPOLY even-odd ray casting
+  inside <- false
+  for each edge (v[j], v[i]) around the polygon:
+      if (v[i].y > p.y) != (v[j].y > p.y):        # edge straddles the ray's height
+          xcross <- v[j].x + (v[i].x - v[j].x) * (p.y - v[j].y) / (v[i].y - v[j].y)
+          if p.x < xcross: inside <- not inside    # crossing is to the right -> toggle
+  return inside
+#+end_example
+
+* Worked example: a concave polygon and a grid of probes
+
+We define a concave "chevron" polygon, spot-check a few points, then classify a fine grid
+of points as inside or outside.
+
+#+name: pp-run
+#+begin_src c++ :eval no
+    // Concave chevron: the top edge dips inward to (3,2), carving a notch.
+    const std::vector<Point2D> poly{{0, 0}, {6, 0}, {6, 4}, {3, 2}, {0, 4}};
+
+    std::cout << "=== spot checks ===\n";
+    for (Point2D q : {Point2D{3, 1}, Point2D{3, 3}, Point2D{1, 2}, Point2D{5, 3.5}, Point2D{7, 2}})
+        std::cout << "(" << q.x << ", " << q.y << ") -> " << (point_in_polygon(q, poly) ? "inside" : "outside") << "\n";
+
+    // Classify a grid.
+    std::vector<double> inx, iny, outx, outy;
+    int inside_count = 0;
+    for (double y = -0.5; y <= 4.5; y += 0.2)
+        for (double x = -0.5; x <= 6.5; x += 0.2) {
+            if (point_in_polygon({x, y}, poly)) { inx.push_back(x); iny.push_back(y); ++inside_count; }
+            else { outx.push_back(x); outy.push_back(y); }
+        }
+    std::cout << "\ngrid: " << inside_count << " points classified inside\n";
+
+    std::vector<double> hx, hy;
+    for (const Point2D& p : poly) { hx.push_back(p.x); hy.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    plot.points(outx, outy, "outside", RGB{203, 213, 225}, 3.5);
+    plot.points(inx, iny, "inside", RGB{16, 185, 129}, 4.0);
+    plot.polygon(hx, hy, RGB{37, 99, 235}, false);
+    plot.legend({"outside", "inside", "polygon"}, {{203, 213, 225}, {16, 185, 129}, {37, 99, 235}});
+    plot.title("Point-in-polygon: even-odd rule on a concave polygon")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/point_in_polygon.svg");
+    std::cout << "wrote point_in_polygon.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/point_in_polygon_analysis.cpp <<'CPP'
+<<pp-includes>>
+
+int main() {
+<<pp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/point_in_polygon_analysis.cpp -o build/org/point_in_polygon_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/point_in_polygon_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== spot checks ===
+(3, 1) -> inside
+(3, 3) -> outside
+(1, 2) -> inside
+(5, 3.5) -> outside
+(7, 2) -> outside
+
+grid: 450 points classified inside
+wrote point_in_polygon.svg
+#+end_example
+
+The spot checks behave exactly as the geometry demands: @math{(3,1)} sits in the body and
+is inside; @math{(3,3)} falls in the notch above the dipped centre edge and is *outside*;
+@math{(1,2)} is inside the left peak; @math{(5,3.5)} lies just *above* the right slanted
+edge and is outside; and @math{(7,2)} is beyond the polygon entirely. The grid makes the
+whole region visible at once.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/point_in_polygon.svg]]
+
+The green points fill the chevron's two arms and body, while the grey points -- including
+the wedge of the concave notch reaching down between the arms -- are correctly left outside.
+The even-odd rule draws that concave boundary with no special handling: more edges, more
+crossings, same parity test.
