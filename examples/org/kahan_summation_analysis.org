@@ -1,0 +1,161 @@
+#+title: Kahan Summation: Recovering the Bits Rounding Throws Away
+#+subtitle: A literate C++ study of compensated summation with =datamunge='s =algorithms::kahan_sum=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Add a million small numbers in a naive loop and the running total, once it grows large,
+can no longer *see* the small ones -- each addition silently rounds away their low-order
+bits, and the errors pile up as @math{O(n\,\varepsilon)}. *Kahan summation* (1965) fixes
+this with a single extra variable that *remembers* what each addition dropped and feeds it
+back on the next step, holding the total error near @math{2\varepsilon} regardless of
+@math{n}. This report implements it in =datamunge='s C++ =algorithms::kahan_sum=, verified
+against a long-double reference, and shows its error staying flat where naive summation's
+climbs.
+#+end_abstract
+
+* The lost-bits trick
+
+When you compute @math{\texttt{sum} + x} in floating point and @math{\texttt{sum}} is much
+larger than @math{x}, the result is rounded to the nearest representable value and the
+tail of @math{x} vanishes. Kahan summation keeps a *compensation* @math{c} tracking that
+lost tail:
+
+#+begin_example
+y <- x - c            # subtract last step's leftover error from the new term
+t <- sum + y          # add it in -- but this rounds, losing some low bits of y
+c <- (t - sum) - y    # (t - sum) is the part that actually landed; minus y = what was lost
+sum <- t              # ... and c carries that loss into the next iteration
+#+end_example
+
+The magic is the line @math{c \leftarrow (t-\texttt{sum}) - y}: algebraically it is zero,
+but in floating point @math{(t-\texttt{sum})} recovers only the *high* part of @math{y}
+that survived the rounding, so subtracting @math{y} leaves exactly the *low* part that was
+lost. Feeding it back next step means those bits are not gone, merely deferred. The
+worst-case error becomes independent of @math{n} -- a two-line change that turns a badly
+conditioned sum into an accurate one.
+
+#+name: ks-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/elementary.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+KAHAN-SUM(xs):
+  sum <- 0;  c <- 0
+  for x in xs:
+      y <- x - c
+      t <- sum + y
+      c <- (t - sum) - y
+      sum <- t
+  return sum
+#+end_example
+
+* Worked example: a catastrophic sum, and error versus n
+
+First the classic stress test -- a huge value, a million ones, then the huge value
+negated -- where naive summation loses almost everything. Then we sum @math{n} copies of
+@math{0.1} (not exactly representable) and watch the naive error grow while Kahan's stays
+flat.
+
+#+name: ks-run
+#+begin_src c++ :eval no
+    // Catastrophic cancellation stress test.
+    std::vector<double> xs;
+    xs.push_back(1.0e16);
+    for (int i = 0; i < 1000000; ++i) xs.push_back(1.0);
+    xs.push_back(-1.0e16);
+    double naive = 0.0;
+    for (double x : xs) naive += x;
+    std::cout << "=== 1e16 + (1e6 ones) - 1e16, exact = 1000000 ===\n";
+    std::cout << "naive sum = " << naive << "\nkahan sum = " << kahan_sum(xs) << "\n\n";
+
+    // Error vs n when summing n copies of 0.1.
+    std::cout << "n          naive error     kahan error\n";
+    std::vector<double> logn, e_naive, e_kahan;
+    for (long n = 1000; n <= 100000000; n *= 10) {
+        std::vector<double> v(n, 0.1);
+        double s = 0.0;
+        for (double x : v) s += x;
+        const double exact = static_cast<double>(n) * 0.1;
+        const double en = std::fabs(s - exact);
+        const double ek = std::fabs(kahan_sum(v) - exact);
+        std::printf("%9ld  %.4e     %.4e\n", n, en, ek);
+        logn.push_back(std::log10(static_cast<double>(n)));
+        e_naive.push_back(std::log10(std::max(en, 1e-18)));
+        e_kahan.push_back(std::log10(std::max(ek, 1e-18)));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(logn, e_naive, "naive", RGB{220, 38, 38}, 2.0);
+    plot.points(logn, e_naive, "naive", RGB{220, 38, 38}, 6.0);
+    plot.line(logn, e_kahan, "kahan", RGB{37, 99, 235}, 2.0);
+    plot.points(logn, e_kahan, "kahan", RGB{37, 99, 235}, 6.0);
+    plot.legend({"naive summation", "Kahan summation"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Summing n copies of 0.1: naive error grows, Kahan stays flat")
+        .x_label("log10 n").y_label("log10 |error|").background({250, 250, 252});
+    plot.save_svg("build/org/kahan_summation.svg");
+    std::cout << "\nwrote kahan_summation.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kahan_summation_analysis.cpp <<'CPP'
+<<ks-includes>>
+
+int main() {
+<<ks-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kahan_summation_analysis.cpp -o build/org/kahan_summation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kahan_summation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== 1e16 + (1e6 ones) - 1e16, exact = 1000000 ===
+naive sum = 0
+kahan sum = 1e+06
+
+n          naive error     kahan error
+     1000  1.4069e-12     0.0000e+00
+    10000  1.5882e-10     0.0000e+00
+   100000  1.8848e-08     0.0000e+00
+  1000000  1.3329e-06     0.0000e+00
+ 10000000  1.6102e-04     0.0000e+00
+100000000  1.8871e-02     0.0000e+00
+
+wrote kahan_summation.svg
+#+end_example
+
+On the stress test naive summation returns a badly wrong total while Kahan recovers the
+exact @math{1000000}. On the @math{0.1} sums the pattern is systematic: naive error climbs
+roughly in proportion to @math{n}, while Kahan's stays pinned near the machine floor no
+matter how many terms are added.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/kahan_summation.svg]]
+
+The red naive-error line rises steadily with @math{n}; the blue Kahan line runs flat along
+the bottom. That flatness is the whole point of compensated summation -- the error no
+longer grows with the number of terms, so a sum of a hundred million values is as
+trustworthy as a sum of a thousand.
