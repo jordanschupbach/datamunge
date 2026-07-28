@@ -1,0 +1,133 @@
+#+title: Bead Sort: Sorting by Gravity
+#+subtitle: A literate C++ study of the abacus sort with =datamunge='s =algorithms::bead_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Bead sort -- also called gravity sort -- sorts positive integers the way an abacus would if you tipped
+it on its side and let the beads fall. Represent each number as a row of beads on vertical rods, drop
+the beads under gravity, and read the new row heights: they come out sorted. It is a charming
+*non-comparison* sort with a natural parallel/analog realisation, though on a sequential computer its
+cost is proportional to the *sum* of the values. This report drives =datamunge='s
+=algorithms::bead_sort=, verified against =std::sort= over thousands of random non-negative arrays, and
+shows the bead columns that do the sorting.
+#+end_abstract
+
+* Drop the beads
+
+Lay out a grid: one *row* per input number and one *column* (rod) per unit of value. Number \(a_i\)
+places a bead in columns \(0,1,\dots,a_i-1\) of its row. Now let gravity act -- within each column the
+beads fall to the bottom. After the fall, column \(j\) holds
+
+\[ c_j=\#\{\,i : a_i>j\,\} \]
+
+beads (that many numbers reached at least column \(j\)). Reading the row heights from the bottom
+gives the values in *descending* order: the number of beads in row \(r\) (from the bottom, \(r=0\)) is
+\(\#\{\,j : c_j>r\,\}\), and these are exactly the sorted values, largest first. Reverse them for
+ascending order. No two numbers are ever compared; the sorting is done entirely by counting and the
+"fall" -- which in hardware could be literal beads sliding down rods, a genuinely analog sort. On a CPU
+the work is \(O(\sum_i a_i)\), fine for small magnitudes and the reason bead sort is a curiosity rather
+than a workhorse.
+
+#+name: bd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorting_hybrid.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BEAD-SORT(a):                       # a: non-negative integers
+  for each column j: c[j] = number of a_i > j     # beads per rod after gravity
+  for r = 0 .. n-1:
+      a[n-1-r] = number of columns j with c[j] > r  # r-th largest value
+#+end_example
+
+* Worked example: sorting, and the bead columns
+
+We sort a small array and show the bead count in each column after gravity -- a non-increasing profile
+whose steps encode the sorted values.
+
+#+name: bd-run
+#+begin_src c++ :eval no
+    std::vector<unsigned> a = {5, 2, 8, 1, 4, 7, 3};
+    auto s = a; bead_sort(s);
+    std::cout << "=== bead sort ===\n";
+    std::cout << "input:  "; for (unsigned x : a) std::cout << x << " "; std::cout << "\n";
+    std::cout << "sorted: "; for (unsigned x : s) std::cout << x << " "; std::cout << "\n\n";
+
+    unsigned mx = 0; for (unsigned x : a) mx = x > mx ? x : mx;
+    std::vector<double> heights; std::vector<std::string> labels;
+    std::cout << "beads per column after gravity:\n";
+    for (unsigned j = 0; j < mx; ++j) {
+        int cj = 0; for (unsigned x : a) if (x > j) ++cj;
+        std::cout << "  column " << j << ": " << cj << " beads\n";
+        heights.push_back(cj); labels.push_back(std::to_string(j));
+    }
+
+    auto plot = RPlot::barplot(heights, labels, "beads", RGB{234, 88, 12});
+    plot.title("Bead sort: bead count per column after gravity (non-increasing)")
+        .x_label("column (rod / value threshold)").y_label("beads").background({250, 250, 252});
+    plot.save_svg("build/org/bead_sort.svg");
+    std::cout << "\nwrote bead_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bead_sort_analysis.cpp <<'CPP'
+<<bd-includes>>
+
+int main() {
+<<bd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bead_sort_analysis.cpp -o build/org/bead_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bead_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== bead sort ===
+input:  5 2 8 1 4 7 3
+sorted: 1 2 3 4 5 7 8
+
+beads per column after gravity:
+  column 0: 7 beads
+  column 1: 6 beads
+  column 2: 5 beads
+  column 3: 4 beads
+  column 4: 3 beads
+  column 5: 2 beads
+  column 6: 2 beads
+  column 7: 1 beads
+
+wrote bead_sort.svg
+#+end_example
+
+Gravity sorts the array -- the output matches =std::sort= across thousands of random non-negative
+inputs -- purely by counting beads per column and reading off row heights, never comparing two numbers.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/bead_sort.svg]]
+
+The column profile falls off monotonically: column \(j\) counts how many values exceed \(j\), so its
+staircase is the sorted sequence viewed sideways. Bead sort's appeal is conceptual and physical -- a
+sort you could build from an abacus -- rather than practical, since its running time scales with the
+magnitude of the numbers, not just how many there are.
