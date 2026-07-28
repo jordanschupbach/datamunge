@@ -1,0 +1,150 @@
+#+title: Stooge Sort: Recursion Taken Too Far
+#+subtitle: A literate C++ study of a deliberately inefficient sort with =datamunge='s =algorithms::stooge_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Stooge sort is correct, elegant in its recursion, and almost uselessly slow -- a favourite teaching
+example of how a plausible-looking divide-and-conquer can go badly wrong. Compare the ends, then
+recursively sort the first two-thirds, the last two-thirds, and the first two-thirds again. The triple
+overlap gives a running time of \(O(n^{\log 3/\log 1.5})=O(n^{2.71})\), worse than bubble sort. This
+report drives =datamunge='s =algorithms::stooge_sort=, verified against =std::sort= over thousands of
+small arrays, and measures its runaway growth.
+#+end_abstract
+
+* Two-thirds, three times
+
+The recursion is deceptively simple. On a segment:
+
+1. If the last element is smaller than the first, swap them.
+2. If the segment has more than two elements, let \(t=\lfloor n/3\rfloor\) and recurse on the first
+   two-thirds \([\,0,\,n-t\,)\), then the last two-thirds \([\,t,\,n\,)\), then the first two-thirds
+   again.
+
+Why it works: after sorting the first \(2/3\) and then the last \(2/3\), the largest third of the
+values has been pushed into the final third; the last third is then in place, and a final pass over
+the first \(2/3\) finishes the job. Why it is slow: each call spawns *three* calls on segments of size
+\(2n/3\), so \(T(n)=3\,T(2n/3)+O(1)\), giving
+
+\[ T(n)=\Theta\!\big(n^{\log_{3/2}3}\big)=\Theta\!\big(n^{2.7095\ldots}\big). \]
+
+Three overlapping recursions on shrunk-by-only-a-third segments is a lot of redundant work -- the
+opposite of the balanced split that makes merge sort fast. Stooge sort earns its place on the list not
+for utility but as a cautionary tale about recursion that fails to divide the problem enough.
+
+#+name: st-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorting_hybrid.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Count the recursive calls stooge sort makes for size n.
+static long g_calls = 0;
+static void stooge_count(int lo, int hi) {
+    ++g_calls;
+    const int len = hi - lo + 1;
+    if (len > 2) { int t = len / 3; stooge_count(lo, hi - t); stooge_count(lo + t, hi); stooge_count(lo, hi - t); }
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+STOOGE-SORT(a, lo, hi):
+  if a[hi] < a[lo]: swap
+  if hi - lo + 1 > 2:
+      t = (hi - lo + 1) / 3
+      STOOGE-SORT(a, lo,   hi-t)
+      STOOGE-SORT(a, lo+t, hi)
+      STOOGE-SORT(a, lo,   hi-t)
+#+end_example
+
+* Worked example: sorting, and the cost blow-up
+
+We sort a small array, then count recursive calls as \(n\) grows and compare against the
+\(n^{2.71}\) prediction and a quadratic reference.
+
+#+name: st-run
+#+begin_src c++ :eval no
+    std::vector<int> a = {5, 1, 4, 2, 8, 0, 7, 3, 6};
+    auto s = a; stooge_sort(s);
+    std::cout << "=== stooge sort ===\n";
+    std::cout << "input:  "; for (int x : a) std::cout << x << " "; std::cout << "\n";
+    std::cout << "sorted: "; for (int x : s) std::cout << x << " "; std::cout << "\n\n";
+
+    std::cout << "recursive calls vs n:\n";
+    std::vector<double> nx, calls, pred, quad;
+    for (int n = 3; n <= 200; ++n) {
+        g_calls = 0; stooge_count(0, n - 1);
+        nx.push_back(n); calls.push_back((double)g_calls);
+        pred.push_back(std::pow((double)n, std::log(3.0) / std::log(1.5)));
+        quad.push_back((double)n * n);
+        if (n == 27 || n == 81 || n == 200) std::printf("  n=%-4d calls=%-8ld  n^2.71=%-10.0f  n^2=%ld\n", n, g_calls, std::pow((double)n, std::log(3.0)/std::log(1.5)), (long)n*n);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(nx, calls, "c", RGB{220, 38, 38}, 2.0);
+    plot.line(nx, pred, "p", RGB{124, 58, 237}, 1.5);
+    plot.line(nx, quad, "q", RGB{5, 150, 105}, 1.5);
+    plot.legend({"stooge recursive calls", "~ n^2.71", "n^2 (bubble sort)"},
+                {{220, 38, 38}, {124, 58, 237}, {5, 150, 105}});
+    plot.title("Stooge sort's calls grow as n^2.71 -- worse than quadratic")
+        .x_label("array size n").y_label("recursive calls").background({250, 250, 252});
+    plot.save_svg("build/org/stooge_sort.svg");
+    std::cout << "\nwrote stooge_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/stooge_sort_analysis.cpp <<'CPP'
+<<st-includes>>
+
+int main() {
+<<st-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/stooge_sort_analysis.cpp -o build/org/stooge_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/stooge_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== stooge sort ===
+input:  5 1 4 2 8 0 7 3 6
+sorted: 0 1 2 3 4 5 6 7 8
+
+recursive calls vs n:
+  n=27   calls=3280      n^2.71=7556        n^2=729
+  n=81   calls=88573     n^2.71=148273      n^2=6561
+  n=200  calls=797161    n^2.71=1716591     n^2=40000
+
+wrote stooge_sort.svg
+#+end_example
+
+Stooge sort is *correct* -- it matches =std::sort= across thousands of small arrays -- but the call
+count balloons as \(n^{2.71}\), overtaking even the quadratic reference. That is the lesson: a
+divide-and-conquer that shrinks the subproblem by too little, and overlaps too much, can be slower than
+the naive method it resembles.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/stooge_sort.svg]]
+
+The red call-count curve tracks the purple \(n^{2.71}\) prediction and climbs above the green
+\(n^2\) line: three recursive calls on two-thirds-size segments is simply too much redundant work.
+Stooge sort is a perfect foil to merge sort -- same divide-and-conquer skeleton, opposite outcome --
+precisely because it fails to divide the problem enough.

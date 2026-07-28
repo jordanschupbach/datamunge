@@ -180,11 +180,11 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
     Humorous or ineffective
         Bogosort: the list is randomly shuffled until it happens to be sorted
         Slowsort
-        Stooge sort
+        [x] Stooge sort  -- datamunge::algorithms::stooge_sort (recursive, O(n^2.71)); report examples/org/stooge_sort_analysis.org
     Hybrid
         [x] Flashsort  -- datamunge::algorithms::flashsort (distribution sort by value class); report examples/org/flashsort_analysis.org
         Introsort: begin with quicksort and switch to heapsort when the recursion depth exceeds a certain level
-        Timsort: adaptative algorithm derived from merge sort and insertion sort. Used in Python 2.3 and up, and Java SE 7.
+        [x] Timsort: adaptative algorithm derived from merge sort and insertion sort. Used in Python 2.3 and up, and Java SE 7.  -- datamunge::algorithms::timsort (runs + minrun + merge-collapse); report examples/org/timsort_analysis.org
     Insertion sorts
         [x] Cycle sort: in-place with theoretically optimal number of writes  -- datamunge::algorithms::cycle_sort; report examples/org/cycle_sort_analysis.org
         [x] Insertion sort: determine where the current item belongs in the list of sorted ones, and insert it there  -- datamunge::algorithms::insertion_sort; report examples/org/insertion_sort_analysis.org
@@ -197,7 +197,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         Slowsort
         [x] Strand sort  -- datamunge::algorithms::strand_sort (extract increasing runs, merge); report examples/org/strand_sort_analysis.org
     Non-comparison sorts
-        Bead sort
+        [x] Bead sort  -- datamunge::algorithms::bead_sort (gravity sort, non-negative ints); report examples/org/bead_sort_analysis.org
         [x] Bucket sort  -- datamunge::algorithms::bucket_sort; report examples/org/bucket_sort_analysis.org
         Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output
         Counting sort
