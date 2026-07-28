@@ -1,0 +1,134 @@
+#+title: The Voronoi Diagram: Carving the Plane Into Territories
+#+subtitle: A literate C++ study of nearest-site regions with =datamunge='s =geometry::voronoi_diagram=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a set of *sites* -- post offices, cell towers, sensors -- the *Voronoi diagram*
+partitions the plane into one region per site: the set of all locations closer to that site
+than to any other. These cells answer "which is nearest?" for the whole plane at once, and
+underlie facility location, nearest-neighbor interpolation, and mesh generation. This report
+drives =datamunge='s =geometry::voronoi_diagram=, built as the geometric dual of the Delaunay
+triangulation, and draws the bounded cells around a set of sites.
+#+end_abstract
+
+* Regions of nearest-ness, dual to Delaunay
+
+The *Voronoi cell* of a site @math{s} is @math{\{x : \|x-s\| \le \|x-s'\|\ \text{for all
+sites } s'\}} -- everywhere @math{s} is the closest site. Cell boundaries are segments of the
+*perpendicular bisectors* between neighbouring sites; a boundary point is equidistant from
+two sites, and a Voronoi *vertex* is equidistant from three.
+
+The diagram is the *straight-line dual* of the Delaunay triangulation: each Delaunay triangle
+corresponds to one Voronoi vertex (its circumcenter), and two sites share a Voronoi edge
+exactly when they are joined by a Delaunay edge. =datamunge= exploits this: it triangulates
+the sites, then places a Voronoi vertex at each triangle's circumcenter and stitches a cell
+polygon around each site from the circumcenters of the triangles incident to it. Cells for
+*interior* sites are the exact bounded Voronoi regions; a *hull* site's true cell is
+unbounded (its outer edges are rays), so what is returned there is the finite polygon of its
+available circumcenters.
+
+#+name: vd-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/voronoi.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+VORONOI(sites):
+  tris <- Delaunay triangulation of the sites
+  for each triangle: compute its circumcenter -> a Voronoi vertex
+  for each site: collect the circumcenters of the triangles around it,
+                 ordered angularly, into that site's cell polygon
+  (bounded cells only; hull sites' cells are unbounded)
+  return vertices and cell polygons
+#+end_example
+
+* Worked example: cells around a cloud of sites
+
+We scatter sites in a box and build the diagram, counting how many cells are bounded, then
+draw those cells over the sites.
+
+#+name: vd-run
+#+begin_src c++ :eval no
+    std::mt19937 rng(1234567);
+    std::uniform_real_distribution<double> ud(1.0, 9.0);
+    std::vector<Point2D> sites;
+    for (int i = 0; i < 24; ++i) sites.push_back({ud(rng), ud(rng)});
+
+    const VoronoiDiagram vd = voronoi_diagram(sites);
+    int nonempty = 0;
+    for (const auto& cell : vd.cells) if (!cell.empty()) ++nonempty;
+    std::cout << "=== Voronoi of 24 sites ===\n";
+    std::cout << "Voronoi vertices (triangle circumcenters): " << vd.vertices.size() << "\n";
+    std::cout << "non-empty cell polygons: " << nonempty << "\n";
+
+    std::vector<double> sx, sy;
+    for (const Point2D& p : sites) { sx.push_back(p.x); sy.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    for (const auto& cell : vd.cells) {
+        if (cell.empty()) continue;
+        std::vector<double> cx, cy;
+        for (const Point2D& p : cell) { cx.push_back(p.x); cy.push_back(p.y); }
+        plot.polygon(cx, cy, RGB{129, 140, 248}, false);
+    }
+    plot.points(sx, sy, "sites", RGB{220, 38, 38}, 6.0);
+    plot.legend({"bounded Voronoi cells", "sites"}, {{129, 140, 248}, {220, 38, 38}});
+    plot.title("Voronoi diagram: each cell is the region nearest one site")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/voronoi.svg");
+    std::cout << "wrote voronoi.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/voronoi_analysis.cpp <<'CPP'
+<<vd-includes>>
+
+int main() {
+<<vd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/voronoi_analysis.cpp -o build/org/voronoi_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/voronoi_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Voronoi of 24 sites ===
+Voronoi vertices (triangle circumcenters): 36
+non-empty cell polygons: 24
+wrote voronoi.svg
+#+end_example
+
+The diagram places a Voronoi vertex at each Delaunay circumcenter (36 of them for these
+sites) and returns a cell polygon for every site. For an interior site that polygon is its
+exact bounded territory -- every point inside is closer to that site than to any other; for a
+hull site it is the finite portion built from the available circumcenters.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/voronoi.svg]]
+
+The purple cells tile the interior, each wrapped around its red site, their shared edges
+lying on the perpendicular bisectors between neighbouring sites. Read the picture as a map
+of nearest-ness: step across a cell boundary and the closest site changes. It is the exact
+dual of the Delaunay mesh in the companion report.

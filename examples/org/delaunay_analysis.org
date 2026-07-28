@@ -1,0 +1,139 @@
+#+title: Delaunay Triangulation: The Triangulation That Avoids Slivers
+#+subtitle: A literate C++ study of the empty-circumcircle triangulation with =datamunge='s =geometry::delaunay_triangulation=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Of all the ways to cut a point set into triangles, the *Delaunay triangulation* is the one
+that *maximizes the smallest angle* -- avoiding the thin "sliver" triangles that wreck
+interpolation and finite-element meshes. Its defining property is beautifully local: the
+circumcircle of every triangle is *empty* of other points. This report drives =datamunge='s
+=geometry::delaunay_triangulation=, verifies the triangle count on a hand-checkable set, and
+draws the mesh over a random cloud.
+#+end_abstract
+
+* The empty-circumcircle property
+
+A triangulation of a point set is *Delaunay* if, for every triangle, the unique circle
+through its three vertices (the *circumcircle*) contains no other point of the set in its
+interior. This single condition has remarkable consequences:
+
+- it *maximizes the minimum angle* over all triangulations, so triangles are as
+  "fat" as possible -- exactly what numerical interpolation and meshing want;
+- it is the *straight-line dual* of the Voronoi diagram (connect two sites whose Voronoi
+  cells share an edge);
+- for @math{n} points with @math{h} of them on the convex hull, it has exactly
+  @math{2n-2-h} triangles.
+
+=datamunge= builds it incrementally: insert points one at a time, delete every triangle
+whose circumcircle the new point violates, and re-triangulate the resulting hole (the
+*Bowyer-Watson* algorithm). Each triangle is returned as a triple of point indices.
+
+#+name: dt-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/delaunay.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+DELAUNAY(points):                          # Bowyer-Watson incremental
+  start with a super-triangle enclosing all points
+  for each point p:
+      find all triangles whose circumcircle contains p ("bad" triangles)
+      remove them, leaving a star-shaped hole
+      re-triangulate the hole by joining p to each boundary edge
+  discard triangles touching the super-triangle
+  return the triangles (as index triples)
+#+end_example
+
+* Worked example: a square plus its center, then a random cloud
+
+We triangulate five points -- a square and its center -- where the Delaunay mesh is a fan of
+four triangles, then draw the triangulation of a random cloud.
+
+#+name: dt-run
+#+begin_src c++ :eval no
+    std::vector<Point2D> five{{0, 0}, {4, 0}, {4, 4}, {0, 4}, {2, 2}};
+    const std::vector<Triangle> t5 = delaunay_triangulation(five);
+    std::cout << "=== square + center (n=5, hull h=4) ===\n";
+    std::cout << "triangles: " << t5.size() << " (expected 2n-2-h = " << 2 * 5 - 2 - 4 << ")\n";
+    for (const Triangle& t : t5) std::cout << "  (" << t.a << "," << t.b << "," << t.c << ")\n";
+
+    std::mt19937 rng(20250728);
+    std::uniform_real_distribution<double> ud(0.0, 10.0);
+    std::vector<Point2D> cloud;
+    for (int i = 0; i < 30; ++i) cloud.push_back({ud(rng), ud(rng)});
+    const std::vector<Triangle> tris = delaunay_triangulation(cloud);
+    std::cout << "\nrandom cloud n=30 -> " << tris.size() << " Delaunay triangles\n";
+
+    std::vector<double> px, py;
+    for (const Point2D& p : cloud) { px.push_back(p.x); py.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    for (const Triangle& t : tris)
+        plot.polygon({cloud[t.a].x, cloud[t.b].x, cloud[t.c].x},
+                     {cloud[t.a].y, cloud[t.b].y, cloud[t.c].y}, RGB{147, 197, 253}, false);
+    plot.points(px, py, "points", RGB{220, 38, 38}, 6.0);
+    plot.legend({"Delaunay triangles", "points"}, {{147, 197, 253}, {220, 38, 38}});
+    plot.title("Delaunay triangulation of a random cloud (n = 30)")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/delaunay.svg");
+    std::cout << "wrote delaunay.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/delaunay_analysis.cpp <<'CPP'
+<<dt-includes>>
+
+int main() {
+<<dt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/delaunay_analysis.cpp -o build/org/delaunay_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/delaunay_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== square + center (n=5, hull h=4) ===
+triangles: 4 (expected 2n-2-h = 4)
+  (0,4,3)
+  (2,3,4)
+  (1,2,4)
+  (0,1,4)
+
+random cloud n=30 -> 47 Delaunay triangles
+wrote delaunay.svg
+#+end_example
+
+The square-plus-center triangulates into exactly the four fan triangles the count formula
+@math{2n-2-h} predicts, and the random cloud fills out to its full Delaunay mesh. Every
+triangle drawn satisfies the empty-circumcircle rule, which is why none of them is a thin
+sliver.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/delaunay.svg]]
+
+The blue mesh covers the convex hull of the red points with well-shaped triangles -- notice
+the absence of long, thin slivers, the visible payoff of maximizing the minimum angle. This
+same mesh is the scaffold for terrain models, finite-element grids, and the Voronoi diagram
+of the companion report, its geometric dual.
