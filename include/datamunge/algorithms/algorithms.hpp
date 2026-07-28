@@ -5,6 +5,7 @@
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
+#include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
@@ -27,6 +28,7 @@
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/manacher.hpp>
+#include <datamunge/algorithms/merge.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
@@ -51,6 +53,7 @@
 #include <datamunge/algorithms/subsequences.hpp>
 #include <datamunge/algorithms/substrings.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
+#include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>

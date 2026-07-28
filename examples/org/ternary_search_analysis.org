@@ -1,0 +1,147 @@
+#+title: Ternary Search: Locating the Peak of a Unimodal Function
+#+subtitle: A literate C++ study of derivative-free optimization with =datamunge='s =algorithms::ternary_search_max=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Binary search finds a value in a *sorted* array by halving. *Ternary search* finds the
+*extremum* of a *unimodal* function -- one that rises then falls (or falls then rises) --
+by splitting the interval into *thirds*. Comparing the function at the two split points
+reveals which outer third *cannot* contain the peak, so it is thrown away and the
+bracket shrinks by @math{2/3} each step. It needs no derivative, only unimodality, and
+converges *logarithmically*. This report implements it in =datamunge='s C++
+=algorithms::ternary_search_max=/=_min=, verified against known analytic optima, and
+watches the bracket close in on the peak.
+#+end_abstract
+
+* Why thirds, and why it works
+
+On a bracket @math{[lo,hi]} pick two interior points
+@math{m_1 = lo + (hi-lo)/3} and @math{m_2 = hi - (hi-lo)/3}. For a function that
+increases then decreases (a single maximum):
+
+- if @math{f(m_1) \ge f(m_2)}, the peak cannot lie in the *right* third @math{(m_2,hi]}
+  -- so set @math{hi \leftarrow m_2};
+- otherwise it cannot lie in the *left* third @math{[lo,m_1)} -- so set
+  @math{lo \leftarrow m_1}.
+
+Either way the surviving bracket still contains the maximum and is @math{2/3} as wide.
+After @math{t} steps the width is @math{(2/3)^t} of the original, so reaching a
+tolerance @math{\varepsilon} takes @math{O(\log_{3/2}\!\frac{hi-lo}{\varepsilon})}
+steps -- logarithmic, like binary search but with base @math{3/2} instead of @math{2}.
+Unimodality is *essential*: on a bumpy multi-peak function the discarded third might
+have held the true optimum. (The closely related *golden-section search* reuses one
+evaluation per step to save function calls; ternary search is the simplest form.)
+
+#+name: ts-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ternary_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TERNARY-SEARCH-MAX(f, lo, hi):
+  while hi - lo > tol:
+      m1 <- lo + (hi-lo)/3
+      m2 <- hi - (hi-lo)/3
+      if f(m1) >= f(m2): hi <- m2      # peak not in the right third
+      else:              lo <- m1      # peak not in the left third
+  return (lo+hi)/2
+#+end_example
+
+* Worked example: the peak of x e^{-x}, and the shrinking bracket
+
+The function @math{f(x)=x\,e^{-x}} rises from 0, peaks at @math{x=1} (value
+@math{1/e\approx0.3679}), then decays -- textbook unimodal. We locate the peak and trace
+the bracket width at each step.
+
+#+name: ts-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return x * std::exp(-x); };
+    const TernaryResult r = ternary_search_max(f, 0.0, 5.0);
+    std::cout << "=== max of x e^{-x} on [0,5] ===\n";
+    std::cout << "x* = " << r.x << " (true 1), f(x*) = " << r.value << " (true 1/e = " << std::exp(-1.0)
+              << "), iterations = " << r.iterations << "\n\n";
+
+    // A minimum example too.
+    const TernaryResult mn = ternary_search_min([](double x) { return (x - 3.0) * (x - 3.0) + 1.0; }, -10, 10);
+    std::cout << "min of (x-3)^2+1: x* = " << mn.x << " (true 3), f = " << mn.value << " (true 1)\n\n";
+
+    // Trace the bracket width per iteration -> geometric (2/3)^t decay.
+    std::vector<double> it, logw, ideal;
+    double lo = 0.0, hi = 5.0;
+    for (int i = 0; i <= 100 && (hi - lo) > 1e-9; ++i) {
+        it.push_back(i);
+        logw.push_back(std::log10(hi - lo));
+        ideal.push_back(std::log10(5.0 * std::pow(2.0 / 3.0, i)));
+        const double m1 = lo + (hi - lo) / 3.0, m2 = hi - (hi - lo) / 3.0;
+        if (f(m1) >= f(m2)) hi = m2; else lo = m1;
+    }
+    std::cout << "bracket width reached 1e-9 in " << it.size() << " steps\n";
+
+    auto plot = RPlot::create();
+    plot.line(it, ideal, "(2/3)^t", RGB{148, 163, 184}, 2.0);
+    plot.line(it, logw, "actual bracket", RGB{124, 58, 237}, 2.0);
+    plot.points(it, logw, "bracket", RGB{124, 58, 237}, 5.0);
+    plot.legend({"ideal (2/3)^t", "actual bracket width"}, {{148, 163, 184}, {124, 58, 237}});
+    plot.title("Ternary search shrinks the bracket by 2/3 each step (log scale)")
+        .x_label("iteration").y_label("log10 bracket width").background({250, 250, 252});
+    plot.save_svg("build/org/ternary_search.svg");
+    std::cout << "wrote ternary_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ternary_search_analysis.cpp <<'CPP'
+<<ts-includes>>
+
+int main() {
+<<ts-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ternary_search_analysis.cpp -o build/org/ternary_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ternary_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== max of x e^{-x} on [0,5] ===
+x* = 1 (true 1), f(x*) = 0.367879 (true 1/e = 0.367879), iterations = 56
+
+min of (x-3)^2+1: x* = 3 (true 3), f = 1 (true 1)
+
+bracket width reached 1e-9 in 56 steps
+wrote ternary_search.svg
+#+end_example
+
+Both optima land on their analytic values -- the peak of @math{x e^{-x}} at
+@math{x=1} with value @math{1/e}, and the parabola's minimum at @math{x=3} -- found
+with nothing but function evaluations. The bracket-width trace is a straight line on a
+log scale: geometric @math{(2/3)^t} shrinkage, the signature of logarithmic
+convergence.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/ternary_search.svg]]
+
+The purple actual-width line lies right on top of the grey @math{(2/3)^t} reference:
+every step really does discard one third of the bracket. That steady logarithmic
+descent is why ternary search reaches a @math{10^{-9}} bracket in only a few dozen
+evaluations, no derivative required -- as long as the function truly has a single peak.

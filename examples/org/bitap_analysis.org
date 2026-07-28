@@ -1,0 +1,182 @@
+#+title: Bitap: Bit-Parallel String Search, Exact and Fuzzy
+#+subtitle: A literate C++ study of the shift-and algorithm with =datamunge='s =algorithms::bitap_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Bitap* algorithm (also *shift-and* / Baeza-Yates-Gonnet) searches for a pattern by
+packing the entire state of the match -- "which pattern prefixes currently match the
+text ending here" -- into the *bits of a single machine word*, and advancing all of them
+at once with one shift and one AND per text character. It is @math{O(n)} with a tiny
+constant, and -- unlike Boyer-Moore or KMP -- extends gracefully to *approximate*
+matching: run a few coupled words, one per allowed error, and you get the *k-mismatches*
+search behind tools like =agrep=. This report implements both in =datamunge='s C++,
+verified against @c std::string::find (exact) and a brute-force Hamming oracle (fuzzy).
+#+end_abstract
+
+* The state of a search, held in one word
+
+Let the pattern have length @math{m}. Bitap keeps a word @math{R} whose bit @math{j} is
+set exactly when @math{pattern[0..j]} matches the text ending at the current position.
+Precompute, for each character @math{c}, a mask with bit @math{j} set where
+@math{pattern[j]=c}. Then reading text character @math{c} updates the whole state in two
+operations:
+
+\[ R \leftarrow \big((R \ll 1)\,\lor\,1\big)\,\land\,\text{mask}[c]. \]
+
+The @math{\ll 1 \lor 1} lets a fresh match start at every position; the @math{\land
+\text{mask}[c]} keeps only prefixes whose next character actually matches. When bit
+@math{m-1} of @math{R} is set, a full occurrence ends here. All @math{m} prefixes
+advance *in parallel* inside the word, so the per-character cost is constant regardless
+of @math{m} (up to the word width).
+
+*Approximate matching.* Keep @math{k+1} words @math{R_0,\dots,R_k}, where @math{R_d}
+tracks matches with at most @math{d} substitutions. Each @math{R_d} is updated from its
+own previous value *and* from @math{R_{d-1}} (spend one more error), so a length-@math{m}
+window whose *Hamming distance* to the pattern is @math{\le k} lights up bit @math{m} of
+@math{R_k}. That is @math{O(nk)} time, still almost entirely inside the CPU word.
+
+#+name: bt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bitap.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BITAP-EXACT(text, pattern):                       # shift-and, 1 = match
+  for c in 0..255: mask[c] <- 0
+  for j in 0..m-1: mask[pattern[j]] |= (1 << j)
+  R <- 0
+  for i in 0..n-1:
+      R <- ((R << 1) | 1) & mask[text[i]]
+      if R & (1 << (m-1)): return i-m+1            # occurrence ends at i
+  return -1
+
+BITAP-FUZZY(text, pattern, k):                    # shift-or, 0 = match, R[d] = up to d subs
+  R[0..k] <- ~1                                     # all "no match" except the seed bit
+  for i in 0..n-1:
+      old <- R[0];  R[0] <- (R[0] | mask[text[i]]) << 1
+      for d in 1..k:
+          tmp <- R[d]
+          R[d] <- (old & (R[d] | mask[text[i]])) << 1
+          old  <- tmp
+      if (R[k] & (1 << m)) == 0: return i           # <=k-substitution window ends at i
+  return -1
+#+end_example
+
+* Worked example: a motif in a genome, exact then fuzzy
+
+We search a DNA string that contains the motif =ACGTACG= exactly (twice) plus several
+*near* copies differing by one or two point mutations, using a growing error budget, and
+count how many length-@math{m} windows match.
+
+#+name: bt-run
+#+begin_src c++ :eval no
+    const std::string text = "TTGCAACGTACGTTAGGCAACGTCCGATCGAAGGTAAGACGTACGCC";
+    const std::string motif = "ACGTACG";
+
+    std::cout << "=== exact search for " << motif << " ===\n";
+    const long e = bitap_search(text, motif);
+    std::cout << "first exact occurrence starts at index " << e << "\n\n";
+
+    std::cout << "=== fuzzy search (k substitutions), first match end index ===\n";
+    for (int k = 0; k <= 3; ++k)
+        std::cout << "k=" << k << ": end index " << bitap_fuzzy_search(text, motif, k) << "\n";
+    std::cout << "\n";
+
+    // Count how many length-m windows match within k substitutions, for k = 0..4.
+    auto count_windows = [&](int k) {
+        const long m = static_cast<long>(motif.size());
+        int        c = 0;
+        for (long i = 0; i + m <= static_cast<long>(text.size()); ++i) {
+            int mm = 0;
+            for (long j = 0; j < m; ++j) mm += (text[i + j] != motif[j]);
+            if (mm <= k) ++c;
+        }
+        return c;
+    };
+    std::vector<double>      counts;
+    std::vector<std::string> labels;
+    std::cout << "matching windows by error budget:\n";
+    for (int k = 0; k <= 4; ++k) {
+        const int c = count_windows(k);
+        counts.push_back(c);
+        labels.push_back("k=" + std::to_string(k));
+        std::cout << "  k=" << k << ": " << c << " window(s)\n";
+    }
+
+    auto plot = RPlot::barplot(counts, labels, "matching windows", RGB{5, 150, 105});
+    plot.title("Bitap fuzzy search: more windows match as the error budget grows")
+        .x_label("substitution budget k").y_label("windows within k of the motif")
+        .background({250, 250, 252});
+    plot.save_svg("build/org/bitap.svg");
+    std::cout << "\nwrote bitap.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bitap_analysis.cpp <<'CPP'
+<<bt-includes>>
+
+int main() {
+<<bt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bitap_analysis.cpp -o build/org/bitap_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bitap_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== exact search for ACGTACG ===
+first exact occurrence starts at index 5
+
+=== fuzzy search (k substitutions), first match end index ===
+k=0: end index 11
+k=1: end index 11
+k=2: end index 11
+k=3: end index 11
+
+matching windows by error budget:
+  k=0: 2 window(s)
+  k=1: 3 window(s)
+  k=2: 5 window(s)
+  k=3: 7 window(s)
+  k=4: 13 window(s)
+
+wrote bitap.svg
+#+end_example
+
+Exact search pinpoints the first planted motif (starting at index 5, ending at 11); the
+first *fuzzy* match stays at that same exact window for every @math{k}, since it is the
+earliest one within budget. What grows is the *number* of matching windows: 2 at
+@math{k=0} (the two exact copies), then 3, 5, 7, and 13 as @math{k} climbs to 4 and ever
+looser near-copies qualify. Every fuzzy result here agrees with the brute-force Hamming
+count the test suite checks against.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bitap.svg]]
+
+The bars grow with @math{k}: at @math{k=0} only the exact motif matches, and each extra
+unit of error budget admits more approximate windows. That monotone growth is the whole
+point of fuzzy search -- a tunable dial between "exactly this string" and "anything
+roughly like it" -- and Bitap turns that dial while touching each text character just a
+handful of bit operations.
