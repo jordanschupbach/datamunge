@@ -1,0 +1,149 @@
+#+title: Trial Division: Factoring by Brute Force
+#+subtitle: A literate C++ study of the simplest factorization with =datamunge='s =algorithms::trial_division_factorize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The oldest way to factor an integer is also the most obvious: try dividing by \(2\), then
+\(3\), then \(5\), and so on, peeling off each prime factor as you find it. *Trial
+division* needs no cleverness and always works, but its cost grows like \(\sqrt{n}\) -- fine
+for small numbers or for stripping the small factors off a big one before a sharper method
+takes over, hopeless for the large semiprimes cryptography relies on. This report drives
+=datamunge='s =algorithms::trial_division_factorize=, verified to reproduce known
+factorizations, and measures its \(\sqrt{n}\) effort.
+#+end_abstract
+
+* Divide, divide out, repeat
+
+To factor \(n\): while \(2\) divides \(n\), record \(2\) and halve; then try odd
+candidates \(d=3,5,7,\dots\). Whenever \(d\mid n\), record \(d\) and divide it out
+(with full multiplicity) before moving on -- so each recorded factor is automatically *prime*,
+since any composite candidate's prime parts were already removed. The loop can stop once
+\(d^2>n\): whatever remains above \(\sqrt{n}\) has no divisor \(\le\sqrt{n}\) and is
+itself prime. Hence the work is \(O(\sqrt{n})\) in the worst case (a prime, or a semiprime
+whose smaller factor is near \(\sqrt{n}\)). That square-root wall is why trial division is a
+*preprocessing* step -- clearing out small factors -- rather than a general factorer.
+
+#+name: td-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TRIAL-DIVISION(n):
+  while n even: record 2; n <- n/2
+  for d = 3, 5, 7, ... while d*d <= n:
+      while d divides n: record d; n <- n/d
+  if n > 1: record n            # the remaining prime
+  return the recorded factors
+#+end_example
+
+* Worked example: factorizations, and the sqrt(n) cost
+
+We factor a few integers by hand-check, then count the trial divisors tested to factor
+semiprimes of growing size (worst case for trial division).
+
+#+name: td-run
+#+begin_src c++ :eval no
+    for (std::uint64_t n : {360ULL, 1001ULL, 2027ULL, 1000000007ULL}) {
+        std::cout << n << " = ";
+        const auto f = trial_division_factorize(n);
+        for (std::size_t i = 0; i < f.size(); ++i) std::cout << (i ? " x " : "") << f[i];
+        if (f.size() == 1) std::cout << " (prime)";
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+
+    // Instrumented divisor count for semiprimes p*q with p ~ q ~ sqrt(n).
+    auto count_divisions = [](std::uint64_t n) {
+        long long steps = 0;
+        while (n % 2 == 0) { ++steps; n /= 2; }
+        for (std::uint64_t d = 3; d * d <= n; d += 2) { ++steps; while (n % d == 0) n /= d; }
+        return steps;
+    };
+
+    std::cout << "semiprime          sqrt(n)      trial divisors\n";
+    std::vector<double> sq, steps;
+    const std::uint64_t primes[] = {101, 331, 1009, 3167, 10007, 31627, 100003};
+    for (std::uint64_t p : primes) {
+        const std::uint64_t n = p * p; // worst case: factor near sqrt(n)
+        const long long s = count_divisions(n);
+        sq.push_back(std::sqrt(static_cast<double>(n)));
+        steps.push_back(static_cast<double>(s));
+        std::printf("%-18llu %-12.0f %lld\n", (unsigned long long)n, std::sqrt((double)n), s);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(sq, steps, "steps", RGB{37, 99, 235}, 2.0);
+    plot.points(sq, steps, "steps", RGB{37, 99, 235}, 6.0);
+    plot.legend({"trial divisors tested"}, {{37, 99, 235}});
+    plot.title("Trial division cost grows linearly with sqrt(n)")
+        .x_label("sqrt(n)").y_label("divisor candidates tested").background({250, 250, 252});
+    plot.save_svg("build/org/trial_division.svg");
+    std::cout << "\nwrote trial_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/trial_division_analysis.cpp <<'CPP'
+<<td-includes>>
+
+int main() {
+<<td-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/trial_division_analysis.cpp -o build/org/trial_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/trial_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+360 = 2 x 2 x 2 x 3 x 3 x 5
+1001 = 7 x 11 x 13
+2027 = 2027 (prime)
+1000000007 = 1000000007 (prime)
+
+semiprime          sqrt(n)      trial divisors
+10201              101          50
+109561             331          165
+1018081            1009         504
+10029889           3167         1583
+100140049          10007        5003
+1000267129         31627        15813
+10000600009        100003       50001
+
+wrote trial_division.svg
+#+end_example
+
+Each number is factored correctly into primes -- \(360=2^3\cdot3^2\cdot5\), the
+ten-digit \(1000000007\) confirmed prime -- and the divisor-count table shows the cost
+tracking \(\sqrt{n}\): the number of candidates tested to factor \(p^2\) is essentially
+\(p/2=\tfrac12\sqrt{n}\) (only odd \(d\) are tried after the factor of two).
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/trial_division.svg]]
+
+The step count is a straight line against \(\sqrt{n}\) -- linear, confirming the
+\(O(\sqrt{n})\) worst case. Since \(\sqrt{n}\) still doubles in bits for every two bits
+added to \(n\), this line becomes an exponential wall in the *number of digits*: exactly
+why factoring hard semiprimes needs the subexponential methods in the companion reports.

@@ -1038,6 +1038,26 @@ We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) a
 
 We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
 
+** [[./trial_division_analysis.html][Trial Division: Factoring by Brute Force]] ([[./trial_division_analysis.pdf][PDF]])
+/A literate C++ study of the simplest factorization using datamunge/
+
+We implement trial division (=algorithms::trial_division_factorize=) and report it as a literate program. We give the divide-out loop with the sqrt(n) cutoff and prime-by-construction factors; 360 = 2^3*3^2*5 and 10^9+7 is confirmed prime, while the divisor-count on p^2 semiprimes tracks ~p/2 = half of sqrt(n), the O(sqrt n) wall.
+
+** [[./fermat_factor_analysis.html][Fermat's Factorization: A Number as a Difference of Squares]] ([[./fermat_factor_analysis.pdf][PDF]])
+/A literate C++ study of close-factor factorization using datamunge/
+
+We implement Fermat's factorization (=algorithms::fermat_factor=) and report it as a literate program. We write n = a^2 - b^2 and search a upward for a perfect square a^2 - n; balanced semiprimes fall in a handful of steps while the step count climbs with the factor gap (a gap of 2000 near 10^8 taking 45 steps versus 0 for tiny gaps) -- the complement to trial division.
+
+** [[./pollard_p_minus_1_analysis.html][Pollard's p-1: Factoring When a Factor Is Smooth]] ([[./pollard_p_minus_1_analysis.pdf][PDF]])
+/A literate C++ study of smooth-order factorization using datamunge/
+
+We implement Pollard's p-1 (=algorithms::pollard_p_minus_1=) and report it as a literate program. We ride the Fermat congruence a^M = 1 (mod p) when (p-1) | M for a smooth exponent M, so gcd(a^M-1, n) splits n; a smooth modulus falls at bound B=7 while a safe-prime modulus resists every small bound -- the security argument for strong primes.
+
+** [[./dixon_analysis.html][Dixon's Algorithm: Factoring by a Congruence of Squares]] ([[./dixon_analysis.pdf][PDF]])
+/A literate C++ study of factor-base factorization using datamunge/
+
+We implement Dixon's algorithm (=algorithms::dixon_factor=) and report it as a literate program. We collect x whose squares mod n are smooth over a factor base, combine a subset via GF(2) Gaussian elimination into X^2 = Y^2 (mod n), and take gcd(X-Y, n); it splits 8051, 16843009 = 257*65537, and others, with smooth relations accumulating steadily as x is scanned -- the prototype of the quadratic and number field sieves.
+
 ** [[./chinese_remainder_analysis.html][The Chinese Remainder Theorem: Solving Simultaneous Congruences by Pairwise Merging]] ([[./chinese_remainder_analysis.pdf][PDF]])
 /A literate C++ study of general (non-coprime) CRT via extended-gcd pairwise merging using datamunge/
 

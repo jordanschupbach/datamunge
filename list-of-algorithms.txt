@@ -320,18 +320,18 @@ Further information: Number theory
     [x] Extended Euclidean algorithm: also solves the equation ax + by = c  -- datamunge::algorithms::extended_gcd (+ modular_inverse); report examples/org/extended_euclidean_analysis.org
     [x] Chinese Remainder Theorem: solves simultaneous congruences (general, non-coprime moduli)  -- datamunge::algorithms::chinese_remainder; report examples/org/chinese_remainder_analysis.org
     [x] Integer factorization: breaking an integer into its prime factors  -- datamunge::algorithms::factorize / pollard_rho_factor; report examples/org/pollard_rho_analysis.org
-        Congruence of squares
-        Dixon's algorithm
-        Fermat's factorization method
+        [x] Congruence of squares  -- realized by datamunge::algorithms::dixon_factor; report examples/org/dixon_analysis.org
+        [x] Dixon's algorithm  -- datamunge::algorithms::dixon_factor (congruence of squares, GF(2)); report examples/org/dixon_analysis.org
+        [x] Fermat's factorization method  -- datamunge::algorithms::fermat_factor; report examples/org/fermat_factor_analysis.org
         General number field sieve
         Lenstra elliptic curve factorization
-        Pollard's p − 1 algorithm
+        [x] Pollard's p − 1 algorithm  -- datamunge::algorithms::pollard_p_minus_1; report examples/org/pollard_p_minus_1_analysis.org
         [x] Pollard's rho algorithm  -- datamunge::algorithms::pollard_rho_factor / factorize (Brent variant); report examples/org/pollard_rho_analysis.org
         prime factorization algorithm
         Quadratic sieve
         Shor's algorithm
         Special number field sieve
-        Trial division
+        [x] Trial division  -- datamunge::algorithms::trial_division_factorize; report examples/org/trial_division_analysis.org
     Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time
     Modular square root: computing square roots modulo a prime number
         Berlekamp's root finding algorithm
