@@ -873,6 +873,26 @@ We implement the nth root algorithm (=algorithms::nth_root=) and report it as a 
 
 We implement the alpha-max-plus-beta-min magnitude approximation (=algorithms::alpha_max_beta_min=) and report it as a literate program. We derive it as a minimax linear fit to sqrt(1+t^2) on [0,1] with coefficients alpha=0.96043, beta=0.39782; the relative error equioscillates within +/-3.96% around the circle, verified worst-case 3.957% with no square root or division.
 
+** [[./matrix_chain_analysis.html][Matrix-Chain Multiplication: The Cheapest Way to Parenthesize]] ([[./matrix_chain_analysis.pdf][PDF]])
+/A literate C++ study of the classic O(n^3) DP using datamunge/
+
+We implement matrix-chain ordering (=algorithms::matrix_chain_order=) and report it as a literate program. We derive the m[i][j] split recurrence and reconstruct the optimal bracketing; the CLRS chain 30x35x15x5x10x20x25 costs 15125 scalar multiplications optimally versus 40500/47500 for naive left/right bracketings.
+
+** [[./branch_and_bound_analysis.html][Branch and Bound: Solving Knapsack Without Enumerating Everything]] ([[./branch_and_bound_analysis.pdf][PDF]])
+/A literate C++ study of bounded search using datamunge/
+
+We implement branch-and-bound 0/1 knapsack (=algorithms::knapsack_branch_and_bound=) and report it as a literate program. We give the fractional-knapsack upper bound that prunes hopeless subtrees while keeping the answer exact; a 5-item instance is solved in 17 nodes, and the node count stays near-linear where full enumeration is 2^(n+1).
+
+** [[./alpha_beta_analysis.html][Alpha-Beta Pruning: Minimax Without the Wasted Work]] ([[./alpha_beta_analysis.pdf][PDF]])
+/A literate C++ study of game-tree pruning using datamunge/
+
+We implement minimax and alpha-beta pruning (=algorithms::minimax=, =alpha_beta=) and report it as a literate program. We give the alpha/beta window and cutoff rules that return minimax's exact value while skipping branches; on random trees alpha-beta matches minimax's value and evaluates far fewer leaves (45 vs 81 at depth 4), trending toward the best-case b^(d/2).
+
+** [[./dpll_analysis.html][DPLL: Deciding Satisfiability by Smart Backtracking]] ([[./dpll_analysis.pdf][PDF]])
+/A literate C++ study of the DPLL SAT algorithm using datamunge/
+
+We implement DPLL (=algorithms::dpll_sat=) and report it as a literate program. We give unit propagation, pure-literal elimination, and branching; a small formula is solved and a contradiction rejected, and a random 3-SAT sweep reproduces the satisfiability phase transition, the fraction-satisfiable curve dropping through one-half near the m/n = 4.26 threshold.
+
 ** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
 /A literate C++ study of polynomial interpolation using datamunge/
 

@@ -6,6 +6,7 @@
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/bitap.hpp>
+#include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
@@ -14,11 +15,13 @@
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
+#include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
+#include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
@@ -30,6 +33,7 @@
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/manacher.hpp>
+#include <datamunge/algorithms/matrix_chain.hpp>
 #include <datamunge/algorithms/merge.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>

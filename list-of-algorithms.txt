@@ -505,11 +505,11 @@ Main article: Mathematical optimization
 
 Hybrid Algorithms
 
-    Alpha–beta pruning: search to reduce number of nodes in minimax algorithm
+    [x] Alpha–beta pruning: search to reduce number of nodes in minimax algorithm  -- datamunge::algorithms::minimax / alpha_beta; report examples/org/alpha_beta_analysis.org
     A hybrid BFGS-Like method (see more https://doi.org/10.1016/j.cam.2024.115857)
-    Branch and bound
+    [x] Branch and bound  -- datamunge::algorithms::knapsack_branch_and_bound (0/1 knapsack, LP bound); report examples/org/branch_and_bound_analysis.org
     Bruss algorithm: see odds algorithm
-    Chain matrix multiplication
+    [x] Chain matrix multiplication  -- datamunge::algorithms::matrix_chain_order (O(n^3) DP); report examples/org/matrix_chain_analysis.org
     Combinatorial optimization: optimization problems where the set of feasible solutions is discrete
         Greedy randomized adaptive search procedure (GRASP): successive constructions of a greedy randomized solution and subsequent iterative improvements of it through a local search
         Hungarian method: a combinatorial optimization algorithm which solves the assignment problem in polynomial time
@@ -519,7 +519,7 @@ Hybrid Algorithms
         Chaff algorithm: an algorithm for solving instances of the Boolean satisfiability problem
         Davis–Putnam algorithm: check the validity of a first-order logic formula
         Difference map algorithm general algorithms for the constraint satisfaction
-        Davis–Putnam–Logemann–Loveland algorithm (DPLL): an algorithm for deciding the satisfiability of propositional logic formula in conjunctive normal form, i.e. for solving the CNF-SAT problem
+        [x] Davis–Putnam–Logemann–Loveland algorithm (DPLL): an algorithm for deciding the satisfiability of propositional logic formula in conjunctive normal form, i.e. for solving the CNF-SAT problem  -- datamunge::algorithms::dpll_sat; report examples/org/dpll_analysis.org
         Exact cover problem
         Min conflicts algorithm general algorithms for the constraint satisfaction
             Algorithm X: a nondeterministic algorithm
