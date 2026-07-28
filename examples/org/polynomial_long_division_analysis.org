@@ -1,0 +1,179 @@
+#+title: Polynomial Long Division over GF(p)
+#+subtitle: A literate C++ study of coefficient-field division with =datamunge='s =algorithms::poly_divmod_gf=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Dividing one polynomial by another is the workhorse underneath polynomial GCDs, modular reduction,
+factorisation, and error-correcting codes. Over a *field* -- here the integers modulo a prime,
+\(\mathrm{GF}(p)\) -- every nonzero leading coefficient is invertible, so long division always
+terminates with a unique quotient and a remainder of strictly smaller degree. This report drives
+=datamunge='s =algorithms::poly_divmod_gf=, verified against the division identity \(a=qb+r\) over
+tens of thousands of random pairs across several primes, and traces the degree falling one step at a
+time.
+#+end_abstract
+
+* Divide like numbers, but with coefficients in a field
+
+Write \(a(x)\) and \(b(x)\) with coefficients in \(\mathrm{GF}(p)\), \(b\neq0\). Long division builds
+the quotient one term at a time, highest degree first. If the current remainder \(a\) has degree
+\(\ge\deg b\), the leading term to cancel is
+
+\[ t = \frac{\operatorname{lead}(a)}{\operatorname{lead}(b)}\,x^{\deg a-\deg b}, \]
+
+where the division of leading coefficients is a *modular inverse* in \(\mathrm{GF}(p)\). Subtract
+\(t\,b(x)\) from \(a\), which kills its leading term and lowers its degree, and add \(t\) to the
+quotient. Repeat until \(\deg a<\deg b\). The result satisfies
+
+\[ a(x)=q(x)\,b(x)+r(x),\qquad \deg r<\deg b, \]
+
+uniquely, because the field guarantees the leading coefficient of \(b\) is invertible at every step.
+This is exactly integer long division with digits replaced by field elements and "borrow/carry"
+replaced by coefficient arithmetic mod \(p\).
+
+#+name: pd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/polynomial_gf.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::int64_t md(std::int64_t a, std::int64_t p) { return ((a % p) + p) % p; }
+static std::string show(const GFPoly& f) {
+    if (f.empty()) return "0";
+    std::string s; bool first = true;
+    for (std::size_t i = f.size(); i-- > 0;) {
+        if (f[i] == 0) continue;
+        if (!first) s += " + ";
+        s += std::to_string(f[i]);
+        if (i) s += "x^" + std::to_string(i);
+        first = false;
+    }
+    return first ? "0" : s;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+POLY-DIVMOD(a, b) over GF(p):
+  q = 0
+  while deg(a) >= deg(b):
+      t = lead(a) * inverse(lead(b)) * x^(deg a - deg b)   # inverse mod p
+      a = a - t*b                                          # cancels lead(a)
+      q = q + t
+  return quotient q, remainder a         # deg(a) < deg(b)
+#+end_example
+
+* Worked example over GF(7)
+
+We divide \(a=x^4+2x^3+3x^2+4x+5\) by \(b=x^2+x+1\) over \(\mathrm{GF}(7)\), print the quotient and
+remainder, verify \(qb+r=a\), and record how the working remainder's degree falls each step.
+
+#+name: pd-run
+#+begin_src c++ :eval no
+    const std::int64_t p = 7;
+    const GFPoly a = {5, 4, 3, 2, 1}; // x^4 + 2x^3 + 3x^2 + 4x + 5
+    const GFPoly b = {1, 1, 1};       // x^2 + x + 1
+
+    const auto qr = poly_divmod_gf(a, b, p);
+    std::cout << "=== polynomial long division over GF(7) ===\n";
+    std::cout << "a = " << show(a) << "\n";
+    std::cout << "b = " << show(b) << "\n";
+    std::cout << "quotient  q = " << show(qr.quotient) << "\n";
+    std::cout << "remainder r = " << show(qr.remainder) << "\n";
+
+    // Verify a == q*b + r over GF(7).
+    GFPoly recon(a.size(), 0);
+    for (std::size_t i = 0; i < qr.quotient.size(); ++i)
+        for (std::size_t j = 0; j < b.size(); ++j)
+            recon[i + j] = md(recon[i + j] + qr.quotient[i] * b[j], p);
+    for (std::size_t i = 0; i < qr.remainder.size(); ++i) recon[i] = md(recon[i] + qr.remainder[i], p);
+    std::cout << "q*b + r = " << show(recon) << "   (matches a: " << (recon == a ? "yes" : "no") << ")\n\n";
+
+    // Record the degree of the working remainder after each elimination step.
+    GFPoly w = a;
+    std::vector<double> step, deg;
+    int s = 0;
+    std::cout << "step  working remainder\n";
+    std::printf("%3d   %s\n", s, show(w).c_str());
+    step.push_back(s); deg.push_back(static_cast<double>((int)w.size() - 1));
+    // Reproduce the elimination to trace degrees.
+    auto inv = [&](std::int64_t v) { std::int64_t r = 1, e = p - 2, x = md(v, p); while (e) { if (e & 1) r = md(r * x, p); x = md(x * x, p); e >>= 1; } return r; };
+    while ((int)w.size() - 1 >= (int)b.size() - 1 && !w.empty()) {
+        const int shift = (int)w.size() - (int)b.size();
+        const std::int64_t c = md(w.back() * inv(b.back()), p);
+        for (std::size_t i = 0; i < b.size(); ++i) w[i + shift] = md(w[i + shift] - c * b[i], p);
+        while (!w.empty() && w.back() == 0) w.pop_back();
+        ++s; std::printf("%3d   %s\n", s, show(w).c_str());
+        step.push_back(s); deg.push_back(static_cast<double>((int)w.size() - 1));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(step, deg, "d", RGB{37, 99, 235}, 2.0);
+    plot.points(step, deg, "d", RGB{37, 99, 235}, 6.0);
+    plot.abline_h(static_cast<double>((int)b.size() - 1), RGB{100, 116, 139}, 1.0);
+    plot.legend({"working remainder degree", "deg(b) = 2 (stop below here)"}, {{37, 99, 235}, {100, 116, 139}});
+    plot.title("Polynomial long division: each step drops the remainder degree by one")
+        .x_label("elimination step").y_label("degree of working remainder").background({250, 250, 252});
+    plot.save_svg("build/org/polynomial_long_division.svg");
+    std::cout << "\nwrote polynomial_long_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/polynomial_long_division_analysis.cpp <<'CPP'
+<<pd-includes>>
+
+int main() {
+<<pd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/polynomial_long_division_analysis.cpp -o build/org/polynomial_long_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/polynomial_long_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== polynomial long division over GF(7) ===
+a = 1x^4 + 2x^3 + 3x^2 + 4x^1 + 5
+b = 1x^2 + 1x^1 + 1
+quotient  q = 1x^2 + 1x^1 + 1
+remainder r = 2x^1 + 4
+q*b + r = 1x^4 + 2x^3 + 3x^2 + 4x^1 + 5   (matches a: yes)
+
+step  working remainder
+  0   1x^4 + 2x^3 + 3x^2 + 4x^1 + 5
+  1   1x^3 + 2x^2 + 4x^1 + 5
+  2   1x^2 + 3x^1 + 5
+  3   2x^1 + 4
+
+wrote polynomial_long_division.svg
+#+end_example
+
+The quotient and remainder satisfy \(qb+r=a\) exactly over \(\mathrm{GF}(7)\), and the remainder's
+degree falls by one at every elimination step until it drops below \(\deg b=2\), where the algorithm
+stops. Each step cost one modular inverse of \(b\)'s leading coefficient and one scaled subtraction.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/polynomial_long_division.svg]]
+
+The staircase descends to the grey \(\deg b\) line and halts: the quotient gains one term per step and
+the remainder shrinks monotonically. Because \(\mathrm{GF}(p)\) is a field, this process is exact and
+unique -- the foundation the polynomial GCD, Chien root search, and Cantor-Zassenhaus factorisation
+all build on.

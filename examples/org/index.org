@@ -703,6 +703,21 @@ We implement transform-based multiplication (=algorithms::ntt_mul=) and report i
 
 We implement Booth's multiplication (=algorithms::booth_multiply=) and report it as a literate program. Scanning bit pairs of the multiplier, the recoding replaces a run of ones by one subtraction entering it and one addition leaving it, and handles signed two's-complement operands with no special case; products match the built-in operator over 200k random pairs and the run-collapsing effect is plotted.
 
+** [[./polynomial_long_division_analysis.html][Polynomial Long Division over GF(p)]] ([[./polynomial_long_division_analysis.pdf][PDF]])
+/A literate C++ study of coefficient-field division using datamunge/
+
+We implement polynomial long division over GF(p) (=algorithms::poly_divmod_gf=) and report it as a literate program. Because the coefficient field makes every leading coefficient invertible, division always yields a unique quotient and a smaller-degree remainder; the identity a=qb+r is checked over tens of thousands of random pairs across several primes and the degree staircase is traced.
+
+** [[./chien_search_analysis.html][Chien Search: Roots of a Polynomial over a Finite Field]] ([[./chien_search_analysis.pdf][PDF]])
+/A literate C++ study of incremental field-element evaluation using datamunge/
+
+We implement Chien search (=algorithms::chien_search=) and report it as a literate program. Walking the field as successive powers of a primitive root, it advances each polynomial term by one constant multiply so every element is tested cheaply; roots match brute-force evaluation over thousands of random polynomials, and the value curve over GF(13) is plotted with its roots picked out.
+
+** [[./cantor_zassenhaus_analysis.html][Cantor-Zassenhaus: Factoring Polynomials over a Finite Field]] ([[./cantor_zassenhaus_analysis.pdf][PDF]])
+/A literate C++ study of randomised equal-degree factorisation using datamunge/
+
+We implement Cantor-Zassenhaus factorisation (=algorithms::cantor_zassenhaus=) and report it as a literate program. Distinct-degree factorisation sorts irreducibles by degree via gcd(f, x^(p^d)-x), then randomised equal-degree splitting separates same-degree factors with a gcd of h^((p^d-1)/2)-1; the returned factors multiply back to the input over hundreds of cases and the recovered factor degrees are plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
