@@ -75,6 +75,7 @@
 #include <datamunge/algorithms/sparse_linalg.hpp>
 #include <datamunge/algorithms/stable_matching.hpp>
 #include <datamunge/algorithms/string_metrics.hpp>
+#include <datamunge/algorithms/string_search_extra.hpp>
 #include <datamunge/algorithms/subsequences.hpp>
 #include <datamunge/algorithms/substrings.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>

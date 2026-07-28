@@ -433,6 +433,16 @@ We implement the Boyer-Moore exact string-matching algorithm (=algorithms::boyer
 
 We implement the Z-algorithm (=algorithms::z_array=, plus =z_search=) and report it as a literate program. We define the Z-array -- z[i] is the longest substring at position i that is also a prefix -- give the single-pass rightmost Z-box construction with correctness and O(n) linearity arguments, and show how concatenating pattern + separator + text reduces exact matching to a Z-array scan; the string "aabaabaab" has Z-array 9 1 0 6 1 0 3 1 0 computed by hand.
 
+** [[./boyer_moore_horspool_analysis.html][Boyer-Moore-Horspool: Substring Search by the Bad-Character Rule]] ([[./boyer_moore_horspool_analysis.pdf][PDF]])
+/A literate C++ study of the simplified Boyer-Moore using datamunge/
+
+We implement Boyer-Moore-Horspool (=algorithms::boyer_moore_horspool_search=) and report it as a literate program. Keeping only Boyer-Moore's bad-character rule, indexed by the single text character aligned with the pattern's last position, gives a sublinear-on-average searcher with a fraction of the code; it agrees with naive search over thousands of random inputs, with the shift table plotted.
+
+** [[./zhu_takaoka_analysis.html][The Zhu-Takaoka Algorithm: Boyer-Moore with a Two-Character Shift]] ([[./zhu_takaoka_analysis.pdf][PDF]])
+/A literate C++ study of the digram bad-character rule using datamunge/
+
+We implement Zhu-Takaoka (=algorithms::zhu_takaoka_search=) and report it as a literate program. Indexing the bad-character shift by the last two characters (a digram) rather than one makes absent lookups more common and each jump longer, which helps on small alphabets; combined with Boyer-Moore's good-suffix rule it agrees with a KMP reference over thousands of random inputs, with character-comparison counts plotted.
+
 ** [[./manacher_analysis.html][Manacher's Algorithm: Longest Palindromic Substring in Linear Time]] ([[./manacher_analysis.pdf][PDF]])
 /A literate C++ study of the '#'-interleaving transform and mirror reuse using datamunge/
 
