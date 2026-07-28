@@ -87,9 +87,9 @@ Further information: Graph search algorithm and State space search
     [x] General Problem Solver: a seminal theorem-proving algorithm intended to work as a universal problem solver machine.  -- datamunge::algorithms::general_problem_solver (STRIPS means-ends planner); report examples/org/general_problem_solver_analysis.org
     [x] Iterative deepening depth-first search (IDDFS): a state space search strategy  -- datamunge::algorithms::iterative_deepening_dfs; report examples/org/iddfs_analysis.org
     [x] Jump point search: an optimization to A* which may reduce computation time by an order of magnitude using further heuristics  -- datamunge::algorithms::jump_point_search (orthogonal grid); report examples/org/jump_point_search_analysis.org
-    Lexicographic breadth-first search (also known as Lex-BFS): a linear time algorithm for ordering the vertices of a graph
+    [x] Lexicographic breadth-first search (also known as Lex-BFS): a linear time algorithm for ordering the vertices of a graph  -- datamunge::algorithms::lex_bfs (partition refinement); report examples/org/lex_bfs_analysis.org
     SSS*: state space search traversing a game tree in a best-first fashion similar to that of the A* search algorithm
-    Uniform-cost search: a tree search that finds the lowest-cost route where costs vary
+    [x] Uniform-cost search: a tree search that finds the lowest-cost route where costs vary  -- datamunge::algorithms::uniform_cost_search (Dijkstra with goal test); report examples/org/uniform_cost_search_analysis.org
 
 Subgraphs
 
@@ -542,7 +542,7 @@ Hybrid Algorithms
             Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees
             Particle swarm
     Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization
-    Golden-section search: an algorithm for finding the maximum of a real function
+    [x] Golden-section search: an algorithm for finding the maximum of a real function  -- datamunge::algorithms::golden_section_search; report examples/org/golden_section_search_analysis.org
     Gradient descent
     Grid Search
     Harmony search (HS): a metaheuristic algorithm mimicking the improvisation process of musicians

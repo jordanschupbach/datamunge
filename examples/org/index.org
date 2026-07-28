@@ -358,6 +358,21 @@ We implement Gale-Shapley deferred acceptance (=algorithms::gale_shapley=, plus 
 
 We implement Kahn's topological-sort algorithm (=algorithms::topological_sort=, plus =is_topological_order=) and report it as a literate program. We define directed acyclic graphs and topological order, give the in-degree/queue pseudocode with termination and correctness arguments, and note how emitting fewer than n vertices doubles as an exact cycle test; a six-course computer-science prerequisite DAG is sorted into a legal study plan and drawn as a layered left-to-right layout in the returned order.
 
+** [[./lex_bfs_analysis.html][Lexicographic BFS: Ordering Vertices by Partition Refinement]] ([[./lex_bfs_analysis.pdf][PDF]])
+/A literate C++ study of Lex-BFS using datamunge/
+
+We implement Lex-BFS (=algorithms::lex_bfs=) and report it as a literate program. Maintaining an ordered partition and, at each output, splitting every block so a vertex's neighbours come first produces a lexicographic ordering in linear time -- whose reverse is a perfect elimination ordering on chordal graphs; it satisfies the four-point Lex-BFS characterisation over thousands of random graphs, with the refining partition plotted.
+
+** [[./golden_section_search_analysis.html][Golden-Section Search: Optimising a Unimodal Function]] ([[./golden_section_search_analysis.pdf][PDF]])
+/A literate C++ study of bracket shrinking using datamunge/
+
+We implement golden-section search (=algorithms::golden_section_search=) and report it as a literate program. Two interior probes placed at the golden ratio let each step reuse one probe and shrink the bracket by 1/phi ~ 0.618 with a single new evaluation; it locates the maxima of several unimodal functions, with the geometric bracket decay plotted.
+
+** [[./uniform_cost_search_analysis.html][Uniform-Cost Search: Dijkstra as a Goal-Directed Search]] ([[./uniform_cost_search_analysis.pdf][PDF]])
+/A literate C++ study of least-cost pathfinding using datamunge/
+
+We implement uniform-cost search (=algorithms::uniform_cost_search=) and report it as a literate program. Expanding the least-cost frontier node and stopping when the goal is dequeued is Dijkstra run as a goal-directed search that settles only nodes cheaper than the goal; it matches Dijkstra over thousands of random weighted graphs, with the early-stop node savings plotted.
+
 ** [[./kosaraju_analysis.html][Kosaraju's Algorithm: Strongly Connected Components in Two Passes]] ([[./kosaraju_analysis.pdf][PDF]])
 /A literate C++ study of SCCs by DFS and transpose using datamunge/
 

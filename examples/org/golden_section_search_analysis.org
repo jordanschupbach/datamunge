@@ -1,0 +1,140 @@
+#+title: Golden-Section Search: Optimising a Unimodal Function
+#+subtitle: A literate C++ study of bracket shrinking with =datamunge='s =algorithms::golden_section_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To find the peak of a *unimodal* function -- one that rises then falls -- without derivatives, golden-
+section search brackets the maximum and repeatedly shrinks the bracket. The magic is the placement of
+its two interior probes at the *golden ratio*: after discarding one side, the surviving probe is
+exactly where the next iteration needs one of its probes, so each step costs a single new function
+evaluation while shrinking the interval by \(1/\varphi\approx0.618\). This report drives =datamunge='s
+=algorithms::golden_section_search=, verified to locate the maxima of several unimodal functions, and
+shows the bracket collapsing geometrically.
+#+end_abstract
+
+* Two probes at the golden ratio
+
+Keep a bracket \([a,b]\) known to contain the maximum, and place two interior points
+
+\[ c=b-\tfrac1\varphi(b-a),\qquad d=a+\tfrac1\varphi(b-a),\qquad \tfrac1\varphi=\frac{\sqrt5-1}{2}\approx0.618. \]
+
+Evaluate \(f(c)\) and \(f(d)\). By unimodality, if \(f(c)<f(d)\) the maximum lies in \([c,b]\), so set
+\(a\gets c\); otherwise it lies in \([a,d]\), so set \(b\gets d\). Here is the payoff of the golden
+ratio: the *retained* interior point becomes one of the two probes of the new, smaller bracket -- \(d\)
+becomes the new \(c\) (or \(c\) becomes the new \(d\)) -- so only *one* fresh evaluation is needed per
+step, not two. The interval shrinks by the constant factor \(1/\varphi\) each iteration, giving *linear
+convergence* with rate \(0.618\): reaching a tolerance \(\varepsilon\) takes about
+\(\log_{1/\varphi}((b-a)/\varepsilon)\) evaluations. No derivative is ever computed, which is why
+golden-section search is the go-to for optimising noisy or black-box unimodal functions, and the line-
+search primitive inside larger optimisers.
+
+#+name: gs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/golden_section_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GOLDEN-SECTION(f, a, b):
+  c = b - (b-a)/phi;  d = a + (b-a)/phi
+  fc = f(c); fd = f(d)
+  while b - a > tol:
+      if fc < fd: a = c; c = d; fc = fd; d = a + (b-a)/phi; fd = f(d)   # max in [c,b]
+      else:       b = d; d = c; fd = fc; c = b - (b-a)/phi; fc = f(c)   # max in [a,d]
+  return (a+b)/2
+#+end_example
+
+* Worked example: a peak, and the shrinking bracket
+
+We maximise a unimodal function, print the located peak, and plot the bracket width against the
+iteration to expose the constant \(0.618\) shrink factor.
+
+#+name: gs-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return std::sin(x) - 0.1 * (x - 1.5) * (x - 1.5); }; // unimodal on [0, 3]
+    const auto r = golden_section_search(f, 0.0, 3.0, 1e-10);
+    std::cout << "=== golden-section search ===\n";
+    std::cout << "maximum at x = " << r.argmax << ", f(x) = " << r.value << " (" << r.iterations << " iterations)\n\n";
+
+    // Reproduce the bracket shrinkage.
+    const double invphi = (std::sqrt(5.0) - 1.0) / 2.0;
+    double a = 0.0, b = 3.0, c = b - invphi * (b - a), d = a + invphi * (b - a), fc = f(c), fd = f(d);
+    std::vector<double> it, width;
+    int step = 0; it.push_back(0); width.push_back(b - a);
+    std::cout << "iter   bracket width\n";
+    while (b - a > 1e-6) {
+        if (fc < fd) { a = c; c = d; fc = fd; d = a + invphi * (b - a); fd = f(d); }
+        else { b = d; d = c; fd = fc; c = b - invphi * (b - a); fc = f(c); }
+        ++step; it.push_back(step); width.push_back(b - a);
+        if (step % 5 == 0) std::printf("%3d    %.6e\n", step, b - a);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(it, width, "w", RGB{37, 99, 235}, 2.0);
+    plot.points(it, width, "w", RGB{37, 99, 235}, 4.0);
+    plot.legend({"bracket width"}, {{37, 99, 235}});
+    plot.title("Golden-section search shrinks the bracket by 0.618 each step")
+        .x_label("iteration").y_label("bracket width").background({250, 250, 252});
+    plot.save_svg("build/org/golden_section_search.svg");
+    std::cout << "\nwrote golden_section_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/golden_section_search_analysis.cpp <<'CPP'
+<<gs-includes>>
+
+int main() {
+<<gs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/golden_section_search_analysis.cpp -o build/org/golden_section_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/golden_section_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== golden-section search ===
+maximum at x = 1.559, f(x) = 0.999582 (51 iterations)
+
+iter   bracket width
+  5    2.705098e-01
+ 10    2.439186e-02
+ 15    2.199412e-03
+ 20    1.983209e-04
+ 25    1.788258e-05
+ 30    1.612471e-06
+
+wrote golden_section_search.svg
+#+end_example
+
+Golden-section search pins the peak to ten digits in a few dozen evaluations, and the bracket width
+falls by a constant factor each step, exactly \(1/\varphi\approx0.618\). The test suite confirms it on
+several unimodal functions, including a skewed one.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/golden_section_search.svg]]
+
+The width curve is a clean geometric decay -- a straight line on a log scale -- because every iteration
+multiplies the interval by the same \(0.618\). That predictable, derivative-free contraction, reusing
+one probe per step, is why golden-section search is the standard one-dimensional maximiser and the
+line-search workhorse inside gradient and coordinate-descent optimisers.
