@@ -533,6 +533,26 @@ We implement Fibonacci search (=algorithms::fibonacci_search=) and report it as 
 
 We implement the Eytzinger layout and search (=algorithms::eytzinger_layout=, =eytzinger_search=) and report it as a literate program. We build the BFS-order array of a binary search tree (median at the root) via in-order fill, and search it by a division-free 2k/2k+1 child walk; the layout of =[1,3,...,19]= is =[13,7,17,3,11,15,19,1,5,9]=, 13 found in one probe and 9 in four.
 
+** [[./ternary_search_analysis.html][Ternary Search: Locating the Peak of a Unimodal Function]] ([[./ternary_search_analysis.pdf][PDF]])
+/A literate C++ study of derivative-free unimodal optimization using datamunge/
+
+We implement ternary search (=algorithms::ternary_search_max=, =ternary_search_min=) and report it as a literate program. We split the bracket into thirds, discard the outer third that cannot hold the extremum, and shrink by 2/3 each step for logarithmic convergence needing no derivative; the peak of x e^{-x} is found at x=1 (value 1/e) in 56 steps, the bracket width plotted decaying as (2/3)^t.
+
+** [[./k_way_merge_analysis.html][The k-Way Merge: Combining Many Sorted Runs With a Heap]] ([[./k_way_merge_analysis.pdf][PDF]])
+/A literate C++ study of heap-based merging using datamunge/
+
+We implement the two-way simple merge and the heap-based k-way merge (=algorithms::simple_merge=, =k_way_merge=) and report it as a literate program. We show the stable two-finger merge, then the min-heap over k list-fronts that turns the naive O(n k) scan into O(n log k); three runs are merged by hand and the heap-vs-naive comparison cost plotted as k grows to 64.
+
+** [[./union_merge_analysis.html][The Union Merge: A Sorted Set Union in One Pass]] ([[./union_merge_analysis.pdf][PDF]])
+/A literate C++ study of deduplicating merge using datamunge/
+
+We implement the union merge (=algorithms::union_merge=) and report it as a literate program. We reuse the k-way min-heap but skip any value equal to the one just emitted, computing the sorted set union in O(n log k) with O(1) extra state; overlapping lists collapse to their distinct values (verified against std::set), the output shrinking toward the value-range size as overlap grows.
+
+** [[./bitap_analysis.html][Bitap: Bit-Parallel String Search, Exact and Fuzzy]] ([[./bitap_analysis.pdf][PDF]])
+/A literate C++ study of the shift-and algorithm using datamunge/
+
+We implement Bitap exact and k-mismatch search (=algorithms::bitap_search=, =bitap_fuzzy_search=) and report it as a literate program. We pack the match state into one machine word advanced by a shift and an AND per character (verified against std::string::find), then carry k+1 coupled words for approximate search; a DNA motif is found exactly and its near-copies counted as the substitution budget grows (checked against a Hamming oracle).
+
 ** [[./fisher_yates_analysis.html][The Fisher-Yates Shuffle: An Unbiased Random Permutation]] ([[./fisher_yates_analysis.pdf][PDF]])
 /A literate C++ study of the Knuth shuffle using datamunge/
 

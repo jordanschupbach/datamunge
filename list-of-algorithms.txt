@@ -106,7 +106,7 @@ Sequence algorithms
 Further information: Sequences
 Approximate sequence matching
 
-    Bitap algorithm: fuzzy algorithm that determines if strings are approximately equal.
+    [x] Bitap algorithm: fuzzy algorithm that determines if strings are approximately equal.  -- datamunge::algorithms::bitap_search / bitap_fuzzy_search (shift-and, k-mismatches); report examples/org/bitap_analysis.org
     Phonetic algorithms
         Daitch–Mokotoff Soundex: a Soundex refinement which allows matching of Slavic and Germanic surnames
         Double Metaphone: an improvement on Metaphone
@@ -139,14 +139,14 @@ Sequence search
         [x] Jump search (or block search): linear search on a smaller subset of the sequence  -- datamunge::algorithms::jump_search; report examples/org/jump_search_analysis.org
         [x] Predictive search: binary-like search which factors in magnitude of search term versus the high and low values in the search. Sometimes called dictionary search or interpolated search.  -- datamunge::algorithms::interpolation_search; report examples/org/interpolation_search_analysis.org
         Uniform binary search: an optimization of the classic binary search algorithm
-    Ternary search: a technique for finding the minimum or maximum of a function that is either strictly increasing and then strictly decreasing or vice versa
+    [x] Ternary search: a technique for finding the minimum or maximum of a function that is either strictly increasing and then strictly decreasing or vice versa  -- datamunge::algorithms::ternary_search_max / ternary_search_min; report examples/org/ternary_search_analysis.org
 
 Sequence merging
 Main article: Merge algorithm
 
-    k-way merge algorithm
-    Simple merge algorithm
-    Union (merge, with elements on the output not repeated)
+    [x] k-way merge algorithm  -- datamunge::algorithms::k_way_merge (min-heap, O(n log k)); report examples/org/k_way_merge_analysis.org
+    [x] Simple merge algorithm  -- datamunge::algorithms::simple_merge (stable two-way merge); report examples/org/k_way_merge_analysis.org
+    [x] Union (merge, with elements on the output not repeated)  -- datamunge::algorithms::union_merge (deduplicating heap merge); report examples/org/union_merge_analysis.org
 
 Sequence permutations
 Further information: Permutation
