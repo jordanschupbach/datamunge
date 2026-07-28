@@ -1,0 +1,137 @@
+#+title: The Shoelace Formula: A Polygon's Area From Its Corners
+#+subtitle: A literate C++ study of the surveyor's area formula with =datamunge='s =geometry::signed_polygon_area=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The area of *any* simple polygon -- convex or not -- falls out of its corner coordinates
+alone, with no triangulation and no trigonometry. The *shoelace formula* (Gauss's area
+formula, the surveyor's formula) sums cross products of consecutive vertices; the pattern
+of multiplications, drawn out, laces like a shoe. The *sign* of the result even encodes the
+winding direction. This report drives =datamunge='s =geometry::signed_polygon_area= and
+=polygon_area=, verified on shapes with known areas, and shades an irregular polygon by its
+computed area.
+#+end_abstract
+
+* Lacing the coordinates together
+
+For a polygon with vertices @math{(x_0,y_0),\dots,(x_{n-1},y_{n-1})} in order, the signed
+area is
+
+\[ A = \frac12 \sum_{i=0}^{n-1} \bigl(x_{j}\,y_{i} - x_{i}\,y_{j}\bigr), \qquad j = i-1 \ (\text{mod } n). \]
+
+Each term @math{x_j y_i - x_i y_j} is the cross product of two consecutive vertices -- twice
+the signed area of the triangle they form with the origin. Summed around the boundary, the
+triangle contributions *outside* the polygon cancel and only the enclosed area remains, no
+matter where the origin sits or how non-convex the shape is. Two facts make it especially
+useful:
+
+- *Sign = winding.* @math{A>0} for counterclockwise vertices, @math{A<0} for clockwise; the
+  unsigned area is @math{|A|}.
+- *Exactness.* For integer or exactly-represented coordinates the result is exact -- which is
+  why it is the surveyor's and GIS standard for parcel areas.
+
+It runs in a single @math{O(n)} pass over the vertices.
+
+#+name: sl-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/polygon.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SIGNED-AREA(vertices):
+  sum <- 0
+  for i in 0..n-1, with j = i-1 (mod n):
+      sum <- sum + (x[j]*y[i] - x[i]*y[j])
+  return sum / 2                         # sign encodes winding; |.| is the area
+#+end_example
+
+* Worked example: known shapes, then an irregular polygon
+
+We check the formula on a unit square (area 1, and @math{-1} when wound backwards) and a
+right triangle (area 6), then measure a non-convex polygon and draw it.
+
+#+name: sl-run
+#+begin_src c++ :eval no
+    const std::vector<Point2D> square{{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+    std::vector<Point2D> square_cw{{0, 0}, {0, 1}, {1, 1}, {1, 0}};
+    const std::vector<Point2D> tri{{0, 0}, {4, 0}, {0, 3}};
+
+    std::cout << "=== known areas ===\n";
+    std::cout << "unit square (CCW): signed " << signed_polygon_area(square) << ", area " << polygon_area(square) << "\n";
+    std::cout << "unit square (CW):  signed " << signed_polygon_area(square_cw) << ", area " << polygon_area(square_cw) << "\n";
+    std::cout << "right triangle 4x3: area " << polygon_area(tri) << " (exact 6)\n\n";
+
+    // A non-convex ("arrow"/chevron) polygon.
+    const std::vector<Point2D> poly{{0, 0}, {6, 0}, {6, 4}, {3, 2}, {0, 4}};
+    std::cout << "chevron polygon: area = " << polygon_area(poly) << "\n";
+
+    std::vector<double> x, y;
+    for (const Point2D& p : poly) { x.push_back(p.x); y.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(x, y, RGB{147, 197, 253}, true);   // shaded interior
+    plot.polygon(x, y, RGB{37, 99, 235}, false);    // outline
+    plot.points(x, y, "vertices", RGB{220, 38, 38}, 8.0);
+    plot.legend({"polygon (area by shoelace)"}, {{37, 99, 235}});
+    plot.title("Shoelace formula: area of a non-convex polygon from its corners")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/shoelace.svg");
+    std::cout << "wrote shoelace.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/shoelace_analysis.cpp <<'CPP'
+<<sl-includes>>
+
+int main() {
+<<sl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/shoelace_analysis.cpp -o build/org/shoelace_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/shoelace_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== known areas ===
+unit square (CCW): signed 1, area 1
+unit square (CW):  signed -1, area 1
+right triangle 4x3: area 6 (exact 6)
+
+chevron polygon: area = 18
+wrote shoelace.svg
+#+end_example
+
+The unit square returns @math{+1} counterclockwise and @math{-1} clockwise -- the sign
+flipping with the winding while the unsigned area stays @math{1} -- and the right triangle
+gives exactly @math{6}. The non-convex chevron, which no single triangle covers, is measured
+correctly in one pass: the inward notch is subtracted automatically by the cancelling cross
+products.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/shoelace.svg]]
+
+The shaded region is the polygon whose area the formula reports; note the concave notch at
+the top, which the shoelace sum handles with no special case. Corners in, area out -- one
+linear pass, exact for exact coordinates, which is why surveyors and GIS engines have used
+it for two centuries.

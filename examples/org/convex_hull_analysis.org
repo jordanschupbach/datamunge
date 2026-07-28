@@ -1,0 +1,146 @@
+#+title: The Convex Hull: The Rubber Band Around a Point Set
+#+subtitle: A literate C++ study of Andrew's monotone chain with =datamunge='s =geometry::convex_hull=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Stretch a rubber band around a scatter of nails and let it snap taut: the polygon it
+forms is the *convex hull*, the smallest convex region containing every point. It is the
+most fundamental construction in computational geometry -- the starting point for
+diameter, width, collision bounds, and shape description. =datamunge= computes it with
+*Andrew's monotone chain*, an @math{O(n\log n)} sort-then-sweep that builds the lower and
+upper boundaries in two passes. This report drives =geometry::convex_hull=, verified
+against a hand-checked example, and draws the hull around a random cloud.
+#+end_abstract
+
+* Sort once, sweep twice
+
+Andrew's monotone chain sorts the points by @math{x} (breaking ties by @math{y}) and then
+builds the hull as two chains:
+
+- the *lower hull*, left to right, and
+- the *upper hull*, right to left.
+
+Walking along a chain, it keeps a stack of candidate vertices and, before pushing each new
+point, *pops* any vertex that would create a non-left turn. The turn direction is the sign
+of the cross product @math{(b-a)\times(c-a)}: positive is counterclockwise (a left turn,
+keep), @math{\le 0} is clockwise or straight (pop). When both chains are built and joined,
+what remains is exactly the counterclockwise hull, with collinear edge points discarded.
+
+The single sort costs @math{O(n\log n)}; each point is pushed and popped at most once, so
+the sweep is @math{O(n)}. That @math{O(n\log n)} total is optimal for hull-from-unsorted-
+points, and monotone chain is the method of choice for its simplicity and numerical
+robustness (one cross-product sign, no angle sorting).
+
+#+name: ch-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/convex_hull.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CONVEX-HULL(points):                     # Andrew's monotone chain
+  sort points by (x, then y);  dedup
+  lower <- []
+  for p in points (left to right):
+      while |lower|>=2 and cross(lower[-2], lower[-1], p) <= 0: pop lower
+      push p onto lower
+  upper <- []
+  for p in points (right to left):
+      while |upper|>=2 and cross(upper[-2], upper[-1], p) <= 0: pop upper
+      push p onto upper
+  return lower + upper  (drop each chain's shared endpoint)
+#+end_example
+
+* Worked example: a hand-checkable hull, then a random cloud
+
+We first hull a small set whose answer we can see by eye, then draw the hull of a random
+cloud of 40 points.
+
+#+name: ch-run
+#+begin_src c++ :eval no
+    // Small hand-checkable set: a square's corners plus interior points that must be excluded.
+    std::vector<Point2D> small{{0, 0}, {4, 0}, {4, 4}, {0, 4}, {2, 2}, {1, 3}, {3, 1}};
+    const std::vector<Point2D> h = convex_hull(small);
+    std::cout << "=== hull of 7 points (a square + 3 interior) ===\n";
+    std::cout << "hull has " << h.size() << " vertices (interior points excluded):\n";
+    for (const Point2D& p : h) std::cout << "  (" << p.x << ", " << p.y << ")\n";
+
+    // Random cloud.
+    std::mt19937 rng(20240728);
+    std::normal_distribution<double> nd(0.0, 1.0);
+    std::vector<Point2D> cloud;
+    for (int i = 0; i < 40; ++i) cloud.push_back({nd(rng), nd(rng)});
+    const std::vector<Point2D> hull = convex_hull(cloud);
+    std::cout << "\nrandom cloud: " << cloud.size() << " points -> hull of " << hull.size() << " vertices\n";
+
+    std::vector<double> px, py, hx, hy;
+    for (const Point2D& p : cloud) { px.push_back(p.x); py.push_back(p.y); }
+    for (const Point2D& p : hull) { hx.push_back(p.x); hy.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(hx, hy, RGB{37, 99, 235}, false); // hull outline
+    plot.points(px, py, "points", RGB{100, 116, 139}, 5.0);
+    plot.points(hx, hy, "hull", RGB{220, 38, 38}, 8.0);
+    plot.legend({"points", "hull vertices"}, {{100, 116, 139}, {220, 38, 38}});
+    plot.title("Convex hull: the taut polygon around a random cloud")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/convex_hull.svg");
+    std::cout << "wrote convex_hull.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/convex_hull_analysis.cpp <<'CPP'
+<<ch-includes>>
+
+int main() {
+<<ch-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/convex_hull_analysis.cpp -o build/org/convex_hull_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/convex_hull_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== hull of 7 points (a square + 3 interior) ===
+hull has 4 vertices (interior points excluded):
+  (0, 0)
+  (4, 0)
+  (4, 4)
+  (0, 4)
+
+random cloud: 40 points -> hull of 8 vertices
+wrote convex_hull.svg
+#+end_example
+
+The small example returns exactly the four square corners -- the three interior points are
+correctly excluded, as is any point that would sit on an edge. On the random cloud the hull
+is a handful of the outermost points, and every other point lies inside it.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/convex_hull.svg]]
+
+The blue polygon wraps tightly around the grey cloud, touching only the extreme red
+vertices; every interior point is contained. That taut boundary -- computed with a single
+sort and two linear sweeps -- is the foundation the diameter, width, and minimum-bounding-
+box algorithms all build on.
