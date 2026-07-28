@@ -36,6 +36,7 @@
 #include <datamunge/algorithms/index_calculus.hpp>
 #include <datamunge/algorithms/interpolation.hpp>
 #include <datamunge/algorithms/kmp.hpp>
+#include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>

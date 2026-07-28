@@ -768,6 +768,11 @@ We implement Berlekamp-Rabin root finding (=algorithms::berlekamp_roots=) and re
 
 We implement Pollard's kangaroo (=algorithms::pollard_kangaroo=) and report it as a literate program. A tame kangaroo lays a trail from g^b and a wild one from h=g^x jumps until it collides, revealing x from the shared distance; it recovers the log across many primes and intervals in O(sqrt(b-a)) jumps, with the sqrt scaling plotted.
 
+** [[./knuth_bendix_analysis.html][Knuth-Bendix Completion: Deciding the Word Problem]] ([[./knuth_bendix_analysis.pdf][PDF]])
+/A literate C++ study of string rewriting using datamunge/
+
+We implement Knuth-Bendix completion (=algorithms::knuth_bendix=) and report it as a literate program. Orienting equations by shortlex and resolving every critical pair between overlapping rules yields a confluent terminating rewriting system in which each word has a unique normal form; completing the presentation of S_3 gives 6 rules and recovers its 6 elements, deciding the word problem, with a word's length plotted shrinking to its normal form.
+
 ** [[./schreier_sims_analysis.html][The Schreier-Sims Algorithm: Order of a Permutation Group]] ([[./schreier_sims_analysis.pdf][PDF]])
 /A literate C++ study of the stabilizer chain using datamunge/
 
