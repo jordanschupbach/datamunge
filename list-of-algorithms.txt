@@ -262,7 +262,7 @@ Further information: Computer algebra
     Gosper's algorithm: find sums of hypergeometric terms that are themselves hypergeometric terms
     Knuth–Bendix completion algorithm: for rewriting rule systems
     Multivariate division algorithm: for polynomials in several indeterminates
-    Pollard's kangaroo algorithm (also known as Pollard's lambda algorithm): an algorithm for solving the discrete logarithm problem
+    [x] Pollard's kangaroo algorithm (also known as Pollard's lambda algorithm): an algorithm for solving the discrete logarithm problem  -- datamunge::algorithms::pollard_kangaroo (interval discrete log, O(sqrt(b-a))); report examples/org/pollard_kangaroo_analysis.org
     [x] Polynomial long division: an algorithm for dividing a polynomial by another polynomial of the same or lower degree  -- datamunge::algorithms::poly_divmod_gf (over GF(p)); report examples/org/polynomial_long_division_analysis.org
     Risch algorithm: an algorithm for the calculus operation of indefinite integration (i.e. finding antiderivatives)
 
@@ -332,9 +332,9 @@ Further information: Number theory
         Shor's algorithm
         Special number field sieve
         [x] Trial division  -- datamunge::algorithms::trial_division_factorize; report examples/org/trial_division_analysis.org
-    Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time
+    [x] Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time  -- datamunge::algorithms::lll_reduce; report examples/org/lll_analysis.org
     Modular square root: computing square roots modulo a prime number
-        Berlekamp's root finding algorithm
+        [x] Berlekamp's root finding algorithm  -- datamunge::algorithms::berlekamp_roots (Berlekamp-Rabin, incl. modular sqrt); report examples/org/berlekamp_analysis.org
         [x] Cipolla's algorithm  -- datamunge::algorithms::cipolla_sqrt (modular sqrt via F_{p^2}); report examples/org/cipolla_analysis.org
         [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
     Multiplication algorithms: fast multiplication of two numbers

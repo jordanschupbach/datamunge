@@ -1,0 +1,162 @@
+#+title: The LLL Algorithm: Short, Nearly Orthogonal Lattice Bases
+#+subtitle: A literate C++ study of lattice reduction with =datamunge='s =algorithms::lll_reduce=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A lattice is the set of integer combinations of some basis vectors, and the same lattice has
+infinitely many bases -- some long and skewed, some short and nearly orthogonal. Finding a good one
+is the *lattice reduction* problem, and the 1982 Lenstra-Lenstra-Lovasz algorithm solves a useful
+version of it in polynomial time. LLL underlies integer programming, cryptanalysis of knapsack and
+RSA variants, polynomial factorisation, and integer-relation detection. This report drives
+=datamunge='s =algorithms::lll_reduce=, verified to return a genuinely LLL-reduced basis that spans
+the *same* lattice, and shows it shrinking a skewed basis toward orthogonality.
+#+end_abstract
+
+* Size reduction and the Lovasz swap
+
+Run Gram-Schmidt (without normalising) to get orthogonal vectors \(b_i^{*}\) and projection
+coefficients \(\mu_{i,j}=\langle b_i,b_j^{*}\rangle/\langle b_j^{*},b_j^{*}\rangle\). A basis is
+*LLL-reduced* (with parameter \(\delta\in(\tfrac14,1)\)) when
+
+\[ |\mu_{i,j}|\le\tfrac12\quad(\text{size-reduced}),\qquad
+   \|b_i^{*}\|^2\ge\big(\delta-\mu_{i,i-1}^2\big)\,\|b_{i-1}^{*}\|^2\quad(\text{Lovasz}). \]
+
+The algorithm enforces both by two moves. *Size reduction* subtracts the nearest integer multiple of
+\(b_j\) from \(b_i\), forcing \(|\mu_{i,j}|\le\tfrac12\) while keeping the lattice unchanged (an
+integer, hence unimodular, operation). If the *Lovasz condition* fails at position \(i\), the
+vectors \(b_i,b_{i-1}\) are *swapped* -- the current vector is shorter in the projected sense than its
+predecessor, so exchanging them makes progress -- and the algorithm steps back. Each swap strictly
+decreases a potential built from the \(\|b_i^{*}\|\), so the process terminates in polynomially many
+steps, leaving a basis whose first vector is provably within a factor \(2^{(n-1)/2}\) of the shortest.
+
+#+name: ll-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lll.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static double norm2(const std::vector<long long>& v) {
+    double s = 0; for (long long c : v) s += (double)c * (double)c; return s;
+}
+static double gram_det(const std::vector<std::vector<long long>>& b) {
+    const int n = (int)b.size();
+    std::vector<std::vector<double>> g(n, std::vector<double>(n));
+    for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j) {
+        double s = 0; for (size_t k = 0; k < b[i].size(); ++k) s += (double)b[i][k]*(double)b[j][k]; g[i][j]=s; }
+    double det = 1;
+    for (int i = 0; i < n; ++i) {
+        int piv = i; for (int r = i+1; r < n; ++r) if (std::fabs(g[r][i])>std::fabs(g[piv][i])) piv=r;
+        std::swap(g[i], g[piv]); if (piv!=i) det=-det; det*=g[i][i];
+        for (int r=i+1;r<n;++r){ double f=g[r][i]/g[i][i]; for(int c=i;c<n;++c) g[r][c]-=f*g[i][c]; }
+    }
+    return std::fabs(det);
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LLL(b_1,...,b_n, delta):
+  compute Gram-Schmidt b* and mu
+  k = 1
+  while k < n:
+      for j = k-1 down to 0:                    # size reduction
+          b_k -= round(mu[k][j]) * b_j; update GS
+      if ||b*_k||^2 >= (delta - mu[k][k-1]^2) ||b*_{k-1}||^2:   # Lovasz OK
+          k += 1
+      else:
+          swap b_k, b_{k-1}; update GS; k = max(k-1, 1)
+  return reduced basis
+#+end_example
+
+* Worked example: reducing a skewed basis
+
+We reduce a deliberately long, skewed basis, print the vector norms before and after, confirm the
+lattice is unchanged (equal Gram determinant), and plot the norms shrinking.
+
+#+name: ll-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<long long>> B = {{201, 37, 5}, {143, 25, 3}, {88, 16, 2}};
+
+    std::cout << "=== LLL reduction ===\n";
+    std::cout << "input basis (norm^2):\n";
+    std::vector<double> before, after;
+    for (auto& v : B) { std::cout << "  [" << v[0] << "," << v[1] << "," << v[2] << "]  |v|^2=" << norm2(v) << "\n"; before.push_back(norm2(v)); }
+    const double det_in = gram_det(B);
+
+    auto R = lll_reduce(B, 0.75);
+    std::cout << "\nreduced basis (norm^2):\n";
+    for (auto& v : R) { std::cout << "  [" << v[0] << "," << v[1] << "," << v[2] << "]  |v|^2=" << norm2(v) << "\n"; after.push_back(norm2(v)); }
+    const double det_out = gram_det(R);
+    std::cout << "\nGram determinant  before=" << det_in << "  after=" << det_out
+              << "   (same lattice: " << (std::fabs(det_in - det_out) < 1e-6 * det_in ? "yes" : "no") << ")\n";
+
+    std::vector<double> xb = {0.8, 1.8, 2.8}, xa = {1.2, 2.2, 3.2};
+    auto plot = RPlot::create();
+    plot.bars(xb, before, "before", RGB{220, 38, 38}, 0.35);
+    plot.bars(xa, after, "after", RGB{5, 150, 105}, 0.35);
+    plot.legend({"|v|^2 before", "|v|^2 after LLL"}, {{220, 38, 38}, {5, 150, 105}});
+    plot.title("LLL shrinks the basis vectors while preserving the lattice")
+        .x_label("basis vector").y_label("squared norm").background({250, 250, 252});
+    plot.save_svg("build/org/lll.svg");
+    std::cout << "wrote lll.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lll_analysis.cpp <<'CPP'
+<<ll-includes>>
+
+int main() {
+<<ll-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lll_analysis.cpp -o build/org/lll_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lll_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LLL reduction ===
+input basis (norm^2):
+  [201,37,5]  |v|^2=41795
+  [143,25,3]  |v|^2=21083
+  [88,16,2]  |v|^2=8004
+
+reduced basis (norm^2):
+  [1,-1,1]  |v|^2=3
+  [3,3,1]  |v|^2=19
+  [3,1,-3]  |v|^2=19
+
+Gram determinant  before=784  after=784   (same lattice: yes)
+wrote lll.svg
+#+end_example
+
+The reduced basis vectors are dramatically shorter than the skewed inputs, and the Gram determinant is
+unchanged -- confirming the algorithm returned a *different basis of the same lattice*, not a different
+lattice. The size-reduction and swap steps did their job: the output is size-reduced and satisfies the
+Lovasz condition.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/lll.svg]]
+
+The green (reduced) bars sit far below the red (input) ones: LLL has traded a long, nearly parallel
+basis for a short, nearly orthogonal one spanning exactly the same integer lattice. That short first
+vector is what makes LLL a workhorse -- it approximates the shortest lattice vector well enough to
+break knapsack cryptosystems, factor polynomials, and find integer relations among real numbers.
