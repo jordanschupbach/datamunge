@@ -16,23 +16,23 @@ computed area.
 
 * Lacing the coordinates together
 
-For a polygon with vertices @math{(x_0,y_0),\dots,(x_{n-1},y_{n-1})} in order, the signed
+For a polygon with vertices \((x_0,y_0),\dots,(x_{n-1},y_{n-1})\) in order, the signed
 area is
 
 \[ A = \frac12 \sum_{i=0}^{n-1} \bigl(x_{j}\,y_{i} - x_{i}\,y_{j}\bigr), \qquad j = i-1 \ (\text{mod } n). \]
 
-Each term @math{x_j y_i - x_i y_j} is the cross product of two consecutive vertices -- twice
+Each term \(x_j y_i - x_i y_j\) is the cross product of two consecutive vertices -- twice
 the signed area of the triangle they form with the origin. Summed around the boundary, the
 triangle contributions *outside* the polygon cancel and only the enclosed area remains, no
 matter where the origin sits or how non-convex the shape is. Two facts make it especially
 useful:
 
-- *Sign = winding.* @math{A>0} for counterclockwise vertices, @math{A<0} for clockwise; the
-  unsigned area is @math{|A|}.
+- *Sign = winding.* \(A>0\) for counterclockwise vertices, \(A<0\) for clockwise; the
+  unsigned area is \(|A|\).
 - *Exactness.* For integer or exactly-represented coordinates the result is exact -- which is
   why it is the surveyor's and GIS standard for parcel areas.
 
-It runs in a single @math{O(n)} pass over the vertices.
+It runs in a single \(O(n)\) pass over the vertices.
 
 #+name: sl-includes
 #+begin_src c++ :eval no
@@ -58,7 +58,7 @@ SIGNED-AREA(vertices):
 
 * Worked example: known shapes, then an irregular polygon
 
-We check the formula on a unit square (area 1, and @math{-1} when wound backwards) and a
+We check the formula on a unit square (area 1, and \(-1\) when wound backwards) and a
 right triangle (area 6), then measure a non-convex polygon and draw it.
 
 #+name: sl-run
@@ -121,9 +121,9 @@ chevron polygon: area = 18
 wrote shoelace.svg
 #+end_example
 
-The unit square returns @math{+1} counterclockwise and @math{-1} clockwise -- the sign
-flipping with the winding while the unsigned area stays @math{1} -- and the right triangle
-gives exactly @math{6}. The non-convex chevron, which no single triangle covers, is measured
+The unit square returns \(+1\) counterclockwise and \(-1\) clockwise -- the sign
+flipping with the winding while the unsigned area stays \(1\) -- and the right triangle
+gives exactly \(6\). The non-convex chevron, which no single triangle covers, is measured
 correctly in one pass: the inward notch is subtracted automatically by the cancelling cross
 products.
 

@@ -7,28 +7,28 @@
 #+begin_abstract
 Given a scatter of points, which two are closest together? The *closest pair problem* is a
 staple of computational geometry -- underlying collision detection, clustering, and
-map-label declutter. The brute-force answer compares all @math{\binom{n}{2}} pairs in
-@math{O(n^2)}; the celebrated divide-and-conquer algorithm does it in @math{O(n\log n)}.
-=datamunge= ships the clear, easy-to-trust @math{O(n^2)} version. This report drives
+map-label declutter. The brute-force answer compares all \(\binom{n}{2}\) pairs in
+\(O(n^2)\); the celebrated divide-and-conquer algorithm does it in \(O(n\log n)\).
+=datamunge= ships the clear, easy-to-trust \(O(n^2)\) version. This report drives
 =geometry::closest_pair=, verified on a hand-checkable set, and highlights the winning pair
 in a random cloud.
 #+end_abstract
 
 * All pairs, or divide and conquer
 
-The distance between two points is @math{\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}}; the closest pair
+The distance between two points is \(\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\); the closest pair
 is the one minimizing it. Two strategies:
 
-- *Brute force* (@math{O(n^2)}): scan every unordered pair, keep the smallest distance. To
+- *Brute force* (\(O(n^2)\)): scan every unordered pair, keep the smallest distance. To
   avoid needless square roots one compares *squared* distances and takes the root once at
   the end. Simple, exact, no edge cases -- the right choice for the modest point counts this
   module targets, and the version =datamunge= implements.
-- *Divide and conquer* (@math{O(n\log n)}): split the points by a vertical line, recurse on
-  each half, then check only the points within the current best distance @math{\delta} of
+- *Divide and conquer* (\(O(n\log n)\)): split the points by a vertical line, recurse on
+  each half, then check only the points within the current best distance \(\delta\) of
   the dividing line -- a strip in which, by a packing argument, each point can have at most a
   constant number of rivals. This is asymptotically optimal but has a fiddly merge step.
 
-For @math{n} in the hundreds the @math{O(n^2)} scan is both fast enough and impossible to
+For \(n\) in the hundreds the \(O(n^2)\) scan is both fast enough and impossible to
 get subtly wrong, which is why a "basic" geometry component prefers it.
 
 #+name: cp-includes
@@ -119,7 +119,7 @@ distance = 0.0360555
 wrote closest_pair.svg
 #+end_example
 
-The algorithm picks out exactly the planted pair near @math{(5,5)}, whose separation of a
+The algorithm picks out exactly the planted pair near \((5,5)\), whose separation of a
 few hundredths is far smaller than any gap in the random spread. Every other pair among the
 sixty-two points is farther apart, and the all-pairs scan finds the minimum with certainty.
 
@@ -128,6 +128,6 @@ sixty-two points is farther apart, and the all-pairs scan finds the minimum with
 [[file:../../build/org/closest_pair.svg]]
 
 The red segment links the two nearest points -- so short it is almost a dot -- while the
-grey cloud around it is comparatively sparse. That is the closest pair the @math{O(n^2)}
+grey cloud around it is comparatively sparse. That is the closest pair the \(O(n^2)\)
 scan is guaranteed to return; for far larger clouds the divide-and-conquer variant would
-find the same answer in @math{O(n\log n)}.
+find the same answer in \(O(n\log n)\).

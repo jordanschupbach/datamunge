@@ -6,28 +6,28 @@
 
 #+begin_abstract
 Graphics hardware draws triangles, not polygons -- so every filled shape must first be
-*triangulated*. Any simple polygon with @math{n} vertices decomposes into exactly
-@math{n-2} triangles, and the classic way to find them is *ear clipping*: repeatedly snip
+*triangulated*. Any simple polygon with \(n\) vertices decomposes into exactly
+\(n-2\) triangles, and the classic way to find them is *ear clipping*: repeatedly snip
 off a convex corner whose triangle contains no other vertex. This report drives =datamunge='s
-=geometry::triangulate_polygon=, verifies the @math{n-2} triangle count, and draws the
+=geometry::triangulate_polygon=, verifies the \(n-2\) triangle count, and draws the
 triangulation of a concave polygon.
 #+end_abstract
 
 * Snipping ears
 
-An *ear* of a simple polygon is a vertex @math{v} whose two neighbours can be joined by a
-diagonal lying entirely inside the polygon -- equivalently, @math{v} is *convex* and the
-triangle formed by @math{v} and its neighbours contains no other polygon vertex. The
+An *ear* of a simple polygon is a vertex \(v\) whose two neighbours can be joined by a
+diagonal lying entirely inside the polygon -- equivalently, \(v\) is *convex* and the
+triangle formed by \(v\) and its neighbours contains no other polygon vertex. The
 *two ears theorem* guarantees every simple polygon with more than three vertices has at
 least two ears, so:
 
 1. find an ear, output its triangle, and *remove* its tip vertex;
 2. repeat on the smaller polygon until only a triangle remains.
 
-Each clip removes one vertex and emits one triangle, so an @math{n}-gon yields exactly
-@math{n-2} triangles. The naive implementation is @math{O(n^2)} (rescan for ears after each
+Each clip removes one vertex and emits one triangle, so an \(n\)-gon yields exactly
+\(n-2\) triangles. The naive implementation is \(O(n^2)\) (rescan for ears after each
 clip), which is the right simplicity/speed tradeoff for the modest polygons this module
-targets; specialised @math{O(n\log n)} and even @math{O(n)} methods exist for large or
+targets; specialised \(O(n\log n)\) and even \(O(n)\) methods exist for large or
 degenerate inputs. Triangles are returned as index triples into the polygon's vertex list.
 
 #+name: pt-includes
@@ -56,7 +56,7 @@ TRIANGULATE-POLYGON(polygon):               # ear clipping
 
 * Worked example: a concave "arrow" polygon
 
-We triangulate a seven-vertex concave polygon and confirm it yields @math{7-2=5} triangles,
+We triangulate a seven-vertex concave polygon and confirm it yields \(7-2=5\) triangles,
 then draw them.
 
 #+name: pt-run
@@ -117,7 +117,7 @@ triangles: 5 (expected n-2 = 5)
 wrote polygon_triangulation.svg
 #+end_example
 
-The seven-vertex polygon splits into exactly five triangles, as @math{n-2} promises, and
+The seven-vertex polygon splits into exactly five triangles, as \(n-2\) promises, and
 together they tile the polygon's interior with no overlaps and no coverage of the concave
 notch's exterior. Ear clipping found a valid diagonal at each step without ever cutting
 outside the shape.

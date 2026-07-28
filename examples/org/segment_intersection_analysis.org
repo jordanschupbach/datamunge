@@ -16,19 +16,19 @@ crossings it finds.
 
 * Straddle, by the sign of a cross product
 
-The *orientation* of an ordered triple @math{(a,b,c)} is the sign of the cross product
-@math{(b-a)\times(c-a)}: positive is a counterclockwise turn, negative clockwise, zero
-collinear. Two segments @math{p_1q_1} and @math{p_2q_2} *properly cross* exactly when each
+The *orientation* of an ordered triple \((a,b,c)\) is the sign of the cross product
+\((b-a)\times(c-a)\): positive is a counterclockwise turn, negative clockwise, zero
+collinear. Two segments \(p_1q_1\) and \(p_2q_2\) *properly cross* exactly when each
 straddles the line of the other:
 
-- @math{p_2} and @math{q_2} lie on *opposite* sides of @math{p_1q_1}, *and*
-- @math{p_1} and @math{q_1} lie on *opposite* sides of @math{p_2q_2}.
+- \(p_2\) and \(q_2\) lie on *opposite* sides of \(p_1q_1\), *and*
+- \(p_1\) and \(q_1\) lie on *opposite* sides of \(p_2q_2\).
 
-In orientation terms, the two orientations @math{(p_1,q_1,p_2)} and @math{(p_1,q_1,q_2)}
+In orientation terms, the two orientations \((p_1,q_1,p_2)\) and \((p_1,q_1,q_2)\)
 differ, and likewise for the other segment. Collinear *touching* is handled by an explicit
 on-segment check. The whole decision is four cross products -- integer-exact for integer
 coordinates, with no slope divisions to blow up on vertical segments. When a unique crossing
-exists, its location comes from solving the two segment parametrizations (a single @math{2\times2}
+exists, its location comes from solving the two segment parametrizations (a single \(2\times2\)
 system); collinear overlap has no single point, so that case reports none.
 
 #+name: si-includes
@@ -128,9 +128,9 @@ touches: intersects = true, crossing at (6, 6)
 wrote segment_intersection.svg
 #+end_example
 
-The anti-diagonal crosses the reference squarely at its midpoint @math{(3,3)}; the disjoint
+The anti-diagonal crosses the reference squarely at its midpoint \((3,3)\); the disjoint
 segment off to the side does not intersect; and the third segment, sharing the endpoint
-@math{(6,6)}, is reported as touching. The straddle test settles each case with a handful of
+\((6,6)\), is reported as touching. The straddle test settles each case with a handful of
 cross-product signs.
 
 #+attr_html: :width 620

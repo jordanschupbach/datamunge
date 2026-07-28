@@ -15,8 +15,8 @@ triangulation, and draws the bounded cells around a set of sites.
 
 * Regions of nearest-ness, dual to Delaunay
 
-The *Voronoi cell* of a site @math{s} is @math{\{x : \|x-s\| \le \|x-s'\|\ \text{for all
-sites } s'\}} -- everywhere @math{s} is the closest site. Cell boundaries are segments of the
+The *Voronoi cell* of a site \(s\) is \(\{x : \|x-s\| \le \|x-s'\|\ \text{for all
+sites } s'\}\) -- everywhere \(s\) is the closest site. Cell boundaries are segments of the
 *perpendicular bisectors* between neighbouring sites; a boundary point is equidistant from
 two sites, and a Voronoi *vertex* is equidistant from three.
 

@@ -16,16 +16,16 @@ maps the inside/outside verdict across a grid over a concave polygon.
 
 * Count the crossings
 
-Cast a horizontal ray from the query point in the @math{+x} direction. Each time it crosses
+Cast a horizontal ray from the query point in the \(+x\) direction. Each time it crosses
 a polygon edge it passes from outside to inside or back, so:
 
 - an *odd* number of crossings means the point is *inside*;
 - an *even* number means *outside*.
 
-Franklin's PNPOLY collapses this into one loop over the edges @math{(v_j, v_i)}: an edge is
-a candidate crossing only if it *straddles* the point's @math{y} (one endpoint above, one
+Franklin's PNPOLY collapses this into one loop over the edges \((v_j, v_i)\): an edge is
+a candidate crossing only if it *straddles* the point's \(y\) (one endpoint above, one
 not), and then a single comparison places the crossing to the right of the point. Each such
-edge toggles an @c inside flag. The whole test is @math{O(n)} with no divisions beyond the
+edge toggles an @c inside flag. The whole test is \(O(n)\) with no divisions beyond the
 edge-slope term and no trigonometry.
 
 The even-odd rule needs no convexity: for a concave or many-armed polygon the ray simply
@@ -128,10 +128,10 @@ grid: 450 points classified inside
 wrote point_in_polygon.svg
 #+end_example
 
-The spot checks behave exactly as the geometry demands: @math{(3,1)} sits in the body and
-is inside; @math{(3,3)} falls in the notch above the dipped centre edge and is *outside*;
-@math{(1,2)} is inside the left peak; @math{(5,3.5)} lies just *above* the right slanted
-edge and is outside; and @math{(7,2)} is beyond the polygon entirely. The grid makes the
+The spot checks behave exactly as the geometry demands: \((3,1)\) sits in the body and
+is inside; \((3,3)\) falls in the notch above the dipped centre edge and is *outside*;
+\((1,2)\) is inside the left peak; \((5,3.5)\) lies just *above* the right slanted
+edge and is outside; and \((7,2)\) is beyond the polygon entirely. The grid makes the
 whole region visible at once.
 
 #+attr_html: :width 620

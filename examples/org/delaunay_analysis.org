@@ -23,8 +23,8 @@ interior. This single condition has remarkable consequences:
   "fat" as possible -- exactly what numerical interpolation and meshing want;
 - it is the *straight-line dual* of the Voronoi diagram (connect two sites whose Voronoi
   cells share an edge);
-- for @math{n} points with @math{h} of them on the convex hull, it has exactly
-  @math{2n-2-h} triangles.
+- for \(n\) points with \(h\) of them on the convex hull, it has exactly
+  \(2n-2-h\) triangles.
 
 =datamunge= builds it incrementally: insert points one at a time, delete every triangle
 whose circumcircle the new point violates, and re-triangulate the resulting hole (the
@@ -125,7 +125,7 @@ wrote delaunay.svg
 #+end_example
 
 The square-plus-center triangulates into exactly the four fan triangles the count formula
-@math{2n-2-h} predicts, and the random cloud fills out to its full Delaunay mesh. Every
+\(2n-2-h\) predicts, and the random cloud fills out to its full Delaunay mesh. Every
 triangle drawn satisfies the empty-circumcircle rule, which is why none of them is a thin
 sliver.
 

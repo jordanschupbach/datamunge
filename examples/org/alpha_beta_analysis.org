@@ -6,28 +6,28 @@
 
 #+begin_abstract
 Minimax finds the value of a game position under optimal play -- but it evaluates *every*
-leaf of the game tree, which grows as @math{b^d} for branching factor @math{b} and depth
-@math{d}. *Alpha-beta pruning* returns the *exact same value* while skipping branches that
+leaf of the game tree, which grows as \(b^d\) for branching factor \(b\) and depth
+\(d\). *Alpha-beta pruning* returns the *exact same value* while skipping branches that
 provably cannot change it: once one player has a move good enough that the opponent would
 never permit the current line, the rest of that line is irrelevant. With good move ordering
-it examines only @math{O(b^{d/2})} leaves -- effectively *doubling the searchable depth*.
+it examines only \(O(b^{d/2})\) leaves -- effectively *doubling the searchable depth*.
 This report drives =datamunge='s =algorithms::alpha_beta=, verified to agree with minimax,
 and measures the leaves it prunes.
 #+end_abstract
 
 * The window that closes
 
-Alpha-beta carries two bounds down the tree: @math{\alpha}, the best value the maximizer can
-already guarantee, and @math{\beta}, the best the minimizer can already hold it to. At a
-*max* node, as soon as a child's value reaches @math{\beta}, the *minimizer above* would
-never enter this node (it already has a line at most @math{\beta}), so the remaining children
+Alpha-beta carries two bounds down the tree: \(\alpha\), the best value the maximizer can
+already guarantee, and \(\beta\), the best the minimizer can already hold it to. At a
+*max* node, as soon as a child's value reaches \(\beta\), the *minimizer above* would
+never enter this node (it already has a line at most \(\beta\)), so the remaining children
 are skipped -- a *beta cutoff*. Symmetrically a *min* node cuts off once a child drops to
-@math{\alpha}. The value returned is *identical* to minimax's; only the useless work is
+\(\alpha\). The value returned is *identical* to minimax's; only the useless work is
 removed.
 
 The payoff depends entirely on *move ordering*. In the worst order (best moves last) nothing
-is pruned and you pay the full @math{b^d}. In the best order (best moves first) the count
-collapses to @math{2b^{d/2}-1} -- the square root of the tree -- which is why real engines
+is pruned and you pay the full \(b^d\). In the best order (best moves first) the count
+collapses to \(2b^{d/2}-1\) -- the square root of the tree -- which is why real engines
 spend so much effort ordering moves. Random ordering, as here, lands in between: substantial
 pruning, though short of the ideal.
 
@@ -63,8 +63,8 @@ ALPHA-BETA(node, maximizing, alpha, beta):
 * Worked example: agreement with minimax, and leaves pruned
 
 We build random game trees, confirm alpha-beta returns exactly minimax's value, and plot how
-many leaves each evaluates as depth grows (branching factor 3), against the @math{b^d} and
-best-case @math{b^{d/2}} references.
+many leaves each evaluates as depth grows (branching factor 3), against the \(b^d\) and
+best-case \(b^{d/2}\) references.
 
 #+name: ab-run
 #+begin_src c++ :eval no
@@ -150,8 +150,8 @@ wrote alpha_beta.svg
 
 Alpha-beta returns exactly minimax's value on every tree -- it is not an approximation -- yet
 evaluates markedly fewer leaves, and the gap grows with depth. Even with the *random* move
-ordering used here, the blue curve sits well below the red @math{b^d} minimax line, trending
-toward the green best-case @math{b^{d/2}}.
+ordering used here, the blue curve sits well below the red \(b^d\) minimax line, trending
+toward the green best-case \(b^{d/2}\).
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth

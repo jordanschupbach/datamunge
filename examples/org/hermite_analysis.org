@@ -7,7 +7,7 @@
 #+begin_abstract
 Linear interpolation fixes the *values* at the samples; *cubic Hermite interpolation*
 fixes the *slopes* there too. On each interval it fits the unique cubic that matches the
-endpoint values *and* the endpoint derivatives, producing a @math{C^1} curve you can
+endpoint values *and* the endpoint derivatives, producing a \(C^1\) curve you can
 sculpt by choosing tangents. The same four points with different slopes give visibly
 different curves -- the mechanism behind Catmull-Rom splines, font outlines, and
 animation easing. This report implements it in =datamunge='s C++
@@ -17,8 +17,8 @@ the tangents reshape the curve.
 
 * The Hermite basis
 
-On an interval @math{[x_k, x_{k+1}]} of width @math{h}, with @math{t=(x-x_k)/h}, the
-cubic that matches values @math{y_k, y_{k+1}} and slopes @math{m_k, m_{k+1}} is
+On an interval \([x_k, x_{k+1}]\) of width \(h\), with \(t=(x-x_k)/h\), the
+cubic that matches values \(y_k, y_{k+1}\) and slopes \(m_k, m_{k+1}\) is
 
 \[ p(x) = h_{00}(t)\,y_k + h_{10}(t)\,h\,m_k + h_{01}(t)\,y_{k+1} + h_{11}(t)\,h\,m_{k+1}, \]
 
@@ -31,10 +31,10 @@ h_{01} &= -2t^3+3t^2, & h_{11} &= t^3-t^2.
 \end{aligned}
 \]
 
-By construction @math{h_{00}} and @math{h_{01}} interpolate the values (and are flat at
-the ends) while @math{h_{10}} and @math{h_{11}} inject the tangents (and vanish at the
+By construction \(h_{00}\) and \(h_{01}\) interpolate the values (and are flat at
+the ends) while \(h_{10}\) and \(h_{11}\) inject the tangents (and vanish at the
 ends). The interpolant therefore passes through every node with exactly the prescribed
-slope, so adjacent segments join @math{C^1}-smoothly whenever they share a nodal slope.
+slope, so adjacent segments join \(C^1\)-smoothly whenever they share a nodal slope.
 Choosing those slopes is the whole art: finite-difference tangents give a Catmull-Rom
 spline, zero tangents give a flat-at-the-nodes "ease", and analytic derivatives reproduce
 a known function to third order.

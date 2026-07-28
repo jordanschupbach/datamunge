@@ -5,7 +5,7 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-An axis-aligned bounding box is easy but wasteful: rotate the points @math{45^\circ} and it
+An axis-aligned bounding box is easy but wasteful: rotate the points \(45^\circ\) and it
 balloons. The *minimum-area bounding box* -- the tightest rectangle of *any* orientation
 enclosing a point set -- is the honest measure of a shape's extent, used for collision
 proxies, part nesting, and OCR deskewing. A theorem of Freeman and Shapira guarantees that
@@ -25,7 +25,7 @@ side *collinear with an edge of the polygon*. So the algorithm is:
 3. take the axis-aligned bounding box in that rotated frame -- its area is a candidate;
 4. keep the smallest-area candidate and rotate its rectangle back.
 
-With the hull having @math{h} edges this is @math{O(h)} orientations (rotating calipers can
+With the hull having \(h\) edges this is \(O(h)\) orientations (rotating calipers can
 even do the supporting-line updates incrementally). The result is the rectangle's four
 corners, its width and height, and its area -- typically far tighter than the axis-aligned
 box for any shape that is not already grid-aligned.
@@ -60,8 +60,8 @@ MIN-BOUNDING-RECTANGLE(points):
 
 * Worked example: a rectangle tilted 30 degrees
 
-We take a @math{6\times2} rectangle rotated by @math{30^\circ}, whose true minimum box is
-the rectangle itself (area @math{12}), and compare the oriented MBR to the wasteful
+We take a \(6\times2\) rectangle rotated by \(30^\circ\), whose true minimum box is
+the rectangle itself (area \(12\)), and compare the oriented MBR to the wasteful
 axis-aligned box.
 
 #+name: mb-run
@@ -127,8 +127,8 @@ axis-aligned box area = 29.3205 (much larger)
 wrote min_bounding_box.svg
 #+end_example
 
-The oriented minimum box recovers the tilted rectangle almost exactly -- sides @math{6} and
-@math{2}, area @math{\approx12} -- because one of its edges lies flush with a hull edge, just
+The oriented minimum box recovers the tilted rectangle almost exactly -- sides \(6\) and
+\(2\), area \(\approx12\) -- because one of its edges lies flush with a hull edge, just
 as the theorem promises. The axis-aligned box over the same tilted points is substantially
 larger, spending its area on empty corners.
 

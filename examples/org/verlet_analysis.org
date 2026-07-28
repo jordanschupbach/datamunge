@@ -5,7 +5,7 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-For Newton's equations of motion @math{x''=a(x)}, accuracy per step is not the whole
+For Newton's equations of motion \(x''=a(x)\), accuracy per step is not the whole
 story -- what matters over a long simulation is whether *energy* is conserved. A generic
 integrator like forward Euler slowly pumps energy in (or bleeds it out), so an orbit
 spirals away over time. *Velocity Verlet* is *symplectic*: it preserves the geometric
@@ -63,8 +63,8 @@ VELOCITY-VERLET(a, x0, v0, t0, t1, steps):
 
 * Worked example: the harmonic oscillator over many periods
 
-We integrate @math{x''=-x} (energy @math{E=\tfrac12(v^2+x^2)}, exactly conserved for the
-true solution @math{x=\cos t}) from @math{x_0=1,\ v_0=0} over @math{50} time units, and
+We integrate \(x''=-x\) (energy \(E=\tfrac12(v^2+x^2)\), exactly conserved for the
+true solution \(x=\cos t\)) from \(x_0=1,\ v_0=0\) over \(50\) time units, and
 track the energy for velocity Verlet against forward Euler applied to the same system.
 
 #+name: vl-run
@@ -134,8 +134,8 @@ wrote verlet.svg
 #+end_example
 
 Over fifty time units -- about eight oscillations -- velocity Verlet's energy stays
-pinned in a razor-thin band around its starting value @math{0.5}, and its position still
-matches @math{\cos t} closely. Forward Euler, integrating the *same* equations at the
+pinned in a razor-thin band around its starting value \(0.5\), and its position still
+matches \(\cos t\) closely. Forward Euler, integrating the *same* equations at the
 *same* step size, steadily injects energy: its amplitude swells and the energy climbs
 without bound. Neither method is exact, but only Verlet respects the conservation law.
 

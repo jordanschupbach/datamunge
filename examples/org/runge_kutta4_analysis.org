@@ -9,7 +9,7 @@ Euler uses one slope per step and earns first-order accuracy. The *classical fou
 Runge-Kutta method* (Runge 1895, Kutta 1901) uses *four* carefully placed slope
 evaluations -- at the start, twice at the midpoint, and at the end -- and blends them so
 that error terms cancel through fourth order. The result is the workhorse of scientific
-computing: *explicit*, self-starting, and @math{O(h^4)} accurate, so halving the step
+computing: *explicit*, self-starting, and \(O(h^4)\) accurate, so halving the step
 cuts the error roughly *sixteen-fold*. This report implements it in =datamunge='s C++
 =algorithms::runge_kutta4=, verifies it against exact solutions, and puts its convergence
 slope side by side with Euler's.
@@ -30,9 +30,9 @@ then combines them with Simpson-like weights
 
 \[ y_{n+1} = y_n + \frac{h}{6}\,(k_1 + 2k_2 + 2k_3 + k_4). \]
 
-The two midpoint samples @math{k_2,k_3} and the endpoint @math{k_4} let the update match
-the Taylor expansion of the true solution through the @math{h^4} term, so the *local*
-error is @math{O(h^5)} and the *global* error @math{O(h^4)}. That is the sweet spot RK4
+The two midpoint samples \(k_2,k_3\) and the endpoint \(k_4\) let the update match
+the Taylor expansion of the true solution through the \(h^4\) term, so the *local*
+error is \(O(h^5)\) and the *global* error \(O(h^4)\). That is the sweet spot RK4
 is famous for: four function evaluations per step -- four times Euler's cost -- but an
 error that falls as the *fourth power* of the step, so for any real accuracy target RK4
 needs dramatically fewer, larger steps than Euler.
@@ -67,8 +67,8 @@ RK4(f, y0, t0, t1, steps):
 
 * Worked example: convergence order, RK4 versus Euler
 
-We integrate @math{y'=-y} (exact @math{e^{-1}} at @math{t=1}) at a range of step sizes
-and plot the final error against @math{h} on log-log axes. Euler's points should fall on
+We integrate \(y'=-y\) (exact \(e^{-1}\) at \(t=1\)) at a range of step sizes
+and plot the final error against \(h\) on log-log axes. Euler's points should fall on
 a line of slope 1; RK4's on a line of slope 4 -- until they hit the floating-point floor.
 
 #+name: rk-run
@@ -150,8 +150,8 @@ wrote runge_kutta4.svg
 #+end_example
 
 At every step size RK4's error is orders of magnitude below Euler's, and the empirical
-slopes confirm the theory: Euler's error falls like @math{h^1}, RK4's like @math{h^4}.
-By @math{256} steps RK4 has already run into the @math{\sim10^{-16}} floating-point floor
+slopes confirm the theory: Euler's error falls like \(h^1\), RK4's like \(h^4\).
+By \(256\) steps RK4 has already run into the \(\sim10^{-16}\) floating-point floor
 -- it is as accurate as double precision allows -- while Euler is still crawling down at
 one digit per halving.
 
