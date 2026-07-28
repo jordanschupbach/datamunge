@@ -813,6 +813,26 @@ We implement the natural cubic spline (=algorithms::natural_cubic_spline=, =cubi
 
 We implement de Casteljau's algorithm (=algorithms::de_casteljau=) and report it as a literate program. We give the pyramid of linear interpolations, its equivalence to the Bernstein form, and the endpoint-interpolation and convex-hull properties; a cubic Bezier is evaluated with B(0.5)=(2,1.875) and the interpolation scaffold drawn.
 
+** [[./linear_interpolation_analysis.html][Linear Interpolation: Connecting the Dots]] ([[./linear_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of piecewise-linear interpolation using datamunge/
+
+We implement piecewise linear interpolation (=algorithms::linear_interpolate=) and report it as a literate program. We give the straight-segment blend, its exactness on affine data, and its O(h^2) error; reconstructing sin x from samples shows the error falling toward a factor of four per node-doubling, with linear extrapolation past the ends.
+
+** [[./hermite_analysis.html][Cubic Hermite Interpolation: Curves Shaped by Their Tangents]] ([[./hermite_analysis.pdf][PDF]])
+/A literate C++ study of cubic Hermite interpolation using datamunge/
+
+We implement cubic Hermite interpolation (=algorithms::hermite_interpolate=) and report it as a literate program. We give the four Hermite basis functions matching endpoint values and slopes for a C1 curve; the same four points with zero versus Catmull-Rom tangents trace visibly different curves, and analytic slopes reproduce a cubic exactly.
+
+** [[./monotone_cubic_analysis.html][Monotone Cubic Interpolation: Smoothness Without the Overshoot]] ([[./monotone_cubic_analysis.pdf][PDF]])
+/A literate C++ study of Fritsch-Carlson interpolation using datamunge/
+
+We implement monotone cubic interpolation (=algorithms::monotone_cubic_interpolate=; Fritsch-Carlson 1980) and report it as a literate program. We give the tangent limiter that keeps the interpolant inside the monotone region (alpha^2+beta^2<=9); on a monotone step a natural cubic spline overshoots to [-0.11, 1.11] while the monotone cubic stays exactly in [0,1] and nondecreasing.
+
+** [[./bilinear_analysis.html][Bilinear Interpolation: Linear Interpolation in Two Dimensions]] ([[./bilinear_analysis.pdf][PDF]])
+/A literate C++ study of grid interpolation using datamunge/
+
+We implement bilinear interpolation (=algorithms::bilinear_interpolate=) and report it as a literate program. We give the two-stage tensor-product blend, its exactness for a+bx+cy+dxy, and its reduction to linear interpolation along grid lines; a 6x6 grid reconstructs sin(x)cos(y) along the diagonal with max error 0.046.
+
 ** [[./insertion_sort_analysis.html][Insertion Sort: Building Order One Element at a Time]] ([[./insertion_sort_analysis.pdf][PDF]])
 /A literate C++ study of the adaptive elementary sort using datamunge/
 

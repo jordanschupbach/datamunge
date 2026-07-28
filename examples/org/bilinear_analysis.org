@@ -1,0 +1,157 @@
+#+title: Bilinear Interpolation: Linear Interpolation in Two Dimensions
+#+subtitle: A literate C++ study of grid interpolation with =datamunge='s =algorithms::bilinear_interpolate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When data lives on a *2-D grid* -- an image, a heightmap, a lookup table of two
+variables -- the workhorse resampler is *bilinear interpolation*: interpolate linearly in
+@math{x} along the two grid rows that bracket the query, then linearly in @math{y} between
+those two results. It is exact for any bilinear surface @math{a+bx+cy+dxy}, reduces to
+ordinary linear interpolation along a grid line, and costs just four samples and a few
+multiplies per query. This report implements it in =datamunge='s C++
+=algorithms::bilinear_interpolate=, verified exact on bilinear data, and reconstructs a
+smooth surface from a coarse grid.
+#+end_abstract
+
+* Two linear interpolations, one after the other
+
+Let the query @math{(x,y)} fall in the grid cell with corners
+@math{(x_i,y_j), (x_{i+1},y_j), (x_i,y_{j+1}), (x_{i+1},y_{j+1})} carrying values
+@math{z_{00},z_{10},z_{01},z_{11}}. With fractional positions
+@math{t_x=\frac{x-x_i}{x_{i+1}-x_i}} and @math{t_y=\frac{y-y_j}{y_{j+1}-y_j}}, interpolate
+first along @math{x}:
+
+\[ a = z_{00} + t_x(z_{10}-z_{00}), \qquad b = z_{01} + t_x(z_{11}-z_{01}), \]
+
+then along @math{y}:
+
+\[ z(x,y) = a + t_y\,(b - a). \]
+
+Doing @math{y} first gives the same answer -- bilinear interpolation is the tensor product
+of two 1-D linear interpolations. The result is *continuous* across cell boundaries,
+*exact* for @math{a+bx+cy+dxy} (the @math{dxy} term is why it is bi-*linear*, not planar),
+and on any single grid line one of @math{t_x,t_y} is fixed so it collapses to plain linear
+interpolation. It is not smooth (the gradient jumps at cell edges) -- that is what bicubic
+interpolation improves -- but it is the cheap default in graphics and geospatial work.
+
+#+name: bl-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/interpolation_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BILINEAR(xs, ys, z, x, y):        # z[i*ny + j] is the value at (xs[i], ys[j])
+  i <- interval index in xs for x;  j <- interval index in ys for y
+  tx <- (x - xs[i])/(xs[i+1]-xs[i]);  ty <- (y - ys[j])/(ys[j+1]-ys[j])
+  a <- z[i,j]   + tx*(z[i+1,j]   - z[i,j])       # interpolate in x, row j
+  b <- z[i,j+1] + tx*(z[i+1,j+1] - z[i,j+1])     # interpolate in x, row j+1
+  return a + ty*(b - a)                           # interpolate in y
+#+end_example
+
+* Worked example: reconstructing a smooth surface from a coarse grid
+
+We sample @math{f(x,y)=\sin x\cos y} on a coarse @math{6\times 6} grid over
+@math{[0,\pi]^2}, then reconstruct it bilinearly along the diagonal @math{x=y} and compare
+to the exact surface. We also confirm exactness on a genuine bilinear function.
+
+#+name: bl-run
+#+begin_src c++ :eval no
+    auto f = [](double x, double y) { return std::sin(x) * std::cos(y); };
+    const int    n  = 6;
+    const double hi = M_PI;
+    std::vector<double> xs, ys, z;
+    for (int i = 0; i < n; ++i) xs.push_back(hi * i / (n - 1));
+    for (int j = 0; j < n; ++j) ys.push_back(hi * j / (n - 1));
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) z.push_back(f(xs[i], ys[j])); // row-major z[i*n + j]
+
+    // Exactness on a bilinear function a + b x + c y + d x y.
+    const double a = 1, b = -2, c = 0.5, d = 0.3;
+    auto g = [&](double x, double y) { return a + b * x + c * y + d * x * y; };
+    std::vector<double> zg;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) zg.push_back(g(xs[i], ys[j]));
+    std::cout << "=== exactness on a bilinear function ===\n";
+    std::cout << "bilinear at (1.7, 2.3) -> " << bilinear_interpolate(xs, ys, zg, 1.7, 2.3)
+              << "  exact " << g(1.7, 2.3) << "\n\n";
+
+    // Reconstruct sin(x)cos(y) along the diagonal x = y = s.
+    std::vector<double> ss, exact, recon;
+    double maxerr = 0.0;
+    for (int i = 0; i <= 300; ++i) {
+        const double s = hi * i / 300.0;
+        ss.push_back(s);
+        exact.push_back(f(s, s));
+        const double r = bilinear_interpolate(xs, ys, z, s, s);
+        recon.push_back(r);
+        maxerr = std::max(maxerr, std::fabs(r - f(s, s)));
+    }
+    std::cout << "reconstruction of sin(x)cos(y) on the diagonal, 6x6 grid:\n";
+    std::cout << "max |error| along the diagonal = " << maxerr << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(ss, exact, "exact", RGB{16, 185, 129}, 2.0);
+    plot.line(ss, recon, "bilinear", RGB{220, 38, 38}, 2.0);
+    plot.legend({"exact sin(x)cos(y) on x=y", "bilinear from 6x6 grid"}, {{16, 185, 129}, {220, 38, 38}});
+    plot.title("Bilinear reconstruction along the diagonal of a coarse grid")
+        .x_label("s  (with x = y = s)").y_label("z").background({250, 250, 252});
+    plot.save_svg("build/org/bilinear.svg");
+    std::cout << "wrote bilinear.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bilinear_analysis.cpp <<'CPP'
+<<bl-includes>>
+
+int main() {
+<<bl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bilinear_analysis.cpp -o build/org/bilinear_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bilinear_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== exactness on a bilinear function ===
+bilinear at (1.7, 2.3) -> -0.077  exact -0.077
+
+reconstruction of sin(x)cos(y) on the diagonal, 6x6 grid:
+max |error| along the diagonal = 0.0456092
+wrote bilinear.svg
+#+end_example
+
+On a genuinely bilinear function the interpolant is exact to machine precision -- the
+@math{dxy} cross-term is precisely what bilinear interpolation is built to represent. On
+the smooth @math{\sin x\cos y} surface, the @math{6\times 6} grid reconstruction tracks the
+diagonal profile closely, with a small error concentrated where the surface curves most
+between grid lines.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/bilinear.svg]]
+
+The red bilinear reconstruction follows the green exact profile, deviating slightly at the
+crests where a flat bilinear patch cannot capture the curvature between samples -- the same
+@math{O(h^2)} story as 1-D linear interpolation, now in two dimensions. Denser grids or a
+bicubic scheme would close the gap; bilinear buys most of the accuracy for the least work.
