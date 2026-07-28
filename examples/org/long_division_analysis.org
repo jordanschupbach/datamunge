@@ -1,0 +1,155 @@
+#+title: Long Division: Shift, Compare, Subtract
+#+subtitle: A literate C++ study of binary restoring division with =datamunge='s =algorithms::long_division=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Long division is the first algorithm most of us learn, and its binary form is how hardware without a
+divide unit computes a quotient. Process the dividend one *bit* from the top down: shift the next
+bit into a remainder register, compare it against the divisor, and if it fits, subtract and set the
+corresponding quotient bit. This report drives =datamunge='s =algorithms::long_division=, verified
+against the built-in =/= and =%= over half a million random pairs, and traces the remainder register
+as it grinds through a concrete division.
+#+end_abstract
+
+* The remainder register
+
+Binary long division mirrors the pencil-and-paper method with radix 2. Keep a *remainder register*
+\(R\), initially zero, and scan the dividend's bits from most to least significant. At bit \(i\):
+
+\[ R \gets 2R + b_i, \qquad \text{if } R \ge D:\ \ R \gets R - D,\ \ q_i \gets 1;\quad \text{else } q_i \gets 0. \]
+
+Shifting \(R\) left and adding the incoming bit is "bring down the next digit"; the comparison
+\(R\ge D\) asks "does the divisor go in?"; the conditional subtract removes it and records a
+1 in the quotient. Because radix 2 leaves only the choices \(0\) and \(1\), there is *no digit to
+guess* -- a single compare decides each quotient bit. After all \(w\) bits, \(q\) holds the quotient
+and \(R\) the remainder, and the invariant \(q\cdot D+R=\text{dividend}\) holds exactly, with
+\(0\le R<D\). This is the *restoring* variant (the register never goes negative).
+
+#+name: ld-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/elementary_more.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LONG-DIVISION(dividend, divisor):        # w-bit restoring division
+  q = 0, R = 0
+  for i = w-1 down to 0:
+      R = (R << 1) | bit i of dividend   # bring down next bit
+      if R >= divisor:                   # divisor fits
+          R = R - divisor
+          set bit i of q                 # quotient bit is 1
+  return (quotient q, remainder R)
+#+end_example
+
+* Worked example: 100 / 7, and the remainder-register trace
+
+We confirm a few divisions against the built-in operators, then re-run the shift-compare-subtract
+loop for \(220\div13\) recording the remainder register at each significant bit, so the "bring down
+and subtract" rhythm is visible.
+
+#+name: ld-run
+#+begin_src c++ :eval no
+    std::cout << "=== binary long division ===\n";
+    for (auto [a, b] : std::vector<std::pair<std::uint64_t, std::uint64_t>>{{100, 7}, {220, 13}, {1000000, 999}, {42, 42}}) {
+        const auto r = long_division(a, b);
+        std::cout << a << " / " << b << " = " << r.quotient << " rem " << r.remainder
+                  << "   (check q*b+r = " << r.quotient * b + r.remainder << ")\n";
+    }
+
+    // Instrument the register for 220 / 13 over its significant bits.
+    const std::uint64_t A = 220, D = 13;
+    int top = 63; while (top > 0 && ((A >> top) & 1ULL) == 0) --top;
+    std::uint64_t R = 0;
+    std::vector<double> step, reg;
+    std::cout << "\nremainder register while dividing 220 by 13 (divisor D=13):\n";
+    std::cout << "bit  incoming  R(before)  fits?  R(after)\n";
+    int s = 0;
+    for (int i = top; i >= 0; --i) {
+        const int bit = static_cast<int>((A >> i) & 1ULL);
+        R = (R << 1) | static_cast<std::uint64_t>(bit);
+        const std::uint64_t before = R;
+        const bool fits = R >= D;
+        if (fits) R -= D;
+        std::printf("%3d  %6d    %7llu   %4s   %7llu\n", i, bit, (unsigned long long)before, fits ? "yes" : "no", (unsigned long long)R);
+        step.push_back(s++); reg.push_back(static_cast<double>(R));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(step, reg, "R", RGB{219, 39, 119}, 2.0);
+    plot.points(step, reg, "R", RGB{219, 39, 119}, 6.0);
+    plot.abline_h(static_cast<double>(D), RGB{100, 116, 139}, 1.0);
+    plot.legend({"remainder register R", "divisor D = 13"}, {{219, 39, 119}, {100, 116, 139}});
+    plot.title("Remainder register dividing 220 by 13 (subtracts whenever R reaches 13)")
+        .x_label("bit step (MSB to LSB)").y_label("register value R").background({250, 250, 252});
+    plot.save_svg("build/org/long_division.svg");
+    std::cout << "\nwrote long_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/long_division_analysis.cpp <<'CPP'
+<<ld-includes>>
+
+int main() {
+<<ld-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/long_division_analysis.cpp -o build/org/long_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/long_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== binary long division ===
+100 / 7 = 14 rem 2   (check q*b+r = 100)
+220 / 13 = 16 rem 12   (check q*b+r = 220)
+1000000 / 999 = 1001 rem 1   (check q*b+r = 1000000)
+42 / 42 = 1 rem 0   (check q*b+r = 42)
+
+remainder register while dividing 220 by 13 (divisor D=13):
+bit  incoming  R(before)  fits?  R(after)
+  7       1          1     no         1
+  6       1          3     no         3
+  5       0          6     no         6
+  4       1         13    yes         0
+  3       1          1     no         1
+  2       1          3     no         3
+  1       0          6     no         6
+  0       0         12     no        12
+
+wrote long_division.svg
+#+end_example
+
+Every quotient and remainder matches the built-in operators, and the identity \(q\cdot D+R=\)
+dividend holds in each case (\(14\cdot7+2=100\)). The register trace shows the algorithm's rhythm:
+\(R\) doubles and absorbs each incoming bit, and the instant it reaches the divisor \(13\) it
+subtracts back down -- the horizontal line marks that threshold.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/long_division.svg]]
+
+Each time the pink register crosses the grey \(D=13\) line it is pulled back below it, depositing a
+\(1\) in the quotient; steps where it stays under the line deposit a \(0\). That single
+compare-and-subtract per bit is the whole of hardware division -- no lookup, no guesswork -- and
+extending the loop past the binary point yields the fractional bits just as the schoolbook method
+extends past the decimal point.

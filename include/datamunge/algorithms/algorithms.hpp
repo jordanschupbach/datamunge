@@ -20,6 +20,7 @@
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
+#include <datamunge/algorithms/elementary_more.hpp>
 #include <datamunge/algorithms/ellipsoid.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>

@@ -380,7 +380,7 @@ Further information: Special functions
         [x] Gauss–Legendre algorithm: computes the digits of pi  -- datamunge::algorithms::gauss_legendre_pi; report examples/org/gauss_legendre_pi_analysis.org
     Division algorithms: for computing quotient and/or remainder of two numbers
         [x] Goldschmidt division  -- datamunge::algorithms::goldschmidt_division; report examples/org/goldschmidt_analysis.org
-        Long division
+        [x] Long division  -- datamunge::algorithms::long_division; report examples/org/long_division_analysis.org
         [x] Newton–Raphson division: uses Newton's method to find the reciprocal of D, and multiply that reciprocal by N to find the final quotient Q.  -- datamunge::algorithms::newton_raphson_division; report examples/org/newton_division_analysis.org
         Non-restoring division
         Restoring division
@@ -401,13 +401,13 @@ Further information: Special functions
     Multiplicative inverse Algorithms: for computing a number's multiplicative inverse (reciprocal).
         Newton's method
     Rounding functions: the classic ways to round numbers
-    Spigot algorithm: a way to compute the value of a mathematical constant without knowing preceding digits
+    [x] Spigot algorithm: a way to compute the value of a mathematical constant without knowing preceding digits  -- datamunge::algorithms::spigot_e; report examples/org/spigot_analysis.org
     Square and Nth root of a number:
         [x] Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares  -- datamunge::algorithms::alpha_max_beta_min; report examples/org/alpha_max_beta_min_analysis.org
-        Methods of computing square roots
+        [x] Methods of computing square roots  -- datamunge::algorithms::digit_by_digit_sqrt; report examples/org/sqrt_digits_analysis.org
         [x] nth root algorithm  -- datamunge::algorithms::nth_root (Newton); report examples/org/nth_root_analysis.org
     Summation:
-        Binary splitting: a divide and conquer technique which speeds up the numerical evaluation of many types of series with rational terms
+        [x] Binary splitting: a divide and conquer technique which speeds up the numerical evaluation of many types of series with rational terms  -- datamunge::algorithms::binary_splitting_e; report examples/org/binary_splitting_analysis.org
         [x] Kahan summation algorithm: a more accurate method of summing floating-point numbers  -- datamunge::algorithms::kahan_sum; report examples/org/kahan_summation_analysis.org
     Unrestricted algorithm
 

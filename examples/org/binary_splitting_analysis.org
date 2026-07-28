@@ -1,0 +1,142 @@
+#+title: Binary Splitting: Summing a Series as One Exact Fraction
+#+subtitle: A literate C++ study of divide-and-conquer series evaluation with =datamunge='s =algorithms::binary_splitting_e=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Adding a rational series term by term is slow and, in exact arithmetic, wasteful. *Binary
+splitting* evaluates a sum of rational terms by *recursively* merging the left and right halves
+of the range into a single exact fraction \(P/Q\), so the tiny fractions combine through balanced
+divide-and-conquer multiplication rather than a long chain of additions. Paired with fast
+multiplication it computes constants like \(e\), \(\pi\), and \(\zeta(3)\) to *millions of digits*
+in near-linear time. This report drives =datamunge='s =algorithms::binary_splitting_e=, verified
+to converge to \(e\), and shows the accuracy climbing with the term count.
+#+end_abstract
+
+* Merge halves, not terms
+
+For \(e=\sum_{k\ge0}1/k!\), write the partial sum over a range \([a,b)\) as an exact fraction
+\(P(a,b)/Q(a,b)\). The base case is a single term; a range is split in the middle and its two
+sub-fractions combined:
+
+\[ \frac{P(a,b)}{Q(a,b)}=\frac{P(a,m)}{Q(a,m)}\ \text{combined with}\ \frac{P(m,b)}{Q(m,b)}
+   \quad\Longrightarrow\quad P=P_\ell Q_r+P_r,\ \ Q=Q_\ell Q_r. \]
+
+Two things make this powerful. First, the answer is a *single reduced fraction* with no
+round-off -- exact rational arithmetic. Second, the recursion tree is *balanced*, so the numbers
+being multiplied are of similar size; with an \(O(M(d))\) multiply of \(d\)-digit numbers the whole
+evaluation is \(O(M(d)\log d)\), essentially linear in the digit count. Term-by-term summation, by
+contrast, multiplies a growing accumulator by each small term -- quadratic. Binary splitting is why
+record computations of \(e\) and \(\pi\) are feasible at all.
+
+#+name: bs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/elementary_more.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BINARY-SPLIT(a, b):                 # for e = sum 1/k!
+  if b - a == 1: return (P=1, Q = (a==0 ? 1 : a))
+  m <- (a+b)/2
+  (Pl,Ql) <- BINARY-SPLIT(a, m)
+  (Pr,Qr) <- BINARY-SPLIT(m, b)
+  return (Pl*Qr + Pr, Ql*Qr)        # one exact fraction for the whole range
+#+end_example
+
+* Worked example: e as an exact fraction, and digits versus terms
+
+We compute \(e\) to several term counts, print the exact fraction, and measure how many correct
+digits each partial sum gives.
+
+#+name: bs-run
+#+begin_src c++ :eval no
+    const double e = std::exp(1.0);
+    const auto three = binary_splitting_e(3);
+    std::cout << "=== e = sum 1/k! by binary splitting ===\n";
+    std::cout << "3 terms: exact fraction " << three.num << "/" << three.den << " = " << three.value << "\n";
+    const auto big = binary_splitting_e(18);
+    std::cout << "18 terms: " << big.num << "/" << big.den << " = " << big.value << " (e = " << e << ")\n\n";
+
+    std::cout << "terms   value              correct digits\n";
+    std::vector<double> tx, digs;
+    for (int t = 2; t <= 18; ++t) {
+        const auto r = binary_splitting_e(t);
+        const double err = std::fabs(r.value - e);
+        const double d = err > 0 ? -std::log10(err) : 16.0;
+        tx.push_back(t); digs.push_back(std::min(d, 16.0));
+        if (t <= 8 || t == 18) std::printf("%-6d  %.15f  %.1f\n", t, r.value, std::min(d, 16.0));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(tx, digs, "digits", RGB{37, 99, 235}, 2.0);
+    plot.points(tx, digs, "digits", RGB{37, 99, 235}, 6.0);
+    plot.legend({"correct digits of e"}, {{37, 99, 235}});
+    plot.title("Binary splitting: correct digits of e grow with the term count")
+        .x_label("number of terms").y_label("correct decimal digits").background({250, 250, 252});
+    plot.save_svg("build/org/binary_splitting.svg");
+    std::cout << "\nwrote binary_splitting.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/binary_splitting_analysis.cpp <<'CPP'
+<<bs-includes>>
+
+int main() {
+<<bs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/binary_splitting_analysis.cpp -o build/org/binary_splitting_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/binary_splitting_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== e = sum 1/k! by binary splitting ===
+3 terms: exact fraction 5/2 = 2.5
+18 terms: 966858672404690/355687428096000 = 2.71828 (e = 2.71828)
+
+terms   value              correct digits
+2       2.000000000000000  0.1
+3       2.500000000000000  0.7
+4       2.666666666666667  1.3
+5       2.708333333333333  2.0
+6       2.716666666666667  2.8
+7       2.718055555555555  3.6
+8       2.718253968253968  4.6
+18      2.718281828459045  16.0
+
+wrote binary_splitting.svg
+#+end_example
+
+Three terms already give the exact fraction \(5/2\), and eighteen terms pin \(e\) to the full
+precision of a double. The digit count climbs steadily with the number of terms -- each factorial
+term contributes several more correct digits -- while every partial sum is an *exact* rational,
+free of accumulated round-off.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/binary_splitting.svg]]
+
+The correct-digit curve rises faster than linearly in the term count (because \(1/k!\) shrinks
+super-exponentially), flattening only when it saturates double precision. Carry this out in a
+big-integer type with fast multiplication and the same recursion delivers millions of digits -- the
+engine behind every record computation of \(e\) and \(\pi\).
