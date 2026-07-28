@@ -260,7 +260,7 @@ Further information: Computer algebra
     [x] Cantor–Zassenhaus algorithm: factor polynomials over finite fields  -- datamunge::algorithms::cantor_zassenhaus; report examples/org/cantor_zassenhaus_analysis.org
     Faugère F4 algorithm: finds a Gröbner basis (also mentions the F5 algorithm)
     Gosper's algorithm: find sums of hypergeometric terms that are themselves hypergeometric terms
-    Knuth–Bendix completion algorithm: for rewriting rule systems
+    [x] Knuth–Bendix completion algorithm: for rewriting rule systems  -- datamunge::algorithms::knuth_bendix (string rewriting, shortlex, decides the word problem); report examples/org/knuth_bendix_analysis.org
     Multivariate division algorithm: for polynomials in several indeterminates
     [x] Pollard's kangaroo algorithm (also known as Pollard's lambda algorithm): an algorithm for solving the discrete logarithm problem  -- datamunge::algorithms::pollard_kangaroo (interval discrete log, O(sqrt(b-a))); report examples/org/pollard_kangaroo_analysis.org
     [x] Polynomial long division: an algorithm for dividing a polynomial by another polynomial of the same or lower degree  -- datamunge::algorithms::poly_divmod_gf (over GF(p)); report examples/org/polynomial_long_division_analysis.org

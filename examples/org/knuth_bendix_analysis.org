@@ -1,0 +1,178 @@
+#+title: Knuth-Bendix Completion: Deciding the Word Problem
+#+subtitle: A literate C++ study of string rewriting with =datamunge='s =algorithms::knuth_bendix=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When is one word equal to another in a monoid or group given by generators and relations? That is the
+*word problem* -- undecidable in general, but often solvable in practice. Knuth-Bendix completion turns
+a set of equations into a *confluent, terminating rewriting system*: a collection of one-directional
+rules under which every word reduces to a unique *normal form*, so two words are equal exactly when
+their normal forms match. This report drives =datamunge='s =algorithms::knuth_bendix=, verified to
+decide the word problem for several groups, and shows a word being rewritten down to its normal form.
+#+end_abstract
+
+* Orient, overlap, complete
+
+Start from equations \(u=v\) over an alphabet and a *reduction order* -- here *shortlex*: shorter words
+are smaller, ties broken alphabetically. *Orient* each equation into a rule pointing from the larger
+side to the smaller, \(\ell\to r\) with \(\ell>r\), so rewriting always shrinks a word and therefore
+*terminates*. The system is *confluent* if the order of rewriting never matters; the obstruction is a
+*critical pair*: two rules whose left-hand sides *overlap* (a suffix of one is a prefix of the other,
+or one contains the other), giving a word that can be rewritten two different ways. For each overlap,
+reduce both results to normal form; if they differ, that difference is a new equation -- *orient it and
+add it as a rule*. Repeat:
+
+\[ \text{while some critical pair reduces to } (\hat u\neq\hat v):\quad \text{add the rule } \hat u\to\hat v. \]
+
+When no critical pair produces a disagreement, the system is confluent and terminating -- *complete*.
+Then reducing any word to normal form decides equality. Completion need not halt (the word problem is
+undecidable), but for many finite groups and monoids it does, yielding a decision procedure. Along the
+way we *inter-reduce* -- discard rules whose left side another rule can already rewrite -- to keep the
+system canonical.
+
+#+name: kb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/knuth_bendix.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+KNUTH-BENDIX(equations):
+  rules = orient each equation (larger side -> smaller, by shortlex)
+  repeat:
+      inter-reduce the rules
+      for every pair of rules with overlapping left-hand sides:
+          form the critical pair (u, v) from the overlap
+          reduce u, v to normal form
+          if they differ: add the oriented rule for u = v
+  until no new rule is added        # confluent + terminating = complete
+#+end_example
+
+* Worked example: the symmetric group S_3
+
+We complete the presentation \(\langle a,b\mid a^2=e,\ b^3=e,\ (ab)^2=e\rangle\) of \(S_3\), print the
+resulting rules, then reduce a word to its normal form and plot its length shrinking at each rewrite.
+
+#+name: kb-run
+#+begin_src c++ :eval no
+    const auto res = knuth_bendix({{"aa", ""}, {"bbb", ""}, {"abab", ""}});
+    std::cout << "=== Knuth-Bendix completion of <a,b | a^2, b^3, (ab)^2> (S_3) ===\n";
+    std::cout << "complete: " << (res.complete ? "yes" : "no (hit cap)") << ", " << res.rules.size() << " rules:\n";
+    for (const auto& r : res.rules)
+        std::cout << "  " << (r.lhs.empty() ? "e" : r.lhs) << " -> " << (r.rhs.empty() ? "e" : r.rhs) << "\n";
+
+    // Enumerate normal forms of all words up to length 6: should be 6 (|S_3|).
+    std::vector<std::string> forms;
+    std::vector<std::string> frontier = {""};
+    for (int len = 0; len <= 6; ++len) {
+        std::vector<std::string> next;
+        for (const auto& w : frontier) { forms.push_back(kb_normal_form(w, res.rules)); for (char c : std::string("ab")) next.push_back(w + c); }
+        frontier = next;
+    }
+    std::sort(forms.begin(), forms.end()); forms.erase(std::unique(forms.begin(), forms.end()), forms.end());
+    std::cout << "\ndistinct normal forms (group elements): " << forms.size() << " -> {";
+    for (std::size_t i = 0; i < forms.size(); ++i) std::cout << (i ? ", " : "") << (forms[i].empty() ? "e" : forms[i]);
+    std::cout << "}\n\n";
+
+    // Reduce a word, recording its length after each rewrite.
+    const std::string start = "bbababbaab";
+    std::string       w     = start;
+    std::vector<double> step, len;
+    step.push_back(0); len.push_back((double)w.size());
+    std::cout << "reducing \"" << start << "\":\n  " << w << "\n";
+    int s = 0;
+    while (true) {
+        std::string before = w;
+        // one rewrite via the completed rules
+        for (const auto& r : res.rules) {
+            if (r.lhs.empty()) continue;
+            auto pos = w.find(r.lhs);
+            if (pos != std::string::npos) { w.replace(pos, r.lhs.size(), r.rhs); break; }
+        }
+        if (w == before) break;
+        ++s; step.push_back(s); len.push_back((double)w.size());
+        std::cout << "  -> " << (w.empty() ? "e" : w) << "\n";
+    }
+    std::cout << "normal form: " << (w.empty() ? "e" : w) << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(step, len, "l", RGB{37, 99, 235}, 2.0);
+    plot.points(step, len, "l", RGB{37, 99, 235}, 6.0);
+    plot.legend({"word length"}, {{37, 99, 235}});
+    plot.title("Rewriting shrinks the word monotonically to its normal form")
+        .x_label("rewrite step").y_label("word length").background({250, 250, 252});
+    plot.save_svg("build/org/knuth_bendix.svg");
+    std::cout << "\nwrote knuth_bendix.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/knuth_bendix_analysis.cpp <<'CPP'
+<<kb-includes>>
+
+int main() {
+<<kb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/knuth_bendix_analysis.cpp -o build/org/knuth_bendix_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/knuth_bendix_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Knuth-Bendix completion of <a,b | a^2, b^3, (ab)^2> (S_3) ===
+complete: yes, 6 rules:
+  aa -> e
+  bbb -> e
+  bab -> a
+  aba -> bb
+  abb -> ba
+  bba -> ab
+
+distinct normal forms (group elements): 6 -> {e, a, ab, b, ba, bb}
+
+reducing "bbababbaab":
+  bbababbaab
+  -> bbababbb
+  -> bbaba
+  -> baa
+  -> b
+normal form: b
+
+wrote knuth_bendix.svg
+#+end_example
+
+Completion turns the three defining relations of \(S_3\) into a confluent rewriting system, and
+enumerating normal forms recovers exactly the *six* elements of the group -- the word problem is
+decided. Reducing a scrambled word applies rules one at a time, each strictly shortening it (in the
+shortlex sense), until it reaches its unique normal form.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/knuth_bendix.svg]]
+
+The word length steps down at every rewrite: because each rule points from a shortlex-larger word to a
+smaller one, reduction can never loop, and confluence guarantees the destination is the same no matter
+which applicable rule is chosen first. That combination -- termination from the ordering, confluence
+from completing every critical pair -- is what makes Knuth-Bendix a decision procedure for equality,
+used in computational group theory (the =kbmag= package), automated theorem proving, and the
+normalisation engines of computer-algebra systems.
