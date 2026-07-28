@@ -1,0 +1,137 @@
+#+title: Rotating Calipers: The Diameter of a Point Set
+#+subtitle: A literate C++ study of antipodal pairs with =datamunge='s =geometry::polygon_diameter=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+What is the *diameter* of a set of points -- the largest distance between any two of them?
+The two extreme points must both lie on the *convex hull*, and moreover form an *antipodal
+pair*: points touched by two parallel supporting lines. The *rotating calipers* technique
+sweeps such a pair of parallel lines around the hull, enumerating every antipodal pair in a
+single @math{O(n)} revolution after the hull is built. This report drives =datamunge='s
+=geometry::polygon_diameter=, verified on a hand-checkable set, and draws the diameter across
+a random cloud.
+#+end_abstract
+
+* Two parallel lines, rotating around the hull
+
+Imagine a pair of parallel lines (calipers) squeezing the convex hull from opposite sides.
+As you rotate them together through @math{180^\circ}, each line stays flush against a hull
+vertex or edge, and the vertices they touch are exactly the *antipodal pairs* -- the only
+candidates for the farthest-apart points. Because the diameter is realized by an antipodal
+pair, sweeping the calipers around the hull finds it in time linear in the number of hull
+vertices, after the @math{O(n\log n)} hull construction.
+
+The same rotating-calipers machinery answers a whole family of questions -- width, minimum-
+area bounding rectangle (see the companion report), maximum distance between two convex
+polygons -- all from the observation that the interesting features live on antipodal pairs.
+=datamunge='s =polygon_diameter= first reduces to the hull (interior points can never be
+extreme) and then finds the farthest pair among the hull vertices.
+
+#+name: rc-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/rotating_calipers.hpp>
+#include <datamunge/geometry/convex_hull.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+POLYGON-DIAMETER(points):
+  hull <- convex_hull(points)            # extremes must be on the hull
+  rotate a pair of parallel supporting lines around the hull,
+    visiting each antipodal pair of vertices once (O(hull) after the hull)
+  return the antipodal pair of maximum separation
+#+end_example
+
+* Worked example: diameter of a hand-set, then a random cloud
+
+We first take a set whose farthest pair is obvious, then find and draw the diameter of a
+random cloud together with its convex hull.
+
+#+name: rc-run
+#+begin_src c++ :eval no
+    // Hand-checkable: farthest pair is the two far corners, distance sqrt(10^2+10^2).
+    std::vector<Point2D> hand{{0, 0}, {10, 0}, {10, 10}, {0, 10}, {5, 5}, {2, 8}};
+    const DiameterResult hd = polygon_diameter(hand);
+    std::cout << "=== diameter of a 10x10 square (+2 interior) ===\n";
+    std::cout << "farthest pair (" << hd.a.x << "," << hd.a.y << ")-(" << hd.b.x << "," << hd.b.y
+              << "), distance " << hd.distance << " (exact " << std::sqrt(200.0) << ")\n\n";
+
+    std::mt19937 rng(31337);
+    std::normal_distribution<double> nd(0.0, 1.0);
+    std::vector<Point2D> cloud;
+    for (int i = 0; i < 50; ++i) cloud.push_back({nd(rng) * 3.0, nd(rng) * 2.0});
+    const DiameterResult d = polygon_diameter(cloud);
+    const std::vector<Point2D> hull = convex_hull(cloud);
+    std::cout << "random cloud of 50: diameter = " << d.distance << "\n";
+
+    std::vector<double> px, py, hx, hy;
+    for (const Point2D& p : cloud) { px.push_back(p.x); py.push_back(p.y); }
+    for (const Point2D& p : hull) { hx.push_back(p.x); hy.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(hx, hy, RGB{148, 163, 184}, false);
+    plot.points(px, py, "points", RGB{100, 116, 139}, 5.0);
+    plot.line({d.a.x, d.b.x}, {d.a.y, d.b.y}, "diameter", RGB{220, 38, 38}, 2.5);
+    plot.points({d.a.x, d.b.x}, {d.a.y, d.b.y}, "endpoints", RGB{220, 38, 38}, 9.0);
+    plot.legend({"points", "hull", "diameter (farthest pair)"},
+                {{100, 116, 139}, {148, 163, 184}, {220, 38, 38}});
+    plot.title("Rotating calipers: the diameter is an antipodal pair on the hull")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/rotating_calipers.svg");
+    std::cout << "wrote rotating_calipers.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rotating_calipers_analysis.cpp <<'CPP'
+<<rc-includes>>
+
+int main() {
+<<rc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rotating_calipers_analysis.cpp -o build/org/rotating_calipers_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rotating_calipers_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== diameter of a 10x10 square (+2 interior) ===
+farthest pair (0,0)-(10,10), distance 14.1421 (exact 14.1421)
+
+random cloud of 50: diameter = 12.4819
+wrote rotating_calipers.svg
+#+end_example
+
+The square's diameter is exactly its main diagonal, @math{\sqrt{200}\approx14.14}, joining
+two opposite corners -- the interior points cannot be extreme. On the random cloud the
+diameter stretches between the two most distant hull vertices, and no pair of points is
+farther apart.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/rotating_calipers.svg]]
+
+The red diameter spans the cloud from one hull extreme to the opposite one, both endpoints
+sitting on the grey hull boundary -- never in the interior. That the farthest pair is always
+an antipodal pair on the hull is the insight rotating calipers exploits to find it in a
+single linear sweep.

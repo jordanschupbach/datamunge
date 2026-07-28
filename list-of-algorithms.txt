@@ -284,15 +284,15 @@ Further information: Computational geometry
     Gilbert–Johnson–Keerthi distance algorithm: determining the smallest distance between two convex shapes.
     Jump-and-Walk algorithm: an algorithm for point location in triangulations
     Laplacian smoothing: an algorithm to smooth a polygonal mesh
-    Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm
+    [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
         Bentley–Ottmann algorithm
         Shamos–Hoey algorithm
-    Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points
-    Nearest neighbor search: find the nearest point or points to a query point
+    [x] Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points  -- datamunge::geometry::minimum_bounding_rectangle (rotating calipers); report examples/org/min_bounding_box_analysis.org
+    [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
     Nesting algorithm: make the most efficient use of material or space
     [x] Point in polygon algorithms: tests whether a given point lies within a given polygon  -- datamunge::geometry::point_in_polygon (PNPOLY even-odd ray casting); report examples/org/point_in_polygon_analysis.org
     Point set registration algorithms: finds the transformation between two point sets to optimally align them.
-    Rotating calipers: determine all antipodal pairs of points and vertices on a convex polygon or convex hull.
+    [x] Rotating calipers: determine all antipodal pairs of points and vertices on a convex polygon or convex hull.  -- datamunge::geometry::polygon_diameter; report examples/org/rotating_calipers_analysis.org
     [x] Shoelace algorithm: determine the area of a polygon whose vertices are described by ordered pairs in the plane  -- datamunge::geometry::signed_polygon_area / polygon_area; report examples/org/shoelace_analysis.org
     Triangulation
         Delaunay triangulation

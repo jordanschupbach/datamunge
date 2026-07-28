@@ -1,0 +1,154 @@
+#+title: Nearest Neighbor Search: The k-d Tree
+#+subtitle: A literate C++ study of spatial search with =datamunge='s =geometry::KDTree2D=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+"Which stored point is closest to this query?" -- asked over and over, as in a database of
+locations or the inner loop of a classifier -- is too slow to answer by scanning all
+@math{n} points each time. The *k-d tree* organizes the points into a binary spatial tree
+that, by *pruning* whole branches that cannot contain a closer point, answers a
+nearest-neighbor query in @math{O(\log n)} on average. This report drives =datamunge='s
+=geometry::KDTree2D=, verifies its nearest against a brute-force scan, and draws a query
+with its nearest and @math{k} nearest neighbors.
+#+end_abstract
+
+* Split, descend, and prune
+
+A 2-D k-d tree is a binary search tree over points that *alternates the splitting axis* by
+depth: the root splits on @math{x}, its children on @math{y}, grandchildren on @math{x}
+again, and so on, each node taking the median point along the current axis. To find the
+nearest neighbor of a query @math{q}:
+
+1. *Descend* to the leaf as if inserting @math{q}, keeping the best point seen.
+2. *Unwind*, and at each node check whether the *other* side of the splitting plane could
+   hold a closer point -- i.e. whether the distance from @math{q} to the plane is less than
+   the best distance found. If not, *prune* that entire subtree.
+
+The pruning is what makes it fast: most branches are discarded without inspection, so an
+average query touches @math{O(\log n)} nodes instead of all @math{n}. The same tree answers
+@math{k}-nearest queries (keep a size-@math{k} max-heap) and radius queries. Its weakness is
+high dimension -- above ~20 dimensions the pruning stops paying off (the "curse of
+dimensionality") -- but in the plane it is ideal.
+
+#+name: kd-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/kdtree.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+NEAREST(node, q, best):
+  if node is null: return
+  update best with node.point
+  axis <- node.depth mod 2
+  near, far <- children of node on q's side / the other side
+  NEAREST(near, q, best)
+  if |q[axis] - node.point[axis]| < dist(q, best):   # plane could hide a closer point
+      NEAREST(far, q, best)                            # otherwise prune the far subtree
+#+end_example
+
+* Worked example: a query, its nearest, and its 5 nearest
+
+We build a tree over a random cloud, query a point, and confirm the tree's nearest matches a
+brute-force scan; we also fetch the 5 nearest neighbors.
+
+#+name: kd-run
+#+begin_src c++ :eval no
+    std::mt19937 rng(9001);
+    std::uniform_real_distribution<double> ud(0.0, 20.0);
+    std::vector<Point2D> pts;
+    for (int i = 0; i < 200; ++i) pts.push_back({ud(rng), ud(rng)});
+
+    const KDTree2D tree(pts);
+    const Point2D  query{10.0, 10.0};
+
+    const Point2D nn = tree.nearest(query);
+    // Brute-force reference.
+    Point2D bruteforce = pts[0];
+    double  bd = 1e18;
+    for (const Point2D& p : pts) { const double d = squared_distance(p, query); if (d < bd) { bd = d; bruteforce = p; } }
+
+    std::cout << "=== nearest to (10,10) among 200 points ===\n";
+    std::cout << "k-d tree nearest = (" << nn.x << ", " << nn.y << ")\n";
+    std::cout << "brute-force      = (" << bruteforce.x << ", " << bruteforce.y << ")  -> match: "
+              << ((nn.x == bruteforce.x && nn.y == bruteforce.y) ? "yes" : "no") << "\n";
+
+    const std::vector<Point2D> knn = tree.k_nearest(query, 5);
+    std::cout << "\n5 nearest neighbors (nearest first):\n";
+    for (const Point2D& p : knn) std::cout << "  (" << p.x << ", " << p.y << ")  dist " << distance(p, query) << "\n";
+
+    std::vector<double> px, py, kx, ky;
+    for (const Point2D& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    for (const Point2D& p : knn) { kx.push_back(p.x); ky.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    plot.points(px, py, "points", RGB{203, 213, 225}, 4.0);
+    plot.points(kx, ky, "5 nearest", RGB{37, 99, 235}, 7.0);
+    plot.points({query.x}, {query.y}, "query", RGB{220, 38, 38}, 11.0);
+    plot.points({nn.x}, {nn.y}, "nearest", RGB{16, 185, 129}, 9.0);
+    plot.legend({"points", "5 nearest", "query", "nearest"},
+                {{203, 213, 225}, {37, 99, 235}, {220, 38, 38}, {16, 185, 129}});
+    plot.title("k-d tree nearest-neighbor query (200 points)")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/kdtree_nn.svg");
+    std::cout << "wrote kdtree_nn.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kdtree_nn_analysis.cpp <<'CPP'
+<<kd-includes>>
+
+int main() {
+<<kd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kdtree_nn_analysis.cpp -o build/org/kdtree_nn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kdtree_nn_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== nearest to (10,10) among 200 points ===
+k-d tree nearest = (9.69606, 10.6646)
+brute-force      = (9.69606, 10.6646)  -> match: yes
+
+5 nearest neighbors (nearest first):
+  (9.69606, 10.6646)  dist 0.730781
+  (9.60974, 10.8028)  dist 0.892598
+  (10.7344, 9.44786)  dist 0.918822
+  (9.00481, 10.768)  dist 1.25708
+  (9.88542, 8.67508)  dist 1.32987
+wrote kdtree_nn.svg
+#+end_example
+
+The tree's nearest neighbor agrees exactly with the brute-force scan -- the pruning discards
+only branches that provably cannot help, so the answer is exact, merely found faster. The
+five nearest come back in increasing distance, the tight cluster around the query.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/kdtree_nn.svg]]
+
+The red query sits amid the grey cloud; its green nearest neighbor and the ring of blue
+@math{k}-nearest points cluster immediately around it, while the vast majority of points are
+never even compared -- pruned away by the splitting planes. That selective descent is what
+turns a linear scan into a logarithmic query.
