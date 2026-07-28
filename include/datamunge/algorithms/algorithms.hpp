@@ -43,6 +43,7 @@
 #include <datamunge/algorithms/min_conflicts.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/multiplication.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/number_theory_extra.hpp>

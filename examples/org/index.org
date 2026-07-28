@@ -688,6 +688,21 @@ We implement Tonelli-Shanks (=algorithms::tonelli_shanks=) and report it as a li
 
 We implement Karatsuba multiplication (=algorithms::karatsuba_multiply=) and report it as a literate program. We derive the three-product identity that turns four half-size products into three, giving O(n^1.585); two 31-digit constants are multiplied and the asymptotic gap against schoolbook O(n^2) plotted.
 
+** [[./toom3_analysis.html][Toom-Cook Multiplication: Five Products from Thirds]] ([[./toom3_analysis.pdf][PDF]])
+/A literate C++ study of Toom-3 big-integer multiplication using datamunge/
+
+We implement Toom-3 multiplication (=algorithms::toom3_mul=) and report it as a literate program. Splitting each operand into three parts and multiplying the resulting degree-2 polynomials by evaluate-multiply-interpolate at five points gives five third-size products and O(n^1.465), beating Karatsuba; a 100-digit product is cross-checked against the Karatsuba multiplier and the three complexity exponents plotted together.
+
+** [[./schonhage_strassen_analysis.html][Schonhage-Strassen Multiplication: Multiplying by Transform]] ([[./schonhage_strassen_analysis.pdf][PDF]])
+/A literate C++ study of NTT-based big-integer multiplication using datamunge/
+
+We implement transform-based multiplication (=algorithms::ntt_mul=) and report it as a literate program. Multiplication is convolution, and the convolution theorem turns it into a pointwise product in transform space; a number-theoretic transform over Z/998244353 makes the FFT exact, giving round-off-free O(n log n) multiplication cross-checked against Karatsuba, with the n log n vs n^2 gap plotted.
+
+** [[./booth_analysis.html][Booth's Algorithm: Signed Multiplication by Recoding]] ([[./booth_analysis.pdf][PDF]])
+/A literate C++ study of two's-complement multiplication using datamunge/
+
+We implement Booth's multiplication (=algorithms::booth_multiply=) and report it as a literate program. Scanning bit pairs of the multiplier, the recoding replaces a run of ones by one subtraction entering it and one addition leaving it, and handles signed two's-complement operands with no special case; products match the built-in operator over 200k random pairs and the run-collapsing effect is plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
