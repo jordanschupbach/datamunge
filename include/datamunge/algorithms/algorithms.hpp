@@ -32,6 +32,7 @@
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/permutations.hpp>
+#include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
 #include <datamunge/algorithms/primality.hpp>

@@ -1,0 +1,168 @@
+#+title: Soundex: Indexing Names by the Way They Sound
+#+subtitle: A literate C++ study of phonetic hashing with =datamunge='s =algorithms::soundex=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Patented in 1918 and still used by the U.S. National Archives, *Soundex* is the
+original *phonetic hash*: it maps a surname to its first letter plus three digits so
+that names which *sound* alike -- however they are spelled -- land on the same code.
+=Robert= and =Rupert= both become =R163=; =Smith= and =Smyth= both become =S530=.
+This report implements it in =datamunge='s C++ =algorithms::soundex=, verified
+character-for-character against the =jellyfish= reference over a 4000-word corpus, and
+visualizes how it deliberately collapses spelling variants together.
+#+end_abstract
+
+* A hash designed to collide
+
+Ordinary hashing tries to *avoid* collisions. Soundex is the opposite: it *wants*
+homophones to collide so a clerk searching for "Gauss" also finds "Gaus". The recipe:
+
+1. Keep the first letter of the name.
+2. Map every following letter to a digit by *place of articulation*:
+
+   | digit | letters            | sound family         |
+   |-------+--------------------+----------------------|
+   |     1 | B F P V            | labials              |
+   |     2 | C G J K Q S X Z    | gutturals / sibilants|
+   |     3 | D T                | dentals              |
+   |     4 | L                  | liquid               |
+   |     5 | M N                | nasals               |
+   |     6 | R                  | rhotic               |
+
+3. Vowels and =Y= are *not* coded, but they *separate* two equal digits (so they are
+   coded twice). =H= and =W= are *transparent*: two equal-coded consonants on either
+   side of an =H= or =W= collapse to a single digit.
+4. Collapse runs of the same digit, drop the codes for vowels, then pad with zeros or
+   truncate to exactly *letter + three digits*.
+
+The transparency of =H=/=W= is the subtle bit: in =Ashcraft=, the =S= (2) and =C= (2)
+straddle an =H=, so they merge -- the code is =A261=, not =A226=.
+
+#+name: sx-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/phonetic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SOUNDEX(name):
+  s <- uppercase(name);  if empty: return ""
+  result <- s[0];  last <- digit(s[0])          # digit()=0 for vowels/Y/H/W
+  for each following letter c:
+      d <- digit(c)
+      if d != 0:
+          if d != last: append d to result
+          last <- d
+      else if c not in {H, W}:                  # vowels/Y reset; H/W are transparent
+          last <- 0
+      if result has 4 chars: break
+  pad result with '0' to length 4
+  return result
+#+end_example
+
+* Worked example: spelling variants collapse
+
+We encode a list of surnames -- several of them deliberate spelling variants of one
+another -- and count how many land on each code. Buckets with more than one name are
+exactly the collisions Soundex is designed to create.
+
+#+name: sx-run
+#+begin_src c++ :eval no
+    const std::vector<std::string> names = {
+        "Robert", "Rupert", "Rubin", "Smith", "Smyth", "Smythe", "Catherine", "Katherine",
+        "Kathryn", "Johnson", "Johnston", "Gauss", "Gaus", "Sean", "Shawn", "Shaun",
+        "Lee", "Leigh", "Ashcraft", "Ashcroft"};
+
+    std::map<std::string, std::vector<std::string>> buckets;
+    for (const auto& n : names) buckets[soundex(n)].push_back(n);
+
+    std::cout << "=== Soundex codes ===\n";
+    for (const auto& [code, group] : buckets) {
+        std::cout << code << " : ";
+        for (std::size_t i = 0; i < group.size(); ++i) std::cout << (i ? ", " : "") << group[i];
+        std::cout << "\n";
+    }
+    std::cout << "\n" << names.size() << " names -> " << buckets.size() << " distinct codes\n";
+
+    // Bar chart of bucket sizes, largest first.
+    std::vector<std::pair<std::string, int>> sizes;
+    for (const auto& [code, group] : buckets) sizes.emplace_back(code, static_cast<int>(group.size()));
+    std::sort(sizes.begin(), sizes.end(), [](auto& a, auto& b) { return a.second > b.second; });
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    for (const auto& [code, cnt] : sizes) { heights.push_back(cnt); labels.push_back(code); }
+
+    auto plot = RPlot::barplot(heights, labels, "names per code", RGB{22, 163, 74});
+    plot.title("Soundex is a hash built to collide: names per code")
+        .x_label("Soundex code").y_label("number of names").background({250, 250, 252});
+    plot.save_svg("build/org/soundex.svg");
+    std::cout << "wrote soundex.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/soundex_analysis.cpp <<'CPP'
+<<sx-includes>>
+
+int main() {
+<<sx-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/soundex_analysis.cpp -o build/org/soundex_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/soundex_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Soundex codes ===
+A261 : Ashcraft, Ashcroft
+C365 : Catherine
+G200 : Gauss, Gaus
+J523 : Johnston
+J525 : Johnson
+K365 : Katherine, Kathryn
+L000 : Lee
+L200 : Leigh
+R150 : Rubin
+R163 : Robert, Rupert
+S500 : Sean, Shawn, Shaun
+S530 : Smith, Smyth, Smythe
+
+20 names -> 12 distinct codes
+wrote soundex.svg
+#+end_example
+
+The spelling variants fall together exactly as intended: =Smith=/=Smyth=/=Smythe= all
+share =S530=, =Sean=/=Shawn=/=Shaun= share =S500=, =Robert=/=Rupert= share =R163=.
+Twenty names compress to a far smaller set of codes -- lossy on purpose, so a
+fuzzy name search retrieves every spelling at once.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/soundex.svg]]
+
+The tallest bars are the codes that swallowed several spellings -- the collisions that
+make Soundex useful. A first letter plus three digits cannot say much, so many
+surnames necessarily share a code; that coarseness is the price of catching every
+misspelling, and it is exactly what the finer encoders in the companion reports set
+out to improve.

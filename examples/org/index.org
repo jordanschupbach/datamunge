@@ -468,6 +468,26 @@ We implement Jaro and Jaro-Winkler similarity (=algorithms::jaro_similarity=, =j
 
 We implement the Sorensen-Dice coefficient over character bigrams (=algorithms::dice_coefficient=) and report it as a literate program. We define it as 2|A∩B|/(|A|+|B|) on bigram multisets, relate it to the Jaccard index, and give the O(|a|+|b|) counting algorithm; =night= vs =nacht= = 0.25 is worked by hand and word pairs from disjoint to identical are compared.
 
+** [[./soundex_analysis.html][Soundex: Indexing Names by the Way They Sound]] ([[./soundex_analysis.pdf][PDF]])
+/A literate C++ study of phonetic hashing using datamunge/
+
+We implement Soundex (=algorithms::soundex=) and report it as a literate program, verified character-for-character against the =jellyfish= reference over a 4000-word corpus. We give the articulation-based digit table, the vowel-separation and transparent-H/W rules (=Ashcraft= -> =A261=, not =A226=), and show a hash built to collide: 20 surnames including spelling variants compress to 12 codes, with =Smith=/=Smyth=/=Smythe= -> =S530= and =Sean=/=Shawn=/=Shaun= -> =S500= plotted as bucket sizes.
+
+** [[./nysiis_analysis.html][NYSIIS: A Sharper Phonetic Key Than Soundex]] ([[./nysiis_analysis.pdf][PDF]])
+/A literate C++ study of the New York State phonetic encoder using datamunge/
+
+We implement NYSIIS (=algorithms::nysiis=) and report it as a literate program, verified against the =jellyfish= reference over a 4000-word corpus. We give its prefix/suffix/interior rewrite rules producing a variable-length alphabetic key (=Catherine= -> =CATARAN=, =MacDonald= -> =MCDANALD=), and show it resolving 32 surnames into 27 distinct keys where Soundex manages only 23 -- finer discrimination from keeping vowels as =A= and not truncating.
+
+** [[./metaphone_analysis.html][Metaphone: A Sound Key From the Rules of English Spelling]] ([[./metaphone_analysis.pdf][PDF]])
+/A literate C++ study of Lawrence Philips' phonetic algorithm using datamunge/
+
+We implement Metaphone (=algorithms::metaphone=) and report it as a literate program, verified character-for-character against the =jellyfish= reference over a 4000-word corpus (including the silent =mb=/=gh=/=gn= clusters). We give its context rules (=TH= -> =0=, =SH= -> =X=, soft/hard =C=/=G=, dropped silent letters), and show it compressing words to a consonant sound skeleton -- =Knight= -> =NT=, =Catherine= and =Kathryn= both -> =K0RN=.
+
+** [[./match_rating_analysis.html][The Match Rating Approach: A Forgiving Name Comparator]] ([[./match_rating_analysis.pdf][PDF]])
+/A literate C++ study of Western Airlines' phonetic matcher using datamunge/
+
+We implement the Match Rating Approach (=algorithms::match_rating_codex=, =match_rating_comparison=) and report it as a literate program, verified against the =jellyfish= reference (codex over a 4000-word corpus, verdicts over hundreds of pairs). We give the vowel-dropping codex and the symmetric letter-cancellation comparison whose acceptance threshold slides down as names lengthen; a batch of pairs is plotted against that sliding bar, =Margaret=/=Marguerite= scoring a perfect 6 while =Alice=/=Zachary= falls short.
+
 ** [[./needleman_wunsch_analysis.html][The Needleman-Wunsch Algorithm: Optimal Global Sequence Alignment]] ([[./needleman_wunsch_analysis.pdf][PDF]])
 /A literate C++ study of global dynamic-programming alignment using datamunge/
 

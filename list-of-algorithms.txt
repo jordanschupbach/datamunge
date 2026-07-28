@@ -110,10 +110,10 @@ Approximate sequence matching
     Phonetic algorithms
         Daitch–Mokotoff Soundex: a Soundex refinement which allows matching of Slavic and Germanic surnames
         Double Metaphone: an improvement on Metaphone
-        Match rating approach: a phonetic algorithm developed by Western Airlines
-        Metaphone: an algorithm for indexing words by their sound, when pronounced in English
-        NYSIIS: phonetic algorithm, improves on Soundex
-        Soundex: a phonetic algorithm for indexing names by sound, as pronounced in English
+        [x] Match rating approach: a phonetic algorithm developed by Western Airlines  -- datamunge::algorithms::match_rating_codex / match_rating_comparison; report examples/org/match_rating_analysis.org
+        [x] Metaphone: an algorithm for indexing words by their sound, when pronounced in English  -- datamunge::algorithms::metaphone; report examples/org/metaphone_analysis.org
+        [x] NYSIIS: phonetic algorithm, improves on Soundex  -- datamunge::algorithms::nysiis; report examples/org/nysiis_analysis.org
+        [x] Soundex: a phonetic algorithm for indexing names by sound, as pronounced in English  -- datamunge::algorithms::soundex; report examples/org/soundex_analysis.org
     String metrics: computes a similarity or dissimilarity (distance) score between two pairs of text strings
         [x] Damerau–Levenshtein distance: computes a distance measure between two strings, improves on Levenshtein distance  -- datamunge::algorithms::damerau_levenshtein_distance (true/unrestricted Lowrance-Wagner); report examples/org/damerau_levenshtein_analysis.org
         [x] Dice's coefficient (also known as the Dice coefficient): a similarity measure related to the Jaccard index  -- datamunge::algorithms::dice_coefficient (bigram Sorensen-Dice); report examples/org/dice_coefficient_analysis.org
