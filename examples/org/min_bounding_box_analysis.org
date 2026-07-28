@@ -1,0 +1,141 @@
+#+title: The Minimum Bounding Box: The Tightest Oriented Rectangle
+#+subtitle: A literate C++ study of the rotating-calipers MBR with =datamunge='s =geometry::minimum_bounding_rectangle=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+An axis-aligned bounding box is easy but wasteful: rotate the points @math{45^\circ} and it
+balloons. The *minimum-area bounding box* -- the tightest rectangle of *any* orientation
+enclosing a point set -- is the honest measure of a shape's extent, used for collision
+proxies, part nesting, and OCR deskewing. A theorem of Freeman and Shapira guarantees that
+this optimal rectangle has one side *flush with a convex-hull edge*, so it suffices to try
+each hull edge as the orientation. This report drives =datamunge='s
+=geometry::minimum_bounding_rectangle=, verified against a tilted rectangle, and draws the
+oriented box around a cloud.
+#+end_abstract
+
+* One side lies on a hull edge
+
+The key theorem: the minimum-area enclosing rectangle of a convex polygon has at least one
+side *collinear with an edge of the polygon*. So the algorithm is:
+
+1. build the convex hull (interior points are irrelevant to the extent);
+2. for each hull *edge*, rotate the frame so that edge is horizontal;
+3. take the axis-aligned bounding box in that rotated frame -- its area is a candidate;
+4. keep the smallest-area candidate and rotate its rectangle back.
+
+With the hull having @math{h} edges this is @math{O(h)} orientations (rotating calipers can
+even do the supporting-line updates incrementally). The result is the rectangle's four
+corners, its width and height, and its area -- typically far tighter than the axis-aligned
+box for any shape that is not already grid-aligned.
+
+#+name: mb-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/rotating_calipers.hpp>
+#include <datamunge/geometry/bounding_box.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MIN-BOUNDING-RECTANGLE(points):
+  hull <- convex_hull(points)
+  best <- infinite area
+  for each edge e of hull:
+      rotate all hull vertices so e is horizontal
+      w, h <- extent of the rotated hull (axis-aligned box)
+      if w*h < best.area: best <- this rectangle (rotated back)
+  return best.corners, width, height, area
+#+end_example
+
+* Worked example: a rectangle tilted 30 degrees
+
+We take a @math{6\times2} rectangle rotated by @math{30^\circ}, whose true minimum box is
+the rectangle itself (area @math{12}), and compare the oriented MBR to the wasteful
+axis-aligned box.
+
+#+name: mb-run
+#+begin_src c++ :eval no
+    // A 6x2 rectangle rotated by 30 degrees about the origin.
+    const double th = 30.0 * M_PI / 180.0, c = std::cos(th), s = std::sin(th);
+    auto rot = [&](double x, double y) { return Point2D{x * c - y * s, x * s + y * c}; };
+    std::vector<Point2D> pts{rot(0, 0), rot(6, 0), rot(6, 2), rot(0, 2)};
+
+    const MinimumBoundingRectangle mbr = minimum_bounding_rectangle(pts);
+    const BoundingBox aabb = bounding_box(pts);
+    const double aabb_area = (aabb.max.x - aabb.min.x) * (aabb.max.y - aabb.min.y);
+
+    std::cout << "=== 6x2 rectangle tilted 30 degrees ===\n";
+    std::cout << "oriented MBR: width " << mbr.width << ", height " << mbr.height << ", area " << mbr.area
+              << " (true 12)\n";
+    std::cout << "axis-aligned box area = " << aabb_area << " (much larger)\n\n";
+
+    std::vector<double> px, py, mx, my;
+    for (const Point2D& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    for (const Point2D& p : mbr.corners) { mx.push_back(p.x); my.push_back(p.y); }
+
+    auto plot = RPlot::create();
+    // axis-aligned box outline
+    plot.polygon({aabb.min.x, aabb.max.x, aabb.max.x, aabb.min.x}, {aabb.min.y, aabb.min.y, aabb.max.y, aabb.max.y},
+                 RGB{203, 213, 225}, false);
+    plot.polygon(mx, my, RGB{220, 38, 38}, false); // oriented MBR
+    plot.points(px, py, "points", RGB{37, 99, 235}, 8.0);
+    plot.legend({"axis-aligned box", "minimum oriented box", "points"},
+                {{203, 213, 225}, {220, 38, 38}, {37, 99, 235}});
+    plot.title("Minimum bounding box: oriented (red) hugs the tilt; axis box (grey) wastes area")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/min_bounding_box.svg");
+    std::cout << "wrote min_bounding_box.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/min_bounding_box_analysis.cpp <<'CPP'
+<<mb-includes>>
+
+int main() {
+<<mb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/min_bounding_box_analysis.cpp -o build/org/min_bounding_box_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/min_bounding_box_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== 6x2 rectangle tilted 30 degrees ===
+oriented MBR: width 2, height 6, area 12 (true 12)
+axis-aligned box area = 29.3205 (much larger)
+
+wrote min_bounding_box.svg
+#+end_example
+
+The oriented minimum box recovers the tilted rectangle almost exactly -- sides @math{6} and
+@math{2}, area @math{\approx12} -- because one of its edges lies flush with a hull edge, just
+as the theorem promises. The axis-aligned box over the same tilted points is substantially
+larger, spending its area on empty corners.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/min_bounding_box.svg]]
+
+The red oriented rectangle sits snug against the tilted points, while the grey axis-aligned
+box swells around them with slack at every corner. Finding the right *orientation* -- by
+trying each hull edge -- is the whole game, and it turns a loose bound into a tight one.

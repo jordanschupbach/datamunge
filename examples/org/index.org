@@ -528,6 +528,26 @@ We drive the shoelace area (=geometry::signed_polygon_area=, =polygon_area=) and
 
 We drive the point-in-polygon test (=geometry::point_in_polygon=, Franklin's PNPOLY) and report it as a literate program. We give the even-odd ray-crossing rule that needs no convexity; on a concave chevron the notch point (3,3) is correctly outside while body points are inside, and a 875-point grid is classified and drawn.
 
+** [[./segment_intersection_analysis.html][Line Segment Intersection: Do Two Segments Cross?]] ([[./segment_intersection_analysis.pdf][PDF]])
+/A literate C++ study of the orientation test using datamunge/
+
+We drive segment intersection (=geometry::segments_intersect=, =segment_intersection_point=) and report it as a literate program. We give the division-free straddle test from cross-product orientation signs; against a reference diagonal, a crossing segment meets it at (3,3), a disjoint one misses, and a touching one shares the endpoint (6,6).
+
+** [[./rotating_calipers_analysis.html][Rotating Calipers: The Diameter of a Point Set]] ([[./rotating_calipers_analysis.pdf][PDF]])
+/A literate C++ study of antipodal pairs using datamunge/
+
+We drive the diameter via rotating calipers (=geometry::polygon_diameter=) and report it as a literate program. We explain why the farthest pair is an antipodal pair on the convex hull, found by sweeping parallel supporting lines in O(n); a 10x10 square's diameter is its diagonal sqrt(200)=14.14 and a 50-point cloud's diameter is drawn across its hull.
+
+** [[./min_bounding_box_analysis.html][The Minimum Bounding Box: The Tightest Oriented Rectangle]] ([[./min_bounding_box_analysis.pdf][PDF]])
+/A literate C++ study of the rotating-calipers MBR using datamunge/
+
+We drive the minimum-area bounding rectangle (=geometry::minimum_bounding_rectangle=) and report it as a literate program. We give the Freeman-Shapira theorem (one side lies on a hull edge) and the per-edge search; a 6x2 rectangle tilted 30 degrees is recovered at area 12 while its axis-aligned box wastes 29.3.
+
+** [[./kdtree_nn_analysis.html][Nearest Neighbor Search: The k-d Tree]] ([[./kdtree_nn_analysis.pdf][PDF]])
+/A literate C++ study of spatial search using datamunge/
+
+We drive nearest-neighbor search (=geometry::KDTree2D=) and report it as a literate program. We give the axis-alternating binary tree and the plane-distance pruning that yields O(log n) average queries; the tree's nearest to (10,10) among 200 points matches a brute-force scan exactly, and the 5 nearest are returned in increasing distance.
+
 ** [[./binary_search_analysis.html][Binary Search: Locating a Key by Halving]] ([[./binary_search_analysis.pdf][PDF]])
 /A literate C++ study of logarithmic search on a sorted sequence using datamunge/
 
