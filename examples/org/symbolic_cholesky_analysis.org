@@ -1,0 +1,147 @@
+#+title: Symbolic Cholesky: Predicting the Fill Before You Compute It
+#+subtitle: A literate C++ study of fill prediction with =datamunge='s =algorithms::symbolic_cholesky=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Before a sparse Cholesky solver touches a single number, it runs a *symbolic* phase that works
+out -- from the *pattern alone* -- exactly which zeros will become nonzero (*fill-in*) in the
+factor \(L\). Knowing the pattern in advance lets the solver allocate \(L\) once, with no
+reallocation or wasted zeros during the numeric factorization. *Symbolic Cholesky* computes this
+by propagating the cliques that elimination creates. This report drives =datamunge='s
+=algorithms::symbolic_cholesky=, verified to cover every nonzero the numeric factor produces, and
+draws the original entries and the fill they generate.
+#+end_abstract
+
+* Cliques propagate down the columns
+
+Cholesky eliminates column \(k\) by subtracting a rank-one update, which makes every pair of
+below-diagonal nonzeros in column \(k\) into a coupled pair -- a *clique* among \(k\)'s
+higher-numbered neighbours. Those new couplings are *fill*, and they cascade: a fill entry in an
+early column becomes a real coupling that spawns more fill later. The symbolic algorithm just
+simulates this on the pattern:
+
+#+begin_example
+for k = 0 .. n-1:
+    higher <- current neighbours of k with index > k    # column k's below-diagonal nonzeros
+    record L(u,k) nonzero for each u in higher
+    add edges making `higher` a clique                   # the fill from eliminating k
+#+end_example
+
+No arithmetic, only set operations on the graph -- so it is fast, and it produces the *exact*
+nonzero structure of \(L\) (for a matrix with no accidental numeric cancellation). The numeric
+phase then fills in the values into a structure that already fits perfectly. The amount of fill
+depends heavily on the ordering (see the Cuthill-McKee and minimum-degree reports), which is why
+symbolic analysis and reordering go hand in hand.
+
+#+name: sc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sparse_linalg.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <set>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SYMBOLIC-CHOLESKY(graph):
+  for k = 0 .. n-1:
+      higher <- neighbours of k with index > k
+      mark L(u,k) nonzero for each u in higher
+      make `higher` a clique (add fill edges)
+  return the pattern of L
+#+end_example
+
+* Worked example: a 2-D grid's factor, original entries and fill
+
+We take the pattern of a \(5\times5\) 2-D grid (each interior node coupled to its four
+neighbours), run symbolic Cholesky, and separate the *original* nonzeros of \(L\) from the *fill*
+it predicts.
+
+#+name: sc-run
+#+begin_src c++ :eval no
+    const int m = 5, n = m * m; // 5x5 grid graph
+    auto id = [m](int r, int c) { return r * m + c; };
+    std::vector<std::vector<int>> adj(n);
+    std::set<std::pair<int,int>> aedges;
+    auto link = [&](int u, int v) { adj[u].push_back(v); adj[v].push_back(u); aedges.insert({std::max(u,v), std::min(u,v)}); };
+    for (int r = 0; r < m; ++r) for (int c = 0; c < m; ++c) {
+        if (c + 1 < m) link(id(r, c), id(r, c + 1));
+        if (r + 1 < m) link(id(r, c), id(r + 1, c));
+    }
+
+    const auto L = symbolic_cholesky(adj);
+    int orig = 0, filln = 0;
+    std::vector<double> ox, oy, fx, fy;
+    for (int i = 0; i < n; ++i)
+        for (int j : L[i]) {
+            if (aedges.count({i, j})) { ++orig; ox.push_back(i); oy.push_back(j); }
+            else { ++filln; fx.push_back(i); fy.push_back(j); }
+        }
+    std::cout << "=== 5x5 grid (n=25), symbolic Cholesky ===\n";
+    std::cout << "original below-diagonal nonzeros of L: " << orig << "\n";
+    std::cout << "fill entries created by elimination  : " << filln << "\n";
+    std::cout << "total nonzeros in L (below diagonal) : " << orig + filln << "\n";
+
+    auto plot = RPlot::create();
+    plot.points(ox, oy, "original", RGB{37, 99, 235}, 6.0);
+    plot.points(fx, fy, "fill", RGB{220, 38, 38}, 6.0);
+    plot.legend({"original A entries", "fill created"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Symbolic Cholesky of a 5x5 grid: original entries (blue) and fill (red)")
+        .x_label("row i").y_label("column j").background({250, 250, 252});
+    plot.save_svg("build/org/symbolic_cholesky.svg");
+    std::cout << "wrote symbolic_cholesky.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/symbolic_cholesky_analysis.cpp <<'CPP'
+<<sc-includes>>
+
+int main() {
+<<sc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/symbolic_cholesky_analysis.cpp -o build/org/symbolic_cholesky_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/symbolic_cholesky_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== 5x5 grid (n=25), symbolic Cholesky ===
+original below-diagonal nonzeros of L: 40
+fill entries created by elimination  : 64
+total nonzeros in L (below diagonal) : 104
+wrote symbolic_cholesky.svg
+#+end_example
+
+The grid's own couplings account for the original entries of \(L\); elimination then adds a
+comparable number of *fill* entries, all inside the grid's natural bandwidth. Symbolic Cholesky
+enumerates every one of them from the pattern alone -- the test suite confirms it *covers every
+nonzero* the numeric factorization actually produces -- so the numeric phase allocates exactly
+the right structure once.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/symbolic_cholesky.svg]]
+
+The blue points are the matrix's original couplings; the red points are the fill elimination
+manufactures between them. Together they are the complete map of \(L\), computed with set
+operations and not a single multiply -- the reason every sparse Cholesky code separates this
+cheap symbolic analysis from the expensive numeric factorization.

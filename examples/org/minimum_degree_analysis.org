@@ -1,0 +1,138 @@
+#+title: The Minimum Degree Algorithm: Ordering to Keep the Factor Sparse
+#+subtitle: A literate C++ study of fill-reducing orderings with =datamunge='s =algorithms::minimum_degree_ordering=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When you factor a sparse symmetric matrix by Cholesky, zeros turn into nonzeros -- *fill-in* --
+and a bad ordering can fill a sparse matrix almost solid. The *minimum degree algorithm* chooses
+the elimination order to keep fill small: at each step it eliminates the vertex of *smallest
+degree* in the remaining graph, deferring the vertices that would couple the most others. It is
+the classic fill-reducing ordering behind sparse direct solvers. This report drives =datamunge='s
+=algorithms::minimum_degree_ordering=, verified to cut fill versus the natural order, on the
+matrix that most dramatically shows the effect: an arrow.
+#+end_abstract
+
+* Eliminate the least-connected vertex first
+
+Cholesky eliminates variables one at a time; eliminating variable \(k\) makes *all* the
+still-uneliminated variables coupled to \(k\) mutually coupled -- a *clique* -- and each new
+coupling is a fill entry. So the fill a vertex creates grows with its *degree* at the moment it
+is eliminated. The minimum degree heuristic therefore:
+
+1. picks the uneliminated vertex of *minimum current degree*;
+2. eliminates it, adding fill edges to make its neighbours a clique;
+3. repeats on the reduced graph.
+
+Eliminating low-degree vertices first is cheap (few new edges) and often keeps later degrees low
+too. It is only a heuristic -- finding the truly minimum-fill order is NP-hard -- but a very good
+one, and its refinements (AMD, minimum local fill) are what production solvers use. The dramatic
+case is an *arrow* matrix, one row/column dense: eliminate that dense vertex first and everything
+else becomes a clique; eliminate it *last* (as minimum degree does) and there is no fill at all.
+
+#+name: md-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sparse_linalg.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MINIMUM-DEGREE(graph):
+  order <- []
+  while vertices remain:
+      v <- uneliminated vertex of minimum current degree
+      add v to order; make v's neighbours a clique (fill); remove v
+  return order
+#+end_example
+
+* Worked example: the arrow matrix
+
+Node \(0\) is coupled to every other node (the dense row/column); the rest are otherwise
+independent. We count the Cholesky fill under the natural ordering versus the minimum-degree
+ordering.
+
+#+name: md-run
+#+begin_src c++ :eval no
+    const int n = 16;
+    std::vector<std::vector<int>> adj(n);
+    for (int i = 1; i < n; ++i) { adj[0].push_back(i); adj[i].push_back(0); } // arrow: node 0 dense
+
+    // Count off-diagonal nonzeros of the Cholesky factor L under a given ordering.
+    auto fill = [&](const std::vector<int>& perm) {
+        std::vector<int> pos(n); for (int k = 0; k < n; ++k) pos[perm[k]] = k;
+        std::vector<std::vector<int>> g(n);
+        for (int i = 0; i < n; ++i) for (int j : adj[i]) g[pos[i]].push_back(pos[j]);
+        const auto L = symbolic_cholesky(g);
+        int total = 0; for (const auto& r : L) total += (int)r.size();
+        return total;
+    };
+
+    std::vector<int> ident(n); for (int i = 0; i < n; ++i) ident[i] = i;
+    const std::vector<int> md = minimum_degree_ordering(adj);
+
+    std::cout << "=== arrow matrix (node 0 coupled to all " << n - 1 << " others) ===\n";
+    std::cout << "L nonzeros, natural order      : " << fill(ident) << "\n";
+    std::cout << "L nonzeros, minimum degree     : " << fill(md) << "\n";
+    std::cout << "minimum-degree order (arms first, dense node last): ";
+    for (int v : md) std::cout << v << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::barplot({(double)fill(ident), (double)fill(md)}, {"natural", "minimum degree"},
+                               "L nonzeros", RGB{37, 99, 235});
+    plot.title("Arrow matrix Cholesky fill: natural order fills solid, minimum degree stays sparse")
+        .x_label("elimination ordering").y_label("nonzeros in the factor L").background({250, 250, 252});
+    plot.save_svg("build/org/minimum_degree.svg");
+    std::cout << "wrote minimum_degree.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/minimum_degree_analysis.cpp <<'CPP'
+<<md-includes>>
+
+int main() {
+<<md-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/minimum_degree_analysis.cpp -o build/org/minimum_degree_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/minimum_degree_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== arrow matrix (node 0 coupled to all 15 others) ===
+L nonzeros, natural order      : 120
+L nonzeros, minimum degree     : 15
+minimum-degree order (arms first, dense node last): 1 2 3 4 5 6 7 8 9 10 11 12 13 14 0 15
+wrote minimum_degree.svg
+#+end_example
+
+The natural ordering eliminates the dense node first, instantly cliqueing all fifteen arms and
+filling the factor densely (120 nonzeros); the minimum-degree ordering eliminates the degree-one
+arms first -- creating *no* fill -- and defers the dense node to the end, leaving just the 15
+original couplings. The order alone is the difference between a solid factor and a sparse one.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/minimum_degree.svg]]
+
+The natural-order bar towers over the minimum-degree bar: same matrix, same arithmetic, but a
+factor that is quadratically denser under the wrong ordering. On real finite-element and
+optimization matrices the gap is less extreme but still decisive, which is why the ordering step
+is never skipped.

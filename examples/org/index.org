@@ -1038,6 +1038,26 @@ We implement the Miller-Rabin primality test (=algorithms::is_probable_prime=) a
 
 We implement Pollard's rho integer factorization with Brent's improvement (=algorithms::pollard_rho_factor=, plus a full =factorize= driver) and report it as a literate program. We explain why trial division is hopeless for RSA-scale semiprimes, derive the rho idea -- iterating g(x)=(x^2+c) mod n, which modulo a hidden prime p collides after ~sqrt(p) steps so gcd(|x_i - x_j|, n) reveals p -- tie it to this library's =brent_cycle_detection=, and give the O(n^(1/4)) analysis. Deterministic examples split 8051 = 83 x 97 and 600851475143 = 71 x 839 x 1471 x 6857, recognize 10^9+7 as prime, and draw the length-5 cycle the map traces modulo the hidden prime 83.
 
+** [[./cuthill_mckee_analysis.html][The Cuthill-McKee Algorithm: Pulling Nonzeros Toward the Diagonal]] ([[./cuthill_mckee_analysis.pdf][PDF]])
+/A literate C++ study of bandwidth reduction using datamunge/
+
+We implement Cuthill-McKee bandwidth reduction (=algorithms::cuthill_mckee=, with reverse) and report it as a literate program. A BFS of the matrix graph from a low-degree start, visiting each level by increasing degree, clusters coupled rows; a shuffled 40x40 banded pattern of bandwidth 32 is re-banded to bandwidth 2 by RCM, the sparsity pattern collapsing onto the diagonal.
+
+** [[./minimum_degree_analysis.html][The Minimum Degree Algorithm: Ordering to Keep the Factor Sparse]] ([[./minimum_degree_analysis.pdf][PDF]])
+/A literate C++ study of fill-reducing orderings using datamunge/
+
+We implement the minimum-degree ordering (=algorithms::minimum_degree_ordering=) and report it as a literate program. Eliminating the least-connected vertex first minimizes Cholesky fill; on an arrow matrix the natural order fills the factor to 120 nonzeros while minimum degree eliminates the arms first for zero fill (just the 15 original couplings).
+
+** [[./symbolic_cholesky_analysis.html][Symbolic Cholesky: Predicting the Fill Before You Compute It]] ([[./symbolic_cholesky_analysis.pdf][PDF]])
+/A literate C++ study of fill prediction using datamunge/
+
+We implement symbolic Cholesky (=algorithms::symbolic_cholesky=) and report it as a literate program. Propagating the cliques that elimination creates gives the exact nonzero pattern of L from the pattern alone; a 5x5 grid's factor is predicted as 40 original entries plus 64 fill (verified to cover every numeric nonzero), so the numeric phase allocates once.
+
+** [[./cannon_analysis.html][Cannon's Algorithm: Matrix Multiplication on a Mesh]] ([[./cannon_analysis.pdf][PDF]])
+/A literate C++ study of shift-and-multiply matmul using datamunge/
+
+We implement Cannon's matrix multiplication (=algorithms::cannon_matmul=) and report it as a literate program. Pre-skewing A and B then shifting nearest-neighbour each of n steps forms the product with only local communication; it computes [[1,2],[3,4]]*[[5,6],[7,8]]=[[19,22],[43,50]] and matches the naive product to machine precision on random matrices.
+
 ** [[./pollard_rho_log_analysis.html][Pollard's Rho for Discrete Logarithms: Low-Memory Collision Search]] ([[./pollard_rho_log_analysis.pdf][PDF]])
 /A literate C++ study of the rho method for discrete logs using datamunge/
 
