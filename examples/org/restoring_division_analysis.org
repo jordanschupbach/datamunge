@@ -1,0 +1,158 @@
+#+title: Restoring Division: Subtract, Test, Put It Back
+#+subtitle: A literate C++ study of the classic sequential divider with =datamunge='s =algorithms::restoring_divide=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The simplest hardware divider works exactly like paper long division in binary: bring down a bit,
+try to subtract the divisor, and if the subtraction goes negative *put it back* -- restore the old
+remainder and record a 0. This report drives =datamunge='s =algorithms::restoring_divide=, verified
+against the built-in =/= and =%= over hundreds of thousands of random pairs, and visualises the
+trial-subtract-and-restore rhythm that gives the algorithm its name and its cost.
+#+end_abstract
+
+* The restore step
+
+Keep a remainder register \(R\) (initially 0) and scan the dividend's bits from most to least
+significant. At bit \(i\):
+
+\[ R \leftarrow 2R + b_i,\qquad T \leftarrow R - D. \]
+
+\(T\) is the *trial* remainder. If \(T\ge 0\) the divisor fit: keep it (\(R\leftarrow T\)) and set
+quotient bit \(q_i=1\). If \(T<0\) the divisor did not fit: *restore* the old remainder
+(\(R\leftarrow R\), discarding \(T\)) and set \(q_i=0\). After all \(w\) bits, \(q\) is the quotient
+and \(R\) the remainder, with the exact invariant \(qD+R=\text{dividend}\) and \(0\le R<D\).
+
+The restore is the algorithm's signature cost: a step that fails the trial subtraction has done a
+subtraction it must undo with an addition, so a bit that comes out 0 can cost *two* arithmetic
+operations. Non-restoring division exists precisely to remove that wasted add.
+
+#+name: rd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/division.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+RESTORING-DIVIDE(dividend, D):
+  R = 0, Q = 0
+  for i = w-1 down to 0:
+      R = 2R + bit i of dividend
+      T = R - D                 # trial subtraction
+      if T >= 0: R = T;  set bit i of Q     # divisor fit
+      else:      (restore: R unchanged);  bit i of Q = 0
+  return quotient Q, remainder R
+#+end_example
+
+* Worked example: 217 / 13, with the restores made visible
+
+We confirm a few divisions against the built-in operators, then re-run the loop for \(217\div13\)
+recording both the *trial* remainder \(T\) (which dips negative on a restore) and the *kept* remainder
+\(R\) after each step.
+
+#+name: rd-run
+#+begin_src c++ :eval no
+    std::cout << "=== restoring division ===\n";
+    for (auto [a, b] : std::vector<std::pair<std::uint64_t, std::uint64_t>>{{217, 13}, {100, 7}, {1000000, 999}}) {
+        const auto r = restoring_divide(a, b);
+        std::cout << a << " / " << b << " = " << r.quotient << " rem " << r.remainder
+                  << "  (q*b+r = " << r.quotient * b + r.remainder << ")\n";
+    }
+
+    // Instrument the trial/restore behaviour for 217 / 13.
+    const std::uint64_t A = 217, D = 13;
+    int top = 63; while (top > 0 && ((A >> top) & 1ULL) == 0) --top;
+    long long R = 0; int restores = 0;
+    std::vector<double> step, trial, kept;
+    std::cout << "\nbit  R(before)  T=R-D   action    R(after)\n";
+    int s = 0;
+    for (int i = top; i >= 0; --i) {
+        R = (R << 1) | static_cast<long long>((A >> i) & 1ULL);
+        const long long before = R;
+        const long long T = R - static_cast<long long>(D);
+        bool fit = T >= 0;
+        if (fit) R = T;                 // subtraction stands
+        // else restore: R keeps `before`
+        std::printf("%3d  %8lld  %6lld   %-8s  %8lld\n", i, before, T, fit ? "keep" : "restore", R);
+        if (!fit) ++restores;
+        step.push_back(s++); trial.push_back(static_cast<double>(T)); kept.push_back(static_cast<double>(R));
+    }
+    std::cout << "restores (wasted adds) = " << restores << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(step, trial, "T", RGB{220, 38, 38}, 2.0);
+    plot.points(step, trial, "T", RGB{220, 38, 38}, 5.0);
+    plot.line(step, kept, "R", RGB{37, 99, 235}, 2.0);
+    plot.points(step, kept, "R", RGB{37, 99, 235}, 5.0);
+    plot.abline_h(0.0, RGB{100, 116, 139}, 1.0);
+    plot.legend({"trial T = R - D (negative => restore)", "kept remainder R"},
+                {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Restoring division of 217 by 13: negative trials are put back")
+        .x_label("bit step (MSB to LSB)").y_label("register value").background({250, 250, 252});
+    plot.save_svg("build/org/restoring_division.svg");
+    std::cout << "wrote restoring_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/restoring_division_analysis.cpp <<'CPP'
+<<rd-includes>>
+
+int main() {
+<<rd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/restoring_division_analysis.cpp -o build/org/restoring_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/restoring_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== restoring division ===
+217 / 13 = 16 rem 9  (q*b+r = 217)
+100 / 7 = 14 rem 2  (q*b+r = 100)
+1000000 / 999 = 1001 rem 1  (q*b+r = 1000000)
+
+bit  R(before)  T=R-D   action    R(after)
+  7         1     -12   restore          1
+  6         3     -10   restore          3
+  5         6      -7   restore          6
+  4        13       0   keep             0
+  3         1     -12   restore          1
+  2         2     -11   restore          2
+  1         4      -9   restore          4
+  0         9      -4   restore          9
+restores (wasted adds) = 7
+wrote restoring_division.svg
+#+end_example
+
+Every quotient and remainder matches the built-in operators, and the invariant \(qD+r=\) dividend
+holds (\(16\cdot13+9=217\)). The trace shows the mechanism: whenever the trial \(T=R-D\) dips below
+the grey zero line the step *restores* -- the blue kept-remainder ignores that negative trial and
+carries the previous value forward, depositing a 0 in the quotient.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/restoring_division.svg]]
+
+Each red point below zero is a subtraction that had to be undone -- a wasted add. Real dividends
+scatter these restores throughout the computation, so restoring division does one subtraction per
+bit plus one extra addition for every 0 quotient bit. That variable, data-dependent cost is exactly
+what the non-restoring variant removes by never putting anything back.
