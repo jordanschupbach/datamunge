@@ -1,0 +1,154 @@
+#+title: Fermat's Factorization: A Number as a Difference of Squares
+#+subtitle: A literate C++ study of close-factor factorization with =datamunge='s =algorithms::fermat_factor=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every odd number is a *difference of two squares*: \(n=a^2-b^2=(a-b)(a+b)\). Fermat's
+factorization method (c. 1643) hunts for that representation directly -- start at
+\(a=\lceil\sqrt{n}\rceil\) and step \(a\) upward until \(a^2-n\) is itself a perfect
+square. It is *lightning fast when \(n\)'s two factors are close together* (few steps) and
+*slow when they are far apart* -- the exact opposite regime to trial division, which makes the
+two complementary. It is also the cautionary tale behind "don't pick RSA primes too close".
+This report drives =datamunge='s =algorithms::fermat_factor=, verified to split composites, and
+shows the step count exploding as the factors spread apart.
+#+end_abstract
+
+* Climbing to a perfect square
+
+If \(n=pq\) with \(p\le q\), set \(a=(p+q)/2\) and \(b=(q-p)/2\); then
+\(a^2-b^2=pq=n\) and \(a\ge\sqrt{n}\). So search \(a=\lceil\sqrt{n}\rceil,
+\lceil\sqrt{n}\rceil+1,\dots\), and for each test whether \(a^2-n\) is a perfect square
+\(b^2\); the first hit yields \(p=a-b,\ q=a+b\). The number of steps is
+\(a-\lceil\sqrt{n}\rceil = \tfrac{p+q}{2}-\sqrt{pq}\), which is *tiny when \(p\approx q\)*
+(the arithmetic and geometric means nearly coincide) and *grows with the gap* \(q-p\). In
+the worst case (\(p=1\), i.e. \(n\) prime) it walks all the way to \(a=(n+1)/2\) -- so
+Fermat alone is impractical for a general number, but unbeatable for balanced semiprimes.
+
+#+name: fm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FERMAT-FACTOR(n):                     # n odd
+  a <- ceil(sqrt(n))
+  loop:
+      b2 <- a*a - n
+      if b2 is a perfect square b^2: return a - b     # = the smaller factor
+      a <- a + 1
+#+end_example
+
+* Worked example: close versus distant factors
+
+We factor several semiprimes of similar size \(n\approx10^8\) but with factor gaps ranging
+from tiny to large, counting the Fermat steps each needs.
+
+#+name: fm-run
+#+begin_src c++ :eval no
+    // Verify a couple of factorizations first.
+    for (std::uint64_t n : {5959ULL, 100000007ULL * 100000037ULL}) {
+        const std::uint64_t f = fermat_factor(n);
+        std::cout << n << " -> factor " << f << " x " << (f > 1 && f < n ? n / f : n)
+                  << (f == n ? " (prime)" : "") << "\n";
+    }
+    std::cout << "\n";
+
+    // Steps vs factor gap: pick p, q = next primes around 10000 with growing separation.
+    auto count_fermat = [](std::uint64_t n) {
+        long long steps = 0;
+        std::uint64_t a = static_cast<std::uint64_t>(std::ceil(std::sqrt((double)n)));
+        for (; steps < 20000000; ++steps, ++a) {
+            const __uint128_t b2 = (__uint128_t)a * a - n;
+            const std::uint64_t b = (std::uint64_t)std::sqrtl((long double)b2);
+            if ((__uint128_t)b * b == b2 || (__uint128_t)(b + 1) * (b + 1) == b2) break;
+        }
+        return steps;
+    };
+
+    // Pairs (p,q) all near 10^4, with increasing gap; n = p*q ~ 10^8.
+    const std::uint64_t P = 10007;
+    const std::uint64_t qs[] = {10009, 10037, 10091, 10259, 10501, 11003, 12007};
+    std::cout << "p=" << P << "\n gap (q-p)    n            fermat steps\n";
+    std::vector<double> gaps, steps;
+    for (std::uint64_t q : qs) {
+        const std::uint64_t n = P * q;
+        const long long s = count_fermat(n);
+        gaps.push_back(static_cast<double>(q - P));
+        steps.push_back(static_cast<double>(s));
+        std::printf(" %-11llu  %-11llu  %lld\n", (unsigned long long)(q - P), (unsigned long long)n, s);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(gaps, steps, "steps", RGB{220, 38, 38}, 2.0);
+    plot.points(gaps, steps, "steps", RGB{220, 38, 38}, 6.0);
+    plot.legend({"Fermat steps to factor"}, {{220, 38, 38}});
+    plot.title("Fermat is fast for close factors, slow as the gap grows")
+        .x_label("factor gap q - p").y_label("Fermat steps").background({250, 250, 252});
+    plot.save_svg("build/org/fermat_factor.svg");
+    std::cout << "\nwrote fermat_factor.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fermat_factor_analysis.cpp <<'CPP'
+<<fm-includes>>
+
+int main() {
+<<fm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fermat_factor_analysis.cpp -o build/org/fermat_factor_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fermat_factor_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+5959 -> factor 59 x 101
+10000004400000259 -> factor 100000007 x 100000037
+
+p=10007
+ gap (q-p)    n            fermat steps
+ 2            100160063    0
+ 30           100440259    0
+ 84           100980637    0
+ 252          102661813    0
+ 494          105083507    2
+ 996          110107021    11
+ 2000         120154049    45
+
+wrote fermat_factor.svg
+#+end_example
+
+The factorizations are correct, and the step table tells Fermat's whole story: a gap of a few
+between the factors is dispatched in a handful of steps, but as the gap widens the step count
+climbs steeply (roughly with the *square* of the gap). Two primes only a few apart are almost
+free to factor this way.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fermat_factor.svg]]
+
+The red curve rises sharply with the factor gap -- the further apart \(p\) and \(q\),
+the higher \(a\) must climb before \(a^2-n\) lands on a perfect square. That steep
+dependence is exactly why Fermat complements trial division (fast for *distant* small factors)
+and why balanced-but-not-too-close primes are chosen for cryptographic moduli.
