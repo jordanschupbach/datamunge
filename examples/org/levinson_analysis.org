@@ -1,0 +1,142 @@
+#+title: Levinson Recursion: Toeplitz Systems in Quadratic Time
+#+subtitle: A literate C++ study of structured solving with =datamunge='s =algorithms::levinson_solve=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *Toeplitz* matrix is constant along each diagonal -- every entry depends only on
+\(i-j\) -- so it is described entirely by a single row. Such matrices are the heart
+of signal processing: autocorrelation, linear prediction, autoregressive fitting.
+*Levinson recursion* solves a symmetric Toeplitz system in \(O(n^2)\) time instead
+of the \(O(n^3)\) a general solver would spend, by growing the solution one
+dimension at a time and reusing a forward/backward vector pair. This report
+implements it in =datamunge='s C++ =algorithms::levinson_solve=, solves a Toeplitz
+system, and checks it against a full dense solve.
+#+end_abstract
+
+* Exploiting constant diagonals
+
+A symmetric Toeplitz matrix \(T\) has \(T_{ij}=t_{|i-j|}\), so its \(n^2\) entries
+are just the \(n\) numbers \(t_0,\dots,t_{n-1}\). Levinson's recursion solves
+\(Tx=b\) by building the solution for the leading \(k\times k\) block and extending
+it to \((k{+}1)\times(k{+}1)\) using the Toeplitz structure. It maintains a *forward*
+and a *backward* vector (for symmetric \(T\), reverses of each other) that satisfy the
+Yule-Walker-type equations, updates them with a reflection coefficient, and folds the
+new right-hand-side component into the growing solution. Each extension is \(O(k)\)
+work, so the whole solve is \(O(n^2)\) -- a full order of \(n\) cheaper than
+Gaussian elimination, which throws away the structure and refills the zeros. The
+same recursion underlies the Levinson-Durbin algorithm for fitting autoregressive
+models.
+
+#+name: lv-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LEVINSON(t, b):                       # symmetric Toeplitz T with T[i][j] = t[|i-j|]
+  f = bwd = [1/t0] ; x = [b0/t0]      # forward, backward, solution (length 1)
+  for s = 1 .. n-1:
+      ef = sum_i t[s-i] f[i] ; eb = sum_i t[i+1] bwd[i] ; ex = sum_i t[s-i] x[i]
+      d  = 1 - ef*eb
+      f, bwd <- combine [f;0],[0;bwd] with reflection (ef, eb) / d
+      x <- [x;0] + (b[s] - ex) * bwd
+  return x
+#+end_example
+
+* Worked example: a decaying-correlation Toeplitz system
+
+We build the symmetric Toeplitz matrix from the first row
+\((4,2,1,0.5,0.25,0.1,0.05,0.02)\) -- a decaying autocorrelation -- and right-hand
+side all ones, solve it with Levinson, and compare against a dense Gaussian solve.
+
+#+name: lv-run
+#+begin_src c++ :eval no
+    const std::vector<double> row = {4.0, 2.0, 1.0, 0.5, 0.25, 0.1, 0.05, 0.02};
+    const std::size_t n = row.size();
+    const std::vector<double> b(n, 1.0);
+
+    const std::vector<double> x = levinson_solve(row, b);
+
+    // Dense version for comparison.
+    std::vector<std::vector<double>> T(n, std::vector<double>(n));
+    for (std::size_t i = 0; i < n; ++i) for (std::size_t j = 0; j < n; ++j) T[i][j] = row[i > j ? i - j : j - i];
+    const auto dense = gaussian_elimination(T, b);
+
+    double max_diff = 0.0;
+    for (std::size_t i = 0; i < n; ++i) max_diff = std::max(max_diff, std::fabs(x[i] - dense.x[i]));
+    std::cout << "=== Levinson recursion (8x8 symmetric Toeplitz) ===\n";
+    std::cout << "solution x =";
+    for (double xi : x) std::cout << " " << xi;
+    std::cout << "\nmax |Levinson - dense Gaussian| = " << max_diff << "\n";
+
+    // Figure: the Toeplitz matrix, coloured by diagonal to show its constant-diagonal structure.
+    auto plot = RPlot::create();
+    const std::vector<RGB> palette = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4},
+                                      {124, 58, 237}, {14, 165, 233}, {236, 72, 153}, {100, 116, 139}};
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < n; ++j) {
+            const std::size_t d = i > j ? i - j : j - i;
+            plot.points({static_cast<double>(j)}, {-static_cast<double>(i)}, "", palette[d % palette.size()], 16.0);
+            plot.text(static_cast<double>(j), -static_cast<double>(i), std::to_string(row[d]).substr(0, 4), RGB{255, 255, 255}, 8.0);
+        }
+    plot.title("A symmetric Toeplitz matrix: constant along each diagonal (same colour)")
+        .x_label("column j").y_label("row i (downward)").background({250, 250, 252});
+    plot.x_limits(-0.6, static_cast<double>(n) - 0.4); plot.y_limits(-static_cast<double>(n) + 0.4, 0.6);
+    plot.save_svg("build/org/levinson.svg");
+    std::cout << "\nwrote levinson.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/levinson_analysis.cpp <<'CPP'
+<<lv-includes>>
+
+int main() {
+<<lv-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/levinson_analysis.cpp -o build/org/levinson_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/levinson_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Levinson recursion (8x8 symmetric Toeplitz) ===
+solution x = 0.167649 0.0835382 0.0843823 0.0826348 0.0826348 0.0843823 0.0835382 0.167649
+max |Levinson - dense Gaussian| = 8.32667e-17
+
+wrote levinson.svg
+#+end_example
+
+Levinson's solution agrees with the dense Gaussian solve to machine precision, but
+it exploited the constant-diagonal structure to do it in \(O(n^2)\) rather than
+\(O(n^3)\) work. For the large Toeplitz systems of signal processing and time-series
+modelling, that difference is decisive.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/levinson.svg]]
+
+Each cell of the matrix is coloured by its diagonal \(|i-j|\); the solid diagonal
+stripes of one colour are exactly the Toeplitz property -- every entry on a diagonal
+is the same value. That redundancy (only \(n\) distinct numbers in an \(n\times n\)
+matrix) is what Levinson recursion converts into an order-\(n\) speedup.

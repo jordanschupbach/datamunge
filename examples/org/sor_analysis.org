@@ -1,0 +1,144 @@
+#+title: Successive Over-Relaxation: Tuning Gauss-Seidel for Speed
+#+subtitle: A literate C++ study of the relaxation factor with =datamunge='s =algorithms::sor=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Gauss-Seidel converges, but often slowly. *Successive over-relaxation* (SOR) speeds
+it up with one tuning knob: instead of accepting each Gauss-Seidel update, *overshoot*
+it by a *relaxation factor* \(\omega\). For a well-chosen \(\omega\in(1,2)\) this can
+cut the iteration count by an order of magnitude. This report implements it in
+=datamunge='s C++ =algorithms::sor=, and sweeps \(\omega\) to find the sharp optimum
+where a 1-D Laplacian solve is fastest.
+#+end_abstract
+
+* Overshoot the Gauss-Seidel step
+
+Each SOR update blends the old value with the Gauss-Seidel value using \(\omega\):
+
+\[
+x_i \leftarrow (1-\omega)\,x_i + \omega\cdot\underbrace{\frac{1}{a_{ii}}\Bigl(b_i-\sum_{j\ne i}a_{ij}x_j\Bigr)}_{\text{Gauss-Seidel value}} .
+\]
+
+At \(\omega=1\) this is exactly Gauss-Seidel; for \(\omega>1\) it *over-relaxes*,
+pushing past the Gauss-Seidel step to anticipate where the solution is heading (and
+\(\omega<1\) *under-relaxes*, damping). Kahan's theorem says convergence requires
+\(\omega\in(0,2)\). For a symmetric positive-definite matrix there is an *optimal*
+\(\omega^\star\in(1,2)\) that minimizes the spectral radius of the iteration matrix;
+for the 1-D Laplacian on \(n\) points it is
+\(\omega^\star=2/(1+\sin(\pi/(n{+}1)))\), close to 2 for large \(n\). Near the
+optimum the convergence rate improves dramatically, which is why finding a good
+\(\omega\) matters.
+
+#+name: sor-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static constexpr double PI = 3.14159265358979323846;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SOR(A, b, omega):
+  x <- 0
+  repeat until ||A x - b|| < tol:
+      for i in 0 .. n-1:
+          gs   <- ( b[i] - sum_{j != i} A[i][j] x[j] ) / A[i][i]
+          x[i] <- (1 - omega) * x[i] + omega * gs
+  return x
+#+end_example
+
+* Worked example: sweeping omega on a Laplacian
+
+We solve \(Ax=b\) for the \(30\times30\) Laplacian \(\mathrm{tridiag}(-1,2,-1)\) with
+\(b\) all ones, and count the iterations to converge as \(\omega\) runs from 0.1 to
+1.95 -- watching the count crash near the theoretical optimum.
+
+#+name: sor-run
+#+begin_src c++ :eval no
+    const std::size_t n = 30;
+    std::vector<std::vector<double>> A(n, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < n; ++i) { A[i][i] = 2.0; if (i) A[i][i - 1] = -1.0; if (i + 1 < n) A[i][i + 1] = -1.0; }
+    const std::vector<double> b(n, 1.0);
+    const double omega_star = 2.0 / (1.0 + std::sin(PI / (n + 1)));
+
+    std::cout << "=== SOR: sweeping omega on the 30x30 Laplacian ===\n";
+    std::cout << "Gauss-Seidel (omega=1.0): " << sor(A, b, 1.0, 100000, 1e-8).iterations << " iterations\n";
+    std::cout << "theoretical optimal omega* = " << omega_star << ": " << sor(A, b, omega_star, 100000, 1e-8).iterations << " iterations\n\n";
+
+    std::vector<double> ws, iters;
+    double best_w = 1.0; int best = 1 << 30;
+    for (double w = 0.1; w <= 1.951; w += 0.05) {
+        const int it = sor(A, b, w, 100000, 1e-8).iterations;
+        ws.push_back(w); iters.push_back(static_cast<double>(it));
+        if (it < best) { best = it; best_w = w; }
+    }
+    std::cout << "swept minimum: omega ~ " << best_w << " at " << best << " iterations\n";
+
+    auto plot = RPlot::create();
+    plot.line(ws, iters, "iterations", RGB{37, 99, 235}, 2.0);
+    plot.points(ws, iters, "iterations", RGB{37, 99, 235}, 5.0);
+    plot.abline_v(omega_star, RGB{22, 163, 74}, 1.5);
+    plot.legend({"iterations to converge", "theoretical omega*"}, {{37, 99, 235}, {22, 163, 74}});
+    plot.title("SOR: iterations plunge near the optimal relaxation factor")
+        .x_label("relaxation factor omega").y_label("iterations to converge").background({250, 250, 252});
+    plot.save_svg("build/org/sor.svg");
+    std::cout << "wrote sor.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sor_analysis.cpp <<'CPP'
+<<sor-includes>>
+
+int main() {
+<<sor-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sor_analysis.cpp -o build/org/sor_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sor_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== SOR: sweeping omega on the 30x30 Laplacian ===
+Gauss-Seidel (omega=1.0): 1949 iterations
+theoretical optimal omega* = 1.81625: 123 iterations
+
+swept minimum: omega ~ 1.85 at 135 iterations
+wrote sor.svg
+#+end_example
+
+Plain Gauss-Seidel (\(\omega=1\)) needs many hundreds of iterations on this
+ill-conditioned Laplacian; the optimal \(\omega^\star\approx1.8\) cuts that by
+roughly an order of magnitude, and the swept minimum lands right where the formula
+predicts. Over-relaxing too far (toward 2) diverges from the sweet spot and the
+count climbs again.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/sor.svg]]
+
+The iteration count traces a sharp valley: high for small \(\omega\), plunging to a
+minimum at the green theoretical \(\omega^\star\), then rising steeply as \(\omega\)
+approaches 2. That narrow optimum is the whole story of SOR -- the right relaxation
+factor turns a plodding Gauss-Seidel into a fast solver, and the wrong one wastes
+the opportunity.
