@@ -1,0 +1,148 @@
+#+title: AC-3: Shrinking a CSP by Arc Consistency
+#+subtitle: A literate C++ study of constraint propagation with =datamunge='s =algorithms::ac3=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Before searching a constraint-satisfaction problem, it pays to *think*: many candidate values
+can be ruled out by pure deduction. *AC-3* (Mackworth, 1977) enforces *arc consistency* --
+it deletes any value from a variable's domain that has no compatible partner in a neighbour's
+domain, cascading the deletions until nothing more can be removed. Often this alone collapses
+the domains dramatically, sometimes solving the problem outright and always shrinking the
+search that follows. This report drives =datamunge='s =algorithms::ac3=, verified to leave
+every arc consistent, and shows the domains contracting.
+#+end_abstract
+
+* Revise, and re-enqueue
+
+A binary CSP has variables, each with a *domain* of allowed values, and constraints relating
+pairs of variables. A directed *arc* @math{(i,j)} is *consistent* when every value in
+@math{i}'s domain has at least one *support* in @math{j}'s domain -- a value of @math{j}
+compatible with it. AC-3 keeps a worklist of arcs and repeatedly:
+
+1. *Revises* an arc @math{(i,j)}: removes from @math{i}'s domain each value with no support in
+   @math{j}.
+2. If that removed anything, *re-enqueues* every arc @math{(k,i)} pointing into @math{i} --
+   because shrinking @math{i}'s domain may have destroyed support elsewhere.
+
+It stops when the worklist empties (fully arc-consistent) or a domain becomes empty (the CSP
+is unsatisfiable). The running time is @math{O(e\,d^3)} for @math{e} arcs and domain size
+@math{d}. Arc consistency is *necessary but not sufficient* for a solution -- it prunes, it
+does not always solve -- which is why it is run as propagation *inside* backtracking search.
+
+#+name: ac-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/arc_consistency.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+AC-3(domains, arcs, compatible):
+  queue <- all arcs
+  while queue not empty:
+      (i,j) <- pop
+      if REVISE(i,j):                       # removed some value from domain[i]
+          if domain[i] empty: return INCONSISTENT
+          for each arc (k,i): enqueue (k,i)
+  return domains
+
+REVISE(i,j): drop each a in domain[i] with no b in domain[j] where compatible(i,a,j,b)
+#+end_example
+
+* Worked example: an ordering chain
+
+Five variables with domains @math{\{1,\dots,9\}} and the constraints
+@math{x_0<x_1<x_2<x_3<x_4}. Arc consistency alone forces each variable into a narrow band.
+
+#+name: ac-run
+#+begin_src c++ :eval no
+    const int nvars = 5;
+    std::vector<std::vector<int>> domains(nvars, std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+    std::vector<std::pair<int, int>> arcs;
+    for (int i = 0; i + 1 < nvars; ++i) { arcs.push_back({i, i + 1}); arcs.push_back({i + 1, i}); }
+    // For arc (i,j): if i<j require value(i) < value(j), else value(i) > value(j).
+    auto rel = [](int i, int a, int j, int b) { return i < j ? a < b : a > b; };
+
+    std::vector<int> before(nvars, 9);
+    const Ac3Result r = ac3(domains, arcs, rel);
+
+    std::cout << "=== x0 < x1 < x2 < x3 < x4, domains 1..9 ===\n";
+    std::cout << "consistent: " << (r.consistent ? "yes" : "no") << "\n";
+    std::vector<double> vx, sz_before, sz_after;
+    for (int i = 0; i < nvars; ++i) {
+        std::cout << "x" << i << " domain: ";
+        for (int v : r.domains[i]) std::cout << v << " ";
+        std::cout << "\n";
+        vx.push_back(i - 0.2);
+        sz_before.push_back(9);
+        sz_after.push_back(static_cast<double>(r.domains[i].size()));
+    }
+    std::vector<double> vx2; for (int i = 0; i < nvars; ++i) vx2.push_back(i + 0.2);
+
+    auto plot = RPlot::create();
+    plot.bars(vx, sz_before, "before", RGB{203, 213, 225}, 0.38);
+    plot.bars(vx2, sz_after, "after AC-3", RGB{37, 99, 235}, 0.38);
+    plot.legend({"domain size before (9)", "domain size after AC-3"}, {{203, 213, 225}, {37, 99, 235}});
+    plot.title("AC-3 contracts every domain in the ordering chain")
+        .x_label("variable index").y_label("domain size").background({250, 250, 252});
+    plot.save_svg("build/org/ac3.svg");
+    std::cout << "\nwrote ac3.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ac3_analysis.cpp <<'CPP'
+<<ac-includes>>
+
+int main() {
+<<ac-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ac3_analysis.cpp -o build/org/ac3_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ac3_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== x0 < x1 < x2 < x3 < x4, domains 1..9 ===
+consistent: yes
+x0 domain: 1 2 3 4 5
+x1 domain: 2 3 4 5 6
+x2 domain: 3 4 5 6 7
+x3 domain: 4 5 6 7 8
+x4 domain: 5 6 7 8 9
+
+wrote ac3.svg
+#+end_example
+
+Arc consistency alone squeezes each nine-value domain down to a narrow band: @math{x_0} can
+only be small (it needs four larger values above it), @math{x_4} only large, and the middle
+variables to nested ranges in between. No search has happened yet -- this is pure
+propagation, and it has already discarded the large majority of the assignment space.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/ac3.svg]]
+
+Every blue "after" bar is far shorter than its grey "before" counterpart: AC-3 has removed
+the values that could never participate in a solution. Running this as propagation inside a
+backtracking search means the solver branches on a tiny fraction of the original
+possibilities -- the reason arc consistency is a fixture of every serious CSP engine.

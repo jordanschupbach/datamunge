@@ -4,6 +4,7 @@
 
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
+#include <datamunge/algorithms/arc_consistency.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/branch_and_bound.hpp>
@@ -18,6 +19,8 @@
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
+#include <datamunge/algorithms/ellipsoid.hpp>
+#include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
@@ -35,6 +38,7 @@
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
 #include <datamunge/algorithms/merge.hpp>
+#include <datamunge/algorithms/min_conflicts.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
