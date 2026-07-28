@@ -1,0 +1,141 @@
+#+title: Patience Sort: Sorting by Dealing into Piles
+#+subtitle: A literate C++ study of the solitaire-inspired sort with =datamunge='s =algorithms::patience_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Patience sort is named for the card game: deal the input onto a row of piles by a simple placement
+rule, then repeatedly collect the smallest visible card. Dealing takes \(O(n\log n)\) with a binary
+search for the pile, and the merge of the pile tops finishes the sort. A beautiful side effect: the
+*number of piles equals the length of the longest increasing subsequence* of the input, so the same
+procedure that sorts also solves a classic combinatorial problem. This report drives =datamunge='s
+=algorithms::patience_sort=, verified against =std::sort= over thousands of random arrays, and shows
+the piles it builds.
+#+end_abstract
+
+* Deal, then merge the tops
+
+Process the input left to right, maintaining a row of piles whose *top* cards increase from left to
+right. For each new value \(x\): place it on the *leftmost* pile whose top is \(\ge x\) (found by
+binary search over the pile tops); if none qualifies, start a new pile on the right. This keeps each
+pile decreasing from bottom to top, so a pile's top is its smallest remaining card, and the pile tops
+stay sorted across the row.
+
+To produce the sorted output, repeatedly remove the globally smallest pile top -- a \(k\)-way merge
+driven by a min-heap over the tops. Two facts fall out:
+
+- The placement rule creates a new pile exactly when \(x\) exceeds every current top, which happens
+  once per element of a *longest increasing subsequence*; hence \(\#\text{piles}=\text{LIS length}\).
+- Each of the \(n\) values is dealt with an \(O(\log n)\) binary search and later extracted with an
+  \(O(\log(\#\text{piles}))\) heap pop, for \(O(n\log n)\) overall.
+
+#+name: pt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sorting_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Reproduce the pile sizes patience sort builds for `v`.
+static std::vector<int> pile_sizes(const std::vector<int>& v) {
+    std::vector<std::vector<int>> piles;
+    for (int x : v) {
+        int lo = 0, hi = (int)piles.size();
+        while (lo < hi) { int mid = (lo + hi) / 2; if (piles[mid].back() >= x) hi = mid; else lo = mid + 1; }
+        if (lo == (int)piles.size()) piles.push_back({x}); else piles[lo].push_back(x);
+    }
+    std::vector<int> sizes; for (auto& p : piles) sizes.push_back((int)p.size());
+    return sizes;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+PATIENCE-SORT(a):
+  piles = []
+  for x in a:
+      p = leftmost pile whose top >= x        # binary search; new pile if none
+      push x onto pile p
+  # merge: repeatedly take the smallest pile top (min-heap)
+  while any pile nonempty:
+      output the smallest current pile top and pop it
+#+end_example
+
+* Worked example: sorting, and the piles
+
+We sort a scrambled array and display the piles patience builds; the pile count equals the input's
+longest increasing subsequence.
+
+#+name: pt-run
+#+begin_src c++ :eval no
+    std::vector<int> a = {7, 2, 8, 1, 3, 9, 4, 6, 5, 0};
+    auto s = a; patience_sort(s);
+    std::cout << "=== patience sort ===\n";
+    std::cout << "input:  "; for (int x : a) std::cout << x << " "; std::cout << "\n";
+    std::cout << "sorted: "; for (int x : s) std::cout << x << " "; std::cout << "\n";
+
+    const auto sizes = pile_sizes(a);
+    std::cout << "piles: " << sizes.size() << " (= longest increasing subsequence length)\n";
+    std::vector<double> heights; std::vector<std::string> labels;
+    for (std::size_t i = 0; i < sizes.size(); ++i) { std::cout << "  pile " << i << ": " << sizes[i] << " cards\n"; heights.push_back(sizes[i]); labels.push_back("P" + std::to_string(i)); }
+
+    auto plot = RPlot::barplot(heights, labels, "size", RGB{124, 58, 237});
+    plot.title("Patience sort piles (their count = longest increasing subsequence)")
+        .x_label("pile").y_label("cards").background({250, 250, 252});
+    plot.save_svg("build/org/patience_sort.svg");
+    std::cout << "\nwrote patience_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/patience_sort_analysis.cpp <<'CPP'
+<<pt-includes>>
+
+int main() {
+<<pt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/patience_sort_analysis.cpp -o build/org/patience_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/patience_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== patience sort ===
+input:  7 2 8 1 3 9 4 6 5 0
+sorted: 0 1 2 3 4 5 6 7 8 9
+piles: 4 (= longest increasing subsequence length)
+  pile 0: 4 cards
+  pile 1: 2 cards
+  pile 2: 2 cards
+  pile 3: 2 cards
+
+wrote patience_sort.svg
+#+end_example
+
+The deal-and-merge produces a correctly sorted array -- matching =std::sort= across the test suite --
+and the number of piles equals the length of the input's longest increasing subsequence, the classic
+combinatorial invariant patience sorting is famous for.
+
+#+attr_html: :width 600
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/patience_sort.svg]]
+
+Each bar is a pile; their count is the LIS length, and every pile is internally sorted, so the final
+min-heap merge simply threads the piles together in order. That dual role -- a sorting method that also
+computes the longest increasing subsequence -- is why patience sorting appears in both the sorting and
+the combinatorics chapters.

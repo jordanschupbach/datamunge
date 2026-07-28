@@ -1153,6 +1153,26 @@ We implement Shell sort (=algorithms::shell_sort=) and report it as a literate p
 
 We implement comb sort (=algorithms::comb_sort=) and report it as a literate program. We explain turtles and the 1.3 shrink factor that lets distant swaps clear them; at n=400 comb sort makes 7106 comparisons versus bubble sort's 147630.
 
+** [[./bitonic_sort_analysis.html][The Bitonic Sorter: A Data-Oblivious Sorting Network]] ([[./bitonic_sort_analysis.pdf][PDF]])
+/A literate C++ study of Batcher's sorting network using datamunge/
+
+We implement bitonic sort (=algorithms::bitonic_sort=) and report it as a literate program. Recursively building bitonic (up-then-down) sequences and merging them applies a fixed, value-independent schedule of compare-swaps in O(n log^2 n), ideal for parallel hardware; it matches std::sort over thousands of arrays, with the data-oblivious comparator count plotted.
+
+** [[./strand_sort_analysis.html][Strand Sort: Pulling Out Sorted Runs]] ([[./strand_sort_analysis.pdf][PDF]])
+/A literate C++ study of natural-merge sorting using datamunge/
+
+We implement strand sort (=algorithms::strand_sort=) and report it as a literate program. Repeatedly extracting an increasing subsequence (a strand) and merging it into the result gives an adaptive sort whose pass count falls with presortedness; it matches std::sort over thousands of arrays, with the strand count plotted against how shuffled the input is.
+
+** [[./patience_sort_analysis.html][Patience Sort: Sorting by Dealing into Piles]] ([[./patience_sort_analysis.pdf][PDF]])
+/A literate C++ study of the solitaire-inspired sort using datamunge/
+
+We implement patience sort (=algorithms::patience_sort=) and report it as a literate program. Dealing each value onto the leftmost pile whose top is at least it, then k-way merging the pile tops, sorts in O(n log n) -- and the pile count equals the input's longest increasing subsequence; it matches std::sort over thousands of arrays, with the pile structure plotted.
+
+** [[./flashsort_analysis.html][Flashsort: Sorting by Value Classification]] ([[./flashsort_analysis.pdf][PDF]])
+/A literate C++ study of distribution sorting using datamunge/
+
+We implement flashsort (=algorithms::flashsort=) and report it as a literate program. Classifying elements into ~0.43n value buckets by a linear map, permuting them into bucket order in place by cycle leaders, then finishing with insertion sort gives expected linear time on uniform data; it matches std::sort over thousands of arrays (ints and doubles), with the near-flat bucket distribution plotted.
+
 ** [[./bucket_sort_analysis.html][Bucket Sort: Scatter, Sort Small, Gather]] ([[./bucket_sort_analysis.pdf][PDF]])
 /A literate C++ study of distribution sorting using datamunge/
 
