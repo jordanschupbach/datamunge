@@ -718,6 +718,26 @@ We implement the Sieve of Atkin (=algorithms::atkin_primes=) and report it as a 
 
 We implement the BBP formula (=algorithms::bbp_pi_hex_digit=) and report it as a literate program. We show how multiplying pi by 16^n and taking the fractional part reduces to modular exponentiation, so the n-th hex digit needs no preceding digits and no big numbers; the leading digits reproduce 3.243F6A8885A308D3... and the 1000th is extracted on its own.
 
+** [[./binary_splitting_analysis.html][Binary Splitting: Summing a Series as One Exact Fraction]] ([[./binary_splitting_analysis.pdf][PDF]])
+/A literate C++ study of divide-and-conquer series evaluation using datamunge/
+
+We implement binary splitting for e=sum 1/k! (=algorithms::binary_splitting_e=) and report it as a literate program. Merging the left and right halves of the range into a single exact fraction P/Q keeps the multiplied numbers balanced in size, giving near-linear evaluation; three terms yield 5/2 exactly and the correct-digit count climbs steadily until it saturates double precision -- the engine behind record computations of e and pi.
+
+** [[./spigot_analysis.html][The Spigot Algorithm: Dripping Out the Digits of e]] ([[./spigot_analysis.pdf][PDF]])
+/A literate C++ study of digit-by-digit constant computation using datamunge/
+
+We implement a spigot for e (=algorithms::spigot_e=) and report it as a literate program. Holding e in factorial base and repeatedly multiplying by ten with carry drips out one decimal digit at a time, never consulting the digits already produced; the output matches the known value of e exactly and the digit frequencies over 400 digits come out roughly uniform.
+
+** [[./sqrt_digits_analysis.html][Digit-by-Digit Square Roots: The Long-Division Method]] ([[./sqrt_digits_analysis.pdf][PDF]])
+/A literate C++ study of exact square-root extraction using datamunge/
+
+We implement the schoolbook square-root method (=algorithms::digit_by_digit_sqrt=) and report it as a literate program. Pairing digits and choosing the largest d with (20R+d)d<=rem extracts one exact decimal digit per step using only integer arithmetic; roots match =std::sqrt= over thousands of inputs, perfect squares come out clean, and the error falls by a factor of ten per digit.
+
+** [[./long_division_analysis.html][Long Division: Shift, Compare, Subtract]] ([[./long_division_analysis.pdf][PDF]])
+/A literate C++ study of binary restoring division using datamunge/
+
+We implement binary long division (=algorithms::long_division=) and report it as a literate program. Scanning the dividend bit by bit, shifting each into a remainder register and subtracting the divisor when it fits, yields the quotient with a single compare per bit; results match the built-in / and % over half a million random pairs, and a register trace shows the subtract-when-it-reaches-D rhythm of hardware division.
+
 ** [[./gauss_legendre_pi_analysis.html][The Gauss-Legendre Algorithm: Pi by Doubling Digits]] ([[./gauss_legendre_pi_analysis.pdf][PDF]])
 /A literate C++ study of AGM iteration using datamunge/
 
