@@ -1028,6 +1028,16 @@ We implement matrix-chain ordering (=algorithms::matrix_chain_order=) and report
 
 We implement branch-and-bound 0/1 knapsack (=algorithms::knapsack_branch_and_bound=) and report it as a literate program. We give the fractional-knapsack upper bound that prunes hopeless subtrees while keeping the answer exact; a 5-item instance is solved in 17 nodes, and the node count stays near-linear where full enumeration is 2^(n+1).
 
+** [[./odds_algorithm_analysis.html][Bruss's Odds Algorithm: Optimal Stopping Made Simple]] ([[./odds_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of the odds theorem using datamunge/
+
+We implement Bruss's odds algorithm (=algorithms::odds_algorithm=) and report it as a literate program. Summing the odds p_i/(1-p_i) from the last event backward until the total reaches one gives the provably optimal threshold for stopping on the last success; it matches the best of all thresholds over thousands of random instances and reproduces the secretary problem's 1/e law, with the win-probability curve plotted.
+
+** [[./subset_sum_analysis.html][Subset Sum by Meet-in-the-Middle]] ([[./subset_sum_analysis.pdf][PDF]])
+/A literate C++ study of the Horowitz-Sahni algorithm using datamunge/
+
+We implement subset sum by meet-in-the-middle (=algorithms::subset_sum=) and report it as a literate program. Splitting the items in half, enumerating each half's 2^(n/2) subset sums, and matching them across the divide by binary search cuts the cost to O(2^(n/2)); it agrees with brute force over thousands of random instances (negatives included), with the exponential gap plotted.
+
 ** [[./alpha_beta_analysis.html][Alpha-Beta Pruning: Minimax Without the Wasted Work]] ([[./alpha_beta_analysis.pdf][PDF]])
 /A literate C++ study of game-tree pruning using datamunge/
 

@@ -1,0 +1,150 @@
+#+title: Subset Sum by Meet-in-the-Middle
+#+subtitle: A literate C++ study of the Horowitz-Sahni algorithm with =datamunge='s =algorithms::subset_sum=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a set of integers and a target, is there a subset that sums to exactly the target? Subset sum is
+NP-complete, so we do not expect a polynomial algorithm -- but we can do far better than checking all
+\(2^n\) subsets. The *meet-in-the-middle* technique (Horowitz-Sahni, 1974) splits the items in half,
+enumerates each half's \(2^{n/2}\) subset sums, and matches them across the divide, cutting the cost to
+\(O(2^{n/2})\). This report drives =datamunge='s =algorithms::subset_sum=, verified against brute force
+over thousands of random instances (including negative values), and shows the exponential gap it opens.
+#+end_abstract
+
+* Split, enumerate, and match
+
+Partition the \(n\) items into two halves \(A\) and \(B\) of size \(\approx n/2\). Enumerate *all*
+subset sums of each half -- \(2^{n/2}\) of them per side, each tagged with the bitmask that produced
+it. A subset of the whole set is a subset of \(A\) together with a subset of \(B\), so the target is
+reachable iff there exist sums \(s_A\) and \(s_B\) with
+
+\[ s_A + s_B = \text{target},\qquad s_A\in\Sigma(A),\ s_B\in\Sigma(B). \]
+
+Sort \(\Sigma(B)\). Then for each \(s_A\) look up \(\text{target}-s_A\) by binary search in
+\(\Sigma(B)\); a hit gives a solution, and the two bitmasks reconstruct which items to pick. The cost
+is \(2^{n/2}\) to build each side plus \(2^{n/2}\log 2^{n/2}\) for the sorted lookups -- overall
+\(O(2^{n/2}\,n)\), the square root of the naive \(2^n\). That square-root is the difference between a
+40-item instance being hopeless (\(2^{40}\approx10^{12}\)) and instant (\(2^{20}\approx10^{6}\)).
+
+#+name: ss-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/subset_sum.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SUBSET-SUM(nums, target):                       # meet in the middle
+  split nums into halves A, B
+  SigmaB = { (sum of subset, mask) : subset of B }   # 2^(n/2) sums
+  sort SigmaB by sum
+  for each subset of A with sum s_A and mask m_A:
+      if (target - s_A) is in SigmaB (binary search):
+          return the items chosen by m_A and the matching mask in B
+  return "no subset"
+#+end_example
+
+* Worked example: solving, and the exponential gap
+
+We solve a few instances, confirm the returned subset really sums to the target, then plot the work of
+brute force (\(2^n\)) against meet-in-the-middle (\(2^{n/2}\)).
+
+#+name: sss-run
+#+begin_src c++ :eval no
+    const std::vector<long long> nums = {3, 34, 4, 12, 5, 2, 15, 9};
+    for (long long target : {9LL, 30LL, 100LL}) {
+        const auto r = subset_sum(nums, target);
+        std::cout << "=== subset sum, target " << target << " ===\n";
+        if (r.found) {
+            long long s = 0;
+            std::cout << "  subset {";
+            for (std::size_t k = 0; k < r.indices.size(); ++k) { std::cout << (k ? ", " : "") << nums[r.indices[k]]; s += nums[r.indices[k]]; }
+            std::cout << "} sums to " << s << "\n";
+        } else {
+            std::cout << "  no subset sums to " << target << "\n";
+        }
+    }
+
+    // Negative values are handled too.
+    const auto rn = subset_sum({-7, -3, 2, 5, 8, -1}, 0);
+    std::cout << "\ntarget 0 with negatives: " << (rn.found ? "found a subset" : "none") << "\n\n";
+
+    std::cout << "work: brute force 2^n  vs  meet-in-the-middle 2^(n/2)\n";
+    std::vector<double> nx, brute, mim;
+    for (int n = 4; n <= 40; n += 4) {
+        nx.push_back(n);
+        brute.push_back(std::pow(2.0, n));
+        mim.push_back(std::pow(2.0, n / 2.0));
+        if (n == 20 || n == 40) std::printf("  n=%-3d 2^n=%.3g   2^(n/2)=%.3g   speedup=%.3gx\n", n, std::pow(2.0, n), std::pow(2.0, n / 2.0), std::pow(2.0, n / 2.0));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(nx, brute, "b", RGB{220, 38, 38}, 2.0);
+    plot.line(nx, mim, "m", RGB{5, 150, 105}, 2.0);
+    plot.legend({"brute force 2^n", "meet-in-the-middle 2^(n/2)"}, {{220, 38, 38}, {5, 150, 105}});
+    plot.title("Meet-in-the-middle takes the square root of the search space")
+        .x_label("number of items n").y_label("subset evaluations").background({250, 250, 252});
+    plot.save_svg("build/org/subset_sum.svg");
+    std::cout << "wrote subset_sum.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/subset_sum_analysis.cpp <<'CPP'
+<<ss-includes>>
+
+int main() {
+<<sss-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/subset_sum_analysis.cpp -o build/org/subset_sum_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/subset_sum_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== subset sum, target 9 ===
+  subset {9} sums to 9
+=== subset sum, target 30 ===
+  subset {4, 2, 15, 9} sums to 30
+=== subset sum, target 100 ===
+  no subset sums to 100
+
+target 0 with negatives: found a subset
+
+work: brute force 2^n  vs  meet-in-the-middle 2^(n/2)
+  n=20  2^n=1.05e+06   2^(n/2)=1.02e+03   speedup=1.02e+03x
+  n=40  2^n=1.1e+12   2^(n/2)=1.05e+06   speedup=1.05e+06x
+wrote subset_sum.svg
+#+end_example
+
+Each returned subset sums to exactly its target, and unsolvable targets are correctly reported as
+having no subset -- the test suite checks this against brute force over thousands of random instances,
+negatives included. The work table shows the payoff: at forty items, meet-in-the-middle evaluates
+about a million subsets where brute force would face a trillion.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/subset_sum.svg]]
+
+The red brute-force curve rockets away from the green meet-in-the-middle curve: taking the square root
+of \(2^n\) turns intractable instances into easy ones without any approximation -- the answer is
+exact. The same split-and-match idea underlies fast attacks on knapsack cryptosystems and the best
+known exact algorithms for a range of NP-hard subset problems.
