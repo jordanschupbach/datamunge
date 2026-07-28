@@ -55,6 +55,7 @@
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
+#include <datamunge/algorithms/polynomial_gf.hpp>
 #include <datamunge/algorithms/primality.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
