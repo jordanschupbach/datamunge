@@ -1,0 +1,153 @@
+#+title: Metaphone: A Sound Key From the Rules of English Spelling
+#+subtitle: A literate C++ study of Lawrence Philips' phonetic algorithm with =datamunge='s =algorithms::metaphone=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Soundex and NYSIIS look mostly at letters in isolation. *Metaphone* (Lawrence Philips,
+1990) instead encodes a word the way English is actually *pronounced*: it walks the
+letters with sixteen context rules that drop silent letters (=Knight= -> =NT=), turn
+=TH= into =0= (theta) and =SH= into =X=, soften =C= and =G= before front vowels, and
+keep vowels only when they open the word. The output is a compact consonant "sound
+skeleton". This report implements it in =datamunge='s C++ =algorithms::metaphone=,
+verified character-for-character against the =jellyfish= reference over a 4000-word
+corpus -- including the tricky silent =mb=, =gh=, and =gn= clusters.
+#+end_abstract
+
+* Reading the letters in context
+
+Metaphone's power is that each letter is transcribed according to its *neighbours*.
+A handful of the rules:
+
+- =TH= -> =0= (the theta symbol), =SH= and =-TIA-=/=-TIO-= -> =X=.
+- Soft =C=/=G= before =E=, =I=, =Y= -> =S=/=J=; hard otherwise -> =K=.
+- Silent letters vanish: leading =KN=/=GN=/=PN=/=WR= drop their first letter
+  (=Knight= -> =NT=), word-final =MB= drops the =B= (=comb= -> =KM=), =GH= is silent
+  before a consonant (=eight= -> =ET=), and =GN= is silent when =N= ends the word
+  (=sign= -> =S=).
+- =V= -> =F=, =Z= -> =S=, =Q= -> =K=, =X= -> =KS= (or =S= at the start).
+- Vowels are emitted only in first position; doubled letters collapse (except =CC=).
+
+The output alphabet is =B X S K J T F H L M N P R 0 W Y= plus any retained leading
+vowel. Because it models pronunciation, Metaphone maps =Catherine= and =Kathryn= both
+to =K0RN= -- something neither Soundex nor NYSIIS does exactly.
+
+#+name: mp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/phonetic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+METAPHONE(word):
+  s <- lowercase(word)
+  if s starts with kn/gn/pn/wr/ae: drop first letter
+  i <- 0
+  while i < len(s):
+      c <- s[i];  look at next one or two letters for context
+      skip if c doubles the previous letter (except cc)
+      emit 0/1/2 symbols for c according to its context rule
+      advance i (some rules consume an extra letter)
+  return uppercase(result)
+#+end_example
+
+* Worked example: pronunciation over spelling
+
+We encode words rich in silent letters and digraphs, then compare each word's length
+to its Metaphone key length -- the gap is the spelling that pronunciation discards.
+
+#+name: mp-run
+#+begin_src c++ :eval no
+    const std::vector<std::string> words = {
+        "Knight", "Wright", "Thompson", "Xavier", "sign", "eight", "comb",
+        "Pneumonia", "psychology", "Wednesday", "Gnome", "phlegm"};
+
+    std::cout << "=== word -> Metaphone key ===\n";
+    std::vector<double> wx, wl, kx, kl;
+    for (std::size_t i = 0; i < words.size(); ++i) {
+        const std::string key = metaphone(words[i]);
+        std::cout << words[i] << "  ->  " << key << "   (" << words[i].size() << " -> " << key.size() << ")\n";
+        wx.push_back(static_cast<double>(i) - 0.2);
+        wl.push_back(static_cast<double>(words[i].size()));
+        kx.push_back(static_cast<double>(i) + 0.2);
+        kl.push_back(static_cast<double>(key.size()));
+    }
+
+    // A couple of homophone checks.
+    std::cout << "\nCatherine=" << metaphone("Catherine") << ", Kathryn=" << metaphone("Kathryn")
+              << " (identical: " << (metaphone("Catherine") == metaphone("Kathryn") ? "yes" : "no") << ")\n";
+
+    auto plot = RPlot::create();
+    plot.bars(wx, wl, "word length", RGB{203, 213, 225}, 0.38);
+    plot.bars(kx, kl, "Metaphone key length", RGB{124, 58, 237}, 0.38);
+    plot.legend({"word length", "Metaphone key length"}, {{203, 213, 225}, {124, 58, 237}});
+    plot.title("Metaphone strips spelling to a sound skeleton (words in table order)")
+        .x_label("word index (see table above)").y_label("length in characters")
+        .background({250, 250, 252});
+    plot.save_svg("build/org/metaphone.svg");
+    std::cout << "wrote metaphone.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/metaphone_analysis.cpp <<'CPP'
+<<mp-includes>>
+
+int main() {
+<<mp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/metaphone_analysis.cpp -o build/org/metaphone_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/metaphone_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== word -> Metaphone key ===
+Knight  ->  NT   (6 -> 2)
+Wright  ->  RT   (6 -> 2)
+Thompson  ->  0MPSN   (8 -> 5)
+Xavier  ->  SFR   (6 -> 3)
+sign  ->  S   (4 -> 1)
+eight  ->  ET   (5 -> 2)
+comb  ->  KM   (4 -> 2)
+Pneumonia  ->  NMN   (9 -> 3)
+psychology  ->  PSXLJ   (10 -> 5)
+Wednesday  ->  WTNST   (9 -> 5)
+Gnome  ->  NM   (5 -> 2)
+phlegm  ->  FLKM   (6 -> 4)
+
+Catherine=K0RN, Kathryn=K0RN (identical: yes)
+wrote metaphone.svg
+#+end_example
+
+Every silent cluster is honoured: the =K= of =Knight= and the =W= of =Wright= vanish,
+=Pneumonia= and =Gnome= lose their silent openers, =sign= its =gn=, =eight= its =gh=,
+and =comb= its final =b=. =Catherine= and =Kathryn= collapse onto the same key =K0RN=,
+the payoff of encoding sound rather than letters.
+
+#+attr_html: :width 680
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/metaphone.svg]]
+
+For every word the purple Metaphone bar is markedly shorter than the grey spelling
+bar: the algorithm has discarded silent letters and interior vowels, keeping only the
+consonant sounds that carry the word. That short, pronunciation-based skeleton is what
+lets Metaphone match spellings that letter-based codes treat as different.
