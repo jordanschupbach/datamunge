@@ -803,6 +803,16 @@ We implement the Bentley-Ottmann sweep (=geometry::bentley_ottmann=) and report 
 
 We implement baby-step giant-step (=algorithms::baby_step_giant_step=) and report it as a literate program. We split x = im + j to separate the unknown into a tabulated baby-step half and a giant-step half, giving O(sqrt p); 2^x ≡ 17 (mod 101) is solved as x = 30, with the baby/giant collision drawn.
 
+** [[./quadratic_sieve_analysis.html][The Quadratic Sieve: Factoring by a Congruence of Squares]] ([[./quadratic_sieve_analysis.pdf][PDF]])
+/A literate C++ study of subexponential factoring using datamunge/
+
+We implement the quadratic sieve (=algorithms::quadratic_sieve=) and report it as a literate program. Sieving Q(x)=x^2-n for values smooth over a factor base of primes where n is a quadratic residue, then finding a GF(2) dependency among their exponent vectors, builds a congruence of squares X^2=Y^2 whose gcd(X-Y,n) is a factor; it splits dozens of semiprimes (cross-checked against Dixon), with the subexponential L_n[1/2] cost plotted.
+
+** [[./index_calculus_analysis.html][Index Calculus: Subexponential Discrete Logarithms]] ([[./index_calculus_analysis.pdf][PDF]])
+/A literate C++ study of factor-base discrete logs using datamunge/
+
+We implement index calculus (=algorithms::index_calculus=) and report it as a literate program. Collecting smooth powers g^a to build a linear system for the logarithms of a factor base, solved mod p-1, then matching the target through one more smooth relation, recovers discrete logs in L_p[1/2] time; it solves g^x=h modulo several primes, with the subexponential cost plotted against the sqrt(p) baby-step giant-step bound.
+
 ** [[./fermat_primality_analysis.html][The Fermat Primality Test: Fast, Fallible, and Fooled by Carmichael Numbers]] ([[./fermat_primality_analysis.pdf][PDF]])
 /A literate C++ study of probabilistic primality using datamunge/
 
