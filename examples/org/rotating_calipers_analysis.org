@@ -9,7 +9,7 @@ What is the *diameter* of a set of points -- the largest distance between any tw
 The two extreme points must both lie on the *convex hull*, and moreover form an *antipodal
 pair*: points touched by two parallel supporting lines. The *rotating calipers* technique
 sweeps such a pair of parallel lines around the hull, enumerating every antipodal pair in a
-single @math{O(n)} revolution after the hull is built. This report drives =datamunge='s
+single \(O(n)\) revolution after the hull is built. This report drives =datamunge='s
 =geometry::polygon_diameter=, verified on a hand-checkable set, and draws the diameter across
 a random cloud.
 #+end_abstract
@@ -17,11 +17,11 @@ a random cloud.
 * Two parallel lines, rotating around the hull
 
 Imagine a pair of parallel lines (calipers) squeezing the convex hull from opposite sides.
-As you rotate them together through @math{180^\circ}, each line stays flush against a hull
+As you rotate them together through \(180^\circ\), each line stays flush against a hull
 vertex or edge, and the vertices they touch are exactly the *antipodal pairs* -- the only
 candidates for the farthest-apart points. Because the diameter is realized by an antipodal
 pair, sweeping the calipers around the hull finds it in time linear in the number of hull
-vertices, after the @math{O(n\log n)} hull construction.
+vertices, after the \(O(n\log n)\) hull construction.
 
 The same rotating-calipers machinery answers a whole family of questions -- width, minimum-
 area bounding rectangle (see the companion report), maximum distance between two convex
@@ -122,7 +122,7 @@ random cloud of 50: diameter = 12.4819
 wrote rotating_calipers.svg
 #+end_example
 
-The square's diameter is exactly its main diagonal, @math{\sqrt{200}\approx14.14}, joining
+The square's diameter is exactly its main diagonal, \(\sqrt{200}\approx14.14\), joining
 two opposite corners -- the interior points cannot be extreme. On the random cloud the
 diameter stretches between the two most distant hull vertices, and no pair of points is
 farther apart.

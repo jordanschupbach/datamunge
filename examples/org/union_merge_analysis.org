@@ -7,7 +7,7 @@
 #+begin_abstract
 A plain merge keeps every element, duplicates included. The *union merge* keeps each
 distinct value *once* -- it is the sorted *set union* of its inputs, computed in a
-single @math{O(n\log k)} pass by the same min-heap as a @math{k}-way merge, simply
+single \(O(n\log k)\) pass by the same min-heap as a \(k\)-way merge, simply
 skipping any value equal to the one just emitted. No sorting afterward, no hash set: the
 already-sorted inputs make deduplication a one-line check. This report implements it in
 =datamunge='s C++ =algorithms::union_merge=, verified against @c std::set over hundreds
@@ -16,7 +16,7 @@ of random cases.
 
 * Deduplicating while you merge
 
-Because a @math{k}-way merge emits values in nondecreasing order, *every copy of a
+Because a \(k\)-way merge emits values in nondecreasing order, *every copy of a
 value comes out consecutively*. So to keep the set union you need only remember the last
 value you emitted and drop the next one if it is equal:
 
@@ -26,7 +26,7 @@ value you emitted and drop the next one if it is equal:
 
 This is the merge behind combining sorted index *posting lists* (document-id lists that
 must not repeat an id) and behind SQL's @c UNION of sorted inputs. It costs the same
-@math{O(n\log k)} as the plain merge, with @math{O(1)} extra state -- strictly cheaper
+\(O(n\log k)\) as the plain merge, with \(O(1)\) extra state -- strictly cheaper
 than merging-then-deduplicating or unioning through a hash set, both of which touch more
 memory.
 

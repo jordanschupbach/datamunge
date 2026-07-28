@@ -6,11 +6,11 @@
 
 #+begin_abstract
 The *0/1 knapsack problem* -- pick items of maximum value within a weight budget -- has
-@math{2^n} candidate subsets, hopeless to enumerate for large @math{n}. *Branch and bound*
+\(2^n\) candidate subsets, hopeless to enumerate for large \(n\). *Branch and bound*
 searches the take/skip tree but computes, at each node, an *optimistic upper bound* on what
 that branch could yield; if the bound cannot beat the best solution so far, the entire
 subtree is *pruned* unexplored. With a good bound most of the tree vanishes, and the exact
-optimum is found while visiting a tiny fraction of the @math{2^n} leaves. This report drives
+optimum is found while visiting a tiny fraction of the \(2^n\) leaves. This report drives
 =datamunge='s =algorithms::knapsack_branch_and_bound=, verified against dynamic programming,
 and shows the pruning at work.
 #+end_abstract
@@ -18,14 +18,14 @@ and shows the pruning at work.
 * Bound, then prune
 
 Branch and bound is exhaustive search with a conscience. At a node we have decided some
-items (current value @math{v}, weight @math{w}) and face the rest. The *branch* step tries
+items (current value \(v\), weight \(w\)) and face the rest. The *branch* step tries
 both possibilities for the next item -- take it (if it fits) or skip it. The *bound* step
 asks: even optimistically, how much could this branch reach? A tight, cheap answer is the
 *fractional-knapsack* bound: sort remaining items by value density and greedily fill the
 leftover capacity, allowing a fractional last item. That relaxation can only *over*-estimate
 the true 0/1 optimum, so:
 
-- if @math{\text{bound(node)} \le \text{best-so-far}}, no completion of this node can improve
+- if \(\text{bound(node)} \le \text{best-so-far}\), no completion of this node can improve
   the incumbent -- *prune* the whole subtree;
 - otherwise recurse.
 
@@ -64,7 +64,7 @@ KNAPSACK-BB(values, weights, capacity):
 * Worked example: a small instance, then pruning as n grows
 
 We solve a hand instance and list the chosen items, then measure how many tree nodes branch
-and bound visits as @math{n} grows -- against the @math{2^{n+1}} nodes a full enumeration
+and bound visits as \(n\) grows -- against the \(2^{n+1}\) nodes a full enumeration
 would touch.
 
 #+name: bb-run
@@ -143,15 +143,15 @@ n     BB nodes     2^(n+1) full tree
 wrote branch_and_bound.svg
 #+end_example
 
-The hand instance is solved to its exact optimum, listing the chosen items. As @math{n}
+The hand instance is solved to its exact optimum, listing the chosen items. As \(n\)
 grows, the gap between the two curves widens fast: full enumeration's node count climbs the
-straight @math{2^{n+1}} line, while branch and bound -- pruning every hopeless subtree --
+straight \(2^{n+1}\) line, while branch and bound -- pruning every hopeless subtree --
 stays far below it, solving instances the brute-force tree could never finish.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth
 [[file:../../build/org/branch_and_bound.svg]]
 
-On the log scale the red brute-force line rises steadily with @math{n}; the blue
+On the log scale the red brute-force line rises steadily with \(n\); the blue
 branch-and-bound line grows far more slowly, the vertical gap between them the many orders of
 magnitude of work the bound spared. Same exact answer, a minuscule fraction of the search.

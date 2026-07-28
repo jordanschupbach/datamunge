@@ -7,19 +7,19 @@
 #+begin_abstract
 Add a million small numbers in a naive loop and the running total, once it grows large,
 can no longer *see* the small ones -- each addition silently rounds away their low-order
-bits, and the errors pile up as @math{O(n\,\varepsilon)}. *Kahan summation* (1965) fixes
+bits, and the errors pile up as \(O(n\,\varepsilon)\). *Kahan summation* (1965) fixes
 this with a single extra variable that *remembers* what each addition dropped and feeds it
-back on the next step, holding the total error near @math{2\varepsilon} regardless of
-@math{n}. This report implements it in =datamunge='s C++ =algorithms::kahan_sum=, verified
+back on the next step, holding the total error near \(2\varepsilon\) regardless of
+\(n\). This report implements it in =datamunge='s C++ =algorithms::kahan_sum=, verified
 against a long-double reference, and shows its error staying flat where naive summation's
 climbs.
 #+end_abstract
 
 * The lost-bits trick
 
-When you compute @math{\texttt{sum} + x} in floating point and @math{\texttt{sum}} is much
-larger than @math{x}, the result is rounded to the nearest representable value and the
-tail of @math{x} vanishes. Kahan summation keeps a *compensation* @math{c} tracking that
+When you compute \(\texttt{sum} + x\) in floating point and \(\texttt{sum}\) is much
+larger than \(x\), the result is rounded to the nearest representable value and the
+tail of \(x\) vanishes. Kahan summation keeps a *compensation* \(c\) tracking that
 lost tail:
 
 #+begin_example
@@ -29,11 +29,11 @@ c <- (t - sum) - y    # (t - sum) is the part that actually landed; minus y = wh
 sum <- t              # ... and c carries that loss into the next iteration
 #+end_example
 
-The magic is the line @math{c \leftarrow (t-\texttt{sum}) - y}: algebraically it is zero,
-but in floating point @math{(t-\texttt{sum})} recovers only the *high* part of @math{y}
-that survived the rounding, so subtracting @math{y} leaves exactly the *low* part that was
+The magic is the line \(c \leftarrow (t-\texttt{sum}) - y\): algebraically it is zero,
+but in floating point \((t-\texttt{sum})\) recovers only the *high* part of \(y\)
+that survived the rounding, so subtracting \(y\) leaves exactly the *low* part that was
 lost. Feeding it back next step means those bits are not gone, merely deferred. The
-worst-case error becomes independent of @math{n} -- a two-line change that turns a badly
+worst-case error becomes independent of \(n\) -- a two-line change that turns a badly
 conditioned sum into an accurate one.
 
 #+name: ks-includes
@@ -65,8 +65,8 @@ KAHAN-SUM(xs):
 * Worked example: a catastrophic sum, and error versus n
 
 First the classic stress test -- a huge value, a million ones, then the huge value
-negated -- where naive summation loses almost everything. Then we sum @math{n} copies of
-@math{0.1} (not exactly representable) and watch the naive error grow while Kahan's stays
+negated -- where naive summation loses almost everything. Then we sum \(n\) copies of
+\(0.1\) (not exactly representable) and watch the naive error grow while Kahan's stays
 flat.
 
 #+name: ks-run
@@ -147,15 +147,15 @@ wrote kahan_summation.svg
 #+end_example
 
 On the stress test naive summation returns a badly wrong total while Kahan recovers the
-exact @math{1000000}. On the @math{0.1} sums the pattern is systematic: naive error climbs
-roughly in proportion to @math{n}, while Kahan's stays pinned near the machine floor no
+exact \(1000000\). On the \(0.1\) sums the pattern is systematic: naive error climbs
+roughly in proportion to \(n\), while Kahan's stays pinned near the machine floor no
 matter how many terms are added.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth
 [[file:../../build/org/kahan_summation.svg]]
 
-The red naive-error line rises steadily with @math{n}; the blue Kahan line runs flat along
+The red naive-error line rises steadily with \(n\); the blue Kahan line runs flat along
 the bottom. That flatness is the whole point of compensated summation -- the error no
 longer grows with the number of terms, so a sum of a hundred million values is as
 trustworthy as a sum of a thousand.

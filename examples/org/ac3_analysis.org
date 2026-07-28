@@ -17,18 +17,18 @@ every arc consistent, and shows the domains contracting.
 * Revise, and re-enqueue
 
 A binary CSP has variables, each with a *domain* of allowed values, and constraints relating
-pairs of variables. A directed *arc* @math{(i,j)} is *consistent* when every value in
-@math{i}'s domain has at least one *support* in @math{j}'s domain -- a value of @math{j}
+pairs of variables. A directed *arc* \((i,j)\) is *consistent* when every value in
+\(i\)'s domain has at least one *support* in \(j\)'s domain -- a value of \(j\)
 compatible with it. AC-3 keeps a worklist of arcs and repeatedly:
 
-1. *Revises* an arc @math{(i,j)}: removes from @math{i}'s domain each value with no support in
-   @math{j}.
-2. If that removed anything, *re-enqueues* every arc @math{(k,i)} pointing into @math{i} --
-   because shrinking @math{i}'s domain may have destroyed support elsewhere.
+1. *Revises* an arc \((i,j)\): removes from \(i\)'s domain each value with no support in
+   \(j\).
+2. If that removed anything, *re-enqueues* every arc \((k,i)\) pointing into \(i\) --
+   because shrinking \(i\)'s domain may have destroyed support elsewhere.
 
 It stops when the worklist empties (fully arc-consistent) or a domain becomes empty (the CSP
-is unsatisfiable). The running time is @math{O(e\,d^3)} for @math{e} arcs and domain size
-@math{d}. Arc consistency is *necessary but not sufficient* for a solution -- it prunes, it
+is unsatisfiable). The running time is \(O(e\,d^3)\) for \(e\) arcs and domain size
+\(d\). Arc consistency is *necessary but not sufficient* for a solution -- it prunes, it
 does not always solve -- which is why it is run as propagation *inside* backtracking search.
 
 #+name: ac-includes
@@ -61,8 +61,8 @@ REVISE(i,j): drop each a in domain[i] with no b in domain[j] where compatible(i,
 
 * Worked example: an ordering chain
 
-Five variables with domains @math{\{1,\dots,9\}} and the constraints
-@math{x_0<x_1<x_2<x_3<x_4}. Arc consistency alone forces each variable into a narrow band.
+Five variables with domains \(\{1,\dots,9\}\) and the constraints
+\(x_0<x_1<x_2<x_3<x_4\). Arc consistency alone forces each variable into a narrow band.
 
 #+name: ac-run
 #+begin_src c++ :eval no
@@ -133,8 +133,8 @@ x4 domain: 5 6 7 8 9
 wrote ac3.svg
 #+end_example
 
-Arc consistency alone squeezes each nine-value domain down to a narrow band: @math{x_0} can
-only be small (it needs four larger values above it), @math{x_4} only large, and the middle
+Arc consistency alone squeezes each nine-value domain down to a narrow band: \(x_0\) can
+only be small (it needs four larger values above it), \(x_4\) only large, and the middle
 variables to nested ranges in between. No search has happened yet -- this is pure
 propagation, and it has already discarded the large majority of the assignment space.
 

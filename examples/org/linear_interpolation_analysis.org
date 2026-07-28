@@ -9,7 +9,7 @@ The most-used interpolation in all of computing is also the simplest: draw a str
 line between each pair of adjacent samples and read off the value in between. *Linear
 interpolation* underlies lookup tables, audio resampling, animation, and the humble
 =lerp= of graphics. It is exact when the data really is linear, continuous everywhere
-(though kinked at the samples), and its error shrinks as @math{O(h^2)} with the sample
+(though kinked at the samples), and its error shrinks as \(O(h^2)\) with the sample
 spacing. This report implements it in =datamunge='s C++ =algorithms::linear_interpolate=,
 verified to reproduce affine data exactly, and shows its error falling as samples are
 added.
@@ -17,15 +17,15 @@ added.
 
 * A line between each pair of points
 
-Given samples @math{(x_i, y_i)} with the @math{x_i} increasing, the value at a query
-@math{x} in @math{[x_k, x_{k+1}]} is the straight-line blend
+Given samples \((x_i, y_i)\) with the \(x_i\) increasing, the value at a query
+\(x\) in \([x_k, x_{k+1}]\) is the straight-line blend
 
 \[ y(x) = y_k + \frac{x - x_k}{x_{k+1}-x_k}\,(y_{k+1} - y_k) = (1-t)\,y_k + t\,y_{k+1}, \]
 
-with @math{t\in[0,1]} the fractional position in the interval. It is *exact* whenever the
+with \(t\in[0,1]\) the fractional position in the interval. It is *exact* whenever the
 underlying function is affine (a straight line has nothing for the interpolant to miss),
-@math{C^0} but not @math{C^1} (the slope jumps at each node), and its worst-case error on
-a smooth function is bounded by @math{\tfrac18 h^2 \max|f''|} -- so *halving the spacing
+\(C^0\) but not \(C^1\) (the slope jumps at each node), and its worst-case error on
+a smooth function is bounded by \(\tfrac18 h^2 \max|f''|\) -- so *halving the spacing
 quarters the error*. Outside the sample range =datamunge= extrapolates along the nearest
 end segment.
 
@@ -53,7 +53,7 @@ LINEAR-INTERPOLATE(xs, ys, x):
 
 * Worked example: sampling a sine, and the O(h^2) error
 
-We sample @math{\sin x} on @math{[0,2\pi]} at a handful of nodes, reconstruct it with
+We sample \(\sin x\) on \([0,2\pi]\) at a handful of nodes, reconstruct it with
 linear interpolation on a fine grid, and measure how the maximum error falls as we add
 nodes.
 
@@ -137,8 +137,8 @@ wrote linear_interpolation.svg
 
 The reconstruction reproduces the affine test data exactly, and on the sine it tracks the
 curve with visible straight segments between samples. The error table shows the promised
-@math{O(h^2)} behaviour: as the grid refines, each doubling of the node count -- halving
-@math{h} -- settles toward cutting the maximum error by a factor of four.
+\(O(h^2)\) behaviour: as the grid refines, each doubling of the node count -- halving
+\(h\) -- settles toward cutting the maximum error by a factor of four.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth

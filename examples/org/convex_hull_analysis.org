@@ -9,14 +9,14 @@ Stretch a rubber band around a scatter of nails and let it snap taut: the polygo
 forms is the *convex hull*, the smallest convex region containing every point. It is the
 most fundamental construction in computational geometry -- the starting point for
 diameter, width, collision bounds, and shape description. =datamunge= computes it with
-*Andrew's monotone chain*, an @math{O(n\log n)} sort-then-sweep that builds the lower and
+*Andrew's monotone chain*, an \(O(n\log n)\) sort-then-sweep that builds the lower and
 upper boundaries in two passes. This report drives =geometry::convex_hull=, verified
 against a hand-checked example, and draws the hull around a random cloud.
 #+end_abstract
 
 * Sort once, sweep twice
 
-Andrew's monotone chain sorts the points by @math{x} (breaking ties by @math{y}) and then
+Andrew's monotone chain sorts the points by \(x\) (breaking ties by \(y\)) and then
 builds the hull as two chains:
 
 - the *lower hull*, left to right, and
@@ -24,12 +24,12 @@ builds the hull as two chains:
 
 Walking along a chain, it keeps a stack of candidate vertices and, before pushing each new
 point, *pops* any vertex that would create a non-left turn. The turn direction is the sign
-of the cross product @math{(b-a)\times(c-a)}: positive is counterclockwise (a left turn,
-keep), @math{\le 0} is clockwise or straight (pop). When both chains are built and joined,
+of the cross product \((b-a)\times(c-a)\): positive is counterclockwise (a left turn,
+keep), \(\le 0\) is clockwise or straight (pop). When both chains are built and joined,
 what remains is exactly the counterclockwise hull, with collinear edge points discarded.
 
-The single sort costs @math{O(n\log n)}; each point is pushed and popped at most once, so
-the sweep is @math{O(n)}. That @math{O(n\log n)} total is optimal for hull-from-unsorted-
+The single sort costs \(O(n\log n)\); each point is pushed and popped at most once, so
+the sweep is \(O(n)\). That \(O(n\log n)\) total is optimal for hull-from-unsorted-
 points, and monotone chain is the method of choice for its simplicity and numerical
 robustness (one cross-product sign, no angle sorting).
 

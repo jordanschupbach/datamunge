@@ -28,7 +28,7 @@ L[R[c]] <- L[c];  R[L[c]] <- R[c]      # splice the column header out
 
 and splice out every row that used it. To *uncover* on backtrack, run the exact inverse in
 reverse order -- the nodes are still there, pointing at their old neighbours, so
-@math{L[R[c]]\leftarrow c} snaps them back. *Nothing is copied.* Choosing the column with the
+\(L[R[c]]\leftarrow c\) snaps them back. *Nothing is copied.* Choosing the column with the
 fewest remaining rows (the S-heuristic) keeps the branching factor low. The result is a solver
 fast enough that Knuth famously used it to enumerate polyomino tilings and Sudoku solutions by
 the million.
@@ -67,7 +67,7 @@ SEARCH():                                  # Algorithm X with Dancing Links
 
 Tiling a board with dominoes is exact cover: the *columns* are the board cells (each must be
 covered once), and the *rows* are the possible domino placements (each covering two adjacent
-cells). We tile a @math{4\times6} board and draw the result.
+cells). We tile a \(4\times6\) board and draw the result.
 
 #+name: ec-run
 #+begin_src c++ :eval no
@@ -141,8 +141,8 @@ solved: yes, dominoes used: 12 (expected 12)
 wrote exact_cover.svg
 #+end_example
 
-Knuth's instance is solved to its unique cover, and the @math{4\times6} board is perfectly
-tiled by @math{12} dominoes -- every cell covered exactly once, no overlaps, no gaps -- which
+Knuth's instance is solved to its unique cover, and the \(4\times6\) board is perfectly
+tiled by \(12\) dominoes -- every cell covered exactly once, no overlaps, no gaps -- which
 is precisely the exact-cover condition read back as a tiling. The same solver, on a much
 larger matrix, is what tiles pentominoes or fills a Sudoku.
 

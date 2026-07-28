@@ -17,9 +17,9 @@ against known optima, and traces the objective plunging.
 
 * Cut the ellipsoid in half, re-enclose
 
-At iterate centre @math{c} with ellipsoid shape matrix @math{P}, a subgradient @math{g} of the
-convex objective satisfies @math{g^\top(x-c)\ge 0 \Rightarrow f(x)\ge f(c)}: the minimizer lies
-in the *opposite* halfspace @math{g^\top(x-c)\le 0}. The smallest ellipsoid enclosing that
+At iterate centre \(c\) with ellipsoid shape matrix \(P\), a subgradient \(g\) of the
+convex objective satisfies \(g^\top(x-c)\ge 0 \Rightarrow f(x)\ge f(c)\): the minimizer lies
+in the *opposite* halfspace \(g^\top(x-c)\le 0\). The smallest ellipsoid enclosing that
 half-ellipsoid has the closed-form update
 
 \[
@@ -28,9 +28,9 @@ c \leftarrow c - \frac{1}{n+1}\tilde g,\quad
 P \leftarrow \frac{n^2}{n^2-1}\Bigl(P - \frac{2}{n+1}\tilde g\,\tilde g^\top\Bigr).
 \]
 
-Each step multiplies the ellipsoid's *volume* by @math{e^{-1/(2n)}<1}, so after @math{O(n^2\log
-\frac{1}{\varepsilon})} steps the ellipsoid -- and thus the distance to the optimum -- has
-shrunk below @math{\varepsilon}. The method needs only a *subgradient oracle*, making it work
+Each step multiplies the ellipsoid's *volume* by \(e^{-1/(2n)}<1\), so after \(O(n^2\log
+\frac{1}{\varepsilon})\) steps the ellipsoid -- and thus the distance to the optimum -- has
+shrunk below \(\varepsilon\). The method needs only a *subgradient oracle*, making it work
 on nondifferentiable convex problems where gradient descent stalls, and its convergence is
 independent of conditioning. In practice it is slow (interior-point methods dominate), but as a
 *theoretical* guarantee of polynomial-time convex optimization it is a landmark.
@@ -65,7 +65,7 @@ ELLIPSOID-MINIMIZE(f, subgradient, c, R):
 
 * Worked example: a 2-D quadratic, and geometric convergence
 
-We minimize @math{f(x,y)=(x-3)^2+5(y+1)^2} (min @math{0} at @math{(3,-1)}) from a ball of
+We minimize \(f(x,y)=(x-3)^2+5(y+1)^2\) (min \(0\) at \((3,-1)\)) from a ball of
 radius 10, tracing the objective at each step to expose the geometric decay.
 
 #+name: el-run
@@ -139,7 +139,7 @@ objective after 120 steps: 1e-8.77287
 wrote ellipsoid.svg
 #+end_example
 
-The method converges to the true optimum @math{(3,-1)} with objective driven to essentially
+The method converges to the true optimum \((3,-1)\) with objective driven to essentially
 zero, using nothing but subgradient evaluations and the ellipsoid update. The objective trace
 falls in a roughly straight line on the log scale -- the signature of *geometric* convergence,
 the volume of the enclosing ellipsoid (and with it the distance to the optimum) shrinking by a

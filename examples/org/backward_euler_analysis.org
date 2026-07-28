@@ -6,7 +6,7 @@
 
 #+begin_abstract
 Forward Euler evaluates the slope where it *is*; *backward Euler* evaluates it where it
-is *going*. That one change -- using @math{f} at the arrival point -- turns the update
+is *going*. That one change -- using \(f\) at the arrival point -- turns the update
 into an *implicit* equation that must be solved each step, but buys *A-stability*: on a
 stiff, rapidly-decaying problem backward Euler stays bounded for *any* step size, while
 forward Euler explodes. This report implements it in =datamunge='s C++
@@ -21,19 +21,19 @@ Backward Euler steps
 
 \[ y_{n+1} = y_n + h\,f(t_{n+1},\, y_{n+1}), \]
 
-with the unknown @math{y_{n+1}} on *both* sides. For a linear test problem
-@math{y'=-\lambda y} this rearranges to @math{y_{n+1} = y_n/(1+h\lambda)}, whose
-amplification factor @math{1/(1+h\lambda)} has magnitude @math{<1} for *every*
-@math{h\lambda>0}: the numerical solution decays just like the true one, no matter how
-big the step. Forward Euler's factor @math{1-h\lambda} instead exceeds 1 in magnitude
-once @math{h\lambda>2}, so it oscillates and diverges. That unconditional stability is
+with the unknown \(y_{n+1}\) on *both* sides. For a linear test problem
+\(y'=-\lambda y\) this rearranges to \(y_{n+1} = y_n/(1+h\lambda)\), whose
+amplification factor \(1/(1+h\lambda)\) has magnitude \(<1\) for *every*
+\(h\lambda>0\): the numerical solution decays just like the true one, no matter how
+big the step. Forward Euler's factor \(1-h\lambda\) instead exceeds 1 in magnitude
+once \(h\lambda>2\), so it oscillates and diverges. That unconditional stability is
 what *A-stability* means, and it is why implicit methods dominate *stiff* problems
 (where some modes decay far faster than the timescale of interest).
 
-The cost: for a general nonlinear @math{f}, each step must *solve* the implicit
+The cost: for a general nonlinear \(f\), each step must *solve* the implicit
 equation. =datamunge= does this with *Newton's method* using a finite-difference
-Jacobian @math{J = I - h\,\partial f/\partial y}, iterating until the residual is
-negligible (for a linear @math{f}, Newton converges in a single step).
+Jacobian \(J = I - h\,\partial f/\partial y\), iterating until the residual is
+negligible (for a linear \(f\), Newton converges in a single step).
 
 #+name: be-includes
 #+begin_src c++ :eval no
@@ -66,10 +66,10 @@ BACKWARD-EULER(f, y0, t0, t1, steps):
 
 * Worked example: a stiff decay that ruins forward Euler
 
-We integrate the stiff problem @math{y'=-25y} (exact @math{y=e^{-25t}}) with a large step
-@math{h=0.1}, so @math{h\lambda=2.5>2}. Forward Euler's factor is @math{1-2.5=-1.5}: the
+We integrate the stiff problem \(y'=-25y\) (exact \(y=e^{-25t}\)) with a large step
+\(h=0.1\), so \(h\lambda=2.5>2\). Forward Euler's factor is \(1-2.5=-1.5\): the
 solution flips sign and grows without bound. Backward Euler's factor is
-@math{1/3.5\approx0.286}: it decays smoothly toward zero, like the truth.
+\(1/3.5\approx0.286\): it decays smoothly toward zero, like the truth.
 
 #+name: be-run
 #+begin_src c++ :eval no
@@ -136,9 +136,9 @@ backward Euler final y = 3.6251e-06  (exact e^-25 = 1.38879e-11)
 forward Euler values: 1.00 -1.50 2.25 -3.38 5.06 -7.59 11.39 -17.09 25.63 -38.44 57.67
 #+end_example
 
-The forward-Euler values flip sign and grow by a factor of @math{1.5} in magnitude every
-step -- @math{1, -1.5, 2.25, -3.375, \dots} -- a textbook stiff instability. Backward
-Euler, evaluating the slope at the step's end, contracts by @math{1/3.5} each step and
+The forward-Euler values flip sign and grow by a factor of \(1.5\) in magnitude every
+step -- \(1, -1.5, 2.25, -3.375, \dots\) -- a textbook stiff instability. Backward
+Euler, evaluating the slope at the step's end, contracts by \(1/3.5\) each step and
 settles toward zero, tracking the true decay (coarsely, since it is only first-order, but
 *stably*). Same step size, opposite fates.
 

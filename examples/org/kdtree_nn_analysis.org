@@ -7,28 +7,28 @@
 #+begin_abstract
 "Which stored point is closest to this query?" -- asked over and over, as in a database of
 locations or the inner loop of a classifier -- is too slow to answer by scanning all
-@math{n} points each time. The *k-d tree* organizes the points into a binary spatial tree
+\(n\) points each time. The *k-d tree* organizes the points into a binary spatial tree
 that, by *pruning* whole branches that cannot contain a closer point, answers a
-nearest-neighbor query in @math{O(\log n)} on average. This report drives =datamunge='s
+nearest-neighbor query in \(O(\log n)\) on average. This report drives =datamunge='s
 =geometry::KDTree2D=, verifies its nearest against a brute-force scan, and draws a query
-with its nearest and @math{k} nearest neighbors.
+with its nearest and \(k\) nearest neighbors.
 #+end_abstract
 
 * Split, descend, and prune
 
 A 2-D k-d tree is a binary search tree over points that *alternates the splitting axis* by
-depth: the root splits on @math{x}, its children on @math{y}, grandchildren on @math{x}
+depth: the root splits on \(x\), its children on \(y\), grandchildren on \(x\)
 again, and so on, each node taking the median point along the current axis. To find the
-nearest neighbor of a query @math{q}:
+nearest neighbor of a query \(q\):
 
-1. *Descend* to the leaf as if inserting @math{q}, keeping the best point seen.
+1. *Descend* to the leaf as if inserting \(q\), keeping the best point seen.
 2. *Unwind*, and at each node check whether the *other* side of the splitting plane could
-   hold a closer point -- i.e. whether the distance from @math{q} to the plane is less than
+   hold a closer point -- i.e. whether the distance from \(q\) to the plane is less than
    the best distance found. If not, *prune* that entire subtree.
 
 The pruning is what makes it fast: most branches are discarded without inspection, so an
-average query touches @math{O(\log n)} nodes instead of all @math{n}. The same tree answers
-@math{k}-nearest queries (keep a size-@math{k} max-heap) and radius queries. Its weakness is
+average query touches \(O(\log n)\) nodes instead of all \(n\). The same tree answers
+\(k\)-nearest queries (keep a size-\(k\) max-heap) and radius queries. Its weakness is
 high dimension -- above ~20 dimensions the pruning stops paying off (the "curse of
 dimensionality") -- but in the plane it is ideal.
 
@@ -149,6 +149,6 @@ five nearest come back in increasing distance, the tight cluster around the quer
 [[file:../../build/org/kdtree_nn.svg]]
 
 The red query sits amid the grey cloud; its green nearest neighbor and the ring of blue
-@math{k}-nearest points cluster immediately around it, while the vast majority of points are
+\(k\)-nearest points cluster immediately around it, while the vast majority of points are
 never even compared -- pruned away by the splitting planes. That selective descent is what
 turns a linear scan into a logarithmic query.

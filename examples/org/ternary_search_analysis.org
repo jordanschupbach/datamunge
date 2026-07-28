@@ -9,7 +9,7 @@ Binary search finds a value in a *sorted* array by halving. *Ternary search* fin
 *extremum* of a *unimodal* function -- one that rises then falls (or falls then rises) --
 by splitting the interval into *thirds*. Comparing the function at the two split points
 reveals which outer third *cannot* contain the peak, so it is thrown away and the
-bracket shrinks by @math{2/3} each step. It needs no derivative, only unimodality, and
+bracket shrinks by \(2/3\) each step. It needs no derivative, only unimodality, and
 converges *logarithmically*. This report implements it in =datamunge='s C++
 =algorithms::ternary_search_max=/=_min=, verified against known analytic optima, and
 watches the bracket close in on the peak.
@@ -17,19 +17,19 @@ watches the bracket close in on the peak.
 
 * Why thirds, and why it works
 
-On a bracket @math{[lo,hi]} pick two interior points
-@math{m_1 = lo + (hi-lo)/3} and @math{m_2 = hi - (hi-lo)/3}. For a function that
+On a bracket \([lo,hi]\) pick two interior points
+\(m_1 = lo + (hi-lo)/3\) and \(m_2 = hi - (hi-lo)/3\). For a function that
 increases then decreases (a single maximum):
 
-- if @math{f(m_1) \ge f(m_2)}, the peak cannot lie in the *right* third @math{(m_2,hi]}
-  -- so set @math{hi \leftarrow m_2};
-- otherwise it cannot lie in the *left* third @math{[lo,m_1)} -- so set
-  @math{lo \leftarrow m_1}.
+- if \(f(m_1) \ge f(m_2)\), the peak cannot lie in the *right* third \((m_2,hi]\)
+  -- so set \(hi \leftarrow m_2\);
+- otherwise it cannot lie in the *left* third \([lo,m_1)\) -- so set
+  \(lo \leftarrow m_1\).
 
-Either way the surviving bracket still contains the maximum and is @math{2/3} as wide.
-After @math{t} steps the width is @math{(2/3)^t} of the original, so reaching a
-tolerance @math{\varepsilon} takes @math{O(\log_{3/2}\!\frac{hi-lo}{\varepsilon})}
-steps -- logarithmic, like binary search but with base @math{3/2} instead of @math{2}.
+Either way the surviving bracket still contains the maximum and is \(2/3\) as wide.
+After \(t\) steps the width is \((2/3)^t\) of the original, so reaching a
+tolerance \(\varepsilon\) takes \(O(\log_{3/2}\!\frac{hi-lo}{\varepsilon})\)
+steps -- logarithmic, like binary search but with base \(3/2\) instead of \(2\).
 Unimodality is *essential*: on a bumpy multi-peak function the discarded third might
 have held the true optimum. (The closely related *golden-section search* reuses one
 evaluation per step to save function calls; ternary search is the simplest form.)
@@ -61,8 +61,8 @@ TERNARY-SEARCH-MAX(f, lo, hi):
 
 * Worked example: the peak of x e^{-x}, and the shrinking bracket
 
-The function @math{f(x)=x\,e^{-x}} rises from 0, peaks at @math{x=1} (value
-@math{1/e\approx0.3679}), then decays -- textbook unimodal. We locate the peak and trace
+The function \(f(x)=x\,e^{-x}\) rises from 0, peaks at \(x=1\) (value
+\(1/e\approx0.3679\)), then decays -- textbook unimodal. We locate the peak and trace
 the bracket width at each step.
 
 #+name: ts-run
@@ -131,17 +131,17 @@ bracket width reached 1e-9 in 56 steps
 wrote ternary_search.svg
 #+end_example
 
-Both optima land on their analytic values -- the peak of @math{x e^{-x}} at
-@math{x=1} with value @math{1/e}, and the parabola's minimum at @math{x=3} -- found
+Both optima land on their analytic values -- the peak of \(x e^{-x}\) at
+\(x=1\) with value \(1/e\), and the parabola's minimum at \(x=3\) -- found
 with nothing but function evaluations. The bracket-width trace is a straight line on a
-log scale: geometric @math{(2/3)^t} shrinkage, the signature of logarithmic
+log scale: geometric \((2/3)^t\) shrinkage, the signature of logarithmic
 convergence.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth
 [[file:../../build/org/ternary_search.svg]]
 
-The purple actual-width line lies right on top of the grey @math{(2/3)^t} reference:
+The purple actual-width line lies right on top of the grey \((2/3)^t\) reference:
 every step really does discard one third of the bracket. That steady logarithmic
-descent is why ternary search reaches a @math{10^{-9}} bracket in only a few dozen
+descent is why ternary search reaches a \(10^{-9}\) bracket in only a few dozen
 evaluations, no derivative required -- as long as the function truly has a single peak.

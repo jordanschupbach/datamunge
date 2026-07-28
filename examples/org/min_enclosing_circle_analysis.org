@@ -27,7 +27,7 @@ a randomized incremental recursion around this fact:
 - with 1, 2, or 3 boundary points the circle is determined outright.
 
 Because a point ends up on the boundary only with small probability at each step, the
-expected work is @math{O(n)} -- linear, despite solving a global optimization. The result is
+expected work is \(O(n)\) -- linear, despite solving a global optimization. The result is
 the circle's centre and radius.
 
 #+name: mc-includes

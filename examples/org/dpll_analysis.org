@@ -63,7 +63,7 @@ DPLL(clauses, assignment):
 
 We solve a small satisfiable formula (reading off an assignment), confirm a contradictory one
 is unsatisfiable, then sweep the clause-to-variable ratio of random 3-SAT to expose the sharp
-satisfiability threshold near @math{m/n\approx4.26}.
+satisfiability threshold near \(m/n\approx4.26\).
 
 #+name: dp-run
 #+begin_src c++ :eval no
@@ -159,10 +159,10 @@ wrote dpll.svg
 #+end_example
 
 DPLL reads off a satisfying assignment for the solvable formula and correctly declares the
-contradiction @math{x_1\wedge\neg x_1} unsatisfiable. The sweep reproduces the celebrated
+contradiction \(x_1\wedge\neg x_1\) unsatisfiable. The sweep reproduces the celebrated
 *phase transition*: for few clauses almost every formula is satisfiable, for many almost none
-is, and the switch happens abruptly right around the theoretical threshold @math{m/n\approx
-4.26} -- exactly where random SAT instances are also hardest to solve.
+is, and the switch happens abruptly right around the theoretical threshold \(m/n\approx
+4.26\) -- exactly where random SAT instances are also hardest to solve.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth
@@ -170,7 +170,7 @@ is, and the switch happens abruptly right around the theoretical threshold @math
 
 The purple satisfiable-fraction curve stays near 1 at low ratios, plunges through a narrow
 window, and flattens near 0 -- a cliff, not a slope -- crossing one-half close to the red
-@math{4.26} line (a touch to its right here, the finite-size shift expected at only
-@math{n=25} variables; the crossing marches onto @math{4.26} as @math{n} grows). That sharp
+\(4.26\) line (a touch to its right here, the finite-size shift expected at only
+\(n=25\) variables; the crossing marches onto \(4.26\) as \(n\) grows). That sharp
 threshold, discovered empirically and then studied intensely, is one of the most striking
 phenomena in the theory of computation, and DPLL is the tool that makes it visible.

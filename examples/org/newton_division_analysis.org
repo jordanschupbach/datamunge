@@ -6,31 +6,31 @@
 
 #+begin_abstract
 Division is the slowest of the four arithmetic operations in hardware. *Newton-Raphson
-division* sidesteps it: to compute @math{N/D} it first finds the *reciprocal* @math{1/D}
-using an iteration built only from *multiplies and subtracts* -- @math{x\leftarrow x(2-Dx)}
--- then multiplies by @math{N}. Each step *doubles* the number of correct bits (quadratic
+division* sidesteps it: to compute \(N/D\) it first finds the *reciprocal* \(1/D\)
+using an iteration built only from *multiplies and subtracts* -- \(x\leftarrow x(2-Dx)\)
+-- then multiplies by \(N\). Each step *doubles* the number of correct bits (quadratic
 convergence), so from a good seed a handful of iterations reach full double precision. This
 report implements it in =datamunge='s C++ =algorithms::newton_raphson_division=, verified
-against true division over @math{10^5} random cases, and traces the digits doubling.
+against true division over \(10^5\) random cases, and traces the digits doubling.
 #+end_abstract
 
 * A reciprocal without a divide
 
-Finding @math{1/D} is finding the root of @math{f(x)=\tfrac1x - D}. Newton's step
-@math{x - f(x)/f'(x)} for this @math{f} simplifies -- with no division of its own -- to
+Finding \(1/D\) is finding the root of \(f(x)=\tfrac1x - D\). Newton's step
+\(x - f(x)/f'(x)\) for this \(f\) simplifies -- with no division of its own -- to
 
 \[ x_{k+1} = x_k\,(2 - D\,x_k). \]
 
-If @math{x_k = (1/D)(1-\epsilon_k)}, substituting gives
-@math{x_{k+1} = (1/D)(1-\epsilon_k^2)}: the relative error is *squared* each step, so
+If \(x_k = (1/D)(1-\epsilon_k)\), substituting gives
+\(x_{k+1} = (1/D)(1-\epsilon_k^2)\): the relative error is *squared* each step, so
 correct digits *double*. Two preconditions make it fast and safe:
 
-- *Scaling.* Write @math{D = m\cdot 2^{e}} with @math{m\in[0.5,1)} (via the floating-point
-  exponent). Reciprocate @math{m}, then multiply by @math{2^{-e}}. This keeps the argument
+- *Scaling.* Write \(D = m\cdot 2^{e}\) with \(m\in[0.5,1)\) (via the floating-point
+  exponent). Reciprocate \(m\), then multiply by \(2^{-e}\). This keeps the argument
   in a fixed range so one linear seed always works.
-- *A good seed.* On @math{[0.5,1)} the minimax linear initial guess
-  @math{x_0 = \tfrac{48}{17} - \tfrac{32}{17}m} has error below @math{1/17}, so four to
-  five doublings reach @math{2^{-53}}.
+- *A good seed.* On \([0.5,1)\) the minimax linear initial guess
+  \(x_0 = \tfrac{48}{17} - \tfrac{32}{17}m\) has error below \(1/17\), so four to
+  five doublings reach \(2^{-53}\).
 
 This is exactly how many CPUs and soft-float libraries divide: a seed table plus a few
 Newton steps, no long-division state machine.
@@ -63,8 +63,8 @@ NEWTON-DIVISION(N, D): return N * RECIPROCAL(D)
 
 * Worked example: 1/3, and the doubling of correct digits
 
-We reciprocate @math{D=3} from the scaled seed and print the error after each Newton step,
-then confirm the full divider matches @math{N/D} on a few magnitudes.
+We reciprocate \(D=3\) from the scaled seed and print the error after each Newton step,
+then confirm the full divider matches \(N/D\) on a few magnitudes.
 
 #+name: nd-run
 #+begin_src c++ :eval no
@@ -134,10 +134,10 @@ reciprocal of m=0.75, error |m x - 1| per step:
   step 6: x=1.333333333333333  error=5.551e-17
 #+end_example
 
-The divider reproduces @math{N/D} across wildly different magnitudes -- tiny denominators,
+The divider reproduces \(N/D\) across wildly different magnitudes -- tiny denominators,
 powers of two, repeating decimals -- using only multiplies and subtracts inside. The error
 trace is the signature of quadratic convergence: the reciprocal error falls
-@math{6\times10^{-2}\to3\times10^{-3}\to1\times10^{-5}\to1\times10^{-10}\to10^{-16}}, the
+\(6\times10^{-2}\to3\times10^{-3}\to1\times10^{-5}\to1\times10^{-10}\to10^{-16}\), the
 number of correct digits roughly doubling each step, reaching machine precision in about
 five iterations.
 

@@ -5,32 +5,32 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-Computing @math{\sqrt{x^2+y^2}} -- a vector's length, a complex number's modulus -- needs a
+Computing \(\sqrt{x^2+y^2}\) -- a vector's length, a complex number's modulus -- needs a
 square root, which is expensive on small DSPs and microcontrollers. The *alpha max plus
 beta min* algorithm approximates it with *no multiply-heavy square root at all*:
-@math{\alpha\max(|x|,|y|) + \beta\min(|x|,|y|)}. With coefficients chosen to minimize the
-worst-case error, @math{\alpha\approx0.960}, @math{\beta\approx0.398}, the estimate is
-within about @math{3.96\%} of the true magnitude everywhere. This report implements it in
+\(\alpha\max(|x|,|y|) + \beta\min(|x|,|y|)\). With coefficients chosen to minimize the
+worst-case error, \(\alpha\approx0.960\), \(\beta\approx0.398\), the estimate is
+within about \(3.96\%\) of the true magnitude everywhere. This report implements it in
 =datamunge='s C++ =algorithms::alpha_max_beta_min=, verified to stay inside that error
-bound over @math{2\times10^5} random vectors.
+bound over \(2\times10^5\) random vectors.
 #+end_abstract
 
 * A linear blend of the two components
 
-Sort the absolute components into @math{\text{hi}=\max(|x|,|y|)} and
-@math{\text{lo}=\min(|x|,|y|)}. The true magnitude is
-@math{\text{hi}\sqrt{1+(\text{lo}/\text{hi})^2}}; the approximation replaces that square
-root with a straight line in @math{\text{lo}/\text{hi}}:
+Sort the absolute components into \(\text{hi}=\max(|x|,|y|)\) and
+\(\text{lo}=\min(|x|,|y|)\). The true magnitude is
+\(\text{hi}\sqrt{1+(\text{lo}/\text{hi})^2}\); the approximation replaces that square
+root with a straight line in \(\text{lo}/\text{hi}\):
 
 \[ \widehat{r} = \alpha\,\text{hi} + \beta\,\text{lo}. \]
 
-The ratio @math{\text{lo}/\text{hi}} ranges over @math{[0,1]} (from an axis-aligned vector
-to a @math{45^\circ} one), so the exact factor @math{\sqrt{1+t^2}} sweeps from @math{1} to
-@math{\sqrt2\approx1.414}. Choosing @math{\alpha,\beta} to minimize the *maximum* deviation
-of the line @math{\alpha+\beta t} from @math{\sqrt{1+t^2}} on @math{[0,1]} gives the
-minimax coefficients @math{\alpha=0.96043}, @math{\beta=0.39782} with peak relative error
-@math{\approx3.96\%}. Different objectives give different constants (e.g. @math{\alpha=1,
-\beta=1/2} is simpler but peaks near @math{12\%}); =datamunge= uses the minimax pair. The
+The ratio \(\text{lo}/\text{hi}\) ranges over \([0,1]\) (from an axis-aligned vector
+to a \(45^\circ\) one), so the exact factor \(\sqrt{1+t^2}\) sweeps from \(1\) to
+\(\sqrt2\approx1.414\). Choosing \(\alpha,\beta\) to minimize the *maximum* deviation
+of the line \(\alpha+\beta t\) from \(\sqrt{1+t^2}\) on \([0,1]\) gives the
+minimax coefficients \(\alpha=0.96043\), \(\beta=0.39782\) with peak relative error
+\(\approx3.96\%\). Different objectives give different constants (e.g. \(\alpha=1,
+\beta=1/2\) is simpler but peaks near \(12\%\)); =datamunge= uses the minimax pair. The
 whole computation is two multiplies, an add, and a compare -- no square root, no division.
 
 #+name: ab-includes
@@ -57,9 +57,9 @@ ALPHA-MAX-BETA-MIN(x, y):
 * Worked example: error around the circle
 
 Because the minimax coefficients make the error *equioscillate*, it reaches its most
-negative (@math{\approx-3.96\%}) both on the axes and at @math{45^\circ}, and swings to
-@math{+3.96\%} partway between. We sweep a unit vector through all angles (true magnitude
-@math{1}) and plot the relative error, which ripples within the @math{\pm4\%} band.
+negative (\(\approx-3.96\%\)) both on the axes and at \(45^\circ\), and swings to
+\(+3.96\%\) partway between. We sweep a unit vector through all angles (true magnitude
+\(1\)) and plot the relative error, which ripples within the \(\pm4\%\) band.
 
 #+name: ab-run
 #+begin_src c++ :eval no
@@ -123,11 +123,11 @@ worst-case relative error over the circle = 3.95661 %
 wrote alpha_max_beta_min.svg
 #+end_example
 
-The spot checks show the character of the approximation: @math{(3,4)} lands at
-@math{5.035} (a touch high, since that vector is away from the worst-case directions),
-while the axis @math{(1,0)} reads @math{0.960} and @math{(1,1)} reads @math{1.358} -- both
-about @math{4\%} low, the equioscillation extremes. The sweep confirms the worst-case error
-stays under @math{4\%} everywhere on the circle, exactly the minimax guarantee the
+The spot checks show the character of the approximation: \((3,4)\) lands at
+\(5.035\) (a touch high, since that vector is away from the worst-case directions),
+while the axis \((1,0)\) reads \(0.960\) and \((1,1)\) reads \(1.358\) -- both
+about \(4\%\) low, the equioscillation extremes. The sweep confirms the worst-case error
+stays under \(4\%\) everywhere on the circle, exactly the minimax guarantee the
 coefficients were designed for. For a cost of two multiplies and an add, that is often
 accurate enough for gain control, edge detection, or a collision radius.
 
@@ -135,7 +135,7 @@ accurate enough for gain control, edge detection, or a collision radius.
 #+attr_latex: :width 0.85\linewidth
 [[file:../../build/org/alpha_max_beta_min.svg]]
 
-The green error curve ripples between the red @math{\pm3.96\%} guide lines with a
-period of @math{90^\circ} -- one lobe per octant of symmetry -- never escaping the band.
+The green error curve ripples between the red \(\pm3.96\%\) guide lines with a
+period of \(90^\circ\) -- one lobe per octant of symmetry -- never escaping the band.
 That bounded, predictable error is what makes the approximation usable: it is always a
 little off, but never badly, and it never needs a square root to say so.

@@ -5,10 +5,10 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-Matrix multiplication is associative, so @math{A_1A_2A_3A_4} can be bracketed many ways --
-and the *order* changes the arithmetic cost enormously, because multiplying a @math{p\times
-q} by a @math{q\times r} matrix costs @math{pqr} scalar multiplications. Choosing the
-cheapest parenthesization is a textbook *dynamic programming* problem: an @math{O(n^3)}
+Matrix multiplication is associative, so \(A_1A_2A_3A_4\) can be bracketed many ways --
+and the *order* changes the arithmetic cost enormously, because multiplying a \(p\times
+q\) by a \(q\times r\) matrix costs \(pqr\) scalar multiplications. Choosing the
+cheapest parenthesization is a textbook *dynamic programming* problem: an \(O(n^3)\)
 recurrence beats the exponential (Catalan) number of orderings. This report drives
 =datamunge='s =algorithms::matrix_chain_order=, verified against brute force, and shows the
 optimal bracketing crushing the naive one.
@@ -16,18 +16,18 @@ optimal bracketing crushing the naive one.
 
 * The DP recurrence
 
-Let the chain be @math{A_1\cdots A_n} with @math{A_i} of size @math{d_{i-1}\times d_i}, so
-the whole chain is described by the dimension list @math{d_0,d_1,\dots,d_n}. Let
-@math{m[i][j]} be the minimum cost to multiply @math{A_i\cdots A_j}. Any bracketing splits
-at some @math{k}, first forming @math{A_i\cdots A_k} and @math{A_{k+1}\cdots A_j} then
-multiplying the two results (a @math{d_{i-1}\times d_k} by a @math{d_k\times d_j}):
+Let the chain be \(A_1\cdots A_n\) with \(A_i\) of size \(d_{i-1}\times d_i\), so
+the whole chain is described by the dimension list \(d_0,d_1,\dots,d_n\). Let
+\(m[i][j]\) be the minimum cost to multiply \(A_i\cdots A_j\). Any bracketing splits
+at some \(k\), first forming \(A_i\cdots A_k\) and \(A_{k+1}\cdots A_j\) then
+multiplying the two results (a \(d_{i-1}\times d_k\) by a \(d_k\times d_j\)):
 
 \[ m[i][j] = \min_{i\le k<j}\ \bigl(m[i][k] + m[k+1][j] + d_{i-1}\,d_k\,d_j\bigr), \qquad m[i][i]=0. \]
 
-Filling the table by increasing chain length gives every @math{m[i][j]} in @math{O(n^3)}
-time and @math{O(n^2)} space, and a parallel @math{s[i][j]} recording each optimal split
+Filling the table by increasing chain length gives every \(m[i][j]\) in \(O(n^3)\)
+time and \(O(n^2)\) space, and a parallel \(s[i][j]\) recording each optimal split
 lets us reconstruct the bracketing. The number of *distinct* parenthesizations is the
-Catalan number @math{C_{n-1}}, which explodes -- so the DP is not a mild speedup but the
+Catalan number \(C_{n-1}\), which explodes -- so the DP is not a mild speedup but the
 difference between feasible and not.
 
 #+name: mc-includes
@@ -55,7 +55,7 @@ MATRIX-CHAIN-ORDER(d[0..n]):
 
 * Worked example: the CLRS chain, optimal versus naive
 
-We solve the textbook chain with dimensions @math{30,35,15,5,10,20,25} and compare the
+We solve the textbook chain with dimensions \(30,35,15,5,10,20,25\) and compare the
 optimal cost to the cost of blindly multiplying left-to-right and right-to-left.
 
 #+name: mc-run
@@ -119,7 +119,7 @@ right-to-left cost = 47500
 wrote matrix_chain.svg
 #+end_example
 
-The DP finds the optimal bracketing at cost @math{15125} scalar multiplications -- the
+The DP finds the optimal bracketing at cost \(15125\) scalar multiplications -- the
 canonical CLRS answer -- while multiplying the same chain blindly left-to-right or
 right-to-left costs several times more. The only thing that changed is *where the
 parentheses go*; the DP finds the placement that minimizes the total work.
@@ -131,4 +131,4 @@ parentheses go*; the DP finds the placement that minimizes the total work.
 The optimal bar is dramatically shorter than either naive ordering. For six matrices the
 gap is a few-fold; for longer chains, where the number of orderings grows like a Catalan
 number, choosing well is the difference between a fast computation and an intractable one --
-which is exactly why the dynamic program is worth its @math{O(n^3)}.
+which is exactly why the dynamic program is worth its \(O(n^3)\).

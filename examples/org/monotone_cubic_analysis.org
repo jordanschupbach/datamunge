@@ -5,7 +5,7 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-A natural cubic spline is beautifully smooth (@math{C^2}) -- but near a sharp change it
+A natural cubic spline is beautifully smooth (\(C^2\)) -- but near a sharp change it
 *overshoots*, dipping below or arcing above the data and inventing values that were never
 there. For *monotone* data (a cumulative distribution, a dose-response curve) that is
 unacceptable. *Monotone cubic interpolation* (Fritsch & Carlson, 1980) keeps the cubic
@@ -19,17 +19,17 @@ with a natural spline's wiggles on step-like data.
 
 Monotone cubic interpolation is a cubic Hermite interpolant (see the companion Hermite
 report) with a *specific, safe* choice of nodal slopes. Starting from the secant slopes
-@math{\Delta_k = (y_{k+1}-y_k)/(x_{k+1}-x_k)}, it takes averaged tangents
-@math{m_k=\tfrac12(\Delta_{k-1}+\Delta_k)} and then applies the *Fritsch-Carlson limiter*:
+\(\Delta_k = (y_{k+1}-y_k)/(x_{k+1}-x_k)\), it takes averaged tangents
+\(m_k=\tfrac12(\Delta_{k-1}+\Delta_k)\) and then applies the *Fritsch-Carlson limiter*:
 
-- if a segment is flat (@math{\Delta_k=0}), force @math{m_k=m_{k+1}=0} (no wiggle across a
+- if a segment is flat (\(\Delta_k=0\)), force \(m_k=m_{k+1}=0\) (no wiggle across a
   plateau);
 - if a tangent points *against* the local secant, clamp it to zero;
-- if @math{\alpha^2+\beta^2>9}, where @math{\alpha=m_k/\Delta_k,\ \beta=m_{k+1}/\Delta_k},
-  scale both tangents down by @math{\tau=3/\sqrt{\alpha^2+\beta^2}}.
+- if \(\alpha^2+\beta^2>9\), where \(\alpha=m_k/\Delta_k,\ \beta=m_{k+1}/\Delta_k\),
+  scale both tangents down by \(\tau=3/\sqrt{\alpha^2+\beta^2}\).
 
-The region @math{\alpha^2+\beta^2\le 9} is exactly the set of tangents for which the cubic
-is monotone on the interval. The price is dropping from @math{C^2} to @math{C^1}
+The region \(\alpha^2+\beta^2\le 9\) is exactly the set of tangents for which the cubic
+is monotone on the interval. The price is dropping from \(C^2\) to \(C^1\)
 smoothness -- the second derivative may jump -- but in exchange the interpolant is
 *guaranteed* to preserve the data's monotonicity and never overshoot.
 
@@ -66,7 +66,7 @@ MONOTONE-CUBIC(xs, ys, x):
 
 We interpolate a monotone step -- values that stay at 0, jump to 1, and stay there -- with
 both a natural cubic spline and monotone cubic interpolation, and measure how far each
-strays outside the data range @math{[0,1]}.
+strays outside the data range \([0,1]\).
 
 #+name: mc-run
 #+begin_src c++ :eval no
@@ -139,7 +139,7 @@ monotone cubic nondecreasing everywhere: yes
 wrote monotone_cubic.svg
 #+end_example
 
-The numbers make the difference concrete: the natural spline swings *outside* @math{[0,1]}
+The numbers make the difference concrete: the natural spline swings *outside* \([0,1]\)
 -- inventing negative values before the step and values above 1 after it -- while the
 monotone cubic stays strictly within the data range and is nondecreasing at every one of
 the sampled points. Both pass through the data; only one respects what the data *means*.

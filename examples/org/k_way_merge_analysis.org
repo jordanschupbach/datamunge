@@ -8,23 +8,23 @@
 Merging two sorted lists is easy: walk a finger down each and always take the smaller.
 Merging *k* sorted lists at once -- the heart of external sorting and of merge sort's
 combine step -- is where the choice of data structure matters. Naively re-scanning all
-@math{k} list-fronts for the minimum each time costs @math{O(n k)}; a *min-heap* over
-the fronts drops that to @math{O(n\log k)}. This report implements both the two-way
+\(k\) list-fronts for the minimum each time costs \(O(n k)\); a *min-heap* over
+the fronts drops that to \(O(n\log k)\). This report implements both the two-way
 *simple merge* and the heap-based *k-way merge* in =datamunge='s C++, verified against
-=std::sort= of the concatenation, and measures the heap's advantage as @math{k} grows.
+=std::sort= of the concatenation, and measures the heap's advantage as \(k\) grows.
 #+end_abstract
 
 * From two fingers to a heap
 
 The *simple (two-way) merge* keeps one index into each of two sorted arrays and, at
 each step, appends the smaller of the two front elements (ties favour the first array,
-so the merge is *stable*). One linear pass, @math{O(|a|+|b|)}.
+so the merge is *stable*). One linear pass, \(O(|a|+|b|)\).
 
-For @math{k} lists you still want the global minimum of the @math{k} fronts each step.
-Scanning all @math{k} fronts every time is @math{O(k)} per output element -- @math{O(nk)}
+For \(k\) lists you still want the global minimum of the \(k\) fronts each step.
+Scanning all \(k\) fronts every time is \(O(k)\) per output element -- \(O(nk)\)
 overall. A *min-heap* holding the current front of each list answers "smallest front"
-in @math{O(\log k)} and updates in @math{O(\log k)} when you pop one and push its
-successor. With @math{n} elements pushed and popped once each, the whole merge is
+in \(O(\log k)\) and updates in \(O(\log k)\) when you pop one and push its
+successor. With \(n\) elements pushed and popped once each, the whole merge is
 
 \[ O(n\log k), \]
 
@@ -61,7 +61,7 @@ K-WAY-MERGE(lists):
 * Worked example: three interleaved runs, and the cost as k grows
 
 We merge three sorted lists by hand, then measure the heap merge's work against the
-naive "scan all k fronts" approach as the number of lists @math{k} climbs (total
+naive "scan all k fronts" approach as the number of lists \(k\) climbs (total
 element count held fixed).
 
 #+name: km-run
@@ -128,15 +128,15 @@ wrote k_way_merge.svg
 #+end_example
 
 The three runs interleave into one fully sorted sequence, and the two-way merge of the
-first pair is just the @math{k=2} special case of the same idea. The cost curves show
-why the heap matters: the naive scan grows *linearly in @math{k}* -- every extra list
+first pair is just the \(k=2\) special case of the same idea. The cost curves show
+why the heap matters: the naive scan grows *linearly in \(k\)* -- every extra list
 adds a comparison to every output step -- while the heap grows only *logarithmically*.
 
 #+attr_html: :width 660
 #+attr_latex: :width 0.85\linewidth
 [[file:../../build/org/k_way_merge.svg]]
 
-The red naive curve climbs in a straight line with @math{k}, but the blue heap curve
-barely rises -- by @math{k=64} the heap does an order of magnitude less work. That gap
+The red naive curve climbs in a straight line with \(k\), but the blue heap curve
+barely rises -- by \(k=64\) the heap does an order of magnitude less work. That gap
 is exactly why external sort merges hundreds of runs through a heap rather than
 re-scanning their fronts.

@@ -5,10 +5,10 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-How does a machine compute a cube root, or a tenth root, with only @math{+,-,\times,\div}?
-The *nth root algorithm* applies Newton's method to @math{x^n - a = 0}, giving the update
-@math{x\leftarrow\frac{(n-1)x + a/x^{n-1}}{n}} -- a weighted pull toward the root that, for
-@math{n=2}, is exactly the ancient Babylonian square-root rule. Because @math{x^n} is
+How does a machine compute a cube root, or a tenth root, with only \(+,-,\times,\div\)?
+The *nth root algorithm* applies Newton's method to \(x^n - a = 0\), giving the update
+\(x\leftarrow\frac{(n-1)x + a/x^{n-1}}{n}\) -- a weighted pull toward the root that, for
+\(n=2\), is exactly the ancient Babylonian square-root rule. Because \(x^n\) is
 convex, the iteration converges *quadratically* from a decent start. This report
 implements it in =datamunge='s C++ =algorithms::nth_root=, verified against @c std::pow
 across many bases and degrees, and traces the digits doubling.
@@ -16,18 +16,18 @@ across many bases and degrees, and traces the digits doubling.
 
 * Newton on x^n - a
 
-To find @math{a^{1/n}} solve @math{f(x)=x^n-a=0}. With @math{f'(x)=n x^{n-1}}, Newton's
-step @math{x-f(x)/f'(x)} is
+To find \(a^{1/n}\) solve \(f(x)=x^n-a=0\). With \(f'(x)=n x^{n-1}\), Newton's
+step \(x-f(x)/f'(x)\) is
 
 \[ x_{k+1} = x_k - \frac{x_k^n - a}{n\,x_k^{\,n-1}} = \frac{(n-1)\,x_k + a/x_k^{\,n-1}}{n}. \]
 
-Read the last form as a *weighted average*: keep @math{n-1} parts of the current guess and
-one part of @math{a/x^{n-1}} (which overshoots to the other side of the root), and the two
-errors cancel to second order. For @math{n=2} it is @math{x\leftarrow\tfrac12(x+a/x)}, the
-Babylonian method. Since @math{x^n} is convex for @math{x>0}, once the iterate is near the
+Read the last form as a *weighted average*: keep \(n-1\) parts of the current guess and
+one part of \(a/x^{n-1}\) (which overshoots to the other side of the root), and the two
+errors cancel to second order. For \(n=2\) it is \(x\leftarrow\tfrac12(x+a/x)\), the
+Babylonian method. Since \(x^n\) is convex for \(x>0\), once the iterate is near the
 root the error is *squared* each step -- quadratic convergence. =datamunge= seeds the
-iteration from the binary exponent of @math{a} (so @math{a=m2^e \Rightarrow x_0\approx
-2^{e/n}}), which lands close enough that only a few steps are needed for any magnitude.
+iteration from the binary exponent of \(a\) (so \(a=m2^e \Rightarrow x_0\approx
+2^{e/n}\)), which lands close enough that only a few steps are needed for any magnitude.
 
 #+name: nr-includes
 #+begin_src c++ :eval no
@@ -57,8 +57,8 @@ NTH-ROOT(a, n):
 
 * Worked example: roots of known values, and quadratic convergence
 
-We check exact roots (@math{\sqrt2}, @math{\sqrt[3]{27}=3}, @math{\sqrt[10]{1024}=2}), then
-trace the error of the cube-root iteration for @math{a=50} to expose the doubling of
+We check exact roots (\(\sqrt2\), \(\sqrt[3]{27}=3\), \(\sqrt[10]{1024}=2\)), then
+trace the error of the cube-root iteration for \(a=50\) to expose the doubling of
 correct digits.
 
 #+name: nr-run
@@ -133,7 +133,7 @@ cube root of 50 (true 3.68403), |x - root| per step:
 The algorithm returns the known roots to the last displayed digit, and the cube-root trace
 shows Newton's quadratic descent: from the exponent seed the error collapses in a handful
 of weighted-average steps. The same routine handles any degree -- second, third, tenth --
-with no special cases beyond the trivial @math{n=1}.
+with no special cases beyond the trivial \(n=1\).
 
 #+attr_html: :width 640
 #+attr_latex: :width 0.8\linewidth

@@ -8,7 +8,7 @@
 The *Bitap* algorithm (also *shift-and* / Baeza-Yates-Gonnet) searches for a pattern by
 packing the entire state of the match -- "which pattern prefixes currently match the
 text ending here" -- into the *bits of a single machine word*, and advancing all of them
-at once with one shift and one AND per text character. It is @math{O(n)} with a tiny
+at once with one shift and one AND per text character. It is \(O(n)\) with a tiny
 constant, and -- unlike Boyer-Moore or KMP -- extends gracefully to *approximate*
 matching: run a few coupled words, one per allowed error, and you get the *k-mismatches*
 search behind tools like =agrep=. This report implements both in =datamunge='s C++,
@@ -17,25 +17,25 @@ verified against @c std::string::find (exact) and a brute-force Hamming oracle (
 
 * The state of a search, held in one word
 
-Let the pattern have length @math{m}. Bitap keeps a word @math{R} whose bit @math{j} is
-set exactly when @math{pattern[0..j]} matches the text ending at the current position.
-Precompute, for each character @math{c}, a mask with bit @math{j} set where
-@math{pattern[j]=c}. Then reading text character @math{c} updates the whole state in two
+Let the pattern have length \(m\). Bitap keeps a word \(R\) whose bit \(j\) is
+set exactly when \(pattern[0..j]\) matches the text ending at the current position.
+Precompute, for each character \(c\), a mask with bit \(j\) set where
+\(pattern[j]=c\). Then reading text character \(c\) updates the whole state in two
 operations:
 
 \[ R \leftarrow \big((R \ll 1)\,\lor\,1\big)\,\land\,\text{mask}[c]. \]
 
-The @math{\ll 1 \lor 1} lets a fresh match start at every position; the @math{\land
-\text{mask}[c]} keeps only prefixes whose next character actually matches. When bit
-@math{m-1} of @math{R} is set, a full occurrence ends here. All @math{m} prefixes
+The \(\ll 1 \lor 1\) lets a fresh match start at every position; the \(\land
+\text{mask}[c]\) keeps only prefixes whose next character actually matches. When bit
+\(m-1\) of \(R\) is set, a full occurrence ends here. All \(m\) prefixes
 advance *in parallel* inside the word, so the per-character cost is constant regardless
-of @math{m} (up to the word width).
+of \(m\) (up to the word width).
 
-*Approximate matching.* Keep @math{k+1} words @math{R_0,\dots,R_k}, where @math{R_d}
-tracks matches with at most @math{d} substitutions. Each @math{R_d} is updated from its
-own previous value *and* from @math{R_{d-1}} (spend one more error), so a length-@math{m}
-window whose *Hamming distance* to the pattern is @math{\le k} lights up bit @math{m} of
-@math{R_k}. That is @math{O(nk)} time, still almost entirely inside the CPU word.
+*Approximate matching.* Keep \(k+1\) words \(R_0,\dots,R_k\), where \(R_d\)
+tracks matches with at most \(d\) substitutions. Each \(R_d\) is updated from its
+own previous value *and* from \(R_{d-1}\) (spend one more error), so a length-\(m\)
+window whose *Hamming distance* to the pattern is \(\le k\) lights up bit \(m\) of
+\(R_k\). That is \(O(nk)\) time, still almost entirely inside the CPU word.
 
 #+name: bt-includes
 #+begin_src c++ :eval no
@@ -78,7 +78,7 @@ BITAP-FUZZY(text, pattern, k):                    # shift-or, 0 = match, R[d] = 
 
 We search a DNA string that contains the motif =ACGTACG= exactly (twice) plus several
 *near* copies differing by one or two point mutations, using a growing error budget, and
-count how many length-@math{m} windows match.
+count how many length-\(m\) windows match.
 
 #+name: bt-run
 #+begin_src c++ :eval no
@@ -165,9 +165,9 @@ wrote bitap.svg
 #+end_example
 
 Exact search pinpoints the first planted motif (starting at index 5, ending at 11); the
-first *fuzzy* match stays at that same exact window for every @math{k}, since it is the
+first *fuzzy* match stays at that same exact window for every \(k\), since it is the
 earliest one within budget. What grows is the *number* of matching windows: 2 at
-@math{k=0} (the two exact copies), then 3, 5, 7, and 13 as @math{k} climbs to 4 and ever
+\(k=0\) (the two exact copies), then 3, 5, 7, and 13 as \(k\) climbs to 4 and ever
 looser near-copies qualify. Every fuzzy result here agrees with the brute-force Hamming
 count the test suite checks against.
 
@@ -175,7 +175,7 @@ count the test suite checks against.
 #+attr_latex: :width 0.8\linewidth
 [[file:../../build/org/bitap.svg]]
 
-The bars grow with @math{k}: at @math{k=0} only the exact motif matches, and each extra
+The bars grow with \(k\): at \(k=0\) only the exact motif matches, and each extra
 unit of error budget admits more approximate windows. That monotone growth is the whole
 point of fuzzy search -- a tunable dial between "exactly this string" and "anything
 roughly like it" -- and Bitap turns that dial while touching each text character just a

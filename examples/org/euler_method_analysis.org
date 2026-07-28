@@ -5,27 +5,27 @@
 #+property: header-args :noweb yes
 
 #+begin_abstract
-Every numerical solver for @math{y'=f(t,y)} begins with Leonhard Euler's idea (1768):
+Every numerical solver for \(y'=f(t,y)\) begins with Leonhard Euler's idea (1768):
 you know the *slope* at your current point, so take a small step along it and repeat.
 The *Euler method* is the simplest possible integrator -- one slope evaluation per step --
 and its virtues (transparency) and vices (first-order accuracy, fragile stability) are
 the yardstick for everything more sophisticated. This report implements it in
 =datamunge='s C++ =algorithms::euler_method=, verified against the exact solution of an
-exponential decay, and exhibits its characteristic @math{O(h)} error.
+exponential decay, and exhibits its characteristic \(O(h)\) error.
 #+end_abstract
 
 * Stepping along the tangent
 
-Given @math{y'=f(t,y)} and a state @math{y_n} at time @math{t_n}, the derivative
-@math{f(t_n,y_n)} *is* the tangent slope there. The Euler method assumes the slope holds
-over a small step @math{h} and moves to
+Given \(y'=f(t,y)\) and a state \(y_n\) at time \(t_n\), the derivative
+\(f(t_n,y_n)\) *is* the tangent slope there. The Euler method assumes the slope holds
+over a small step \(h\) and moves to
 
 \[ y_{n+1} = y_n + h\,f(t_n, y_n), \qquad t_{n+1} = t_n + h. \]
 
 It is *explicit* (the new value is an outright formula, no equation to solve) and uses
 one function evaluation per step. Its *local* error -- committed in a single step -- is
-@math{O(h^2)}, from the dropped second-order Taylor term; accumulated over
-@math{(t_1-t_0)/h} steps this gives a *global* error of @math{O(h)}. So Euler is
+\(O(h^2)\), from the dropped second-order Taylor term; accumulated over
+\((t_1-t_0)/h\) steps this gives a *global* error of \(O(h)\). So Euler is
 *first-order*: halve the step, halve the error. That slow payoff, plus a small stability
 region that lets big steps diverge, is exactly why higher-order and implicit methods
 exist -- but Euler is where the story starts.
@@ -59,9 +59,9 @@ EULER(f, y0, t0, t1, steps):
 
 * Worked example: exponential decay, and the O(h) error
 
-We integrate @math{y'=-y} (exact solution @math{y=e^{-t}}) with a deliberately *coarse*
+We integrate \(y'=-y\) (exact solution \(y=e^{-t}\)) with a deliberately *coarse*
 step to see the tangent-following error, then measure how the final error shrinks as the
-step size @math{h} halves.
+step size \(h\) halves.
 
 #+name: eu-run
 #+begin_src c++ :eval no
@@ -136,17 +136,17 @@ steps   h        final error   error/h
 wrote euler_method.svg
 #+end_example
 
-With only eight steps Euler tracks the shape of @math{e^{-t}} but visibly lags it -- each
+With only eight steps Euler tracks the shape of \(e^{-t}\) but visibly lags it -- each
 step commits to a straight tangent while the true curve keeps bending. The error table
-tells the quantitative story: the final error divided by @math{h} is nearly *constant*,
-the fingerprint of first-order @math{O(h)} convergence. Every halving of @math{h} buys
+tells the quantitative story: the final error divided by \(h\) is nearly *constant*,
+the fingerprint of first-order \(O(h)\) convergence. Every halving of \(h\) buys
 one more correct step's worth of accuracy, no more.
 
 #+attr_html: :width 640
 #+attr_latex: :width 0.8\linewidth
 [[file:../../build/org/euler_method.svg]]
 
-The red Euler polyline stays below the green exact curve: because @math{e^{-t}} is
+The red Euler polyline stays below the green exact curve: because \(e^{-t}\) is
 convex, each tangent step cuts under the arc, and the small errors accumulate. Refining
 the step would pull the red line onto the green one -- but only linearly, which is the
 whole motivation for the Runge-Kutta and implicit methods in the companion reports.
