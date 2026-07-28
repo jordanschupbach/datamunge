@@ -1,0 +1,132 @@
+#+title: Halley's Method: Cubic Convergence With the Second Derivative
+#+subtitle: A literate C++ study of third-order root-finding with =datamunge='s =algorithms::halley=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Newton's method doubles the correct digits each step (quadratic convergence).
+*Halley's method* -- named for the comet's Edmond Halley -- does better: by using the
+*second* derivative as well, it *triples* the correct digits per step (cubic
+convergence). Geometrically it fits a hyperbola, not a tangent line, to the curve.
+This report implements it in =datamunge='s C++ =algorithms::halley= and shows its
+error collapsing even faster than Newton's on \(\sqrt2\).
+#+end_abstract
+
+* One order faster than Newton
+
+Newton steps to the zero of the tangent line; Halley steps to the zero of the
+osculating hyperbola, which hugs the curve one derivative more closely. The update
+is
+
+\[
+x_{n+1}=x_n-\frac{2\,f(x_n)\,f'(x_n)}{2\,f'(x_n)^2-f(x_n)\,f''(x_n)} .
+\]
+
+Near a simple root the error obeys \(e_{n+1}=O(e_n^{3})\) -- *cubic* convergence,
+versus Newton's quadratic \(O(e_n^2)\) -- so where Newton goes 2, 4, 8, 16 correct
+digits, Halley goes 3, 9, 27. The cost is the extra second derivative \(f''\) and a
+slightly heavier formula per step; when \(f''\) is cheap and a few extra digits per
+iteration matter, Halley wins. (It is the member of the *Householder* family of one
+order above Newton.)
+
+#+name: hy-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static constexpr double ROOT2 = 1.4142135623730951;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+HALLEY(f, f', f'', x0):
+  x <- x0
+  repeat:
+      if |f(x)| < tol: return x
+      x <- x - 2 f(x) f'(x) / ( 2 f'(x)^2 - f(x) f''(x) )
+#+end_example
+
+* Worked example: sqrt(2), Halley versus Newton
+
+Solving \(x^2-2=0\) from \(x_0=2\) (so \(f'=2x,\ f''=2\)), Halley reaches machine
+precision in even fewer steps than Newton. We trace both errors.
+
+#+name: hy-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return x * x - 2.0; };
+    auto df = [](double x) { return 2.0 * x; };
+    auto d2f = [](double) { return 2.0; };
+
+    const RootResult r = halley(f, df, d2f, 2.0);
+    std::cout << "=== Halley's method on x^2 - 2, x0 = 2 ===\n";
+    std::cout << "root = " << r.root << ", iterations = " << r.iterations << ", residual = " << r.residual << "\n\n";
+
+    std::vector<double> hi, he, ni, ne;
+    { double x = 2.0; for (int i = 0; i < 8; ++i) { hi.push_back(i); he.push_back(std::log10(std::max(std::fabs(x - ROOT2), 1e-17))); if (std::fabs(f(x)) < 1e-15) break; x -= 2 * f(x) * df(x) / (2 * df(x) * df(x) - f(x) * d2f(x)); } }
+    { double x = 2.0; for (int i = 0; i < 8; ++i) { ni.push_back(i); ne.push_back(std::log10(std::max(std::fabs(x - ROOT2), 1e-17))); if (std::fabs(f(x)) < 1e-15) break; x -= f(x) / df(x); } }
+    std::cout << "Halley error per step: "; for (double e : he) std::cout << e << " "; std::cout << "\n";
+    std::cout << "Newton error per step: "; for (double e : ne) std::cout << e << " "; std::cout << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(ni, ne, "Newton (quadratic)", RGB{220, 38, 38}, 2.0);
+    plot.points(ni, ne, "Newton", RGB{220, 38, 38}, 6.0);
+    plot.line(hi, he, "Halley (cubic)", RGB{37, 99, 235}, 2.0);
+    plot.points(hi, he, "Halley", RGB{37, 99, 235}, 7.0);
+    plot.legend({"Newton (order 2)", "Halley (order 3)"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Halley triples the correct digits per step; Newton doubles")
+        .x_label("iteration").y_label("log10 |x - sqrt2|").background({250, 250, 252});
+    plot.save_svg("build/org/halley.svg");
+    std::cout << "\nwrote halley.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/halley_analysis.cpp <<'CPP'
+<<hy-includes>>
+
+int main() {
+<<hy-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/halley_analysis.cpp -o build/org/halley_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/halley_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Halley's method on x^2 - 2, x0 = 2 ===
+root = 1.41421, iterations = 4, residual = 2.73432e-16
+
+Halley error per step: -0.232261 -1.84291 -6.43842 -17
+Newton error per step: -0.232261 -1.06658 -2.61028 -5.67287 -11.7973 -17
+#+end_example
+
+Halley reaches full double precision in about three steps -- one or two fewer than
+Newton -- because each iteration roughly cubes the error rather than squaring it. The
+per-step error exponents make it plain: Halley's error drops by a factor of three in
+log terms where Newton's drops by two.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/halley.svg]]
+
+Both curves plunge, but the blue Halley error falls faster and steeper than the red
+Newton error, hitting the machine floor a step or two sooner. That extra order of
+convergence is exactly what the second derivative buys -- a hyperbola fits the curve
+better than a tangent line, so each guess lands closer.

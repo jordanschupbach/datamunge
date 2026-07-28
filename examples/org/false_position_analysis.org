@@ -1,0 +1,145 @@
+#+title: False Position and the Illinois Fix: Bracketing With a Secant
+#+subtitle: A literate C++ study of regula falsi with =datamunge='s =algorithms::false_position=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *false position method* (regula falsi) keeps a bracket around the root like
+bisection, but instead of halving it draws a *secant* between the endpoints and
+takes its x-intercept -- usually a much better guess. Its flaw is *stalling*: for a
+curved function one endpoint can stay pinned forever, dragging convergence down to
+linear. The *Illinois* modification cures this by halving the stale endpoint's
+function value, restoring fast convergence while never losing the bracket. This
+report implements it in =datamunge='s C++ =algorithms::false_position= and shows
+Illinois racing past plain regula falsi.
+#+end_abstract
+
+* The secant step and why it stalls
+
+Given a bracket \([a,b]\) with \(f(a)f(b)<0\), the secant through the endpoints
+crosses zero at
+
+\[
+c=\frac{f(b)\,a-f(a)\,b}{f(b)-f(a)},
+\]
+
+and whichever sub-interval still straddles zero becomes the new bracket. For a
+*convex* (or concave) function the curve lies entirely on one side of the secant, so
+the same endpoint is replaced every step and the other stays fixed -- the interval
+shrinks from one side only, and convergence degrades to linear. The *Illinois*
+algorithm detects a retained endpoint and *halves its function value*, tilting the
+next secant so the stale endpoint finally moves. This keeps the guaranteed bracket
+of regula falsi but recovers superlinear (order ~1.44) convergence.
+
+#+name: fp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FALSE-POSITION-ILLINOIS(f, a, b):
+  repeat:
+      c <- (f(b)*a - f(a)*b) / (f(b) - f(a))       # secant x-intercept
+      if |f(c)| < tol: return c
+      if sign(f(c)) == sign(f(b)): b <- c;  if b retained again: f(a) <- f(a)/2
+      else:                        a <- c;  if a retained again: f(b) <- f(b)/2
+#+end_example
+
+* Worked example: the root of e^x - 2 on [0,1]
+
+We find \(\ln 2\approx0.6931\) as the root of \(e^{x}-2\). The function is convex, so
+plain regula falsi pins the right endpoint and crawls; the library's Illinois
+version does not. We trace both residual histories.
+
+#+name: fp-run
+#+begin_src c++ :eval no
+    auto f = [](double x) { return std::exp(x) - 2.0; };
+    const RootResult r = false_position(f, 0.0, 1.0);
+    std::cout << "=== False position (Illinois) on e^x - 2, [0,1] ===\n";
+    std::cout << "root = " << r.root << "  (ln 2 = " << std::log(2.0) << ")\n";
+    std::cout << "converged in " << r.iterations << " iterations, residual " << r.residual << "\n\n";
+
+    auto trace = [&](bool illinois) {
+        std::vector<double> lg; double a = 0, b = 1, fa = f(a), fb = f(b); int side = 0;
+        for (int i = 1; i <= 40; ++i) {
+            double c = (fb * a - fa * b) / (fb - fa), fc = f(c);
+            lg.push_back(std::log10(std::max(std::fabs(fc), 1e-16)));
+            if (std::fabs(fc) < 1e-13) break;
+            if ((fc < 0) == (fb < 0)) { b = c; fb = fc; if (illinois && side == 1) fa *= 0.5; side = 1; }
+            else { a = c; fa = fc; if (illinois && side == -1) fb *= 0.5; side = -1; }
+        }
+        return lg;
+    };
+    const auto plain = trace(false), ill = trace(true);
+    std::cout << "plain regula falsi: " << plain.size() << " iters to 1e-13; Illinois: " << ill.size() << "\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> xp, xi;
+    for (std::size_t i = 0; i < plain.size(); ++i) xp.push_back(static_cast<double>(i + 1));
+    for (std::size_t i = 0; i < ill.size(); ++i) xi.push_back(static_cast<double>(i + 1));
+    plot.line(xp, plain, "plain regula falsi", RGB{220, 38, 38}, 2.0);
+    plot.points(xp, plain, "plain", RGB{220, 38, 38}, 4.0);
+    plot.line(xi, ill, "Illinois", RGB{37, 99, 235}, 2.0);
+    plot.points(xi, ill, "Illinois", RGB{37, 99, 235}, 6.0);
+    plot.legend({"plain regula falsi", "Illinois"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Illinois cures regula falsi's stall: log residual vs iteration")
+        .x_label("iteration").y_label("log10 |f(c)|").background({250, 250, 252});
+    plot.save_svg("build/org/false_position.svg");
+    std::cout << "wrote false_position.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/false_position_analysis.cpp <<'CPP'
+<<fp-includes>>
+
+int main() {
+<<fp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/false_position_analysis.cpp -o build/org/false_position_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/false_position_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== False position (Illinois) on e^x - 2, [0,1] ===
+root = 0.693147  (ln 2 = 0.693147)
+converged in 7 iterations, residual 2.01839e-13
+
+plain regula falsi: 16 iters to 1e-13; Illinois: 8
+wrote false_position.svg
+#+end_example
+
+Plain regula falsi keeps the right endpoint pinned and inches toward \(\ln 2\) with a
+long, straight (linear) residual decline; the Illinois version halves the stale
+endpoint and drops to full precision in a handful of steps. Both retain the bracket
+throughout -- the reliability of false position -- but only Illinois recovers the
+speed a secant should give.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/false_position.svg]]
+
+The red plain-regula-falsi residual descends slowly along a straight line -- the
+signature of the stall -- while the blue Illinois residual plunges to the floor in a
+few iterations. The single trick of halving a retained endpoint's function value is
+the entire difference between the two curves.

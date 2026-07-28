@@ -713,6 +713,26 @@ We implement the secant method (=algorithms::secant=) and report it as a literat
 
 We implement Ridders' method (=algorithms::ridders=) and report it as a literate program. We derive its exponential correction that keeps a guaranteed bracket yet converges quadratically; sqrt(2) on [1,2] is found in a handful of iterations, its log-error plotted plunging far below bisection's linear descent.
 
+** [[./false_position_analysis.html][False Position and the Illinois Fix: Bracketing With a Secant]] ([[./false_position_analysis.pdf][PDF]])
+/A literate C++ study of regula falsi using datamunge/
+
+We implement the false position method with the Illinois acceleration (=algorithms::false_position=) and report it as a literate program. We show how the secant x-intercept keeps a bracket yet can stall to linear convergence on a convex function, and how halving a retained endpoint's function value cures it; ln 2 as a root of e^x-2 on [0,1] takes plain regula falsi 16 iterations but Illinois only 8, plotted as residual-vs-iteration.
+
+** [[./halley_analysis.html][Halley's Method: Cubic Convergence With the Second Derivative]] ([[./halley_analysis.pdf][PDF]])
+/A literate C++ study of third-order root-finding using datamunge/
+
+We implement Halley's method (=algorithms::halley=) and report it as a literate program. We derive its hyperbola-fitting update x - 2ff'/(2f'^2 - ff'') and its cubic convergence (tripling the correct digits per step); on x^2-2 from x0=2 it reaches sqrt(2) in four steps against Newton's quadratic descent, the two error curves plotted.
+
+** [[./muller_analysis.html][Muller's Method: A Parabola Through Three Points]] ([[./muller_analysis.pdf][PDF]])
+/A literate C++ study of quadratic-interpolation root-finding using datamunge/
+
+We implement Muller's method (=algorithms::muller=) and report it as a literate program. We fit a parabola through the three most recent points via divided differences and take its nearest root (order ~1.84, no derivative, discriminant clamped for real roots); the real root of x^3-x-2 is found from {1,1.5,2} in five steps and ln 2 from e^x-2 with no derivative, the residual plunge plotted.
+
+** [[./itp_analysis.html][The ITP Method: Bisection's Guarantee, the Secant's Speed]] ([[./itp_analysis.pdf][PDF]])
+/A literate C++ study of Interpolate-Truncate-Project root-finding using datamunge/
+
+We implement the ITP method (=algorithms::itp=; Oliveira & Takahashi, 2020) and report it as a literate program. We give its three moves -- interpolate (regula falsi), truncate toward the midpoint, project into a minmax interval -- that make it minmax-optimal yet superlinear; on cos(x)-x the estimate's residual reaches 1e-13 in 8 iterations against bisection's 39, plotted while both retain the same worst-case bracket guarantee.
+
 ** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
 /A literate C++ study of polynomial interpolation using datamunge/
 
