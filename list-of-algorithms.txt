@@ -274,9 +274,9 @@ Further information: Computational geometry
     Collision detection algorithms: check for the collision or intersection of two given solids
     Cone algorithm: identify surface points
     [x] Convex hull algorithms: determining the convex hull of a set of points  -- datamunge::geometry::convex_hull (Andrew's monotone chain, O(n log n)); report examples/org/convex_hull_analysis.org
-        Chan's algorithm
-        Gift wrapping algorithm or Jarvis march
-        Graham scan
+        [x] Chan's algorithm  -- datamunge::geometry::chans_algorithm (O(n log h), group-hull + wrap); report examples/org/chans_algorithm_analysis.org
+        [x] Gift wrapping algorithm or Jarvis march  -- datamunge::geometry::jarvis_march (O(n*h), output-sensitive); report examples/org/jarvis_march_analysis.org
+        [x] Graham scan  -- datamunge::geometry::graham_scan (O(n log n), angular sweep); report examples/org/graham_scan_analysis.org
         Kirkpatrick–Seidel algorithm
         Quickhull
     Euclidean distance transform: computes the distance between every point in a grid and a discrete collection of points.

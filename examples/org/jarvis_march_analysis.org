@@ -1,0 +1,140 @@
+#+title: Gift Wrapping (Jarvis March): Output-Sensitive Convex Hull
+#+subtitle: A literate C++ study of the O(n·h) hull with =datamunge='s =geometry::jarvis_march=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The most intuitive way to find a convex hull is to *wrap* it: pin a string at the leftmost point and
+pull it taut around the outside, point by point, until you return to the start. That is the Jarvis
+march, or gift-wrapping algorithm. Its cost is \(O(n\,h)\) for \(n\) points and \(h\) hull vertices --
+*output-sensitive*, so on the many point sets whose hull is small it beats an \(O(n\log n)\) sort.
+This report drives =datamunge='s =geometry::jarvis_march=, verified to agree with the module's
+monotone-chain hull over hundreds of random point sets, and shows it wrapping a cloud of points.
+#+end_abstract
+
+* Wrap by picking the most clockwise turn
+
+Start at a point guaranteed to be on the hull -- the leftmost (lowest to break ties). From the current
+hull vertex \(c\), the next hull vertex is the point \(q\) that is *most clockwise* seen from \(c\):
+the one for which every other point lies to the left of the ray \(c\to q\). Concretely, walk a
+candidate \(m\) through all points and replace it whenever
+
+\[ \operatorname{cross}(c,m,q)<0 \quad(\text{$q$ is to the right of } c\to m), \]
+
+breaking ties (collinear points, \(\operatorname{cross}=0\)) by keeping the *farther* point so the
+intermediate collinear ones are skipped -- giving the strict hull. Set \(c\gets q\) and repeat until
+the wrap returns to the start. Each of the \(h\) hull edges costs one \(O(n)\) scan, so the total is
+\(O(n\,h)\): cheap when the hull is small, but quadratic in the pathological case where nearly every
+point is a hull vertex.
+
+#+name: jm-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static std::vector<Point2D> sample_points() {
+    return {{0, 0}, {10, 0}, {18, 4}, {20, 12}, {15, 20}, {6, 22}, {-2, 15}, {-4, 6},
+            {5, 5}, {10, 10}, {8, 15}, {3, 10}, {12, 6}, {14, 14}, {2, 18}, {16, 10},
+            {7, 3}, {11, 17}, {9, 8}, {13, 11}};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+JARVIS-MARCH(points):
+  c = leftmost point (then lowest)
+  repeat:
+      append c to hull
+      m = any point != c
+      for q in points:
+          o = cross(c, m, q)
+          if o < 0 or (o == 0 and dist(c,q) > dist(c,m)): m = q
+      c = m
+  until c == start
+  return hull            # counterclockwise
+#+end_example
+
+* Worked example: hull of a point cloud
+
+We compute the hull of twenty points, print its vertices, and plot the cloud with the hull outline.
+
+#+name: jm-run
+#+begin_src c++ :eval no
+    const auto pts  = sample_points();
+    const auto hull = jarvis_march(pts);
+    std::cout << "=== Jarvis march (gift wrapping) ===\n";
+    std::cout << pts.size() << " points -> hull of " << hull.size() << " vertices (counterclockwise):\n";
+    for (const auto& v : hull) std::cout << "  (" << v.x << ", " << v.y << ")\n";
+
+    std::vector<double> px, py;
+    for (const auto& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    std::vector<double> hx, hy;
+    for (const auto& v : hull) { hx.push_back(v.x); hy.push_back(v.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(hx, hy, RGB{209, 250, 229}, true);
+    plot.points(px, py, "pts", RGB{30, 41, 59}, 6.0);
+    plot.points(hx, hy, "hull", RGB{5, 150, 105}, 9.0);
+    plot.legend({"points", "hull vertices"}, {{30, 41, 59}, {5, 150, 105}});
+    plot.title("Jarvis march: wrapping the hull one vertex at a time")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/jarvis_march.svg");
+    std::cout << "\nwrote jarvis_march.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/jarvis_march_analysis.cpp <<'CPP'
+<<jm-includes>>
+
+int main() {
+<<jm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/jarvis_march_analysis.cpp -o build/org/jarvis_march_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/jarvis_march_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Jarvis march (gift wrapping) ===
+20 points -> hull of 8 vertices (counterclockwise):
+  (-4, 6)
+  (0, 0)
+  (10, 0)
+  (18, 4)
+  (20, 12)
+  (15, 20)
+  (6, 22)
+  (-2, 15)
+
+wrote jarvis_march.svg
+#+end_example
+
+The march wraps the same hull Graham's scan finds -- identical vertices in counterclockwise order --
+by pivoting from each vertex to the next most-clockwise point. Every interior and edge point is
+skipped, and the result matches the module's monotone-chain hull across the test suite.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/jarvis_march.svg]]
+
+The shaded region is the hull traced by the wrap; the green markers are the vertices where the string
+bends. Because each bend costs a full scan of the points, gift wrapping shines exactly when the hull
+has few vertices -- an output-sensitive \(O(n\,h)\) that can beat sorting for the common case of a
+small hull around many interior points.

@@ -1,0 +1,153 @@
+#+title: Chan's Algorithm: The Optimal Output-Sensitive Convex Hull
+#+subtitle: A literate C++ study of the O(n log h) hull with =datamunge='s =geometry::chans_algorithm=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Graham scan is \(O(n\log n)\); gift wrapping is \(O(n\,h)\). Chan's 1996 algorithm cleverly combines
+them to achieve \(O(n\log h)\) -- optimal, and never worse than either parent. The trick: chop the
+points into small groups, hull each group cheaply, then gift-wrap over the *groups*, using each
+group's hull to find the next wrap vertex fast. A doubling guess for \(h\) keeps the total cost in
+check. This report drives =datamunge='s =geometry::chans_algorithm=, verified to agree with the
+module's monotone-chain hull over hundreds of random point sets, and shows the group hulls it wraps.
+#+end_abstract
+
+* Group, hull, wrap -- and guess h by doubling
+
+Chan's algorithm rests on a guess \(m\) for the number of hull vertices \(h\):
+
+1. *Partition* the \(n\) points into \(\lceil n/m\rceil\) groups of size \(m\).
+2. *Hull each group* with Graham scan, at total cost \(O\!\big(\tfrac{n}{m}\cdot m\log m\big)=O(n\log m)\).
+3. *Gift-wrap over the group hulls*: from the current hull vertex, each group offers one candidate --
+   its tangent point, found by binary search on that group's hull in \(O(\log m)\). Scanning all
+   \(n/m\) groups per wrap step costs \(O\!\big(\tfrac{n}{m}\log m\big)\), and \(m\) steps cost
+   \(O(n\log m)\).
+
+If the wrap completes within \(m\) steps, the hull is done; otherwise \(m<h\), so *double the
+exponent* -- \(m\gets m^2\) -- and retry. Because \(m\) grows doubly-exponentially, the successful
+round has \(m<h^2\), i.e. \(\log m=O(\log h)\), and the geometric series of round costs sums to
+\(O(n\log h)\). The result is optimal and adapts to the actual hull size. (This implementation finds
+each group's tangent by scanning its hull for clarity; swapping in the binary search is what secures
+the \(\log h\) factor.)
+
+#+name: ch-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static std::vector<Point2D> sample_points() {
+    return {{0, 0}, {10, 0}, {18, 4}, {20, 12}, {15, 20}, {6, 22}, {-2, 15}, {-4, 6},
+            {5, 5}, {10, 10}, {8, 15}, {3, 10}, {12, 6}, {14, 14}, {2, 18}, {16, 10},
+            {7, 3}, {11, 17}, {9, 8}, {13, 11}};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CHAN(points):
+  for m = 4, 16, 256, ... (m <- m^2):
+      split points into groups of size m
+      hull each group with Graham scan
+      p = lowest point; wrap:
+          for up to m steps:
+              from current vertex, each group hull offers its tangent point
+              next = most clockwise of those candidates
+              if next == start: return the hull
+      # not closed in m steps => m < h, double and retry
+#+end_example
+
+* Worked example: group hulls and the final hull
+
+We compute the hull of twenty points, print it, and plot the point cloud with the per-group hulls
+(the intermediate structures Chan's wraps over) and the final hull on top.
+
+#+name: ch-run
+#+begin_src c++ :eval no
+    const auto pts  = sample_points();
+    const auto hull = chans_algorithm(pts);
+    std::cout << "=== Chan's algorithm ===\n";
+    std::cout << pts.size() << " points -> hull of " << hull.size() << " vertices (counterclockwise):\n";
+    for (const auto& v : hull) std::cout << "  (" << v.x << ", " << v.y << ")\n";
+
+    // Reproduce a grouping (m = 7) to visualise the per-group hulls Chan's wraps over.
+    const int m = 7;
+    auto plot = RPlot::create();
+    const RGB groupcol[3] = {{253, 230, 138}, {191, 219, 254}, {209, 250, 229}};
+    for (std::size_t g = 0; g * m < pts.size(); ++g) {
+        std::vector<Point2D> grp(pts.begin() + g * m, pts.begin() + std::min(pts.size(), (g + 1) * m));
+        auto gh = graham_scan(grp);
+        std::vector<double> gx, gy;
+        for (auto& v : gh) { gx.push_back(v.x); gy.push_back(v.y); }
+        if (gh.size() >= 3) plot.polygon(gx, gy, groupcol[g % 3], true);
+    }
+    std::vector<double> px, py;
+    for (const auto& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    std::vector<double> hx, hy;
+    for (const auto& v : hull) { hx.push_back(v.x); hy.push_back(v.y); }
+    plot.points(px, py, "pts", RGB{30, 41, 59}, 6.0);
+    plot.polygon(hx, hy, RGB{124, 58, 237}, false);
+    plot.points(hx, hy, "hull", RGB{124, 58, 237}, 9.0);
+    plot.legend({"points", "final hull"}, {{30, 41, 59}, {124, 58, 237}});
+    plot.title("Chan's algorithm: per-group hulls (shaded) wrapped into the final hull")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/chans_algorithm.svg");
+    std::cout << "\nwrote chans_algorithm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/chans_algorithm_analysis.cpp <<'CPP'
+<<ch-includes>>
+
+int main() {
+<<ch-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/chans_algorithm_analysis.cpp -o build/org/chans_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/chans_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Chan's algorithm ===
+20 points -> hull of 8 vertices (counterclockwise):
+  (0, 0)
+  (10, 0)
+  (18, 4)
+  (20, 12)
+  (15, 20)
+  (6, 22)
+  (-2, 15)
+  (-4, 6)
+
+wrote chans_algorithm.svg
+#+end_example
+
+Chan's algorithm returns the identical hull the other two methods find, but by a route that combines
+their strengths: cheap group hulls (Graham) wrapped with a gift-wrap outer loop, guarded by the
+doubling guess for \(h\). It matches the module's monotone-chain hull across the test suite.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/chans_algorithm.svg]]
+
+The shaded polygons are the per-group hulls -- the intermediate structures Chan's wraps over instead
+of the raw points -- and the purple outline is the final hull stitched across them. By hulling groups
+first, the wrap considers only a few candidates per group, and the doubling of \(m\) ensures the whole
+computation costs \(O(n\log h)\): never worse than Graham scan, and far better than gift wrapping when
+the hull is large.

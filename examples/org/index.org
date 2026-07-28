@@ -758,6 +758,21 @@ We implement Schreier-Sims (=algorithms::schreier_sims=) and report it as a lite
 
 We implement Todd-Coxeter coset enumeration (=algorithms::todd_coxeter_index=) and report it as a literate program. Filling a coset table by forcing the relations and merging coincidences yields the index [G:H] -- the group order for the trivial subgroup; it recovers the orders of cyclic, dihedral, symmetric (S_4=24), and alternating (A_5=60) groups from their presentations, with the recovered orders plotted.
 
+** [[./graham_scan_analysis.html][Graham Scan: The Convex Hull by Angular Sweep]] ([[./graham_scan_analysis.pdf][PDF]])
+/A literate C++ study of the O(n log n) convex hull using datamunge/
+
+We implement Graham scan (=geometry::graham_scan=) and report it as a literate program. Sorting points by polar angle around the lowest point and sweeping once, keeping only left turns, yields the strict convex hull in O(n log n); it agrees with the module's monotone-chain hull over hundreds of random inputs, with the hull plotted around a point cloud.
+
+** [[./jarvis_march_analysis.html][Gift Wrapping (Jarvis March): Output-Sensitive Convex Hull]] ([[./jarvis_march_analysis.pdf][PDF]])
+/A literate C++ study of the O(n*h) convex hull using datamunge/
+
+We implement gift wrapping (=geometry::jarvis_march=) and report it as a literate program. Starting at the leftmost point and repeatedly pivoting to the most-clockwise next point wraps the hull in O(n*h), output-sensitive and cheap when the hull is small; it matches the module's monotone-chain hull across the test suite.
+
+** [[./chans_algorithm_analysis.html][Chan's Algorithm: The Optimal Output-Sensitive Convex Hull]] ([[./chans_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of the O(n log h) convex hull using datamunge/
+
+We implement Chan's algorithm (=geometry::chans_algorithm=) and report it as a literate program. Partitioning into groups, hulling each with Graham scan, then gift-wrapping over the group hulls with a doubling guess for h achieves the optimal O(n log h); it agrees with the module's monotone-chain hull, with the per-group hulls and final hull plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 

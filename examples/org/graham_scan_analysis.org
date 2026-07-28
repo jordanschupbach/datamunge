@@ -1,0 +1,138 @@
+#+title: Graham Scan: The Convex Hull by Angular Sweep
+#+subtitle: A literate C++ study of the O(n log n) hull with =datamunge='s =geometry::graham_scan=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The convex hull of a point set -- the smallest convex polygon containing them all -- is the
+"rubber band" you get by snapping an elastic loop around the points. Graham's 1972 scan computes it in
+\(O(n\log n)\): sort the points by angle around an extreme point, then sweep once, discarding any
+point that would make the boundary turn the wrong way. This report drives =datamunge='s
+=geometry::graham_scan=, verified to agree with the module's monotone-chain hull over hundreds of
+random point sets, and shows the hull it wraps around a cloud of points.
+#+end_abstract
+
+* Sort by angle, then keep left turns
+
+Pick the lowest point \(p_0\) (it is certainly a hull vertex). Sort the remaining points by the polar
+angle of the ray \(p_0\to p\). Now sweep them in that order, maintaining a stack of candidate hull
+vertices. For each new point \(p\), while the top two stack points \(a,b\) and \(p\) make a
+non-left turn,
+
+\[ \operatorname{cross}(a,b,p)=(b-a)\times(p-a)\ \le\ 0, \]
+
+pop \(b\): it is inside the hull being built (a right turn or a collinear point). Then push \(p\). The
+orientation primitive \(\operatorname{cross}\) is the whole engine -- positive means a left
+(counterclockwise) turn, negative a right turn, zero collinear -- and keeping only strict left turns
+yields the strict convex hull, excluding points that lie on an edge. The angular sort costs
+\(O(n\log n)\); the sweep is linear because every point is pushed and popped at most once.
+
+#+name: gr-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static std::vector<Point2D> sample_points() {
+    return {{0, 0}, {10, 0}, {18, 4}, {20, 12}, {15, 20}, {6, 22}, {-2, 15}, {-4, 6},
+            {5, 5}, {10, 10}, {8, 15}, {3, 10}, {12, 6}, {14, 14}, {2, 18}, {16, 10},
+            {7, 3}, {11, 17}, {9, 8}, {13, 11}};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GRAHAM-SCAN(points):
+  p0 = lowest point (then leftmost)
+  sort the rest by polar angle around p0 (ties: nearer first)
+  stack = []
+  for p in sorted order:
+      while |stack| >= 2 and cross(stack[-2], stack[-1], p) <= 0:
+          pop stack
+      push p
+  return stack            # hull vertices, counterclockwise
+#+end_example
+
+* Worked example: hull of a point cloud
+
+We compute the hull of twenty points, print its vertices, and plot the cloud with the hull outline.
+
+#+name: gr-run
+#+begin_src c++ :eval no
+    const auto pts  = sample_points();
+    const auto hull = graham_scan(pts);
+    std::cout << "=== Graham scan ===\n";
+    std::cout << pts.size() << " points -> hull of " << hull.size() << " vertices (counterclockwise):\n";
+    for (const auto& v : hull) std::cout << "  (" << v.x << ", " << v.y << ")\n";
+
+    std::vector<double> px, py;
+    for (const auto& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    std::vector<double> hx, hy;
+    for (const auto& v : hull) { hx.push_back(v.x); hy.push_back(v.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(hx, hy, RGB{191, 219, 254}, true);
+    plot.points(px, py, "pts", RGB{30, 41, 59}, 6.0);
+    plot.points(hx, hy, "hull", RGB{220, 38, 38}, 9.0);
+    plot.legend({"points", "hull vertices"}, {{30, 41, 59}, {220, 38, 38}});
+    plot.title("Graham scan: convex hull of a point cloud")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/graham_scan.svg");
+    std::cout << "\nwrote graham_scan.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/graham_scan_analysis.cpp <<'CPP'
+<<gr-includes>>
+
+int main() {
+<<gr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/graham_scan_analysis.cpp -o build/org/graham_scan_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/graham_scan_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Graham scan ===
+20 points -> hull of 8 vertices (counterclockwise):
+  (0, 0)
+  (10, 0)
+  (18, 4)
+  (20, 12)
+  (15, 20)
+  (6, 22)
+  (-2, 15)
+  (-4, 6)
+
+wrote graham_scan.svg
+#+end_example
+
+The scan reduces twenty points to the handful of hull vertices, listed counterclockwise, with every
+interior and edge-collinear point discarded. It agrees exactly with the module's monotone-chain hull,
+as the test suite confirms over hundreds of random inputs.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/graham_scan.svg]]
+
+The shaded polygon is the convex hull; the red markers are its vertices and the dark dots the interior
+points the sweep threw away. The angular sort orders the points into a single counterclockwise pass,
+and the left-turn test peels off every concavity in linear time -- the reason Graham scan is the
+textbook \(O(n\log n)\) hull algorithm.
