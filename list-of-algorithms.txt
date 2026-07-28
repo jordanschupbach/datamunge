@@ -309,7 +309,7 @@ Number theoretic algorithms
 Further information: Number theory
 
     [x] Binary GCD algorithm: Efficient way of calculating GCD.  -- datamunge::algorithms::binary_gcd (Stein, shifts & subtraction); report examples/org/binary_gcd_analysis.org
-    Booth's multiplication algorithm
+    [x] Booth's multiplication algorithm  -- datamunge::algorithms::booth_multiply; report examples/org/booth_analysis.org
     Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation
     Discrete logarithm:
         [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
@@ -339,8 +339,8 @@ Further information: Number theory
         [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
         [x] Karatsuba algorithm  -- datamunge::algorithms::karatsuba_multiply (decimal strings, O(n^1.585)); report examples/org/karatsuba_analysis.org
-        Schönhage–Strassen algorithm
-        Toom–Cook multiplication
+        [x] Schönhage–Strassen algorithm  -- datamunge::algorithms::ntt_mul (NTT convolution, O(n log n)); report examples/org/schonhage_strassen_analysis.org
+        [x] Toom–Cook multiplication  -- datamunge::algorithms::toom3_mul (Toom-3, O(n^1.465)); report examples/org/toom3_analysis.org
     Odlyzko–Schönhage algorithm: calculates nontrivial zeroes of the Riemann zeta function
     Primality tests: determining whether a given number is prime
         AKS primality test
@@ -393,7 +393,7 @@ Further information: Special functions
         [x] CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents  -- datamunge::algorithms::cordic_sincos; report examples/org/cordic_analysis.org
     [x] Montgomery reduction: an algorithm that allows modular arithmetic to be performed efficiently when the modulus is large  -- datamunge::algorithms::montgomery_multiply; report examples/org/montgomery_analysis.org
     Multiplication algorithms: fast multiplication of two numbers
-        Booth's multiplication algorithm: a multiplication algorithm that multiplies two signed binary numbers in two's complement notation
+        [x] Booth's multiplication algorithm: a multiplication algorithm that multiplies two signed binary numbers in two's complement notation  -- datamunge::algorithms::booth_multiply; report examples/org/booth_analysis.org
         Fürer's algorithm: an integer multiplication algorithm for very large numbers possessing a very low asymptotic complexity
         Karatsuba algorithm: an efficient procedure for multiplying large numbers
         Schönhage–Strassen algorithm: an asymptotically fast multiplication algorithm for large integers

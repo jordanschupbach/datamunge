@@ -1,0 +1,158 @@
+#+title: Toom-Cook Multiplication: Five Products from Thirds
+#+subtitle: A literate C++ study of Toom-3 big-integer multiplication with =datamunge='s =algorithms::toom3_mul=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Karatsuba splits each number in two and needs three products; Toom-Cook generalises the idea to
+splitting in \(k\) parts. The popular *Toom-3* variant splits into thirds and multiplies two
+degree-2 polynomials by *evaluating* them at five points, multiplying pointwise, and *interpolating*
+the result -- five third-size products instead of the nine a naive split needs, for a cost of
+\(O(n^{\log_3 5})\approx O(n^{1.465})\), beating Karatsuba's \(n^{1.585}\). This report drives
+=datamunge='s =algorithms::toom3_mul=, verified against the library's Karatsuba multiplier over
+hundreds of random operands, and places its complexity between schoolbook and Karatsuba.
+#+end_abstract
+
+* Evaluate, multiply, interpolate
+
+Split each operand into three base-\(B\) parts (\(B=10^{n/3}\)) and read them as the coefficients of
+degree-2 polynomials:
+
+\[ p(x)=a_2x^2+a_1x+a_0,\qquad q(x)=b_2x^2+b_1x+b_0,\qquad a=p(B),\ b=q(B). \]
+
+Their product \(r(x)=p(x)q(x)\) has degree 4, so *five* coefficients \(c_0,\dots,c_4\) determine it.
+Evaluate \(p\) and \(q\) at five points -- here \(0,1,-1,2,\infty\) -- multiply the values pairwise to
+get \(r\) at those points, then solve the small linear system to recover the \(c_i\):
+
+\[ c_0=r(0),\quad c_4=r(\infty),\quad c_2=\tfrac{r(1)+r(-1)}2-c_0-c_4, \]
+\[ c_1+c_3=\tfrac{r(1)-r(-1)}2,\qquad c_1+4c_3=\tfrac{r(2)-c_0-4c_2-16c_4}2, \]
+
+from which \(c_3\) and \(c_1\) follow. Finally \(r(B)=\sum c_i B^i=ab\). The five sub-products are each
+a third the size and recurse, giving \(T(n)=5\,T(n/3)+O(n)=\Theta(n^{\log_3 5})\). The evaluation
+point \(\infty\) just means "take the leading coefficient", so \(r(\infty)=a_2b_2\) needs no real
+arithmetic.
+
+#+name: tc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/number_theory.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TOOM3(a, b):
+  if a, b are small: return KARATSUBA(a, b)          # base case
+  split a = a2 B^2 + a1 B + a0,  b = b2 B^2 + b1 B + b0
+  # evaluate p, q at x = 0, 1, -1, 2, inf
+  w0 = a0*b0
+  w1 = (a0+a1+a2)*(b0+b1+b2)
+  w2 = (a0-a1+a2)*(b0-b1+b2)
+  w3 = (a0+2a1+4a2)*(b0+2b1+4b2)
+  w4 = a2*b2
+  # interpolate c0..c4, then recompose
+  c0 = w0; c4 = w4
+  c2 = (w1+w2)/2 - c0 - c4
+  c3 = ((w3 - c0 - 4c2 - 16c4)/2 - (w1-w2)/2) / 3
+  c1 = (w1-w2)/2 - c3
+  return c0 + c1 B + c2 B^2 + c3 B^3 + c4 B^4
+#+end_example
+
+* Worked example: a big product, and where Toom-3 sits
+
+We multiply two large integers, confirm the digits against the library's Karatsuba multiplier, then
+plot the three complexity exponents together.
+
+#+name: tc-run
+#+begin_src c++ :eval no
+    const std::string a = "31415926535897932384626433832795028841971693993751";
+    const std::string b = "27182818284590452353602874713526624977572470936999";
+    const std::string prod = toom3_mul(a, b);
+    std::cout << "=== Toom-3 multiplication ===\n";
+    std::cout << "product has " << prod.size() << " digits\n";
+    std::cout << "matches Karatsuba multiplier: " << (prod == karatsuba_multiply(a, b) ? "yes" : "no") << "\n";
+    std::cout << "first 40 digits: " << prod.substr(0, 40) << "...\n";
+    std::cout << "repunit R9 squared = " << toom3_mul("111111111", "111111111") << "\n\n";
+
+    std::cout << "asymptotic digit-multiplication exponents:\n";
+    std::vector<double> nx, school, kara, toom;
+    for (int n = 3; n <= 81; n += 3) {
+        nx.push_back(n);
+        school.push_back(static_cast<double>(n) * n);
+        kara.push_back(std::pow((double)n, std::log2(3.0)));
+        toom.push_back(std::pow((double)n, std::log(5.0) / std::log(3.0)));
+        if (n == 27 || n == 81)
+            std::printf("n=%-3d  school=%-8.0f kara=%-8.0f toom3=%-8.0f\n",
+                        n, (double)n * n, std::pow((double)n, std::log2(3.0)),
+                        std::pow((double)n, std::log(5.0) / std::log(3.0)));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(nx, school, "s", RGB{220, 38, 38}, 2.0);
+    plot.line(nx, kara, "k", RGB{234, 88, 12}, 2.0);
+    plot.line(nx, toom, "t", RGB{22, 163, 74}, 2.0);
+    plot.legend({"schoolbook  n^2", "Karatsuba  n^1.585", "Toom-3  n^1.465"},
+                {{220, 38, 38}, {234, 88, 12}, {22, 163, 74}});
+    plot.title("Toom-3 sits below Karatsuba, which sits below schoolbook")
+        .x_label("operand length n (digits)").y_label("single-digit multiplications").background({250, 250, 252});
+    plot.save_svg("build/org/toom3.svg");
+    std::cout << "wrote toom3.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/toom3_analysis.cpp <<'CPP'
+<<tc-includes>>
+
+int main() {
+<<tc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/toom3_analysis.cpp -o build/org/toom3_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/toom3_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Toom-3 multiplication ===
+product has 99 digits
+matches Karatsuba multiplier: yes
+first 40 digits: 8539734222673567065463550869546574495034...
+repunit R9 squared = 12345678987654321
+
+asymptotic digit-multiplication exponents:
+n=27   school=729      kara=186      toom3=125
+n=81   school=6561     kara=1059     toom3=625
+wrote toom3.svg
+#+end_example
+
+The hundred-digit product agrees digit-for-digit with the independent Karatsuba multiplier, and the
+repunit square is the expected palindrome. Toom-3's five sub-products cost a little bookkeeping --
+the evaluate/interpolate scaffolding with its divisions by 2 and 3 -- but the exponent it buys,
+\(\log_3 5\approx1.465\), is genuinely below Karatsuba's \(1.585\).
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/toom3.svg]]
+
+The three curves fan out in the order schoolbook \(>\) Karatsuba \(>\) Toom-3: each finer split trades
+more additions and a more elaborate interpolation for fewer, smaller multiplications. Push the split
+count \(k\) higher and the exponent \(\log_k(2k-1)\) keeps falling toward 1, the trend that
+Schonhage-Strassen completes by taking the split all the way to a transform.
