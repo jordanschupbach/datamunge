@@ -1,0 +1,158 @@
+#+title: The Bentley-Ottmann Sweep: All Segment Intersections
+#+subtitle: A literate C++ study of the sweep-line algorithm with =datamunge='s =geometry::bentley_ottmann=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given \(n\) line segments, how many of them cross, and where? Checking all pairs costs \(O(n^2)\), but
+most pairs are nowhere near each other. The Bentley-Ottmann algorithm sweeps a vertical line across
+the plane and exploits a simple fact: two segments can only start intersecting when they become
+*adjacent* in the top-to-bottom order along the sweep line. Tracking that order and checking only
+neighbours finds all \(k\) intersections in \(O((n+k)\log n)\). This report drives =datamunge='s
+=geometry::bentley_ottmann=, verified to report exactly the intersections a brute-force check finds
+over hundreds of random inputs, and plots the segments with their crossings marked.
+#+end_abstract
+
+* Sweep, and check only neighbours
+
+Imagine a vertical line sweeping left to right. At any moment it crosses some subset of the segments;
+order them by the \(y\)-coordinate where each meets the line -- the *status*. The algorithm processes
+*events* in \(x\) order, kept in a priority queue:
+
+- a *left endpoint* inserts its segment into the status; the new segment is compared with its
+  immediate neighbours above and below, and any future crossing is scheduled;
+- a *right endpoint* removes its segment; its former neighbours, now adjacent, are checked;
+- a *crossing* reports the point, then *swaps* the two segments in the status (past the crossing their
+  order reverses) and checks the newly adjacent pairs.
+
+The key invariant: **two segments that intersect are adjacent in the status immediately before the
+intersection**. So it suffices to test adjacent pairs -- never all pairs -- and each of the \(k\)
+intersections surfaces exactly when its two segments touch in the order. With a balanced binary search
+tree for the status and priority queue for events, every operation is \(O(\log n)\), for a total of
+\(O((n+k)\log n)\) -- output-sensitive, and far below \(O(n^2)\) when crossings are few. (This
+implementation keeps the status in a vector for clarity, preserving the event structure; a balanced
+tree restores the logarithmic factor.)
+
+#+name: bo-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/bentley_ottmann.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BENTLEY-OTTMANN(segments):
+  event queue <- all endpoints (by x)
+  status <- empty (segments ordered by y along the sweep line)
+  while events remain:
+      pop the leftmost event e
+      if e is a left endpoint:  insert segment; check it vs its neighbours
+      if e is a right endpoint: remove segment; check its two neighbours
+      if e is a crossing:       report point; swap the pair; check new neighbours
+      (each check schedules a crossing event if the pair intersects to the right)
+  return all reported crossings
+#+end_example
+
+* Worked example: a tangle of segments
+
+We intersect a handful of segments, print the crossings, confirm the count against a brute-force
+all-pairs check, and plot the segments with their intersection points.
+
+#+name: bo-run
+#+begin_src c++ :eval no
+    std::vector<Segment> segs = {
+        {{0, 0}, {10, 8}}, {{0, 8}, {10, 0}}, {{1, 1}, {9, 2}},
+        {{2, 9}, {8, 1}}, {{0, 4}, {10, 5}}, {{5, 0}, {4, 9}},
+    };
+    const auto xs = bentley_ottmann(segs);
+    std::cout << "=== Bentley-Ottmann segment intersections ===\n";
+    std::cout << segs.size() << " segments -> " << xs.size() << " intersections:\n";
+    for (const auto& p : xs) std::printf("  (%.3f, %.3f)\n", p.x, p.y);
+
+    // Brute-force all-pairs count for confirmation.
+    int brute = 0;
+    for (std::size_t i = 0; i < segs.size(); ++i)
+        for (std::size_t j = i + 1; j < segs.size(); ++j) {
+            Point2D p;
+            if (detail::proper_intersection(segs[i].a, segs[i].b, segs[j].a, segs[j].b, p)) ++brute;
+        }
+    std::cout << "brute-force count: " << brute << "  (match: " << (brute == (int)xs.size() ? "yes" : "no") << ")\n";
+
+    auto plot = RPlot::create();
+    std::vector<double> x0, y0, x1, y1;
+    for (const auto& s : segs) { x0.push_back(s.a.x); y0.push_back(s.a.y); x1.push_back(s.b.x); y1.push_back(s.b.y); }
+    plot.segments(x0, y0, x1, y1, RGB{100, 116, 139}, 1.8);
+    std::vector<double> ix, iy;
+    for (const auto& p : xs) { ix.push_back(p.x); iy.push_back(p.y); }
+    plot.points(ix, iy, "x", RGB{220, 38, 38}, 9.0);
+    plot.legend({"intersections"}, {{220, 38, 38}});
+    plot.title("Bentley-Ottmann: all pairwise segment intersections")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/bentley_ottmann.svg");
+    std::cout << "\nwrote bentley_ottmann.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bentley_ottmann_analysis.cpp <<'CPP'
+<<bo-includes>>
+
+int main() {
+<<bo-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bentley_ottmann_analysis.cpp -o build/org/bentley_ottmann_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bentley_ottmann_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bentley-Ottmann segment intersections ===
+6 segments -> 14 intersections:
+  (1.296, 1.037)
+  (4.348, 5.870)
+  (4.444, 4.444)
+  (4.505, 4.451)
+  (4.512, 4.390)
+  (4.592, 3.673)
+  (4.836, 1.479)
+  (5.000, 4.000)
+  (5.349, 4.535)
+  (5.469, 4.375)
+  (5.714, 4.571)
+  (6.875, 2.500)
+  (7.400, 1.800)
+  (7.703, 1.838)
+brute-force count: 14  (match: yes)
+
+wrote bentley_ottmann.svg
+#+end_example
+
+The sweep reports exactly the intersections a brute-force all-pairs check finds, but by testing only
+segments that are neighbours along the sweep line rather than every pair. Across the test suite it
+matches brute force on hundreds of random configurations.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bentley_ottmann.svg]]
+
+The grey segments criss-cross the plane and the red dots mark every crossing the sweep found. Each dot
+was discovered at the instant its two segments became adjacent in the sweep-line order -- never by
+comparing distant, non-adjacent segments. That neighbour-only discipline is what turns a quadratic
+all-pairs search into an output-sensitive \(O((n+k)\log n)\) sweep, the backbone of map overlay,
+Boolean polygon operations, and collision detection.
