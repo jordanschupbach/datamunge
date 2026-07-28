@@ -62,6 +62,7 @@
 #include <datamunge/algorithms/search_more.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
 #include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/algorithms/sparse_linalg.hpp>
 #include <datamunge/algorithms/stable_matching.hpp>
 #include <datamunge/algorithms/string_metrics.hpp>
 #include <datamunge/algorithms/subsequences.hpp>

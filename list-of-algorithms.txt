@@ -454,7 +454,7 @@ Further information: Numerical linear algebra
     [x] Gram–Schmidt process: orthogonalizes a set of vectors  -- datamunge::algorithms::gram_schmidt (modified, numerically stable); report examples/org/gram_schmidt_analysis.org
     Krylov methods (for large sparse matrix problems; third most-important numerical method class of the 20th century as ranked by SISC; after fast-fourier and fast-multipole)
     Matrix multiplication algorithms
-        Cannon's algorithm: a distributed algorithm for matrix multiplication especially suitable for computers laid out in an N × N mesh
+        [x] Cannon's algorithm: a distributed algorithm for matrix multiplication especially suitable for computers laid out in an N × N mesh  -- datamunge::algorithms::cannon_matmul; report examples/org/cannon_analysis.org
         Coppersmith–Winograd algorithm: square matrix multiplication
         [x] Freivalds' algorithm: a randomized algorithm used to verify matrix multiplication  -- datamunge::algorithms::freivalds_verify; report examples/org/freivalds_analysis.org
         [x] Strassen algorithm: faster matrix multiplication  -- datamunge::algorithms::strassen_multiply; report examples/org/strassen_analysis.org
@@ -471,9 +471,9 @@ Further information: Numerical linear algebra
         [x] Tridiagonal matrix algorithm (Thomas algorithm): solves systems of tridiagonal equations  -- datamunge::algorithms::thomas_solve; report examples/org/thomas_algorithm_analysis.org
     SMAWK Algorithm
     Sparse matrix algorithms
-        Cuthill–McKee algorithm: reduce the bandwidth of a symmetric sparse matrix
-        Minimum degree algorithm: permute the rows and columns of a symmetric sparse matrix before applying the Cholesky decomposition
-        Symbolic Cholesky decomposition: Efficient way of storing sparse matrix
+        [x] Cuthill–McKee algorithm: reduce the bandwidth of a symmetric sparse matrix  -- datamunge::algorithms::cuthill_mckee (+ reverse); report examples/org/cuthill_mckee_analysis.org
+        [x] Minimum degree algorithm: permute the rows and columns of a symmetric sparse matrix before applying the Cholesky decomposition  -- datamunge::algorithms::minimum_degree_ordering; report examples/org/minimum_degree_analysis.org
+        [x] Symbolic Cholesky decomposition: Efficient way of storing sparse matrix  -- datamunge::algorithms::symbolic_cholesky; report examples/org/symbolic_cholesky_analysis.org
 
 Monte Carlo
 Further information: Monte Carlo method

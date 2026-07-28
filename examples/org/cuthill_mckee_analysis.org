@@ -1,0 +1,142 @@
+#+title: The Cuthill-McKee Algorithm: Pulling Nonzeros Toward the Diagonal
+#+subtitle: A literate C++ study of bandwidth reduction with =datamunge='s =algorithms::cuthill_mckee=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A sparse symmetric matrix stored as a *band* -- nonzeros confined near the diagonal -- is far
+cheaper to factor and solve than one with scattered entries. But the band width depends on how
+the rows and columns are *ordered*. The *Cuthill-McKee algorithm* (1969) reorders them by a
+breadth-first sweep of the matrix's graph, keeping coupled rows adjacent so the nonzeros cluster
+along the diagonal. Its reverse (RCM) is a staple of finite-element and circuit solvers. This
+report drives =datamunge='s =algorithms::cuthill_mckee=, verified to shrink the bandwidth, and
+draws the sparsity pattern collapsing toward the diagonal.
+#+end_abstract
+
+* A breadth-first sweep of the matrix graph
+
+View the symmetric pattern as a graph: node \(i\) is joined to node \(j\) when \(A_{ij}\neq0\).
+The *bandwidth* under an ordering is \(\max_{A_{ij}\neq0}|\pi(i)-\pi(j)|\) -- the farthest any
+nonzero sits from the diagonal. Cuthill-McKee minimizes it heuristically:
+
+1. start at a *low-degree* vertex (a matrix row with few nonzeros);
+2. breadth-first traverse the graph, and within each BFS level visit neighbours in *increasing
+   degree* order;
+3. the visitation order is the new labelling.
+
+Because BFS keeps a vertex close to its neighbours (they enter within one level), the coupled
+rows land near each other, and the nonzeros fall into a narrow band. The *reverse* ordering
+(RCM) -- just flip the sequence -- provably has bandwidth no worse and typically produces less
+*fill-in* during Cholesky, so it is the usual choice. The whole reordering is one @c O(edges)
+BFS.
+
+#+name: cm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sparse_linalg.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CUTHILL-MCKEE(graph):
+  order <- []
+  for each connected component (start = lowest-degree unvisited vertex):
+      BFS from start; at each vertex, enqueue unvisited neighbours by increasing degree
+      append vertices in BFS visitation order
+  return order        # (reverse it for RCM)
+#+end_example
+
+* Worked example: a shuffled graph re-banded
+
+We build a sparse symmetric pattern whose *natural* ordering is deliberately scattered (a banded
+graph with randomly permuted labels), then apply Cuthill-McKee and compare bandwidths and
+sparsity patterns.
+
+#+name: cm-run
+#+begin_src c++ :eval no
+    std::mt19937 rng(7);
+    const int    n = 40;
+    // A banded pattern (each node linked to +-1, +-2), then randomly relabel to scatter it.
+    std::vector<int> label(n); for (int i = 0; i < n; ++i) label[i] = i; std::shuffle(label.begin(), label.end(), rng);
+    std::vector<std::vector<int>> adj(n);
+    auto add = [&](int a, int b) { adj[label[a]].push_back(label[b]); adj[label[b]].push_back(label[a]); };
+    for (int i = 0; i < n; ++i) { if (i + 1 < n) add(i, i + 1); if (i + 2 < n) add(i, i + 2); }
+
+    auto bandwidth = [&](const std::vector<int>& perm) {
+        std::vector<int> pos(n); for (int k = 0; k < n; ++k) pos[perm[k]] = k;
+        int bw = 0; for (int i = 0; i < n; ++i) for (int j : adj[i]) bw = std::max(bw, std::abs(pos[i] - pos[j]));
+        return bw;
+    };
+    std::vector<int> ident(n); for (int i = 0; i < n; ++i) ident[i] = i;
+    const std::vector<int> rcm = cuthill_mckee(adj, true);
+
+    std::cout << "=== bandwidth of a 40x40 shuffled banded pattern ===\n";
+    std::cout << "natural ordering : bandwidth " << bandwidth(ident) << "\n";
+    std::cout << "reverse Cuthill-McKee: bandwidth " << bandwidth(rcm) << "\n";
+
+    // Nonzero positions before (natural) and after (RCM).
+    std::vector<int> pos(n); for (int k = 0; k < n; ++k) pos[rcm[k]] = k;
+    std::vector<double> bx, by, ax, ay;
+    for (int i = 0; i < n; ++i) for (int j : adj[i]) { bx.push_back(i); by.push_back(j); ax.push_back(pos[i]); ay.push_back(pos[j]); }
+
+    auto plot = RPlot::create();
+    plot.points(bx, by, "before", RGB{203, 213, 225}, 3.0);
+    plot.points(ax, ay, "after RCM", RGB{37, 99, 235}, 3.0);
+    plot.legend({"nonzeros: natural order", "nonzeros: reverse Cuthill-McKee"}, {{203, 213, 225}, {37, 99, 235}});
+    plot.title("Cuthill-McKee pulls the scattered nonzeros into a tight diagonal band")
+        .x_label("row").y_label("column").background({250, 250, 252});
+    plot.save_svg("build/org/cuthill_mckee.svg");
+    std::cout << "wrote cuthill_mckee.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cuthill_mckee_analysis.cpp <<'CPP'
+<<cm-includes>>
+
+int main() {
+<<cm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cuthill_mckee_analysis.cpp -o build/org/cuthill_mckee_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cuthill_mckee_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== bandwidth of a 40x40 shuffled banded pattern ===
+natural ordering : bandwidth 32
+reverse Cuthill-McKee: bandwidth 2
+wrote cuthill_mckee.svg
+#+end_example
+
+The scattered natural ordering has a large bandwidth -- nonzeros flung far from the diagonal --
+and reverse Cuthill-McKee squeezes it down to a small band, exactly the width of the underlying
+coupling. The reordering recovered the hidden band the random relabelling had disguised.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/cuthill_mckee.svg]]
+
+The grey points -- nonzeros under the natural ordering -- are sprayed across the whole matrix;
+the blue points, after RCM, hug the diagonal in a thin strip. That thin strip is the payoff: a
+banded matrix factorizes and solves in a fraction of the time and storage, which is why every
+serious sparse solver reorders first.
