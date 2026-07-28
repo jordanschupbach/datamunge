@@ -1,0 +1,152 @@
+#+title: Backward Euler: Trading Explicitness for Stability
+#+subtitle: A literate C++ study of the implicit Euler method with =datamunge='s =algorithms::backward_euler=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Forward Euler evaluates the slope where it *is*; *backward Euler* evaluates it where it
+is *going*. That one change -- using @math{f} at the arrival point -- turns the update
+into an *implicit* equation that must be solved each step, but buys *A-stability*: on a
+stiff, rapidly-decaying problem backward Euler stays bounded for *any* step size, while
+forward Euler explodes. This report implements it in =datamunge='s C++
+=algorithms::backward_euler= (with a Newton solve per step), verifies it against an
+exact solution, and shows it staying calm on a stiff problem that blows forward Euler to
+pieces.
+#+end_abstract
+
+* An implicit step, and why it is stable
+
+Backward Euler steps
+
+\[ y_{n+1} = y_n + h\,f(t_{n+1},\, y_{n+1}), \]
+
+with the unknown @math{y_{n+1}} on *both* sides. For a linear test problem
+@math{y'=-\lambda y} this rearranges to @math{y_{n+1} = y_n/(1+h\lambda)}, whose
+amplification factor @math{1/(1+h\lambda)} has magnitude @math{<1} for *every*
+@math{h\lambda>0}: the numerical solution decays just like the true one, no matter how
+big the step. Forward Euler's factor @math{1-h\lambda} instead exceeds 1 in magnitude
+once @math{h\lambda>2}, so it oscillates and diverges. That unconditional stability is
+what *A-stability* means, and it is why implicit methods dominate *stiff* problems
+(where some modes decay far faster than the timescale of interest).
+
+The cost: for a general nonlinear @math{f}, each step must *solve* the implicit
+equation. =datamunge= does this with *Newton's method* using a finite-difference
+Jacobian @math{J = I - h\,\partial f/\partial y}, iterating until the residual is
+negligible (for a linear @math{f}, Newton converges in a single step).
+
+#+name: be-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ode.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BACKWARD-EULER(f, y0, t0, t1, steps):
+  h <- (t1 - t0) / steps;  y <- y0;  t <- t0
+  repeat steps times:
+      t1n <- t + h
+      Y <- y + h*f(t, y)                     # forward-Euler predictor (initial guess)
+      repeat until converged:                # Newton solve of  Y - y - h f(t1n, Y) = 0
+          G <- Y - y - h*f(t1n, Y)
+          J <- I - h * (finite-difference Jacobian of f at Y)
+          solve J * dY = -G;   Y <- Y + dY
+      y <- Y;  t <- t1n;  record (t, y)
+  return trajectory
+#+end_example
+
+* Worked example: a stiff decay that ruins forward Euler
+
+We integrate the stiff problem @math{y'=-25y} (exact @math{y=e^{-25t}}) with a large step
+@math{h=0.1}, so @math{h\lambda=2.5>2}. Forward Euler's factor is @math{1-2.5=-1.5}: the
+solution flips sign and grows without bound. Backward Euler's factor is
+@math{1/3.5\approx0.286}: it decays smoothly toward zero, like the truth.
+
+#+name: be-run
+#+begin_src c++ :eval no
+    const double lambda = 25.0;
+    auto f = [&](double, const std::vector<double>& y) { return std::vector<double>{-lambda * y[0]}; };
+
+    const int steps = 10; // h = 0.1, so h*lambda = 2.5
+    const OdeSolution fe = euler_method(f, {1.0}, 0.0, 1.0, steps);
+    const OdeSolution be = backward_euler(f, {1.0}, 0.0, 1.0, steps);
+
+    std::cout << "=== stiff y' = -25 y, h = 0.1 (h*lambda = 2.5) ===\n";
+    std::cout << "forward  Euler final y = " << fe.y.back()[0] << "  (|y| exploding)\n";
+    std::cout << "backward Euler final y = " << be.y.back()[0] << "  (exact e^-25 = " << std::exp(-25.0) << ")\n\n";
+
+    std::vector<double> tf, yf, tb, yb, tx, yx;
+    for (std::size_t i = 0; i < fe.t.size(); ++i) { tf.push_back(fe.t[i]); yf.push_back(fe.y[i][0]); }
+    for (std::size_t i = 0; i < be.t.size(); ++i) { tb.push_back(be.t[i]); yb.push_back(be.y[i][0]); }
+    for (int i = 0; i <= 200; ++i) { const double t = i / 200.0; tx.push_back(t); yx.push_back(std::exp(-lambda * t)); }
+
+    std::cout << "forward Euler values: ";
+    for (double v : yf) std::printf("%.2f ", v);
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    plot.line(tf, yf, "forward Euler", RGB{220, 38, 38}, 2.0);
+    plot.points(tf, yf, "forward", RGB{220, 38, 38}, 5.0);
+    plot.line(tb, yb, "backward Euler", RGB{37, 99, 235}, 2.0);
+    plot.points(tb, yb, "backward", RGB{37, 99, 235}, 6.0);
+    plot.line(tx, yx, "exact", RGB{16, 185, 129}, 2.0);
+    plot.legend({"forward Euler (diverges)", "backward Euler (stable)", "exact e^{-25t}"},
+                {{220, 38, 38}, {37, 99, 235}, {16, 185, 129}});
+    plot.title("Stiff decay, h*lambda = 2.5: forward Euler explodes, backward Euler holds")
+        .x_label("t").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/backward_euler.svg");
+    std::cout << "\nwrote backward_euler.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/backward_euler_analysis.cpp <<'CPP'
+<<be-includes>>
+
+int main() {
+<<be-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/backward_euler_analysis.cpp -o build/org/backward_euler_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/backward_euler_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== stiff y' = -25 y, h = 0.1 (h*lambda = 2.5) ===
+forward  Euler final y = 57.665  (|y| exploding)
+backward Euler final y = 3.6251e-06  (exact e^-25 = 1.38879e-11)
+
+forward Euler values: 1.00 -1.50 2.25 -3.38 5.06 -7.59 11.39 -17.09 25.63 -38.44 57.67
+#+end_example
+
+The forward-Euler values flip sign and grow by a factor of @math{1.5} in magnitude every
+step -- @math{1, -1.5, 2.25, -3.375, \dots} -- a textbook stiff instability. Backward
+Euler, evaluating the slope at the step's end, contracts by @math{1/3.5} each step and
+settles toward zero, tracking the true decay (coarsely, since it is only first-order, but
+*stably*). Same step size, opposite fates.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/backward_euler.svg]]
+
+The red forward-Euler polyline zig-zags to ever-larger amplitude while the blue backward-
+Euler curve hugs the green exact decay near zero. This is the whole case for implicit
+methods: when a problem is stiff, stability -- not per-step accuracy -- is what decides
+whether the integration is usable at all.

@@ -33,6 +33,7 @@
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
+#include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
