@@ -1,0 +1,156 @@
+#+title: Todd-Coxeter Coset Enumeration
+#+subtitle: A literate C++ study of enumerating cosets from a presentation with =datamunge='s =algorithms::todd_coxeter_index=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A group can be handed to you as a *presentation* -- generators and relations, like
+\(\langle a,b\mid a^2,b^3,(ab)^4\rangle\) -- with no hint of how large it is or whether it is even
+finite. The Todd-Coxeter algorithm (1936) answers by *enumerating the cosets* of a subgroup: it fills
+in a coset table by repeatedly forcing the relations to hold, merging cosets that turn out equal,
+until the table closes. The number of cosets is the index \([G:H]\); with the trivial subgroup it is
+the group order. This report drives =datamunge='s =algorithms::todd_coxeter_index=, verified against
+the known orders of cyclic, dihedral, symmetric, and alternating groups and against subgroup indices.
+#+end_abstract
+
+* Fill the coset table, merge coincidences
+
+Number the cosets \(1,2,\dots\), with coset \(1\) standing for the subgroup \(H\). The *coset table*
+records, for each coset \(c\) and generator \(x\), the coset \(c\cdot x\). The algorithm keeps two
+kinds of moves:
+
+- *Definition* -- when a needed entry \(c\cdot x\) is unknown and progress has stalled, invent a new
+  coset for it.
+- *Deduction and coincidence* -- *scan* each relator \(r\) from each coset: follow \(r\)'s letters
+  through the table from both ends. If the scan closes with one missing edge, that edge is *deduced*;
+  if it closes onto two different cosets, those cosets are the same -- a *coincidence* -- and are
+  merged, which can cascade into further merges.
+
+Every relator \(r\) must act as the identity, so scanning \(r\) from coset \(c\) has to return to
+\(c\); every subgroup generator must fix coset \(1\). Enforcing these constraints and defining new
+cosets only when forced, the table eventually becomes complete and consistent. The count of surviving
+cosets is
+
+\[ [G:H]=\#\{\text{live cosets}\}, \]
+
+and for \(H=\{1\}\) this equals \(|G|\). Todd-Coxeter is guaranteed to terminate exactly when the
+index is finite -- it is a semi-decision procedure for a problem that is undecidable in general.
+
+#+name: tc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/todd_coxeter.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::vector<int> poww(int sym, int k) { std::vector<int> w; for (int i = 0; i < k; ++i) w.push_back(sym); return w; }
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TODD-COXETER(generators, relators, subgroup gens):
+  coset 1 = H
+  scan each subgroup generator from coset 1 (must return to 1)
+  for each live coset c (in order):
+      scan every relator from c (deduce edges, merge coincidences)
+      for each generator x: if c.x undefined, define a new coset
+  index = number of live cosets
+#+end_example
+
+* Worked example: orders from presentations, and subgroup indices
+
+We compute several group orders from their presentations, confirm them, then read off a subgroup
+index, and plot the recovered orders of a family of named groups.
+
+#+name: tc-run
+#+begin_src c++ :eval no
+    std::cout << "=== Todd-Coxeter coset enumeration ===\n";
+    // S_4 = <a,b | a^2, b^3, (ab)^4>
+    std::cout << "S_4 = <a,b | a^2,b^3,(ab)^4> : order " << todd_coxeter_index(2, {{1,1},{2,2,2},{1,2,1,2,1,2,1,2}}, {}) << " (expect 24)\n";
+    // A_5 = <a,b | a^2, b^3, (ab)^5>  (order 60)
+    std::cout << "A_5 = <a,b | a^2,b^3,(ab)^5> : order " << todd_coxeter_index(2, {{1,1},{2,2,2},{1,2,1,2,1,2,1,2,1,2}}, {}) << " (expect 60)\n";
+    // Subgroup index: C_12 = <a | a^12>, H = <a^4> -> index 4
+    std::cout << "[C_12 : <a^4>] = " << todd_coxeter_index(1, {poww(1,12)}, {poww(1,4)}) << " (expect 4)\n\n";
+
+    struct G { std::string name; int ngen; std::vector<std::vector<int>> rel; long long expect; };
+    std::vector<G> groups = {
+        {"C6",   1, {poww(1,6)}, 6},
+        {"S3",   2, {{1,1},{2,2,2},{1,2,1,2}}, 6},
+        {"D4",   2, {{1,1,1,1},{2,2},{1,2,1,2}}, 8},
+        {"A4",   2, {{1,1},{2,2,2},{1,2,1,2,1,2}}, 12},
+        {"S4",   2, {{1,1},{2,2,2},{1,2,1,2,1,2,1,2}}, 24},
+        {"A5",   2, {{1,1},{2,2,2},{1,2,1,2,1,2,1,2,1,2}}, 60},
+    };
+    std::vector<double> ord; std::vector<std::string> lab;
+    std::cout << "group   order   expected\n";
+    for (auto& g : groups) {
+        const long long o = todd_coxeter_index(g.ngen, g.rel, {});
+        std::printf("%-5s   %5lld   %5lld%s\n", g.name.c_str(), o, g.expect, o == g.expect ? "" : "  <-- MISMATCH");
+        ord.push_back((double)o); lab.push_back(g.name);
+    }
+
+    auto plot = RPlot::barplot(ord, lab, "order", RGB{124, 58, 237});
+    plot.title("Group orders recovered from presentations by coset enumeration")
+        .x_label("group").y_label("order = number of cosets").background({250, 250, 252});
+    plot.save_svg("build/org/todd_coxeter.svg");
+    std::cout << "\nwrote todd_coxeter.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/todd_coxeter_analysis.cpp <<'CPP'
+<<tc-includes>>
+
+int main() {
+<<tc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/todd_coxeter_analysis.cpp -o build/org/todd_coxeter_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/todd_coxeter_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Todd-Coxeter coset enumeration ===
+S_4 = <a,b | a^2,b^3,(ab)^4> : order 24 (expect 24)
+A_5 = <a,b | a^2,b^3,(ab)^5> : order 60 (expect 60)
+[C_12 : <a^4>] = 4 (expect 4)
+
+group   order   expected
+C6          6       6
+S3          6       6
+D4          8       8
+A4         12      12
+S4         24      24
+A5         60      60
+
+wrote todd_coxeter.svg
+#+end_example
+
+From nothing but generators and relations, coset enumeration recovers the exact order of every group
+-- up to \(A_5\) with its \(60\) elements -- and reads the subgroup index \([C_{12}:\langle
+a^4\rangle]=4\) straight off the coset count. No element was ever multiplied out; the table simply
+closed under the relations.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/todd_coxeter.svg]]
+
+The bar heights are the coset counts at which each enumeration closed, matching the known orders
+\(6,6,8,12,24,60\). Todd-Coxeter cannot know in advance how many cosets it will need -- and for an
+infinite group it never halts -- but whenever the index is finite it is guaranteed to find it, which
+is why it remains the standard tool for computing with finitely presented groups.
