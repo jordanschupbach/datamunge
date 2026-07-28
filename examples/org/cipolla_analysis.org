@@ -1,0 +1,143 @@
+#+title: Cipolla's Algorithm: Square Roots Modulo a Prime via F_{p^2}
+#+subtitle: A literate C++ study of modular square roots with =datamunge='s =algorithms::cipolla_sqrt=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Solving \(r^2\equiv n\pmod p\) -- a *square root modulo a prime* -- is a basic step in
+number theory and cryptography (point decompression on elliptic curves, quadratic sieves).
+*Cipolla's algorithm* (1907) solves it with a beautiful move: it steps *outside* \(F_p\) into
+the quadratic extension field \(F_{p^2}\), where an exponentiation delivers the root, then lands
+back in \(F_p\). It is an elegant alternative to Tonelli-Shanks, often faster when \(p-1\) holds
+a large power of two. This report drives =datamunge='s =algorithms::cipolla_sqrt=, verified that
+\(r^2\equiv n\), and plots the two roots folding around each residue.
+#+end_abstract
+
+* A detour through the quadratic field
+
+First check that \(n\) is a *quadratic residue* by Euler's criterion:
+\(n^{(p-1)/2}\equiv1\pmod p\) (else no root exists). Then pick \(a\) so that
+\(w=a^2-n\) is a *non-residue*; \(\sqrt w\) does not exist in \(F_p\), so
+\(F_{p^2}=F_p(\sqrt w)\) is a genuine field extension whose elements are \(x+y\sqrt w\).
+Cipolla's theorem: in \(F_{p^2}\),
+
+\[ r = (a+\sqrt w)^{(p+1)/2} \]
+
+is a *pure* element of \(F_p\) (its \(\sqrt w\)-part vanishes) and satisfies \(r^2\equiv n\).
+The exponentiation is ordinary square-and-multiply, but each multiply uses the
+\(F_{p^2}\) rule \((x_1+y_1\sqrt w)(x_2+y_2\sqrt w)=(x_1x_2+w\,y_1y_2)+(x_1y_2+x_2y_1)\sqrt w\).
+The other root is simply \(p-r\). About half the elements of \(F_p^\ast\) are residues, so a
+suitable \(a\) is found in a couple of tries.
+
+#+name: cp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/arithmetic_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CIPOLLA(n, p):
+  if n^((p-1)/2) != 1 mod p: return "no root"       # Euler's criterion
+  find a with (a^2 - n) a non-residue;  w <- a^2 - n
+  r <- (a + sqrt(w))^((p+1)/2)   computed in F_{p^2}
+  return r        # r^2 = n mod p; the other root is p - r
+#+end_example
+
+* Worked example: roots mod a prime, and the two-valued folding
+
+We take square roots of several residues and verify them, then plot both roots of every
+quadratic residue modulo a prime -- the characteristic two-branch fold.
+
+#+name: cp-run
+#+begin_src c++ :eval no
+    const std::uint64_t p = 1009;
+    std::cout << "=== square roots modulo p = " << p << " ===\n";
+    for (std::uint64_t n : {2ULL, 10ULL, 100ULL, 500ULL}) {
+        const long long r = cipolla_sqrt(n, p);
+        if (r < 0) { std::cout << "sqrt(" << n << ") : none (non-residue)\n"; continue; }
+        std::cout << "sqrt(" << n << ") = " << r << " and " << (p - r)
+                  << "  (check " << (r * r) % (long long)p << " = " << n << ")\n";
+    }
+    for (std::uint64_t n = 2; n < p; ++n)
+        if (cipolla_sqrt(n, p) < 0) { std::cout << n << " is a non-residue mod " << p << " (no root)\n"; break; }
+    std::cout << "\n";
+
+    // Plot both roots for every quadratic residue mod p.
+    std::vector<double> nx, r1, r2;
+    int residues = 0;
+    for (std::uint64_t n = 1; n < p; ++n) {
+        const long long r = cipolla_sqrt(n, p);
+        if (r < 0) continue;
+        ++residues;
+        nx.push_back(static_cast<double>(n));
+        r1.push_back(static_cast<double>(r));
+        r2.push_back(static_cast<double>(p - r));
+    }
+    std::cout << residues << " of " << (p - 1) << " nonzero residues are quadratic residues\n";
+
+    auto plot = RPlot::create();
+    plot.points(nx, r1, "root", RGB{37, 99, 235}, 3.0);
+    plot.points(nx, r2, "other root", RGB{220, 38, 38}, 3.0);
+    plot.legend({"root r", "other root p - r"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Cipolla: the two square roots of each residue mod 1009")
+        .x_label("residue n").y_label("sqrt(n) mod p").background({250, 250, 252});
+    plot.save_svg("build/org/cipolla.svg");
+    std::cout << "wrote cipolla.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cipolla_analysis.cpp <<'CPP'
+<<cp-includes>>
+
+int main() {
+<<cp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cipolla_analysis.cpp -o build/org/cipolla_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cipolla_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== square roots modulo p = 1009 ===
+sqrt(2) = 439 and 570  (check 2 = 2)
+sqrt(10) = 162 and 847  (check 10 = 10)
+sqrt(100) = 999 and 10  (check 100 = 100)
+sqrt(500) = 587 and 422  (check 500 = 500)
+11 is a non-residue mod 1009 (no root)
+
+504 of 1008 nonzero residues are quadratic residues
+wrote cipolla.svg
+#+end_example
+
+Each residue's root squares back to it, and the first non-residue is correctly reported as
+having no root; every residue has exactly two roots, \(r\) and \(p-r\), summing to \(p\).
+Exactly half of the nonzero classes (504 of 1008) are quadratic residues -- the expected
+count -- and Cipolla finds a root for each by a single exponentiation in \(F_{p^2}\).
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/cipolla.svg]]
+
+The two point clouds are mirror images across \(y=p/2\): every quadratic residue \(n\) has roots
+\(r\) and \(p-r\), one in each half. The scatter looks random because modular square-rooting is
+a genuinely nonlinear scramble -- which is exactly why it is useful in cryptographic settings,
+and why an algebraic detour through \(F_{p^2}\) is what it takes to invert it.

@@ -1,0 +1,140 @@
+#+title: Addition-Chain Exponentiation: The Fewest Multiplications for a Power
+#+subtitle: A literate C++ study of optimal power chains with =datamunge='s =algorithms::addition_chain=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To compute \(x^e\) you multiply; the question is *how few* multiplications suffice. Binary
+"square-and-multiply" is the familiar answer, but it is not always optimal: \(x^{15}\) takes
+*six* multiplications by binary yet only *five* by the chain \(1,2,4,5,10,15\). An *addition
+chain* is a sequence \(1=c_0,\dots,c_L=e\) where each term is a sum of two earlier ones -- one
+multiplication apiece -- and the *shortest* chain minimizes the work. This report drives
+=datamunge='s =algorithms::addition_chain=, verified to produce valid chains, and shows the
+optimal count dipping below binary's.
+#+end_abstract
+
+* Chains of sums, one multiply each
+
+If \(c_k=c_i+c_j\) with \(i,j<k\), then \(x^{c_k}=x^{c_i}\cdot x^{c_j}\): each new chain element
+costs exactly one multiplication of already-computed powers. So the number of multiplications to
+form \(x^e\) is the *length* \(L\) of an addition chain ending at \(e\). Binary exponentiation is
+one particular chain -- doublings interleaved with \(+1\) steps for the set bits -- of length
+\(\lfloor\log_2 e\rfloor+(\nu(e)-1)\), where \(\nu(e)\) is the popcount. The *shortest* chain can
+be strictly smaller, because a well-chosen intermediate (like the \(5\) in the \(x^{15}\) chain
+\(1,2,4,5,10,15\)) can be reused. Finding the minimum is hard in general (no closed form), but a bounded
+depth-first search settles it for the modest exponents where it matters -- and the saving,
+though a constant factor, is pure profit in tight inner loops (modular exponentiation,
+elliptic-curve scalar multiplication) run billions of times.
+
+#+name: ac-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/arithmetic_extra.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <bit>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ADDITION-CHAIN(e):                       # shortest chain for small e
+  for target length L = 1, 2, 3, ...:
+      DFS building a chain [1, ...] where each new term is a sum of two earlier terms,
+          strictly increasing, never exceeding e, pruned when doubling can't reach e
+      if a chain of length L reaches e: return it
+  (fall back to the binary square-and-multiply chain for large e)
+#+end_example
+
+* Worked example: x^15 and x^255, then optimal versus binary
+
+We print optimal chains for a couple of exponents, then compare optimal and binary
+multiplication counts across a range of \(e\).
+
+#+name: ac-run
+#+begin_src c++ :eval no
+    auto binary_mults = [](std::uint64_t e) {
+        return (63 - std::countl_zero(e)) + (std::popcount(e) - 1); // floor(log2 e) + popcount-1
+    };
+
+    for (std::uint64_t e : {15ULL, 255ULL, 31ULL}) {
+        const auto c = addition_chain(e);
+        std::cout << "x^" << e << " chain: ";
+        for (std::size_t i = 0; i < c.size(); ++i) std::cout << (i ? "," : "") << c[i];
+        std::cout << "  -> " << (c.size() - 1) << " mults (binary " << binary_mults(e) << ")\n";
+    }
+    std::cout << "\n";
+
+    std::vector<double> ex, opt, bin;
+    long long savings = 0;
+    for (std::uint64_t e = 1; e <= 100; ++e) {
+        const long long o = static_cast<long long>(addition_chain(e).size()) - 1;
+        const long long b = binary_mults(e);
+        ex.push_back(static_cast<double>(e));
+        opt.push_back(static_cast<double>(o));
+        bin.push_back(static_cast<double>(b));
+        savings += (b - o);
+    }
+    std::cout << "over e=1..100: optimal saves " << savings << " multiplications total vs binary\n";
+
+    auto plot = RPlot::create();
+    plot.line(ex, bin, "binary", RGB{220, 38, 38}, 2.0);
+    plot.points(ex, bin, "binary", RGB{220, 38, 38}, 3.0);
+    plot.line(ex, opt, "optimal", RGB{37, 99, 235}, 2.0);
+    plot.points(ex, opt, "optimal", RGB{37, 99, 235}, 3.0);
+    plot.legend({"binary square-and-multiply", "shortest addition chain"}, {{220, 38, 38}, {37, 99, 235}});
+    plot.title("Multiplications for x^e: the shortest chain is never worse than binary")
+        .x_label("exponent e").y_label("multiplications").background({250, 250, 252});
+    plot.save_svg("build/org/addition_chain.svg");
+    std::cout << "wrote addition_chain.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/addition_chain_analysis.cpp <<'CPP'
+<<ac-includes>>
+
+int main() {
+<<ac-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/addition_chain_analysis.cpp -o build/org/addition_chain_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/addition_chain_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+x^15 chain: 1,2,4,5,10,15  -> 5 mults (binary 6)
+x^255 chain: 1,2,4,8,16,17,34,68,85,170,255  -> 10 mults (binary 14)
+x^31 chain: 1,2,4,8,10,20,30,31  -> 7 mults (binary 8)
+
+over e=1..100: optimal saves 35 multiplications total vs binary
+wrote addition_chain.svg
+#+end_example
+
+The optimal chain computes \(x^{15}\) in five multiplications where binary needs six, and
+\(x^{255}\) drops from fourteen to ten. Across \(e=1..100\) the optimal chains save a
+meaningful running total of multiplications, and are *never* worse than binary -- binary is, after
+all, just one admissible chain.
+
+#+attr_html: :width 660
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/addition_chain.svg]]
+
+The blue optimal curve tracks at or below the red binary curve everywhere, dipping under it at
+the exponents whose set-bit pattern binary handles wastefully. Each dip is a handful of
+multiplications saved -- negligible once, decisive in the exponentiation inner loops of
+cryptography where a fixed exponent is applied over and over.
