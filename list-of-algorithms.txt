@@ -250,8 +250,8 @@ Abstract algebra
 Further information: Abstract algebra
 
     [x] Chien search: a recursive algorithm for determining roots of polynomials defined over a finite field  -- datamunge::algorithms::chien_search; report examples/org/chien_search_analysis.org
-    Schreier–Sims algorithm: computing a base and strong generating set (BSGS) of a permutation group
-    Todd–Coxeter algorithm: Procedure for generating cosets.
+    [x] Schreier–Sims algorithm: computing a base and strong generating set (BSGS) of a permutation group  -- datamunge::algorithms::schreier_sims (order + membership); report examples/org/schreier_sims_analysis.org
+    [x] Todd–Coxeter algorithm: Procedure for generating cosets.  -- datamunge::algorithms::todd_coxeter_index (coset enumeration, index [G:H]); report examples/org/todd_coxeter_analysis.org
 
 Computer algebra
 Further information: Computer algebra

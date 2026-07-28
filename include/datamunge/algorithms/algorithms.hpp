@@ -68,6 +68,7 @@
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/search_batch.hpp>
+#include <datamunge/algorithms/schreier_sims.hpp>
 #include <datamunge/algorithms/search_more.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
 #include <datamunge/algorithms/sorted_search.hpp>
@@ -78,6 +79,7 @@
 #include <datamunge/algorithms/substrings.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>
+#include <datamunge/algorithms/todd_coxeter.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>

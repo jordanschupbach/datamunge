@@ -748,6 +748,16 @@ We implement Berlekamp-Rabin root finding (=algorithms::berlekamp_roots=) and re
 
 We implement Pollard's kangaroo (=algorithms::pollard_kangaroo=) and report it as a literate program. A tame kangaroo lays a trail from g^b and a wild one from h=g^x jumps until it collides, revealing x from the shared distance; it recovers the log across many primes and intervals in O(sqrt(b-a)) jumps, with the sqrt scaling plotted.
 
+** [[./schreier_sims_analysis.html][The Schreier-Sims Algorithm: Order of a Permutation Group]] ([[./schreier_sims_analysis.pdf][PDF]])
+/A literate C++ study of the stabilizer chain using datamunge/
+
+We implement Schreier-Sims (=algorithms::schreier_sims=) and report it as a literate program. A base and strong generating set builds a stabilizer chain whose orbit sizes multiply to the group order and whose transversals give an instant membership test; it recovers |S_n|=n!, dihedral, and alternating group orders, with the chain's orbit sizes (6*5*4*3*2=720 for S_6) plotted.
+
+** [[./todd_coxeter_analysis.html][Todd-Coxeter Coset Enumeration]] ([[./todd_coxeter_analysis.pdf][PDF]])
+/A literate C++ study of enumerating cosets from a presentation using datamunge/
+
+We implement Todd-Coxeter coset enumeration (=algorithms::todd_coxeter_index=) and report it as a literate program. Filling a coset table by forcing the relations and merging coincidences yields the index [G:H] -- the group order for the trivial subgroup; it recovers the orders of cyclic, dihedral, symmetric (S_4=24), and alternating (A_5=60) groups from their presentations, with the recovered orders plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
