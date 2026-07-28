@@ -1,0 +1,164 @@
+#+title: Index Calculus: Subexponential Discrete Logarithms
+#+subtitle: A literate C++ study of factor-base discrete logs with =datamunge='s =algorithms::index_calculus=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The discrete logarithm -- solve \(g^x\equiv h\pmod p\) for \(x\) -- underpins Diffie-Hellman and
+DSA, and its hardness is what keeps them secure. Generic attacks like baby-step giant-step cost
+\(O(\sqrt p)\); *index calculus* does far better, \(L_p[\tfrac12]\), by the same smoothness trick that
+powers the quadratic sieve. Collect powers of \(g\) that are smooth over a factor base, solve a linear
+system for the logarithms of the small primes, then read off any target's logarithm from one more
+smooth relation. This report drives =datamunge='s =algorithms::index_calculus=, verified to recover
+discrete logs modulo several primes, and shows why it is subexponential.
+#+end_abstract
+
+* Logarithms of the small primes, then everything else
+
+Fix a factor base of the small primes \(q_1,\dots,q_k\le B\). *Relation collection*: for random
+exponents \(a\), compute \(g^a\bmod p\); when the residue is \(B\)-smooth,
+\(g^a\equiv\prod_j q_j^{e_j}\), take logarithms base \(g\) to get a *linear* equation over
+\(\mathbb{Z}/(p-1)\):
+
+\[ a\equiv\sum_j e_j\,\log_g q_j \pmod{p-1}. \]
+
+Gather more such relations than there are primes and solve the linear system for the unknowns
+\(\log_g q_j\) -- the logarithms of the entire factor base, computed once. *Individual logarithm*:
+for the target \(h\), search a random shift \(s\) until \(h\,g^{s}\) is smooth,
+\(h\,g^{s}\equiv\prod_j q_j^{f_j}\); then
+
+\[ \log_g h \equiv \Big(\sum_j f_j\,\log_g q_j\Big)-s \pmod{p-1}. \]
+
+The precomputation dominates and costs \(L_p[\tfrac12,\,\sqrt2]\) -- subexponential -- after which every
+individual logarithm is cheap. That asymmetry (expensive one-time table, cheap queries) is exactly why
+index calculus, and its number-field-sieve descendants, set the key sizes for discrete-log
+cryptography.
+
+#+name: ic-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/index_calculus.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::uint64_t pmod(std::uint64_t a, std::uint64_t e, std::uint64_t m) {
+    unsigned __int128 r = 1; a %= m;
+    while (e) { if (e & 1) r = r * a % m; a = (unsigned __int128)a * a % m; e >>= 1; }
+    return (std::uint64_t)r;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+INDEX-CALCULUS(g, h, p):
+  factor base = small primes q_j <= B
+  # precompute logs of the factor base
+  collect relations: random a with g^a smooth => a = sum e_j log(q_j)  (mod p-1)
+  solve the linear system for all log(q_j)  (mod p-1)
+  # individual logarithm
+  find random s with h * g^s smooth => h*g^s = prod q_j^{f_j}
+  return log h = sum f_j log(q_j) - s   (mod p-1)
+#+end_example
+
+* Worked example: recovering discrete logs
+
+We hide exponents behind \(h=g^x\bmod p\) for several primes and recover \(x\), confirming
+\(g^x\equiv h\).
+
+#+name: ic-run
+#+begin_src c++ :eval no
+    std::cout << "=== index calculus ===\n";
+    struct Case { std::uint64_t p, g, x; };
+    for (auto c : std::vector<Case>{{10007, 5, 1234}, {100003, 2, 54321}, {1000003, 2, 424242}, {15485863, 6, 9999999}}) {
+        const std::uint64_t h = pmod(c.g, c.x, c.p);
+        const auto          r = index_calculus(c.g, h, c.p);
+        std::cout << "p=" << c.p << ", g=" << c.g << ": solved g^x = " << h
+                  << "  ->  x = " << r.x << "  (g^x check: " << (pmod(c.g, r.x, c.p) == h ? "ok" : "FAIL") << ")\n";
+    }
+
+    // Subexponential L_p[1/2] vs baby-step giant-step sqrt(p).
+    std::vector<double> bits, ic, bsgs;
+    std::cout << "\nbits   L_p[1/2] (log10)   BSGS sqrt(p) (log10)\n";
+    for (int b = 30; b <= 240; b += 30) {
+        const double lnp = b * std::log(2.0);
+        const double Lc  = std::exp(std::sqrt(2.0) * std::sqrt(lnp * std::log(lnp)));
+        bits.push_back(b);
+        ic.push_back(std::log10(Lc));
+        bsgs.push_back(std::log10(std::pow(2.0, b / 2.0)));
+        std::printf("%4d   %14.2f   %14.2f\n", b, std::log10(Lc), std::log10(std::pow(2.0, b / 2.0)));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(bits, bsgs, "b", RGB{220, 38, 38}, 2.0);
+    plot.line(bits, ic, "i", RGB{124, 58, 237}, 2.0);
+    plot.legend({"baby-step giant-step sqrt(p)", "index calculus L_p[1/2]"}, {{220, 38, 38}, {124, 58, 237}});
+    plot.title("Index calculus is subexponential, far below the sqrt(p) generic bound")
+        .x_label("bits of p").y_label("log10 of operations").background({250, 250, 252});
+    plot.save_svg("build/org/index_calculus.svg");
+    std::cout << "\nwrote index_calculus.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/index_calculus_analysis.cpp <<'CPP'
+<<ic-includes>>
+
+int main() {
+<<ic-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/index_calculus_analysis.cpp -o build/org/index_calculus_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/index_calculus_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== index calculus ===
+p=10007, g=5: solved g^x = 4873  ->  x = 1234  (g^x check: ok)
+p=100003, g=2: solved g^x = 56246  ->  x = 54321  (g^x check: ok)
+p=1000003, g=2: solved g^x = 671432  ->  x = 424242  (g^x check: ok)
+p=15485863, g=6: solved g^x = 9002412  ->  x = 9999999  (g^x check: ok)
+
+bits   L_p[1/2] (log10)   BSGS sqrt(p) (log10)
+  30             4.88             4.52
+  60             7.65             9.03
+  90             9.86            13.55
+ 120            11.78            18.06
+ 150            13.50            22.58
+ 180            15.07            27.09
+ 210            16.54            31.61
+ 240            17.91            36.12
+
+wrote index_calculus.svg
+#+end_example
+
+Each hidden exponent is recovered and verified by re-exponentiation -- the test suite confirms this
+across several primes and random targets. The logarithm was found not by searching the exponent space
+but by solving a linear system over the factor base and matching the target to it.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/index_calculus.svg]]
+
+Near the far left the two curves nearly touch -- for tiny \(p\) the subexponential \(L_p[\tfrac12]\)
+carries a larger constant than \(\sqrt p\), so index calculus is no faster on toy inputs. But past the
+early crossover the purple curve pulls decisively beneath the red one and the gap widens with every
+bit: taking the search from \(\sqrt p\) down to \(L_p[\tfrac12]\) is the difference between a
+discrete-log problem being merely hard and being broken at cryptographic sizes. It is precisely this
+subexponential attack -- refined into the number field sieve -- that forces the large key sizes used
+by finite-field Diffie-Hellman and DSA.

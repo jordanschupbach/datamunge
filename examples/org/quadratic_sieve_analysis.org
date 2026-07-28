@@ -1,0 +1,154 @@
+#+title: The Quadratic Sieve: Factoring by a Congruence of Squares
+#+subtitle: A literate C++ study of subexponential factoring with =datamunge='s =algorithms::quadratic_sieve=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+For decades the quadratic sieve was the fastest known factoring algorithm, and it remains the method
+of choice for numbers up to about a hundred digits. Its engine is Fermat's old idea -- a *congruence
+of squares* \(X^2\equiv Y^2\pmod n\) with \(X\not\equiv\pm Y\) hands you the factor
+\(\gcd(X-Y,n)\) -- made practical by *sieving* for the smooth numbers that build the square. This
+report drives =datamunge='s =algorithms::quadratic_sieve=, verified to split dozens of semiprimes
+(cross-checked against the module's Dixon factoriser), and situates its cost between polynomial and
+exponential.
+#+end_abstract
+
+* Smooth squares, then linear algebra
+
+Set \(s=\lceil\sqrt n\rceil\) and consider \(Q(x)=x^2-n\) for \(x\) near \(s\); then
+\(x^2\equiv Q(x)\pmod n\), and \(Q(x)\) is small, so it has a good chance of being *B-smooth* (all its
+prime factors \(\le B\)). Collect many \(x\) for which \(Q(x)\) factors completely over a *factor
+base* -- the primes \(p\le B\) for which \(n\) is a quadratic residue (only those can divide
+\(x^2-n\)). Each smooth \(Q(x)\) gives a row of prime exponents. Find a subset of rows whose exponents
+sum to *even* numbers in every prime: that is a linear dependency mod 2, solved by Gaussian
+elimination over \(\mathrm{GF}(2)\). For that subset,
+
+\[ X=\prod x_i \pmod n,\qquad Y=\prod_p p^{\frac12\sum e_p}\pmod n \quad\Longrightarrow\quad X^2\equiv\prod Q(x_i)\equiv Y^2\pmod n. \]
+
+With probability \(\ge\tfrac12\) the factor \(\gcd(X-Y,n)\) is nontrivial; otherwise try another
+dependency. The *sieve* is what makes finding smooth \(Q(x)\) cheap: for each factor-base prime \(p\),
+the \(x\) with \(p\mid Q(x)\) are exactly \(x\equiv\pm\sqrt n\pmod p\) (a Tonelli-Shanks square root),
+an arithmetic progression, so we strike out multiples of \(p\) across the whole interval at once
+instead of trial-dividing each value. The running time is \(L_n[\tfrac12,1]=\exp\!\big((1+o(1))\sqrt{\ln n\,\ln\ln n}\big)\) -- *subexponential*, between polynomial and exponential.
+
+#+name: qs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/quadratic_sieve.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+QUADRATIC-SIEVE(n):
+  factor base = { p <= B : n is a quadratic residue mod p }
+  sieve x near sqrt(n): mark x with p | Q(x) at x ≡ ±sqrt(n) (mod p)
+  keep x whose Q(x) = x^2 - n is B-smooth, recording exponent vectors
+  once there are more relations than primes:
+      find a GF(2) dependency among the exponent vectors
+      X = prod x_i,  Y = prod p^(half exponent sum)
+      d = gcd(X - Y, n); if 1 < d < n: return d
+#+end_example
+
+* Worked example: factoring semiprimes
+
+We factor several products of two primes and confirm each split; the sieve never sees the factors
+directly -- they fall out of the congruence of squares.
+
+#+name: qs-run
+#+begin_src c++ :eval no
+    std::cout << "=== quadratic sieve ===\n";
+    for (unsigned long long n : {1000003ull * 1000033ull, 15485863ull * 15485867ull, 4000037ull * 7999993ull, 32452843ull * 49979687ull}) {
+        const unsigned long long f = quadratic_sieve(n);
+        std::cout << "n = " << n << "  =  " << f << " x " << n / f
+                  << "   (" << (f > 1 && f < n && n % f == 0 ? "verified" : "FAILED") << ")\n";
+    }
+
+    // Subexponential cost L_n[1/2] vs trial division 2^(bits/2) vs polynomial.
+    std::vector<double> bits, sieve, trial, poly;
+    std::cout << "\nbits   L_n[1/2] (log10)   trial-div 2^(b/2) (log10)\n";
+    for (int b = 30; b <= 240; b += 30) {
+        const double lnn = b * std::log(2.0);
+        const double Lc  = std::exp(std::sqrt(lnn * std::log(lnn))) ; // L_n[1/2, 1]
+        bits.push_back(b);
+        sieve.push_back(std::log10(Lc));
+        trial.push_back(std::log10(std::pow(2.0, b / 2.0)));
+        poly.push_back(std::log10((double)b * b * b));
+        std::printf("%4d   %14.2f   %14.2f\n", b, std::log10(Lc), std::log10(std::pow(2.0, b / 2.0)));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(bits, trial, "t", RGB{220, 38, 38}, 2.0);
+    plot.line(bits, sieve, "s", RGB{37, 99, 235}, 2.0);
+    plot.line(bits, poly, "p", RGB{5, 150, 105}, 2.0);
+    plot.legend({"trial division 2^(b/2)", "quadratic sieve L_n[1/2]", "polynomial b^3"},
+                {{220, 38, 38}, {37, 99, 235}, {5, 150, 105}});
+    plot.title("Quadratic sieve is subexponential: between polynomial and exponential")
+        .x_label("bits of n").y_label("log10 of operations").background({250, 250, 252});
+    plot.save_svg("build/org/quadratic_sieve.svg");
+    std::cout << "\nwrote quadratic_sieve.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/quadratic_sieve_analysis.cpp <<'CPP'
+<<qs-includes>>
+
+int main() {
+<<qs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/quadratic_sieve_analysis.cpp -o build/org/quadratic_sieve_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/quadratic_sieve_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== quadratic sieve ===
+n = 1000036000099  =  1000003 x 1000033   (verified)
+n = 239812014798221  =  15485863 x 15485867   (verified)
+n = 32000267999741  =  7999993 x 4000037   (verified)
+n = 1621982935400141  =  32452843 x 49979687   (verified)
+
+bits   L_n[1/2] (log10)   trial-div 2^(b/2) (log10)
+  30             3.45             4.52
+  60             5.41             9.03
+  90             6.97            13.55
+ 120             8.33            18.06
+ 150             9.54            22.58
+ 180            10.66            27.09
+ 210            11.69            31.61
+ 240            12.67            36.12
+
+wrote quadratic_sieve.svg
+#+end_example
+
+Every semiprime splits into its two prime factors, the split verified by multiplication -- and the
+test suite cross-checks the sieve against the module's Dixon factoriser over dozens of cases. The
+factors were never searched for; each emerged from a \(\gcd\) once enough smooth relations combined
+into a square.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/quadratic_sieve.svg]]
+
+The blue quadratic-sieve curve sits far below the red trial-division line and only modestly above the
+green polynomial one: that is what *subexponential* means, \(L_n[\tfrac12]\), the reason the quadratic
+sieve dominated integer factorisation from the 1980s until the number field sieve overtook it for the
+very largest numbers. The same congruence-of-squares core drives Dixon's method, the number field
+sieve, and modern factoring records.

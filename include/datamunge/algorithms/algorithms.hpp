@@ -33,6 +33,7 @@
 #include <datamunge/algorithms/graph_layout.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>
+#include <datamunge/algorithms/index_calculus.hpp>
 #include <datamunge/algorithms/interpolation.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
@@ -64,6 +65,7 @@
 #include <datamunge/algorithms/primality.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/quadratic_sieve.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>

@@ -313,7 +313,7 @@ Further information: Number theory
     [x] Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation  -- datamunge::algorithms::chakravala; report examples/org/chakravala_analysis.org
     Discrete logarithm:
         [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
-        Index calculus algorithm
+        [x] Index calculus algorithm  -- datamunge::algorithms::index_calculus (factor-base discrete log, subexponential); report examples/org/index_calculus_analysis.org
         [x] Pohlig–Hellman algorithm  -- datamunge::algorithms::pohlig_hellman_log; report examples/org/pohlig_hellman_analysis.org
         [x] Pollard's rho algorithm for logarithms  -- datamunge::algorithms::pollard_rho_log; report examples/org/pollard_rho_log_analysis.org
     [x] Euclidean algorithm: computes the greatest common divisor  -- datamunge::algorithms::extended_gcd (returns gcd); report examples/org/extended_euclidean_analysis.org
@@ -328,7 +328,7 @@ Further information: Number theory
         [x] Pollard's p − 1 algorithm  -- datamunge::algorithms::pollard_p_minus_1; report examples/org/pollard_p_minus_1_analysis.org
         [x] Pollard's rho algorithm  -- datamunge::algorithms::pollard_rho_factor / factorize (Brent variant); report examples/org/pollard_rho_analysis.org
         prime factorization algorithm
-        Quadratic sieve
+        [x] Quadratic sieve  -- datamunge::algorithms::quadratic_sieve (congruence of squares via smooth Q(x)=x^2-n, GF(2) nullspace); report examples/org/quadratic_sieve_analysis.org
         Shor's algorithm
         Special number field sieve
         [x] Trial division  -- datamunge::algorithms::trial_division_factorize; report examples/org/trial_division_analysis.org
