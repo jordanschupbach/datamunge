@@ -793,6 +793,26 @@ We implement the classical fourth-order Runge-Kutta method (=algorithms::runge_k
 
 We implement velocity Verlet (=algorithms::velocity_verlet=) and report it as a literate program. We give its drift-kick update for x''=a(x) and explain why symplecticity keeps energy bounded; on the harmonic oscillator over 50 time units Verlet's energy stays in [0.4999, 0.5] while forward Euler's drifts up to 1.74, with x(50) matching cos(50) to three digits.
 
+** [[./kahan_summation_analysis.html][Kahan Summation: Recovering the Bits Rounding Throws Away]] ([[./kahan_summation_analysis.pdf][PDF]])
+/A literate C++ study of compensated summation using datamunge/
+
+We implement Kahan compensated summation (=algorithms::kahan_sum=) and report it as a literate program. We give the running-compensation trick that recovers each addition's lost low-order bits, holding the error near 2*eps independent of n; naive summation of 1e16 + a million ones - 1e16 returns 0 while Kahan returns 1000000, and its error stays flat as n grows to 1e8.
+
+** [[./newton_division_analysis.html][Newton-Raphson Division: Dividing by Multiplying]] ([[./newton_division_analysis.pdf][PDF]])
+/A literate C++ study of reciprocal-by-Newton division using datamunge/
+
+We implement Newton-Raphson division (=algorithms::newton_raphson_division=) and report it as a literate program. We derive the divide-free reciprocal iteration x<-x(2-Dx), its quadratic bit-doubling, and the [0.5,1) scaling with a minimax seed; the reciprocal of 3 reaches machine precision in five multiply-add steps and division matches N/D across magnitudes from 1e-9 up.
+
+** [[./nth_root_analysis.html][The nth Root Algorithm: Newton's Method for Radicals]] ([[./nth_root_analysis.pdf][PDF]])
+/A literate C++ study of computing a^(1/n) using datamunge/
+
+We implement the nth root algorithm (=algorithms::nth_root=) and report it as a literate program. We derive the Newton weighted-average update ((n-1)x + a/x^(n-1))/n (the Babylonian rule for n=2) and its quadratic convergence from an exponent-based seed; sqrt(2), cbrt(27)=3, and 1024^(1/10)=2 are computed exactly and cbrt(50) converges in four steps.
+
+** [[./alpha_max_beta_min_analysis.html][Alpha Max Plus Beta Min: A Square-Root-Free Magnitude]] ([[./alpha_max_beta_min_analysis.pdf][PDF]])
+/A literate C++ study of fast vector magnitude using datamunge/
+
+We implement the alpha-max-plus-beta-min magnitude approximation (=algorithms::alpha_max_beta_min=) and report it as a literate program. We derive it as a minimax linear fit to sqrt(1+t^2) on [0,1] with coefficients alpha=0.96043, beta=0.39782; the relative error equioscillates within +/-3.96% around the circle, verified worst-case 3.957% with no square root or division.
+
 ** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
 /A literate C++ study of polynomial interpolation using datamunge/
 

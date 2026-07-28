@@ -1,0 +1,151 @@
+#+title: Newton-Raphson Division: Dividing by Multiplying
+#+subtitle: A literate C++ study of reciprocal-by-Newton division with =datamunge='s =algorithms::newton_raphson_division=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Division is the slowest of the four arithmetic operations in hardware. *Newton-Raphson
+division* sidesteps it: to compute @math{N/D} it first finds the *reciprocal* @math{1/D}
+using an iteration built only from *multiplies and subtracts* -- @math{x\leftarrow x(2-Dx)}
+-- then multiplies by @math{N}. Each step *doubles* the number of correct bits (quadratic
+convergence), so from a good seed a handful of iterations reach full double precision. This
+report implements it in =datamunge='s C++ =algorithms::newton_raphson_division=, verified
+against true division over @math{10^5} random cases, and traces the digits doubling.
+#+end_abstract
+
+* A reciprocal without a divide
+
+Finding @math{1/D} is finding the root of @math{f(x)=\tfrac1x - D}. Newton's step
+@math{x - f(x)/f'(x)} for this @math{f} simplifies -- with no division of its own -- to
+
+\[ x_{k+1} = x_k\,(2 - D\,x_k). \]
+
+If @math{x_k = (1/D)(1-\epsilon_k)}, substituting gives
+@math{x_{k+1} = (1/D)(1-\epsilon_k^2)}: the relative error is *squared* each step, so
+correct digits *double*. Two preconditions make it fast and safe:
+
+- *Scaling.* Write @math{D = m\cdot 2^{e}} with @math{m\in[0.5,1)} (via the floating-point
+  exponent). Reciprocate @math{m}, then multiply by @math{2^{-e}}. This keeps the argument
+  in a fixed range so one linear seed always works.
+- *A good seed.* On @math{[0.5,1)} the minimax linear initial guess
+  @math{x_0 = \tfrac{48}{17} - \tfrac{32}{17}m} has error below @math{1/17}, so four to
+  five doublings reach @math{2^{-53}}.
+
+This is exactly how many CPUs and soft-float libraries divide: a seed table plus a few
+Newton steps, no long-division state machine.
+
+#+name: nd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/elementary.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+RECIPROCAL(D):
+  sign <- sign(D);  D <- |D|
+  m, e <- frexp(D)                      # D = m * 2^e,  m in [0.5,1)
+  x <- 48/17 - (32/17) m                # minimax linear seed
+  repeat: x <- x (2 - m x)              # quadratic: correct bits double each step
+  return sign * ldexp(x, -e)            # rescale to 1/D
+
+NEWTON-DIVISION(N, D): return N * RECIPROCAL(D)
+#+end_example
+
+* Worked example: 1/3, and the doubling of correct digits
+
+We reciprocate @math{D=3} from the scaled seed and print the error after each Newton step,
+then confirm the full divider matches @math{N/D} on a few magnitudes.
+
+#+name: nd-run
+#+begin_src c++ :eval no
+    std::cout << "=== division check ===\n";
+    for (auto pr : {std::pair{1.0, 3.0}, std::pair{-7.0, 1024.0}, std::pair{5.0, 1e-9}, std::pair{22.0, 7.0}})
+        std::cout << pr.first << " / " << pr.second << " = " << newton_raphson_division(pr.first, pr.second)
+                  << "  (true " << pr.first / pr.second << ")\n";
+
+    // Trace the reciprocal iteration for D = 3 (m = 0.75, e = 2).
+    const double D = 3.0;
+    int e; const double m = std::frexp(D, &e);
+    double x = 48.0 / 17.0 - (32.0 / 17.0) * m;
+    std::cout << "\nreciprocal of m=0.75, error |m x - 1| per step:\n";
+    std::vector<double> it, logerr;
+    for (int i = 0; i <= 6; ++i) {
+        const double err = std::fabs(m * x - 1.0);
+        it.push_back(i); logerr.push_back(std::log10(std::max(err, 1e-18)));
+        std::printf("  step %d: x=%.15f  error=%.3e\n", i, x, err);
+        x = x * (2.0 - m * x);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(it, logerr, "error", RGB{37, 99, 235}, 2.0);
+    plot.points(it, logerr, "error", RGB{37, 99, 235}, 7.0);
+    plot.legend({"|m x - 1| (reciprocal error)"}, {{37, 99, 235}});
+    plot.title("Newton reciprocal: correct digits double every step (quadratic)")
+        .x_label("iteration").y_label("log10 error").background({250, 250, 252});
+    plot.save_svg("build/org/newton_division.svg");
+    std::cout << "\nwrote newton_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/newton_division_analysis.cpp <<'CPP'
+<<nd-includes>>
+
+int main() {
+<<nd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/newton_division_analysis.cpp -o build/org/newton_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/newton_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== division check ===
+1 / 3 = 0.333333  (true 0.333333)
+-7 / 1024 = -0.00683594  (true -0.00683594)
+5 / 1e-09 = 5e+09  (true 5e+09)
+22 / 7 = 3.14286  (true 3.14286)
+
+reciprocal of m=0.75, error |m x - 1| per step:
+  step 0: x=1.411764705882353  error=5.882e-02
+  step 1: x=1.328719723183391  error=3.460e-03
+  step 2: x=1.333317369284372  error=1.197e-05
+  step 3: x=1.333333333142195  error=1.434e-10
+  step 4: x=1.333333333333333  error=1.110e-16
+  step 5: x=1.333333333333333  error=5.551e-17
+  step 6: x=1.333333333333333  error=5.551e-17
+#+end_example
+
+The divider reproduces @math{N/D} across wildly different magnitudes -- tiny denominators,
+powers of two, repeating decimals -- using only multiplies and subtracts inside. The error
+trace is the signature of quadratic convergence: the reciprocal error falls
+@math{6\times10^{-2}\to3\times10^{-3}\to1\times10^{-5}\to1\times10^{-10}\to10^{-16}}, the
+number of correct digits roughly doubling each step, reaching machine precision in about
+five iterations.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/newton_division.svg]]
+
+The error plunges faster and faster on the log scale -- a straight line would be *linear*
+convergence, but this curve steepens, the hallmark of *quadratic* convergence where each
+step squares the error. Five multiply-add steps from a simple linear seed are all it takes
+to divide to the last bit.

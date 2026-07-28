@@ -381,7 +381,7 @@ Further information: Special functions
     Division algorithms: for computing quotient and/or remainder of two numbers
         Goldschmidt division
         Long division
-        Newton–Raphson division: uses Newton's method to find the reciprocal of D, and multiply that reciprocal by N to find the final quotient Q.
+        [x] Newton–Raphson division: uses Newton's method to find the reciprocal of D, and multiply that reciprocal by N to find the final quotient Q.  -- datamunge::algorithms::newton_raphson_division; report examples/org/newton_division_analysis.org
         Non-restoring division
         Restoring division
         SRT division
@@ -403,12 +403,12 @@ Further information: Special functions
     Rounding functions: the classic ways to round numbers
     Spigot algorithm: a way to compute the value of a mathematical constant without knowing preceding digits
     Square and Nth root of a number:
-        Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares
+        [x] Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares  -- datamunge::algorithms::alpha_max_beta_min; report examples/org/alpha_max_beta_min_analysis.org
         Methods of computing square roots
-        nth root algorithm
+        [x] nth root algorithm  -- datamunge::algorithms::nth_root (Newton); report examples/org/nth_root_analysis.org
     Summation:
         Binary splitting: a divide and conquer technique which speeds up the numerical evaluation of many types of series with rational terms
-        Kahan summation algorithm: a more accurate method of summing floating-point numbers
+        [x] Kahan summation algorithm: a more accurate method of summing floating-point numbers  -- datamunge::algorithms::kahan_sum; report examples/org/kahan_summation_analysis.org
     Unrestricted algorithm
 
 Geometric
