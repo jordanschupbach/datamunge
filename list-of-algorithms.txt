@@ -357,18 +357,18 @@ Further information: List of numerical analysis topics and Numerical analysis
 Differential equation solving
 Further information: Differential equation
 
-    Backward Euler method
-    Euler method
+    [x] Backward Euler method  -- datamunge::algorithms::backward_euler (implicit, Newton solve, A-stable); report examples/org/backward_euler_analysis.org
+    [x] Euler method  -- datamunge::algorithms::euler_method (forward/explicit); report examples/org/euler_method_analysis.org
     Linear multistep methods
     Multigrid methods (MG methods), a group of algorithms for solving differential equations using a hierarchy of discretizations
     Partial differential equation:
         Crank–Nicolson method for diffusion equations
         Finite difference method
         Lax–Wendroff for wave equations
-    Runge–Kutta methods
+    [x] Runge–Kutta methods  -- datamunge::algorithms::runge_kutta4 (classical RK4, 4th order); report examples/org/runge_kutta4_analysis.org
         Euler integration
     Trapezoidal rule (differential equations)
-    Verlet integration (French pronunciation: [vɛʁˈlɛ]): integrate Newton's equations of motion
+    [x] Verlet integration (French pronunciation: [vɛʁˈlɛ]): integrate Newton's equations of motion  -- datamunge::algorithms::velocity_verlet (symplectic); report examples/org/verlet_analysis.org
 
 Elementary and special functions
 Further information: Special functions

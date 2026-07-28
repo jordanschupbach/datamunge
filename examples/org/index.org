@@ -773,6 +773,26 @@ We implement Muller's method (=algorithms::muller=) and report it as a literate 
 
 We implement the ITP method (=algorithms::itp=; Oliveira & Takahashi, 2020) and report it as a literate program. We give its three moves -- interpolate (regula falsi), truncate toward the midpoint, project into a minmax interval -- that make it minmax-optimal yet superlinear; on cos(x)-x the estimate's residual reaches 1e-13 in 8 iterations against bisection's 39, plotted while both retain the same worst-case bracket guarantee.
 
+** [[./euler_method_analysis.html][The Euler Method: Following the Tangent, One Step at a Time]] ([[./euler_method_analysis.pdf][PDF]])
+/A literate C++ study of the simplest ODE integrator using datamunge/
+
+We implement the forward Euler method (=algorithms::euler_method=) and report it as a literate program. We derive the tangent step y+h f(t,y), its local O(h^2) / global O(h) error, and its conditional stability; integrating y'=-y shows the error/h ratio holding near-constant (first order), and a coarse 8-step run visibly undershooting the exact e^{-t} curve.
+
+** [[./backward_euler_analysis.html][Backward Euler: Trading Explicitness for Stability]] ([[./backward_euler_analysis.pdf][PDF]])
+/A literate C++ study of the implicit Euler method using datamunge/
+
+We implement backward (implicit) Euler with a per-step Newton solve (=algorithms::backward_euler=) and report it as a literate program. We show why evaluating the slope at the arrival point gives the amplification factor 1/(1+h*lambda) and hence A-stability; on stiff y'=-25y with h*lambda=2.5, forward Euler explodes to 57.7 while backward Euler decays smoothly toward zero.
+
+** [[./runge_kutta4_analysis.html][Runge-Kutta 4: Fourth-Order Accuracy From Four Slopes]] ([[./runge_kutta4_analysis.pdf][PDF]])
+/A literate C++ study of the classical RK4 integrator using datamunge/
+
+We implement the classical fourth-order Runge-Kutta method (=algorithms::runge_kutta4=) and report it as a literate program. We give its four Simpson-weighted slope samples and O(h^4) global error; a log-log error-vs-step study measures the empirical convergence orders as Euler ~1.08 and RK4 ~4.15, RK4 hitting the 1e-13 floating-point floor by 256 steps.
+
+** [[./verlet_analysis.html][Velocity Verlet: The Integrator That Conserves Energy]] ([[./verlet_analysis.pdf][PDF]])
+/A literate C++ study of symplectic integration using datamunge/
+
+We implement velocity Verlet (=algorithms::velocity_verlet=) and report it as a literate program. We give its drift-kick update for x''=a(x) and explain why symplecticity keeps energy bounded; on the harmonic oscillator over 50 time units Verlet's energy stays in [0.4999, 0.5] while forward Euler's drifts up to 1.74, with x(50) matching cos(50) to three digits.
+
 ** [[./lagrange_interpolation_analysis.html][Lagrange Interpolation: The Polynomial Through the Points]] ([[./lagrange_interpolation_analysis.pdf][PDF]])
 /A literate C++ study of polynomial interpolation using datamunge/
 
