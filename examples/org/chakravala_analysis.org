@@ -1,0 +1,152 @@
+#+title: The Chakravala Method: Pell's Equation the Cyclic Way
+#+subtitle: A literate C++ study of Bhaskara's Diophantine solver with =datamunge='s =algorithms::chakravala=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Pell's equation \(x^2-Ny^2=1\) asks for integer points on a hyperbola, and its smallest solution can
+be astonishingly large -- for \(N=61\) it is \(x=1{,}766{,}319{,}049\). Around 1150 CE the Indian
+mathematician Bhaskara II gave the *chakravala* ("cyclic") method that finds it directly, centuries
+before Europe. It threads a sequence of auxiliary triples toward \(k=1\), at each turn choosing a
+multiplier that keeps the numbers small. This report drives =datamunge='s =algorithms::chakravala=,
+verified to satisfy \(x^2-Ny^2=1\) for every non-square \(N\le150\) and to reproduce the famous
+fundamental solutions, and plots how wildly the solution size swings with \(N\).
+#+end_abstract
+
+* Composition and the cyclic step
+
+Brahmagupta's identity lets two solutions of \(a^2-Nb^2=k\) *compose*. Chakravala keeps a triple
+\((a,b,k)\) with
+
+\[ a^2 - N\,b^2 = k, \]
+
+starting from \(a=\lfloor\sqrt N\rfloor,\ b=1\). Each step picks a positive integer \(m\) with
+\(k\mid(a+bm)\) -- among those, the one making \(|m^2-N|\) smallest, i.e. \(m\) nearest \(\sqrt N\) --
+and advances
+
+\[ a'=\frac{am+Nb}{|k|},\qquad b'=\frac{a+bm}{|k|},\qquad k'=\frac{m^2-N}{k}. \]
+
+A lemma guarantees all three quotients are integers, and that the new \(|k'|\) tends to stay small.
+When the process reaches \(k=1\) the pair \((a,b)\) solves Pell's equation. The genius is the
+multiplier choice: instead of blindly composing, it steers toward \(k=1\) while holding the
+intermediate numbers near \(\sqrt N\) -- which is why chakravala terminates so quickly where naive
+search would drown.
+
+#+name: ck-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_advanced.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::string i128_str(__int128 v) {
+    if (v == 0) return "0";
+    bool neg = v < 0; unsigned __int128 u = neg ? -v : v;
+    std::string s;
+    while (u) { s += char('0' + int(u % 10)); u /= 10; }
+    if (neg) s += '-';
+    return {s.rbegin(), s.rend()};
+}
+static bool is_square(unsigned long long n) {
+    unsigned long long r = (unsigned long long)std::sqrt((double)n);
+    while (r * r > n) --r; while ((r + 1) * (r + 1) <= n) ++r; return r * r == n;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CHAKRAVALA(N):                          # N non-square
+  a = floor(sqrt N); b = 1; k = a^2 - N
+  while k != 1:
+      m = positive integer with k | (a + b m), minimising |m^2 - N|
+      (a, b, k) = ( (a m + N b)/|k|, (a + b m)/|k|, (m^2 - N)/k )
+  return (a, b)                          # x^2 - N y^2 = 1
+#+end_example
+
+* Worked example: famous solutions and the size swing
+
+We print the fundamental solutions for a few \(N\), verify \(x^2-Ny^2=1\), and plot how many digits
+the solution has as \(N\) ranges over the non-squares.
+
+#+name: ck-run
+#+begin_src c++ :eval no
+    std::cout << "=== Chakravala: fundamental solutions of x^2 - N y^2 = 1 ===\n";
+    for (unsigned long long N : {2ull, 3ull, 5ull, 13ull, 29ull, 61ull, 109ull}) {
+        const auto s = chakravala(N);
+        const __int128 check = s.x * s.x - (__int128)N * s.y * s.y;
+        std::cout << "N=" << N << ":  x=" << i128_str(s.x) << ", y=" << i128_str(s.y)
+                  << "   x^2 - N y^2 = " << i128_str(check) << "\n";
+    }
+
+    std::vector<double> nx, digits;
+    for (unsigned long long N = 2; N <= 100; ++N) {
+        if (is_square(N)) continue;
+        const auto s = chakravala(N);
+        nx.push_back((double)N);
+        digits.push_back(std::log10((double)(s.x) ) ); // number of digits ~ log10 x
+    }
+
+    auto plot = RPlot::create();
+    plot.line(nx, digits, "d", RGB{37, 99, 235}, 1.5);
+    plot.points(nx, digits, "d", RGB{37, 99, 235}, 4.0);
+    plot.legend({"log10(x): size of fundamental solution"}, {{37, 99, 235}});
+    plot.title("Pell solution size swings wildly with N (spikes at 61, 94, ...)")
+        .x_label("N").y_label("log10 of fundamental x").background({250, 250, 252});
+    plot.save_svg("build/org/chakravala.svg");
+    std::cout << "\nwrote chakravala.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/chakravala_analysis.cpp <<'CPP'
+<<ck-includes>>
+
+int main() {
+<<ck-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/chakravala_analysis.cpp -o build/org/chakravala_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/chakravala_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Chakravala: fundamental solutions of x^2 - N y^2 = 1 ===
+N=2:  x=3, y=2   x^2 - N y^2 = 1
+N=3:  x=2, y=1   x^2 - N y^2 = 1
+N=5:  x=9, y=4   x^2 - N y^2 = 1
+N=13:  x=649, y=180   x^2 - N y^2 = 1
+N=29:  x=9801, y=1820   x^2 - N y^2 = 1
+N=61:  x=1766319049, y=226153980   x^2 - N y^2 = 1
+N=109:  x=158070671986249, y=15140424455100   x^2 - N y^2 = 1
+
+wrote chakravala.svg
+#+end_example
+
+Each returned pair satisfies \(x^2-Ny^2=1\) exactly, including the celebrated \(N=61\) solution whose
+\(x\) exceeds \(1.7\times10^9\) -- the case Fermat posed as a challenge and that Bhaskara had already
+solved five centuries earlier. The method reaches it in only a handful of cyclic steps.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/chakravala.svg]]
+
+The solution size is spectacularly irregular: many \(N\) give tiny solutions, while a few -- \(N=61\),
+\(94\), and their kin -- spike to nine or more digits. Chakravala is oblivious to this drama; its
+multiplier rule keeps every intermediate near \(\sqrt N\), so it converges in steps proportional to
+the (small) continued-fraction period, not to the (possibly enormous) size of the answer.

@@ -1,0 +1,161 @@
+#+title: Lenstra's Elliptic-Curve Factorisation
+#+subtitle: A literate C++ study of ECM with =datamunge='s =algorithms::lenstra_ecm=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Pollard's \(p-1\) method factors \(n\) when some prime factor \(p\) has a *smooth* \(p-1\). Lenstra's
+1987 insight was to escape that single fixed group: work on a random *elliptic curve* modulo \(n\),
+whose group of points has an order near \(p\) that varies from curve to curve. Try enough curves and
+one will have a smooth order -- and the arithmetic that would compute the identity instead stumbles
+on a non-invertible slope, handing you a factor via a gcd. This report drives =datamunge='s
+=algorithms::lenstra_ecm=, verified to return a proper divisor of many composites, and illustrates why
+its cost scales with the *smaller* prime factor.
+#+end_abstract
+
+* A group that changes with the curve
+
+Over \(\mathbb{Z}/n\) (with \(n=pq\) unknown), pick a curve \(y^2=x^3+ax+b\) and a point \(P\) on it.
+Point addition needs the slope between two points, whose denominator we invert modulo \(n\). Modulo the
+unknown prime \(p\), the points form a group \(E(\mathbb{F}_p)\) of order
+
+\[ \#E(\mathbb{F}_p)=p+1-t,\qquad |t|\le 2\sqrt p \quad(\text{Hasse}). \]
+
+Compute \([k]P\) for \(k=\operatorname{lcm}(1,2,\dots,B)\). If \(\#E(\mathbb{F}_p)\) is \(B\)-smooth it
+divides \(k\), so \([k]P\equiv\mathcal O\) modulo \(p\) -- meaning a slope denominator becomes
+\(0\bmod p\) but not \(0\bmod q\). That denominator then shares the factor \(p\) with \(n\), and
+
+\[ \gcd(\text{denominator},\ n)=p \]
+
+falls out. The crucial freedom over Pollard \(p-1\): if one curve's order is not smooth, just pick
+another -- the order reshuffles within the Hasse interval each time, so success is a matter of enough
+tries rather than luck with a fixed \(p-1\).
+
+#+name: ec-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/number_theory_advanced.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// B-smoothness test: are all prime factors of m at most B?
+static bool is_smooth(long long m, long long B) {
+    for (long long p = 2; p * p <= m; ++p)
+        while (m % p == 0) { if (p > B) return false; m /= p; }
+    return m == 1 || m <= B;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LENSTRA-ECM(n):
+  strip small factors of n
+  repeat with a fresh random curve E: y^2 = x^3 + a x + b and point P:
+      for each prime q <= B:
+          P = [q^e] P    (q^e the largest power <= B)   # scalar mult mod n
+          if a slope denominator d has 1 < gcd(d, n) < n: return that gcd
+  # smooth curve order => the factor drops out of the gcd
+#+end_example
+
+* Worked example: factoring composites, and the smoothness effect
+
+We factor several composites, confirming each returned divisor is proper, then illustrate ECM's
+theory: for a prime \(p\), the fraction of orders in its Hasse interval that are \(B\)-smooth (which
+sets the per-curve success probability) shrinks as \(p\) grows.
+
+#+name: ec-run
+#+begin_src c++ :eval no
+    std::cout << "=== Lenstra ECM: nontrivial factors ===\n";
+    for (unsigned long long n : {1517ull, 10403ull, 1000003ull * 101, 104729ull * 1009, 999983ull * 3}) {
+        const unsigned long long f = lenstra_ecm(n);
+        std::cout << "n=" << n << "  ->  factor " << f << "  (n/f = " << n / f
+                  << ", exact: " << (n % f == 0 ? "yes" : "no") << ")\n";
+    }
+
+    // Fraction of B-smooth orders in the Hasse interval [p+1-2sqrt p, p+1+2sqrt p].
+    const long long B = 50;
+    std::vector<double> px, frac;
+    std::cout << "\nprime p   B-smooth fraction of Hasse interval (B=50)\n";
+    for (long long p : {101ll, 211ll, 401ll, 809ll, 1601ll, 3203ll, 6421ll, 12809ll}) {
+        const long long lo = p + 1 - (long long)(2 * std::sqrt((double)p));
+        const long long hi = p + 1 + (long long)(2 * std::sqrt((double)p));
+        long long smooth = 0, total = 0;
+        for (long long m = lo; m <= hi; ++m, ++total)
+            if (m > 1 && is_smooth(m, B)) ++smooth;
+        const double f = (double)smooth / (double)total;
+        px.push_back(std::log2((double)p)); frac.push_back(f);
+        std::printf("%7lld   %.3f\n", p, f);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(px, frac, "s", RGB{5, 150, 105}, 2.0);
+    plot.points(px, frac, "s", RGB{5, 150, 105}, 6.0);
+    plot.legend({"fraction of B-smooth orders (B=50)"}, {{5, 150, 105}});
+    plot.title("ECM per-curve success falls as the target prime grows")
+        .x_label("log2(prime p)").y_label("smooth fraction of Hasse interval").background({250, 250, 252});
+    plot.save_svg("build/org/lenstra_ecm.svg");
+    std::cout << "\nwrote lenstra_ecm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lenstra_ecm_analysis.cpp <<'CPP'
+<<ec-includes>>
+
+int main() {
+<<ec-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lenstra_ecm_analysis.cpp -o build/org/lenstra_ecm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lenstra_ecm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lenstra ECM: nontrivial factors ===
+n=1517  ->  factor 37  (n/f = 41, exact: yes)
+n=10403  ->  factor 101  (n/f = 103, exact: yes)
+n=101000303  ->  factor 101  (n/f = 1000003, exact: yes)
+n=105671561  ->  factor 104729  (n/f = 1009, exact: yes)
+n=2999949  ->  factor 3  (n/f = 999983, exact: yes)
+
+prime p   B-smooth fraction of Hasse interval (B=50)
+    101   0.732
+    211   0.593
+    401   0.519
+    809   0.407
+   1601   0.311
+   3203   0.247
+   6421   0.190
+  12809   0.141
+
+wrote lenstra_ecm.svg
+#+end_example
+
+ECM returns a proper divisor of every composite, splitting products of two large primes that trial
+division could not touch quickly. The smoothness table explains its cost: the fraction of curve orders
+that are \(B\)-smooth -- the per-curve success probability -- falls steadily as the target prime grows,
+so more curves are needed for bigger factors.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/lenstra_ecm.svg]]
+
+Because that probability depends on the size of \(p\), not of \(n\), ECM is the method of choice for
+finding *medium* factors of very large numbers -- it peels off a 20- or 30-digit prime from a number
+hundreds of digits long, exactly where trial division and Pollard rho give out. Raising the bound
+\(B\) or trying more curves trades time for a better chance, the two knobs at the heart of the method.

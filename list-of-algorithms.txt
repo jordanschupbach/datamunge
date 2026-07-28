@@ -310,7 +310,7 @@ Further information: Number theory
 
     [x] Binary GCD algorithm: Efficient way of calculating GCD.  -- datamunge::algorithms::binary_gcd (Stein, shifts & subtraction); report examples/org/binary_gcd_analysis.org
     [x] Booth's multiplication algorithm  -- datamunge::algorithms::booth_multiply; report examples/org/booth_analysis.org
-    Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation
+    [x] Chakravala method: a cyclic algorithm to solve indeterminate quadratic equations, including Pell's equation  -- datamunge::algorithms::chakravala; report examples/org/chakravala_analysis.org
     Discrete logarithm:
         [x] Baby-step giant-step  -- datamunge::algorithms::baby_step_giant_step (Shanks, meet-in-the-middle, O(sqrt p)); report examples/org/baby_step_giant_step_analysis.org
         Index calculus algorithm
@@ -324,7 +324,7 @@ Further information: Number theory
         [x] Dixon's algorithm  -- datamunge::algorithms::dixon_factor (congruence of squares, GF(2)); report examples/org/dixon_analysis.org
         [x] Fermat's factorization method  -- datamunge::algorithms::fermat_factor; report examples/org/fermat_factor_analysis.org
         General number field sieve
-        Lenstra elliptic curve factorization
+        [x] Lenstra elliptic curve factorization  -- datamunge::algorithms::lenstra_ecm; report examples/org/lenstra_ecm_analysis.org
         [x] Pollard's p − 1 algorithm  -- datamunge::algorithms::pollard_p_minus_1; report examples/org/pollard_p_minus_1_analysis.org
         [x] Pollard's rho algorithm  -- datamunge::algorithms::pollard_rho_factor / factorize (Brent variant); report examples/org/pollard_rho_analysis.org
         prime factorization algorithm
@@ -343,7 +343,7 @@ Further information: Number theory
         [x] Toom–Cook multiplication  -- datamunge::algorithms::toom3_mul (Toom-3, O(n^1.465)); report examples/org/toom3_analysis.org
     Odlyzko–Schönhage algorithm: calculates nontrivial zeroes of the Riemann zeta function
     Primality tests: determining whether a given number is prime
-        AKS primality test
+        [x] AKS primality test  -- datamunge::algorithms::aks_is_prime; report examples/org/aks_primality_analysis.org
         [x] Baillie–PSW primality test  -- datamunge::algorithms::baillie_psw (strong MR base 2 + strong Lucas); report examples/org/baillie_psw_analysis.org
         [x] Fermat primality test  -- datamunge::algorithms::fermat_probable_prime; report examples/org/fermat_primality_analysis.org
         [x] Lucas primality test  -- datamunge::algorithms::lucas_primality_test (deterministic); report examples/org/lucas_primality_analysis.org
