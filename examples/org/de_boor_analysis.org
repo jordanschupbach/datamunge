@@ -1,0 +1,136 @@
+#+title: De Boor's Algorithm: Evaluating B-Splines
+#+subtitle: A literate C++ study of stable spline evaluation with =datamunge='s =geometry::de_boor=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+B-splines are the workhorse curves of computer-aided design, fonts, and animation: piecewise
+polynomials with local control and guaranteed smoothness. De Boor's algorithm evaluates them the way
+de Casteljau's evaluates Bezier curves -- by *repeated linear interpolation*, weighted by the knot
+vector -- which is both numerically stable and geometrically transparent. This report drives
+=datamunge='s =geometry::de_boor=, verified to reproduce constant curves, interpolate clamped
+endpoints, and match a Bezier curve on the appropriate knots, and plots a spline through its control
+polygon.
+#+end_abstract
+
+* Repeated knot-weighted interpolation
+
+A B-spline of degree \(p\) is defined by control points \(P_0,\dots,P_{n-1}\) and a knot vector
+\(t_0\le t_1\le\cdots\). To evaluate at parameter \(t\), first find the *knot span* \(k\) with
+\(t_k\le t<t_{k+1}\); only the \(p+1\) control points \(P_{k-p},\dots,P_k\) influence the curve there
+(the *local support* property). Set \(d_j^{(0)}=P_{k-p+j}\) and refine for \(r=1,\dots,p\):
+
+\[ d_j^{(r)}=\big(1-\alpha_j^{(r)}\big)\,d_{j-1}^{(r-1)}+\alpha_j^{(r)}\,d_j^{(r-1)},\qquad
+   \alpha_j^{(r)}=\frac{t-t_{i}}{t_{i+p-r+1}-t_{i}},\ \ i=k-p+j. \]
+
+Each step blends adjacent points with a weight set by the knots; after \(p\) rounds the single
+survivor \(d_p^{(p)}\) is the point on the curve. Because every operation is a convex combination
+(for \(t\) in range \(\alpha\in[0,1]\)), the scheme is numerically stable and the curve stays inside
+the convex hull of its active control points. Clamped knot vectors (repeating the end knots \(p+1\)
+times) make the curve pass through the first and last control points -- the property CAD tools rely on.
+
+#+name: db-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/de_boor.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+DE-BOOR(degree p, knots t, control P, parameter u):
+  k = knot span with t[k] <= u < t[k+1]
+  d[j] = P[k-p+j]  for j = 0..p
+  for r = 1..p:
+      for j = p down to r:
+          i = k - p + j
+          a = (u - t[i]) / (t[i+p-r+1] - t[i])
+          d[j] = (1 - a) * d[j-1] + a * d[j]
+  return d[p]
+#+end_example
+
+* Worked example: a clamped cubic spline
+
+We define a clamped cubic B-spline, confirm it interpolates its end control points, sample it, and
+plot the curve over its control polygon.
+
+#+name: db-run
+#+begin_src c++ :eval no
+    const std::vector<Point2D> ctrl  = {{0, 0}, {1, 4}, {3, 5}, {5, 1}, {7, 4}, {8, 0}};
+    const std::vector<double>  knots = {0, 0, 0, 0, 1, 2, 3, 3, 3, 3}; // degree 3, 6 control pts
+    const int                  p     = 3;
+
+    std::cout << "=== De Boor: clamped cubic B-spline ===\n";
+    const Point2D s = de_boor(p, knots, ctrl, 0.0);
+    const Point2D e = de_boor(p, knots, ctrl, 3.0 - 1e-12);
+    std::cout << "curve start = (" << s.x << ", " << s.y << ")  [control[0] = (0,0)]\n";
+    std::cout << "curve end   = (" << e.x << ", " << e.y << ")  [control[5] = (8,0)]\n";
+    const Point2D mid = de_boor(p, knots, ctrl, 1.5);
+    std::cout << "curve at u=1.5 = (" << mid.x << ", " << mid.y << ")\n";
+
+    const auto curve = de_boor_curve(p, knots, ctrl, 120);
+    std::vector<double> cx, cy, px, py;
+    for (const auto& q : curve) { cx.push_back(q.x); cy.push_back(q.y); }
+    for (const auto& q : ctrl)  { px.push_back(q.x); py.push_back(q.y); }
+
+    auto plot = RPlot::create();
+    plot.line(px, py, "poly", RGB{148, 163, 184}, 1.5);
+    plot.points(px, py, "ctrl", RGB{100, 116, 139}, 7.0);
+    plot.line(cx, cy, "spline", RGB{37, 99, 235}, 2.5);
+    plot.legend({"control polygon", "B-spline curve"}, {{148, 163, 184}, {37, 99, 235}});
+    plot.title("De Boor evaluation of a clamped cubic B-spline")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/de_boor.svg");
+    std::cout << "\nwrote de_boor.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/de_boor_analysis.cpp <<'CPP'
+<<db-includes>>
+
+int main() {
+<<db-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/de_boor_analysis.cpp -o build/org/de_boor_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/de_boor_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== De Boor: clamped cubic B-spline ===
+curve start = (0, 0)  [control[0] = (0,0)]
+curve end   = (8, 1.20011e-11)  [control[5] = (8,0)]
+curve at u=1.5 = (4, 3.0625)
+
+wrote de_boor.svg
+#+end_example
+
+The clamped knot vector makes the curve start exactly at the first control point and end at the last,
+as the printed endpoints confirm, while the interior follows the control polygon smoothly. The test
+suite further checks that a constant control net gives a constant curve and that Bernstein knots
+reproduce the cubic Bezier exactly.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/de_boor.svg]]
+
+The blue B-spline threads through the grey control polygon: pinned at the two ends, pulled toward --
+but not through -- the interior control points, and everywhere smooth. Each plotted point came from
+three rounds of knot-weighted linear interpolation, the same stable convex-combination scheme that
+makes de Boor the standard evaluator in every spline library.

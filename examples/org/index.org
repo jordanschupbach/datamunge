@@ -773,6 +773,21 @@ We implement gift wrapping (=geometry::jarvis_march=) and report it as a literat
 
 We implement Chan's algorithm (=geometry::chans_algorithm=) and report it as a literate program. Partitioning into groups, hulling each with Graham scan, then gift-wrapping over the group hulls with a doubling guess for h achieves the optimal O(n log h); it agrees with the module's monotone-chain hull, with the per-group hulls and final hull plotted.
 
+** [[./quickhull_analysis.html][Quickhull: Divide and Conquer for the Convex Hull]] ([[./quickhull_analysis.pdf][PDF]])
+/A literate C++ study of the recursive convex hull using datamunge/
+
+We implement Quickhull (=geometry::quickhull=) and report it as a literate program. Splitting the points by the line through the two extreme-x points and recursively keeping the farthest point of each region (discarding the interior triangle, quicksort-style) gives O(n log n) average; it agrees with the module's monotone-chain hull over hundreds of random inputs, with the hull plotted.
+
+** [[./de_boor_analysis.html][De Boor's Algorithm: Evaluating B-Splines]] ([[./de_boor_analysis.pdf][PDF]])
+/A literate C++ study of stable B-spline evaluation using datamunge/
+
+We implement de Boor's algorithm (=geometry::de_boor=) and report it as a literate program. Repeated knot-weighted linear interpolation of the p+1 locally-supported control points evaluates a B-spline stably; it reproduces constant curves, interpolates clamped endpoints, and matches the cubic Bezier on Bernstein knots, with a clamped cubic spline plotted over its control polygon.
+
+** [[./bentley_ottmann_analysis.html][The Bentley-Ottmann Sweep: All Segment Intersections]] ([[./bentley_ottmann_analysis.pdf][PDF]])
+/A literate C++ study of the sweep-line intersection algorithm using datamunge/
+
+We implement the Bentley-Ottmann sweep (=geometry::bentley_ottmann=) and report it as a literate program. A vertical sweep line processes endpoint and crossing events, testing only segments adjacent in the sweep-line order, to report all k intersections in O((n+k) log n); it matches a brute-force all-pairs check over hundreds of random inputs, with the segments and crossings plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 

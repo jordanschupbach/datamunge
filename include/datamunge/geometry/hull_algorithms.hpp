@@ -148,4 +148,57 @@ inline std::vector<Point2D> chans_algorithm(std::vector<Point2D> points) {
     }
 }
 
+namespace detail {
+
+// Recursively collect the hull vertices strictly left of the directed edge a->b,
+// appended between a and b (a and b themselves are added by the caller).
+inline void quickhull_rec(const std::vector<Point2D>& pts, const Point2D& a, const Point2D& b,
+                          std::vector<Point2D>& out) {
+    int    far  = -1;
+    double best = 0;
+    for (std::size_t i = 0; i < pts.size(); ++i) {
+        const double c = cross(a, b, pts[i]);
+        if (c > best) { best = c; far = static_cast<int>(i); }
+    }
+    if (far < 0) return; // no point strictly left: edge a->b is on the hull
+    const Point2D c = pts[far];
+
+    std::vector<Point2D> left_ac, left_cb;
+    for (const Point2D& p : pts) {
+        if (cross(a, c, p) > 0) left_ac.push_back(p);
+        else if (cross(c, b, p) > 0) left_cb.push_back(p);
+    }
+    quickhull_rec(left_ac, a, c, out);
+    out.push_back(c);
+    quickhull_rec(left_cb, c, b, out);
+}
+
+} // namespace detail
+
+// Quickhull: split the points by the line through the two extreme x points, then
+// recursively find the farthest point of each side and divide. O(n log n) average.
+inline std::vector<Point2D> quickhull(std::vector<Point2D> points) {
+    std::vector<Point2D> pts = detail::sorted_unique(std::move(points));
+    const int            n   = static_cast<int>(pts.size());
+    if (n < 3) return pts;
+
+    const Point2D a = pts.front(); // leftmost (sorted by x, then y)
+    const Point2D b = pts.back();  // rightmost
+
+    std::vector<Point2D> above, below;
+    for (const Point2D& p : pts) {
+        const double c = cross(a, b, p);
+        if (c > 0) above.push_back(p);
+        else if (c < 0) below.push_back(p);
+    }
+
+    std::vector<Point2D> hull;
+    hull.push_back(a);
+    detail::quickhull_rec(above, a, b, hull); // upper chain a -> b
+    hull.push_back(b);
+    detail::quickhull_rec(below, b, a, hull); // lower chain b -> a
+    detail::make_ccw(hull);
+    return hull;
+}
+
 } // namespace datamunge::geometry

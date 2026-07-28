@@ -1,0 +1,137 @@
+#+title: Quickhull: Divide and Conquer for the Convex Hull
+#+subtitle: A literate C++ study of the recursive hull with =datamunge='s =geometry::quickhull=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Quickhull is the convex-hull cousin of quicksort: split the points by a line, find the point farthest
+from it (certainly a hull vertex), and recurse on the two outer regions it creates. On well-spread
+inputs it runs in \(O(n\log n)\), discarding great swaths of interior points at each step. This report
+drives =datamunge='s =geometry::quickhull=, verified to agree with the module's monotone-chain hull
+over hundreds of random point sets, and shows the hull it carves out of a point cloud.
+#+end_abstract
+
+* Farthest point splits the problem
+
+Take the two extreme points in \(x\), \(a\) (leftmost) and \(b\) (rightmost); both are hull vertices,
+and the line \(a\to b\) splits the rest into an upper set (to its left) and a lower set (to its
+right). Now solve one side recursively. Given a directed edge \(a\to b\) and the points strictly to
+its left, the point \(c\) maximising the signed distance
+
+\[ \operatorname{cross}(a,b,c)=(b-a)\times(c-a) \]
+
+is the farthest, hence a hull vertex lying between \(a\) and \(b\). Every point inside triangle
+\(a\,b\,c\) is interior to the hull and discarded; the survivors split into those left of \(a\to c\)
+and those left of \(c\to b\), and each sub-edge recurses. The recursion bottoms out when an edge has
+no points to its left -- then it is a hull edge. Stitching the upper chain \(a\to b\) with the lower
+chain \(b\to a\) gives the full hull. Discarding the interior triangle at each step is what makes
+Quickhull fast: like quicksort's partition, a good split throws away most of the work.
+
+#+name: qh-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/hull_algorithms.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static std::vector<Point2D> sample_points() {
+    return {{0, 0}, {10, 0}, {18, 4}, {20, 12}, {15, 20}, {6, 22}, {-2, 15}, {-4, 6},
+            {5, 5}, {10, 10}, {8, 15}, {3, 10}, {12, 6}, {14, 14}, {2, 18}, {16, 10},
+            {7, 3}, {11, 17}, {9, 8}, {13, 11}};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+QUICKHULL(points):
+  a = leftmost, b = rightmost
+  upper = points left of a->b,  lower = points right of a->b
+  hull = [a] + FINDHULL(upper, a, b) + [b] + FINDHULL(lower, b, a)
+
+FINDHULL(pts, a, b):          # pts strictly left of a->b
+  if pts empty: return []
+  c = point maximising cross(a, b, .)
+  return FINDHULL(left of a->c, a, c) + [c] + FINDHULL(left of c->b, c, b)
+#+end_example
+
+* Worked example: hull of a point cloud
+
+We compute the hull of twenty points, print its vertices, and plot the cloud with the hull outline.
+
+#+name: qh-run
+#+begin_src c++ :eval no
+    const auto pts  = sample_points();
+    const auto hull = quickhull(pts);
+    std::cout << "=== Quickhull ===\n";
+    std::cout << pts.size() << " points -> hull of " << hull.size() << " vertices (counterclockwise):\n";
+    for (const auto& v : hull) std::cout << "  (" << v.x << ", " << v.y << ")\n";
+
+    std::vector<double> px, py, hx, hy;
+    for (const auto& p : pts) { px.push_back(p.x); py.push_back(p.y); }
+    for (const auto& v : hull) { hx.push_back(v.x); hy.push_back(v.y); }
+
+    auto plot = RPlot::create();
+    plot.polygon(hx, hy, RGB{254, 226, 226}, true);
+    plot.points(px, py, "pts", RGB{30, 41, 59}, 6.0);
+    plot.points(hx, hy, "hull", RGB{234, 88, 12}, 9.0);
+    plot.legend({"points", "hull vertices"}, {{30, 41, 59}, {234, 88, 12}});
+    plot.title("Quickhull: divide-and-conquer convex hull of a point cloud")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/quickhull.svg");
+    std::cout << "\nwrote quickhull.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/quickhull_analysis.cpp <<'CPP'
+<<qh-includes>>
+
+int main() {
+<<qh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/quickhull_analysis.cpp -o build/org/quickhull_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/quickhull_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Quickhull ===
+20 points -> hull of 8 vertices (counterclockwise):
+  (0, 0)
+  (10, 0)
+  (18, 4)
+  (20, 12)
+  (15, 20)
+  (6, 22)
+  (-2, 15)
+  (-4, 6)
+
+wrote quickhull.svg
+#+end_example
+
+Quickhull carves out the same hull the other methods find, by recursively keeping only the farthest
+point of each region and discarding the interior triangles. It matches the module's monotone-chain
+hull across the test suite.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/quickhull.svg]]
+
+The shaded region is the hull; the orange markers its vertices, each of which was found as the
+farthest point from some dividing edge. On evenly spread points the interior triangles swallow most of
+the input at every level, giving the quicksort-like \(O(n\log n)\) average that names the algorithm --
+though, like quicksort, an adversarial input can push it to \(O(n^2)\).

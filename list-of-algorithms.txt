@@ -278,14 +278,14 @@ Further information: Computational geometry
         [x] Gift wrapping algorithm or Jarvis march  -- datamunge::geometry::jarvis_march (O(n*h), output-sensitive); report examples/org/jarvis_march_analysis.org
         [x] Graham scan  -- datamunge::geometry::graham_scan (O(n log n), angular sweep); report examples/org/graham_scan_analysis.org
         Kirkpatrick–Seidel algorithm
-        Quickhull
+        [x] Quickhull  -- datamunge::geometry::quickhull (divide and conquer, O(n log n) avg); report examples/org/quickhull_analysis.org
     Euclidean distance transform: computes the distance between every point in a grid and a discrete collection of points.
     Geometric hashing: a method for efficiently finding two-dimensional objects represented by discrete points that have undergone an affine transformation
     Gilbert–Johnson–Keerthi distance algorithm: determining the smallest distance between two convex shapes.
     Jump-and-Walk algorithm: an algorithm for point location in triangulations
     Laplacian smoothing: an algorithm to smooth a polygonal mesh
     [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
-        Bentley–Ottmann algorithm
+        [x] Bentley–Ottmann algorithm  -- datamunge::geometry::bentley_ottmann (sweep-line segment intersections, O((n+k) log n)); report examples/org/bentley_ottmann_analysis.org
         Shamos–Hoey algorithm
     [x] Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points  -- datamunge::geometry::minimum_bounding_rectangle (rotating calipers); report examples/org/min_bounding_box_analysis.org
     [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
@@ -436,7 +436,7 @@ Further information: Extrapolation and Interpolation
         [x] Neville's algorithm  -- datamunge::algorithms::neville_interpolate; report examples/org/neville_analysis.org
     Spline interpolation: Reduces error with Runge's phenomenon.
         [x] Natural cubic spline interpolation  -- datamunge::algorithms::natural_cubic_spline / cubic_spline_eval; report examples/org/cubic_spline_analysis.org
-        De Boor algorithm: B-splines
+        [x] De Boor algorithm: B-splines  -- datamunge::geometry::de_boor (stable B-spline evaluation); report examples/org/de_boor_analysis.org
         [x] De Casteljau's algorithm: Bézier curves  -- datamunge::algorithms::de_casteljau; report examples/org/de_casteljau_analysis.org
     Trigonometric interpolation
 
