@@ -1,0 +1,150 @@
+#+title: Uniform Binary Search: A Fixed Step Schedule
+#+subtitle: A literate C++ study of table-driven binary search with =datamunge='s =algorithms::uniform_binary_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Ordinary binary search recomputes a midpoint \((\text{lo}+\text{hi})/2\) at every step. *Uniform*
+binary search replaces that data-dependent arithmetic with a *fixed schedule* of step sizes -- a
+descending sequence of powers of two, precomputed once for a given array length and reused for every
+search. Each iteration becomes a single add and compare, with no division and no branch-dependent
+bounds to track. This report drives =datamunge='s =algorithms::uniform_binary_search=, verified
+against a reference binary search over thousands of random arrays and keys, and shows the fixed probe
+schedule at work.
+#+end_abstract
+
+* The same steps every time
+
+For an array of length \(n\), precompute the schedule
+
+\[ \{\,2^k,\ 2^{k-1},\ \dots,\ 2,\ 1\,\},\qquad 2^k=\text{the largest power of two}\le n. \]
+
+Maintain a running index \(i\), initially \(-1\), holding the largest position whose value is \(\le\)
+the key so far. For each step \(s\) in the schedule, look one step ahead: if \(i+s\) is in range and
+\(a[i+s]\le\text{key}\), accept the step, \(i\gets i+s\); otherwise reject it. After the whole
+schedule, \(i\) is the last index with \(a[i]\le\text{key}\); the key is present exactly when
+\(a[i]=\text{key}\). The schedule is *uniform* -- it depends only on \(n\), not on the data or the key
+-- so the branch pattern is identical across searches, and the look-ahead check \(i+s<n\) keeps every
+probe in bounds. The cost is the same \(\lceil\log_2 n\rceil\) comparisons as classic binary search,
+but the per-step work is a single addition rather than a midpoint division, which is why the technique
+was favoured on machines where division was slow and is still handy for tight, predictable loops.
+
+#+name: ub-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/uniform_binary_search.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+UNIFORM-BINARY-SEARCH(a, key):
+  steps = { 2^k, ..., 2, 1 }   with 2^k the largest power of two <= |a|
+  i = -1
+  for s in steps:
+      if i + s < |a| and a[i + s] <= key: i += s
+  return i if (i >= 0 and a[i] == key) else NOT-FOUND
+#+end_example
+
+* Worked example: the probe schedule
+
+We search a 100-element sorted array and record the position \(i\) after each step of the fixed
+schedule, showing how the running index climbs by ever-smaller powers of two toward the target.
+
+#+name: ub-run
+#+begin_src c++ :eval no
+    std::vector<int> a(100);
+    for (int k = 0; k < 100; ++k) a[k] = k * 3; // 0, 3, 6, ..., 297
+    const auto steps = uniform_search_table(static_cast<int>(a.size()));
+    const int  key   = 231; // = a[77]
+
+    std::cout << "=== uniform binary search ===\n";
+    std::cout << "array of " << a.size() << " elements; step schedule:";
+    for (int s : steps) std::cout << " " << s;
+    std::cout << "\n\n";
+
+    // Reproduce the search, recording the running index after each step.
+    int i = -1;
+    std::vector<double> sx, iy;
+    int step_no = 0;
+    std::cout << "step  size  i (running index)  a[i]\n";
+    std::printf("%3d   %4s  %-16d  %s\n", step_no, "-", i, "(none)");
+    for (int s : steps) {
+        if (i + s < static_cast<int>(a.size()) && a[i + s] <= key) i += s;
+        ++step_no;
+        sx.push_back(step_no); iy.push_back(i);
+        std::printf("%3d   %4d  %-16d  %d\n", step_no, s, i, i >= 0 ? a[i] : -1);
+    }
+    const auto idx = uniform_binary_search(a, key, steps);
+    std::cout << "\nfound key " << key << " at index " << idx << " (a[" << idx << "] = " << a[idx] << ")\n";
+
+    auto plot = RPlot::create();
+    plot.line(sx, iy, "i", RGB{37, 99, 235}, 2.0);
+    plot.points(sx, iy, "i", RGB{37, 99, 235}, 6.0);
+    plot.abline_h(77.0, RGB{220, 38, 38}, 1.5);
+    plot.legend({"running index i", "target index 77"}, {{37, 99, 235}, {220, 38, 38}});
+    plot.title("Uniform binary search converges on the target by halving steps")
+        .x_label("step number").y_label("running index i").background({250, 250, 252});
+    plot.save_svg("build/org/uniform_binary_search.svg");
+    std::cout << "\nwrote uniform_binary_search.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/uniform_binary_search_analysis.cpp <<'CPP'
+<<ub-includes>>
+
+int main() {
+<<ub-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/uniform_binary_search_analysis.cpp -o build/org/uniform_binary_search_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/uniform_binary_search_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== uniform binary search ===
+array of 100 elements; step schedule: 64 32 16 8 4 2 1
+
+step  size  i (running index)  a[i]
+  0      -  -1                (none)
+  1     64  63                189
+  2     32  63                189
+  3     16  63                189
+  4      8  71                213
+  5      4  75                225
+  6      2  77                231
+  7      1  77                231
+
+found key 231 at index 77 (a[77] = 231)
+
+wrote uniform_binary_search.svg
+#+end_example
+
+The search lands on index 77 -- the position of the key -- after a fixed schedule of seven steps
+(\(64,32,16,8,4,2,1\)), each either accepted or rejected by a single comparison. It agrees with the
+standard library's binary search across the test suite over thousands of random arrays and queries.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/uniform_binary_search.svg]]
+
+The running index climbs toward the red target line in decreasing jumps of \(64,32,16,\dots\): each
+accepted step doubles the resolution, each rejected step costs only a comparison. Because the schedule
+is fixed in advance, the loop has no data-dependent bookkeeping -- just add-or-not and compare -- the
+predictable, branch-light structure that makes uniform binary search attractive for tight inner loops.

@@ -603,6 +603,16 @@ We implement Fibonacci search (=algorithms::fibonacci_search=) and report it as 
 
 We implement the Eytzinger layout and search (=algorithms::eytzinger_layout=, =eytzinger_search=) and report it as a literate program. We build the BFS-order array of a binary search tree (median at the root) via in-order fill, and search it by a division-free 2k/2k+1 child walk; the layout of =[1,3,...,19]= is =[13,7,17,3,11,15,19,1,5,9]=, 13 found in one probe and 9 in four.
 
+** [[./uniform_binary_search_analysis.html][Uniform Binary Search: A Fixed Step Schedule]] ([[./uniform_binary_search_analysis.pdf][PDF]])
+/A literate C++ study of table-driven binary search using datamunge/
+
+We implement uniform binary search (=algorithms::uniform_binary_search=) and report it as a literate program. A precomputed descending schedule of powers of two replaces the per-step midpoint division: each iteration accepts or rejects a fixed-size jump with one comparison, keeping every probe in bounds; it matches the standard binary search over thousands of random arrays, with the probe schedule (64,32,...,1 converging on index 77) traced.
+
+** [[./trigram_search_analysis.html][Trigram Search: Fuzzy Matching by Shared Substrings]] ([[./trigram_search_analysis.pdf][PDF]])
+/A literate C++ study of typo-tolerant search using datamunge/
+
+We implement trigram search (=algorithms::trigram_search=) and report it as a literate program. Representing each string by the set of its 3-character substrings and scoring by the Jaccard overlap gives a similarity robust to typos; the misspelling "algorithim" still ranks "algorithm" first by a wide margin, with identical strings scoring 1 and disjoint ones 0.
+
 ** [[./ternary_search_analysis.html][Ternary Search: Locating the Peak of a Unimodal Function]] ([[./ternary_search_analysis.pdf][PDF]])
 /A literate C++ study of derivative-free unimodal optimization using datamunge/
 

@@ -86,5 +86,7 @@
 #include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/todd_coxeter.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
+#include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
+#include <datamunge/algorithms/uniform_binary_search.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>
