@@ -32,6 +32,7 @@
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_connectivity.hpp>
+#include <datamunge/algorithms/graph_hard.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>

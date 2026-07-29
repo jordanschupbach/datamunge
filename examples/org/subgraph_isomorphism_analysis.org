@@ -1,0 +1,150 @@
+#+title: Subgraph Isomorphism: Finding a Pattern Inside a Graph
+#+subtitle: A literate C++ study of backtracking graph matching with =datamunge='s =algorithms::subgraph_isomorphism=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Does a small *pattern* graph occur inside a larger *target* graph? This subgraph-isomorphism question
+sits at the heart of cheminformatics (finding a molecular substructure), pattern recognition, and
+database queries over graphs -- and it is NP-complete. A backtracking search solves it in practice:
+assign the pattern's vertices to target vertices one at a time, checking at each step that every
+already-placed pattern edge is honoured, and abandoning any partial map that cannot be completed. This
+report drives =datamunge='s =algorithms::subgraph_isomorphism=, verified against brute force over
+thousands of random graph pairs, and shows the pruning that makes backtracking beat exhaustive search.
+#+end_abstract
+
+* Map vertices, check edges, backtrack
+
+We seek an injective map \(f:V(P)\to V(G)\) such that every edge of the pattern maps to an edge of the
+target:
+
+\[ (u,w)\in E(P)\ \Longrightarrow\ (f(u),f(w))\in E(G). \]
+
+Assign the pattern vertices \(0,1,2,\dots\) in order. To place pattern vertex \(u\), try each unused
+target vertex \(v\) and accept it only if it is *consistent* with the placements so far: for every
+already-mapped pattern neighbour \(w<u\),
+
+\[ (u,w)\in E(P)\ \Longrightarrow\ (v,f(w))\in E(G), \]
+
+and a quick degree filter \(\deg_G(v)\ge\deg_P(u)\) rejects hopeless targets immediately. If \(v\) is
+consistent, map \(u\mapsto v\), mark \(v\) used, and recurse to the next pattern vertex; if the
+recursion fails, undo and try the next \(v\). Reaching the last pattern vertex means the whole pattern
+has been embedded. The consistency check is what prunes the search: a partial assignment that already
+violates an edge is discarded before any of its extensions are explored, so the backtracking tree stays
+far smaller than the \(n_G!/(n_G-n_P)!\) injective maps a brute force would test. (Ullmann's algorithm
+and VF2 add stronger refinement and candidate-set pruning; this is the backtracking core they build on.)
+
+#+name: si-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_hard.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SUBGRAPH-ISO(pattern, target, depth = 0, map):
+  if depth == |pattern|: return the map (success)
+  u = depth
+  for each unused target vertex v with deg(v) >= deg(u):
+      if for every mapped neighbour w of u: (v, map[w]) is a target edge:
+          map[u] = v; recurse on depth+1; if success: return
+          undo map[u]
+  return failure
+#+end_example
+
+* Worked example: locating a pattern
+
+We embed a small "paw" pattern (a triangle with a tail) into a larger target graph and print the vertex
+mapping, then confirm the mapping preserves every pattern edge.
+
+#+name: si-run
+#+begin_src c++ :eval no
+    // Pattern: triangle 0-1-2 with a tail 2-3 (a "paw").
+    std::vector<std::vector<int>> pat = {{1, 2}, {0, 2}, {0, 1, 3}, {2}};
+    // Target: 6 vertices with a 4-clique {1,2,3,4} and extra vertices.
+    std::vector<std::vector<int>> tgt = {{1}, {0, 2, 3, 4}, {1, 3, 4}, {1, 2, 4, 5}, {1, 2, 3}, {3}};
+    const int np = 4, ng = 6;
+
+    auto r = subgraph_isomorphism(np, pat, ng, tgt);
+    std::cout << "=== subgraph isomorphism ===\n";
+    std::cout << "pattern (paw) found in target: " << (r.found ? "yes" : "no") << "\n";
+    if (r.found) {
+        std::cout << "mapping (pattern -> target):\n";
+        for (int u = 0; u < np; ++u) std::cout << "  " << u << " -> " << r.mapping[u] << "\n";
+        // Verify every pattern edge maps to a target edge.
+        std::vector<std::vector<char>> gm(ng, std::vector<char>(ng, 0));
+        for (int u = 0; u < ng; ++u) for (int v : tgt[u]) gm[u][v] = 1;
+        bool ok = true;
+        for (int u = 0; u < np; ++u) for (int w : pat[u]) if (!gm[r.mapping[u]][r.mapping[w]]) ok = false;
+        std::cout << "all pattern edges preserved: " << (ok ? "yes" : "no") << "\n";
+    }
+
+    // Which target vertices are used by the embedding?
+    std::vector<double> heights; std::vector<std::string> labels;
+    for (int v = 0; v < ng; ++v) {
+        bool used = false; for (int u = 0; u < np; ++u) if (r.found && r.mapping[u] == v) used = true;
+        heights.push_back(used ? 1.0 : 0.0); labels.push_back(std::to_string(v));
+    }
+    auto plot = RPlot::barplot(heights, labels, "used", RGB{5, 150, 105});
+    plot.title("Target vertices matched by the pattern embedding (1 = used)")
+        .x_label("target vertex").y_label("in embedding").background({250, 250, 252});
+    plot.save_svg("build/org/subgraph_isomorphism.svg");
+    std::cout << "\nwrote subgraph_isomorphism.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/subgraph_isomorphism_analysis.cpp <<'CPP'
+<<si-includes>>
+
+int main() {
+<<si-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/subgraph_isomorphism_analysis.cpp -o build/org/subgraph_isomorphism_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/subgraph_isomorphism_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== subgraph isomorphism ===
+pattern (paw) found in target: yes
+mapping (pattern -> target):
+  0 -> 1
+  1 -> 2
+  2 -> 3
+  3 -> 4
+all pattern edges preserved: yes
+
+wrote subgraph_isomorphism.svg
+#+end_example
+
+The backtracking search embeds the paw pattern into the target and returns a concrete vertex mapping
+whose every pattern edge lands on a target edge -- matching the brute-force answer the test suite checks
+over thousands of random graph pairs.
+
+#+attr_html: :width 620
+#+attr_latex: :width 0.72\linewidth
+[[file:../../build/org/subgraph_isomorphism.svg]]
+
+The highlighted target vertices are the ones the pattern occupies; the rest are untouched. Building the
+mapping one vertex at a time and rejecting any partial assignment that already breaks an edge is what
+keeps the search tractable -- the consistency check prunes whole subtrees of impossible maps, the idea
+that Ullmann's algorithm and VF2 sharpen into the workhorse subgraph matchers of cheminformatics and
+graph databases.

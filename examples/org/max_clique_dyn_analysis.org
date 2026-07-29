@@ -1,0 +1,152 @@
+#+title: MaxCliqueDyn: The Maximum Clique by Branch and Bound
+#+subtitle: A literate C++ study of colouring-bounded clique search with =datamunge='s =algorithms::max_clique_dyn=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Finding the *largest* clique in a graph is NP-hard, but a good branch-and-bound search solves
+real-world instances quickly. The key is a cheap *upper bound* on how large a clique the current
+candidates could still yield: a greedy *graph colouring* gives exactly that -- a set coloured with
+\(k\) colours contains no clique larger than \(k\). MaxCliqueDyn wraps this colouring bound in a
+depth-first search that prunes any branch that cannot beat the best clique found so far. This report
+drives =datamunge='s =algorithms::max_clique_dyn=, verified against brute force over thousands of
+random graphs, and shows how the maximum clique grows with graph density.
+#+end_abstract
+
+* Colour to bound, branch to search
+
+Grow a clique \(R\) from a candidate set \(P\) (the vertices adjacent to all of \(R\)). At each node,
+*colour* \(P\) greedily: assign each vertex the first colour not used by a neighbour already in \(P\).
+Since a clique needs a distinct colour per vertex, a set coloured with \(k\) colours holds no clique
+bigger than \(k\), so
+
+\[ |R| + \text{colours}(P)\ \le\ |R|+k \]
+
+bounds the best clique reachable through this node. Process the candidates in *decreasing* colour order;
+the moment a candidate's bound cannot exceed the current best,
+
+\[ |R| + \text{colour}(v)\ \le\ |R_{\text{best}}|, \]
+
+the whole remaining branch is pruned -- every later candidate has an even smaller colour. Otherwise add
+\(v\) to \(R\), recurse on \(P\cap N(v)\), and continue. The colouring both *orders* the search
+(highest-bound vertices first, to find big cliques early and tighten the bound) and *prunes* it, which
+is what turns an exponential search into one fast enough for graphs with thousands of vertices. The
+"Dyn" refinement re-computes tighter bounds dynamically in the densest part of the search; the
+colouring bound above is its engine.
+
+#+name: mc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_hard.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MAX-CLIQUE(R, P):
+  if P empty: update best with R; return
+  colour P greedily; process candidates by decreasing colour:
+      if |R| + colour(v) <= |best|: prune the rest; return
+      MAX-CLIQUE(R + {v}, P ∩ N(v))
+#+end_example
+
+* Worked example: a maximum clique, and density
+
+We find the maximum clique of a small graph, then measure how the maximum clique size grows as random
+graphs get denser.
+
+#+name: mc-run
+#+begin_src c++ :eval no
+    // 8 vertices: a 4-clique {0,1,2,3} plus a triangle {4,5,6} plus a pendant 7.
+    std::vector<std::vector<int>> adj = {
+        {1, 2, 3}, {0, 2, 3}, {0, 1, 3, 4}, {0, 1, 2}, {2, 5, 6}, {4, 6}, {4, 5}, {6}};
+    auto cl = max_clique_dyn(8, adj);
+    std::cout << "=== MaxCliqueDyn ===\n";
+    std::cout << "maximum clique (" << cl.size() << " vertices): {";
+    for (std::size_t i = 0; i < cl.size(); ++i) std::cout << (i ? "," : "") << cl[i];
+    std::cout << "}\n\n";
+
+    // Max clique size vs edge density on random 40-vertex graphs.
+    std::mt19937_64 rng(31);
+    const int n = 40;
+    std::vector<double> dens, size;
+    std::cout << "edge prob   max clique\n";
+    for (int pct = 10; pct <= 90; pct += 10) {
+        std::vector<std::vector<int>> g(n);
+        for (int u = 0; u < n; ++u)
+            for (int v = u + 1; v < n; ++v)
+                if ((int)(rng() % 100) < pct) { g[u].push_back(v); g[v].push_back(u); }
+        int c = (int)max_clique_dyn(n, g).size();
+        dens.push_back(pct / 100.0); size.push_back(c);
+        std::printf("  %.1f        %d\n", pct / 100.0, c);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(dens, size, "c", RGB{37, 99, 235}, 2.0);
+    plot.points(dens, size, "c", RGB{37, 99, 235}, 6.0);
+    plot.legend({"maximum clique size"}, {{37, 99, 235}});
+    plot.title("Maximum clique grows with edge density (n = 40 random graphs)")
+        .x_label("edge probability").y_label("max clique size").background({250, 250, 252});
+    plot.save_svg("build/org/max_clique_dyn.svg");
+    std::cout << "\nwrote max_clique_dyn.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/max_clique_dyn_analysis.cpp <<'CPP'
+<<mc-includes>>
+
+int main() {
+<<mc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/max_clique_dyn_analysis.cpp -o build/org/max_clique_dyn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/max_clique_dyn_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== MaxCliqueDyn ===
+maximum clique (4 vertices): {0,1,2,3}
+
+edge prob   max clique
+  0.1        3
+  0.2        4
+  0.3        5
+  0.4        5
+  0.5        7
+  0.6        9
+  0.7        11
+  0.8        15
+  0.9        19
+
+wrote max_clique_dyn.svg
+#+end_example
+
+The search finds the 4-clique as the maximum -- matching the brute-force answer the test suite checks
+over thousands of random graphs -- and the density sweep shows the maximum clique swelling steadily as
+edges are added, exactly where an unpruned search would blow up.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/max_clique_dyn.svg]]
+
+The maximum-clique curve rises with density: denser graphs harbour larger cliques and a bigger search
+space, and it is precisely there that the colouring bound earns its keep -- a set that greedily needs
+only \(k\) colours can hold no clique larger than \(k\), so whole branches vanish before they are ever
+explored. That bound is what makes exact maximum-clique feasible far beyond the reach of brute force.
