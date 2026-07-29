@@ -12,7 +12,10 @@
 #include <datamunge/geometry/delaunay.hpp>
 #include <datamunge/geometry/dtw.hpp>
 #include <datamunge/geometry/frechet.hpp>
+#include <datamunge/geometry/geometric_hashing.hpp>
+#include <datamunge/geometry/jump_and_walk.hpp>
 #include <datamunge/geometry/kdtree.hpp>
+#include <datamunge/geometry/laplacian_smoothing.hpp>
 #include <datamunge/geometry/min_enclosing_circle.hpp>
 #include <datamunge/geometry/point2d.hpp>
 #include <datamunge/geometry/polygon.hpp>
