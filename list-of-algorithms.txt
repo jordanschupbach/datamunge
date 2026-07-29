@@ -32,9 +32,9 @@ Network theory
 Further information: Network theory
 
     Network analysis
-        Link analysis
+        [x] Link analysis  -- datamunge::algorithms::page_rank + HITS (network_analysis.hpp); reports examples/org/page_rank_analysis.org, examples/org/hits_analysis.org
             [x] Girvan–Newman algorithm: detect communities in complex systems  -- datamunge::algorithms::girvan_newman; report examples/org/girvan_newman_analysis.org
-            Web link analysis
+            [x] Web link analysis  -- datamunge::algorithms::page_rank + HITS (network_analysis.hpp); reports examples/org/page_rank_analysis.org, examples/org/hits_analysis.org
                 [x] Hyperlink-Induced Topic Search (HITS) (also known as Hubs and authorities)  -- datamunge::algorithms::hits; report examples/org/hits_analysis.org
                 [x] PageRank  -- datamunge::algorithms::page_rank; report examples/org/page_rank_analysis.org
                 [x] TrustRank  -- datamunge::algorithms::trust_rank; report examples/org/trust_rank_analysis.org
@@ -83,7 +83,7 @@ Further information: Graph search algorithm and State space search
     [x] Brute-force search: an exhaustive and reliable search method, but computationally inefficient in many applications  -- datamunge::algorithms::brute_force_search; report examples/org/brute_force_search_analysis.org
     [x] D*: an incremental heuristic search algorithm  -- datamunge::algorithms::d_star_replan (grid replanning kernel); report examples/org/d_star_analysis.org
     [x] Depth-first search: traverses a graph branch by branch  -- datamunge::algorithms::depth_first_search; report examples/org/depth_first_search_analysis.org
-    Dijkstra's algorithm: a special case of A* for which no heuristic function is used
+    [x] Dijkstra's algorithm: a special case of A* for which no heuristic function is used  -- datamunge::algorithms::dijkstra; report examples/org/dijkstra_analysis.org
     [x] General Problem Solver: a seminal theorem-proving algorithm intended to work as a universal problem solver machine.  -- datamunge::algorithms::general_problem_solver (STRIPS means-ends planner); report examples/org/general_problem_solver_analysis.org
     [x] Iterative deepening depth-first search (IDDFS): a state space search strategy  -- datamunge::algorithms::iterative_deepening_dfs; report examples/org/iddfs_analysis.org
     [x] Jump point search: an optimization to A* which may reduce computation time by an order of magnitude using further heuristics  -- datamunge::algorithms::jump_point_search (orthogonal grid); report examples/org/jump_point_search_analysis.org
@@ -126,12 +126,12 @@ Selection algorithms
 Main article: Selection algorithm
 
     Introselect
-    Quickselect
+    [x] Quickselect  -- datamunge::algorithms::quickselect; report examples/org/quickselect_analysis.org
 
 Sequence search
 
     Linear search: locates an item in an unsorted sequence
-    Selection algorithm: finds the kth largest item in a sequence
+    [x] Selection algorithm: finds the kth largest item in a sequence  -- datamunge::algorithms::quickselect (kth largest); report examples/org/quickselect_analysis.org
     Sorted lists
         [x] Binary search algorithm: locates an item in a sorted sequence  -- datamunge::algorithms::binary_search; report examples/org/binary_search_analysis.org
         [x] Eytzinger binary search: cache friendly binary search algorithm [7]  -- datamunge::algorithms::eytzinger_layout / eytzinger_search; report examples/org/eytzinger_search_analysis.org
@@ -176,10 +176,10 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         [x] Comb sort  -- datamunge::algorithms::comb_sort; report examples/org/comb_sort_analysis.org
         [x] Gnome sort  -- datamunge::algorithms::gnome_sort; report examples/org/gnome_sort_analysis.org
         [x] Odd–even sort  -- datamunge::algorithms::odd_even_sort; report examples/org/odd_even_sort_analysis.org
-        Quicksort: divide list into two, with all items on the first list coming before all items on the second list.; then sort the two lists. Often the method of choice
+        [x] Quicksort: divide list into two, with all items on the first list coming before all items on the second list.; then sort the two lists. Often the method of choice  -- datamunge::algorithms::quicksort; report examples/org/quicksort_analysis.org
     Humorous or ineffective
-        Bogosort: the list is randomly shuffled until it happens to be sorted
-        Slowsort
+        [x] Bogosort: the list is randomly shuffled until it happens to be sorted  -- datamunge::algorithms::bogosort (joke-tier; joke_sorts.hpp)
+        [x] Slowsort  -- datamunge::algorithms::slowsort (joke-tier; joke_sorts.hpp)
         [x] Stooge sort  -- datamunge::algorithms::stooge_sort (recursive, O(n^2.71)); report examples/org/stooge_sort_analysis.org
     Hybrid
         [x] Flashsort  -- datamunge::algorithms::flashsort (distribution sort by value class); report examples/org/flashsort_analysis.org
@@ -193,26 +193,26 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
         [x] Shell sort: an attempt to improve insertion sort  -- datamunge::algorithms::shell_sort; report examples/org/shell_sort_analysis.org
         [x] Tree sort (binary tree sort): build binary tree, then traverse it to create sorted list  -- datamunge::algorithms::tree_sort; report examples/org/tree_sort_analysis.org
     Merge sorts
-        Merge sort: sort the first and second half of the list separately, then merge the sorted lists
-        Slowsort
+        [x] Merge sort: sort the first and second half of the list separately, then merge the sorted lists  -- datamunge::algorithms::merge_sort; report examples/org/merge_sort_analysis.org
+        [x] Slowsort  -- datamunge::algorithms::slowsort (joke-tier; joke_sorts.hpp)
         [x] Strand sort  -- datamunge::algorithms::strand_sort (extract increasing runs, merge); report examples/org/strand_sort_analysis.org
     Non-comparison sorts
         [x] Bead sort  -- datamunge::algorithms::bead_sort (gravity sort, non-negative ints); report examples/org/bead_sort_analysis.org
         [x] Bucket sort  -- datamunge::algorithms::bucket_sort; report examples/org/bucket_sort_analysis.org
         [x] Burstsort: build a compact, cache efficient burst trie and then traverse it to create sorted output  -- datamunge::algorithms::burstsort; report examples/org/burstsort_analysis.org
-        Counting sort
+        [x] Counting sort  -- datamunge::algorithms::counting_sort; report examples/org/counting_sort_analysis.org
         [x] Pigeonhole sort  -- datamunge::algorithms::pigeonhole_sort; report examples/org/pigeonhole_sort_analysis.org
         [x] Postman sort: variant of Bucket sort which takes advantage of hierarchical structure  -- datamunge::algorithms::postman_sort (MSD radix); report examples/org/postman_sort_analysis.org
-        Radix sort: sorts strings letter by letter
+        [x] Radix sort: sorts strings letter by letter  -- datamunge::algorithms::radix_sort; report examples/org/radix_sort_analysis.org
     Selection sorts
-        Heapsort: convert the list into a heap, keep removing the largest element from the heap and adding it to the end of the list
+        [x] Heapsort: convert the list into a heap, keep removing the largest element from the heap and adding it to the end of the list  -- datamunge::algorithms::heapsort; report examples/org/heapsort_analysis.org
         [x] Selection sort: pick the smallest of the remaining elements, add it to the end of the sorted list  -- datamunge::algorithms::selection_sort; report examples/org/selection_sort_analysis.org
         Smoothsort
     Other
         [x] Bitonic sorter  -- datamunge::algorithms::bitonic_sort (Batcher network, data-oblivious, O(n log^2 n)); report examples/org/bitonic_sort_analysis.org
         [x] Pancake sorting  -- datamunge::algorithms::pancake_sort (returns the flip sequence); report examples/org/pancake_sort_analysis.org
         Spaghetti sort
-        Topological sort
+        [x] Topological sort  -- datamunge::algorithms::topological_sort; report examples/org/topological_sort_analysis.org
     Unknown class
         [x] Samplesort  -- datamunge::algorithms::samplesort (splitter bucketing, recursive); report examples/org/samplesort_analysis.org
 
@@ -256,7 +256,7 @@ Further information: Abstract algebra
 Computer algebra
 Further information: Computer algebra
 
-    Buchberger's algorithm: finds a Gröbner basis
+    [x] Buchberger's algorithm: finds a Gröbner basis  -- datamunge::algebra::groebner_basis (algebra/groebner.hpp)
     [x] Cantor–Zassenhaus algorithm: factor polynomials over finite fields  -- datamunge::algorithms::cantor_zassenhaus; report examples/org/cantor_zassenhaus_analysis.org
     Faugère F4 algorithm: finds a Gröbner basis (also mentions the F5 algorithm)
     Gosper's algorithm: find sums of hypergeometric terms that are themselves hypergeometric terms
@@ -333,7 +333,7 @@ Further information: Number theory
         Special number field sieve
         [x] Trial division  -- datamunge::algorithms::trial_division_factorize; report examples/org/trial_division_analysis.org
     [x] Lenstra–Lenstra–Lovász algorithm (also known as LLL algorithm): find a short, nearly orthogonal lattice basis in polynomial time  -- datamunge::algorithms::lll_reduce; report examples/org/lll_analysis.org
-    Modular square root: computing square roots modulo a prime number
+    [x] Modular square root: computing square roots modulo a prime number  -- datamunge::algorithms::tonelli_shanks / cipolla_sqrt; reports examples/org/tonelli_shanks_analysis.org, examples/org/cipolla_analysis.org
         [x] Berlekamp's root finding algorithm  -- datamunge::algorithms::berlekamp_roots (Berlekamp-Rabin, incl. modular sqrt); report examples/org/berlekamp_analysis.org
         [x] Cipolla's algorithm  -- datamunge::algorithms::cipolla_sqrt (modular sqrt via F_{p^2}); report examples/org/cipolla_analysis.org
         [x] Tonelli–Shanks algorithm  -- datamunge::algorithms::tonelli_shanks; report examples/org/tonelli_shanks_analysis.org
@@ -347,7 +347,7 @@ Further information: Number theory
         [x] Baillie–PSW primality test  -- datamunge::algorithms::baillie_psw (strong MR base 2 + strong Lucas); report examples/org/baillie_psw_analysis.org
         [x] Fermat primality test  -- datamunge::algorithms::fermat_probable_prime; report examples/org/fermat_primality_analysis.org
         [x] Lucas primality test  -- datamunge::algorithms::lucas_primality_test (deterministic); report examples/org/lucas_primality_analysis.org
-        Miller–Rabin primality test
+        [x] Miller–Rabin primality test  -- datamunge::algorithms::miller_rabin; report examples/org/miller_rabin_analysis.org
         [x] Sieve of Atkin  -- datamunge::algorithms::atkin_primes; report examples/org/atkin_sieve_analysis.org
         [x] Sieve of Eratosthenes  -- datamunge::algorithms::prime_sieve / primes_up_to; report examples/org/sieve_of_eratosthenes_analysis.org
         [x] Sieve of Sundaram  -- datamunge::algorithms::sundaram_primes; report examples/org/sundaram_sieve_analysis.org
@@ -359,14 +359,14 @@ Further information: Differential equation
 
     [x] Backward Euler method  -- datamunge::algorithms::backward_euler (implicit, Newton solve, A-stable); report examples/org/backward_euler_analysis.org
     [x] Euler method  -- datamunge::algorithms::euler_method (forward/explicit); report examples/org/euler_method_analysis.org
-    Linear multistep methods
+    [x] Linear multistep methods  -- datamunge::ode (linear multistep, ode/ode.hpp)
     Multigrid methods (MG methods), a group of algorithms for solving differential equations using a hierarchy of discretizations
     Partial differential equation:
         [x] Crank–Nicolson method for diffusion equations  -- datamunge::algorithms::crank_nicolson_heat; report examples/org/crank_nicolson_analysis.org
         [x] Finite difference method  -- datamunge::algorithms::finite_difference_poisson; report examples/org/finite_difference_analysis.org
         [x] Lax–Wendroff for wave equations  -- datamunge::algorithms::lax_wendroff_advection; report examples/org/lax_wendroff_analysis.org
     [x] Runge–Kutta methods  -- datamunge::algorithms::runge_kutta4 (classical RK4, 4th order); report examples/org/runge_kutta4_analysis.org
-        Euler integration
+        [x] Euler integration  -- datamunge::ode (Euler / backward Euler, ode/ode.hpp); reports examples/org/euler_method_analysis.org, examples/org/backward_euler_analysis.org
     [x] Trapezoidal rule (differential equations)  -- datamunge::algorithms::trapezoidal_ode; report examples/org/trapezoidal_ode_analysis.org
     [x] Verlet integration (French pronunciation: [vɛʁˈlɛ]): integrate Newton's equations of motion  -- datamunge::algorithms::velocity_verlet (symplectic); report examples/org/verlet_analysis.org
 
@@ -395,9 +395,9 @@ Further information: Special functions
     Multiplication algorithms: fast multiplication of two numbers
         [x] Booth's multiplication algorithm: a multiplication algorithm that multiplies two signed binary numbers in two's complement notation  -- datamunge::algorithms::booth_multiply; report examples/org/booth_analysis.org
         Fürer's algorithm: an integer multiplication algorithm for very large numbers possessing a very low asymptotic complexity
-        Karatsuba algorithm: an efficient procedure for multiplying large numbers
-        Schönhage–Strassen algorithm: an asymptotically fast multiplication algorithm for large integers
-        Toom–Cook multiplication: (Toom3) a multiplication algorithm for large integers
+        [x] Karatsuba algorithm: an efficient procedure for multiplying large numbers  -- datamunge::algorithms::karatsuba_multiply; report examples/org/karatsuba_analysis.org
+        [x] Schönhage–Strassen algorithm: an asymptotically fast multiplication algorithm for large integers  -- datamunge::algorithms::ntt_mul; report examples/org/schonhage_strassen_analysis.org
+        [x] Toom–Cook multiplication: (Toom3) a multiplication algorithm for large integers  -- datamunge::algorithms::toom3_mul; report examples/org/toom3_analysis.org
     Multiplicative inverse Algorithms: for computing a number's multiplicative inverse (reciprocal).
         [x] Newton's method  -- datamunge::algorithms::newton_raphson_divide (reciprocal via x<-x(2-Dx)); report examples/org/newton_raphson_division_analysis.org
     [x] Rounding functions: the classic ways to round numbers  -- datamunge::algorithms::round_half_to_even / round_half_up / round_with / rounding_bias (tie-breaking modes + bias measure); report examples/org/rounding_functions_analysis.org
@@ -420,7 +420,7 @@ Interpolation and extrapolation
 Further information: Extrapolation and Interpolation
 
     [x] Birkhoff interpolation: an extension of polynomial interpolation  -- datamunge::algorithms::birkhoff_polynomial / birkhoff_eval (lacunary derivative constraints -> linear system, poisedness check); report examples/org/birkhoff_interpolation_analysis.org
-    Cubic interpolation
+    [x] Cubic interpolation  -- datamunge::algorithms::natural_cubic_spline / cubic_spline_eval; report examples/org/cubic_spline_analysis.org
     [x] Hermite interpolation  -- datamunge::algorithms::hermite_interpolate (cubic Hermite, C1); report examples/org/hermite_analysis.org
     [x] Lagrange interpolation: interpolation using Lagrange polynomials  -- datamunge::algorithms::lagrange_interpolate; report examples/org/lagrange_interpolation_analysis.org
     [x] Linear interpolation: a method of curve fitting using linear polynomials  -- datamunge::algorithms::linear_interpolate; report examples/org/linear_interpolation_analysis.org
@@ -432,7 +432,7 @@ Further information: Extrapolation and Interpolation
         [x] Nearest-neighbor interpolation  -- datamunge::algorithms::nearest_neighbor_interpolate (piecewise-constant, nearest-sample, O(log n)); report examples/org/nearest_neighbor_interpolation_analysis.org
         [x] Tricubic interpolation: a generalization of cubic interpolation to three dimensions  -- datamunge::algorithms::tricubic_interpolate (Keys cubic convolution, separable 4x4x4 stencil); report examples/org/tricubic_interpolation_analysis.org
     Pareto interpolation: a method of estimating the median and other properties of a population that follows a Pareto distribution.
-    Polynomial interpolation
+    [x] Polynomial interpolation  -- datamunge::algorithms::lagrange_interpolate / neville_interpolate; report examples/org/neville_analysis.org
         [x] Neville's algorithm  -- datamunge::algorithms::neville_interpolate; report examples/org/neville_analysis.org
     Spline interpolation: Reduces error with Runge's phenomenon.
         [x] Natural cubic spline interpolation  -- datamunge::algorithms::natural_cubic_spline / cubic_spline_eval; report examples/org/cubic_spline_analysis.org
@@ -446,7 +446,7 @@ Further information: Numerical linear algebra
     Eigenvalue algorithms
         [x] Arnoldi iteration  -- datamunge::algorithms::arnoldi_iteration (orthonormal Krylov basis + upper-Hessenberg projection, Ritz values); report examples/org/arnoldi_iteration_analysis.org
         [x] Inverse iteration  -- datamunge::algorithms::inverse_iteration (shifted inverse power iteration for the eigenvector nearest mu); report examples/org/inverse_iteration_analysis.org
-        Jacobi method
+        [x] Jacobi method  -- datamunge::linalg::jacobi_eigen (linalg/eigen.hpp)
         [x] Lanczos iteration  -- datamunge::algorithms::lanczos_iteration (symmetric Krylov three-term recurrence -> tridiagonal, extreme Ritz values); report examples/org/lanczos_iteration_analysis.org
         [x] Power iteration  -- datamunge::algorithms::power_iteration; report examples/org/power_iteration_analysis.org
         [x] QR algorithm  -- datamunge::algorithms::qr_eigenvalues (shifted QR iteration with Wilkinson shift and deflation, symmetric); report examples/org/qr_algorithm_analysis.org
@@ -512,8 +512,8 @@ Hybrid Algorithms
     [x] Chain matrix multiplication  -- datamunge::algorithms::matrix_chain_order (O(n^3) DP); report examples/org/matrix_chain_analysis.org
     Combinatorial optimization: optimization problems where the set of feasible solutions is discrete
         [x] Greedy randomized adaptive search procedure (GRASP): successive constructions of a greedy randomized solution and subsequent iterative improvements of it through a local search  -- datamunge::algorithms::grasp_max_cut (restricted-candidate-list construction + local search, multi-start, on MAX-CUT); report examples/org/grasp_analysis.org
-        Hungarian method: a combinatorial optimization algorithm which solves the assignment problem in polynomial time
-    Conjugate gradient methods (see more https://doi.org/10.1016/j.jksus.2022.101923)
+        [x] Hungarian method: a combinatorial optimization algorithm which solves the assignment problem in polynomial time  -- datamunge::algorithms::hungarian; report examples/org/hungarian_analysis.org
+    [x] Conjugate gradient methods (see more https://doi.org/10.1016/j.jksus.2022.101923)  -- datamunge::algorithms::conjugate_gradient; report examples/org/conjugate_gradient_analysis.org
     Constraint satisfaction
         [x] AC-3 algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::ac3; report examples/org/ac3_analysis.org
         Chaff algorithm: an algorithm for solving instances of the Boolean satisfiability problem
@@ -524,28 +524,28 @@ Hybrid Algorithms
         [x] Min conflicts algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::min_conflicts_nqueens; report examples/org/min_conflicts_analysis.org
             [x] Algorithm X: a nondeterministic algorithm  -- datamunge::algorithms::exact_cover; report examples/org/exact_cover_analysis.org
             [x] Dancing Links: an efficient implementation of Algorithm X  -- datamunge::algorithms::exact_cover (DLX); report examples/org/exact_cover_analysis.org
-    Cross-entropy method: a general Monte Carlo approach to combinatorial and continuous multi-extremal optimization and importance sampling
-    Differential evolution
+    [x] Cross-entropy method: a general Monte Carlo approach to combinatorial and continuous multi-extremal optimization and importance sampling  -- datamunge::optim (optim/cross_entropy_method.hpp)
+    [x] Differential evolution  -- datamunge::optim (optim/differential_evolution.hpp)
     Dynamic Programming: problems exhibiting the properties of overlapping subproblems and optimal substructure
     [x] Ellipsoid method: is an algorithm for solving convex optimization problems  -- datamunge::algorithms::ellipsoid_minimize; report examples/org/ellipsoid_analysis.org
     Evolutionary computation: optimization inspired by biological mechanisms of evolution
-        Evolution strategy
+        [x] Evolution strategy  -- datamunge::optim (optim/evolution_strategy.hpp)
         Gene expression programming
-        Genetic algorithms
+        [x] Genetic algorithms  -- datamunge::optim (optim/genetic_algorithm.hpp)
             [x] Fitness proportionate selection – also known as roulette-wheel selection  -- datamunge::algorithms::roulette_wheel_sample (cumulative-fitness wheel, O(log n) per draw); report examples/org/roulette_wheel_analysis.org
             [x] Stochastic universal sampling  -- datamunge::algorithms::stochastic_universal_sampling (single spin, N evenly-spaced pointers, deviation <= 1); report examples/org/stochastic_universal_sampling_analysis.org
             [x] Tournament selection  -- datamunge::algorithms::tournament_sample (fittest of k random contestants, pressure tuned by k); report examples/org/tournament_selection_analysis.org
             Truncation selection
         [x] Memetic algorithm  -- datamunge::algorithms::memetic_max_cut (GA + local-search refinement of every offspring, on MAX-CUT); report examples/org/memetic_analysis.org
         Swarm intelligence
-            Ant colony optimization
-            Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees
-            Particle swarm
+            [x] Ant colony optimization  -- datamunge::optim (optim/acor.hpp)
+            [x] Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees  -- datamunge::optim (optim/artificial_bee_colony.hpp)
+            [x] Particle swarm  -- datamunge::optim (optim/pso.hpp)
     [x] Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization  -- datamunge::algorithms::frank_wolfe / simplex_lmo (conditional gradient, projection-free, linear minimization oracle, O(1/k)); report examples/org/frank_wolfe_analysis.org
     [x] Golden-section search: an algorithm for finding the maximum of a real function  -- datamunge::algorithms::golden_section_search; report examples/org/golden_section_search_analysis.org
     Gradient descent
     Grid Search
-    Harmony search (HS): a metaheuristic algorithm mimicking the improvisation process of musicians
+    [x] Harmony search (HS): a metaheuristic algorithm mimicking the improvisation process of musicians  -- datamunge::optim (optim/harmony_search.hpp)
     A hybrid HS-LS conjugate gradient algorithm (see https://doi.org/10.1016/j.cam.2023.115304)
     Interior point method
     Line search
@@ -566,10 +566,10 @@ Hybrid Algorithms
         [x] Best Bin First: find an approximate solution to the nearest neighbor search problem in very-high-dimensional spaces  -- datamunge::geometry::BestBinFirst (priority-queue k-d tree search with an examination budget); report examples/org/best_bin_first_analysis.org
     Newton's method in optimization
     Nonlinear optimization
-        BFGS method: a nonlinear optimization algorithm
+        [x] BFGS method: a nonlinear optimization algorithm  -- datamunge::optim (L-BFGS variant, optim/lbfgs.hpp)
         [x] Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::algorithms::gauss_newton (normal equations (J^T J)d=-J^T r, finite-difference Jacobian); report examples/org/gauss_newton_analysis.org
-        Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems
-        Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm
+        [x] Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::optim (optim/levenberg_marquardt.hpp)
+        [x] Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm  -- datamunge::optim (optim/nelder_mead.hpp); report examples/org/optimization_derivative_free_analysis.org
     [x] Odds algorithm (Bruss algorithm): Finds the optimal strategy to predict a last specific event in a random sequence event  -- datamunge::algorithms::odds_algorithm (optimal stopping); report examples/org/odds_algorithm_analysis.org
     Random Search
     Simulated annealing
