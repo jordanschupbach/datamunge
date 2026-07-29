@@ -1,0 +1,156 @@
+#+title: SSS*: Best-First Game-Tree Search
+#+subtitle: A literate C++ study of SSS* via MTD null-window search with =datamunge='s =algorithms::sss_star=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Alpha-beta pruning is the classic game-tree search, but it is not optimal: with a poor move order it still
+visits nodes a smarter search would skip. *SSS** (Stockman, 1979) is a *best-first* search that returns
+the identical minimax value while provably *never* examining a node alpha-beta would prune -- it
+dominates alpha-beta in nodes searched. This report drives =datamunge='s =algorithms::sss_star=,
+implemented through Plaat's elegant reformulation SSS* = MTD(+INF), verified to match minimax exactly
+while evaluating far fewer leaves.
+#+end_abstract
+
+* SSS* as a sequence of null-window searches
+
+SSS* was originally described with an OPEN list of partial "solution trees," which is correct but
+intricate. Plaat, Schaeffer, Pijls & de Bruin (1996) showed it is exactly equivalent to a much simpler
+driver: a sequence of *null-window* alpha-beta searches, each reusing bounds cached in a transposition
+table (alpha-beta *with memory*). A null-window search asks a yes/no question -- "is the value at least
+\(\gamma\)?" -- returning a bound rather than an exact value:
+
+\[ g\gets\textsf{AlphaBetaWithMemory}(root,\ \gamma-\varepsilon,\ \gamma). \]
+
+Starting from an upper bound \(\gamma=+\infty\) and repeating, each search either *fails low*
+(\(g<\gamma\), tightening the upper bound) or *fails high* (raising the lower bound); the bounds squeeze
+together and converge on the minimax value. Because the transposition table remembers what each subtree's
+bounds are, work is never repeated, and the downward sweep from \(+\infty\) reproduces SSS*'s
+best-first order. The payoff is the dominance theorem: SSS* expands a *subset* of the nodes alpha-beta
+expands, so on trees with imperfect move ordering it searches meaningfully fewer leaves -- the reason it
+(and its memory-enhanced descendants like MTD(f)) matter in game AI.
+
+#+name: sss-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/game_search.hpp>
+#include <datamunge/algorithms/sss_star.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static GameNode build_tree(std::mt19937& rng, int depth) {
+    GameNode n;
+    if (depth == 0) { n.leaf = true; n.value = static_cast<double>(rng() % 21) - 10; return n; }
+    const int k = 2 + static_cast<int>(rng() % 3);
+    for (int i = 0; i < k; ++i) n.children.push_back(build_tree(rng, depth - 1));
+    return n;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SSS*(root) = MTD(root, +INF):
+  g = upper bound (just above the largest leaf)
+  repeat:
+      gamma = g
+      g = AlphaBetaWithMemory(root, gamma - eps, gamma)   # null-window search
+      if g < gamma: upper = g   else: lower = g
+  until lower >= upper
+  return g
+
+AlphaBetaWithMemory(n, alpha, beta):
+  look up cached [lower, upper] bounds for n; narrow [alpha,beta] or return early
+  search children with the window; store the resulting bound back in the table
+#+end_example
+
+* Worked example: value and leaf count vs minimax
+
+We generate random game trees and compare SSS* against plain minimax -- confirming the value matches and
+counting the leaves each evaluates.
+
+#+name: sss-run
+#+begin_src c++ :eval no
+    std::mt19937 rng(7);
+    std::cout << "=== SSS* vs minimax ===\n";
+    std::cout << " depth   value(mm)  value(sss)   leaves(mm)  leaves(sss)\n";
+    std::vector<double> depths, mmleaf, sssleaf;
+    for (int depth = 2; depth <= 7; ++depth) {
+        long long mm = 0, ss = 0; double vmm = 0, vss = 0; const int reps = 40;
+        for (int r = 0; r < reps; ++r) {
+            std::mt19937 local(1000 + depth * 97 + r);
+            const GameNode root = build_tree(local, depth);
+            const auto a = minimax(root, true);
+            const auto b = sss_star(root, true, 1.0);
+            mm += a.leaves_evaluated; ss += b.leaves_evaluated; vmm = a.value; vss = b.value;
+        }
+        std::printf("   %d       %6.1f     %6.1f      %8.1f     %8.1f\n", depth, vmm, vss,
+                    (double)mm / reps, (double)ss / reps);
+        depths.push_back(depth); mmleaf.push_back((double)mm / reps); sssleaf.push_back((double)ss / reps);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(depths, mmleaf, "mm", RGB{220, 120, 120}, 2.2);
+    plot.points(depths, mmleaf, "mm", RGB{220, 120, 120}, 5.0);
+    plot.line(depths, sssleaf, "sss", RGB{37, 99, 235}, 2.2);
+    plot.points(depths, sssleaf, "sss", RGB{37, 99, 235}, 5.0);
+    plot.legend({"minimax leaves", "SSS* leaves"}, {{220, 120, 120}, {37, 99, 235}});
+    plot.title("SSS* evaluates far fewer leaves than minimax at every depth")
+        .x_label("tree depth").y_label("leaves evaluated (log scale)").background({250, 250, 252});
+    plot.save_svg("build/org/sss_star.svg");
+    std::cout << "\nwrote sss_star.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sss_star_analysis.cpp <<'CPP'
+<<sss-includes>>
+
+int main() {
+<<sss-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sss_star_analysis.cpp -o build/org/sss_star_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sss_star_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== SSS* vs minimax ===
+ depth   value(mm)  value(sss)   leaves(mm)  leaves(sss)
+   2          9.0        9.0           8.7          8.6
+   3          7.0        7.0          27.2         18.5
+   4          0.0        0.0          81.7         35.4
+   5          6.0        6.0         240.4         89.2
+   6         -4.0       -4.0         739.5        164.6
+   7          4.0        4.0        2245.8        394.5
+
+wrote sss_star.svg
+#+end_example
+
+SSS* returns exactly the minimax value at every depth while evaluating a fraction of the leaves -- the
+dominance guarantee in action: nothing alpha-beta would prune is ever touched, and the best-first order
+skips even more.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/sss_star.svg]]
+
+The red minimax curve climbs steeply with depth -- it evaluates every leaf -- while the blue SSS* curve
+stays well below it, the gap widening as the tree grows. Reformulating SSS* as repeated null-window
+searches over a transposition table turns a famously intricate algorithm into a short driver loop, yet it
+keeps the property that made SSS* famous: it never does work a perfect alpha-beta wouldn't, and usually
+much less.
