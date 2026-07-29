@@ -1038,6 +1038,16 @@ We implement inverse iteration (=algorithms::inverse_iteration=) and report it a
 
 We implement Rayleigh quotient iteration (=algorithms::rayleigh_quotient_iteration=) and report it as a literate program. Updating the inverse-iteration shift to the current vector's Rayleigh quotient x^T A x each step lets vector and eigenvalue refine each other, giving cubic convergence for symmetric matrices; from a generic start the residual falls 0.12 -> 4.8e-4 -> 2.8e-11 -> 3.1e-16 in a few steps, verified to reach a true eigenpair over hundreds of random matrices.
 
+** [[./arnoldi_iteration_analysis.html][Arnoldi Iteration: Projecting a Matrix Onto a Krylov Subspace]] ([[./arnoldi_iteration_analysis.pdf][PDF]])
+/A literate C++ study of the Krylov basis using datamunge/
+
+We implement Arnoldi iteration (=algorithms::arnoldi_iteration=) and report it as a literate program. Modified Gram-Schmidt on the Krylov sequence {b, Ab, A^2 b, ...} builds an orthonormal basis V and an upper-Hessenberg H = V^T A V, whose Ritz values approximate A's eigenvalues; the Arnoldi relation A V = V H + h v e^T holds to 2.8e-16 and the basis is orthonormal to 7.4e-16, the residual per Krylov step plotted -- the construction behind GMRES and nonsymmetric eigensolvers.
+
+** [[./lanczos_iteration_analysis.html][Lanczos Iteration: A Few Eigenvalues of a Huge Symmetric Matrix]] ([[./lanczos_iteration_analysis.pdf][PDF]])
+/A literate C++ study of the symmetric Krylov method using datamunge/
+
+We implement Lanczos iteration (=algorithms::lanczos_iteration=) and report it as a literate program. For symmetric A the Arnoldi Hessenberg becomes tridiagonal, so a three-term recurrence (with re-orthogonalization) builds the basis; the tridiagonal's Ritz values converge fastest to the extreme eigenvalues -- on a 30x30 matrix both extremes reach ~1e-9 by 22 steps -- plotted on a log axis, the method of choice for a few eigenvalues of a giant sparse symmetric matrix.
+
 ** [[./strassen_analysis.html][The Strassen Algorithm: Matrix Multiplication in Seven Products]] ([[./strassen_analysis.pdf][PDF]])
 /A literate C++ study of sub-cubic matrix multiplication using datamunge/
 
@@ -1267,6 +1277,11 @@ We implement the natural cubic spline (=algorithms::natural_cubic_spline=, =cubi
 /A literate C++ study of Keys' cubic convolution using datamunge/
 
 We implement bicubic interpolation (=algorithms::bicubic_interpolate=) and report it as a literate program. Keys' cubic-convolution kernel (a=-1/2) applied separably over the 4x4 neighborhood gives a C1, third-order interpolant that passes exactly through grid nodes and reproduces bilinear functions in the interior; on a smooth bump sampled on a 9x9 grid its profile error (8.4e-3) is an order below bilinear's (6.6e-2), with the two reconstructions plotted against the truth.
+
+** [[./nearest_neighbor_interpolation_analysis.html][Nearest-Neighbor Interpolation: The Simplest Resampler]] ([[./nearest_neighbor_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of piecewise-constant interpolation using datamunge/
+
+We implement nearest-neighbor interpolation (=algorithms::nearest_neighbor_interpolate=) and report it as a literate program. Returning the value of the closest sample gives a piecewise-constant staircase that reproduces the nodes exactly, never overshoots, and is the right choice for categorical data -- the O(log n) baseline every smoother interpolant is judged against; it matches a brute-force nearest-sample search over thousands of queries, with the staircase drawn over its samples.
 
 ** [[./lanczos_resampling_analysis.html][Lanczos Resampling: Windowed-Sinc Reconstruction]] ([[./lanczos_resampling_analysis.pdf][PDF]])
 /A literate C++ study of windowed-sinc resampling using datamunge/
