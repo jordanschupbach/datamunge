@@ -419,16 +419,16 @@ Geometric
 Interpolation and extrapolation
 Further information: Extrapolation and Interpolation
 
-    Birkhoff interpolation: an extension of polynomial interpolation
+    [x] Birkhoff interpolation: an extension of polynomial interpolation  -- datamunge::algorithms::birkhoff_polynomial / birkhoff_eval (lacunary derivative constraints -> linear system, poisedness check); report examples/org/birkhoff_interpolation_analysis.org
     Cubic interpolation
     [x] Hermite interpolation  -- datamunge::algorithms::hermite_interpolate (cubic Hermite, C1); report examples/org/hermite_analysis.org
     [x] Lagrange interpolation: interpolation using Lagrange polynomials  -- datamunge::algorithms::lagrange_interpolate; report examples/org/lagrange_interpolation_analysis.org
     [x] Linear interpolation: a method of curve fitting using linear polynomials  -- datamunge::algorithms::linear_interpolate; report examples/org/linear_interpolation_analysis.org
     [x] Monotone cubic interpolation: a variant of cubic interpolation that preserves monotonicity of the data set being interpolated.  -- datamunge::algorithms::monotone_cubic_interpolate (Fritsch-Carlson); report examples/org/monotone_cubic_analysis.org
     Multivariate interpolation
-        Bicubic interpolation: a generalization of cubic interpolation to two dimensions
+        [x] Bicubic interpolation: a generalization of cubic interpolation to two dimensions  -- datamunge::algorithms::bicubic_interpolate (Keys cubic convolution, a=-1/2, separable 4x4 stencil); report examples/org/bicubic_interpolation_analysis.org
         [x] Bilinear interpolation: an extension of linear interpolation for interpolating functions of two variables on a regular grid  -- datamunge::algorithms::bilinear_interpolate; report examples/org/bilinear_analysis.org
-        Lanczos resampling ("Lanzosh"): a multivariate interpolation method used to compute new values for any digitally sampled data
+        [x] Lanczos resampling ("Lanzosh"): a multivariate interpolation method used to compute new values for any digitally sampled data  -- datamunge::algorithms::lanczos_resample / lanczos_resample_at (windowed-sinc kernel L(x)=sinc(x)sinc(x/a)); report examples/org/lanczos_resampling_analysis.org
         Nearest-neighbor interpolation
         Tricubic interpolation: a generalization of cubic interpolation to three dimensions
     Pareto interpolation: a method of estimating the median and other properties of a population that follows a Pareto distribution.

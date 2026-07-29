@@ -8,6 +8,8 @@
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/berlekamp.hpp>
+#include <datamunge/algorithms/bicubic_interpolation.hpp>
+#include <datamunge/algorithms/birkhoff_interpolation.hpp>
 #include <datamunge/algorithms/bkm.hpp>
 #include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/branch_and_bound.hpp>
@@ -42,6 +44,7 @@
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/algorithms/lanczos_resampling.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
