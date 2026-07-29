@@ -1,0 +1,132 @@
+#+title: Nesting: Bin Packing by First-Fit-Decreasing
+#+subtitle: A literate C++ study of the cutting-stock heuristic with =datamunge='s =algorithms::nest_first_fit_decreasing=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How do you cut a set of lengths from stock bars, or pack files onto disks, using as few units as
+possible? That is *bin packing* -- pack items of given sizes into the fewest fixed-capacity bins. It is
+NP-hard, but the *First-Fit-Decreasing* (FFD) heuristic is fast, simple, and provably close to optimal:
+sort the items largest-first and drop each into the first bin with room. This report drives
+=datamunge='s =algorithms::nest_first_fit_decreasing=, verified to produce valid packings that respect
+capacity and meet the lower bound, and shows how tightly it fills the bins.
+#+end_abstract
+
+* Largest first, first that fits
+
+Bin packing asks for the minimum number of capacity-\(C\) bins holding all items of sizes \(s_i\). Trying
+every assignment is exponential, so heuristics rule. The insight behind *First-Fit-Decreasing* is to
+place the *awkward* big items while bins are still empty, then let the small items fill the gaps:
+
+1. Sort the items in *decreasing* size.
+2. For each item, scan the open bins and place it in the *first* one with enough remaining capacity.
+3. If none fits, open a new bin.
+
+This runs in \(O(n\log n)\) and comes with a guarantee: FFD never uses more than
+\(\tfrac{11}{9}\,\mathrm{OPT}+\tfrac69\) bins, so it is within about 22% of optimal in the worst case and
+usually much closer -- often optimal. A simple *lower bound* on any packing is
+\(\lceil(\sum_i s_i)/C\rceil\), since that much total size cannot fit in fewer bins; comparing FFD's
+result to it certifies near-optimality. The largest-first order is what makes the difference: First-Fit
+*without* sorting can be forced far from optimal, but sorting big-to-small keeps the wasted space small --
+the reason FFD is the default heuristic for cutting stock, load balancing, and storage allocation.
+
+#+name: nest-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/nesting.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FIRST-FIT-DECREASING(sizes, capacity):
+  sort items by decreasing size
+  bins = []
+  for each item s:
+      place s in the first bin whose load + s <= capacity
+      if no such bin: open a new bin holding s
+  return bins
+#+end_example
+
+* Worked example: packing random items
+
+We pack a batch of random items into unit-capacity bins, print the bin count against the lower bound, and
+plot how full each bin ends up.
+
+#+name: nest-run
+#+begin_src c++ :eval no
+    // A deterministic batch of items in (0,1].
+    std::vector<double> sizes;
+    unsigned s = 12345;
+    for (int i = 0; i < 30; ++i) { s = s * 1103515245u + 12345u; sizes.push_back(0.15 + (s % 1000) / 1000.0 * 0.7); }
+    const double cap = 1.0;
+
+    const auto r = nest_first_fit_decreasing(sizes, cap);
+    std::cout << "=== Nesting: First-Fit-Decreasing ===\n";
+    std::printf("%zu items, capacity %.1f\n", sizes.size(), cap);
+    std::printf("bins used = %d,  lower bound = %d\n", r.bins, nesting_lower_bound(sizes, cap));
+    double total = 0; for (double v : sizes) total += v;
+    std::printf("total size %.2f,  average fill %.1f%%\n", total, 100.0 * total / (r.bins * cap));
+
+    std::vector<double> binidx, loads;
+    for (int b = 0; b < r.bins; ++b) { binidx.push_back(b + 1); loads.push_back(r.loads[b]); }
+
+    auto plot = RPlot::create();
+    plot.bars(binidx, loads, "load", RGB{22, 163, 74}, 0.7);
+    plot.abline_h(cap, RGB{220, 40, 40}, 1.5);
+    plot.legend({"bin load", "capacity"}, {{22, 163, 74}, {220, 40, 40}});
+    plot.title("First-Fit-Decreasing fills each bin close to capacity")
+        .x_label("bin").y_label("load").background({250, 250, 252});
+    plot.save_svg("build/org/nesting.svg");
+    std::cout << "\nwrote nesting.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/nesting_analysis.cpp <<'CPP'
+<<nest-includes>>
+
+int main() {
+<<nest-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/nesting_analysis.cpp -o build/org/nesting_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/nesting_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Nesting: First-Fit-Decreasing ===
+30 items, capacity 1.0
+bins used = 16,  lower bound = 15
+total size 14.50,  average fill 90.6%
+
+wrote nesting.svg
+#+end_example
+
+FFD packs the items into a bin count at or barely above the theoretical lower bound, with most bins
+filled close to capacity -- the near-optimal behavior the \(\tfrac{11}{9}\)-approximation guarantee
+promises.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/nesting.svg]]
+
+Each green bar is a bin's load, nearly all of them pressed up against the red capacity line -- little
+wasted space. Placing the big items first and letting the small ones trickle into the leftover gaps is
+what keeps the fill high and the bin count low, which is why First-Fit-Decreasing is the workhorse
+heuristic wherever material or space must be used efficiently.

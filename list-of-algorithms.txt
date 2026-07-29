@@ -88,7 +88,7 @@ Further information: Graph search algorithm and State space search
     [x] Iterative deepening depth-first search (IDDFS): a state space search strategy  -- datamunge::algorithms::iterative_deepening_dfs; report examples/org/iddfs_analysis.org
     [x] Jump point search: an optimization to A* which may reduce computation time by an order of magnitude using further heuristics  -- datamunge::algorithms::jump_point_search (orthogonal grid); report examples/org/jump_point_search_analysis.org
     [x] Lexicographic breadth-first search (also known as Lex-BFS): a linear time algorithm for ordering the vertices of a graph  -- datamunge::algorithms::lex_bfs (partition refinement); report examples/org/lex_bfs_analysis.org
-    SSS*: state space search traversing a game tree in a best-first fashion similar to that of the A* search algorithm
+    [x] SSS*: state space search traversing a game tree in a best-first fashion similar to that of the A* search algorithm  -- datamunge::algorithms::sss_star (Plaat's MTD(+INF) null-window driver over alpha-beta with memory); report examples/org/sss_star_analysis.org
     [x] Uniform-cost search: a tree search that finds the lowest-cost route where costs vary  -- datamunge::algorithms::uniform_cost_search (Dijkstra with goal test); report examples/org/uniform_cost_search_analysis.org
 
 Subgraphs
@@ -272,7 +272,7 @@ Further information: Computational geometry
 
     [x] Closest pair problem: find the pair of points (from a set of points) with the smallest distance between them  -- datamunge::geometry::closest_pair (brute-force O(n^2)); report examples/org/closest_pair_analysis.org
     Collision detection algorithms: check for the collision or intersection of two given solids
-    Cone algorithm: identify surface points
+    [x] Cone algorithm: identify surface points  -- datamunge::geometry::cone_surface_points (largest angular neighbor-gap exceeds threshold => boundary point); report examples/org/cone_algorithm_analysis.org
     [x] Convex hull algorithms: determining the convex hull of a set of points  -- datamunge::geometry::convex_hull (Andrew's monotone chain, O(n log n)); report examples/org/convex_hull_analysis.org
         [x] Chan's algorithm  -- datamunge::geometry::chans_algorithm (O(n log h), group-hull + wrap); report examples/org/chans_algorithm_analysis.org
         [x] Gift wrapping algorithm or Jarvis march  -- datamunge::geometry::jarvis_march (O(n*h), output-sensitive); report examples/org/jarvis_march_analysis.org
@@ -289,7 +289,7 @@ Further information: Computational geometry
         Shamos–Hoey algorithm
     [x] Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points  -- datamunge::geometry::minimum_bounding_rectangle (rotating calipers); report examples/org/min_bounding_box_analysis.org
     [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
-    Nesting algorithm: make the most efficient use of material or space
+    [x] Nesting algorithm: make the most efficient use of material or space  -- datamunge::algorithms::nest_first_fit_decreasing (First-Fit-Decreasing bin packing, 11/9-approximation); report examples/org/nesting_analysis.org
     [x] Point in polygon algorithms: tests whether a given point lies within a given polygon  -- datamunge::geometry::point_in_polygon (PNPOLY even-odd ray casting); report examples/org/point_in_polygon_analysis.org
     [x] Point set registration algorithms: finds the transformation between two point sets to optimally align them.  -- datamunge::geometry::icp (Iterative Closest Point: nearest-neighbor correspondence + closed-form 2D Kabsch alignment); report examples/org/icp_analysis.org
     [x] Rotating calipers: determine all antipodal pairs of points and vertices on a convex polygon or convex hull.  -- datamunge::geometry::polygon_diameter; report examples/org/rotating_calipers_analysis.org

@@ -898,6 +898,11 @@ We implement geometric hashing (=geometry::build_geometric_hash=, =recognize=) a
 
 We implement Iterative Closest Point (=geometry::icp=) and report it as a literate program. ICP splits the joint pose-and-correspondence problem into two easy steps -- match each source point to its nearest target, then solve the closed-form 2D Kabsch alignment (theta = atan2(sum p x q, sum p . q)) -- repeated until the mean-squared error stops falling; a cloud transformed by a known pose is recovered exactly (RMSE 1.8e-15) and the alignment error is verified non-increasing across iterations, with the aligned cloud drawn landing on the target.
 
+** [[./cone_algorithm_analysis.html][The Cone Algorithm: Finding the Surface of a Point Cloud]] ([[./cone_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of mesh-free boundary detection using datamunge/
+
+We implement the cone algorithm (=geometry::cone_surface_points=) and report it as a literate program. A point is a surface point when the largest angular gap between the directions to its neighbors within a radius exceeds a threshold -- interior points have neighbors all around, boundary points an empty cone where the cloud ends; on a solid disk of 2500 points every flagged point lies within 0.7 of the rim with no interior false positives, the extracted outline drawn over the faint interior.
+
 ** [[./frank_wolfe_analysis.html][The Frank-Wolfe Algorithm: Optimization Without Projection]] ([[./frank_wolfe_analysis.pdf][PDF]])
 /A literate C++ study of the projection-free conditional gradient method using datamunge/
 
@@ -1167,6 +1172,16 @@ We implement subset sum by meet-in-the-middle (=algorithms::subset_sum=) and rep
 /A literate C++ study of game-tree pruning using datamunge/
 
 We implement minimax and alpha-beta pruning (=algorithms::minimax=, =alpha_beta=) and report it as a literate program. We give the alpha/beta window and cutoff rules that return minimax's exact value while skipping branches; on random trees alpha-beta matches minimax's value and evaluates far fewer leaves (45 vs 81 at depth 4), trending toward the best-case b^(d/2).
+
+** [[./sss_star_analysis.html][SSS*: Best-First Game-Tree Search]] ([[./sss_star_analysis.pdf][PDF]])
+/A literate C++ study of SSS* via MTD null-window search using datamunge/
+
+We implement SSS* (=algorithms::sss_star=) and report it as a literate program. Using Plaat's reformulation SSS* = MTD(+INF) -- a sequence of null-window alpha-beta searches driven downward over a transposition table (alpha-beta with memory) -- it returns minimax's exact value while never touching a node alpha-beta would prune; on random trees it matches minimax at every depth and evaluates a fraction of the leaves (395 vs 2246 at depth 7), the dominance property plotted against depth.
+
+** [[./nesting_analysis.html][Nesting: Bin Packing by First-Fit-Decreasing]] ([[./nesting_analysis.pdf][PDF]])
+/A literate C++ study of the cutting-stock heuristic using datamunge/
+
+We implement First-Fit-Decreasing bin packing (=algorithms::nest_first_fit_decreasing=) and report it as a literate program. Sorting items largest-first and dropping each into the first bin with room gives an O(n log n) packing within 11/9*OPT+6/9 bins; 30 random items pack into 16 bins against a lower bound of 15 at 90.6% average fill, with each bin's load drawn against the capacity line, and 200 random instances verified valid (capacity-respecting, at or above the lower bound).
 
 ** [[./dpll_analysis.html][DPLL: Deciding Satisfiability by Smart Backtracking]] ([[./dpll_analysis.pdf][PDF]])
 /A literate C++ study of the DPLL SAT algorithm using datamunge/

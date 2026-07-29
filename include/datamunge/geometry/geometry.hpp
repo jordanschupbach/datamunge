@@ -9,6 +9,7 @@
 #include <datamunge/geometry/best_bin_first.hpp>
 #include <datamunge/geometry/bounding_box.hpp>
 #include <datamunge/geometry/closest_pair.hpp>
+#include <datamunge/geometry/cone_algorithm.hpp>
 #include <datamunge/geometry/convex_hull.hpp>
 #include <datamunge/geometry/delaunay.hpp>
 #include <datamunge/geometry/dtw.hpp>

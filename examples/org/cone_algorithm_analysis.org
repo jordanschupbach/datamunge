@@ -1,0 +1,134 @@
+#+title: The Cone Algorithm: Finding the Surface of a Point Cloud
+#+subtitle: A literate C++ study of boundary detection with =datamunge='s =geometry::cone_surface_points=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a cloud of points sampling a shape, which ones lie on its *boundary*? Interior points are surrounded
+by neighbors in every direction; a boundary point has a whole empty *cone* on one side, because the cloud
+simply ends there. The *cone algorithm* turns that observation into a fast, local, mesh-free surface
+detector: flag a point when the largest angular gap between its neighbors exceeds a threshold. This report
+drives =datamunge='s =geometry::cone_surface_points=, verified to flag a disk's rim while leaving the
+interior untouched, and shows the extracted outline.
+#+end_abstract
+
+* An empty angular sector marks the edge
+
+Consider a point \(p\) and the directions from \(p\) to each neighbor within a radius \(r\). For an
+*interior* point of a well-sampled region, those directions are spread all the way around the circle, so
+the largest angular gap between consecutive neighbors is small. For a *boundary* point, the shape ends on
+one side, leaving a wide empty wedge -- a cone -- with no neighbors at all. The rule is simply:
+
+\[ p\ \text{is a surface point}\iff \max_k\bigl(\theta_{(k+1)}-\theta_{(k)}\bigr)\ \ge\ \theta_{\text{thr}}, \]
+
+where the \(\theta_{(k)}\) are the sorted angles of the neighbor directions (with the wrap-around gap
+across \(\pm\pi\) included). A point right on a straight edge sees an empty half-plane, a gap of about
+\(\pi\); a convex corner sees an even wider one; an interior point sees gaps only as large as its local
+sampling spacing. Choosing \(\theta_{\text{thr}}\) between those regimes cleanly separates boundary from
+interior. The test is purely *local* -- it needs only the neighbors within \(r\), no triangulation or
+global reconstruction -- so it scales to large clouds and is a standard first step in point-cloud outline
+extraction and molecular-surface identification.
+
+#+name: cone-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/cone_algorithm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+CONE-SURFACE-POINTS(points, radius, threshold):
+  for each point p:
+      collect the angles of (neighbor - p) for neighbors within radius
+      sort the angles; compute the largest gap between consecutive angles
+      (including the wrap-around gap across +-pi)
+      p is a surface point if the largest gap >= threshold
+#+end_example
+
+* Worked example: outlining a disk
+
+We sample a filled disk, run the cone algorithm, and separate boundary points from interior. The figure
+draws the interior points faint and the detected surface points highlighted.
+
+#+name: cone-run
+#+begin_src c++ :eval no
+    const double R = 10.0;
+    std::vector<Point2D> pts;
+    std::mt19937 rng(1);
+    std::uniform_real_distribution<double> u(-R, R);
+    for (int i = 0; i < 2500; ++i) { const double x = u(rng), y = u(rng); if (x * x + y * y <= R * R) pts.push_back({x, y}); }
+
+    const auto surf = cone_surface_points(pts, 2.5, M_PI * 0.55);
+
+    int nsurf = 0; double min_d = 1e9;
+    for (std::size_t i = 0; i < pts.size(); ++i) if (surf[i]) { ++nsurf; min_d = std::min(min_d, std::hypot(pts[i].x, pts[i].y)); }
+    std::cout << "=== Cone algorithm (disk of radius " << R << ") ===\n";
+    std::printf("%zu points, %d flagged as surface\n", pts.size(), nsurf);
+    std::printf("closest surface point to center: %.2f  (rim is at %.1f)\n", min_d, R);
+
+    std::vector<double> ix, iy, sx, sy;
+    for (std::size_t i = 0; i < pts.size(); ++i) {
+        if (surf[i]) { sx.push_back(pts[i].x); sy.push_back(pts[i].y); }
+        else { ix.push_back(pts[i].x); iy.push_back(pts[i].y); }
+    }
+    auto plot = RPlot::create();
+    plot.points(ix, iy, "interior", RGB{200, 205, 214}, 3.0);
+    plot.points(sx, sy, "surface", RGB{220, 40, 40}, 5.0);
+    plot.legend({"interior points", "detected surface"}, {{200, 205, 214}, {220, 40, 40}});
+    plot.title("The cone algorithm extracts the disk's boundary from the cloud")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/cone_algorithm.svg");
+    std::cout << "\nwrote cone_algorithm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cone_algorithm_analysis.cpp <<'CPP'
+<<cone-includes>>
+
+int main() {
+<<cone-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cone_algorithm_analysis.cpp -o build/org/cone_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cone_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cone algorithm (disk of radius 10) ===
+1948 points, 176 flagged as surface
+closest surface point to center: 9.34  (rim is at 10.0)
+
+wrote cone_algorithm.svg
+#+end_example
+
+Every flagged point sits within a couple of units of the rim -- the interior is left entirely unmarked --
+so the algorithm cleanly extracts the disk's outline from a solid cloud using nothing but each point's
+local neighborhood.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/cone_algorithm.svg]]
+
+The gray interior fills the disk while the red points trace its circular boundary -- exactly the outline
+we would draw by eye. Because the rule looks only at the angular spread of nearby neighbors, it finds that
+edge without triangulating or reconstructing the shape, which is what makes the cone algorithm a cheap and
+robust first pass for isolating the surface of a sampled object.

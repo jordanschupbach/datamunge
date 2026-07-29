@@ -61,6 +61,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/nesting.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
 #include <datamunge/algorithms/number_theory_extra.hpp>
@@ -85,6 +86,7 @@
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/simplex.hpp>
+#include <datamunge/algorithms/sss_star.hpp>
 #include <datamunge/algorithms/stone_sip.hpp>
 #include <datamunge/algorithms/search_batch.hpp>
 #include <datamunge/algorithms/schreier_sims.hpp>
