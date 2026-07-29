@@ -1,0 +1,146 @@
+#+title: The GJK Algorithm: Distance Between Convex Shapes
+#+subtitle: A literate C++ study of support-function distance with =datamunge='s =geometry::gjk_distance=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Collision detection asks a deceptively hard question: how far apart are two shapes, and do they touch?
+For *convex* shapes the Gilbert-Johnson-Keerthi algorithm answers it elegantly using only a *support
+function* -- "give me the farthest point of the shape in direction \(d\)". GJK reframes the problem as
+finding the point of the *Minkowski difference* \(A-B\) closest to the origin: the shapes intersect iff
+that point is the origin, and otherwise its distance is the gap between them. This report drives
+=datamunge='s =geometry::gjk_distance=, verified against a brute-force polygon distance over thousands
+of random convex pairs, and shows a computed gap.
+#+end_abstract
+
+* The origin, and the Minkowski difference
+
+The *Minkowski difference* \(A-B=\{a-b:a\in A,\ b\in B\}\) is convex, and
+
+\[ \operatorname{dist}(A,B)=\min_{a\in A,\,b\in B}\lVert a-b\rVert=\min_{p\in A-B}\lVert p\rVert=\operatorname{dist}(0,\ A-B). \]
+
+So the shape-to-shape distance is just the distance from the *origin* to the convex set \(A-B\); the
+shapes overlap exactly when \(0\in A-B\). GJK never builds \(A-B\) explicitly. It needs only its
+*support function*, which factors through the two shapes' supports:
+
+\[ s_{A-B}(d)=s_A(d)-s_B(-d). \]
+
+The algorithm maintains a *simplex* (1, 2, or 3 points of \(A-B\) in the plane), computes the point of
+that simplex closest to the origin, and asks the support function for a new point in the direction of
+the origin. If that new point is no closer, the simplex's closest point *is* the closest point of the
+whole set -- done. Otherwise the point is added, the simplex is reduced to the feature (vertex or edge)
+nearest the origin, and the search continues. A triangle that contains the origin means \(0\in A-B\):
+the shapes overlap, distance zero. Because each step touches only the support function, GJK works
+uniformly for polygons, polytopes, discs, and smooth convex bodies alike -- which is why it is the
+distance engine inside physics engines and robotics collision checkers.
+
+#+name: gj-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/gjk.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static std::vector<Point2D> ngon(double cx, double cy, double r, int n, double rot) {
+    std::vector<Point2D> p;
+    for (int i = 0; i < n; ++i) { double a = rot + 2 * M_PI * i / n; p.push_back({cx + r * std::cos(a), cy + r * std::sin(a)}); }
+    return p;
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GJK-DISTANCE(A, B):
+  support(d) = support_A(d) - support_B(-d)      # of the Minkowski difference
+  simplex = { support(any direction) }
+  loop:
+      c = point of the simplex closest to the origin
+      a = support(-c)                            # search toward the origin
+      if a is no closer to the origin than c: return |c|   # converged
+      add a; reduce the simplex to the feature nearest the origin
+      if the simplex (triangle) contains the origin: return 0   # overlap
+#+end_example
+
+* Worked example: gaps and overlaps
+
+We measure the distance between several convex polygon pairs -- disjoint, touching, and overlapping --
+and plot the gap as one shape slides away from another.
+
+#+name: gj-run
+#+begin_src c++ :eval no
+    std::cout << "=== GJK distance ===\n";
+    auto A = ngon(0, 0, 1.0, 4, 0.3);
+    for (double dx : {1.5, 2.0, 3.0, 5.0}) {
+        auto B = ngon(dx, 0.4, 1.0, 5, 0.1);
+        std::printf("centres %.1f apart: distance = %.4f%s\n", dx, gjk_distance(A, B),
+                    gjk_distance(A, B) == 0.0 ? "  (overlap)" : "");
+    }
+
+    // Distance as a pentagon slides away from a fixed square.
+    std::vector<double> sep, dist;
+    for (double dx = 0.5; dx <= 6.0; dx += 0.25) {
+        auto B = ngon(dx, 0.4, 1.0, 5, 0.1);
+        sep.push_back(dx); dist.push_back(gjk_distance(A, B));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(sep, dist, "d", RGB{5, 150, 105}, 2.0);
+    plot.points(sep, dist, "d", RGB{5, 150, 105}, 4.0);
+    plot.legend({"GJK distance"}, {{5, 150, 105}});
+    plot.title("GJK distance between a square and a sliding pentagon (0 while overlapping)")
+        .x_label("centre separation").y_label("distance").background({250, 250, 252});
+    plot.save_svg("build/org/gjk.svg");
+    std::cout << "\nwrote gjk.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/gjk_analysis.cpp <<'CPP'
+<<gj-includes>>
+
+int main() {
+<<gj-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/gjk_analysis.cpp -o build/org/gjk_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gjk_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== GJK distance ===
+centres 1.5 apart: distance = 0.0000  (overlap)
+centres 2.0 apart: distance = 0.2409
+centres 3.0 apart: distance = 1.2359
+centres 5.0 apart: distance = 3.2259
+
+wrote gjk.svg
+#+end_example
+
+GJK reports zero while the shapes overlap and the true gap once they separate -- matching a brute-force
+polygon distance across thousands of random convex pairs in the test suite -- using nothing but the
+support functions.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/gjk.svg]]
+
+The distance curve sits flat at zero while the pentagon overlaps the square, then lifts off and grows
+linearly as it slides away. That clean transition -- exactly zero on contact, exact distance apart -- is
+what GJK delivers from support queries alone, which is why it (and its penetration-depth companion EPA)
+underpins the broad-phase-then-narrow-phase collision pipelines of game physics and robot motion
+planning.

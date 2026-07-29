@@ -853,6 +853,16 @@ We implement de Boor's algorithm (=geometry::de_boor=) and report it as a litera
 
 We implement the Bentley-Ottmann sweep (=geometry::bentley_ottmann=) and report it as a literate program. A vertical sweep line processes endpoint and crossing events, testing only segments adjacent in the sweep-line order, to report all k intersections in O((n+k) log n); it matches a brute-force all-pairs check over hundreds of random inputs, with the segments and crossings plotted.
 
+** [[./distance_transform_analysis.html][The Euclidean Distance Transform: Distance to the Nearest Site]] ([[./distance_transform_analysis.pdf][PDF]])
+/A literate C++ study of Felzenszwalb's exact transform using datamunge/
+
+We implement the exact Euclidean distance transform (=geometry::euclidean_distance_transform=, Felzenszwalb-Huttenlocher) and report it as a literate program. We exploit the separability of squared distance to reduce the 2-D transform to two 1-D passes, each computed as the lower envelope of a family of parabolas in a single linear sweep, giving O(rows*cols) independent of the number of sites; a three-site grid's distance field is printed and matched against a brute-force nearest-site computation over hundreds of random grids, with the distance profile along a row plotted.
+
+** [[./gjk_analysis.html][The GJK Algorithm: Distance Between Convex Shapes]] ([[./gjk_analysis.pdf][PDF]])
+/A literate C++ study of support-function distance using datamunge/
+
+We implement the Gilbert-Johnson-Keerthi distance algorithm (=geometry::gjk_distance=) and report it as a literate program. We reframe shape-to-shape distance as the distance from the origin to the Minkowski difference A-B, searched using only the support function via an evolving 1-2-3-point simplex whose closest-to-origin feature drives the next query; a square and a sliding pentagon give exact gaps (0 while overlapping, growing once apart), matched against a brute-force polygon distance over thousands of random convex pairs, with the gap curve plotted.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
@@ -1407,6 +1417,11 @@ We implement Dixon's algorithm (=algorithms::dixon_factor=) and report it as a l
 /A literate C++ study of general (non-coprime) CRT via extended-gcd pairwise merging using datamunge/
 
 We implement the Chinese Remainder Theorem in general form -- moduli need not be coprime -- as =algorithms::chinese_remainder=, and report it as a literate program. We state the classical coprime theorem and the general consistency condition, derive the constructive pairwise merge via the extended Euclidean algorithm with its solvability criterion gcd(m1,m2) | (r1 - r2), and give pseudocode. Sun-Tzu's system is solved by hand -- merging x=2(3) and x=3(5) into x=8(15), then folding in x=2(7) to reach 23 (mod 105) -- alongside a consistent non-coprime system and an inconsistent one the solver rejects, with a grid figure drawing the bijection Z/15 <-> Z/3 x Z/5.
+
+** [[./bkm_analysis.html][The BKM Algorithm: Logarithms and Exponentials by Shift-and-Add]] ([[./bkm_analysis.pdf][PDF]])
+/A literate C++ study of table-driven elementary functions using datamunge/
+
+We implement the BKM algorithm (=algorithms::bkm_ln= / =bkm_exp=) and report it as a literate program. Like CORDIC for trigonometry, BKM computes logarithms and exponentials one bit at a time, conditionally multiplying a running value by (1+2^-k) -- a shift and an add, no multiplier -- while accumulating a table of ln(1+2^-k); it reproduces =std::log= and =std::exp= to nine or more digits, with the error in ln(3) falling geometrically (one correct bit per iteration) plotted on a log scale.
 
 * Numerical Methods & Linear Algebra
 

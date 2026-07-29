@@ -1,0 +1,142 @@
+#+title: The BKM Algorithm: Logarithms and Exponentials by Shift-and-Add
+#+subtitle: A literate C++ study of table-driven elementary functions with =datamunge='s =algorithms::bkm_ln= / =bkm_exp=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How does hardware compute \(\ln\) and \(\exp\) without a multiplier? CORDIC does trigonometry with a
+table of arctangents and shift-adds; the BKM algorithm (Bajard, Kla, Muller, 1994) does logarithms and
+exponentials the same way, with a table of \(\ln(1+2^{-k})\). It builds the answer one bit at a time by
+conditionally multiplying a running value by \((1+2^{-k})\) -- a shift and an add -- and accumulating
+the matching table entry. This report drives =datamunge='s =algorithms::bkm_ln= and =bkm_exp=, verified
+against the standard library to nine digits, and shows the bit-by-bit convergence.
+#+end_abstract
+
+* One bit at a time, with a table of logarithms
+
+BKM's *L-mode* computes \(\ln v\). Maintain a running product \(x\) (starting at \(1\)) and a running
+sum \(y\) (starting at \(0\)). For \(k=0,1,2,\dots\), tentatively multiply \(x\) by \((1+2^{-k})\); if
+the result stays \(\le v\), *accept* it and add \(\ln(1+2^{-k})\) to \(y\):
+
+\[ x\gets x\,(1+2^{-k})\ \text{if }x(1+2^{-k})\le v,\qquad y\gets y+\ln(1+2^{-k})\ \text{when accepted}. \]
+
+Since \(x=\prod(1+2^{-k})\) over the accepted \(k\) creeps up toward \(v\) from below, and
+\(y=\sum\ln(1+2^{-k})=\ln x\) tracks it, after enough steps \(x\to v\) and \(y\to\ln v\). The
+multiplication by \((1+2^{-k})\) is just \(x + (x\gg k)\) -- a shift and an add, no multiplier -- and
+the \(\ln(1+2^{-k})\) values come from a small precomputed table. *E-mode* runs the mirror image to
+compute \(\exp\): accumulate the table entries toward the input \(y\), and the parallel product
+converges to \(\exp y\). Each accepted step fixes one more bit of the result, so \(n\) bits cost \(n\)
+iterations -- linear convergence in the number of correct bits, the same shift-add efficiency that made
+CORDIC and BKM the elementary-function engines of calculators, FPGAs, and early floating-point units.
+(L-mode works for \(v\in[1,4.768]\) and E-mode for \(y\in[0,1.562]\); general arguments are handled by
+range reduction.)
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bkm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BKM-LN(v):                          # v in [1, 4.768]
+  x = 1; y = 0
+  for k = 0, 1, 2, ...:
+      if x + (x >> k) <= v:         # tentatively x *= (1 + 2^-k)
+          x = x + (x >> k)
+          y = y + table[k]          # table[k] = ln(1 + 2^-k)
+  return y                          # -> ln(v)
+#+end_example
+
+* Worked example: accuracy and bit-by-bit convergence
+
+We compare BKM against the standard library for several values, then track how the error in
+\(\ln(3)\) falls as more iterations (bits) are used.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    std::cout << "=== BKM elementary functions ===\n";
+    std::cout << "  ln:    v      bkm_ln       std::log      |error|\n";
+    for (double v : {1.5, 2.0, 2.718281828, 3.0, 4.5}) std::printf("       %.3f  %.10f  %.10f  %.2e\n", v, bkm_ln(v), std::log(v), std::fabs(bkm_ln(v) - std::log(v)));
+    std::cout << "  exp:   y      bkm_exp      std::exp      |error|\n";
+    for (double y : {0.25, 0.5, 1.0, 1.5}) std::printf("       %.3f  %.10f  %.10f  %.2e\n", y, bkm_exp(y), std::exp(y), std::fabs(bkm_exp(y) - std::exp(y)));
+
+    // Convergence of ln(3) with the number of BKM iterations.
+    const auto& tbl = [] { std::vector<double> t(53); for (int k = 0; k < 53; ++k) t[k] = std::log1p(std::ldexp(1.0, -k)); return t; }();
+    const double v = 3.0; double x = 1.0, y = 0.0;
+    std::vector<double> it, err;
+    for (int k = 0; k < 40; ++k) {
+        double xn = x + std::ldexp(x, -k);
+        if (xn <= v) { x = xn; y += tbl[k]; }
+        it.push_back(k + 1); err.push_back(std::max(1e-17, std::fabs(y - std::log(v))));
+    }
+
+    auto plot = RPlot::create();
+    plot.line(it, err, "e", RGB{124, 58, 237}, 2.0);
+    plot.legend({"|error| in ln(3)"}, {{124, 58, 237}});
+    plot.title("BKM fixes one more bit of ln(3) per iteration (log-scale error)")
+        .x_label("iterations (bits)").y_label("absolute error").background({250, 250, 252});
+    plot.save_svg("build/org/bkm.svg");
+    std::cout << "\nwrote bkm.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bkm_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bkm_analysis.cpp -o build/org/bkm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bkm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== BKM elementary functions ===
+  ln:    v      bkm_ln       std::log      |error|
+       1.500  0.4054651081  0.4054651081  0.00e+00
+       2.000  0.6931471806  0.6931471806  0.00e+00
+       2.718  0.9999999998  0.9999999998  1.11e-16
+       3.000  1.0986122887  1.0986122887  2.22e-16
+       4.500  1.5040773968  1.5040773968  4.44e-16
+  exp:   y      bkm_exp      std::exp      |error|
+       0.250  1.2840254167  1.2840254167  0.00e+00
+       0.500  1.6487212707  1.6487212707  0.00e+00
+       1.000  2.7182818285  2.7182818285  0.00e+00
+       1.500  4.4816890703  4.4816890703  0.00e+00
+
+wrote bkm.svg
+#+end_example
+
+BKM reproduces the standard library's \(\ln\) and \(\exp\) to nine or more digits using only shifts,
+additions, and a table of logarithms -- no multiplications. The convergence trace shows the error
+falling geometrically, one correct bit per iteration.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bkm.svg]]
+
+On the log-scale axis the error descends in a near-straight line: each iteration that accepts its
+\((1+2^{-k})\) factor nails down another bit of \(\ln 3\). That steady bit-at-a-time convergence, using
+only shift-add arithmetic and a fixed table, is exactly what makes BKM -- like its trigonometric cousin
+CORDIC -- so well suited to hardware without a fast multiplier.
