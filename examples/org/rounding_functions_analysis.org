@@ -1,0 +1,143 @@
+#+title: Rounding Functions: Why Banker's Rounding Is Unbiased
+#+subtitle: A literate C++ study of tie-breaking rules with =datamunge='s =algorithms::round_*=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Rounding to the nearest integer is unambiguous -- except exactly at the half, where a *tie-breaking rule*
+must decide. The naive "round half up" biases every tie in the same direction, so summing many rounded
+values drifts steadily upward. *Round half to even* (banker's rounding, the IEEE-754 default) sends ties
+to the nearest even integer, canceling the drift. This report drives =datamunge='s rounding functions,
+verified against the standard library and analytic tie cases, and shows the accumulated bias of the two
+rules diverging.
+#+end_abstract
+
+* Ties, and the bias they create
+
+Away from the half, rounding is forced: \(2.3\to2\), \(2.7\to3\). At a tie \(k+\tfrac12\) both neighbors
+are equidistant, and the rule chosen decides the systematic error. *Round half up* always takes the upper
+neighbor,
+
+\[ \operatorname{round\_half\_up}(x)=\big\lfloor x+\tfrac12\big\rfloor, \]
+
+so every tie contributes \(+\tfrac12\) of error; over a symmetric spread of tie values the mean error is
+\(+\tfrac12\), a persistent upward bias that corrupts long sums (a real problem in accounting and signal
+processing). *Round half to even* instead breaks ties toward whichever neighbor is even:
+
+\[ \operatorname{round\_half\_to\_even}(x)=\begin{cases}\lfloor x\rfloor & \lfloor x\rfloor\text{ even},\\ \lceil x\rceil & \lfloor x\rfloor\text{ odd},\end{cases}\quad\text{at a tie}. \]
+
+Half the ties then round down and half round up, so the errors cancel and the mean bias is zero -- which
+is exactly why IEEE-754 makes it the default rounding mode and why it is called *banker's rounding*.
+Other rules (half away from zero, half down, truncation toward zero) trade the bias differently; the
+right choice depends on whether unbiasedness, symmetry about zero, or simplicity matters most.
+
+#+name: rf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/rounding_functions.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ROUND-HALF-TO-EVEN(x):
+  f = floor(x);  diff = x - f
+  if diff < 0.5: return f
+  if diff > 0.5: return f + 1
+  return (f is even) ? f : f + 1        # tie -> nearest even
+#+end_example
+
+* Worked example: the accumulating bias
+
+We round the tie values \(0.5, 1.5, 2.5, \dots\) under both rules, tabulate a few, and plot the *running
+sum of rounding error* -- flat for banker's rounding, a rising staircase for round-half-up.
+
+#+name: rf-run
+#+begin_src c++ :eval no
+    std::cout << "=== Rounding tie-breaking ===\n";
+    std::cout << "   x     half-to-even  half-up  half-away  half-down\n";
+    for (double x : {0.5, 1.5, 2.5, 3.5, -0.5, -1.5}) {
+        std::printf("  %4.1f      %5.1f      %5.1f    %5.1f     %5.1f\n", x,
+                    round_half_to_even(x), round_half_up(x),
+                    round_half_away_from_zero(x), round_half_down(x));
+    }
+
+    std::vector<double> ties;
+    for (int k = 0; k < 60; ++k) ties.push_back(k + 0.5);
+    std::printf("\nmean bias over %zu tie values:  half-to-even %+.4f   half-up %+.4f\n",
+                ties.size(), rounding_bias(ties, RoundMode::HalfToEven),
+                rounding_bias(ties, RoundMode::HalfUp));
+
+    std::vector<double> idx, even_cum, up_cum;
+    double ec = 0, uc = 0;
+    for (std::size_t i = 0; i < ties.size(); ++i) {
+        ec += round_half_to_even(ties[i]) - ties[i];
+        uc += round_half_up(ties[i]) - ties[i];
+        idx.push_back(static_cast<double>(i + 1)); even_cum.push_back(ec); up_cum.push_back(uc);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(idx, up_cum, "up", RGB{220, 38, 38}, 2.2);
+    plot.line(idx, even_cum, "even", RGB{22, 163, 74}, 2.2);
+    plot.legend({"round half up (biased)", "round half to even (unbiased)"}, {{220, 38, 38}, {22, 163, 74}});
+    plot.title("Accumulated rounding error: half-up drifts, banker's rounding does not")
+        .x_label("number of ties summed").y_label("cumulative error").background({250, 250, 252});
+    plot.save_svg("build/org/rounding_functions.svg");
+    std::cout << "\nwrote rounding_functions.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rounding_functions_analysis.cpp <<'CPP'
+<<rf-includes>>
+
+int main() {
+<<rf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rounding_functions_analysis.cpp -o build/org/rounding_functions_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rounding_functions_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Rounding tie-breaking ===
+   x     half-to-even  half-up  half-away  half-down
+   0.5        0.0        1.0      1.0       0.0
+   1.5        2.0        2.0      2.0       1.0
+   2.5        2.0        3.0      3.0       2.0
+   3.5        4.0        4.0      4.0       3.0
+  -0.5        0.0        0.0     -1.0      -1.0
+  -1.5       -2.0       -1.0     -2.0      -2.0
+
+mean bias over 60 tie values:  half-to-even +0.0000   half-up +0.5000
+
+wrote rounding_functions.svg
+#+end_example
+
+The tie table shows the rules parting ways only at the half, and the mean bias confirms the theory:
+round-half-to-even averages to zero while round-half-up averages to \(+0.5\).
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rounding_functions.svg]]
+
+The red line climbs by \(\tfrac12\) at every tie -- an error that grows without bound as more values are
+summed -- while the green banker's-rounding line hugs zero, its ties canceling in pairs. That cancellation
+is the entire reason IEEE-754 arithmetic rounds halves to even by default: it keeps long chains of
+rounded computation from silently accumulating a one-directional drift.

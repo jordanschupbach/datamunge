@@ -11,6 +11,7 @@
 #include <datamunge/algorithms/bicubic_interpolation.hpp>
 #include <datamunge/algorithms/birkhoff_interpolation.hpp>
 #include <datamunge/algorithms/bkm.hpp>
+#include <datamunge/algorithms/borwein_pi.hpp>
 #include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
@@ -77,6 +78,7 @@
 #include <datamunge/algorithms/quadratic_sieve.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
+#include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/search_batch.hpp>
@@ -84,6 +86,7 @@
 #include <datamunge/algorithms/search_more.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
 #include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/algorithms/srt_division.hpp>
 #include <datamunge/algorithms/sorting_dist.hpp>
 #include <datamunge/algorithms/sorting_extra.hpp>
 #include <datamunge/algorithms/sorting_hybrid.hpp>

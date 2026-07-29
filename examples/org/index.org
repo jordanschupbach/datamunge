@@ -963,6 +963,11 @@ We implement the Gauss-Legendre algorithm (=algorithms::gauss_legendre_pi=) and 
 
 We implement the Chudnovsky algorithm (=algorithms::chudnovsky_pi=) and report it as a literate program. We give the Ramanujan-style series whose 640320^3 denominator adds ~14 digits per term; in double precision one term reaches error 6e-14 and a second saturates the machine at 4e-16.
 
+** [[./borwein_pi_analysis.html][Borwein's Quartic Algorithm: Pi, Four Digits at a Time]] ([[./borwein_pi_analysis.pdf][PDF]])
+/A literate C++ study of quartic-order pi computation using datamunge/
+
+We implement Borwein's quartic algorithm (=algorithms::borwein_pi=, =borwein_pi_sequence=) and report it as a literate program. The AGM-style iteration seeded at y0=sqrt(2)-1 quadruples the correct digits each step; in double precision the error collapses 2.3e-1 -> 7.4e-9 -> 1.3e-15 (the machine floor) in two iterations, a textbook quartic cascade plotted on a log axis.
+
 ** [[./cordic_analysis.html][CORDIC: Trigonometry With Only Shifts and Adds]] ([[./cordic_analysis.pdf][PDF]])
 /A literate C++ study of shift-add rotation using datamunge/
 
@@ -1092,6 +1097,11 @@ We implement velocity Verlet (=algorithms::velocity_verlet=) and report it as a 
 /A literate C++ study of compensated summation using datamunge/
 
 We implement Kahan compensated summation (=algorithms::kahan_sum=) and report it as a literate program. We give the running-compensation trick that recovers each addition's lost low-order bits, holding the error near 2*eps independent of n; naive summation of 1e16 + a million ones - 1e16 returns 0 while Kahan returns 1000000, and its error stays flat as n grows to 1e8.
+
+** [[./rounding_functions_analysis.html][Rounding Functions: Why Banker's Rounding Is Unbiased]] ([[./rounding_functions_analysis.pdf][PDF]])
+/A literate C++ study of tie-breaking rules using datamunge/
+
+We implement the classic rounding modes (=algorithms::round_half_to_even=, =round_half_up=, =round_with=, =rounding_bias=) and report them as a literate program. Away from the half rounding is forced; at a tie the rule decides the bias, and round-half-to-even (banker's rounding, the IEEE-754 default) cancels the drift that round-half-up accumulates. Over 60 tie values the mean bias is +0.0000 vs +0.5000, and the cumulative-error plot shows half-up climbing a staircase while banker's rounding hugs zero.
 
 ** [[./newton_division_analysis.html][Newton-Raphson Division: Dividing by Multiplying]] ([[./newton_division_analysis.pdf][PDF]])
 /A literate C++ study of reciprocal-by-Newton division using datamunge/
@@ -1407,6 +1417,11 @@ We implement the Baillie-PSW test (=algorithms::baillie_psw=) and report it as a
 /A literate C++ study of parallel multiplicative division using datamunge/
 
 We implement Goldschmidt division (=algorithms::goldschmidt_division=) and report it as a literate program. We scale numerator and denominator by the same f=2-D so D->1 quadratically (the two multiplies each step being independent, unlike Newton's), reaching machine precision in about five steps; the denominator error 1e-1,1e-2,1e-4,1e-8,... is traced dividing 22/7.
+
+** [[./srt_division_analysis.html][SRT Division: Redundant Quotient Digits]] ([[./srt_division_analysis.pdf][PDF]])
+/A literate C++ study of radix-2 SRT division using datamunge/
+
+We implement radix-2 SRT division (=algorithms::srt_divide=, =srt_quotient_digits=) and report it as a literate program. Allowing the redundant quotient digit set {-1,0,1} lets each digit be read from an estimate of the shifted partial remainder alone (q=+1/-1/0 by comparing 2P to +/-1/2), which keeps the remainder bounded by the normalized divisor and adds one good bit per step; 0.7/0.9 is computed to 4e-13 with several -1 digits, its partial-remainder trajectory plotted inside the +/- d band -- the idea behind the divide unit (and the 1994 Pentium FDIV bug).
 
 ** [[./montgomery_analysis.html][Montgomery Reduction: Modular Arithmetic Without Division]] ([[./montgomery_analysis.pdf][PDF]])
 /A literate C++ study of REDC using datamunge/

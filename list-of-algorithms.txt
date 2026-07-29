@@ -375,7 +375,7 @@ Further information: Special functions
 
     Computation of π:
         [x] Bailey–Borwein–Plouffe formula: (BBP formula) a spigot algorithm for the computation of the nth binary digit of π  -- datamunge::algorithms::bbp_pi_hex_digit; report examples/org/bbp_pi_analysis.org
-        Borwein's algorithm: an algorithm to calculate the value of 1/π
+        [x] Borwein's algorithm: an algorithm to calculate the value of 1/π  -- datamunge::algorithms::borwein_pi / borwein_pi_sequence (quartic-convergence AGM-style iteration); report examples/org/borwein_pi_analysis.org
         [x] Chudnovsky algorithm: a fast method for calculating the digits of π  -- datamunge::algorithms::chudnovsky_pi; report examples/org/chudnovsky_pi_analysis.org
         [x] Gauss–Legendre algorithm: computes the digits of pi  -- datamunge::algorithms::gauss_legendre_pi; report examples/org/gauss_legendre_pi_analysis.org
     Division algorithms: for computing quotient and/or remainder of two numbers
@@ -384,7 +384,7 @@ Further information: Special functions
         [x] Newton–Raphson division: uses Newton's method to find the reciprocal of D, and multiply that reciprocal by N to find the final quotient Q.  -- datamunge::algorithms::newton_raphson_division; report examples/org/newton_division_analysis.org
         [x] Non-restoring division  -- datamunge::algorithms::non_restoring_divide; report examples/org/non_restoring_division_analysis.org
         [x] Restoring division  -- datamunge::algorithms::restoring_divide; report examples/org/restoring_division_analysis.org
-        SRT division
+        [x] SRT division  -- datamunge::algorithms::srt_divide / srt_quotient_digits (radix-2, redundant digit set {-1,0,1}, bounded partial remainder); report examples/org/srt_division_analysis.org
     Exponentiation:
         [x] Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications  -- datamunge::algorithms::addition_chain; report examples/org/addition_chain_analysis.org
         [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
@@ -400,7 +400,7 @@ Further information: Special functions
         Toom–Cook multiplication: (Toom3) a multiplication algorithm for large integers
     Multiplicative inverse Algorithms: for computing a number's multiplicative inverse (reciprocal).
         [x] Newton's method  -- datamunge::algorithms::newton_raphson_divide (reciprocal via x<-x(2-Dx)); report examples/org/newton_raphson_division_analysis.org
-    Rounding functions: the classic ways to round numbers
+    [x] Rounding functions: the classic ways to round numbers  -- datamunge::algorithms::round_half_to_even / round_half_up / round_with / rounding_bias (tie-breaking modes + bias measure); report examples/org/rounding_functions_analysis.org
     [x] Spigot algorithm: a way to compute the value of a mathematical constant without knowing preceding digits  -- datamunge::algorithms::spigot_e; report examples/org/spigot_analysis.org
     Square and Nth root of a number:
         [x] Alpha max plus beta min algorithm: an approximation of the square-root of the sum of two squares  -- datamunge::algorithms::alpha_max_beta_min; report examples/org/alpha_max_beta_min_analysis.org
