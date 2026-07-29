@@ -8,6 +8,7 @@
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/berlekamp.hpp>
+#include <datamunge/algorithms/bkm.hpp>
 #include <datamunge/algorithms/bitap.hpp>
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>

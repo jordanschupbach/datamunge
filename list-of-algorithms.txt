@@ -279,9 +279,9 @@ Further information: Computational geometry
         [x] Graham scan  -- datamunge::geometry::graham_scan (O(n log n), angular sweep); report examples/org/graham_scan_analysis.org
         Kirkpatrick–Seidel algorithm
         [x] Quickhull  -- datamunge::geometry::quickhull (divide and conquer, O(n log n) avg); report examples/org/quickhull_analysis.org
-    Euclidean distance transform: computes the distance between every point in a grid and a discrete collection of points.
+    [x] Euclidean distance transform: computes the distance between every point in a grid and a discrete collection of points.  -- datamunge::geometry::euclidean_distance_transform (Felzenszwalb-Huttenlocher, separable lower-envelope of parabolas, O(rows*cols)); report examples/org/distance_transform_analysis.org
     Geometric hashing: a method for efficiently finding two-dimensional objects represented by discrete points that have undergone an affine transformation
-    Gilbert–Johnson–Keerthi distance algorithm: determining the smallest distance between two convex shapes.
+    [x] Gilbert–Johnson–Keerthi distance algorithm: determining the smallest distance between two convex shapes.  -- datamunge::geometry::gjk_distance (support-function search of the Minkowski difference for the origin); report examples/org/gjk_analysis.org
     Jump-and-Walk algorithm: an algorithm for point location in triangulations
     Laplacian smoothing: an algorithm to smooth a polygonal mesh
     [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
@@ -389,7 +389,7 @@ Further information: Special functions
         [x] Addition-chain exponentiation: exponentiation by positive integer powers that requires a minimal number of multiplications  -- datamunge::algorithms::addition_chain; report examples/org/addition_chain_analysis.org
         [x] Exponentiating by squaring: an algorithm used for the fast computation of large integer powers of a number  -- datamunge::algorithms::mod_pow (modular exponentiation); report examples/org/modular_exponentiation_analysis.org
     Hyperbolic and Trigonometric Functions:
-        BKM algorithm: computes elementary functions using a table of logarithms
+        [x] BKM algorithm: computes elementary functions using a table of logarithms  -- datamunge::algorithms::bkm_ln / bkm_exp (shift-and-add, table of ln(1+2^-k)); report examples/org/bkm_analysis.org
         [x] CORDIC: computes hyperbolic and trigonometric functions using a table of arctangents  -- datamunge::algorithms::cordic_sincos; report examples/org/cordic_analysis.org
     [x] Montgomery reduction: an algorithm that allows modular arithmetic to be performed efficiently when the modulus is large  -- datamunge::algorithms::montgomery_multiply; report examples/org/montgomery_analysis.org
     Multiplication algorithms: fast multiplication of two numbers

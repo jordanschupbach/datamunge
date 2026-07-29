@@ -1,0 +1,143 @@
+#+title: The Euclidean Distance Transform: Distance to the Nearest Site
+#+subtitle: A literate C++ study of Felzenszwalb's exact transform with =datamunge='s =geometry::euclidean_distance_transform=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a grid with some cells marked as "sites", the *distance transform* labels every cell with its
+distance to the nearest site. It is everywhere in image processing -- shape analysis, skeletons,
+morphology, path planning. Computing it naively costs \(O(\text{cells}\times\text{sites})\), but
+Felzenszwalb and Huttenlocher's algorithm does it *exactly* in *linear* time by composing
+one-dimensional transforms, each computed as the lower envelope of a family of parabolas. This report
+drives =datamunge='s =geometry::euclidean_distance_transform=, verified against brute force over
+hundreds of random grids, and shows the distance field it produces.
+#+end_abstract
+
+* Separable, and a lower envelope of parabolas
+
+The squared Euclidean distance separates:
+\(\;(r-r')^2+(c-c')^2\), so the 2-D transform is two 1-D transforms -- first down each column, then
+across each row. A 1-D squared distance transform of a sampled function \(f\) computes
+
+\[ D(q)=\min_{p}\big(f(p)+(q-p)^2\big). \]
+
+Each source \(p\) contributes a *parabola* \(y=(q-p)^2+f(p)\) in \(q\); \(D\) is the *lower envelope* of
+all these parabolas. Felzenszwalb's key trick computes that envelope in one pass: sweep \(q\) left to
+right maintaining the parabolas that form the envelope and the breakpoints where the winner changes.
+Each parabola is added and removed at most once, so the 1-D transform is \(O(n)\); two passes make the
+2-D transform \(O(\text{rows}\times\text{cols})\), *independent of the number of sites*. Seeding \(f=0\)
+at sites and \(+\infty\) elsewhere and taking a square root at the end gives the exact Euclidean
+distance to the nearest site -- no approximation, unlike the chamfer masks it replaced.
+
+#+name: dt-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/distance_transform.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+EUCLIDEAN-DT(grid):
+  f[cell] = 0 if site else +inf
+  for each column: f[.] = 1-D squared DT of the column   # lower envelope of parabolas
+  for each row:    f[.] = 1-D squared DT of the row
+  return sqrt(f)                                          # exact Euclidean distance
+#+end_example
+
+* Worked example: a distance field
+
+We mark a few sites on a grid, compute the transform, print the distance field, and plot the distance
+profile along one row.
+
+#+name: dt-run
+#+begin_src c++ :eval no
+    const int R = 9, C = 15;
+    std::vector<std::vector<char>> grid(R, std::vector<char>(C, 0));
+    grid[2][3] = 1; grid[6][11] = 1; grid[4][7] = 1; // three sites
+    const auto dt = euclidean_distance_transform(grid);
+
+    std::cout << "=== Euclidean distance transform ===\n";
+    std::cout << "distance field (rounded):\n";
+    for (int r = 0; r < R; ++r) {
+        std::cout << "  ";
+        for (int c = 0; c < C; ++c) std::printf("%4.1f", dt[r][c]);
+        std::cout << "\n";
+    }
+
+    // Distance profile along the middle row.
+    std::vector<double> xs, ys;
+    const int row = 4;
+    for (int c = 0; c < C; ++c) { xs.push_back(c); ys.push_back(dt[row][c]); }
+    std::cout << "\nrow " << row << " has a site at column 7 (distance 0 there)\n";
+
+    auto plot = RPlot::create();
+    plot.line(xs, ys, "d", RGB{37, 99, 235}, 2.0);
+    plot.points(xs, ys, "d", RGB{37, 99, 235}, 5.0);
+    plot.legend({"distance to nearest site"}, {{37, 99, 235}});
+    plot.title("Distance-to-nearest-site profile along a grid row")
+        .x_label("column").y_label("Euclidean distance").background({250, 250, 252});
+    plot.save_svg("build/org/distance_transform.svg");
+    std::cout << "\nwrote distance_transform.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/distance_transform_analysis.cpp <<'CPP'
+<<dt-includes>>
+
+int main() {
+<<dt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/distance_transform_analysis.cpp -o build/org/distance_transform_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/distance_transform_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Euclidean distance transform ===
+distance field (rounded):
+   3.6 2.8 2.2 2.0 2.2 2.8 3.6 4.0 4.1 4.5 5.0 5.7 6.1 6.3 6.7
+   3.2 2.2 1.4 1.0 1.4 2.2 3.2 3.0 3.2 3.6 4.2 5.0 5.1 5.4 5.8
+   3.0 2.0 1.0 0.0 1.0 2.0 2.2 2.0 2.2 2.8 3.6 4.0 4.1 4.5 5.0
+   3.2 2.2 1.4 1.0 1.4 2.2 1.4 1.0 1.4 2.2 3.2 3.0 3.2 3.6 4.2
+   3.6 2.8 2.2 2.0 2.2 2.0 1.0 0.0 1.0 2.0 2.2 2.0 2.2 2.8 3.6
+   4.2 3.6 3.2 3.0 3.2 2.2 1.4 1.0 1.4 2.2 1.4 1.0 1.4 2.2 3.2
+   5.0 4.5 4.1 4.0 3.6 2.8 2.2 2.0 2.2 2.0 1.0 0.0 1.0 2.0 3.0
+   5.8 5.4 5.1 5.0 4.2 3.6 3.2 3.0 3.2 2.2 1.4 1.0 1.4 2.2 3.2
+   6.7 6.3 6.1 5.7 5.0 4.5 4.1 4.0 3.6 2.8 2.2 2.0 2.2 2.8 3.6
+
+row 4 has a site at column 7 (distance 0 there)
+
+wrote distance_transform.svg
+#+end_example
+
+Each cell holds its exact Euclidean distance to the nearest of the three sites -- zero at a site,
+growing smoothly outward -- and the values match a brute-force nearest-site computation across hundreds
+of random grids in the test suite.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/distance_transform.svg]]
+
+The profile dips to zero at the site in the row and rises on either side, its shape the lower envelope
+of the distance parabolas from every site. That envelope, computed in a single linear sweep per
+dimension, is what makes the exact Euclidean distance transform fast enough to run on every frame of an
+image -- the foundation of medial-axis skeletons, morphological operations, and grid-based path
+planning.
