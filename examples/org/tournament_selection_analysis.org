@@ -1,0 +1,138 @@
+#+title: Tournament Selection: Selection Pressure You Can Dial
+#+subtitle: A literate C++ study of tournament selection with =datamunge='s =algorithms::tournament_sample=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Fitness-proportionate selection ties the selection pressure to the raw fitness values, which makes it
+fragile to their scale. *Tournament selection* sidesteps that entirely: to pick a parent, draw \(k\)
+individuals at random and keep the fittest. It depends only on the *ranking*, not the magnitudes, and the
+tournament size \(k\) is a single knob that dials the pressure from gentle (\(k=2\)) to fierce. This report
+drives =datamunge='s =algorithms::tournament_sample=, verified to select monotonically in fitness with
+pressure that grows with \(k\), and shows how the selection distribution sharpens as \(k\) increases.
+#+end_abstract
+
+* Draw k, keep the best
+
+To select one parent, pick \(k\) individuals uniformly at random (with replacement) and return the one of
+highest fitness. Only the *order* of fitnesses matters, so tournament selection is invariant to any
+monotone rescaling -- doubling every fitness, or adding a constant, changes nothing. The tournament size
+\(k\) controls the *selection pressure* directly. For an individual of rank \(r\) among \(n\) (rank 1 =
+worst), the probability it wins a tournament is
+
+\[ p(r)=\frac{r^{k}-(r-1)^{k}}{n^{k}}, \]
+
+the chance that all \(k\) draws land on rank \(\le r\) but not all on \(\le r-1\). With \(k=1\) selection
+is uniform (no pressure); \(k=2\) gives mild pressure linear in rank; large \(k\) makes the single best
+individual win almost every tournament. Because it needs no cumulative sums, no fitness scaling, and no
+handling of negative or zero fitnesses, and because \(k\) offers a clean pressure control, tournament
+selection is the most widely used operator in modern genetic algorithms and genetic programming.
+
+#+name: ts-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/selection_operators.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TOURNAMENT-SAMPLE(fitness, n, k):
+  repeat n times:
+      best = a random individual
+      repeat k-1 times:
+          c = a random individual
+          if fitness[c] > fitness[best]: best = c
+      select best
+#+end_example
+
+* Worked example: sharpening pressure with k
+
+We run tournaments of size \(k=1,2,4,8\) over a ranked population and watch the selection distribution
+shift from flat toward the fittest individual.
+
+#+name: ts-run
+#+begin_src c++ :eval no
+    const std::vector<double> fit{1, 2, 3, 4, 5, 6, 7, 8}; // rank == fitness here
+    const int n = static_cast<int>(fit.size());
+    const int N = 200000;
+
+    std::cout << "=== Tournament selection ===\n";
+    std::cout << "selection frequency of the BEST individual as k grows:\n";
+    std::vector<double> ks, best_freq;
+    std::vector<std::vector<double>> dists;
+    for (int k : {1, 2, 4, 8}) {
+        const auto pick = tournament_sample(fit, N, k, 1);
+        std::vector<int> count(n, 0);
+        for (auto i : pick) ++count[i];
+        std::printf("  k=%d: best chosen %.1f%% of the time\n", k, 100.0 * count[n - 1] / N);
+        ks.push_back(k); best_freq.push_back(static_cast<double>(count[n - 1]) / N);
+        std::vector<double> d; for (int i = 0; i < n; ++i) d.push_back(static_cast<double>(count[i]) / N); dists.push_back(d);
+    }
+
+    // Plot the selection distribution for k = 2 and k = 8.
+    std::vector<double> ids; for (int i = 0; i < n; ++i) ids.push_back(i + 1);
+    auto plot = RPlot::create();
+    plot.line(ids, dists[1], "k2", RGB{37, 99, 235}, 2.2);
+    plot.points(ids, dists[1], "k2", RGB{37, 99, 235}, 5.0);
+    plot.line(ids, dists[3], "k8", RGB{220, 40, 40}, 2.2);
+    plot.points(ids, dists[3], "k8", RGB{220, 40, 40}, 5.0);
+    plot.legend({"k = 2 (mild pressure)", "k = 8 (fierce pressure)"}, {{37, 99, 235}, {220, 40, 40}});
+    plot.title("Tournament size k dials the selection pressure")
+        .x_label("individual (by increasing fitness)").y_label("selection probability").background({250, 250, 252});
+    plot.save_svg("build/org/tournament_selection.svg");
+    std::cout << "\nwrote tournament_selection.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tournament_selection_analysis.cpp <<'CPP'
+<<ts-includes>>
+
+int main() {
+<<ts-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tournament_selection_analysis.cpp -o build/org/tournament_selection_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tournament_selection_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tournament selection ===
+selection frequency of the BEST individual as k grows:
+  k=1: best chosen 12.4% of the time
+  k=2: best chosen 23.2% of the time
+  k=4: best chosen 41.1% of the time
+  k=8: best chosen 65.5% of the time
+
+wrote tournament_selection.svg
+#+end_example
+
+The frequency with which the best individual is chosen climbs steeply with the tournament size -- from an
+even \(1/8\) at \(k=1\) toward near-certainty at \(k=8\) -- exactly the tunable pressure that makes
+tournament selection so practical.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/tournament_selection.svg]]
+
+The gentle \(k=2\) curve rises roughly linearly with rank, spreading selection across the population; the
+\(k=8\) curve is sharply skewed, pouring almost all selection onto the top few. One integer \(k\) slides
+between exploration and exploitation, needing no fitness scaling and caring only about who beats whom --
+which is why tournament selection, not the roulette wheel, is the default in most modern evolutionary
+algorithms.

@@ -95,6 +95,7 @@
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
+#include <datamunge/algorithms/selection_operators.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/simplex.hpp>
 #include <datamunge/algorithms/sss_star.hpp>

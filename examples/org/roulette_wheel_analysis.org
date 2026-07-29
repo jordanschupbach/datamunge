@@ -1,0 +1,133 @@
+#+title: Roulette-Wheel Selection: Reproduction in Proportion to Fitness
+#+subtitle: A literate C++ study of fitness-proportionate selection with =datamunge='s =algorithms::roulette_wheel_sample=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Evolutionary algorithms improve a population by letting the fittest individuals reproduce more often --
+but *how much* more? *Fitness-proportionate* (roulette-wheel) selection is the classic answer: give each
+individual a slice of a roulette wheel sized by its fitness, and spin. The probability of being chosen is
+exactly the individual's share of the total fitness. This report drives =datamunge='s
+=algorithms::roulette_wheel_sample=, verified to reproduce the fitness distribution over hundreds of
+thousands of draws, and shows the empirical frequencies matching the theory.
+#+end_abstract
+
+* Slicing the wheel by fitness
+
+Give individual \(i\) with fitness \(f_i\ge0\) a slot on a wheel whose size is proportional to \(f_i\).
+Spinning the wheel selects \(i\) with probability
+
+\[ p_i=\frac{f_i}{\sum_j f_j}. \]
+
+Concretely, form the cumulative sums \(F_i=\sum_{j\le i}f_j\), draw \(u\) uniformly in \([0,\sum f)\), and
+return the first \(i\) with \(F_i>u\) -- a binary search, so each draw is \(O(\log n)\). The *selection
+pressure* is set entirely by the spread of fitnesses: when they are similar the wheel is nearly uniform
+and selection is weak; when one individual dominates it is chosen almost every spin. That direct
+proportionality is roulette-wheel selection's appeal and its weakness -- a single super-fit individual can
+take over the population prematurely, and the scheme misbehaves if fitnesses can be negative (they must be
+shifted to non-negative first) or if they are all nearly equal (selection becomes random drift). Scaling
+or ranking the fitnesses tempers this, but the bare roulette wheel remains the textbook definition of
+fitness-proportionate reproduction.
+
+#+name: rw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/selection_operators.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+ROULETTE-WHEEL-SAMPLE(fitness, n):
+  cumulative F[i] = f[0] + ... + f[i];  total = F[last]
+  repeat n times:
+      u = uniform(0, total)
+      select the first i with F[i] > u        # binary search
+#+end_example
+
+* Worked example: frequencies match the fitness shares
+
+We select many times from a small population and compare the empirical selection frequency of each
+individual with its fitness share.
+
+#+name: rw-run
+#+begin_src c++ :eval no
+    const std::vector<double> fit{1, 2, 3, 4, 5};
+    double total = 0; for (double f : fit) total += f;
+    const int N = 300000;
+
+    const auto pick = roulette_wheel_sample(fit, N, 1);
+    std::vector<int> count(fit.size(), 0);
+    for (auto i : pick) ++count[i];
+
+    std::cout << "=== Roulette-wheel selection ===\n";
+    std::cout << " individual  fitness  share   empirical\n";
+    std::vector<double> ids, shares, freqs;
+    for (std::size_t i = 0; i < fit.size(); ++i) {
+        const double share = fit[i] / total, freq = static_cast<double>(count[i]) / N;
+        std::printf("     %zu        %.0f     %.3f    %.3f\n", i, fit[i], share, freq);
+        ids.push_back(static_cast<double>(i) + 1); shares.push_back(share); freqs.push_back(freq);
+    }
+
+    auto plot = RPlot::create();
+    plot.bars(ids, freqs, "emp", RGB{37, 99, 235}, 0.5);
+    plot.points(ids, shares, "share", RGB{220, 40, 40}, 8.0);
+    plot.legend({"empirical frequency", "fitness share (theory)"}, {{37, 99, 235}, {220, 40, 40}});
+    plot.title("Roulette-wheel selection frequency matches the fitness share")
+        .x_label("individual").y_label("selection probability").background({250, 250, 252});
+    plot.save_svg("build/org/roulette_wheel.svg");
+    std::cout << "\nwrote roulette_wheel.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/roulette_wheel_analysis.cpp <<'CPP'
+<<rw-includes>>
+
+int main() {
+<<rw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/roulette_wheel_analysis.cpp -o build/org/roulette_wheel_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/roulette_wheel_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Roulette-wheel selection ===
+ individual  fitness  share   empirical
+     0        1     0.067    0.067
+     1        2     0.133    0.133
+     2        3     0.200    0.199
+     3        4     0.267    0.266
+     4        5     0.333    0.334
+
+wrote roulette_wheel.svg
+#+end_example
+
+Each individual is selected with a frequency that lands right on its fitness share -- the defining
+property of fitness-proportionate selection, confirmed to within a fraction of a percent over hundreds of
+thousands of spins.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/roulette_wheel.svg]]
+
+Every red theory dot sits atop its blue empirical bar: the wheel's slot sizes translate exactly into
+selection probabilities. That clean proportionality is what makes roulette-wheel selection the canonical
+way to reward fitness -- and the reason practitioners temper it with scaling or ranking when a single
+dominant individual would otherwise spin its way to taking over the whole population.

@@ -1,0 +1,144 @@
+#+title: Stochastic Universal Sampling: Fair Selection in One Spin
+#+subtitle: A literate C++ study of low-variance selection with =datamunge='s =algorithms::stochastic_universal_sampling=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Roulette-wheel selection is unbiased *on average*, but a run of unlucky spins can over-pick one individual
+and starve another -- sampling noise that slows an evolutionary search. *Stochastic universal sampling*
+(Baker, 1987) fixes this with a single spin of a wheel carrying \(N\) equally-spaced pointers, selecting
+all \(N\) parents at once. The expected counts are identical to roulette, but the variance nearly
+vanishes: no individual is picked more than one away from its fair share. This report drives =datamunge='s
+=algorithms::stochastic_universal_sampling=, verified to keep every count within one of its expectation,
+and shows that fairness.
+#+end_abstract
+
+* One spin, N evenly-spaced pointers
+
+Roulette-wheel selection spins the wheel \(N\) times independently, so the count for individual \(i\) is a
+binomial with mean \(N p_i\) but variance \(N p_i(1-p_i)\) -- real sampling noise. Stochastic universal
+sampling replaces the \(N\) independent spins with *one*. Lay the individuals end to end around a wheel of
+circumference \(\sum f_j\), place \(N\) equally-spaced pointers a distance \(\text{step}=\sum f_j/N\)
+apart, pick a single random starting offset in \([0,\text{step})\), and read off the individual under each
+pointer:
+
+\[ \text{pointer}_k=\text{offset}+k\cdot\text{step},\qquad k=0,\dots,N-1. \]
+
+Because the pointers are rigidly spaced, an individual of fitness \(f_i\) spans exactly \(N f_i/\sum f_j\)
+pointer-steps, so it is selected either \(\lfloor N p_i\rfloor\) or \(\lceil N p_i\rceil\) times -- never
+further from its fair share than one. The expected counts equal roulette's, but the variance collapses,
+which reduces the *genetic drift* that random selection noise would otherwise inject. And it costs a
+single \(O(N)\) sweep rather than \(N\) binary searches. That combination -- same bias, far less noise,
+cheaper -- makes SUS the preferred fitness-proportionate operator in practice.
+
+#+name: sus-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/selection_operators.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+STOCHASTIC-UNIVERSAL-SAMPLING(fitness, n):
+  total = sum of fitness;  step = total / n
+  pointer = uniform(0, step)                 # single random offset
+  cumulative walk: for k in 0..n-1:
+      advance to the individual under `pointer`; select it
+      pointer += step
+#+end_example
+
+* Worked example: counts pinned to their fair share
+
+We select \(N=1000\) parents from a population and compare each individual's actual count against its
+expected count \(N p_i\), confirming every deviation is at most one.
+
+#+name: sus-run
+#+begin_src c++ :eval no
+    const std::vector<double> fit{1, 2, 3, 4, 5, 6};
+    double total = 0; for (double f : fit) total += f;
+    const int N = 1000;
+
+    const auto pick = stochastic_universal_sampling(fit, N, 3);
+    std::vector<int> count(fit.size(), 0);
+    for (auto i : pick) ++count[i];
+
+    std::cout << "=== Stochastic universal sampling (N = " << N << ") ===\n";
+    std::cout << " individual  expected   actual   |deviation|\n";
+    std::vector<double> ids, expected, actual;
+    double max_dev = 0;
+    for (std::size_t i = 0; i < fit.size(); ++i) {
+        const double exp = N * fit[i] / total;
+        const double dev = std::fabs(count[i] - exp);
+        max_dev = std::max(max_dev, dev);
+        std::printf("     %zu        %6.1f     %4d       %.2f\n", i, exp, count[i], dev);
+        ids.push_back(static_cast<double>(i) + 1); expected.push_back(exp); actual.push_back(count[i]);
+    }
+    std::printf("maximum deviation from expected: %.2f (SUS guarantees <= 1)\n", max_dev);
+
+    auto plot = RPlot::create();
+    plot.bars(ids, actual, "act", RGB{22, 163, 74}, 0.5);
+    plot.points(ids, expected, "exp", RGB{220, 40, 40}, 8.0);
+    plot.legend({"actual count", "expected count N*p_i"}, {{22, 163, 74}, {220, 40, 40}});
+    plot.title("SUS keeps every selection count within one of its fair share")
+        .x_label("individual").y_label("count").background({250, 250, 252});
+    plot.save_svg("build/org/stochastic_universal_sampling.svg");
+    std::cout << "\nwrote stochastic_universal_sampling.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/stochastic_universal_sampling_analysis.cpp <<'CPP'
+<<sus-includes>>
+
+int main() {
+<<sus-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/stochastic_universal_sampling_analysis.cpp -o build/org/stochastic_universal_sampling_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/stochastic_universal_sampling_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Stochastic universal sampling (N = 1000) ===
+ individual  expected   actual   |deviation|
+     0          47.6       48       0.38
+     1          95.2       95       0.24
+     2         142.9      143       0.14
+     3         190.5      191       0.52
+     4         238.1      238       0.10
+     5         285.7      285       0.71
+maximum deviation from expected: 0.71 (SUS guarantees <= 1)
+
+wrote stochastic_universal_sampling.svg
+#+end_example
+
+Every individual's count is its expected value rounded up or down -- the deviation never exceeds one, the
+guarantee that makes SUS so much steadier than independent roulette spins while keeping the same average
+behavior.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/stochastic_universal_sampling.svg]]
+
+The green actual counts sit right on the red expected values -- no over- or under-representation, because
+the rigidly-spaced pointers give each individual exactly its share of the wheel. Trading \(N\) independent
+spins for one evenly-sampled sweep removes the selection noise that would otherwise drift an evolutionary
+population off course, which is why stochastic universal sampling is the fitness-proportionate operator of
+choice.
