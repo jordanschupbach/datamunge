@@ -26,5 +26,6 @@
 #include <datamunge/geometry/polygon_triangulation.hpp>
 #include <datamunge/geometry/rotating_calipers.hpp>
 #include <datamunge/geometry/segment_intersection.hpp>
+#include <datamunge/geometry/shamos_hoey.hpp>
 #include <datamunge/geometry/simplify_polyline.hpp>
 #include <datamunge/geometry/voronoi.hpp>

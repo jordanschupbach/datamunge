@@ -35,6 +35,7 @@
 #include <datamunge/algorithms/floyd_warshall.hpp>
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
+#include <datamunge/algorithms/gabow_scc.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/gauss_newton.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
@@ -52,6 +53,7 @@
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
+#include <datamunge/algorithms/library_sort.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
