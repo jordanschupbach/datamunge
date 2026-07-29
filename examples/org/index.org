@@ -331,6 +331,21 @@ We implement NSGA-II (Deb et al. 2002) in =datamunge='s C++ =optim::NSGA2= and r
 
 We implement SPEA2 (Zitzler, Laumanns & Thiele 2001) in =datamunge='s C++ =optim::SPEA2= and report it as a literate program: every number and figure below is real, compiled, executed output. We derive the strength, raw-fitness, and density terms and the nearest-neighbor truncation rule, verify the fitness bookkeeping on a hand example, and converge the archive to the ZDT1 front to within \(\approx1.8\times10^{-3}\).
 
+** [[./roulette_wheel_analysis.html][Roulette-Wheel Selection: Reproduction in Proportion to Fitness]] ([[./roulette_wheel_analysis.pdf][PDF]])
+/A literate C++ study of fitness-proportionate selection using datamunge/
+
+We implement roulette-wheel selection (=algorithms::roulette_wheel_sample=) and report it as a literate program. Each individual gets a wheel slot sized by its fitness, so it is selected with probability f_i / sum f_j via a cumulative-sum binary search; over 300k spins the empirical frequencies land on the fitness shares to a fraction of a percent, the theory-vs-empirical bars plotted, with a note on the premature-convergence weakness that scaling and ranking temper.
+
+** [[./stochastic_universal_sampling_analysis.html][Stochastic Universal Sampling: Fair Selection in One Spin]] ([[./stochastic_universal_sampling_analysis.pdf][PDF]])
+/A literate C++ study of low-variance selection using datamunge/
+
+We implement stochastic universal sampling (=algorithms::stochastic_universal_sampling=) and report it as a literate program. Replacing N independent roulette spins with one spin of N evenly-spaced pointers keeps the same expected counts but collapses the variance -- every individual is selected within one of its fair share (max deviation 0.71 on a 1000-draw example), reducing the genetic drift of noisy selection, with actual-vs-expected counts plotted.
+
+** [[./tournament_selection_analysis.html][Tournament Selection: Selection Pressure You Can Dial]] ([[./tournament_selection_analysis.pdf][PDF]])
+/A literate C++ study of rank-based selection using datamunge/
+
+We implement tournament selection (=algorithms::tournament_sample=) and report it as a literate program. Drawing k random individuals and keeping the fittest depends only on rank, not fitness magnitude, and the tournament size k dials the selection pressure -- the best individual is chosen 12% of the time at k=1, rising to 66% at k=8 on an 8-individual population -- with the selection distribution sharpening as k grows, the default operator of modern genetic algorithms.
+
 ** [[./moead_analysis.html][MOEA/D: Multi-Objective Optimization by Decomposition]] ([[./moead_analysis.pdf][PDF]])
 /A literate C++ study of Das-Dennis weight vectors, Tchebycheff scalarization, and neighborhood updates using datamunge/
 

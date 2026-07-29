@@ -532,9 +532,9 @@ Hybrid Algorithms
         Evolution strategy
         Gene expression programming
         Genetic algorithms
-            Fitness proportionate selection – also known as roulette-wheel selection
-            Stochastic universal sampling
-            Tournament selection
+            [x] Fitness proportionate selection – also known as roulette-wheel selection  -- datamunge::algorithms::roulette_wheel_sample (cumulative-fitness wheel, O(log n) per draw); report examples/org/roulette_wheel_analysis.org
+            [x] Stochastic universal sampling  -- datamunge::algorithms::stochastic_universal_sampling (single spin, N evenly-spaced pointers, deviation <= 1); report examples/org/stochastic_universal_sampling_analysis.org
+            [x] Tournament selection  -- datamunge::algorithms::tournament_sample (fittest of k random contestants, pressure tuned by k); report examples/org/tournament_selection_analysis.org
             Truncation selection
         Memetic algorithm
         Swarm intelligence
