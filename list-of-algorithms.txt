@@ -511,13 +511,13 @@ Hybrid Algorithms
     [x] Bruss algorithm: see odds algorithm  -- datamunge::algorithms::odds_algorithm; report examples/org/odds_algorithm_analysis.org
     [x] Chain matrix multiplication  -- datamunge::algorithms::matrix_chain_order (O(n^3) DP); report examples/org/matrix_chain_analysis.org
     Combinatorial optimization: optimization problems where the set of feasible solutions is discrete
-        Greedy randomized adaptive search procedure (GRASP): successive constructions of a greedy randomized solution and subsequent iterative improvements of it through a local search
+        [x] Greedy randomized adaptive search procedure (GRASP): successive constructions of a greedy randomized solution and subsequent iterative improvements of it through a local search  -- datamunge::algorithms::grasp_max_cut (restricted-candidate-list construction + local search, multi-start, on MAX-CUT); report examples/org/grasp_analysis.org
         Hungarian method: a combinatorial optimization algorithm which solves the assignment problem in polynomial time
     Conjugate gradient methods (see more https://doi.org/10.1016/j.jksus.2022.101923)
     Constraint satisfaction
         [x] AC-3 algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::ac3; report examples/org/ac3_analysis.org
         Chaff algorithm: an algorithm for solving instances of the Boolean satisfiability problem
-        Davis–Putnam algorithm: check the validity of a first-order logic formula
+        [x] Davis–Putnam algorithm: check the validity of a first-order logic formula  -- datamunge::algorithms::davis_putnam (CNF-SAT by unit propagation, pure-literal, and resolution variable elimination); report examples/org/davis_putnam_analysis.org
         Difference map algorithm general algorithms for the constraint satisfaction
         [x] Davis–Putnam–Logemann–Loveland algorithm (DPLL): an algorithm for deciding the satisfiability of propositional logic formula in conjunctive normal form, i.e. for solving the CNF-SAT problem  -- datamunge::algorithms::dpll_sat; report examples/org/dpll_analysis.org
         [x] Exact cover problem  -- datamunge::algorithms::exact_cover (Dancing Links); report examples/org/exact_cover_analysis.org
@@ -567,7 +567,7 @@ Hybrid Algorithms
     Newton's method in optimization
     Nonlinear optimization
         BFGS method: a nonlinear optimization algorithm
-        Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems
+        [x] Gauss–Newton algorithm: an algorithm for solving nonlinear least squares problems  -- datamunge::algorithms::gauss_newton (normal equations (J^T J)d=-J^T r, finite-difference Jacobian); report examples/org/gauss_newton_analysis.org
         Levenberg–Marquardt algorithm: an algorithm for solving nonlinear least squares problems
         Nelder–Mead method (downhill simplex method): a nonlinear optimization algorithm
     [x] Odds algorithm (Bruss algorithm): Finds the optimal strategy to predict a last specific event in a random sequence event  -- datamunge::algorithms::odds_algorithm (optimal stopping); report examples/org/odds_algorithm_analysis.org

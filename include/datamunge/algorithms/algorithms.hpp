@@ -20,6 +20,7 @@
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
+#include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
@@ -35,7 +36,9 @@
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/game_search.hpp>
+#include <datamunge/algorithms/gauss_newton.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
+#include <datamunge/algorithms/grasp.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_connectivity.hpp>
 #include <datamunge/algorithms/graph_hard.hpp>
