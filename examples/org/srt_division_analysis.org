@@ -1,0 +1,145 @@
+#+title: SRT Division: Redundant Quotient Digits
+#+subtitle: A literate C++ study of radix-2 SRT division with =datamunge='s =algorithms::srt_divide=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Hardware dividers do not compute one careful quotient bit at a time -- they cheat productively. *SRT
+division* (Sweeney, Robertson, Tocher) lets each quotient digit come from a *redundant* set
+\(\{-1,0,1\}\), so the digit can be read off a few leading bits of the partial remainder without a full
+comparison against the divisor. That is what makes the recurrence fast enough to pipeline. This report
+drives =datamunge='s =algorithms::srt_divide=, verified against the true quotient over thousands of
+random inputs, and shows the partial remainder staying bounded as the quotient is built.
+#+end_abstract
+
+* Redundancy in the quotient digit
+
+Restoring and non-restoring division emit one *nonnegative* bit per step, each requiring the sign of a
+full-width subtraction. SRT breaks the dependency by allowing the digit \(q_j\in\{-1,0,1\}\). For a
+normalized divisor \(d\in[\tfrac12,1)\) and a proper-fraction dividend \(0\le n<d\), the *partial
+remainder* recurrence is
+
+\[ P_0=n,\qquad P_j=2P_{j-1}-q_j\,d,\qquad Q=\sum_{j\ge1} q_j\,2^{-j}. \]
+
+The redundant digit set creates *overlap* in the selection regions, so \(q_j\) can be chosen from an
+estimate of \(2P_{j-1}\) alone -- here, radix-2:
+
+\[ q_j=\begin{cases}+1 & 2P_{j-1}\ge \tfrac12,\\ -1 & 2P_{j-1}\le -\tfrac12,\\ 0 & \text{otherwise.}\end{cases} \]
+
+Because \(d\ge\tfrac12\), this crude comparison always keeps \(|P_j|<d\), so the remainder never runs
+away and each step contributes one more bit: after \(b\) steps the quotient \(Q\) matches \(n/d=N/D\) to
+within \(2^{-b}\). Real dividers use radix 4 or higher with a small selection table (the infamous lookup
+table behind the 1994 Pentium FDIV bug), retiring several bits per cycle -- but the essential idea is
+already here: trade a full comparison for a redundant digit and a bounded remainder.
+
+#+name: srt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/srt_division.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SRT-DIVIDE(N, D, bits):                     # 0 <= N < D
+  normalize d = D * 2^e into [1/2, 1);  P = N * 2^e
+  Q = 0
+  for j = 1 .. bits:
+      w = 2 P
+      q = +1 if w >= 1/2  else  -1 if w <= -1/2  else  0
+      P = w - q d
+      Q += q * 2^(-j)
+  return Q                                   # -> N / D
+#+end_example
+
+* Worked example: dividing with redundant digits
+
+We divide a fraction, print the first quotient digits and the reconstructed quotient against the true
+value, and plot the partial-remainder trajectory that stays safely bounded.
+
+#+name: srt-run
+#+begin_src c++ :eval no
+    const double N = 0.7, D = 0.9; // 0 <= N < D
+    std::cout << "=== Radix-2 SRT division ===\n";
+    const int  bits = 40;
+    const auto digits = srt_quotient_digits(N, D, bits);
+    std::cout << "first 16 quotient digits q_j (in {-1,0,1}): ";
+    for (int i = 0; i < 16; ++i) std::printf("%2d ", digits[i]);
+    std::cout << "\n";
+    std::printf("SRT quotient = %.12f   true N/D = %.12f   |error| = %.2e\n",
+                srt_digits_to_value(digits), N / D, std::fabs(srt_digits_to_value(digits) - N / D));
+
+    // Partial-remainder trajectory (bounded by the normalized divisor).
+    const int e = [](double d) { int k = 0; while (d < 0.5) { d *= 2; ++k; } while (d >= 1) { d *= 0.5; --k; } return k; }(D);
+    const double d = std::ldexp(D, e);
+    double P = std::ldexp(N, e);
+    std::vector<double> step, rem;
+    for (int j = 0; j < 24; ++j) {
+        const double w = 2 * P;
+        const int    q = w >= 0.5 ? 1 : (w <= -0.5 ? -1 : 0);
+        P = w - q * d;
+        step.push_back(j + 1); rem.push_back(P);
+    }
+
+    auto plot = RPlot::create();
+    plot.line(step, rem, "P", RGB{2, 132, 199}, 2.0);
+    plot.points(step, rem, "P", RGB{2, 132, 199}, 4.0);
+    plot.abline_h(d, RGB{200, 60, 60}, 1.2);
+    plot.abline_h(-d, RGB{200, 60, 60}, 1.2);
+    plot.legend({"partial remainder P_j", "+/- d bound"}, {{2, 132, 199}, {200, 60, 60}});
+    plot.title("SRT partial remainder stays bounded by the normalized divisor")
+        .x_label("step j").y_label("P_j").background({250, 250, 252});
+    plot.save_svg("build/org/srt_division.svg");
+    std::cout << "\nwrote srt_division.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/srt_division_analysis.cpp <<'CPP'
+<<srt-includes>>
+
+int main() {
+<<srt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/srt_division_analysis.cpp -o build/org/srt_division_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/srt_division_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Radix-2 SRT division ===
+first 16 quotient digits q_j (in {-1,0,1}):  1  1  0  0  1  0  0 -1  0  0  1  0  0 -1  0  0
+SRT quotient = 0.777777777777   true N/D = 0.777777777778   |error| = 4.04e-13
+
+wrote srt_division.svg
+#+end_example
+
+The quotient digits, several of them \(-1\), reconstruct \(N/D\) to the requested precision, and the
+partial remainder never leaves the \(\pm d\) band -- the boundedness that makes the crude radix-2 digit
+selection correct.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/srt_division.svg]]
+
+The remainder bounces between the two red bounds \(\pm d\) as each step subtracts \(0\), \(+d\), or
+\(-d\) from the doubled remainder; because it can never escape, every step is guaranteed to add one good
+bit to the quotient. Trading an exact comparison for a redundant digit and a bounded remainder is the
+whole trick -- scaled up to radix 4 with a small selection table, it is how the divide unit in a CPU
+actually works.
