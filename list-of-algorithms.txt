@@ -429,7 +429,7 @@ Further information: Extrapolation and Interpolation
         [x] Bicubic interpolation: a generalization of cubic interpolation to two dimensions  -- datamunge::algorithms::bicubic_interpolate (Keys cubic convolution, a=-1/2, separable 4x4 stencil); report examples/org/bicubic_interpolation_analysis.org
         [x] Bilinear interpolation: an extension of linear interpolation for interpolating functions of two variables on a regular grid  -- datamunge::algorithms::bilinear_interpolate; report examples/org/bilinear_analysis.org
         [x] Lanczos resampling ("Lanzosh"): a multivariate interpolation method used to compute new values for any digitally sampled data  -- datamunge::algorithms::lanczos_resample / lanczos_resample_at (windowed-sinc kernel L(x)=sinc(x)sinc(x/a)); report examples/org/lanczos_resampling_analysis.org
-        Nearest-neighbor interpolation
+        [x] Nearest-neighbor interpolation  -- datamunge::algorithms::nearest_neighbor_interpolate (piecewise-constant, nearest-sample, O(log n)); report examples/org/nearest_neighbor_interpolation_analysis.org
         [x] Tricubic interpolation: a generalization of cubic interpolation to three dimensions  -- datamunge::algorithms::tricubic_interpolate (Keys cubic convolution, separable 4x4x4 stencil); report examples/org/tricubic_interpolation_analysis.org
     Pareto interpolation: a method of estimating the median and other properties of a population that follows a Pareto distribution.
     Polynomial interpolation
@@ -444,10 +444,10 @@ Linear algebra
 Further information: Numerical linear algebra
 
     Eigenvalue algorithms
-        Arnoldi iteration
+        [x] Arnoldi iteration  -- datamunge::algorithms::arnoldi_iteration (orthonormal Krylov basis + upper-Hessenberg projection, Ritz values); report examples/org/arnoldi_iteration_analysis.org
         [x] Inverse iteration  -- datamunge::algorithms::inverse_iteration (shifted inverse power iteration for the eigenvector nearest mu); report examples/org/inverse_iteration_analysis.org
         Jacobi method
-        Lanczos iteration
+        [x] Lanczos iteration  -- datamunge::algorithms::lanczos_iteration (symmetric Krylov three-term recurrence -> tridiagonal, extreme Ritz values); report examples/org/lanczos_iteration_analysis.org
         [x] Power iteration  -- datamunge::algorithms::power_iteration; report examples/org/power_iteration_analysis.org
         [x] QR algorithm  -- datamunge::algorithms::qr_eigenvalues (shifted QR iteration with Wilkinson shift and deflation, symmetric); report examples/org/qr_algorithm_analysis.org
         [x] Rayleigh quotient iteration  -- datamunge::algorithms::rayleigh_quotient_iteration (adaptive-shift inverse iteration, cubic convergence); report examples/org/rayleigh_quotient_iteration_analysis.org

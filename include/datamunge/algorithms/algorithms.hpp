@@ -5,6 +5,7 @@
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
+#include <datamunge/algorithms/arnoldi_iteration.hpp>
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/berlekamp.hpp>
@@ -52,6 +53,7 @@
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/algorithms/lanczos_iteration.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/library_sort.hpp>
@@ -67,6 +69,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
 #include <datamunge/algorithms/nesting.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
