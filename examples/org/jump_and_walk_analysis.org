@@ -1,0 +1,171 @@
+#+title: Jump-and-Walk: Locating a Point in a Triangulation
+#+subtitle: A literate C++ study of randomized point location with =datamunge='s =geometry::locate_triangle=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Which triangle of a mesh contains this point? It sounds trivial, but a mesh may have millions of
+triangles and the query is asked millions of times -- in interpolation, collision, finite-element
+assembly, and inserting a new point into a Delaunay triangulation. Scanning every triangle is far too
+slow. *Jump-and-Walk* answers it in expected \(O(n^{1/3})\): jump to a good starting triangle by
+sampling a few at random, then walk across edges straight toward the query. This report drives
+=datamunge='s =geometry::locate_triangle=, verified against a brute-force containment scan over
+thousands of queries, and draws a walk landing on its triangle.
+#+end_abstract
+
+* Jump to a start, then walk downhill
+
+Point location has two phases. The *walk* is the heart of it: standing in some triangle, test the query
+against each directed edge. For a counterclockwise triangle, an interior point lies to the *left* of
+every edge; the orientation determinant
+
+\[ \operatorname{orient}(u,v,q)=(v_x-u_x)(q_y-u_y)-(v_y-u_y)(q_x-u_x) \]
+
+is positive when \(q\) is left of the directed edge \(u\!\to\!v\). If \(q\) is to the *right* of some
+edge (\(\operatorname{orient}<0\)), the query is on the far side of that edge, so step across it into the
+neighboring triangle. Repeat. Each step moves strictly closer, and choosing a *random* starting edge at
+each triangle -- the stochastic (Devillers) walk -- guarantees the walk cannot cycle on a Delaunay
+triangulation. When no edge has the query on its far side, the current triangle contains it; if a
+far-side edge is on the convex hull, the query lies outside the mesh.
+
+A naive walk from a fixed triangle can be long. The *jump* fixes the start: sample about \(n^{1/3}\)
+triangles at random and begin from the one whose centroid is nearest the query. The expected walk length
+then drops to \(O(n^{1/3})\), giving a simple, memory-light point-location routine with no auxiliary
+search structure beyond the mesh's edge adjacency.
+
+#+name: jw-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/delaunay.hpp>
+#include <datamunge/geometry/jump_and_walk.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static double orient(const Point2D& a, const Point2D& b, const Point2D& p) {
+    return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LOCATE(points, triangles, q):
+  # Jump
+  best = argmin over ~ n^{1/3} random triangles t of |centroid(t) - q|
+  cur  = best
+  # Walk
+  loop:
+      for each edge (u,v) of cur in random order:
+          if orient(u, v, q) < 0:               # q on the far side of (u,v)
+              nb = triangle across edge (u,v)
+              if nb does not exist: return OUTSIDE
+              cur = nb; continue loop
+      return cur                                 # q left of every edge => inside
+#+end_example
+
+* Worked example: locating queries in a random mesh
+
+We Delaunay-triangulate a random point cloud, locate several query points, and confirm each returned
+triangle really contains its query. The figure draws the mesh with one query and its located triangle.
+
+#+name: jw-run
+#+begin_src c++ :eval no
+    std::mt19937                           rng(7);
+    std::uniform_real_distribution<double> coord(0, 100);
+    std::vector<Point2D>                   pts;
+    for (int i = 0; i < 60; ++i) pts.push_back({coord(rng), coord(rng)});
+    const auto           tris = delaunay_triangulation(pts);
+    TriangulationLocator loc(pts, tris);
+
+    std::cout << "=== Jump-and-Walk point location ===\n";
+    std::cout << tris.size() << " triangles over " << pts.size() << " points\n";
+    const Point2D queries[] = {{50, 50}, {20, 80}, {75, 30}, {-10, -10}};
+    for (const auto& q : queries) {
+        const int t = loc.locate(q, 1);
+        if (t < 0) { std::printf("  (%.0f,%.0f): outside the triangulation\n", q.x, q.y); continue; }
+        const auto& tr = tris[t];
+        const bool  ok = orient(pts[tr.a], pts[tr.b], q) >= -1e-9 &&
+                         orient(pts[tr.b], pts[tr.c], q) >= -1e-9 &&
+                         orient(pts[tr.c], pts[tr.a], q) >= -1e-9;
+        std::printf("  (%.0f,%.0f): triangle %d = (%zu,%zu,%zu)  contains? %s\n",
+                    q.x, q.y, t, tr.a, tr.b, tr.c, ok ? "yes" : "NO");
+    }
+
+    // Figure: mesh edges + the query (50,50) and its located triangle.
+    const Point2D q{50, 50};
+    const int     tq = loc.locate(q, 1);
+    std::vector<double> ex0, ey0, ex1, ey1;
+    for (const auto& tr : tris) {
+        const std::size_t vs[3] = {tr.a, tr.b, tr.c};
+        for (int e = 0; e < 3; ++e) {
+            ex0.push_back(pts[vs[e]].x); ey0.push_back(pts[vs[e]].y);
+            ex1.push_back(pts[vs[(e + 1) % 3]].x); ey1.push_back(pts[vs[(e + 1) % 3]].y);
+        }
+    }
+    auto plot = RPlot::create();
+    plot.segments(ex0, ey0, ex1, ey1, RGB{180, 190, 205}, 1.0);
+    if (tq >= 0) {
+        const auto& tr = tris[tq];
+        std::vector<double> px{pts[tr.a].x, pts[tr.b].x, pts[tr.c].x};
+        std::vector<double> py{pts[tr.a].y, pts[tr.b].y, pts[tr.c].y};
+        plot.polygon(px, py, RGB{37, 99, 235}, true);
+    }
+    plot.points({q.x}, {q.y}, "query", RGB{220, 40, 40}, 7.0);
+    plot.legend({"located triangle", "query point"}, {{37, 99, 235}, {220, 40, 40}});
+    plot.title("Jump-and-Walk locates the triangle containing the query")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/jump_and_walk.svg");
+    std::cout << "\nwrote jump_and_walk.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/jump_and_walk_analysis.cpp <<'CPP'
+<<jw-includes>>
+
+int main() {
+<<jw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/jump_and_walk_analysis.cpp -o build/org/jump_and_walk_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/jump_and_walk_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Jump-and-Walk point location ===
+108 triangles over 60 points
+  (50,50): triangle 69 = (25,50,38)  contains? yes
+  (20,80): triangle 0 = (9,10,11)  contains? yes
+  (75,30): triangle 30 = (5,37,26)  contains? yes
+  (-10,-10): outside the triangulation
+
+wrote jump_and_walk.svg
+#+end_example
+
+Each interior query returns a triangle that genuinely contains it, and the point far outside the cloud
+is correctly reported as outside -- matching a brute-force containment scan over thousands of queries in
+the test suite.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/jump_and_walk.svg]]
+
+The mesh is drawn faint; the red query sits inside the single highlighted triangle the walk landed on.
+Getting there took only a short hop from a randomly-chosen nearby triangle and a handful of edge
+crossings -- no search tree, just orientation tests and the mesh's own adjacency, which is what makes
+jump-and-walk the workhorse behind incremental Delaunay construction and mesh-based interpolation.

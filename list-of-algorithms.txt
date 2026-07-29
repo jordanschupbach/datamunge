@@ -280,10 +280,10 @@ Further information: Computational geometry
         Kirkpatrick–Seidel algorithm
         [x] Quickhull  -- datamunge::geometry::quickhull (divide and conquer, O(n log n) avg); report examples/org/quickhull_analysis.org
     [x] Euclidean distance transform: computes the distance between every point in a grid and a discrete collection of points.  -- datamunge::geometry::euclidean_distance_transform (Felzenszwalb-Huttenlocher, separable lower-envelope of parabolas, O(rows*cols)); report examples/org/distance_transform_analysis.org
-    Geometric hashing: a method for efficiently finding two-dimensional objects represented by discrete points that have undergone an affine transformation
+    [x] Geometric hashing: a method for efficiently finding two-dimensional objects represented by discrete points that have undergone an affine transformation  -- datamunge::geometry::build_geometric_hash / recognize (similarity-invariant coordinate frames + voting); report examples/org/geometric_hashing_analysis.org
     [x] Gilbert–Johnson–Keerthi distance algorithm: determining the smallest distance between two convex shapes.  -- datamunge::geometry::gjk_distance (support-function search of the Minkowski difference for the origin); report examples/org/gjk_analysis.org
-    Jump-and-Walk algorithm: an algorithm for point location in triangulations
-    Laplacian smoothing: an algorithm to smooth a polygonal mesh
+    [x] Jump-and-Walk algorithm: an algorithm for point location in triangulations  -- datamunge::geometry::locate_triangle / TriangulationLocator (random jump + stochastic orientation walk, expected O(n^1/3)); report examples/org/jump_and_walk_analysis.org
+    [x] Laplacian smoothing: an algorithm to smooth a polygonal mesh  -- datamunge::geometry::laplacian_smooth / dirichlet_energy (umbrella-average Jacobi sweeps, energy descent); report examples/org/laplacian_smoothing_analysis.org
     [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
         [x] Bentley–Ottmann algorithm  -- datamunge::geometry::bentley_ottmann (sweep-line segment intersections, O((n+k) log n)); report examples/org/bentley_ottmann_analysis.org
         Shamos–Hoey algorithm

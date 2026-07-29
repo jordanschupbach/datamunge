@@ -1,0 +1,161 @@
+#+title: Geometric Hashing: Recognizing a Shape Under an Unknown Transform
+#+subtitle: A literate C++ study of transform-invariant point matching with =datamunge='s =geometry::recognize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+You are given a known pattern of points -- a *model* -- and a cluttered *scene* that contains a rotated,
+scaled, and translated copy of it, mixed with distractor points. Where is the model, and what transform
+was applied? *Geometric hashing* answers this by precomputing a hash table of transform-invariant
+coordinates, so recognition becomes a voting game: pick a basis in the scene, look up where its points
+land, and let the model bases with matching coordinates vote. This report drives =datamunge='s
+=geometry::recognize=, verified to recover known similarity transforms and to find the model amid
+clutter, and shows the recovered alignment.
+#+end_abstract
+
+* A coordinate frame that ignores the transform
+
+The engine is a *transform-invariant coordinate frame*. Choose an ordered pair of points \((b_0,b_1)\)
+as a *basis*, and express any other point \(p\) in the frame that sends \(b_0\) to the origin and \(b_1\)
+to \((1,0)\). Treating points as complex numbers, those coordinates are the quotient
+
+\[ (u,v)=\frac{p-b_0}{\,b_1-b_0\,}. \]
+
+Under any similarity (rotation, uniform scale, translation) the same three points move together, and the
+quotient is *unchanged* -- the transform cancels in numerator and denominator. So a model point's frame
+coordinates are identical in the scene, however the scene was transformed.
+
+That invariance drives two phases. *Preprocessing* (offline): for every model basis, compute the frame
+coordinates of the other model points and store each in a hash table keyed by its quantized \((u,v)\)
+bin, recording which basis produced it. *Recognition* (online): pick a scene basis, compute the frame
+coordinates of the other scene points, and look them up; every hit *votes* for a model basis. A model
+basis that collects many votes is a candidate correspondence -- its scene basis and model basis pin down
+the similarity transform, recovered as the complex ratio \((s_b-s_a)/(m_j-m_i)\) and then *verified* by
+counting how many model points map onto scene points. Because each lookup is invariant, a single correct
+scene basis is enough to surface the model even buried in distractor points -- the idea behind
+model-based object recognition in computer vision.
+
+#+name: gh-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/geometric_hashing.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+
+static Point2D apply_sim(const Point2D& p, double s, double a, double tx, double ty) {
+    const double c = s * std::cos(a), d = s * std::sin(a);
+    return {c * p.x - d * p.y + tx, d * p.x + c * p.y + ty};
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BUILD(model, quant):                       # offline
+  for each ordered basis (i, j) of the model:
+      for each other point k:
+          (u, v) = (model[k] - model[i]) / (model[j] - model[i])
+          table[ bin(u, v) ].append( basis (i, j) )
+
+RECOGNIZE(table, scene, quant):            # online
+  for each ordered scene basis (a, b):
+      votes = {}
+      for each other scene point k:
+          (u, v) = (scene[k] - scene[a]) / (scene[b] - scene[a])
+          for basis in table[ bin(u, v) ]: votes[basis] += 1
+      track the (scene basis, model basis) with the most votes
+  recover similarity from the best basis correspondence; verify by inlier count
+#+end_example
+
+* Worked example: recognition under similarity plus clutter
+
+We build a model, apply a known transform (scale 1.7, rotate 0.9 rad, translate (12, -8)), scatter in
+distractor points, and let =recognize= recover the transform and match.
+
+#+name: gh-run
+#+begin_src c++ :eval no
+    std::vector<Point2D> model{{0, 0}, {2, 0}, {1, 1.5}, {2.2, 1.1}, {0.5, -0.7}, {-0.4, 0.9}};
+    const auto           table = build_geometric_hash(model, 0.05);
+
+    const double s = 1.7, ang = 0.9, tx = 12.0, ty = -8.0;
+    std::vector<Point2D> scene;
+    for (const auto& p : model) scene.push_back(apply_sim(p, s, ang, tx, ty));
+    const Point2D clutter[] = {{-30, -20}, {-25, -34}, {-38, -12}, {-20, -28}};
+    for (const auto& c : clutter) scene.push_back(c);
+
+    const auto match = recognize(table, model, scene, 1e-4, 2);
+    std::cout << "=== Geometric hashing ===\n";
+    std::cout << "applied:   scale " << s << "  angle " << ang << "  translate (" << tx << ", " << ty << ")\n";
+    std::printf("recovered: scale %.4f  angle %.4f  translate (%.4f, %.4f)\n",
+                match.scale, match.angle, match.translation.x, match.translation.y);
+    std::printf("votes %d,  inliers %d / %zu,  model basis (%d,%d) <-> scene basis (%d,%d)\n",
+                match.votes, match.inliers, model.size(), match.model_i, match.model_j,
+                match.scene_a, match.scene_b);
+
+    // Figure: scene points (with clutter) and the recovered model mapped onto them.
+    std::vector<double> scx, scy;
+    for (const auto& p : scene) { scx.push_back(p.x); scy.push_back(p.y); }
+    std::vector<double> rmx, rmy;
+    for (const auto& p : model) {
+        const Point2D r = apply_sim(p, match.scale, match.angle, match.translation.x, match.translation.y);
+        rmx.push_back(r.x); rmy.push_back(r.y);
+    }
+    auto plot = RPlot::create();
+    plot.points(scx, scy, "scene", RGB{150, 160, 175}, 8.0);
+    plot.points(rmx, rmy, "recovered", RGB{220, 40, 40}, 4.0);
+    plot.legend({"scene points (model + clutter)", "recovered model"}, {{150, 160, 175}, {220, 40, 40}});
+    plot.title("Geometric hashing recovers the model inside a cluttered scene")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/geometric_hashing.svg");
+    std::cout << "\nwrote geometric_hashing.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/geometric_hashing_analysis.cpp <<'CPP'
+<<gh-includes>>
+
+int main() {
+<<gh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/geometric_hashing_analysis.cpp -o build/org/geometric_hashing_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/geometric_hashing_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Geometric hashing ===
+applied:   scale 1.7  angle 0.9  translate (12, -8)
+recovered: scale 1.7000  angle 0.9000  translate (12.0000, -8.0000)
+votes 4,  inliers 6 / 6,  model basis (0,2) <-> scene basis (0,2)
+
+wrote geometric_hashing.svg
+#+end_example
+
+The recovered scale, angle, and translation reproduce the transform that was applied, and every model
+point is matched (all inliers) despite the distractor points -- exactly what the test suite checks over
+dozens of random transforms.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/geometric_hashing.svg]]
+
+The gray points are the whole scene, model copy and clutter together; the small red markers are the
+model mapped through the *recovered* transform. They land squarely on the scene's model points and
+ignore the distractors -- the voting picked out the one basis correspondence consistent with a
+similarity, and the invariant coordinate frame made that correspondence visible no matter how the model
+was rotated, scaled, and shifted.

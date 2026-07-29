@@ -1,0 +1,156 @@
+#+title: Laplacian Smoothing: Relaxing a Mesh Toward Its Neighbors
+#+subtitle: A literate C++ study of umbrella smoothing with =datamunge='s =geometry::laplacian_smooth=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A noisy mesh -- a curve or surface whose vertices jitter around where they should be -- is smoothed by
+the simplest possible rule: move every vertex a little toward the average of its neighbors, and repeat.
+This is *Laplacian smoothing*, the discrete cousin of heat diffusion. Each pass shrinks the mesh's
+Dirichlet energy \(\sum_{(i,j)}\lVert v_i-v_j\rVert^2\), pulling kinks flat while pinned boundary
+vertices hold the shape in place. This report drives =datamunge='s =geometry::laplacian_smooth=,
+verified to reduce that energy monotonically over many random meshes, and shows a jagged curve relaxing
+into a smooth one.
+#+end_abstract
+
+* The umbrella operator, and energy descent
+
+Let \(N(i)\) be the graph neighbors of vertex \(i\). The *umbrella* (discrete Laplacian) of \(v_i\) is
+the vector from \(v_i\) to its neighbor centroid,
+
+\[ \Delta v_i=\frac{1}{|N(i)|}\sum_{j\in N(i)}v_j\;-\;v_i, \]
+
+and Laplacian smoothing takes a damped step along it,
+
+\[ v_i\;\gets\;v_i+\lambda\,\Delta v_i,\qquad 0<\lambda\le 1, \]
+
+with boundary vertices held fixed. With \(\lambda=1\) a vertex jumps exactly to its neighbor centroid;
+smaller \(\lambda\) relaxes more gently and avoids overshoot. Applied repeatedly (a Jacobi sweep: all
+vertices read the old positions and write new ones), the update is gradient descent on the *Dirichlet
+energy*
+
+\[ E=\sum_{(i,j)\ \text{edges}}\lVert v_i-v_j\rVert^2, \]
+
+whose gradient with respect to \(v_i\) is exactly \(-2|N(i)|\,\Delta v_i\). So each free vertex moves
+downhill in \(E\); with the boundary pinned, the energy decreases monotonically toward the harmonic
+configuration -- the discrete solution of Laplace's equation on the mesh. This is why one line of code
+(average toward the neighbors) untangles meshes, denoises curves, and regularizes finite-element grids.
+
+#+name: ls-includes
+#+begin_src c++ :eval no
+#include <datamunge/geometry/laplacian_smoothing.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::geometry;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LAPLACIAN-SMOOTH(vertices, neighbors, fixed, lambda, iterations):
+  repeat iterations times:
+      next = copy of vertices                         # Jacobi: read old, write new
+      for each free vertex i:
+          c = mean of vertices[j] for j in neighbors[i]
+          next[i] = vertices[i] + lambda * (c - vertices[i])
+      vertices = next
+  return vertices
+#+end_example
+
+* Worked example: denoising a jagged curve
+
+We take a smooth base curve, add random jitter to its interior points, pin the two endpoints, and smooth.
+We print the Dirichlet energy as it falls and plot the noisy curve against the relaxed one.
+
+#+name: ls-run
+#+begin_src c++ :eval no
+    const int N = 41;
+    std::vector<Point2D>          v(N);
+    std::vector<std::vector<int>> nb(N);
+    std::vector<char>             fixed(N, 0);
+    std::mt19937                  rng(42);
+    std::uniform_real_distribution<double> noise(-3.0, 3.0);
+    for (int i = 0; i < N; ++i) {
+        const double x = i;
+        v[i] = {x, 8.0 * std::sin(x / 6.0) + (i == 0 || i == N - 1 ? 0.0 : noise(rng))};
+    }
+    for (int i = 0; i + 1 < N; ++i) { nb[i].push_back(i + 1); nb[i + 1].push_back(i); }
+    fixed[0] = fixed[N - 1] = 1;
+
+    const std::vector<Point2D> noisy = v;
+    std::cout << "=== Laplacian smoothing ===\n";
+    std::cout << "Dirichlet energy by iteration (lambda = 0.5):\n";
+    std::cout << "  iter 0: " << dirichlet_energy(v, nb) << "\n";
+    std::vector<Point2D> cur = v;
+    for (int pass = 1; pass <= 40; ++pass) {
+        cur = laplacian_smooth(cur, nb, fixed, 0.5, 1);
+        if (pass == 5 || pass == 10 || pass == 20 || pass == 40)
+            std::printf("  iter %2d: %.4f\n", pass, dirichlet_energy(cur, nb));
+    }
+
+    std::vector<double> nx, ny, sx, sy;
+    for (int i = 0; i < N; ++i) { nx.push_back(noisy[i].x); ny.push_back(noisy[i].y); sx.push_back(cur[i].x); sy.push_back(cur[i].y); }
+
+    auto plot = RPlot::create();
+    plot.line(nx, ny, "noisy", RGB{220, 120, 120}, 1.5);
+    plot.points(nx, ny, "noisy", RGB{220, 120, 120}, 3.0);
+    plot.line(sx, sy, "smoothed", RGB{37, 99, 235}, 2.5);
+    plot.legend({"noisy (input)", "smoothed (40 passes)"}, {{220, 120, 120}, {37, 99, 235}});
+    plot.title("Laplacian smoothing relaxes a jagged curve (endpoints pinned)")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/laplacian_smoothing.svg");
+    std::cout << "\nwrote laplacian_smoothing.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/laplacian_smoothing_analysis.cpp <<'CPP'
+<<ls-includes>>
+
+int main() {
+<<ls-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/laplacian_smoothing_analysis.cpp -o build/org/laplacian_smoothing_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/laplacian_smoothing_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Laplacian smoothing ===
+Dirichlet energy by iteration (lambda = 0.5):
+  iter 0: 404.35
+  iter  5: 77.6081
+  iter 10: 73.2431
+  iter 20: 68.5453
+  iter 40: 62.1098
+
+wrote laplacian_smoothing.svg
+#+end_example
+
+The Dirichlet energy falls monotonically pass after pass -- exactly the behavior the test suite checks
+across many random meshes -- as the interior vertices migrate toward their neighbor averages while the
+pinned endpoints anchor the curve.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/laplacian_smoothing.svg]]
+
+The red input rattles around the underlying trend; the blue curve, after forty gentle passes, has shed
+the jitter and settled onto a smooth arc through the same fixed endpoints. That is discrete heat
+diffusion at work: each vertex repeatedly averaged with its neighbors is the explicit Euler step of the
+heat equation, and the pinned boundary makes the limit the harmonic (minimal-energy) interpolant.

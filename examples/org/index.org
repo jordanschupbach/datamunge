@@ -863,6 +863,21 @@ We implement the exact Euclidean distance transform (=geometry::euclidean_distan
 
 We implement the Gilbert-Johnson-Keerthi distance algorithm (=geometry::gjk_distance=) and report it as a literate program. We reframe shape-to-shape distance as the distance from the origin to the Minkowski difference A-B, searched using only the support function via an evolving 1-2-3-point simplex whose closest-to-origin feature drives the next query; a square and a sliding pentagon give exact gaps (0 while overlapping, growing once apart), matched against a brute-force polygon distance over thousands of random convex pairs, with the gap curve plotted.
 
+** [[./laplacian_smoothing_analysis.html][Laplacian Smoothing: Relaxing a Mesh Toward Its Neighbors]] ([[./laplacian_smoothing_analysis.pdf][PDF]])
+/A literate C++ study of umbrella mesh smoothing using datamunge/
+
+We implement Laplacian smoothing (=geometry::laplacian_smooth=, =dirichlet_energy=) and report it as a literate program. Each free vertex takes a damped step toward its neighbor centroid (the umbrella operator), which is gradient descent on the Dirichlet energy sum |v_i - v_j|^2; with the boundary pinned the energy falls monotonically (verified over many random meshes), and a jitter-corrupted curve relaxes into a smooth arc through fixed endpoints -- discrete heat diffusion.
+
+** [[./jump_and_walk_analysis.html][Jump-and-Walk: Locating a Point in a Triangulation]] ([[./jump_and_walk_analysis.pdf][PDF]])
+/A literate C++ study of randomized point location using datamunge/
+
+We implement Jump-and-Walk point location (=geometry::locate_triangle=, =TriangulationLocator=) and report it as a literate program. Sampling ~n^{1/3} triangles to jump to a good start, then walking across the edge whose far side holds the query (an orientation test) with a random start edge each step (the stochastic walk that cannot cycle on a Delaunay mesh), locates the containing triangle in expected O(n^{1/3}); it matches a brute-force containment scan over thousands of queries, with a walk drawn landing on its triangle.
+
+** [[./geometric_hashing_analysis.html][Geometric Hashing: Recognizing a Shape Under an Unknown Transform]] ([[./geometric_hashing_analysis.pdf][PDF]])
+/A literate C++ study of transform-invariant point matching using datamunge/
+
+We implement geometric hashing (=geometry::build_geometric_hash=, =recognize=) and report it as a literate program. Expressing points in the similarity-invariant frame that sends a chosen basis pair to (0,0) and (1,0) -- the complex quotient (p - b0)/(b1 - b0) -- lets a precomputed hash table turn recognition into a voting game; a model scaled 1.7x, rotated 0.9 rad, and translated amid clutter is recovered exactly (all six points inliers), verified over dozens of random transforms, with the recovered model drawn landing on the scene.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
