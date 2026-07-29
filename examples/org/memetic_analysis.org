@@ -1,0 +1,144 @@
+#+title: Memetic Algorithms: Evolution That Also Learns
+#+subtitle: A literate C++ study of GA + local search with =datamunge='s =algorithms::memetic_max_cut=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A genetic algorithm explores broadly but converges slowly, often drifting near a good solution without
+quite reaching it. A *memetic* algorithm bolts local search onto the GA: every offspring is refined to a
+local optimum before it competes, so the population's genetic exploration is paired with each individual's
+lifetime learning. The hybrid usually reaches better solutions in far fewer generations than either alone.
+This report drives =datamunge='s =algorithms::memetic_max_cut=, verified to reach the brute-force optimum
+of MAX-CUT on small graphs, and shows the hybrid at work.
+#+end_abstract
+
+* Genes evolve, individuals learn
+
+A genetic algorithm evolves a population of candidate solutions through *selection* (fitter individuals
+reproduce), *crossover* (mixing two parents), and *mutation* (random tweaks). It is good at *exploration*
+-- roaming the whole search space -- but poor at *exploitation*, the fine local tuning that squeezes out
+the last improvement. A memetic algorithm adds exactly that missing piece: after crossover and mutation,
+each new individual undergoes *local search*, climbing to the nearest local optimum before its fitness is
+judged. The population thus evolves over the landscape of *local optima* rather than raw points, which is
+a vastly smaller and better-behaved space. The name, from Dawkins's "meme", captures the metaphor -- genes
+are inherited, but memes (local improvements) are learned within a lifetime.
+
+For MAX-CUT -- partition a weighted graph's vertices into two sets to maximize the crossing-edge weight --
+the encoding is a bit per vertex, crossover mixes two partitions, mutation flips a few bits, and local
+search repeatedly moves any vertex to the side that increases the cut. Seeding and refining every
+individual with local search means the GA's crossover recombines *already-good* partitions, so the memetic
+search reliably finds the optimum where a plain GA would stall short of it -- the reason memetic algorithms
+dominate on hard combinatorial problems like graph partitioning, routing, and scheduling.
+
+#+name: mem-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/memetic.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <tuple>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+MEMETIC-MAX-CUT(graph, pop_size, generations):
+  population = random partitions, each improved by local search
+  repeat generations times:
+      keep the best (elitism)
+      until the new population is full:
+          pick two parents by tournament selection
+          child = uniform crossover of the parents
+          mutate the child (flip each bit with small probability)
+          local-search the child to a local optimum      # the memetic step
+          add child to the new population
+  return the best partition found
+#+end_example
+
+* Worked example: MAX-CUT against brute force
+
+We run the memetic algorithm on random weighted graphs and compare its cut against the brute-force optimum
+over all partitions. The figure shows the best cut climbing across generations on one graph.
+
+#+name: mem-run
+#+begin_src c++ :eval no
+    // A fixed weighted graph (deterministic construction).
+    const int n = 16;
+    std::vector<std::vector<std::pair<int, double>>> adj(n);
+    std::vector<std::tuple<int, int, double>>        edges;
+    std::uint64_t sdr = 999;
+    auto rnd = [&] { sdr ^= sdr << 13; sdr ^= sdr >> 7; sdr ^= sdr << 17; return sdr; };
+    for (int i = 0; i < n; ++i)
+        for (int j = i + 1; j < n; ++j)
+            if (rnd() % 2) { const double w = 1 + rnd() % 9; adj[i].push_back({j, w}); adj[j].push_back({i, w}); edges.emplace_back(i, j, w); }
+
+    // brute-force optimum
+    double opt = 0;
+    for (unsigned m = 0; m < (1u << n); ++m) { double c = 0; for (auto& [a, b, w] : edges) if (((m >> a) & 1) != ((m >> b) & 1)) c += w; if (c > opt) opt = c; }
+
+    const auto mr = memetic_max_cut(n, adj, 24, 40, 1);
+    std::cout << "=== Memetic algorithm for MAX-CUT ===\n";
+    std::printf("%d vertices, %zu edges.  memetic cut = %.0f,  brute-force optimum = %.0f\n", n, edges.size(), mr.value, opt);
+
+    // best cut vs generations
+    std::vector<double> gens, best;
+    for (int g = 1; g <= 30; ++g) { const auto r = memetic_max_cut(n, adj, 24, g, 1); gens.push_back(g); best.push_back(r.value); }
+
+    auto plot = RPlot::create();
+    plot.line(gens, best, "best", RGB{147, 51, 234}, 2.2);
+    plot.points(gens, best, "best", RGB{147, 51, 234}, 4.0);
+    plot.abline_h(opt, RGB{220, 40, 40}, 1.5);
+    plot.legend({"best cut found", "optimum"}, {{147, 51, 234}, {220, 40, 40}});
+    plot.title("Memetic search climbs to the optimal cut within a few generations")
+        .x_label("generations").y_label("best cut weight").background({250, 250, 252});
+    plot.save_svg("build/org/memetic.svg");
+    std::cout << "\nwrote memetic.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/memetic_analysis.cpp <<'CPP'
+<<mem-includes>>
+
+int main() {
+<<mem-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/memetic_analysis.cpp -o build/org/memetic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/memetic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Memetic algorithm for MAX-CUT ===
+16 vertices, 56 edges.  memetic cut = 195,  brute-force optimum = 195
+
+wrote memetic.svg
+#+end_example
+
+The memetic algorithm finds the brute-force optimal cut, and its best-so-far reaches the optimum within a
+handful of generations -- the local-search refinement of every individual doing the fine tuning a plain
+GA struggles with.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/memetic.svg]]
+
+The purple best-so-far curve rises steeply and then rests on the red optimum line: because each offspring
+is climbed to a local optimum before competing, crossover recombines already-refined partitions and the
+population converges on the true maximum cut quickly. Marrying the GA's exploration to local search's
+exploitation -- genes plus learning -- is what makes memetic algorithms the method of choice when a
+combinatorial problem is too rugged for either evolution or local search alone.

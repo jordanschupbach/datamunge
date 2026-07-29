@@ -22,6 +22,7 @@
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
+#include <datamunge/algorithms/difference_map.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
@@ -63,6 +64,7 @@
 #include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
+#include <datamunge/algorithms/memetic.hpp>
 #include <datamunge/algorithms/merge.hpp>
 #include <datamunge/algorithms/miser.hpp>
 #include <datamunge/algorithms/min_conflicts.hpp>
@@ -91,6 +93,7 @@
 #include <datamunge/algorithms/quadratic_sieve.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/random_restart_hill_climbing.hpp>
 #include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
