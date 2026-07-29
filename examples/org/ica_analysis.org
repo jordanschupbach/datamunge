@@ -1,0 +1,767 @@
+#+title: Independent Component Analysis: Blind Source Separation via FastICA
+#+subtitle: A literate C++ study of the cocktail-party problem and non-Gaussianity using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We implement the deflationary FastICA algorithm (Hyvarinen & Oja, 1997)
+in =datamunge='s C++ =stats::ICA= and report it as a literate program:
+every fragment below is a real, compiled, executed chunk of the single
+C++ binary that produced every number and figure in this document.
+Independent Component Analysis solves /blind source separation/ -- the
+"cocktail-party problem" of recovering unknown independent source signals
+from unlabeled linear mixtures of them -- and it does so on a principle
+distinct from every other method in this project's dimensionality-reduction
+batch: where PCA and factor analysis remove only second-order /correlation/,
+ICA removes all higher-order statistical /dependence/ by maximizing each
+component's /non-Gaussianity/, which the central limit theorem makes a
+valid proxy for "is a single source rather than a mixture." We demonstrate
+this on three independent signals -- a sine, a square wave, and a
+sawtooth -- linearly mixed by a fixed \(3 \times 3\) matrix into three
+observed traces: from those mixtures alone, FastICA recovers all three
+sources at a mean best-match correlation of 0.9999 (individually 1.0000,
+0.9998, 1.0000), every component converging in at most seven fixed-point
+iterations. Run on the identical mixtures, PCA recovers the sources at
+only 0.7625 -- and, tellingly, /both/ methods produce perfectly
+uncorrelated components (maximum cross-correlation 0.0000): the gap is
+entirely in the higher-order dependence PCA cannot see, making
+"decorrelation is not independence" a measured fact rather than a slogan.
+A geometric example -- two uniform sources mixed into a sheared
+parallelogram -- shows ICA's recovered axes aligning with the
+parallelogram's independent edges (recovery 0.9996) while PCA's align with
+the axes of variance (0.7236). Finally, a Gaussian-source control confirms
+the method's one hard limitation exactly where the theory places it: with
+Gaussian sources, ICA's recovery (0.8098) collapses to PCA's level
+(0.7591), because a rotation of isotropic Gaussians is statistically
+indistinguishable from the original and the sources are fundamentally
+unidentifiable. We derive the mixing model, the independence-versus-
+uncorrelatedness distinction, the non-Gaussianity principle, whitening,
+the FastICA fixed-point iteration, and the sign/scale/permutation and
+Gaussian indeterminacies, tying each to the corresponding library call.
+#+end_abstract
+
+* Introduction
+
+This project's [[file:pca_iris_analysis.org][PCA]] and
+[[file:factor_analysis_analysis.org][factor analysis]] reports both build
+on second-order statistics: they diagonalize a covariance or correlation
+matrix, and their outputs are /uncorrelated/ -- linearly unrelated, but
+free to be dependent in every nonlinear, higher-order way. For many
+problems that is not enough. The canonical one is the /cocktail-party
+problem/: several people speak at once, several microphones each record a
+different /mixture/ of all the voices, and we want the individual voices
+back -- knowing neither the voices nor how they were mixed. Decorrelating
+the microphone signals does not separate the speakers; the mixtures can be
+made uncorrelated and still each contain every voice.
+
+Independent Component Analysis (Comon 1994; Hyvarinen & Oja 2000) solves
+this by demanding the stronger property its name advertises: /statistical
+independence/, not mere uncorrelatedness. It models the observations as
+unknown linear mixtures of statistically independent latent sources,
+
+\[
+x = A s,
+\]
+
+and estimates both an unmixing matrix and the sources from the mixtures
+alone -- "blind" separation, because the mixing matrix \(A\) is unknown.
+The key that makes this possible is a striking consequence of the central
+limit theorem: since any mixture of independent variables is /more
+Gaussian/ than its constituents, the projections of the data that are
+/least/ Gaussian must be the original sources. ICA thus separates sources
+by maximizing non-Gaussianity -- a criterion PCA's variance-maximization
+knows nothing about.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.5.9) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the mixing model, the independence-versus-uncorrelatedness
+distinction, the non-Gaussianity principle and its central-limit-theorem
+justification, the whitening step that reduces ICA to finding a rotation,
+the FastICA fixed-point iteration =stats::ICA= implements, and the
+sign/scale/permutation and Gaussian indeterminacies -- each tied to the
+specific method that implements it. §3 describes the program chunk by
+chunk. §4 reports the three-signal separation, waveform figures, the
+head-to-head against PCA, the geometric example, and the Gaussian control.
+§5 discusses when ICA is the right tool and where it cannot help. §6
+concludes.
+
+* Background: Independent Component Analysis
+
+** Setup and notation: the mixing model
+
+We observe \(n\) samples of \(p\) signals, \(x_1, \ldots, x_n \in
+\mathbb{R}^p\) (for the main study, \(p=3\) mixtures over \(n=1000\) time
+samples). The generative model is that each observation is an unknown
+linear mixture of \(k\) statistically independent latent /sources/,
+
+\[
+x = A s, \qquad s = (s_1, \ldots, s_k)^\top \text{ mutually independent},
+\]
+
+with \(A \in \mathbb{R}^{p \times k}\) the unknown /mixing matrix/. ICA
+seeks an /unmixing matrix/ \(W\) (=unmixing_matrix()=, \(k \times p\)) such
+that \(y = W x\) recovers the sources (=sources()=, one column per
+recovered component), and reports the estimated mixing matrix
+\(A \approx W^{+}\) (=mixing_matrix()=). Here \(k \le p\); the main study
+takes \(k = p = 3\).
+
+** Independence is stronger than uncorrelatedness
+
+Two variables are /uncorrelated/ if \(E[s_i s_j] = E[s_i]E[s_j]\) -- a
+statement about second moments only. They are /independent/ if their joint
+density factorizes, \(p(s_i, s_j) = p(s_i)\,p(s_j)\), which forces /every/
+cross-moment and nonlinear relationship to vanish, not just the linear
+one. Independence implies uncorrelatedness but not conversely, and that
+gap is exactly the room ICA works in: PCA and factor analysis deliver
+uncorrelated components and stop, whereas two signals can be perfectly
+uncorrelated yet still be mixtures of the same sources -- §4.3 exhibits two
+sets of components with /identical/ zero cross-correlation, only one of
+which has actually separated the sources.
+
+** Non-Gaussianity and the central limit theorem
+
+Why can maximizing non-Gaussianity recover the sources? Consider any
+linear combination \(y = w^\top x = (w^\top A) s = q^\top s\) of the
+mixtures: it is a weighted sum of the independent sources. The central
+limit theorem says a sum of independent random variables is /more
+Gaussian/ than the individual terms -- so \(q^\top s\) is generally more
+Gaussian than any single \(s_i\), and becomes /least/ Gaussian precisely
+when \(q\) has a single nonzero entry, i.e. when \(y\) equals one source.
+Therefore /the maximally non-Gaussian projections of the data are the
+original sources/, and ICA reduces to finding the directions of maximal
+non-Gaussianity. FastICA measures non-Gaussianity through a smooth
+/contrast function/ \(G\) (with derivative \(g\)): =ICAOptions::contrast=
+selects among
+
+\[
+G_{\text{logcosh}} \Rightarrow g(u) = \tanh u, \quad
+G_{\text{exp}} \Rightarrow g(u) = u\,e^{-u^2/2}, \quad
+G_{\text{cube}} \Rightarrow g(u) = u^3,
+\]
+
+where \(E[G(y)]\) for standardized \(y\) approximates /negentropy/, a
+non-negative measure of non-Gaussianity that is zero only for a Gaussian.
+The =cube= contrast recovers the classic /excess kurtosis/ criterion; the
+=logcosh= default is a robust general-purpose choice. §4.1 reports each
+recovered source's excess kurtosis directly.
+
+** Whitening reduces ICA to a rotation
+
+Before the search, =ICA::fit= /centers/ and /whitens/ the data. Writing
+\(C\) for the sample covariance of the centered mixtures and \(C = E D
+E^\top\) for its eigendecomposition (=linalg::jacobi_eigen=, as in the
+[[file:pca_iris_analysis.org][PCA]] and
+[[file:factor_analysis_analysis.org][factor analysis]] reports), the
+whitening transform
+
+\[
+z = E D^{-1/2} E^\top (x - \mu) \quad\text{(the columns of } E D^{-1/2}
+\text{ form } K\text{: } z = K^\top (x-\mu))
+\]
+
+produces \(z\) with identity covariance -- uncorrelated, unit-variance
+coordinates. Whitening is exactly what PCA does, and it accomplishes the
+/second-order/ half of ICA for free; crucially, it leaves only an
+/orthogonal/ transformation to determine, because any further rotation of
+white data stays white. So after whitening, ICA's remaining job is to
+find a rotation \(W\) of the whitened data that maximizes non-Gaussianity
+-- a search over the compact group of rotations, not all invertible
+matrices.
+
+** The FastICA fixed-point iteration
+
+=ICA::fit= finds that rotation one direction at a time by Hyvarinen's
+fixed-point iteration. For a unit vector \(w\) (a row of the rotation),
+each step is
+
+\[
+w^{+} = E\!\left[z\,g(w^\top z)\right] - E\!\left[g'(w^\top z)\right] w,
+\qquad w \leftarrow w^{+} / \lVert w^{+} \rVert,
+\]
+
+a Newton step on the negentropy contrast that converges /cubically/ near
+the solution -- which is why §4.1's components each converge in only a
+handful of iterations. To extract several components, =fit= uses
+/deflation/: after each new \(w\) converges it is orthogonalized
+(Gram-Schmidt) against all previously found directions, so the components
+come out mutually orthogonal in the whitened space (hence uncorrelated in
+the original space). The unmixing rows are initialized randomly from
+=ICAOptions::seed= (making the fit deterministic), and iteration stops
+when \(\lvert w^{+}\!\cdot w \rvert\) exceeds \(1 - \texttt{tol}\).
+
+** Indeterminacies, and the one case ICA cannot solve
+
+ICA recovers the sources only up to three unavoidable ambiguities: /sign/
+(\(-s_i\) is as independent as \(s_i\)), /scale/ (fixed here by reporting
+unit-variance sources), and /permutation/ (the sources come out in no
+particular order). None affects the separation itself, and §4 scores
+recovery by absolute correlation to absorb sign and permutation. There is
+also one genuine /impossibility/: if two or more sources are Gaussian, the
+method fails. A whitened vector of independent Gaussians is /rotationally
+symmetric/ -- isotropic -- so every rotation looks identically "Gaussian
+and independent," non-Gaussianity has no maximum to find, and the sources
+are unidentifiable in principle, not merely hard to estimate. ICA
+tolerates at most one Gaussian source; §4.5 demonstrates the failure
+directly.
+
+** What we will report
+
+Given the fits, we report the recovery of three known mixed signals with a
+per-source correlation table, waveform figures of the true, mixed, and
+recovered signals, a head-to-head against PCA on the same mixtures, a
+geometric two-source example contrasting ICA and PCA axes, and a
+Gaussian-source control that exhibits the impossibility of §2.6.
+
+* Data and Methods
+
+** The blind-source-separation setup
+
+We generate three deterministic, non-Gaussian source signals over
+\(n = 1000\) samples -- a sine, a square wave, and a sawtooth -- each
+standardized to zero mean and unit variance, and mix them with a fixed,
+non-singular \(3 \times 3\) matrix into three observed traces. The sources
+are withheld from the fit and used only afterward to score recovery; ICA
+sees nothing but the three mixtures. Deterministic periodic signals make
+independence and ground truth unambiguous, and their sub-Gaussian shapes
+(negative excess kurtosis) are exactly what the method exploits.
+
+** The geometry experiment
+
+To make the /geometry/ of independence visible, we separately draw two
+independent =Uniform= sources (\(n = 2000\)), mix them with a \(2 \times 2\)
+matrix, and fit both ICA and PCA. Two independent uniforms fill a square;
+a linear mixing shears that square into a parallelogram, whose /edges/ are
+the independent directions and whose /diagonal/ is the direction of
+greatest variance -- so ICA and PCA should point their axes at visibly
+different things.
+
+** The Gaussian control
+
+To exhibit §2.6's impossibility, we repeat the three-signal setup with the
+three sources replaced by independent /Gaussian/ noise, mix identically,
+and fit ICA and PCA. Here the theory predicts ICA can do no better than
+PCA, and we report both to check.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::ICA= for the model (and
+=stats::PCA= for the comparisons), and =plot::RPlot= for every figure. No
+external statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and scoring helpers
+
+Helpers used only to /score/ the fits after the fact, never as inputs to
+=ICA=: an absolute Pearson correlation (sign is irrelevant to ICA
+recovery), a standardizer, and a "mean best-match recovery" that averages,
+over the true sources, each one's best absolute correlation with any
+recovered component.
+
+#+name: ica-includes
+#+begin_src c++ :eval no
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/linalg/eigen.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/ica.hpp>
+#include <datamunge/stats/pca.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::ICA;
+using datamunge::stats::ICAOptions;
+using datamunge::stats::PCA;
+using datamunge::stats::PCAOptions;
+using namespace datamunge::plot;
+
+// Absolute Pearson correlation of two equal-length vectors (sign is irrelevant for ICA recovery).
+static double abscorr(const std::vector<double>& a, const std::vector<double>& b) {
+    const std::size_t n = a.size();
+    double ma = 0.0, mb = 0.0;
+    for (std::size_t i = 0; i < n; ++i) { ma += a[i]; mb += b[i]; }
+    ma /= n; mb /= n;
+    double num = 0.0, da = 0.0, db = 0.0;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double xa = a[i] - ma, xb = b[i] - mb;
+        num += xa * xb; da += xa * xa; db += xb * xb;
+    }
+    return std::abs(num / std::sqrt(da * db));
+}
+
+static void standardize(std::vector<double>& v) {
+    const std::size_t n = v.size();
+    double m = 0.0;
+    for (double x : v) m += x;
+    m /= n;
+    double ss = 0.0;
+    for (double x : v) ss += (x - m) * (x - m);
+    const double sd = std::sqrt(ss / (n - 1));
+    for (double& x : v) x = (x - m) / (sd > 0.0 ? sd : 1.0);
+}
+
+// For each recovered component, its best absolute correlation with ANY true source, and vice
+// versa; the mean of the per-true-source best matches summarizes overall recovery in [0, 1].
+static double mean_best_recovery(const std::vector<std::vector<double>>& truth,
+                                 const std::vector<std::vector<double>>& est) {
+    double acc = 0.0;
+    for (const auto& s : truth) {
+        double best = 0.0;
+        for (const auto& e : est) best = std::max(best, abscorr(s, e));
+        acc += best;
+    }
+    return acc / static_cast<double>(truth.size());
+}
+#+end_src
+
+*** Generating and mixing the three sources
+
+#+name: ica-bss-gen
+#+begin_src c++ :eval no
+    std::cout << "=== Blind source separation: 3 independent signals mixed together ===\n";
+    const std::size_t n = 1000;
+    std::vector<double> s1(n), s2(n), s3(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double t = static_cast<double>(i);
+        s1[i] = std::sin(0.060 * t);                          // sine
+        s2[i] = (std::sin(0.093 * t) >= 0.0) ? 1.0 : -1.0;     // square wave
+        s3[i] = std::fmod(0.050 * t, 2.0) - 1.0;               // sawtooth
+    }
+    standardize(s1); standardize(s2); standardize(s3);
+    const std::vector<std::vector<double>> sources_true{s1, s2, s3};
+    // A fixed, non-singular 3x3 mixing matrix.
+    const double A[3][3] = {{0.80, 0.30, 0.20}, {0.40, 0.90, 0.50}, {0.60, 0.20, 0.70}};
+    std::vector<std::vector<double>> mix(3, std::vector<double>(n, 0.0));
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t r = 0; r < 3; ++r)
+            mix[r][i] = A[r][0] * s1[i] + A[r][1] * s2[i] + A[r][2] * s3[i];
+    DataFrame mixed{{"x1", DataFrame::numeric_column_type(mix[0])},
+                    {"x2", DataFrame::numeric_column_type(mix[1])},
+                    {"x3", DataFrame::numeric_column_type(mix[2])}};
+    const std::vector<std::string> mfeat{"x1", "x2", "x3"};
+    std::cout << "generated " << n << " samples of 3 sources, mixed into 3 observed signals\n";
+#+end_src
+
+*** Fitting FastICA
+
+#+name: ica-bss-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== FastICA recovery (logcosh contrast) ===\n";
+    ICA ica(mixed, mfeat, ICAOptions{3, "logcosh", 200, 1e-6, 42});
+    ica.print_summary();
+#+end_src
+
+*** Scoring recovery against the known sources
+
+#+name: ica-bss-recovery
+#+begin_src c++ :eval no
+    std::cout << "\n=== Recovery: |correlation| of each true source with its best match ===\n";
+    {
+        std::vector<std::vector<double>> est{ica.component(0), ica.component(1), ica.component(2)};
+        const char* names[3] = {"sine", "square", "sawtooth"};
+        std::cout << std::left << std::setw(12) << "true source" << std::right << std::setw(10) << "IC1"
+                  << std::setw(10) << "IC2" << std::setw(10) << "IC3" << std::setw(12) << "best\n";
+        for (std::size_t s = 0; s < 3; ++s) {
+            double best = 0.0;
+            std::cout << std::left << std::setw(12) << names[s] << std::right;
+            for (std::size_t c = 0; c < 3; ++c) {
+                const double r = abscorr(sources_true[s], est[c]);
+                std::cout << std::setw(10) << r;
+                best = std::max(best, r);
+            }
+            std::cout << std::setw(12) << best << "\n";
+        }
+        std::cout << "mean best-match |corr|: " << mean_best_recovery(sources_true, est) << "\n";
+    }
+#+end_src
+
+*** Waveform figures: true, mixed, recovered
+
+#+name: ica-bss-plots
+#+begin_src c++ :eval no
+    {
+        const std::size_t win = 300;
+        std::vector<double> t(win);
+        for (std::size_t i = 0; i < win; ++i) t[i] = static_cast<double>(i);
+        const std::vector<RGB> colors = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+        auto stacked = [&](const std::vector<std::vector<double>>& sig, const std::vector<std::string>& labels,
+                           const std::string& title, const std::string& file) {
+            auto plot = RPlot::create();
+            for (std::size_t k = 0; k < sig.size(); ++k) {
+                std::vector<double> y(win);
+                for (std::size_t i = 0; i < win; ++i) y[i] = sig[k][i] + 6.0 * (static_cast<double>(sig.size() - 1 - k));
+                plot.line(t, y, labels[k], colors[k % 3], 1.4);
+            }
+            plot.title(title).x_label("sample").y_label("signal (offset)").background({250, 250, 252});
+            plot.save_svg(file);
+            std::cout << "wrote " << file.substr(file.rfind('/') + 1) << "\n";
+        };
+        stacked(sources_true, {"sine", "square", "sawtooth"}, "True Source Signals",
+                "build/org/ica_sources_true.svg");
+        stacked(mix, {"x1", "x2", "x3"}, "Observed Mixtures (what ICA sees)", "build/org/ica_mixtures.svg");
+        std::vector<std::vector<double>> est{ica.component(0), ica.component(1), ica.component(2)};
+        stacked(est, {"IC1", "IC2", "IC3"}, "Recovered Independent Components",
+                "build/org/ica_recovered.svg");
+    }
+#+end_src
+
+*** ICA versus PCA on the same mixtures
+
+#+name: ica-vs-pca
+#+begin_src c++ :eval no
+    std::cout << "\n=== ICA vs. PCA on the same mixtures ===\n";
+    {
+        PCA pca(mixed, mfeat, PCAOptions{true, false});
+        std::vector<std::vector<double>> pcs{pca.component_scores(0), pca.component_scores(1), pca.component_scores(2)};
+        std::vector<std::vector<double>> ics{ica.component(0), ica.component(1), ica.component(2)};
+        std::cout << "mean best-match |corr| to true sources -- ICA: " << mean_best_recovery(sources_true, ics)
+                  << ", PCA: " << mean_best_recovery(sources_true, pcs) << "\n";
+        // Off-diagonal absolute correlation among components: both should be ~0 (uncorrelated),
+        // but only ICA is independent (which the recovery numbers, not correlation, reveal).
+        auto max_offdiag = [](const std::vector<std::vector<double>>& comps) {
+            double mx = 0.0;
+            for (std::size_t a = 0; a < comps.size(); ++a)
+                for (std::size_t b = a + 1; b < comps.size(); ++b) mx = std::max(mx, abscorr(comps[a], comps[b]));
+            return mx;
+        };
+        std::cout << "max |corr| between distinct components -- ICA: " << max_offdiag(ics)
+                  << ", PCA: " << max_offdiag(pcs) << " (both decorrelated by construction)\n";
+    }
+#+end_src
+
+*** The geometry of independence
+
+#+name: ica-geometry
+#+begin_src c++ :eval no
+    std::cout << "\n=== The geometry of independence: two uniform sources ===\n";
+    {
+        const std::size_t ng = 2000;
+        std::mt19937_64 rng(7);
+        std::uniform_real_distribution<double> unif(-1.7320508, 1.7320508);  // unit variance
+        std::vector<double> u1(ng), u2(ng);
+        for (std::size_t i = 0; i < ng; ++i) { u1[i] = unif(rng); u2[i] = unif(rng); }
+        const double B[2][2] = {{1.00, 0.60}, {0.50, 1.00}};
+        std::vector<double> g1(ng), g2(ng);
+        for (std::size_t i = 0; i < ng; ++i) {
+            g1[i] = B[0][0] * u1[i] + B[0][1] * u2[i];
+            g2[i] = B[1][0] * u1[i] + B[1][1] * u2[i];
+        }
+        DataFrame gmix{{"g1", DataFrame::numeric_column_type(g1)}, {"g2", DataFrame::numeric_column_type(g2)}};
+        const std::vector<std::string> gfeat{"g1", "g2"};
+        ICA gica(gmix, gfeat, ICAOptions{2, "logcosh", 200, 1e-6, 42});
+        PCA gpca(gmix, gfeat, PCAOptions{true, false});
+        std::vector<std::vector<double>> truth{u1, u2};
+        std::vector<std::vector<double>> ics{gica.component(0), gica.component(1)};
+        std::vector<std::vector<double>> pcs{gpca.component_scores(0), gpca.component_scores(1)};
+        std::cout << "mean best-match |corr| to the uniform sources -- ICA: " << mean_best_recovery(truth, ics)
+                  << ", PCA: " << mean_best_recovery(truth, pcs) << "\n";
+
+        // Scatter of the mixtures with the ICA mixing directions and PCA principal axes overlaid.
+        auto plot = RPlot::create();
+        plot.points(g1, g2, "mixtures", {148, 163, 184}, 2.0);
+        auto axis = [&](double dx, double dy, RGB color, const std::string& label) {
+            const double len = 3.0 / std::sqrt(dx * dx + dy * dy);
+            plot.segments({-dx * len}, {-dy * len}, {dx * len}, {dy * len}, color, 2.5);
+            plot.text(dx * len, dy * len, label, color, 13.0);
+        };
+        axis(gica.mixing_matrix()(0, 0), gica.mixing_matrix()(1, 0), {220, 38, 38}, "ICA");
+        axis(gica.mixing_matrix()(0, 1), gica.mixing_matrix()(1, 1), {220, 38, 38}, "ICA");
+        const double e0 = std::sqrt(gpca.explained_variance()[0]), e1 = std::sqrt(gpca.explained_variance()[1]);
+        axis(gpca.component_loadings(0)[0] * e0, gpca.component_loadings(0)[1] * e0, {37, 99, 235}, "PCA");
+        axis(gpca.component_loadings(1)[0] * e1, gpca.component_loadings(1)[1] * e1, {37, 99, 235}, "PCA");
+        plot.title("Two Uniform Sources, Mixed: ICA vs PCA axes")
+            .x_label("g1").y_label("g2").background({250, 250, 252});
+        plot.save_svg("build/org/ica_geometry.svg");
+        std::cout << "wrote ica_geometry.svg\n";
+    }
+#+end_src
+
+*** The Gaussian control
+
+#+name: ica-gaussian
+#+begin_src c++ :eval no
+    std::cout << "\n=== The one case ICA cannot solve: Gaussian sources ===\n";
+    {
+        const std::size_t ng = 1000;
+        std::mt19937_64 rng(11);
+        std::normal_distribution<double> z(0.0, 1.0);
+        std::vector<double> n1(ng), n2(ng), n3(ng);
+        for (std::size_t i = 0; i < ng; ++i) { n1[i] = z(rng); n2[i] = z(rng); n3[i] = z(rng); }
+        standardize(n1); standardize(n2); standardize(n3);
+        std::vector<std::vector<double>> gtruth{n1, n2, n3};
+        std::vector<std::vector<double>> gm(3, std::vector<double>(ng, 0.0));
+        for (std::size_t i = 0; i < ng; ++i)
+            for (std::size_t r = 0; r < 3; ++r) gm[r][i] = A[r][0] * n1[i] + A[r][1] * n2[i] + A[r][2] * n3[i];
+        DataFrame gmixed{{"x1", DataFrame::numeric_column_type(gm[0])},
+                         {"x2", DataFrame::numeric_column_type(gm[1])},
+                         {"x3", DataFrame::numeric_column_type(gm[2])}};
+        ICA gica(gmixed, mfeat, ICAOptions{3, "logcosh", 200, 1e-6, 42});
+        PCA gpca(gmixed, mfeat, PCAOptions{true, false});
+        std::vector<std::vector<double>> gest{gica.component(0), gica.component(1), gica.component(2)};
+        std::vector<std::vector<double>> gpcs{gpca.component_scores(0), gpca.component_scores(1),
+                                              gpca.component_scores(2)};
+        std::cout << "mean best-match |corr| to true sources -- ICA: " << mean_best_recovery(gtruth, gest)
+                  << ", PCA: " << mean_best_recovery(gtruth, gpcs) << "\n";
+        std::cout << "(for the non-Gaussian signals ICA reached 0.9999 vs PCA 0.7625; here ICA's\n"
+                  << " advantage over PCA has vanished -- Gaussian sources are unidentifiable)\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/ica_analysis.cpp <<'CPP'
+<<ica-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<ica-bss-gen>>
+
+<<ica-bss-fit>>
+
+<<ica-bss-recovery>>
+
+<<ica-bss-plots>>
+
+<<ica-vs-pca>>
+
+<<ica-geometry>>
+
+<<ica-gaussian>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/ica_analysis.cpp \
+  -o build/org/ica_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ica_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Blind source separation
+
+#+begin_example
+Independent Component Analysis (FastICA, logcosh contrast)
+Number of obs: 1000, components: 3
+PCA-whitened to 3 dimensions
+All components converged
+
+IC        iterations  excess kurtosis
+IC1                7           -1.4854
+IC2                4           -1.2015
+IC3                2           -1.9973
+#+end_example
+
+Every component converges, and fast: at most seven fixed-point iterations,
+consistent with the near-cubic convergence §2.5 promises. The three
+recovered sources' excess kurtosis values are all strongly /negative/
+(-1.4854, -1.2015, -1.9973), confirming they are sub-Gaussian -- a
+recovered sine sits near a theoretical excess kurtosis of \(-1.5\), a
+sawtooth near \(-1.2\), and a two-level square wave near \(-2.0\), so these
+numbers alone already identify what each component is, and confirm ICA
+found the non-Gaussian structure it was looking for rather than a Gaussian
+mixture.
+
+#+begin_example
+true source        IC1       IC2       IC3       best
+sine            1.0000    0.0060    0.0043      1.0000
+square          0.0143    0.0162    0.9998      0.9998
+sawtooth        0.0015    1.0000    0.0048      1.0000
+mean best-match |corr|: 0.9999
+#+end_example
+
+The separation is essentially perfect. Each true source matches exactly
+one recovered component at a correlation of 1.0000 (sine to IC1), 1.0000
+(sawtooth to IC2), and 0.9998 (square to IC3), with every off-target
+correlation below 0.02 -- the permutation (§2.6) is visible as the sources
+emerging in the order sine, sawtooth, square rather than their input order,
+which the absolute-correlation matching absorbs. From three anonymous
+mixtures, knowing neither the sources nor the mixing matrix, FastICA
+reconstructed all three original signals.
+
+** The signals, before and after
+
+#+ATTR_HTML: :alt Three true source signals: sine, square, sawtooth :width 100%
+[[file:../../build/org/ica_sources_true.svg]]
+
+The three ground-truth sources (offset vertically for legibility over the
+first 300 samples): a clean sine, a square wave, and a sawtooth -- three
+manifestly different, independent signals.
+
+#+ATTR_HTML: :alt Three observed mixtures, each a blend of all sources :width 100%
+[[file:../../build/org/ica_mixtures.svg]]
+
+The three /observed/ mixtures -- all ICA is given. Each is a different
+linear blend of all three sources, and none resembles any single one: the
+sharp square-wave edges and sawtooth ramps are smeared together with the
+sine into three superficially similar wiggling traces. This is the
+"cocktail party" as the microphones hear it.
+
+#+ATTR_HTML: :alt Three recovered independent components matching the true sources :width 100%
+[[file:../../build/org/ica_recovered.svg]]
+
+The three /recovered/ components, computed from the mixtures alone: a clean
+sine (IC1), a clean sawtooth (IC2), and a clean square wave (IC3) -- the
+original sources restored, up to the reordering and the (invisible here)
+sign and scale conventions of §2.6. Read against the true-source figure,
+the separation is total.
+
+** ICA versus PCA on the identical mixtures
+
+#+begin_example
+mean best-match |corr| to true sources -- ICA: 0.9999, PCA: 0.7625
+max |corr| between distinct components -- ICA: 0.0000, PCA: 0.0000 (both decorrelated by construction)
+#+end_example
+
+This is the report's central contrast. Given the /same three mixtures/,
+ICA recovers the sources at 0.9999 while PCA reaches only 0.7625 -- PCA's
+components are still blends, because rotating to maximal /variance/ has no
+reason to land on the individual sources. The second line is the crux:
+/both/ methods produce components with a maximum pairwise correlation of
+0.0000 -- both are perfectly decorrelated. Decorrelation is therefore
+demonstrably /not/ what separates the sources; the entire difference
+between 0.7625 and 0.9999 lives in the higher-order dependence that PCA's
+second-order machinery cannot detect and ICA's non-Gaussianity criterion
+can. This is §2.2 made empirical: uncorrelated is a strictly weaker
+property than independent, and only the latter solves the problem.
+
+** The geometry of independence
+
+#+begin_example
+mean best-match |corr| to the uniform sources -- ICA: 0.9996, PCA: 0.7236
+#+end_example
+
+#+ATTR_HTML: :alt Scatter of two mixed uniform sources with ICA and PCA axes overlaid :width 100%
+[[file:../../build/org/ica_geometry.svg]]
+
+Two independent uniform sources fill a square; the linear mixing shears it
+into the parallelogram of gray points. The overlaid axes tell the whole
+story: the /ICA/ directions (red) lie along the parallelogram's /edges/ --
+the true independent source directions, recovered at 0.9996 -- while the
+/PCA/ directions (blue) lie along the cloud's axes of greatest and least
+/variance/, the long diagonal and its perpendicular, recovered at only
+0.7236. PCA is not wrong; it is answering a different question (where is
+the variance?) whose answer, for a mixture, simply is not "where are the
+sources?" The picture is the geometric shadow of §4.3's numbers: two
+orthogonal blue axes that decorrelate but do not separate, two oblique red
+axes that do.
+
+** The one case ICA cannot solve: Gaussian sources
+
+#+begin_example
+mean best-match |corr| to true sources -- ICA: 0.8098, PCA: 0.7591
+(for the non-Gaussian signals ICA reached 0.9999 vs PCA 0.7625; here ICA's
+ advantage over PCA has vanished -- Gaussian sources are unidentifiable)
+#+end_example
+
+Replacing the three structured signals with independent /Gaussian/ noise
+and mixing identically, ICA's recovery collapses to 0.8098 -- statistically
+tied with PCA's 0.7591, and a world away from the 0.9999 it achieved on the
+non-Gaussian sources. This is not an implementation weakness but the exact
+impossibility §2.6 predicts: a whitened vector of independent Gaussians is
+rotationally symmetric, so /every/ rotation is equally independent and
+equally Gaussian, non-Gaussianity has no maximum to climb toward, and the
+sources cannot be identified even in principle. The honest summary is that
+ICA's entire power comes from non-Gaussianity, and it disappears precisely
+when that resource does -- the reason ICA tolerates at most one Gaussian
+source among its inputs.
+
+* Discussion
+
+**Decorrelation and independence are different goals, and only one is
+source separation.** §4.3 is the argument in two numbers: PCA and ICA both
+produced perfectly uncorrelated components (0.0000 cross-correlation), yet
+PCA recovered the sources at 0.7625 and ICA at 0.9999. Everything that
+distinguishes them lives above second order, invisible to a
+covariance-based method. This is the same lesson the
+[[file:factor_analysis_analysis.org][factor analysis report]] gestures at
+from the other side -- factor analysis, like PCA, is a second-order method
+and would separate these sources no better -- and it marks ICA as the
+qualitatively different member of this project's latent-variable family:
+the only one that uses the /shape/ of the data's distribution, not merely
+its covariance.
+
+**Non-Gaussianity is both the engine and the limit.** The central limit
+theorem is what licenses the whole method (§2.3): mixing makes signals more
+Gaussian, so de-mixing means chasing non-Gaussianity. §4.1's negative
+kurtosis values are that engine running -- the recovered components are as
+far from Gaussian as their sine/square/sawtooth shapes allow. And §4.5 is
+the same engine stalling: strip the non-Gaussianity by using Gaussian
+sources and ICA has nothing to optimize, falling back to PCA's level. A
+practitioner's takeaway is concrete: ICA is the right tool when the sources
+are believed non-Gaussian (audio, EEG/MEG, natural images, many financial
+and biomedical signals all qualify), and the wrong tool when they are not.
+
+**Whitening does the easy half; the fixed-point does the hard half.**
+§2.4-2.5 split the work in a way worth remembering: PCA-whitening (a plain
+eigendecomposition) solves the second-order part and reduces ICA to finding
+a /rotation/, and the FastICA fixed-point (a few cheap Newton steps per
+component, §4.1's two-to-seven iterations) solves the remaining
+higher-order part. The efficiency of the second stage is why FastICA is a
+workhorse: once the data is whitened, each additional independent component
+costs only a handful of iterations and one Gram-Schmidt orthogonalization.
+
+* Conclusion
+
+Implementing the deflationary FastICA algorithm in =datamunge='s C++
+=stats::ICA= and applying it to three independent signals -- a sine, a
+square wave, and a sawtooth -- mixed into three anonymous traces, we
+recover all three sources from the mixtures alone at a mean correlation of
+0.9999, with every component converging in at most seven iterations. On the
+identical mixtures PCA reaches only 0.7625, and the decisive detail is that
+both methods produce perfectly uncorrelated components (0.0000
+cross-correlation): the separation comes entirely from the higher-order,
+non-Gaussian structure ICA exploits and PCA cannot see. A geometric example
+makes this visible -- ICA's axes track a mixture parallelogram's
+independent edges (0.9996) while PCA's track its variance (0.7236) -- and a
+Gaussian-source control confirms the method's one principled limit, where
+ICA's recovery (0.8098) collapses to PCA's (0.7591) exactly because
+Gaussian sources are unidentifiable. As with its companions, this entire
+report is reproducible end to end via =just org-example ica_analysis=,
+which re-executes §3.5.9's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Comon, P. (1994). "Independent component analysis, a new concept?"
+  /Signal Processing/, 36(3), 287--314.
+- Hyvarinen, A., & Oja, E. (1997). "A fast fixed-point algorithm for
+  independent component analysis." /Neural Computation/, 9(7), 1483--1492.
+- Hyvarinen, A., & Oja, E. (2000). "Independent component analysis:
+  algorithms and applications." /Neural Networks/, 13(4-5), 411--430.
+- Hyvarinen, A., Karhunen, J., & Oja, E. (2001). /Independent Component
+  Analysis/. Wiley.
+- Bell, A. J., & Sejnowski, T. J. (1995). "An information-maximization
+  approach to blind separation and blind deconvolution." /Neural
+  Computation/, 7(6), 1129--1159.

@@ -1,0 +1,683 @@
+#+title: Conformal Prediction: Distribution-Free Coverage Guarantees
+#+subtitle: A literate C++ study of prediction sets and intervals with a guarantee, on iris, using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We implement /split conformal prediction/ (Vovk, Gammerman & Shafer 2005;
+Lei et al. 2018) in =datamunge='s C++ =stats::SplitConformalClassifier=
+and =stats::SplitConformalRegressor=, and report it as a literate program:
+every fragment below is a real, compiled, executed chunk of the single C++
+binary that produced every number and figure in this document. A trained
+model usually emits a bare point prediction with no honest sense of its own
+uncertainty. Conformal prediction is a wrapper -- around /any/ base model --
+that fixes this: it turns point predictions into prediction /sets/ (for
+classification) or /intervals/ (for regression) that are guaranteed to
+contain the true answer with probability at least \(1 - \alpha\), and this
+guarantee is /distribution-free/ and /finite-sample/, resting on nothing
+but the assumption that the calibration and test data are exchangeable. It
+works by scoring how "strange" each held-out calibration example is under
+the model, taking a finite-sample-corrected quantile of those scores as a
+threshold, and admitting into a test point's set every label whose score
+falls below it. On Fisher's iris data, wrapping a \(k\)-nearest-neighbors
+classifier, conformal prediction returns a confident singleton
+\(\{\text{setosa}\}\) when the flower is unambiguous and an honest
+two-class set \(\{\text{versicolor}, \text{virginica}\}\) exactly at the
+overlapping boundary of those two species -- its set size adapting to
+difficulty automatically. Averaged over 300 random calibration/test splits,
+its empirical coverage meets the target at every level (83.0% at
+\(\alpha=0.2\), 92.2% at \(0.1\), 97.2% at \(0.05\), all at or above the
+\(1-\alpha\) line), and at \(\alpha=0.01\) the finite-sample correction
+honestly returns the trivial full set, since 50 calibration points cannot
+certify 99% coverage without it. A regression example -- guaranteed
+intervals for petal length from petal width -- shows the same guarantee
+holds for continuous responses (coverage 80.7%, 90.5%, 96.4% against
+targets 80%, 90%, 95%). We derive exchangeability, the nonconformity score,
+the conformal quantile and its coverage proof, the LAC and APS
+classification scores, and the absolute-residual regression interval, tying
+each to the corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every classifier and regressor in this project returns a point prediction:
+this flower is /versicolor/; this petal is 4.5 cm long. What none of them
+returns, honestly, is /how sure it is/. A model's own probability outputs
+are not a reliable answer -- they are often miscalibrated, and they carry no
+guarantee. Yet for any decision that matters, the useful object is not a
+single guess but a /set of plausible answers/ with a known reliability: "the
+species is one of these two, and I am right 90% of the time when I say so."
+
+/Conformal prediction/ produces exactly that, with a guarantee that is
+remarkable for how little it assumes. Wrapped around any already-trained
+model, it outputs a prediction /set/ (classification) or /interval/
+(regression) that contains the true answer with probability at least
+\(1 - \alpha\) -- and this holds /distribution-free/ (no assumption about
+the data-generating process), /finite-sample/ (not just asymptotically),
+and /model-agnostic/ (the base model can be anything, however biased or
+miscalibrated). The only requirement is /exchangeability/: that the
+calibration data and the future test point are drawn from the same
+distribution, order not mattering. In exchange for that one assumption, the
+coverage guarantee is exact.
+
+The mechanism is disarmingly simple. Set aside a /calibration/ set the model
+did not train on. Score each calibration example by how poorly the model
+fits its true answer -- a /nonconformity/ score. Take a particular quantile
+of those scores as a threshold. Then a test point's prediction set is every
+candidate answer whose score falls below the threshold. Because the
+calibration scores and the test score are exchangeable, the test answer's
+score lands below the threshold at least \(1-\alpha\) of the time -- and that
+is the whole proof.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.4.5) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives exchangeability, the nonconformity score, the conformal quantile
+and the short proof of its coverage guarantee, the two classification
+scores (LAC and APS), and the regression interval -- each tied to the piece
+of =datamunge= that implements it. §3 describes the program chunk by chunk.
+§4 reports iris prediction sets and their adaptivity, the coverage
+guarantee validated over many splits, and a regression-interval example. §5
+discusses what the guarantee does and does not promise. §6 concludes.
+
+* Background: Split Conformal Prediction
+
+** Setup and exchangeability
+
+We have a trained base model and a separate /calibration/ set of \(n\)
+labeled examples \((x_1, y_1), \ldots, (x_n, y_n)\) that the model did /not/
+train on, plus a future test point \((x_{n+1}, y_{n+1})\) whose label we
+want to cover. The sole assumption is /exchangeability/: the joint
+distribution of the \(n+1\) pairs is invariant to their ordering (any
+i.i.d. sample qualifies, but exchangeability is weaker). In the library,
+the base model is used only to produce the inputs conformal needs -- class
+probabilities for classification, point predictions for regression -- so the
+conformal layer itself is entirely model-agnostic.
+
+** The nonconformity score
+
+A /nonconformity score/ \(s(x, y)\) measures how poorly the pair \((x, y)\)
+conforms to what the model expects -- larger means stranger. Its precise form
+is a modeling choice (§2.4-2.5 give three), but the guarantee below holds
+for /any/ score. We compute the score of each calibration example at its
+/true/ label, \(s_i = s(x_i, y_i)\), giving a sample of \(n\) nonconformity
+scores.
+
+** The conformal quantile and its guarantee
+
+Fix a miscoverage level \(\alpha\). The /conformal quantile/ is the
+finite-sample-corrected empirical quantile of the calibration scores,
+
+\[
+\hat{q} = \text{the } \lceil (n+1)(1-\alpha) \rceil \text{-th smallest of }
+   s_1, \ldots, s_n ,
+\]
+
+(and \(\hat{q} = +\infty\) when that rank exceeds \(n\), §2.6). The
+prediction set for a test input is every label whose score is at most
+\(\hat{q}\),
+
+\[
+C(x_{n+1}) = \{\, y : s(x_{n+1}, y) \le \hat{q} \,\} ,
+\]
+
+and =datamunge='s =conformal_quantile= and the classifier's =predict_set=
+implement exactly these two lines. The coverage guarantee follows in one
+step. The true test label is covered precisely when its own score is small
+enough, \(y_{n+1} \in C(x_{n+1}) \iff s_{n+1} \le \hat{q}\), so
+
+\[
+\Pr\bigl(y_{n+1} \in C(x_{n+1})\bigr) = \Pr\bigl(s_{n+1} \le \hat{q}\bigr)
+   \;\ge\; \frac{\lceil (n+1)(1-\alpha) \rceil}{n+1} \;\ge\; 1 - \alpha .
+\]
+
+The middle inequality is the entire content: by exchangeability the
+\(n+1\) scores \(s_1, \ldots, s_{n+1}\) are equally likely in any order, so
+the rank of the test score \(s_{n+1}\) among them is uniform, and it falls
+at or below the \(\lceil(n+1)(1-\alpha)\rceil\)-th smallest with probability
+at least \(\lceil(n+1)(1-\alpha)\rceil / (n+1) \ge 1-\alpha\). No property of
+the model or the data distribution is used. §4.2 confirms the guarantee
+empirically.
+
+** Classification scores: LAC and APS
+
+For classification the base model outputs class probabilities \(\hat{p}(y
+\mid x)\), and =ConformalClassifierOptions::score= selects the nonconformity
+score. The /LAC/ score (Least Ambiguous set-valued Classifier; also called
+the softmax-score method) is simply
+
+\[
+s_{\text{LAC}}(x, y) = 1 - \hat{p}(y \mid x) ,
+\]
+
+so a label is admitted when its predicted probability clears the threshold,
+\(\hat{p}(y \mid x) \ge 1 - \hat{q}\); this gives the smallest sets on
+average. The /APS/ score (Adaptive Prediction Sets) instead accumulates the
+probabilities of all classes at least as likely as \(y\),
+
+\[
+s_{\text{APS}}(x, y) = \sum_{y' : \hat{p}(y' \mid x) \ge \hat{p}(y \mid x)}
+   \hat{p}(y' \mid x) ,
+\]
+
+which spreads coverage across classes and yields more input-adaptive set
+sizes when the probabilities are smooth. Either way, the set is
+\(\{y : s(x, y) \le \hat{q}\}\) and the guarantee of §2.3 applies unchanged.
+
+** Regression: the absolute-residual interval
+
+For regression the base model outputs a point prediction \(\hat{y}(x)\), and
+the natural nonconformity score is the absolute residual,
+
+\[
+s(x, y) = \lvert y - \hat{y}(x) \rvert .
+\]
+
+Its conformal quantile \(\hat{q}\) is a single number -- the calibrated
+interval half-width -- and =SplitConformalRegressor::predict_interval=
+returns
+
+\[
+C(x) = \bigl[\, \hat{y}(x) - \hat{q}, \; \hat{y}(x) + \hat{q} \,\bigr] ,
+\]
+
+which contains \(y\) with probability at least \(1-\alpha\) by the same
+argument. Note the width is /constant/ in \(x\): basic split conformal buys
+its guarantee at the cost of a fixed-width band, a limitation §5 revisits.
+
+** The finite-sample floor
+
+The correction \(\lceil (n+1)(1-\alpha)\rceil\) can exceed \(n\) -- precisely
+when \((n+1)(1-\alpha) > n\), i.e. \(\alpha < 1/(n+1)\). Then there is no
+\(n\)-th-order statistic large enough, \(\hat{q}=+\infty\), and the honest
+prediction set is /everything/. This is not a defect but the guarantee
+telling the truth: with only \(n\) calibration points one cannot certify
+coverage tighter than \(1 - 1/(n+1)\) without returning the trivial set.
+§4.2 shows this happening at \(\alpha=0.01\) with \(n=50\).
+
+** What we will report
+
+Given a base classifier and regressor for iris, we report conformal
+prediction sets on one split (with their species-dependent adaptivity),
+the coverage guarantee validated as a mean over many random splits (for
+both the LAC and APS scores), and a conformal regression-interval example.
+
+* Data and Methods
+
+** The data and base models
+
+We use Fisher's 150-flower iris data, split at random into three equal
+parts: 50 rows to /train/ the base model, 50 to /calibrate/ the conformal
+threshold, and 50 to /test/. The base classifier is a \(k\)-nearest-
+neighbors model (\(k=15\)) on all four measurements, whose vote-share
+probabilities feed the conformal classifier; the base regressor is a
+kernel ridge regression of =Petal.Length= on =Petal.Width=. Conformal
+prediction is indifferent to these choices -- its guarantee would hold for
+any base model -- and they serve only to supply the probabilities and point
+predictions it wraps.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::KNNClassifier= and
+=stats::KernelRidgeRegression= for the base models,
+=stats::SplitConformalClassifier= and =stats::SplitConformalRegressor= for
+the conformal layer, and =plot::RPlot= for every figure.
+
+** Program, presented as a literate whole
+
+*** Includes and helpers
+
+Helpers to split iris into train/calibration/test DataFrames and to read a
+KNN model's class probabilities and true labels into the matrix/vector form
+the conformal classifier consumes.
+
+#+name: conf-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/linalg/dense_matrix.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/conformal.hpp>
+#include <datamunge/stats/kernel_ridge_regression.hpp>
+#include <datamunge/stats/knn_classifier.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::linalg::DenseMatrix;
+using namespace datamunge::stats;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kFeatures = {"Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width"};
+
+// Build a DataFrame from the rows iris[idx[a..b)] (four numeric features plus Species).
+static DataFrame subset(const DataFrame& iris, const std::vector<std::size_t>& idx, std::size_t a, std::size_t b) {
+    std::vector<std::vector<double>> cols(kFeatures.size());
+    std::vector<std::string> sp;
+    for (std::size_t t = a; t < b; ++t) {
+        for (std::size_t f = 0; f < kFeatures.size(); ++f) cols[f].push_back(iris.double_at(kFeatures[f], idx[t]));
+        sp.push_back(iris.string_at("Species", idx[t]));
+    }
+    DataFrame d;
+    for (std::size_t f = 0; f < kFeatures.size(); ++f) d.add_column(kFeatures[f], cols[f]);
+    d.add_column("Species", sp);
+    return d;
+}
+
+// A random train/calibration/test partition of iris (sizes 50/50/50).
+struct Split { DataFrame train, calib, test; };
+static Split make_split(const DataFrame& iris, unsigned seed) {
+    std::vector<std::size_t> idx(iris.nrows());
+    std::iota(idx.begin(), idx.end(), 0);
+    std::mt19937_64 rng(seed);
+    std::shuffle(idx.begin(), idx.end(), rng);
+    return {subset(iris, idx, 0, 50), subset(iris, idx, 50, 100), subset(iris, idx, 100, 150)};
+}
+
+// KNN class probabilities (vote shares) as a rows x classes matrix, and the true class indices.
+static DenseMatrix<double> probs_of(const KNNClassifier& m, const DataFrame& d) {
+    const auto pr = m.predict_detail(d);
+    DenseMatrix<double> M(d.nrows(), m.classes().size(), 0.0);
+    for (std::size_t i = 0; i < d.nrows(); ++i)
+        for (std::size_t k = 0; k < m.classes().size(); ++k) M(i, k) = pr.vote_share[i][k];
+    return M;
+}
+static std::vector<std::size_t> labels_of(const std::vector<std::string>& classes, const DataFrame& d) {
+    std::vector<std::size_t> L(d.nrows());
+    for (std::size_t i = 0; i < d.nrows(); ++i)
+        L[i] = static_cast<std::size_t>(std::lower_bound(classes.begin(), classes.end(), d.string_at("Species", i)) -
+                                        classes.begin());
+    return L;
+}
+#+end_src
+
+*** Prediction sets on one split
+
+#+name: conf-single
+#+begin_src c++ :eval no
+    std::cout << "=== Conformal prediction sets for iris species (one split, alpha=0.1) ===\n";
+    {
+        const auto sp = make_split(iris, 20240815);
+        KNNClassifier knn(sp.train, "Species ~ Petal.Length + Petal.Width + Sepal.Length + Sepal.Width",
+                          KNNClassifierOptions{K_NN});
+        const auto classes = knn.classes();
+        SplitConformalClassifier conf(probs_of(knn, sp.calib), labels_of(classes, sp.calib), classes,
+                                      ConformalClassifierOptions{0.1, "lac"});
+        std::cout << "base: " << K_NN << "-NN; calibrated threshold q = " << conf.quantile() << "\n";
+
+        const auto tp = probs_of(knn, sp.test);
+        const auto tl = labels_of(classes, sp.test);
+        const auto ev = conf.evaluate(tp, tl);
+        std::cout << "test coverage: " << ev.coverage << ", average set size: " << ev.average_set_size << "\n";
+
+        // One representative prediction set per species (covered; preferring an ambiguous 2-set).
+        std::cout << "\nExample prediction sets (true species -> set):\n";
+        for (const std::string& want : {"setosa", "versicolor", "virginica"}) {
+            std::size_t best = sp.test.nrows();
+            std::size_t best_size = 0;
+            for (std::size_t i = 0; i < sp.test.nrows(); ++i) {
+                if (sp.test.string_at("Species", i) != want) continue;
+                std::vector<double> row(classes.size());
+                for (std::size_t k = 0; k < classes.size(); ++k) row[k] = tp(i, k);
+                const auto in = conf.membership(row);
+                std::size_t sz = 0;
+                for (char c : in) sz += c;
+                // Prefer a covered example, and among those the largest (most informative) set.
+                if (in[tl[i]] && sz > best_size) { best = i; best_size = sz; }
+            }
+            if (best < sp.test.nrows()) {
+                std::vector<double> row(classes.size());
+                for (std::size_t k = 0; k < classes.size(); ++k) row[k] = tp(best, k);
+                std::cout << "  " << std::left << std::setw(12) << want << " -> { ";
+                for (const auto& c : conf.predict_set(row)) std::cout << c << " ";
+                std::cout << "}\n";
+            }
+        }
+
+        // Figure: test points in petal space, marked by prediction-set size.
+        auto plot = RPlot::create();
+        std::vector<std::vector<double>> sx(3), sy(3);  // set size 1, 2, 3
+        for (std::size_t i = 0; i < sp.test.nrows(); ++i) {
+            std::vector<double> row(classes.size());
+            for (std::size_t k = 0; k < classes.size(); ++k) row[k] = tp(i, k);
+            std::size_t sz = conf.predict_set(row).size();
+            if (sz >= 1 && sz <= 3) {
+                sx[sz - 1].push_back(sp.test.double_at("Petal.Length", i));
+                sy[sz - 1].push_back(sp.test.double_at("Petal.Width", i));
+            }
+        }
+        const std::vector<RGB> col = {{22, 163, 74}, {217, 119, 6}, {220, 38, 38}};
+        const std::vector<std::string> lab = {"singleton (confident)", "two-class set (ambiguous)", "three-class set"};
+        for (std::size_t s = 0; s < 3; ++s)
+            if (!sx[s].empty()) plot.points(sx[s], sy[s], lab[s], col[s], 6.0);
+        plot.title("Conformal set size by location (alpha=0.1)")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)").background({250, 250, 252});
+        plot.save_svg("build/org/conformal_setsize.svg");
+        std::cout << "wrote conformal_setsize.svg\n";
+    }
+#+end_src
+
+*** Validating the guarantee over many splits
+
+#+name: conf-validate
+#+begin_src c++ :eval no
+    std::cout << "\n=== The guarantee: mean coverage over 300 random splits ===\n";
+    {
+        std::cout << std::left << std::setw(8) << "alpha" << std::right << std::setw(12) << "target"
+                  << std::setw(16) << "LAC coverage" << std::setw(12) << "LAC size" << std::setw(16)
+                  << "APS coverage" << std::setw(12) << "APS size\n";
+        std::vector<double> alphas = {0.20, 0.10, 0.05, 0.01};
+        std::vector<double> lac_cov_pts, target_pts;
+        const int R = 300;
+        for (double a : alphas) {
+            double lc = 0, ls = 0, ac = 0, as = 0;
+            for (int r = 0; r < R; ++r) {
+                const auto sp = make_split(iris, static_cast<unsigned>(1000 + r));
+                KNNClassifier knn(sp.train, "Species ~ Petal.Length + Petal.Width + Sepal.Length + Sepal.Width",
+                                  KNNClassifierOptions{K_NN});
+                const auto classes = knn.classes();
+                const auto cp = probs_of(knn, sp.calib);
+                const auto cl = labels_of(classes, sp.calib);
+                const auto tp = probs_of(knn, sp.test);
+                const auto tl = labels_of(classes, sp.test);
+                SplitConformalClassifier lac(cp, cl, classes, ConformalClassifierOptions{a, "lac"});
+                SplitConformalClassifier aps(cp, cl, classes, ConformalClassifierOptions{a, "aps"});
+                const auto el = lac.evaluate(tp, tl), ea = aps.evaluate(tp, tl);
+                lc += el.coverage; ls += el.average_set_size; ac += ea.coverage; as += ea.average_set_size;
+            }
+            lc /= R; ls /= R; ac /= R; as /= R;
+            std::cout << std::left << std::setw(8) << a << std::right << std::setw(12) << (1 - a) << std::setw(16)
+                      << lc << std::setw(12) << ls << std::setw(16) << ac << std::setw(12) << as << "\n";
+            target_pts.push_back(1 - a);
+            lac_cov_pts.push_back(lc);
+        }
+        // Figure: achieved coverage vs. the 1-alpha target, with the y=x guarantee line.
+        auto plot = RPlot::create();
+        std::vector<double> diag = {0.75, 1.0};
+        plot.line(diag, diag, "target (1 - alpha)", {156, 163, 175}, 1.5);
+        plot.points(target_pts, lac_cov_pts, "achieved coverage", {37, 99, 235}, 7.0);
+        plot.title("Conformal coverage meets its guarantee (mean over 300 splits)")
+            .x_label("target 1 - alpha").y_label("mean empirical coverage").background({250, 250, 252});
+        plot.save_svg("build/org/conformal_coverage.svg");
+        std::cout << "wrote conformal_coverage.svg\n";
+    }
+#+end_src
+
+*** Conformal regression intervals
+
+#+name: conf-regression
+#+begin_src c++ :eval no
+    std::cout << "\n=== Conformal regression intervals: iris Petal.Length ~ Petal.Width ===\n";
+    {
+        // Coverage over 300 splits.
+        std::cout << std::left << std::setw(8) << "alpha" << std::right << std::setw(12) << "target"
+                  << std::setw(14) << "coverage" << std::setw(16) << "avg width (cm)\n";
+        for (double a : {0.20, 0.10, 0.05}) {
+            double cov = 0, wid = 0; const int R = 300;
+            for (int r = 0; r < R; ++r) {
+                const auto sp = make_split(iris, static_cast<unsigned>(5000 + r));
+                KernelRidgeRegression krr(sp.train, "Petal.Length ~ Petal.Width", KernelRidgeRegressionOptions{"rbf"});
+                auto cpred = krr.predict(sp.calib), tpred = krr.predict(sp.test);
+                std::vector<double> ctruth(sp.calib.nrows()), ttruth(sp.test.nrows());
+                for (std::size_t i = 0; i < sp.calib.nrows(); ++i) ctruth[i] = sp.calib.double_at("Petal.Length", i);
+                for (std::size_t i = 0; i < sp.test.nrows(); ++i) ttruth[i] = sp.test.double_at("Petal.Length", i);
+                SplitConformalRegressor reg(cpred, ctruth, ConformalRegressorOptions{a});
+                const auto ev = reg.evaluate(tpred, ttruth);
+                cov += ev.coverage; wid += ev.average_width;
+            }
+            std::cout << std::left << std::setw(8) << a << std::right << std::setw(12) << (1 - a) << std::setw(14)
+                      << cov / R << std::setw(16) << wid / R << "\n";
+        }
+        // Figure: one split's fit with its conformal band.
+        const auto sp = make_split(iris, 20240815);
+        KernelRidgeRegression krr(sp.train, "Petal.Length ~ Petal.Width", KernelRidgeRegressionOptions{"rbf"});
+        std::vector<double> cpred = krr.predict(sp.calib), ctruth(sp.calib.nrows());
+        for (std::size_t i = 0; i < sp.calib.nrows(); ++i) ctruth[i] = sp.calib.double_at("Petal.Length", i);
+        SplitConformalRegressor reg(cpred, ctruth, ConformalRegressorOptions{0.1});
+        const double q = reg.quantile();
+        std::vector<double> gx(120), gfit(120), glo(120), ghi(120);
+        for (std::size_t i = 0; i < 120; ++i) gx[i] = 0.0 + 2.6 * static_cast<double>(i) / 119.0;
+        DataFrame grid; grid.add_column("Petal.Width", gx);
+        const auto gp = krr.predict(grid);
+        for (std::size_t i = 0; i < 120; ++i) { gfit[i] = gp[i]; glo[i] = gp[i] - q; ghi[i] = gp[i] + q; }
+        std::vector<double> tx, ty;
+        for (std::size_t i = 0; i < sp.test.nrows(); ++i) { tx.push_back(sp.test.double_at("Petal.Width", i)); ty.push_back(sp.test.double_at("Petal.Length", i)); }
+        auto plot = RPlot::create();
+        plot.points(tx, ty, "test data", {156, 163, 175}, 4.0);
+        plot.line(gx, ghi, "90% conformal band", {37, 99, 235}, 1.5);
+        plot.line(gx, glo, "", {37, 99, 235}, 1.5);
+        plot.line(gx, gfit, "fit", {220, 38, 38}, 2.0);
+        plot.title("Conformal 90% prediction band (half-width q = " + std::to_string(q).substr(0, 4) + " cm)")
+            .x_label("Petal.Width (cm)").y_label("Petal.Length (cm)").background({250, 250, 252});
+        plot.save_svg("build/org/conformal_regression.svg");
+        std::cout << "interval half-width q at alpha=0.1: " << q << " cm\n";
+        std::cout << "wrote conformal_regression.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/conformal_prediction_analysis.cpp <<'CPP'
+<<conf-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+    const auto iris = datamunge::datasets::iris();
+    const std::size_t K_NN = 15;
+
+<<conf-single>>
+
+<<conf-validate>>
+
+<<conf-regression>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/conformal_prediction_analysis.cpp \
+  -o build/org/conformal_prediction_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/conformal_prediction_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Prediction sets that adapt to difficulty
+
+#+begin_example
+=== Conformal prediction sets for iris species (one split, alpha=0.1) ===
+base: 15-NN; calibrated threshold q = 0.7333
+test coverage: 0.9200, average set size: 1.3400
+
+Example prediction sets (true species -> set):
+  setosa       -> { setosa }
+  versicolor   -> { versicolor }
+  virginica    -> { versicolor virginica }
+#+end_example
+
+On one split, the conformal classifier (\(\alpha = 0.1\)) calibrates a
+threshold \(\hat{q} = 0.7333\) and covers 92% of the test flowers with an
+average set size of 1.34 -- most sets a single species, some two. The three
+example sets show what "adaptive" means concretely: a /setosa/ flower, which
+the model reads unambiguously, gets the confident singleton
+\(\{\text{setosa}\}\); a clear /versicolor/ likewise gets
+\(\{\text{versicolor}\}\); but a /virginica/ sitting near the boundary of
+the two overlapping species gets the honest two-class set
+\(\{\text{versicolor}, \text{virginica}\}\) -- the method declining to
+commit where the data genuinely does not separate. The set /size/ is an
+automatic, per-flower readout of the model's uncertainty, and it carries a
+guarantee no bare probability does.
+
+#+ATTR_HTML: :alt Iris test points in petal space colored by conformal set size; two-class sets cluster at the versicolor/virginica boundary :width 100%
+[[file:../../build/org/conformal_setsize.svg]]
+
+Plotting each test flower by its set size makes the pattern geometric. The
+green singletons fill the regions each species owns -- the tight
+low-petal /setosa/ cluster at the lower left, and the core of the
+/versicolor/-/virginica/ band. The orange two-class sets appear exactly
+where they should: along the seam in the upper right where /versicolor/ and
+/virginica/ overlap and no classifier can cleanly separate them. Conformal
+prediction has, without being told, drawn a map of its own uncertainty.
+
+** The guarantee, validated
+
+#+begin_example
+alpha         target    LAC coverage    LAC size    APS coverage    APS size
+0.2000        0.8000          0.8302      0.9160          0.9735      2.5947
+0.1000        0.9000          0.9221      1.1035          0.9916      2.8334
+0.0500        0.9500          0.9722      1.2598          0.9993      2.9868
+0.0100        0.9900          1.0000      3.0000          1.0000      3.0000
+#+end_example
+
+The coverage of a /single/ split is noisy (the guarantee is marginal, over
+the random draw of the calibration set), so we validate it as the mean over
+300 random splits. The LAC method meets its target at every level: 83.0%
+against 80%, 92.2% against 90%, 97.2% against 95% -- always at or above the
+line, and only slightly above, because the discrete vote shares of a
+\(k\)-NN model produce tied scores that make split conformal a touch
+conservative. The \(\alpha=0.01\) row is §2.6's finite-sample floor made
+concrete: certifying 99% coverage needs
+\(\lceil 51 \times 0.99 \rceil = 51 > 50\) calibration points, so the honest
+output is the trivial three-class set (coverage 100%, size 3) -- the method
+refusing to over-promise on 50 calibration points. The APS score also
+covers (indeed over-covers, 97-100%) but with markedly larger sets here:
+its cumulative-probability score is designed for smooth probabilities and
+turns conservative on \(k\)-NN's coarse, discrete vote shares, a reminder
+that the /score/ should suit the base model even though the /guarantee/
+never depends on it.
+
+#+ATTR_HTML: :alt Achieved coverage plotted against the 1-alpha target, all points on or above the y=x line :width 100%
+[[file:../../build/org/conformal_coverage.svg]]
+
+The picture is the guarantee itself: every achieved-coverage point sits on
+or above the \(y = x\) target line. Coverage is never below what was asked
+for, at any \(\alpha\) -- the distribution-free promise of §2.3, kept.
+
+** Guaranteed intervals for regression
+
+#+begin_example
+alpha         target      coverage avg width (cm)
+0.2000        0.8000        0.8069          1.0341
+0.1000        0.9000        0.9051          1.5178
+0.0500        0.9500        0.9637          2.1083
+#+end_example
+
+The same machinery, with the absolute-residual score (§2.5), wraps a kernel
+ridge regression of petal length on petal width into guaranteed intervals.
+Over 300 splits the coverage again meets its target -- 80.7%, 90.5%, 96.4%
+against 80%, 90%, 95% -- and the price of a smaller \(\alpha\) is a wider
+interval (half-width growing so the band widens from about 1.0 to 2.1 cm
+total), the explicit, honest exchange rate between confidence and
+precision.
+
+#+ATTR_HTML: :alt Kernel ridge fit of petal length on petal width with a constant-width 90% conformal band containing most test points :width 100%
+[[file:../../build/org/conformal_regression.svg]]
+
+The fitted curve with its \(\pm 0.70\) cm conformal band (\(\alpha=0.1\))
+contains about nine of every ten test points, as guaranteed. The band's
+/constant/ width is visible and is the one caveat of §2.5: basic split
+conformal spends a fixed error budget everywhere, so the interval is no
+narrower in the data-dense middle than in the sparse tails. Variants that
+normalize the residual by a local difficulty estimate (conformalized
+quantile regression, Mondrian conformal) recover adaptive widths; the plain
+version here trades that for its one-line simplicity while keeping the exact
+guarantee.
+
+* Discussion
+
+**The guarantee is real, distribution-free, and cheap.** §4.2 is the whole
+argument: across 300 splits and four confidence levels, conformal coverage
+never fell below its target, on a guarantee (§2.3) that assumed only
+exchangeability and used nothing about the \(k\)-NN model or the iris
+distribution. The cost is one held-out calibration set and a sorted-array
+quantile -- no retraining, no distributional model, no asymptotics. That
+combination is why conformal prediction has become the default way to attach
+honest uncertainty to otherwise black-box predictors: it wraps whatever you
+already have and makes a promise it keeps.
+
+**Set size is the useful output, and it is automatic.** A fixed coverage
+level turns the interesting variation into the /size/ of each prediction --
+a singleton where the model is confident, a larger set where it is not
+(§4.1). This is a strictly more honest interface than a point prediction or
+a miscalibrated probability: it says "one of these, and I'm right at least
+90% of the time," and the seam of two-class sets along the
+/versicolor/-/virginica/ boundary is the model confessing exactly where its
+knowledge runs out. Nothing had to be tuned to produce that map; it fell out
+of the guarantee.
+
+**What conformal does not promise is worth stating.** The guarantee is
+/marginal/ -- averaged over all test points -- not /conditional/ on the input,
+so a fixed-\(\alpha\) band can under-cover in a hard region and over-cover in
+an easy one while satisfying the overall target; §4.3's constant-width
+interval is the visible symptom. It also rests entirely on exchangeability,
+and breaks under distribution shift, where calibration no longer resembles
+test. The refinements the field has built -- adaptive scores (§2.4's APS),
+normalized regression intervals, group-conditional (Mondrian) calibration,
+and methods robust to shift -- all keep this report's one-line quantile at
+their core and relax one of these limitations at a time. The plain split
+conformal implemented here is the honest foundation they build on.
+
+* Conclusion
+
+Implementing split conformal prediction in =datamunge='s C++
+=stats::SplitConformalClassifier= and =stats::SplitConformalRegressor=, we
+turn ordinary iris predictions into sets and intervals that carry a
+distribution-free, finite-sample coverage guarantee. On one split the
+classifier returns a confident \(\{\text{setosa}\}\) and an honest
+\(\{\text{versicolor}, \text{virginica}\}\) exactly where those species
+overlap, its set size a free, per-flower measure of uncertainty; over 300
+splits its coverage meets the target at every level (83.0/92.2/97.2% against
+80/90/95%), and at \(\alpha=0.01\) it honestly returns the trivial set that
+50 calibration points can certify. A regression example produces guaranteed
+petal-length intervals (coverage 80.7/90.5/96.4%) at the cost of a
+constant-width band. The whole guarantee rests on a single exchangeability
+assumption and a sorted-array quantile, wrapping any base model without
+retraining -- which is exactly why it travels so well. As with its
+companions, this entire report is reproducible end to end via
+=just org-example conformal_prediction_analysis=, which re-executes
+§3.4.5's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Vovk, V., Gammerman, A., & Shafer, G. (2005). /Algorithmic Learning in a
+  Random World/. Springer.
+- Lei, J., G'Sell, M., Rinaldo, A., Tibshirani, R. J., & Wasserman, L.
+  (2018). "Distribution-free predictive inference for regression." /Journal
+  of the American Statistical Association/, 113(523), 1094--1111.
+- Sadinle, M., Lei, J., & Wasserman, L. (2019). "Least ambiguous set-valued
+  classifiers with bounded error levels." /JASA/, 114(525), 223--234.
+- Romano, Y., Sesia, M., & Cand\`es, E. J. (2020). "Classification with
+  valid and adaptive coverage." /NeurIPS 33/, 3581--3591.
+- Angelopoulos, A. N., & Bates, S. (2023). "Conformal prediction: a gentle
+  introduction." /Foundations and Trends in Machine Learning/, 16(4),
+  494--591.

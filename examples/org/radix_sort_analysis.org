@@ -1,0 +1,290 @@
+#+title: Radix Sort: Sorting Integers Below the Comparison Barrier
+#+subtitle: A literate C++ study of LSD base-256 radix sort with =datamunge='s =algorithms::radix_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every sort that works by /comparing/ pairs of keys must, in the worst case,
+make at least \(\Omega(n \log n)\) comparisons -- a lower bound that quicksort,
+mergesort, and heapsort all meet but cannot beat. Radix sort escapes it by
+never comparing keys at all: it reads their digits. This report implements
+*least-significant-digit (LSD) radix sort* for signed 64-bit integers in
+=datamunge='s C++ =algorithms::radix_sort= and presents it as a literate
+program in which every number and figure below is produced by a single
+compiled binary. We explain how a non-comparison sort ducks the comparison
+lower bound, build LSD radix sort as eight repeated *stable counting-sort*
+passes over the bytes of each key (base \(256\)), and argue that it is
+precisely the /stability/ of each pass that lets the passes compose into a
+correct total order. We give the sign-bit-flip trick that makes two's-complement
+signed integers sort correctly as unsigned bytes, and the \(O(d\,(n+b))\)
+running time. A hand-computed base-10 example shows the array falling into
+order one digit at a time; a second example sorts a mix of negatives, zero, and
+positives to confirm the signed ordering; and the counting-sort bucket sizes of
+the first pass are drawn as a histogram.
+#+end_abstract
+
+* Sorting below the comparison barrier
+
+A /comparison sort/ learns about its input only through yes/no questions of the
+form "is \(a < b\)?". Each such question has two outcomes, so a sequence of
+\(k\) comparisons can distinguish at most \(2^k\) cases. To sort \(n\) distinct
+keys the algorithm must be able to reach any of the \(n!\) possible orderings,
+forcing \(2^k \ge n!\), i.e. \(k \ge \log_2 (n!) = \Theta(n \log n)\). No
+comparison sort can do asymptotically better.
+
+*Radix sort* is not a comparison sort. It never asks "is \(a < b\)?"; it looks
+directly at the digits of the keys and distributes them into buckets by digit
+value. By exploiting structure the comparison model ignores -- that the keys
+are fixed-width integers with \(d\) digits drawn from an alphabet of size \(b\)
+-- it sorts in \(O(d\,(n+b))\) time, linear in \(n\) when \(d\) and \(b\) are
+constants. For 64-bit integers we take the \(b = 256\) possible byte values as
+the digit alphabet, so each key has exactly \(d = 8\) digits.
+
+=datamunge= exposes this as a single in-place call over a vector of signed
+64-bit integers.
+
+#+name: radix-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/radix_sort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <limits>
+#include <random>
+#include <sstream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Repeated stable counting sort, least digit first
+
+The engine of radix sort is *counting sort*, itself a non-comparison sort for
+keys drawn from a small range \(0..b-1\). One pass tallies how many keys carry
+each digit value, converts those tallies into starting offsets by a prefix sum,
+then scatters the keys into an output buffer at those offsets. Crucially it can
+be made *stable*: if we scatter the keys in input order, two keys with the same
+digit land in the output in the same relative order they had on input.
+
+#+begin_example
+COUNTING-SORT-BY-BYTE(keys[0..n-1], shift, out[0..n-1]):
+  count[0..255] <- 0
+  for i in 0..n-1:                        # tally how many keys fall in each bucket
+      b <- (keys[i] >> shift) AND 0xFF
+      count[b] <- count[b] + 1
+  start <- 0                              # prefix sums: turn counts into starting offsets
+  for b in 0..255:
+      c <- count[b];  count[b] <- start;  start <- start + c
+  for i in 0..n-1:                        # STABLE scatter: input order kept within a bucket
+      b <- (keys[i] >> shift) AND 0xFF
+      out[ count[b] ] <- keys[i]
+      count[b] <- count[b] + 1
+#+end_example
+
+*LSD radix sort* runs one such pass per digit, moving from the *least*
+significant digit to the most significant.
+
+#+begin_example
+RADIX-SORT(data[0..n-1]):                 # signed 64-bit integers, ascending
+  if n < 2: return
+  for i in 0..n-1:                        # sign-bit flip: signed order -> unsigned byte order
+      keys[i] <- (uint64) data[i]  XOR  (1 << 63)
+  for pass in 0..7:                       # 8 bytes, least significant first
+      COUNTING-SORT-BY-BYTE(keys, 8*pass, buffer)
+      swap(keys, buffer)                  # buffer now holds keys sorted by this byte
+  for i in 0..n-1:                        # undo the bias
+      data[i] <- (int64)( keys[i] XOR (1 << 63) )
+#+end_example
+
+*Why stability is what makes it correct.* Consider two keys \(x\) and \(y\)
+with \(x < y\) (as unsigned, after biasing). Let byte \(p\) be the most
+significant byte at which they differ; there \(x\)'s byte is smaller. Passes
+\(0..p-1\) may shuffle them arbitrarily relative to each other, but pass \(p\)
+sends \(x\) to an earlier bucket than \(y\), so afterwards \(x\) precedes
+\(y\). Every later pass \(q > p\) sees /equal/ bytes for \(x\) and \(y\)
+(they agree above byte \(p\)); because those passes are *stable*, they preserve
+the order pass \(p\) established. Hence \(x\) ends up before \(y\). Stability is
+not a nicety here -- it is the invariant that lets "sorted by the low bytes"
+survive each higher-byte pass, so that the final pass leaves the array totally
+ordered.
+
+*The signed-integer sign-bit-flip trick.* Counting sort on raw bytes orders
+keys as /unsigned/ integers, but two's-complement negatives have their top bit
+set and would sort /after/ the positives -- backwards. The fix is a monotone
+relabeling: map each signed \(x\) to the unsigned key \(u = x + 2^{63}\), which
+is exactly XOR-ing the sign bit. This slides \([\,\text{INT64\_MIN},
+\text{INT64\_MAX}\,]\) onto \([\,0,\ 2^{64}-1\,]\) without wrapping, so
+\(x_1 < x_2 \iff u_1 < u_2\): negatives (top bit \(1\)) map below positives (top
+bit \(0\)), and order within each group is preserved. We sort the \(u\)'s as
+unsigned bytes, then XOR the sign bit back to recover the signed values.
+
+*Running time.* Each of the \(d = 8\) passes does \(O(n + b)\) work -- a tally
+sweep, a prefix sum over \(b = 256\) buckets, and a scatter sweep -- for
+\(O(d\,(n+b)) = O(8(n + 256))\) overall, i.e. linear in \(n\). The extra space
+is two \(n\)-element scratch buffers plus the \(256\)-entry count array.
+
+* Example: watching the array fall into order
+
+We demonstrate the mechanism twice. First, a human-readable *base-10* LSD radix
+sort of the classic eight-number array \(\{170, 45, 75, 90, 2, 802, 24, 66\}\),
+printing the partial order after each digit pass (ones, then tens, then
+hundreds) -- the same stable-counting-sort idea the library runs in base 256.
+Then we call the real =radix_sort= on a mix of *negatives, zero, and positives*
+to confirm the signed ordering, and cross-check the sorter against
+=std::sort= over a thousand random arrays that include values at the extremes
+of the =int64= range. Finally we draw the counting-sort bucket sizes of the
+first (ones-digit) pass as a histogram.
+
+#+name: radix-run
+#+begin_src c++ :eval no
+    std::cout << "=== LSD radix sort (base 256, 8 passes) on signed 64-bit integers ===\n\n";
+
+    auto join = [](const std::vector<std::int64_t>& v) {
+        std::ostringstream os;
+        for (std::size_t i = 0; i < v.size(); ++i) { if (i) os << ' '; os << v[i]; }
+        return os.str();
+    };
+
+    // --- Base-10 illustration: one stable counting-sort pass per decimal digit. ---
+    std::cout << "--- Illustration: base-10 LSD radix sort (same idea, human-readable digits) ---\n";
+    std::vector<std::int64_t> demo = {170, 45, 75, 90, 2, 802, 24, 66};
+    std::cout << "input: " << join(demo) << "\n";
+
+    const char* pass_name[3] = {"ones digit", "tens digit", "hundreds digit"};
+    std::vector<double> hist_digit, hist_count; // ones-digit bucket sizes, saved for the figure
+    std::int64_t divisor = 1;
+    for (int p = 0; p < 3; ++p) {
+        std::array<std::size_t, 11> count{}; // 10 digits + 1 slot for prefix sums
+        for (std::int64_t x : demo)
+            ++count[static_cast<std::size_t>((x / divisor) % 10) + 1];
+        if (p == 0)
+            for (int d = 0; d < 10; ++d) {
+                hist_digit.push_back(static_cast<double>(d));
+                hist_count.push_back(static_cast<double>(count[static_cast<std::size_t>(d) + 1]));
+            }
+        for (int d = 0; d < 10; ++d)
+            count[static_cast<std::size_t>(d) + 1] += count[static_cast<std::size_t>(d)];
+        std::vector<std::int64_t> next(demo.size());
+        for (std::int64_t x : demo) {
+            const std::size_t d = static_cast<std::size_t>((x / divisor) % 10);
+            next[count[d]++] = x;
+        }
+        demo.swap(next);
+        std::cout << "after pass " << (p + 1) << " (" << pass_name[p] << "): " << join(demo) << "\n";
+        divisor *= 10;
+    }
+    std::cout << "sorted: " << join(demo) << "\n\n";
+
+    // --- Signed integers: the sign-bit-flip trick, via the real library sort. ---
+    std::cout << "--- Signed integers: the sign-bit-flip trick ---\n";
+    std::vector<std::int64_t> signed_demo = {3, -1, -128, 127, 0, -1, 42, -42};
+    std::cout << "input: " << join(signed_demo) << "\n";
+    radix_sort(signed_demo);
+    std::cout << "sorted: " << join(signed_demo) << "\n\n";
+
+    // --- Cross-check against std::sort, including negatives and near-extreme values. ---
+    std::cout << "--- Cross-check against std::sort ---\n";
+    std::mt19937_64 rng(20240927);
+    constexpr std::int64_t kMin = std::numeric_limits<std::int64_t>::min();
+    constexpr std::int64_t kMax = std::numeric_limits<std::int64_t>::max();
+    bool ok = true;
+    for (int trial = 0; trial < 1000 && ok; ++trial) {
+        std::vector<std::int64_t> v(1 + rng() % 200);
+        for (auto& x : v) {
+            const std::uint64_t r = rng();
+            switch (r % 6) {
+                case 0: x = kMin + static_cast<std::int64_t>(rng() % 5); break;
+                case 1: x = kMax - static_cast<std::int64_t>(rng() % 5); break;
+                case 2: x = -static_cast<std::int64_t>(rng() % 100000); break;
+                default: x = static_cast<std::int64_t>(rng()); break;
+            }
+        }
+        std::vector<std::int64_t> expected = v;
+        std::sort(expected.begin(), expected.end());
+        radix_sort(v);
+        if (v != expected) ok = false;
+    }
+    std::cout << "1000 random trials (incl. negatives and values near INT64_MIN/MAX): "
+              << (ok ? "PASS" : "FAIL") << "\n\n";
+
+    // --- Figure: counting-sort bucket sizes for the ones-digit (pass 1) of the base-10 example. ---
+    auto plot = RPlot::create();
+    if (!hist_digit.empty() && !hist_count.empty())
+        plot.bars(hist_digit, hist_count, "ones-digit counts", {37, 99, 235}, 0.8);
+    plot.title("Counting-sort bucket sizes for the ones-digit (pass 1) of the base-10 example")
+        .x_label("ones digit (0-9)").y_label("count").background({250, 250, 252});
+    plot.save_svg("build/org/radix_sort_passes.svg");
+    std::cout << "wrote radix_sort_passes.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/radix_sort_analysis.cpp <<'CPP'
+<<radix-includes>>
+
+int main() {
+<<radix-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/radix_sort_analysis.cpp -o build/org/radix_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/radix_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LSD radix sort (base 256, 8 passes) on signed 64-bit integers ===
+
+--- Illustration: base-10 LSD radix sort (same idea, human-readable digits) ---
+input: 170 45 75 90 2 802 24 66
+after pass 1 (ones digit): 170 90 2 802 24 45 75 66
+after pass 2 (tens digit): 2 802 24 45 66 170 75 90
+after pass 3 (hundreds digit): 2 24 45 66 75 90 170 802
+sorted: 2 24 45 66 75 90 170 802
+
+--- Signed integers: the sign-bit-flip trick ---
+input: 3 -1 -128 127 0 -1 42 -42
+sorted: -128 -42 -1 -1 0 3 42 127
+
+--- Cross-check against std::sort ---
+1000 random trials (incl. negatives and values near INT64_MIN/MAX): PASS
+
+wrote radix_sort_passes.svg
+#+end_example
+
+Read the base-10 trace top to bottom. After the *ones* pass the array is
+ordered by last digit alone -- =170 90= (both end in 0), then =2 802= (both end
+in 2), then =24=, then =45 75= (both end in 5), then =66=; note that =170= still
+precedes =90= and =45= still precedes =75=, the stable pass having kept their
+input order. The *tens* pass reorders by the middle digit while, within any tie,
+preserving what the ones pass built; the *hundreds* pass does the same with the
+top digit and the array is fully sorted -- three passes because the largest key
+has three digits. The signed example is the payoff of the sign-bit flip:
+=-128= and =-42= and the two =-1='s land below =0= and the positives, and the
+negatives are internally ordered most-negative-first, exactly as signed order
+demands. The thousand-trial cross-check against =std::sort= -- deliberately
+salted with =INT64_MIN=, =INT64_MAX=, and their neighbors -- reports =PASS=,
+evidence that the unsigned byte passes plus the bias reproduce true signed order
+across the whole range.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/radix_sort_passes.svg]]
+
+The histogram shows the bucket sizes the very first (ones-digit) counting-sort
+pass computed for the base-10 example: two keys each end in 0, 2, and 5, one
+each in 4 and 6, and the remaining digits are empty. These ten tallies are
+exactly what the prefix sum turns into the starting offsets that the stable
+scatter writes to -- a single, cheap linear sweep per digit, and the reason
+radix sort sorts integers in time that comparison sorts provably cannot match.

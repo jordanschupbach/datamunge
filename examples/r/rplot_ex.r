@@ -7,6 +7,12 @@
 # auto-prints any un-assigned top-level expression's result, including NULL from save_svg().
 library(datamunger)
 
+# Plot_show() opens an X11 window and aborts (uncaught C++ exception) when no display is
+# available, so gate it on $DISPLAY -- skip with a note when headless; the SVGs are still
+# written below. On a machine with an X server it displays normally.
+.real_plot_show <- Plot_show
+Plot_show <- function(...) if (nzchar(Sys.getenv("DISPLAY"))) .real_plot_show(...) else invisible(message("  (Plot_show skipped -- no DISPLAY)"))
+
 rgb <- function(r, g, b) {
   color <- RGB()
   RGB_r_set(color, r)

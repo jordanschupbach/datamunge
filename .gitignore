@@ -58,3 +58,4 @@ src/octruby/ext/octruby/mkmf.log
 
 examples/ocaml/datamunge_ex.cmi
 examples/ocaml/datamunge_ex.cmx
+tmp/

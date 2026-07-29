@@ -1,0 +1,242 @@
+#+title: The Sieve of Eratosthenes: All Primes up to N
+#+subtitle: A literate C++ study of the ancient prime sieve with =datamunge='s =algorithms::prime_sieve=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How do you list every prime below some bound without testing each number for
+primality one at a time? Around 240 BC Eratosthenes of Cyrene gave an answer so
+efficient it is still the method of choice: write the integers down and
+repeatedly cross out the multiples of each prime you meet. Whatever survives is
+prime. This report implements the *Sieve of Eratosthenes* in =datamunge='s C++
+=algorithms::prime_sieve= and =algorithms::primes_up_to= and presents it as a
+literate program: every number and figure is produced by a single compiled
+binary. We describe the crossing-out procedure, explain the two small
+optimizations that give it its speed -- starting each prime's strikes at \(p^2\)
+and stopping the outer scan at \(\sqrt{n}\) -- and derive its
+\(O(n \log \log n)\) running time from the sum of reciprocals of the primes. A
+fully worked sieve up to \(30\) shows exactly which composites are struck by
+\(2\), \(3\), and \(5\), leaving the ten primes \(2,3,5,7,11,13,17,19,23,29\);
+we then evaluate the prime-counting function \(\pi(n)\) at
+\(n = 10, 100, 1000, 10000\) (getting \(4, 25, 168, 1229\)) and watch it track
+the Prime Number Theorem's estimate \(\pi(n) \sim n/\ln n\).
+#+end_abstract
+
+* Counting and crossing out
+
+A *prime* is an integer greater than \(1\) whose only positive divisors are
+\(1\) and itself; everything else above \(1\) is *composite*. By convention
+\(0\) and \(1\) are neither, so for \(n < 2\) there are no primes at all.
+
+Eratosthenes' idea is to find the primes not by dividing but by *elimination*.
+Lay out \(2, 3, \dots, n\). The smallest number is \(2\): it is prime, so cross
+out \(4, 6, 8, \dots\). The next surviving number is \(3\): prime, so cross out
+its multiples. Continue: every time you reach a number that has *not* been
+crossed out, it has no smaller prime factor, so it must itself be prime -- and
+you strike its multiples in turn. When you are done, the survivors are exactly
+the primes.
+
+=datamunge= exposes the result two ways: =prime_sieve(n)= returns a
+=std::vector<bool>= of length \(n+1\) whose entry =i= is =true= iff =i= is
+prime, and =primes_up_to(n)= collects those true positions into an ascending
+list of primes.
+
+#+name: sieve-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The algorithm and its two shortcuts
+
+Two observations turn the naive "cross out every multiple of every prime" into
+the fast sieve.
+
+*Start striking at \(p^2\).* When we reach a prime \(p\), every multiple
+\(2p, 3p, \dots, (p-1)p\) has a factor smaller than \(p\) and was therefore
+already crossed out while processing that smaller factor. The first multiple of
+\(p\) that could still be standing is \(p \cdot p\). So the inner loop may begin
+at \(p^2\) rather than \(2p\).
+
+*Stop the outer loop at \(\sqrt{n}\).* Any composite \(c \le n\) factors as
+\(c = ab\) with \(1 < a \le b\); then \(a \le \sqrt{c} \le \sqrt{n}\), so \(c\)
+has a prime factor \(\le \sqrt{n}\) and was struck while processing that factor.
+Hence once \(p > \sqrt{n}\) -- equivalently \(p^2 > n\) -- nothing remains to
+strike, and every number still standing is prime. The outer loop needs only run
+while \(p^2 \le n\).
+
+#+begin_example
+PRIME-SIEVE(n):
+  if n < 2: return empty
+  is_prime[0..n] <- true
+  is_prime[0] <- false;  is_prime[1] <- false
+  p <- 2
+  while p * p <= n:                 # stop the outer scan at sqrt(n)
+      if is_prime[p]:               # p survived: it is prime
+          m <- p * p                # smaller multiples already struck
+          while m <= n:
+              is_prime[m] <- false
+              m <- m + p
+      p <- p + 1
+  return is_prime                   # survivors are exactly the primes
+#+end_example
+
+*Correctness.* By the two arguments above, a number \(i \in [2, n]\) is left
+=true= exactly when it has no prime factor \(\le \sqrt{n}\), which for
+\(i \le n\) means it has no nontrivial factor at all -- i.e. \(i\) is prime.
+
+*Running time.* Processing prime \(p\) strikes about \(n/p\) entries, so the
+total work is proportional to
+\[
+  \sum_{p \le \sqrt{n}} \frac{n}{p} \;=\; n \sum_{p \le \sqrt{n}} \frac{1}{p}.
+\]
+Mertens' theorem says the sum of reciprocals of the primes up to \(x\) grows
+like \(\ln \ln x\), so \(\sum_{p \le \sqrt n} 1/p = O(\log \log n)\) and the
+sieve runs in \(O(n \log \log n)\) time -- barely more than linear -- using
+\(O(n)\) memory.
+
+*How many primes are there?* The survivors number \(\pi(n)\), the
+*prime-counting function*. The Prime Number Theorem (Hadamard and de la
+Vallée-Poussin, 1896) states \(\pi(n) \sim n/\ln n\): the density of primes near
+\(n\) is about \(1/\ln n\). We check both the sieve's exact counts and this
+estimate below.
+
+* Example: the sieve up to 30, and \(\pi(n)\) at four scales
+
+We first run the sieve up to \(N = 30\) by hand, printing for each prime the
+composites it *newly* strikes, then list the survivors. We then evaluate
+\(\pi(n)\) exactly at \(n = 10, 100, 1000, 10000\) and compare with \(n/\ln n\).
+
+#+name: sieve-run
+#+begin_src c++ :eval no
+    std::cout << "=== Sieve of Eratosthenes up to N = 30 ===\n";
+    const std::uint64_t N = 30;
+
+    // Replay the sieve, attributing each newly-crossed-out composite to the prime that strikes it.
+    std::vector<bool> is_prime(N + 1, true);
+    is_prime[0] = false;
+    is_prime[1] = false;
+    for (std::uint64_t p = 2; p * p <= N; ++p) {
+        if (!is_prime[p]) continue;             // p already struck: skip
+        std::cout << "strike multiples of " << p << " from " << p * p << ":";
+        for (std::uint64_t m = p * p; m <= N; m += p) {
+            if (is_prime[m]) {                  // only report the ones this prime newly removes
+                std::cout << " " << m;
+                is_prime[m] = false;
+            }
+        }
+        std::cout << "\n";
+    }
+
+    const auto primes = primes_up_to(N);
+    std::cout << "primes <= 30:";
+    for (const auto p : primes) std::cout << " " << p;
+    std::cout << "\n(pi(30) = " << primes.size() << ")\n";
+
+    std::cout << "\n=== Prime-counting function pi(n) vs n/ln(n) ===\n";
+    for (const std::uint64_t n : {std::uint64_t{10}, std::uint64_t{100},
+                                  std::uint64_t{1000}, std::uint64_t{10000}}) {
+        const std::size_t exact = primes_up_to(n).size();
+        const double approx = static_cast<double>(n) / std::log(static_cast<double>(n));
+        const double ratio = static_cast<double>(exact) / approx;
+        std::cout << "  pi(" << n << ") = " << exact
+                  << ",  n/ln(n) = " << approx
+                  << ",  ratio = " << ratio << "\n";
+    }
+
+    // Trace pi(n) and n/ln(n) across [100, 10000] for the figure, using one sieve and a running count.
+    const std::uint64_t Nmax = 10000;
+    const auto sieve = prime_sieve(Nmax);
+    std::vector<double> xs, pis, approxs;
+    std::size_t count = 0;
+    for (std::uint64_t n = 2; n <= Nmax; ++n) {
+        if (sieve[n]) ++count;
+        if (n % 100 == 0) {
+            xs.push_back(static_cast<double>(n));
+            pis.push_back(static_cast<double>(count));
+            approxs.push_back(static_cast<double>(n) / std::log(static_cast<double>(n)));
+        }
+    }
+
+    auto plot = RPlot::create();
+    plot.lines(xs, pis, "pi(n) exact", {37, 99, 235}, 2.0);
+    plot.lines(xs, approxs, "n / ln(n)", {220, 38, 38}, 2.0);
+    plot.title("The prime-counting function pi(n) and its PNT estimate n/ln(n)")
+        .x_label("n").y_label("number of primes <= n").background({250, 250, 252});
+    plot.save_svg("build/org/sieve_prime_counting.svg");
+    std::cout << "\nwrote sieve_prime_counting.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sieve_of_eratosthenes_analysis.cpp <<'CPP'
+<<sieve-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(2);
+<<sieve-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sieve_of_eratosthenes_analysis.cpp -o build/org/sieve_of_eratosthenes_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sieve_of_eratosthenes_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sieve of Eratosthenes up to N = 30 ===
+strike multiples of 2 from 4: 4 6 8 10 12 14 16 18 20 22 24 26 28 30
+strike multiples of 3 from 9: 9 15 21 27
+strike multiples of 5 from 25: 25
+primes <= 30: 2 3 5 7 11 13 17 19 23 29
+(pi(30) = 10)
+
+=== Prime-counting function pi(n) vs n/ln(n) ===
+  pi(10) = 4,  n/ln(n) = 4.34,  ratio = 0.92
+  pi(100) = 25,  n/ln(n) = 21.71,  ratio = 1.15
+  pi(1000) = 168,  n/ln(n) = 144.76,  ratio = 1.16
+  pi(10000) = 1229,  n/ln(n) = 1085.74,  ratio = 1.13
+
+wrote sieve_prime_counting.svg
+#+end_example
+
+The trace up to \(30\) reads exactly as Eratosthenes described it. Striking the
+multiples of \(2\) from \(4\) removes fourteen even composites; the multiples of
+\(3\) from \(9\) remove only \(9, 15, 21, 27\), because \(12, 18, 24, 30\) were
+already gone; and the multiples of \(5\) from \(25\) remove only \(25\), since
+\(30\) is already struck. At that point \(5^2 = 25 \le 30\) but the next prime
+\(7\) has \(7^2 = 49 > 30\), so the outer loop stops and the ten survivors
+\(2,3,5,7,11,13,17,19,23,29\) are the primes -- \(\pi(30) = 10\).
+
+The exact counts \(\pi(10)=4\), \(\pi(100)=25\), \(\pi(1000)=168\), and
+\(\pi(10000)=1229\) sit close to \(n/\ln n\), the ratio hovering near \(1.1\)
+and drifting slowly toward \(1\) as \(n\) grows -- the Prime Number Theorem's
+promise that \(\pi(n)\sim n/\ln n\), with the estimate consistently a little
+*below* the true count at these modest scales:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/sieve_prime_counting.svg]]
+
+The blue curve is the sieve's exact \(\pi(n)\); the red curve is \(n/\ln n\).
+They share the same gentle, slightly-concave sweep, the red running just under
+the blue across the whole range -- a picture of an asymptotic law already
+visibly at work by \(n = 10^4\). The sieve that draws it is the same ancient
+procedure, and computing every prime below ten thousand to make the plot costs
+only \(O(n \log \log n)\) work.

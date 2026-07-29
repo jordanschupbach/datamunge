@@ -117,12 +117,46 @@ TEST(SplitMix64, ParameterizedNormalIsDeterministicAndValidatesDeviation) {
 }
 
 TEST(RandomEngines, ShareSamplingContractAndAreReproducible) {
+  expect_common_generator_contract<datamunge::random::Acorn64>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::BlumBlumShub>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::LaggedFibonacci64>(0x1234ULL);
+  expect_common_generator_contract<datamunge::random::LinearCongruential64>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::MersenneTwister64>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::Pcg32>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::Xoroshiro128Plus>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::Xoshiro256StarStar>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::Sfc64>(0x1234ULL);
   expect_common_generator_contract<datamunge::random::ChaCha20>(0x1234ULL);
+}
+
+TEST(Acorn64, MatchesHandComputedLowOrderRecurrence) {
+  datamunge::random::Acorn64 rng(std::vector<std::uint64_t>{1, 2, 3});
+  EXPECT_EQ(rng.next_u64(), 6U);
+  EXPECT_EQ(rng.next_u64(), 10U);
+  EXPECT_EQ(rng.next_u64(), 15U);
+  EXPECT_THROW((void)datamunge::random::Acorn64(std::vector<std::uint64_t>{2, 3}),
+               std::invalid_argument);
+}
+
+TEST(BlumBlumShub, MatchesHandComputedBits) {
+  // p=7, q=11, seed=3: x0=9; x1=4, x2=16, x3=25, x4=9, so low bits are 0,0,1,1.
+  datamunge::random::BlumBlumShub rng(3, 7, 11);
+  EXPECT_EQ(rng.next_u64() & 0xFULL, 0xCULL);
+  EXPECT_THROW((void)datamunge::random::BlumBlumShub(7, 7, 11), std::invalid_argument);
+}
+
+TEST(LaggedFibonacci64, ValidatesLags) {
+  EXPECT_THROW((void)datamunge::random::LaggedFibonacci64(1, 0, 5), std::invalid_argument);
+  EXPECT_THROW((void)datamunge::random::LaggedFibonacci64(1, 5, 5), std::invalid_argument);
+}
+
+TEST(LinearCongruential64, MatchesConfiguredRecurrence) {
+  datamunge::random::LinearCongruential64 rng(1, 5, 3);
+  EXPECT_EQ(rng.next_u64(), 8U);
+  EXPECT_EQ(rng.next_u64(), 43U);
+  EXPECT_EQ(rng.next_u64(), 218U);
+  EXPECT_THROW((void)datamunge::random::LinearCongruential64(1, 4, 3),
+               std::invalid_argument);
 }
 
 TEST(MersenneTwister64, MatchesReferenceSeedOutput) {

@@ -1,6 +1,8 @@
 #include <datamunge/random/random.hpp>
 
 #include <cmath>
+#include <limits>
+#include <numeric>
 #include <stdexcept>
 
 namespace datamunge::random {
@@ -93,6 +95,92 @@ SplitMix64::SplitMix64(std::uint64_t seed) : state_(seed) {}
 
 std::uint64_t SplitMix64::next_u64() {
   return splitmix64_step(state_);
+}
+
+Acorn64::Acorn64(std::uint64_t seed, std::size_t order) {
+  if (order == 0) {
+    throw std::invalid_argument("Acorn64: order must be positive");
+  }
+  SplitMix64 seeder(seed);
+  state_.resize(order + 1);
+  for (auto& word : state_) word = seeder.next_u64();
+  state_[0] |= 1ULL;
+}
+
+Acorn64::Acorn64(std::vector<std::uint64_t> state) : state_(std::move(state)) {
+  if (state_.size() < 2) {
+    throw std::invalid_argument("Acorn64: state must contain an increment and an output word");
+  }
+  if ((state_[0] & 1ULL) == 0) {
+    throw std::invalid_argument("Acorn64: the first state word must be odd");
+  }
+}
+
+std::uint64_t Acorn64::next_u64() {
+  for (std::size_t i = 1; i < state_.size(); ++i) state_[i] += state_[i - 1];
+  return state_.back();
+}
+
+BlumBlumShub::BlumBlumShub(std::uint64_t seed, std::uint64_t p, std::uint64_t q) {
+  if (p < 3 || q < 3 || p == q || p % 4 != 3 || q % 4 != 3) {
+    throw std::invalid_argument("BlumBlumShub: p and q must be distinct and congruent to 3 mod 4");
+  }
+  const auto product = static_cast<unsigned __int128>(p) * q;
+  if (product > std::numeric_limits<std::uint64_t>::max()) {
+    throw std::invalid_argument("BlumBlumShub: p*q does not fit in uint64_t");
+  }
+  modulus_ = static_cast<std::uint64_t>(product);
+  if (std::gcd(seed, modulus_) != 1) {
+    throw std::invalid_argument("BlumBlumShub: seed must be coprime to p*q");
+  }
+  state_ = static_cast<std::uint64_t>(
+      (static_cast<unsigned __int128>(seed % modulus_) * (seed % modulus_)) % modulus_);
+}
+
+std::uint64_t BlumBlumShub::step() {
+  state_ = static_cast<std::uint64_t>(
+      (static_cast<unsigned __int128>(state_) * state_) % modulus_);
+  return state_;
+}
+
+std::uint64_t BlumBlumShub::next_u64() {
+  std::uint64_t word = 0;
+  for (unsigned bit = 0; bit < 64; ++bit) word |= (step() & 1ULL) << bit;
+  return word;
+}
+
+LaggedFibonacci64::LaggedFibonacci64(std::uint64_t seed, std::size_t short_lag,
+                                     std::size_t long_lag)
+    : short_lag_(short_lag) {
+  if (short_lag == 0 || short_lag >= long_lag) {
+    throw std::invalid_argument("LaggedFibonacci64: require 0 < short_lag < long_lag");
+  }
+  SplitMix64 seeder(seed);
+  state_.resize(long_lag);
+  for (auto& word : state_) word = seeder.next_u64();
+}
+
+std::uint64_t LaggedFibonacci64::next_u64() {
+  const std::size_t long_lag = state_.size();
+  const std::size_t short_index = (index_ + long_lag - short_lag_) % long_lag;
+  state_[index_] += state_[short_index];
+  const std::uint64_t result = state_[index_];
+  index_ = (index_ + 1) % long_lag;
+  return result;
+}
+
+LinearCongruential64::LinearCongruential64(std::uint64_t seed, std::uint64_t multiplier,
+                                           std::uint64_t increment)
+    : state_(seed), multiplier_(multiplier), increment_(increment) {
+  if ((multiplier & 3ULL) != 1ULL || (increment & 1ULL) == 0) {
+    throw std::invalid_argument(
+        "LinearCongruential64: require multiplier = 1 mod 4 and an odd increment");
+  }
+}
+
+std::uint64_t LinearCongruential64::next_u64() {
+  state_ = multiplier_ * state_ + increment_;
+  return state_;
 }
 
 MersenneTwister64::MersenneTwister64(std::uint64_t seed) {

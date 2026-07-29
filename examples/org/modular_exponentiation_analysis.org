@@ -1,0 +1,261 @@
+#+title: Modular Exponentiation: Fast Powers by Square-and-Multiply
+#+subtitle: A literate C++ study of computing a^b mod m with =datamunge='s =algorithms::mod_pow=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Public-key cryptography, primality testing, and hashing all lean on the same
+inner loop: raise a number to a huge power, modulo another number. Done
+naively -- multiply by the base \(b\) times -- this is hopeless: an RSA
+exponent has hundreds of bits, so \(b\) is astronomically large and the loop
+would never finish. *Square-and-multiply* replaces those \(b\) multiplications
+with roughly \(\log_2 b\) of them by reading the exponent in binary, and by
+reducing modulo \(m\) after every operation it keeps the numbers small
+throughout. This report implements the method in =datamunge='s C++
+=algorithms::mod_pow= and presents it as a literate program: every number and
+figure below is produced by a single compiled binary. We explain why the naive
+approach costs \(O(b)\) and the fast one \(O(\log b)\), give the pseudocode,
+and pin down the one place 64-bit arithmetic silently overflows -- a single
+product of two near-\(2^{63}\) residues -- and how a 128-bit intermediate fixes
+it. A hand-traced example, \(7^{13} \bmod 1000 = 407\), shows the running base
+and running result at each bit of the exponent, and a scatter of \(3^k \bmod
+17\) for \(k = 0..16\) exhibits the cyclic structure that makes the /discrete
+logarithm/ -- inverting this map -- hard.
+#+end_abstract
+
+* The problem: powers under a modulus
+
+We want @f$a^b \bmod m@f$ for nonnegative integers, where \(b\) may be enormous
+(thousands of bits in cryptography) and \(m\) may be as large as a machine word.
+The result is always in \(\{0, \dots, m-1\}\), so the /answer/ is small; the
+danger is entirely in the intermediate values.
+
+The naive method computes \(a \cdot a \cdots a\) with \(b-1\) multiplications.
+Two things go wrong. First, if we never reduce, \(a^b\) has on the order of
+\(b\log_2 a\) bits and overflows any fixed integer almost immediately -- and
+even with big integers the numbers grow without bound. Reducing mod \(m\) after
+each multiply cures the size problem (every partial product stays below
+\(m^2\)), but the second problem remains: there are still \(b-1\)
+multiplications. For a 256-bit exponent, \(b \approx 10^{77}\); at a billion
+multiplies per second the loop outlives the universe. The cost is \(O(b)\),
+i.e. exponential in the /number of bits/ of the exponent. That is infeasible.
+
+=datamunge= exposes the fast alternative as a single call, correct for any
+modulus up to \(2^{64}-1\):
+
+#+name: mp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Square-and-multiply
+
+Write the exponent in binary, \(b = \sum_{i} b_i 2^i\) with each \(b_i \in
+\{0,1\}\). Then by the laws of exponents
+
+\[
+a^b = a^{\sum_i b_i 2^i} = \prod_{i \,:\, b_i = 1} a^{2^i}.
+\]
+
+The powers \(a^{2^i}\) form a sequence in which each term is the /square/ of the
+one before: \(a^{2^0} = a\), \(a^{2^1} = (a)^2\), \(a^{2^2} = (a^2)^2\), and so
+on. So a single pass over the bits of \(b\), from least significant to most,
+suffices: keep a *running base* that we square every step (producing \(a^{2^0},
+a^{2^1}, a^{2^2}, \dots\)), and a *running result* into which we fold the
+current running base exactly when the current bit is set. Because \(b\) has
+\(\lfloor \log_2 b \rfloor + 1\) bits, we perform at most \(2\log_2 b\)
+multiplications -- \(O(\log b)\), a stupendous saving over \(O(b)\).
+
+Reducing modulo \(m\) after every square and every fold is what keeps this
+practical: each operand is always a residue in \([0, m)\), so each product is
+below \(m^2\) and one reduction brings it back. The numbers never grow.
+
+#+begin_example
+MOD-POW(base, exponent, modulus):
+  if modulus == 0: error "modulus must be nonzero"
+  if modulus == 1: return 0             # every value is 0 mod 1
+
+  result  <- 1                          # a^0
+  running <- base mod modulus           # a^(2^0)
+  while exponent > 0:
+      if (exponent AND 1) == 1:         # this binary digit of the exponent is set
+          result <- (result * running) mod modulus
+      running <- (running * running) mod modulus   # square: a^(2^i) -> a^(2^(i+1))
+      exponent <- exponent >> 1         # advance to the next bit
+  return result
+#+end_example
+
+*Correctness.* Loop invariant: at the top of the loop, ~result~ equals \(a\)
+raised to the bits already consumed, and ~running~ equals \(a^{2^i}\) for the
+bit \(i\) about to be examined, all mod \(m\). Folding in ~running~ exactly on
+set bits accumulates \(\prod_{b_i=1} a^{2^i} = a^b\).
+
+*Complexity.* The exponent is halved each iteration, so the loop runs
+\(\lfloor \log_2 b \rfloor + 1\) times with at most two modular multiplications
+each: \(O(\log b)\) multiplications and \(O(1)\) extra space.
+
+** The overflow point, and the 128-bit fix
+
+Each modular multiply forms a product of two residues, each less than \(m\). If
+\(m\) is near \(2^{63}\), that product is near \(2^{126}\) -- far beyond the
+\(2^{64}\) a =std::uint64_t= can hold. Computing =(a * b) % m= in 64-bit
+arithmetic therefore /silently wraps/ and returns garbage for large moduli. The
+fix is to widen just the multiplication: cast to a 128-bit unsigned integer,
+multiply there (the product fits, since \(2 \cdot 63 = 126 < 128\)), and reduce
+back into 64 bits:
+
+#+begin_example
+mulmod(a, b, m) = (uint64_t)( ( (unsigned __int128)a * b ) % m )
+#+end_example
+
+With this, =mod_pow= is exact for every modulus up to \(2^{64}-1\).
+
+* Example: tracing 7^13 mod 1000
+
+We compute \(7^{13} \bmod 1000\) by hand and by machine. In binary \(13 =
+1101_2\), so the set bits are \(0, 2, 3\) and \(7^{13} = 7^{1} \cdot 7^{4} \cdot
+7^{8}\). The program below prints the running result and running base after each
+bit, then verifies a few known values, checks Fermat's little theorem
+\(a^{p-1} \equiv 1 \pmod p\), and tabulates \(3^k \bmod 17\) for the figure.
+
+#+name: mp-run
+#+begin_src c++ :eval no
+    std::cout << "=== Modular exponentiation: square-and-multiply ===\n";
+    std::cout << "mod_pow(2, 10, 1000)   = " << mod_pow(2, 10, 1000) << "  (expected 24)\n";
+    std::cout << "mod_pow(3, 0, 7)       = " << mod_pow(3, 0, 7) << "  (expected 1)\n";
+    std::cout << "mod_pow(7, 256, 13)    = " << mod_pow(7, 256, 13) << "\n";
+
+    std::cout << "\nWorked example: 7^13 mod 1000  (13 = 1101 in binary)\n";
+    std::cout << "  initial: result=1, base=7\n";
+    {
+        const std::uint64_t mod = 1000;
+        std::uint64_t exp = 13;
+        std::uint64_t b = 7 % mod, result = 1;
+        for (int i = 0; exp > 0; ++i) {
+            const unsigned bit = static_cast<unsigned>(exp & 1u);
+            if (bit) result = (result * b) % mod;
+            const std::uint64_t squared = (b * b) % mod;
+            std::cout << "  bit " << i << " = " << bit << ": result=" << result
+                      << ", base(before square)=" << b << " -> base=" << squared << "\n";
+            b = squared;
+            exp >>= 1;
+        }
+        std::cout << "  => 7^13 mod 1000 = " << result << "\n";
+    }
+
+    std::cout << "\nFermat's little theorem, a^(p-1) mod p == 1 (p = 13):\n";
+    for (std::uint64_t a = 2; a <= 6; ++a)
+        std::cout << "  " << a << "^12 mod 13 = " << mod_pow(a, 12, 13) << "\n";
+
+    std::cout << "\nDiscrete powers 3^k mod 17 for k = 0..16:\n";
+    std::vector<double> ks, vals;
+    for (std::uint64_t k = 0; k < 17; ++k) {
+        const std::uint64_t v = mod_pow(3, k, 17);
+        ks.push_back(static_cast<double>(k));
+        vals.push_back(static_cast<double>(v));
+        std::cout << "  3^" << k << " mod 17 = " << v << "\n";
+    }
+
+    auto plot = RPlot::create();
+    plot.points(ks, vals, "3^k mod 17", {37, 99, 235}, 6.0);
+    plot.title("Powers of a primitive root: 3^k mod 17 (k = 0..16)")
+        .x_label("exponent k").y_label("3^k mod 17").background({250, 250, 252});
+    plot.save_svg("build/org/modular_exponentiation_powers.svg");
+    std::cout << "\nwrote modular_exponentiation_powers.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/modular_exponentiation_analysis.cpp <<'CPP'
+<<mp-includes>>
+
+int main() {
+<<mp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/modular_exponentiation_analysis.cpp -o build/org/modular_exponentiation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/modular_exponentiation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Modular exponentiation: square-and-multiply ===
+mod_pow(2, 10, 1000)   = 24  (expected 24)
+mod_pow(3, 0, 7)       = 1  (expected 1)
+mod_pow(7, 256, 13)    = 9
+
+Worked example: 7^13 mod 1000  (13 = 1101 in binary)
+  initial: result=1, base=7
+  bit 0 = 1: result=7, base(before square)=7 -> base=49
+  bit 1 = 0: result=7, base(before square)=49 -> base=401
+  bit 2 = 1: result=807, base(before square)=401 -> base=801
+  bit 3 = 1: result=407, base(before square)=801 -> base=601
+  => 7^13 mod 1000 = 407
+
+Fermat's little theorem, a^(p-1) mod p == 1 (p = 13):
+  2^12 mod 13 = 1
+  3^12 mod 13 = 1
+  4^12 mod 13 = 1
+  5^12 mod 13 = 1
+  6^12 mod 13 = 1
+
+Discrete powers 3^k mod 17 for k = 0..16:
+  3^0 mod 17 = 1
+  3^1 mod 17 = 3
+  3^2 mod 17 = 9
+  3^3 mod 17 = 10
+  3^4 mod 17 = 13
+  3^5 mod 17 = 5
+  3^6 mod 17 = 15
+  3^7 mod 17 = 11
+  3^8 mod 17 = 16
+  3^9 mod 17 = 14
+  3^10 mod 17 = 8
+  3^11 mod 17 = 7
+  3^12 mod 17 = 4
+  3^13 mod 17 = 12
+  3^14 mod 17 = 2
+  3^15 mod 17 = 6
+  3^16 mod 17 = 1
+
+wrote modular_exponentiation_powers.svg
+#+end_example
+
+The trace reads the exponent \(13 = 1101_2\) from its least significant bit
+upward. The running base marches through \(7^{2^i} \bmod 1000\): \(7, 49, 401,
+801\). The running result absorbs it only on the set bits \(0, 2, 3\): it steps
+\(1 \to 7\) (bit 0), holds at \(7\) across the zero bit 1, then \(7 \to 807\)
+(bit 2) and \(807 \to 407\) (bit 3), landing on \(7^{13} \bmod 1000 = 407\) in
+four iterations rather than twelve multiplications. Fermat's little theorem
+holds on the nose for every base against the prime \(13\), a sanity check the
+implementation gets the arithmetic right.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/modular_exponentiation_powers.svg]]
+
+Because \(3\) is a /primitive root/ modulo the prime \(17\), the scatter of
+\(3^k \bmod 17\) visits all sixteen nonzero residues exactly once as \(k\) runs
+\(0..15\) before wrapping back to \(1\) at \(k = 16\) -- the powers cycle with
+full period \(16\). The points jump around \(\{1, \dots, 16\}\) with no visible
+pattern in \(k\); that apparent scramble is precisely what makes the /discrete
+logarithm/ hard. Computing \(3^k \bmod 17\) forward is one =mod_pow= call, but
+recovering \(k\) from the residue -- inverting the map this figure draws -- has
+no known fast algorithm for large primes, and that asymmetry is the bedrock of
+Diffie-Hellman key exchange and much of public-key cryptography.

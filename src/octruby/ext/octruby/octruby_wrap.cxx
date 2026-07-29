@@ -2299,202 +2299,210 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__DataFrame swig_types[5]
 #define SWIGTYPE_p_datamunge__DecisionTreeClassifier swig_types[6]
 #define SWIGTYPE_p_datamunge__DecisionTreeRegressor swig_types[7]
-#define SWIGTYPE_p_datamunge__Dual swig_types[8]
-#define SWIGTYPE_p_datamunge__ElasticNet swig_types[9]
-#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[10]
-#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[11]
-#define SWIGTYPE_p_datamunge__GGPlot swig_types[12]
-#define SWIGTYPE_p_datamunge__GLM swig_types[13]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[14]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[15]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[16]
-#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[17]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[18]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[19]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[20]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[21]
-#define SWIGTYPE_p_datamunge__LDA swig_types[22]
-#define SWIGTYPE_p_datamunge__LM swig_types[23]
-#define SWIGTYPE_p_datamunge__LMM swig_types[24]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[25]
-#define SWIGTYPE_p_datamunge__MDS swig_types[26]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[27]
-#define SWIGTYPE_p_datamunge__PCA swig_types[28]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[29]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[30]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[31]
-#define SWIGTYPE_p_datamunge__SVM swig_types[32]
-#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[33]
-#define SWIGTYPE_p_datamunge__Tape swig_types[34]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[35]
-#define SWIGTYPE_p_datamunge__Var swig_types[36]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[37]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[39]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[40]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[41]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[42]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[43]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[44]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[45]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[46]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[47]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[51]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[52]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[55]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[56]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[57]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[58]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[59]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[60]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[61]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[62]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[63]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[64]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[65]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[66]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[67]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[68]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[69]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[71]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[72]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[73]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[74]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[75]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[76]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[77]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[78]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[79]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[80]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[81]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[82]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[83]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[84]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[85]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[86]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[87]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[88]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[89]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[90]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[91]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[92]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[93]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[94]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[95]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[96]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[97]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[98]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[99]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[100]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[101]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[102]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[103]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[104]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[105]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[106]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[107]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[108]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[109]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[110]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[111]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[112]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[113]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[114]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[115]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[116]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[117]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[118]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[119]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[120]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[121]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[122]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[123]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[124]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[125]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[126]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[127]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[128]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[129]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[153]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[154]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[155]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[156]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[157]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[158]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[159]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[160]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[161]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[162]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[163]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[164]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[165]
-#define SWIGTYPE_p_difference_type swig_types[166]
-#define SWIGTYPE_p_first_type swig_types[167]
-#define SWIGTYPE_p_int swig_types[168]
-#define SWIGTYPE_p_long_long swig_types[169]
-#define SWIGTYPE_p_p_void swig_types[170]
-#define SWIGTYPE_p_second_type swig_types[171]
-#define SWIGTYPE_p_short swig_types[172]
-#define SWIGTYPE_p_signed_char swig_types[173]
-#define SWIGTYPE_p_size_type swig_types[174]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[175]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[176]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[177]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[178]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[179]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[180]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[181]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[182]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[183]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[184]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[185]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[186]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[187]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[188]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[189]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[190]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[191]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[192]
-#define SWIGTYPE_p_swig__ConstIterator swig_types[193]
-#define SWIGTYPE_p_swig__GC_VALUE swig_types[194]
-#define SWIGTYPE_p_swig__Iterator swig_types[195]
-#define SWIGTYPE_p_unsigned_char swig_types[196]
-#define SWIGTYPE_p_unsigned_int swig_types[197]
-#define SWIGTYPE_p_unsigned_long_long swig_types[198]
-#define SWIGTYPE_p_unsigned_short swig_types[199]
-#define SWIGTYPE_p_value_type swig_types[200]
-#define SWIGTYPE_p_void swig_types[201]
-static swig_type_info *swig_types[203];
-static swig_module_info swig_module = {swig_types, 202, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__DiffusionMaps swig_types[8]
+#define SWIGTYPE_p_datamunge__Dual swig_types[9]
+#define SWIGTYPE_p_datamunge__ElasticNet swig_types[10]
+#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[11]
+#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[12]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[13]
+#define SWIGTYPE_p_datamunge__GLM swig_types[14]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[15]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[16]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[17]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[18]
+#define SWIGTYPE_p_datamunge__Isomap swig_types[19]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[20]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[21]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[22]
+#define SWIGTYPE_p_datamunge__KernelPCA swig_types[23]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[24]
+#define SWIGTYPE_p_datamunge__LDA swig_types[25]
+#define SWIGTYPE_p_datamunge__LLE swig_types[26]
+#define SWIGTYPE_p_datamunge__LM swig_types[27]
+#define SWIGTYPE_p_datamunge__LMM swig_types[28]
+#define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[29]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[30]
+#define SWIGTYPE_p_datamunge__MDS swig_types[31]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[32]
+#define SWIGTYPE_p_datamunge__PCA swig_types[33]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[34]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[35]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[36]
+#define SWIGTYPE_p_datamunge__SVM swig_types[37]
+#define SWIGTYPE_p_datamunge__SammonMapping swig_types[38]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[39]
+#define SWIGTYPE_p_datamunge__TSNE swig_types[40]
+#define SWIGTYPE_p_datamunge__Tape swig_types[41]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[42]
+#define SWIGTYPE_p_datamunge__UMAP swig_types[43]
+#define SWIGTYPE_p_datamunge__Var swig_types[44]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[45]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[60]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[61]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[62]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[63]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[64]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[66]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[67]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[72]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[73]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[74]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[75]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[76]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[77]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[78]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[79]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[81]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[82]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[83]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[84]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[85]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[86]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[87]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[88]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[89]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[90]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[91]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[92]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[93]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[94]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[95]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[96]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[97]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[98]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[99]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[100]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[101]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[102]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[103]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[104]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[105]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[106]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[107]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[108]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[109]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[110]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[111]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[112]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[113]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[114]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[115]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[116]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[117]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[118]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[119]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[120]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[121]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[122]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[123]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[124]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[125]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[162]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[163]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[164]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[165]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[166]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[167]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[168]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[169]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[170]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[171]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[172]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[173]
+#define SWIGTYPE_p_difference_type swig_types[174]
+#define SWIGTYPE_p_first_type swig_types[175]
+#define SWIGTYPE_p_int swig_types[176]
+#define SWIGTYPE_p_long_long swig_types[177]
+#define SWIGTYPE_p_p_void swig_types[178]
+#define SWIGTYPE_p_second_type swig_types[179]
+#define SWIGTYPE_p_short swig_types[180]
+#define SWIGTYPE_p_signed_char swig_types[181]
+#define SWIGTYPE_p_size_type swig_types[182]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[183]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[184]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[185]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[186]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[187]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[188]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[189]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[190]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[191]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[192]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[193]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[194]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[195]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[196]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[197]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[198]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[199]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[200]
+#define SWIGTYPE_p_swig__ConstIterator swig_types[201]
+#define SWIGTYPE_p_swig__GC_VALUE swig_types[202]
+#define SWIGTYPE_p_swig__Iterator swig_types[203]
+#define SWIGTYPE_p_unsigned_char swig_types[204]
+#define SWIGTYPE_p_unsigned_int swig_types[205]
+#define SWIGTYPE_p_unsigned_long_long swig_types[206]
+#define SWIGTYPE_p_unsigned_short swig_types[207]
+#define SWIGTYPE_p_value_type swig_types[208]
+#define SWIGTYPE_p_void swig_types[209]
+static swig_type_info *swig_types[211];
+static swig_module_info swig_module = {swig_types, 210, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -51497,6 +51505,15942 @@ fail:
 SWIGINTERN void
 free_datamunge_MDS(void *self) {
     datamunge::MDS *arg1 = (datamunge::MDS *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassIsomap;
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","Isomap", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(argv[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "std::string const &","Isomap", 5, argv[4] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 5, argv[4])); 
+    }
+    arg5 = ptr;
+  }
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),(std::string const &)*arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","Isomap", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","Isomap", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(argv[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "std::string const &","Isomap", 5, argv[4] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 5, argv[4])); 
+    }
+    arg5 = ptr;
+  }
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),(std::string const &)*arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","Isomap", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","Isomap", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_Isomap_allocate(VALUE self)
+#else
+_wrap_Isomap_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__Isomap);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Isomap__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::Isomap";
+  datamunge::Isomap *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Isomap", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Isomap", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","Isomap", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","Isomap", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::Isomap *)new datamunge::Isomap((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_Isomap(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 5) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_Isomap__SWIG_7(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_Isomap__SWIG_3(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_Isomap__SWIG_6(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_Isomap__SWIG_2(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_Isomap__SWIG_5(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_Isomap__SWIG_1(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_new_Isomap__SWIG_4(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_new_Isomap__SWIG_0(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "Isomap.new", 
+    "    Isomap.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, std::string const &metric)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, std::string const &metric)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    Isomap.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_eigenvalues(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","eigenvalues", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->eigenvalues();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_goodness_of_fit(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","goodness_of_fit", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = (double)((datamunge::Isomap const *)arg1)->goodness_of_fit();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::Isomap const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::Isomap const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  ((datamunge::Isomap const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Isomap_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Isomap_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_Isomap_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_Isomap_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "Isomap.plot_embedding", 
+    "    datamunge::plot::RPlot Isomap.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot Isomap.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot Isomap.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Isomap_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::Isomap *arg1 = (datamunge::Isomap *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Isomap, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Isomap const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Isomap_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Isomap_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_Isomap_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Isomap, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_Isomap_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "Isomap.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot Isomap.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_Isomap(void *self) {
+    datamunge::Isomap *arg1 = (datamunge::Isomap *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassLLE;
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::string *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  int res6 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LLE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  {
+    std::string *ptr = (std::string *)0;
+    res6 = SWIG_AsPtr_std_string(argv[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "std::string const &","LLE", 6, argv[5] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 6, argv[5])); 
+    }
+    arg6 = ptr;
+  }
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,(std::string const &)*arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LLE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::string *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  int res6 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LLE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  {
+    std::string *ptr = (std::string *)0;
+    res6 = SWIG_AsPtr_std_string(argv[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "std::string const &","LLE", 6, argv[5] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 6, argv[5])); 
+    }
+    arg6 = ptr;
+  }
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,(std::string const &)*arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LLE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LLE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LLE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_LLE_allocate(VALUE self)
+#else
+_wrap_LLE_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__LLE);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LLE__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LLE";
+  datamunge::LLE *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LLE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LLE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LLE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LLE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::LLE *)new datamunge::LLE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_LLE(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[6];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 6) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_LLE__SWIG_9(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_LLE__SWIG_4(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_LLE__SWIG_8(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_LLE__SWIG_3(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_LLE__SWIG_7(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_LLE__SWIG_2(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_LLE__SWIG_6(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_LLE__SWIG_1(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                return _wrap_new_LLE__SWIG_5(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                return _wrap_new_LLE__SWIG_0(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 6, "LLE.new", 
+    "    LLE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double regularization, std::string const &metric)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double regularization)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double regularization, std::string const &metric)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double regularization)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    LLE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_eigenvalues(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","eigenvalues", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->eigenvalues();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::LLE const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::LLE const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  ((datamunge::LLE const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  result = ((datamunge::LLE const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LLE_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_LLE_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LLE_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LLE_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "LLE.plot_embedding", 
+    "    datamunge::plot::RPlot LLE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot LLE.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot LLE.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LLE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::LLE *arg1 = (datamunge::LLE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LLE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LLE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LLE_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LLE_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LLE_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LLE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_LLE_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "LLE.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot LLE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_LLE(void *self) {
+    datamunge::LLE *arg1 = (datamunge::LLE *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassTSNE;
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  std::string *arg12 = 0 ;
+  std::uint64_t arg13 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  int res12 = SWIG_OLDOBJ ;
+  unsigned long long val13 ;
+  int ecode13 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 13) || (argc > 13)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 13)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  {
+    std::string *ptr = (std::string *)0;
+    res12 = SWIG_AsPtr_std_string(argv[11], &ptr);
+    if (!SWIG_IsOK(res12)) {
+      SWIG_exception_fail(SWIG_ArgError(res12), Ruby_Format_TypeError( "", "std::string const &","TSNE", 12, argv[11] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 12, argv[11])); 
+    }
+    arg12 = ptr;
+  }
+  ecode13 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[12], &val13);
+  if (!SWIG_IsOK(ecode13)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode13), Ruby_Format_TypeError( "", "std::uint64_t","TSNE", 13, argv[12] ));
+  } 
+  arg13 = static_cast< std::uint64_t >(val13);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11),(std::string const &)*arg12,arg13);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  std::string *arg12 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  int res12 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 12) || (argc > 12)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 12)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  {
+    std::string *ptr = (std::string *)0;
+    res12 = SWIG_AsPtr_std_string(argv[11], &ptr);
+    if (!SWIG_IsOK(res12)) {
+      SWIG_exception_fail(SWIG_ArgError(res12), Ruby_Format_TypeError( "", "std::string const &","TSNE", 12, argv[11] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 12, argv[11])); 
+    }
+    arg12 = ptr;
+  }
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11),(std::string const &)*arg12);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 11) || (argc > 11)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 11)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 10) || (argc > 10)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 10)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 9) || (argc > 9)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 9)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_10(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_11(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_12(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  std::string *arg12 = 0 ;
+  std::uint64_t arg13 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  int res12 = SWIG_OLDOBJ ;
+  unsigned long long val13 ;
+  int ecode13 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 13) || (argc > 13)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 13)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  {
+    std::string *ptr = (std::string *)0;
+    res12 = SWIG_AsPtr_std_string(argv[11], &ptr);
+    if (!SWIG_IsOK(res12)) {
+      SWIG_exception_fail(SWIG_ArgError(res12), Ruby_Format_TypeError( "", "std::string const &","TSNE", 12, argv[11] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 12, argv[11])); 
+    }
+    arg12 = ptr;
+  }
+  ecode13 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[12], &val13);
+  if (!SWIG_IsOK(ecode13)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode13), Ruby_Format_TypeError( "", "std::uint64_t","TSNE", 13, argv[12] ));
+  } 
+  arg13 = static_cast< std::uint64_t >(val13);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11),(std::string const &)*arg12,arg13);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_13(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  std::string *arg12 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  int res12 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 12) || (argc > 12)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 12)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  {
+    std::string *ptr = (std::string *)0;
+    res12 = SWIG_AsPtr_std_string(argv[11], &ptr);
+    if (!SWIG_IsOK(res12)) {
+      SWIG_exception_fail(SWIG_ArgError(res12), Ruby_Format_TypeError( "", "std::string const &","TSNE", 12, argv[11] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 12, argv[11])); 
+    }
+    arg12 = ptr;
+  }
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11),(std::string const &)*arg12);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res12)) delete arg12;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_14(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  std::size_t arg11 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  size_t val11 ;
+  int ecode11 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 11) || (argc > 11)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 11)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_size_t(argv[10], &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), Ruby_Format_TypeError( "", "std::size_t","TSNE", 11, argv[10] ));
+  } 
+  arg11 = static_cast< std::size_t >(val11);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10,SWIG_STD_MOVE(arg11));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_15(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  double arg10 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 10) || (argc > 10)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 10)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "double","TSNE", 10, argv[9] ));
+  } 
+  arg10 = static_cast< double >(val10);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9,arg10);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_16(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  double arg9 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 9) || (argc > 9)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 9)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  ecode9 = SWIG_AsVal_double(argv[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), Ruby_Format_TypeError( "", "double","TSNE", 9, argv[8] ));
+  } 
+  arg9 = static_cast< double >(val9);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8),arg9);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_17(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  size_t val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_size_t(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::size_t","TSNE", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::size_t >(val8);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,SWIG_STD_MOVE(arg8));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_18(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","TSNE", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_19(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","TSNE", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_20(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","TSNE", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_21(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","TSNE", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_22(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","TSNE", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_TSNE_allocate(VALUE self)
+#else
+_wrap_TSNE_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__TSNE);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_TSNE__SWIG_23(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::TSNE";
+  datamunge::TSNE *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","TSNE", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","TSNE", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","TSNE", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","TSNE", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::TSNE *)new datamunge::TSNE((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_TSNE(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[13];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 13) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_TSNE__SWIG_23(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_TSNE__SWIG_11(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_TSNE__SWIG_22(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_TSNE__SWIG_10(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_TSNE__SWIG_21(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_TSNE__SWIG_9(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_TSNE__SWIG_20(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_TSNE__SWIG_8(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_TSNE__SWIG_19(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_TSNE__SWIG_7(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_TSNE__SWIG_18(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_TSNE__SWIG_6(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_TSNE__SWIG_17(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_TSNE__SWIG_5(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      return _wrap_new_TSNE__SWIG_16(nargs, args, self);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      return _wrap_new_TSNE__SWIG_4(nargs, args, self);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        return _wrap_new_TSNE__SWIG_15(nargs, args, self);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        return _wrap_new_TSNE__SWIG_3(nargs, args, self);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 11) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          return _wrap_new_TSNE__SWIG_14(nargs, args, self);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 11) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          return _wrap_new_TSNE__SWIG_2(nargs, args, self);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 12) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          int res = SWIG_AsPtr_std_string(argv[11], (std::string**)(0));
+                          _v = SWIG_CheckState(res);
+                          if (_v) {
+                            return _wrap_new_TSNE__SWIG_13(nargs, args, self);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 12) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          int res = SWIG_AsPtr_std_string(argv[11], (std::string**)(0));
+                          _v = SWIG_CheckState(res);
+                          if (_v) {
+                            return _wrap_new_TSNE__SWIG_1(nargs, args, self);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 13) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          int res = SWIG_AsPtr_std_string(argv[11], (std::string**)(0));
+                          _v = SWIG_CheckState(res);
+                          if (_v) {
+                            {
+                              int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[12], NULL);
+                              _v = SWIG_CheckState(res);
+                            }
+                            if (_v) {
+                              return _wrap_new_TSNE__SWIG_12(nargs, args, self);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 13) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_size_t(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    {
+                      int res = SWIG_AsVal_double(argv[8], NULL);
+                      _v = SWIG_CheckState(res);
+                    }
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_double(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        {
+                          int res = SWIG_AsVal_size_t(argv[10], NULL);
+                          _v = SWIG_CheckState(res);
+                        }
+                        if (_v) {
+                          int res = SWIG_AsPtr_std_string(argv[11], (std::string**)(0));
+                          _v = SWIG_CheckState(res);
+                          if (_v) {
+                            {
+                              int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[12], NULL);
+                              _v = SWIG_CheckState(res);
+                            }
+                            if (_v) {
+                              return _wrap_new_TSNE__SWIG_0(nargs, args, self);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 13, "TSNE.new", 
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration, std::string const &metric, std::uint64_t seed)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration, std::string const &metric)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double perplexity)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration, std::string const &metric, std::uint64_t seed)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration, std::string const &metric)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, std::size_t momentum_switch_iteration)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum, double final_momentum)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations, double initial_momentum)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration, std::size_t early_exaggeration_iterations)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate, double early_exaggeration)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations, double learning_rate)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity, std::size_t max_iterations)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double perplexity)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    TSNE.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_achieved_perplexity(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","achieved_perplexity", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->achieved_perplexity();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::TSNE const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::TSNE const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  ((datamunge::TSNE const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_TSNE_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_TSNE_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_TSNE_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_TSNE_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "TSNE.plot_embedding", 
+    "    datamunge::plot::RPlot TSNE.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot TSNE.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot TSNE.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TSNE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::TSNE *arg1 = (datamunge::TSNE *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__TSNE, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::TSNE const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_TSNE_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_TSNE_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_TSNE_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__TSNE, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_TSNE_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "TSNE.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot TSNE.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_TSNE(void *self) {
+    datamunge::TSNE *arg1 = (datamunge::TSNE *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassLaplacianEigenmaps;
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LaplacianEigenmaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","LaplacianEigenmaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","LaplacianEigenmaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_LaplacianEigenmaps_allocate(VALUE self)
+#else
+_wrap_LaplacianEigenmaps_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__LaplacianEigenmaps);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_LaplacianEigenmaps__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::LaplacianEigenmaps";
+  datamunge::LaplacianEigenmaps *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","LaplacianEigenmaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","LaplacianEigenmaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","LaplacianEigenmaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::LaplacianEigenmaps *)new datamunge::LaplacianEigenmaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_LaplacianEigenmaps(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 5) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_LaplacianEigenmaps__SWIG_7(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_LaplacianEigenmaps__SWIG_3(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_LaplacianEigenmaps__SWIG_6(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_LaplacianEigenmaps__SWIG_2(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_LaplacianEigenmaps__SWIG_5(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_LaplacianEigenmaps__SWIG_1(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_LaplacianEigenmaps__SWIG_4(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_LaplacianEigenmaps__SWIG_0(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "LaplacianEigenmaps.new", 
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double heat_kernel_t)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double heat_kernel_t)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    LaplacianEigenmaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_eigenvalues(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","eigenvalues", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->eigenvalues();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::LaplacianEigenmaps const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  ((datamunge::LaplacianEigenmaps const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LaplacianEigenmaps_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "LaplacianEigenmaps.plot_embedding", 
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LaplacianEigenmaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LaplacianEigenmaps_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LaplacianEigenmaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "LaplacianEigenmaps.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot LaplacianEigenmaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_LaplacianEigenmaps(void *self) {
+    datamunge::LaplacianEigenmaps *arg1 = (datamunge::LaplacianEigenmaps *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassDiffusionMaps;
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","DiffusionMaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","DiffusionMaps", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,arg5,arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","DiffusionMaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","DiffusionMaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","DiffusionMaps", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,arg5,arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","DiffusionMaps", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","DiffusionMaps", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","DiffusionMaps", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_DiffusionMaps_allocate(VALUE self)
+#else
+_wrap_DiffusionMaps_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__DiffusionMaps);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DiffusionMaps__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::DiffusionMaps";
+  datamunge::DiffusionMaps *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","DiffusionMaps", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","DiffusionMaps", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","DiffusionMaps", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DiffusionMaps *)new datamunge::DiffusionMaps((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_DiffusionMaps(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[6];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 6) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_DiffusionMaps__SWIG_9(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_DiffusionMaps__SWIG_4(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_DiffusionMaps__SWIG_8(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_DiffusionMaps__SWIG_3(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_DiffusionMaps__SWIG_7(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_DiffusionMaps__SWIG_2(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_DiffusionMaps__SWIG_6(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_DiffusionMaps__SWIG_1(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_DiffusionMaps__SWIG_5(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_DiffusionMaps__SWIG_0(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 6, "DiffusionMaps.new", 
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double heat_kernel_epsilon, double alpha, double diffusion_time)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double heat_kernel_epsilon, double alpha)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double heat_kernel_epsilon)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double heat_kernel_epsilon, double alpha, double diffusion_time)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double heat_kernel_epsilon, double alpha)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double heat_kernel_epsilon)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    DiffusionMaps.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_eigenvalues(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","eigenvalues", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->eigenvalues();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::DiffusionMaps const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::DiffusionMaps const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  ((datamunge::DiffusionMaps const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DiffusionMaps_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DiffusionMaps_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_DiffusionMaps_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DiffusionMaps_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "DiffusionMaps.plot_embedding", 
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DiffusionMaps, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DiffusionMaps const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DiffusionMaps_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DiffusionMaps, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "DiffusionMaps.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot DiffusionMaps.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_DiffusionMaps(void *self) {
+    datamunge::DiffusionMaps *arg1 = (datamunge::DiffusionMaps *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassKernelPCA;
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","KernelPCA", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","KernelPCA", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6,arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","KernelPCA", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","KernelPCA", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","KernelPCA", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6,arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","KernelPCA", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","KernelPCA", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 4, argv[3] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 4, argv[3])); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_10(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","KernelPCA", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_KernelPCA_allocate(VALUE self)
+#else
+_wrap_KernelPCA_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__KernelPCA);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KernelPCA__SWIG_11(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::KernelPCA";
+  datamunge::KernelPCA *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","KernelPCA", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","KernelPCA", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","KernelPCA", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","KernelPCA", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::KernelPCA *)new datamunge::KernelPCA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_KernelPCA(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[7];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 7) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_KernelPCA__SWIG_11(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_KernelPCA__SWIG_5(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_KernelPCA__SWIG_10(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_KernelPCA__SWIG_4(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_new_KernelPCA__SWIG_9(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_new_KernelPCA__SWIG_3(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_KernelPCA__SWIG_8(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_KernelPCA__SWIG_2(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_KernelPCA__SWIG_7(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_KernelPCA__SWIG_1(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_KernelPCA__SWIG_6(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_KernelPCA__SWIG_0(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 7, "KernelPCA.new", 
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::string const &kernel, double gamma, double degree, double coef0)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::string const &kernel, double gamma, double degree)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::string const &kernel, double gamma)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::string const &kernel)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::string const &kernel, double gamma, double degree, double coef0)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::string const &kernel, double gamma, double degree)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::string const &kernel, double gamma)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::string const &kernel)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    KernelPCA.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_eigenvalues(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","eigenvalues", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->eigenvalues();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::KernelPCA const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::KernelPCA const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  ((datamunge::KernelPCA const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_KernelPCA_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_KernelPCA_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_KernelPCA_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_KernelPCA_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "KernelPCA.plot_embedding", 
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KernelPCA_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__KernelPCA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::KernelPCA const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_KernelPCA_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_KernelPCA_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_KernelPCA_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__KernelPCA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_KernelPCA_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "KernelPCA.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot KernelPCA.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_KernelPCA(void *self) {
+    datamunge::KernelPCA *arg1 = (datamunge::KernelPCA *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassSammonMapping;
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::string *arg7 = 0 ;
+  std::uint64_t arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int res7 = SWIG_OLDOBJ ;
+  unsigned long long val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  {
+    std::string *ptr = (std::string *)0;
+    res7 = SWIG_AsPtr_std_string(argv[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 7, argv[6] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 7, argv[6])); 
+    }
+    arg7 = ptr;
+  }
+  ecode8 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::uint64_t","SammonMapping", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::uint64_t >(val8);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,(std::string const &)*arg7,arg8);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::string *arg7 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int res7 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  {
+    std::string *ptr = (std::string *)0;
+    res7 = SWIG_AsPtr_std_string(argv[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 7, argv[6] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 7, argv[6])); 
+    }
+    arg7 = ptr;
+  }
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,(std::string const &)*arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::string *arg7 = 0 ;
+  std::uint64_t arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int res7 = SWIG_OLDOBJ ;
+  unsigned long long val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  {
+    std::string *ptr = (std::string *)0;
+    res7 = SWIG_AsPtr_std_string(argv[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 7, argv[6] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 7, argv[6])); 
+    }
+    arg7 = ptr;
+  }
+  ecode8 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "std::uint64_t","SammonMapping", 8, argv[7] ));
+  } 
+  arg8 = static_cast< std::uint64_t >(val8);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,(std::string const &)*arg7,arg8);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::string *arg7 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int res7 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  {
+    std::string *ptr = (std::string *)0;
+    res7 = SWIG_AsPtr_std_string(argv[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 7, argv[6] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 7, argv[6])); 
+    }
+    arg7 = ptr;
+  }
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,(std::string const &)*arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  ecode6 = SWIG_AsVal_double(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","SammonMapping", 6, argv[5] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_10(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 5, argv[4] ));
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_11(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","SammonMapping", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_12(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","SammonMapping", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_SammonMapping_allocate(VALUE self)
+#else
+_wrap_SammonMapping_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__SammonMapping);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SammonMapping__SWIG_13(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::SammonMapping";
+  datamunge::SammonMapping *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","SammonMapping", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","SammonMapping", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","SammonMapping", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","SammonMapping", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::SammonMapping *)new datamunge::SammonMapping((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_SammonMapping(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[8];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 8) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_SammonMapping__SWIG_13(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_SammonMapping__SWIG_6(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_SammonMapping__SWIG_12(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_SammonMapping__SWIG_5(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_SammonMapping__SWIG_11(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_SammonMapping__SWIG_4(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_SammonMapping__SWIG_10(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_SammonMapping__SWIG_3(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_SammonMapping__SWIG_9(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_SammonMapping__SWIG_2(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  return _wrap_new_SammonMapping__SWIG_8(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  return _wrap_new_SammonMapping__SWIG_1(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_SammonMapping__SWIG_7(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_SammonMapping__SWIG_0(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 8, "SammonMapping.new", 
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance, std::string const &metric, std::uint64_t seed)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance, std::string const &metric)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, double learning_rate)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance, std::string const &metric, std::uint64_t seed)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance, std::string const &metric)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations, double tolerance)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double learning_rate, std::size_t max_iterations)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, double learning_rate)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    SammonMapping.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::SammonMapping const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::SammonMapping const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_stress(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","stress", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = (double)((datamunge::SammonMapping const *)arg1)->stress();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_iterations_run(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","iterations_run", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->iterations_run();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  ((datamunge::SammonMapping const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_SammonMapping_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_SammonMapping_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_SammonMapping_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_SammonMapping_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "SammonMapping.plot_embedding", 
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SammonMapping_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__SammonMapping, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::SammonMapping const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_SammonMapping_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_SammonMapping_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_SammonMapping_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__SammonMapping, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_SammonMapping_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "SammonMapping.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot SammonMapping.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_SammonMapping(void *self) {
+    datamunge::SammonMapping *arg1 = (datamunge::SammonMapping *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassUMAP;
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  std::string *arg9 = 0 ;
+  std::uint64_t arg10 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  int res9 = SWIG_OLDOBJ ;
+  unsigned long long val10 ;
+  int ecode10 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 10) || (argc > 10)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 10)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  {
+    std::string *ptr = (std::string *)0;
+    res9 = SWIG_AsPtr_std_string(argv[8], &ptr);
+    if (!SWIG_IsOK(res9)) {
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "std::string const &","UMAP", 9, argv[8] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 9, argv[8])); 
+    }
+    arg9 = ptr;
+  }
+  ecode10 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "std::uint64_t","UMAP", 10, argv[9] ));
+  } 
+  arg10 = static_cast< std::uint64_t >(val10);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8,(std::string const &)*arg9,arg10);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  std::string *arg9 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  int res9 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 9) || (argc > 9)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 9)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  {
+    std::string *ptr = (std::string *)0;
+    res9 = SWIG_AsPtr_std_string(argv[8], &ptr);
+    if (!SWIG_IsOK(res9)) {
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "std::string const &","UMAP", 9, argv[8] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 9, argv[8])); 
+    }
+    arg9 = ptr;
+  }
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8,(std::string const &)*arg9);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_6(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_7(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_8(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_9(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  std::string *arg9 = 0 ;
+  std::uint64_t arg10 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  int res9 = SWIG_OLDOBJ ;
+  unsigned long long val10 ;
+  int ecode10 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 10) || (argc > 10)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 10)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  {
+    std::string *ptr = (std::string *)0;
+    res9 = SWIG_AsPtr_std_string(argv[8], &ptr);
+    if (!SWIG_IsOK(res9)) {
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "std::string const &","UMAP", 9, argv[8] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 9, argv[8])); 
+    }
+    arg9 = ptr;
+  }
+  ecode10 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), Ruby_Format_TypeError( "", "std::uint64_t","UMAP", 10, argv[9] ));
+  } 
+  arg10 = static_cast< std::uint64_t >(val10);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8,(std::string const &)*arg9,arg10);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_10(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  std::string *arg9 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  int res9 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 9) || (argc > 9)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 9)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  {
+    std::string *ptr = (std::string *)0;
+    res9 = SWIG_AsPtr_std_string(argv[8], &ptr);
+    if (!SWIG_IsOK(res9)) {
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "std::string const &","UMAP", 9, argv[8] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 9, argv[8])); 
+    }
+    arg9 = ptr;
+  }
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8,(std::string const &)*arg9);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res9)) delete arg9;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_11(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  double arg8 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  double val8 ;
+  int ecode8 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 8) || (argc > 8)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  ecode8 = SWIG_AsVal_double(argv[7], &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), Ruby_Format_TypeError( "", "double","UMAP", 8, argv[7] ));
+  } 
+  arg8 = static_cast< double >(val8);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7,arg8);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_12(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 7) || (argc > 7)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  ecode7 = SWIG_AsVal_double(argv[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","UMAP", 7, argv[6] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),arg7);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_13(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  size_t val6 ;
+  int ecode6 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_size_t(argv[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "std::size_t","UMAP", 6, argv[5] ));
+  } 
+  arg6 = static_cast< std::size_t >(val6);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_14(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_double(argv[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","UMAP", 5, argv[4] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_15(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","UMAP", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_16(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","UMAP", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_UMAP_allocate(VALUE self)
+#else
+_wrap_UMAP_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__UMAP);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_UMAP__SWIG_17(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::UMAP";
+  datamunge::UMAP *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","UMAP", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","UMAP", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","UMAP", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","UMAP", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::UMAP *)new datamunge::UMAP((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  DATA_PTR(self) = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_UMAP(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[10];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 10) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_UMAP__SWIG_17(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_UMAP__SWIG_8(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_UMAP__SWIG_16(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_UMAP__SWIG_7(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_UMAP__SWIG_15(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_UMAP__SWIG_6(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_UMAP__SWIG_14(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_UMAP__SWIG_5(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_UMAP__SWIG_13(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_UMAP__SWIG_4(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_UMAP__SWIG_12(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_new_UMAP__SWIG_3(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_UMAP__SWIG_11(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    return _wrap_new_UMAP__SWIG_2(nargs, args, self);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      return _wrap_new_UMAP__SWIG_10(nargs, args, self);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      return _wrap_new_UMAP__SWIG_1(nargs, args, self);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        return _wrap_new_UMAP__SWIG_9(nargs, args, self);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_size_t(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  {
+                    int res = SWIG_AsVal_double(argv[7], NULL);
+                    _v = SWIG_CheckState(res);
+                  }
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      {
+                        int res = SWIG_AsVal_unsigned_SS_long_SS_long(argv[9], NULL);
+                        _v = SWIG_CheckState(res);
+                      }
+                      if (_v) {
+                        return _wrap_new_UMAP__SWIG_0(nargs, args, self);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 10, "UMAP.new", 
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate, std::string const &metric, std::uint64_t seed)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate, std::string const &metric)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns, std::size_t n_components)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &feature_columns)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate, std::string const &metric, std::uint64_t seed)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate, std::string const &metric)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate, double negative_sample_rate)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations, double learning_rate)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist, std::size_t max_iterations)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors, double min_dist)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components, std::size_t n_neighbors)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns, std::size_t n_components)\n"
+    "    UMAP.new(datamunge::DataFrame const &data, std::string const &encoded_feature_columns)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_feature_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","feature_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->feature_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_observations(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","observations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->observations();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_n_components(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","n_components", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->n_components();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_kept_row_indices(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","kept_row_indices", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->kept_row_indices();
+  vresult = swig::from(static_cast< std::vector< size_t,std::allocator< size_t > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_dimension(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","dimension", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","dimension", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::UMAP const *)arg1)->dimension(SWIG_STD_MOVE(arg2));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_embedding_frame(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","embedding_frame", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::UMAP const *)arg1)->embedding_frame();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_sigmas(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","sigmas", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->sigmas();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_rhos(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","rhos", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->rhos();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->summary();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_print_summary(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","print_summary", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  ((datamunge::UMAP const *)arg1)->print_summary();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","plot_embedding", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding();
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_UMAP_plot_embedding(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_UMAP_plot_embedding__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_UMAP_plot_embedding__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_UMAP_plot_embedding__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "UMAP.plot_embedding", 
+    "    datamunge::plot::RPlot UMAP.plot_embedding(std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot UMAP.plot_embedding(std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot UMAP.plot_embedding()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 4, argv[2] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","plot_embedding_grouped", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(arg3));
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_UMAP_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::UMAP *arg1 = (datamunge::UMAP *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::plot::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__UMAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::UMAP const *","plot_embedding_grouped", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","plot_embedding_grouped", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_UMAP_plot_embedding_grouped(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_UMAP_plot_embedding_grouped__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_UMAP_plot_embedding_grouped__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__UMAP, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_UMAP_plot_embedding_grouped__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "UMAP.plot_embedding_grouped", 
+    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x, std::size_t dimension_y)\n"
+    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels, std::size_t dimension_x)\n"
+    "    datamunge::plot::RPlot UMAP.plot_embedding_grouped(std::vector< std::string,std::allocator< std::string > > const &group_labels)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_UMAP(void *self) {
+    datamunge::UMAP *arg1 = (datamunge::UMAP *)self;
     delete arg1;
 }
 
@@ -114060,6 +130004,7 @@ static swig_type_info _swigt__p_datamunge__DBSCAN = {"_p_datamunge__DBSCAN", "da
 static swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__DecisionTreeClassifier = {"_p_datamunge__DecisionTreeClassifier", "datamunge::DecisionTreeClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__DecisionTreeRegressor = {"_p_datamunge__DecisionTreeRegressor", "datamunge::DecisionTreeRegressor *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__DiffusionMaps = {"_p_datamunge__DiffusionMaps", "datamunge::DiffusionMaps *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Dual = {"_p_datamunge__Dual", "datamunge::Dual *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ElasticNet = {"_p_datamunge__ElasticNet", "datamunge::ElasticNet *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GBMClassifier = {"_p_datamunge__GBMClassifier", "datamunge::GBMClassifier *", 0, 0, (void*)0, 0};
@@ -114070,13 +130015,17 @@ static swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamu
 static swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__HyperDual = {"_p_datamunge__HyperDual", "datamunge::HyperDual *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__INLAMixedModel = {"_p_datamunge__INLAMixedModel", "datamunge::INLAMixedModel *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__Isomap = {"_p_datamunge__Isomap", "datamunge::Isomap *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KMeans = {"_p_datamunge__KMeans", "datamunge::KMeans *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KNNClassifier = {"_p_datamunge__KNNClassifier", "datamunge::KNNClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KNNRegressor = {"_p_datamunge__KNNRegressor", "datamunge::KNNRegressor *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__KernelPCA = {"_p_datamunge__KernelPCA", "datamunge::KernelPCA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KernelRegression = {"_p_datamunge__KernelRegression", "datamunge::KernelRegression *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__LDA = {"_p_datamunge__LDA", "datamunge::LDA *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__LLE = {"_p_datamunge__LLE", "datamunge::LLE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "datamunge::LM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__LMM = {"_p_datamunge__LMM", "datamunge::LMM *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__LaplacianEigenmaps = {"_p_datamunge__LaplacianEigenmaps", "datamunge::LaplacianEigenmaps *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Lasso = {"_p_datamunge__Lasso", "datamunge::Lasso *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__MDS = {"_p_datamunge__MDS", "datamunge::MDS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__NaiveBayesClassifier = {"_p_datamunge__NaiveBayesClassifier", "datamunge::NaiveBayesClassifier *", 0, 0, (void*)0, 0};
@@ -114085,9 +130034,12 @@ static swig_type_info _swigt__p_datamunge__RandomForestClassifier = {"_p_datamun
 static swig_type_info _swigt__p_datamunge__RandomForestRegressor = {"_p_datamunge__RandomForestRegressor", "datamunge::RandomForestRegressor *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "datamunge::Ridge *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__SammonMapping = {"_p_datamunge__SammonMapping", "datamunge::SammonMapping *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__TSNE = {"_p_datamunge__TSNE", "datamunge::TSNE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__UMAP = {"_p_datamunge__UMAP", "datamunge::UMAP *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
@@ -114264,6 +130216,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__DataFrame,
   &_swigt__p_datamunge__DecisionTreeClassifier,
   &_swigt__p_datamunge__DecisionTreeRegressor,
+  &_swigt__p_datamunge__DiffusionMaps,
   &_swigt__p_datamunge__Dual,
   &_swigt__p_datamunge__ElasticNet,
   &_swigt__p_datamunge__GBMClassifier,
@@ -114274,13 +130227,17 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__GaussianProcessRegression,
   &_swigt__p_datamunge__HyperDual,
   &_swigt__p_datamunge__INLAMixedModel,
+  &_swigt__p_datamunge__Isomap,
   &_swigt__p_datamunge__KMeans,
   &_swigt__p_datamunge__KNNClassifier,
   &_swigt__p_datamunge__KNNRegressor,
+  &_swigt__p_datamunge__KernelPCA,
   &_swigt__p_datamunge__KernelRegression,
   &_swigt__p_datamunge__LDA,
+  &_swigt__p_datamunge__LLE,
   &_swigt__p_datamunge__LM,
   &_swigt__p_datamunge__LMM,
+  &_swigt__p_datamunge__LaplacianEigenmaps,
   &_swigt__p_datamunge__Lasso,
   &_swigt__p_datamunge__MDS,
   &_swigt__p_datamunge__NaiveBayesClassifier,
@@ -114289,9 +130246,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__RandomForestRegressor,
   &_swigt__p_datamunge__Ridge,
   &_swigt__p_datamunge__SVM,
+  &_swigt__p_datamunge__SammonMapping,
   &_swigt__p_datamunge__ShapeLayer,
+  &_swigt__p_datamunge__TSNE,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
+  &_swigt__p_datamunge__UMAP,
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
@@ -114468,6 +130428,7 @@ static swig_cast_info _swigc__p_datamunge__DBSCAN[] = {  {&_swigt__p_datamunge__
 static swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DecisionTreeClassifier[] = {  {&_swigt__p_datamunge__DecisionTreeClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DecisionTreeRegressor[] = {  {&_swigt__p_datamunge__DecisionTreeRegressor, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__DiffusionMaps[] = {  {&_swigt__p_datamunge__DiffusionMaps, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Dual[] = {  {&_swigt__p_datamunge__Dual, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ElasticNet[] = {  {&_swigt__p_datamunge__ElasticNet, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GBMClassifier[] = {  {&_swigt__p_datamunge__GBMClassifier, 0, 0, 0},{0, 0, 0, 0}};
@@ -114478,13 +130439,17 @@ static swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GL
 static swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__HyperDual[] = {  {&_swigt__p_datamunge__HyperDual, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__INLAMixedModel[] = {  {&_swigt__p_datamunge__INLAMixedModel, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__Isomap[] = {  {&_swigt__p_datamunge__Isomap, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KMeans[] = {  {&_swigt__p_datamunge__KMeans, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KNNClassifier[] = {  {&_swigt__p_datamunge__KNNClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KNNRegressor[] = {  {&_swigt__p_datamunge__KNNRegressor, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__KernelPCA[] = {  {&_swigt__p_datamunge__KernelPCA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KernelRegression[] = {  {&_swigt__p_datamunge__KernelRegression, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__LDA[] = {  {&_swigt__p_datamunge__LDA, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__LLE[] = {  {&_swigt__p_datamunge__LLE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__LMM[] = {  {&_swigt__p_datamunge__LMM, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__LaplacianEigenmaps[] = {  {&_swigt__p_datamunge__LaplacianEigenmaps, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Lasso[] = {  {&_swigt__p_datamunge__Lasso, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__MDS[] = {  {&_swigt__p_datamunge__MDS, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__NaiveBayesClassifier[] = {  {&_swigt__p_datamunge__NaiveBayesClassifier, 0, 0, 0},{0, 0, 0, 0}};
@@ -114493,9 +130458,12 @@ static swig_cast_info _swigc__p_datamunge__RandomForestClassifier[] = {  {&_swig
 static swig_cast_info _swigc__p_datamunge__RandomForestRegressor[] = {  {&_swigt__p_datamunge__RandomForestRegressor, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__Ridge, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__SammonMapping[] = {  {&_swigt__p_datamunge__SammonMapping, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__TSNE[] = {  {&_swigt__p_datamunge__TSNE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__UMAP[] = {  {&_swigt__p_datamunge__UMAP, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
@@ -114672,6 +130640,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__DataFrame,
   _swigc__p_datamunge__DecisionTreeClassifier,
   _swigc__p_datamunge__DecisionTreeRegressor,
+  _swigc__p_datamunge__DiffusionMaps,
   _swigc__p_datamunge__Dual,
   _swigc__p_datamunge__ElasticNet,
   _swigc__p_datamunge__GBMClassifier,
@@ -114682,13 +130651,17 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__GaussianProcessRegression,
   _swigc__p_datamunge__HyperDual,
   _swigc__p_datamunge__INLAMixedModel,
+  _swigc__p_datamunge__Isomap,
   _swigc__p_datamunge__KMeans,
   _swigc__p_datamunge__KNNClassifier,
   _swigc__p_datamunge__KNNRegressor,
+  _swigc__p_datamunge__KernelPCA,
   _swigc__p_datamunge__KernelRegression,
   _swigc__p_datamunge__LDA,
+  _swigc__p_datamunge__LLE,
   _swigc__p_datamunge__LM,
   _swigc__p_datamunge__LMM,
+  _swigc__p_datamunge__LaplacianEigenmaps,
   _swigc__p_datamunge__Lasso,
   _swigc__p_datamunge__MDS,
   _swigc__p_datamunge__NaiveBayesClassifier,
@@ -114697,9 +130670,12 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__RandomForestRegressor,
   _swigc__p_datamunge__Ridge,
   _swigc__p_datamunge__SVM,
+  _swigc__p_datamunge__SammonMapping,
   _swigc__p_datamunge__ShapeLayer,
+  _swigc__p_datamunge__TSNE,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
+  _swigc__p_datamunge__UMAP,
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
@@ -116053,6 +132029,161 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassMDS.mark = 0;
   SwigClassMDS.destroy = (void (*)(void *)) free_datamunge_MDS;
   SwigClassMDS.trackObjects = 0;
+  
+  SwigClassIsomap.klass = rb_define_class_under(mOctruby, "Isomap", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__Isomap, (void *) &SwigClassIsomap);
+  rb_define_alloc_func(SwigClassIsomap.klass, _wrap_Isomap_allocate);
+  rb_define_method(SwigClassIsomap.klass, "initialize", VALUEFUNC(_wrap_new_Isomap), -1);
+  rb_define_method(SwigClassIsomap.klass, "feature_names", VALUEFUNC(_wrap_Isomap_feature_names), -1);
+  rb_define_method(SwigClassIsomap.klass, "observations", VALUEFUNC(_wrap_Isomap_observations), -1);
+  rb_define_method(SwigClassIsomap.klass, "n_components", VALUEFUNC(_wrap_Isomap_n_components), -1);
+  rb_define_method(SwigClassIsomap.klass, "kept_row_indices", VALUEFUNC(_wrap_Isomap_kept_row_indices), -1);
+  rb_define_method(SwigClassIsomap.klass, "eigenvalues", VALUEFUNC(_wrap_Isomap_eigenvalues), -1);
+  rb_define_method(SwigClassIsomap.klass, "goodness_of_fit", VALUEFUNC(_wrap_Isomap_goodness_of_fit), -1);
+  rb_define_method(SwigClassIsomap.klass, "dimension", VALUEFUNC(_wrap_Isomap_dimension), -1);
+  rb_define_method(SwigClassIsomap.klass, "embedding_frame", VALUEFUNC(_wrap_Isomap_embedding_frame), -1);
+  rb_define_method(SwigClassIsomap.klass, "summary", VALUEFUNC(_wrap_Isomap_summary), -1);
+  rb_define_method(SwigClassIsomap.klass, "print_summary", VALUEFUNC(_wrap_Isomap_print_summary), -1);
+  rb_define_method(SwigClassIsomap.klass, "plot_embedding", VALUEFUNC(_wrap_Isomap_plot_embedding), -1);
+  rb_define_method(SwigClassIsomap.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_Isomap_plot_embedding_grouped), -1);
+  SwigClassIsomap.mark = 0;
+  SwigClassIsomap.destroy = (void (*)(void *)) free_datamunge_Isomap;
+  SwigClassIsomap.trackObjects = 0;
+  
+  SwigClassLLE.klass = rb_define_class_under(mOctruby, "LLE", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__LLE, (void *) &SwigClassLLE);
+  rb_define_alloc_func(SwigClassLLE.klass, _wrap_LLE_allocate);
+  rb_define_method(SwigClassLLE.klass, "initialize", VALUEFUNC(_wrap_new_LLE), -1);
+  rb_define_method(SwigClassLLE.klass, "feature_names", VALUEFUNC(_wrap_LLE_feature_names), -1);
+  rb_define_method(SwigClassLLE.klass, "observations", VALUEFUNC(_wrap_LLE_observations), -1);
+  rb_define_method(SwigClassLLE.klass, "n_components", VALUEFUNC(_wrap_LLE_n_components), -1);
+  rb_define_method(SwigClassLLE.klass, "kept_row_indices", VALUEFUNC(_wrap_LLE_kept_row_indices), -1);
+  rb_define_method(SwigClassLLE.klass, "eigenvalues", VALUEFUNC(_wrap_LLE_eigenvalues), -1);
+  rb_define_method(SwigClassLLE.klass, "dimension", VALUEFUNC(_wrap_LLE_dimension), -1);
+  rb_define_method(SwigClassLLE.klass, "embedding_frame", VALUEFUNC(_wrap_LLE_embedding_frame), -1);
+  rb_define_method(SwigClassLLE.klass, "summary", VALUEFUNC(_wrap_LLE_summary), -1);
+  rb_define_method(SwigClassLLE.klass, "print_summary", VALUEFUNC(_wrap_LLE_print_summary), -1);
+  rb_define_method(SwigClassLLE.klass, "plot_embedding", VALUEFUNC(_wrap_LLE_plot_embedding), -1);
+  rb_define_method(SwigClassLLE.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_LLE_plot_embedding_grouped), -1);
+  SwigClassLLE.mark = 0;
+  SwigClassLLE.destroy = (void (*)(void *)) free_datamunge_LLE;
+  SwigClassLLE.trackObjects = 0;
+  
+  SwigClassTSNE.klass = rb_define_class_under(mOctruby, "TSNE", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__TSNE, (void *) &SwigClassTSNE);
+  rb_define_alloc_func(SwigClassTSNE.klass, _wrap_TSNE_allocate);
+  rb_define_method(SwigClassTSNE.klass, "initialize", VALUEFUNC(_wrap_new_TSNE), -1);
+  rb_define_method(SwigClassTSNE.klass, "feature_names", VALUEFUNC(_wrap_TSNE_feature_names), -1);
+  rb_define_method(SwigClassTSNE.klass, "observations", VALUEFUNC(_wrap_TSNE_observations), -1);
+  rb_define_method(SwigClassTSNE.klass, "n_components", VALUEFUNC(_wrap_TSNE_n_components), -1);
+  rb_define_method(SwigClassTSNE.klass, "kept_row_indices", VALUEFUNC(_wrap_TSNE_kept_row_indices), -1);
+  rb_define_method(SwigClassTSNE.klass, "achieved_perplexity", VALUEFUNC(_wrap_TSNE_achieved_perplexity), -1);
+  rb_define_method(SwigClassTSNE.klass, "dimension", VALUEFUNC(_wrap_TSNE_dimension), -1);
+  rb_define_method(SwigClassTSNE.klass, "embedding_frame", VALUEFUNC(_wrap_TSNE_embedding_frame), -1);
+  rb_define_method(SwigClassTSNE.klass, "summary", VALUEFUNC(_wrap_TSNE_summary), -1);
+  rb_define_method(SwigClassTSNE.klass, "print_summary", VALUEFUNC(_wrap_TSNE_print_summary), -1);
+  rb_define_method(SwigClassTSNE.klass, "plot_embedding", VALUEFUNC(_wrap_TSNE_plot_embedding), -1);
+  rb_define_method(SwigClassTSNE.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_TSNE_plot_embedding_grouped), -1);
+  SwigClassTSNE.mark = 0;
+  SwigClassTSNE.destroy = (void (*)(void *)) free_datamunge_TSNE;
+  SwigClassTSNE.trackObjects = 0;
+  
+  SwigClassLaplacianEigenmaps.klass = rb_define_class_under(mOctruby, "LaplacianEigenmaps", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__LaplacianEigenmaps, (void *) &SwigClassLaplacianEigenmaps);
+  rb_define_alloc_func(SwigClassLaplacianEigenmaps.klass, _wrap_LaplacianEigenmaps_allocate);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "initialize", VALUEFUNC(_wrap_new_LaplacianEigenmaps), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "feature_names", VALUEFUNC(_wrap_LaplacianEigenmaps_feature_names), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "observations", VALUEFUNC(_wrap_LaplacianEigenmaps_observations), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "n_components", VALUEFUNC(_wrap_LaplacianEigenmaps_n_components), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "kept_row_indices", VALUEFUNC(_wrap_LaplacianEigenmaps_kept_row_indices), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "eigenvalues", VALUEFUNC(_wrap_LaplacianEigenmaps_eigenvalues), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "dimension", VALUEFUNC(_wrap_LaplacianEigenmaps_dimension), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "embedding_frame", VALUEFUNC(_wrap_LaplacianEigenmaps_embedding_frame), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "summary", VALUEFUNC(_wrap_LaplacianEigenmaps_summary), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "print_summary", VALUEFUNC(_wrap_LaplacianEigenmaps_print_summary), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "plot_embedding", VALUEFUNC(_wrap_LaplacianEigenmaps_plot_embedding), -1);
+  rb_define_method(SwigClassLaplacianEigenmaps.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_LaplacianEigenmaps_plot_embedding_grouped), -1);
+  SwigClassLaplacianEigenmaps.mark = 0;
+  SwigClassLaplacianEigenmaps.destroy = (void (*)(void *)) free_datamunge_LaplacianEigenmaps;
+  SwigClassLaplacianEigenmaps.trackObjects = 0;
+  
+  SwigClassDiffusionMaps.klass = rb_define_class_under(mOctruby, "DiffusionMaps", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__DiffusionMaps, (void *) &SwigClassDiffusionMaps);
+  rb_define_alloc_func(SwigClassDiffusionMaps.klass, _wrap_DiffusionMaps_allocate);
+  rb_define_method(SwigClassDiffusionMaps.klass, "initialize", VALUEFUNC(_wrap_new_DiffusionMaps), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "feature_names", VALUEFUNC(_wrap_DiffusionMaps_feature_names), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "observations", VALUEFUNC(_wrap_DiffusionMaps_observations), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "n_components", VALUEFUNC(_wrap_DiffusionMaps_n_components), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "kept_row_indices", VALUEFUNC(_wrap_DiffusionMaps_kept_row_indices), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "eigenvalues", VALUEFUNC(_wrap_DiffusionMaps_eigenvalues), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "dimension", VALUEFUNC(_wrap_DiffusionMaps_dimension), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "embedding_frame", VALUEFUNC(_wrap_DiffusionMaps_embedding_frame), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "summary", VALUEFUNC(_wrap_DiffusionMaps_summary), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "print_summary", VALUEFUNC(_wrap_DiffusionMaps_print_summary), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "plot_embedding", VALUEFUNC(_wrap_DiffusionMaps_plot_embedding), -1);
+  rb_define_method(SwigClassDiffusionMaps.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_DiffusionMaps_plot_embedding_grouped), -1);
+  SwigClassDiffusionMaps.mark = 0;
+  SwigClassDiffusionMaps.destroy = (void (*)(void *)) free_datamunge_DiffusionMaps;
+  SwigClassDiffusionMaps.trackObjects = 0;
+  
+  SwigClassKernelPCA.klass = rb_define_class_under(mOctruby, "KernelPCA", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__KernelPCA, (void *) &SwigClassKernelPCA);
+  rb_define_alloc_func(SwigClassKernelPCA.klass, _wrap_KernelPCA_allocate);
+  rb_define_method(SwigClassKernelPCA.klass, "initialize", VALUEFUNC(_wrap_new_KernelPCA), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "feature_names", VALUEFUNC(_wrap_KernelPCA_feature_names), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "observations", VALUEFUNC(_wrap_KernelPCA_observations), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "n_components", VALUEFUNC(_wrap_KernelPCA_n_components), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "kept_row_indices", VALUEFUNC(_wrap_KernelPCA_kept_row_indices), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "eigenvalues", VALUEFUNC(_wrap_KernelPCA_eigenvalues), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "dimension", VALUEFUNC(_wrap_KernelPCA_dimension), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "embedding_frame", VALUEFUNC(_wrap_KernelPCA_embedding_frame), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "summary", VALUEFUNC(_wrap_KernelPCA_summary), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "print_summary", VALUEFUNC(_wrap_KernelPCA_print_summary), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "plot_embedding", VALUEFUNC(_wrap_KernelPCA_plot_embedding), -1);
+  rb_define_method(SwigClassKernelPCA.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_KernelPCA_plot_embedding_grouped), -1);
+  SwigClassKernelPCA.mark = 0;
+  SwigClassKernelPCA.destroy = (void (*)(void *)) free_datamunge_KernelPCA;
+  SwigClassKernelPCA.trackObjects = 0;
+  
+  SwigClassSammonMapping.klass = rb_define_class_under(mOctruby, "SammonMapping", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__SammonMapping, (void *) &SwigClassSammonMapping);
+  rb_define_alloc_func(SwigClassSammonMapping.klass, _wrap_SammonMapping_allocate);
+  rb_define_method(SwigClassSammonMapping.klass, "initialize", VALUEFUNC(_wrap_new_SammonMapping), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "feature_names", VALUEFUNC(_wrap_SammonMapping_feature_names), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "observations", VALUEFUNC(_wrap_SammonMapping_observations), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "n_components", VALUEFUNC(_wrap_SammonMapping_n_components), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "kept_row_indices", VALUEFUNC(_wrap_SammonMapping_kept_row_indices), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "dimension", VALUEFUNC(_wrap_SammonMapping_dimension), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "embedding_frame", VALUEFUNC(_wrap_SammonMapping_embedding_frame), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "stress", VALUEFUNC(_wrap_SammonMapping_stress), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "iterations_run", VALUEFUNC(_wrap_SammonMapping_iterations_run), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "summary", VALUEFUNC(_wrap_SammonMapping_summary), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "print_summary", VALUEFUNC(_wrap_SammonMapping_print_summary), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "plot_embedding", VALUEFUNC(_wrap_SammonMapping_plot_embedding), -1);
+  rb_define_method(SwigClassSammonMapping.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_SammonMapping_plot_embedding_grouped), -1);
+  SwigClassSammonMapping.mark = 0;
+  SwigClassSammonMapping.destroy = (void (*)(void *)) free_datamunge_SammonMapping;
+  SwigClassSammonMapping.trackObjects = 0;
+  
+  SwigClassUMAP.klass = rb_define_class_under(mOctruby, "UMAP", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__UMAP, (void *) &SwigClassUMAP);
+  rb_define_alloc_func(SwigClassUMAP.klass, _wrap_UMAP_allocate);
+  rb_define_method(SwigClassUMAP.klass, "initialize", VALUEFUNC(_wrap_new_UMAP), -1);
+  rb_define_method(SwigClassUMAP.klass, "feature_names", VALUEFUNC(_wrap_UMAP_feature_names), -1);
+  rb_define_method(SwigClassUMAP.klass, "observations", VALUEFUNC(_wrap_UMAP_observations), -1);
+  rb_define_method(SwigClassUMAP.klass, "n_components", VALUEFUNC(_wrap_UMAP_n_components), -1);
+  rb_define_method(SwigClassUMAP.klass, "kept_row_indices", VALUEFUNC(_wrap_UMAP_kept_row_indices), -1);
+  rb_define_method(SwigClassUMAP.klass, "dimension", VALUEFUNC(_wrap_UMAP_dimension), -1);
+  rb_define_method(SwigClassUMAP.klass, "embedding_frame", VALUEFUNC(_wrap_UMAP_embedding_frame), -1);
+  rb_define_method(SwigClassUMAP.klass, "sigmas", VALUEFUNC(_wrap_UMAP_sigmas), -1);
+  rb_define_method(SwigClassUMAP.klass, "rhos", VALUEFUNC(_wrap_UMAP_rhos), -1);
+  rb_define_method(SwigClassUMAP.klass, "summary", VALUEFUNC(_wrap_UMAP_summary), -1);
+  rb_define_method(SwigClassUMAP.klass, "print_summary", VALUEFUNC(_wrap_UMAP_print_summary), -1);
+  rb_define_method(SwigClassUMAP.klass, "plot_embedding", VALUEFUNC(_wrap_UMAP_plot_embedding), -1);
+  rb_define_method(SwigClassUMAP.klass, "plot_embedding_grouped", VALUEFUNC(_wrap_UMAP_plot_embedding_grouped), -1);
+  SwigClassUMAP.mark = 0;
+  SwigClassUMAP.destroy = (void (*)(void *)) free_datamunge_UMAP;
+  SwigClassUMAP.trackObjects = 0;
   
   SwigClassAgglomerativeClustering.klass = rb_define_class_under(mOctruby, "AgglomerativeClustering", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__AgglomerativeClustering, (void *) &SwigClassAgglomerativeClustering);

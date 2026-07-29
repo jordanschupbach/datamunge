@@ -1,0 +1,22 @@
+#+title: Jump-Point Search on Orthogonal Grids
+#+property: header-args:c++ :eval no
+* Mathematics and pseudocode
+On uniform grids, many straight-line A* states are symmetric.  Jump search
+advances in a direction to the next turn boundary or goal and expands only
+those jump points; skipped cells are restored when reconstructing the path.
+#+begin_example
+pop minimum g+Manhattan
+in each direction jump to boundary/goal; relax that jump point
+expand the compressed path after reaching goal
+#+end_example
+Worst-case complexity matches A*, while open corridors shrink dramatically.
+* Example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using datamunge::algorithms::jump_point_search;
+  const auto result =
+      jump_point_search({{0, 0}, {0, 0}}, {0, 0}, {1, 1});
+  return result.found ? 0 : 1;
+}
+#+end_src

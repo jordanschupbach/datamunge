@@ -1,0 +1,271 @@
+#+title: Heapsort: In-Place Sorting with a Binary Max-Heap
+#+subtitle: A literate C++ study of Floyd's linear-time heap build and the extract-max loop with =datamunge='s =algorithms::heapsort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Heapsort (Williams 1964) sorts an array in place, in \(O(n\log n)\) worst-case
+time, using \(O(1)\) extra space -- the only mainstream comparison sort that
+achieves all three at once. Quicksort matches its space but can degrade to
+\(O(n^2)\); merge sort matches its worst case but needs \(O(n)\) scratch. The
+price Heapsort pays is that it is neither stable nor cache-friendly. Its engine
+is the *binary max-heap*, a complete binary tree -- stored implicitly in the
+array, the children of index \(i\) sitting at \(2i+1\) and \(2i+2\) -- in which
+every parent dominates its children. This report implements Heapsort in
+=datamunge='s C++ =algorithms::heapsort= and presents it as a literate program:
+every number and figure below is produced by a single compiled, executed
+binary. We derive the =sift_down= primitive, prove that bottom-up
+(Floyd's) heapification runs in \(O(n)\) rather than \(O(n\log n)\) via the sum
+of subtree heights, and trace the extract-max loop. A deterministic
+six-element array is heapified into =9 7 8 3 2 1= and drained to =1 2 3 7 8 9=,
+each step checked by hand.
+#+end_abstract
+
+* The binary heap as an implicit array
+
+A *binary max-heap* is a /complete/ binary tree -- every level full except
+possibly the last, which is filled left to right -- whose every node is at
+least as large as each of its children. Completeness is what lets us drop the
+tree entirely and keep only an array: number the nodes level by level, left to
+right, starting at 0, and the parent/child links become arithmetic. For a node
+at index \(i\),
+
+#+begin_example
+  left child  = 2i + 1
+  right child = 2i + 2
+  parent      = (i - 1) / 2      (integer division)
+#+end_example
+
+No pointers, no allocation: the heap /is/ the array. The *max-heap property*
+is simply \(\text{data}[i] \ge \text{data}[2i+1]\) and \(\text{data}[i] \ge
+\text{data}[2i+2]\) wherever those children exist, which makes the root,
+\(\text{data}[0]\), the maximum of the whole array. The last node that has any
+child is the parent of the last element, index \(\lfloor n/2\rfloor - 1\);
+every index beyond it is a leaf and a trivial one-element heap.
+
+=datamunge= exposes the three pieces -- =build_max_heap=, =is_max_heap=, and
+=heapsort= itself -- so a caller can construct, certify, or sort a heap.
+
+#+name: hs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/heapsort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Sift-down: the one primitive
+
+Every operation on a heap reduces to one repair step. Suppose the subtrees
+rooted at the two children of a node are already valid heaps, but the node's
+own value may be too small. *Sift-down* (also "heapify" or "percolate down")
+restores the heap by walking that value toward the leaves: compare the node
+with its larger child; if the child is bigger, swap and descend into that
+child; stop when the node dominates both children or reaches a leaf. Since it
+follows a single root-to-leaf path, sift-down costs \(O(h)\) for a node of
+height \(h\), i.e. \(O(\log n)\) at worst.
+
+#+begin_example
+SIFT-DOWN(A, root, heap_size):
+  loop:
+      left  <- 2*root + 1
+      right <- 2*root + 2
+      largest <- root
+      if left  < heap_size and A[left]  > A[largest]:  largest <- left
+      if right < heap_size and A[right] > A[largest]:  largest <- right
+      if largest == root:                 # parent already dominates its children
+          return
+      swap A[root] and A[largest]
+      root <- largest                     # follow the value down and repeat
+#+end_example
+
+* Building the heap bottom-up in O(n)
+
+To turn an arbitrary array into a heap, call sift-down on every /internal/
+node, deepest first -- from index \(\lfloor n/2\rfloor - 1\) down to the root.
+Processing in reverse index order guarantees the precondition of sift-down:
+when we reach node \(i\), both of its child subtrees have already been
+heapified.
+
+#+begin_example
+BUILD-MAX-HEAP(A):
+  n <- length(A)
+  for i from floor(n/2) - 1 down to 0:
+      SIFT-DOWN(A, i, n)
+#+end_example
+
+*Why this is \(O(n)\), not \(O(n\log n)\).* A loose bound calls sift-down
+\(n/2\) times at \(O(\log n)\) each and concludes \(O(n\log n)\) -- but that
+overcharges the many shallow nodes. The real cost is governed by node
+/height/, not depth. In a heap of \(n\) nodes there are at most
+\(\lceil n/2^{h+1}\rceil\) nodes of height \(h\), and a sift-down from height
+\(h\) costs \(O(h)\). Summing,
+
+#+begin_example
+  total  <=  sum over h>=0 of  ceil(n / 2^(h+1)) * O(h)
+         <=  O(n) * sum over h>=0 of  h / 2^(h+1)
+         =   O(n) * 1                       # since sum_{h>=0} h/2^h = 2
+         =   O(n).
+#+end_example
+
+The geometric series \(\sum_{h\ge 0} h/2^h = 2\) converges to a constant, so
+the heights sum to \(O(n)\). Bottom-up construction is /linear/. (Building the
+heap by \(n\) successive top-down insertions, by contrast, genuinely costs
+\(O(n\log n)\), because there the expensive nodes are the numerous deep ones.)
+
+* Heapsort: the extract-max loop
+
+With a max-heap in hand, sorting is a drain. The root is the maximum, so swap
+it with the last element of the active heap -- parking the largest value in its
+final sorted position -- shrink the heap by one, and sift the new root down to
+restore the property. Repeat until one element remains. After \(n-1\)
+extractions the array is sorted ascending, in place.
+
+#+begin_example
+HEAPSORT(A):
+  n <- length(A)
+  BUILD-MAX-HEAP(A)                        # O(n)
+  for end from n-1 down to 1:
+      swap A[0] and A[end]                 # move current max to its final slot
+      SIFT-DOWN(A, 0, end)                 # re-heapify the shrunken range A[0..end)
+#+end_example
+
+*Cost.* The build is \(O(n)\); the loop performs \(n-1\) sift-downs of
+\(O(\log n)\) each, so Heapsort is \(O(n\log n)\) in the /worst/ case -- there
+is no pathological input, unlike quicksort's \(O(n^2)\). It touches only a
+constant number of extra variables, so its space is \(O(1)\) -- unlike merge
+sort's \(O(n)\) auxiliary buffer. The costs of these guarantees are two:
+Heapsort is *not stable* (swapping the root across the array reorders equal
+keys), and, because it hops along parent/child links that stride across memory,
+it is *less cache-friendly* than a well-tuned quicksort, which is why quicksort
+usually wins in wall-clock time despite the weaker worst case.
+
+* Example: heapify and drain a six-element array
+
+We take the deterministic array =3 7 1 9 2 8=, build its max-heap, and sort it,
+verifying at each stage. Building bottom-up sifts nodes 2, 1, 0 in turn:
+node 2 (=1=) swaps under its child =8=; node 1 (=7=) rises past =9=; node 0
+(=3=) sinks through =9= then =7=. The result is the max-heap =9 7 8 3 2 1=,
+drawn below as a binary tree. The extract-max loop then repeatedly parks the
+root at the tail -- pulling out =9=, =8=, =7=, =3=, =2= -- leaving
+=1 2 3 7 8 9=.
+
+#+name: hs-run
+#+begin_src c++ :eval no
+    const std::vector<std::int64_t> input = {3, 7, 1, 9, 2, 8};
+    auto show = [](const std::string& tag, const std::vector<std::int64_t>& v) {
+        std::cout << tag;
+        for (auto x : v) std::cout << x << " ";
+        std::cout << "\n";
+    };
+
+    std::cout << "=== Heapsort of a 6-element array ===\n";
+    show("input:     ", input);
+
+    std::vector<std::int64_t> heap = input;
+    build_max_heap(heap);
+    std::cout << "\nAfter build_max_heap (bottom-up, O(n)):\n";
+    show("max-heap:  ", heap);
+    std::cout << "  valid max-heap: " << (is_max_heap(heap) ? "yes" : "NO") << "\n";
+
+    std::vector<std::int64_t> sorted = input;
+    heapsort(sorted);
+    std::cout << "\nAfter heapsort (extract-max loop):\n";
+    show("sorted:    ", sorted);
+    std::vector<std::int64_t> ref = input;
+    std::sort(ref.begin(), ref.end());
+    std::cout << "  ascending: " << (std::is_sorted(sorted.begin(), sorted.end()) ? "yes" : "NO")
+              << ";  matches std::sort: " << (sorted == ref ? "yes" : "NO") << "\n";
+
+    // Draw the initial max-heap as a binary tree: node i at depth floor(log2(i+1)),
+    // spread evenly within its level; edges connect each parent to its children.
+    const std::size_t n = heap.size();
+    std::vector<double> nx, ny;               // node centers
+    std::vector<double> ex0, ey0, ex1, ey1;   // parent -> child edges
+    for (std::size_t i = 0; i < n; ++i) {
+        const auto depth = static_cast<std::size_t>(std::floor(std::log2(static_cast<double>(i + 1))));
+        const std::size_t width = std::size_t{1} << depth;    // slots on this level
+        const std::size_t slot = i + 1 - width;                // position within the level
+        nx.push_back((static_cast<double>(slot) + 0.5) / static_cast<double>(width));
+        ny.push_back(-static_cast<double>(depth));
+    }
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t c = 2 * i + 1; c <= 2 * i + 2 && c < n; ++c) {
+            ex0.push_back(nx[i]); ey0.push_back(ny[i]);
+            ex1.push_back(nx[c]); ey1.push_back(ny[c]);
+        }
+
+    auto plot = RPlot::create();
+    if (!ex0.empty()) plot.segments(ex0, ey0, ex1, ey1, {148, 163, 184}, 1.5);
+    if (!nx.empty()) plot.points(nx, ny, "", {37, 99, 235}, 22.0);
+    for (std::size_t i = 0; i < n; ++i)
+        plot.text(nx[i], ny[i], std::to_string(heap[i]), {255, 255, 255}, 13.0);
+    plot.title("Initial max-heap as a binary tree (children of i at 2i+1, 2i+2)")
+        .x_label("").y_label("").hide_axes(true).background({250, 250, 252});
+    plot.save_svg("build/org/heapsort_heap.svg");
+    std::cout << "\nwrote heapsort_heap.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/heapsort_analysis.cpp <<'CPP'
+<<hs-includes>>
+
+int main() {
+<<hs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/heapsort_analysis.cpp -o build/org/heapsort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/heapsort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Heapsort of a 6-element array ===
+input:     3 7 1 9 2 8
+
+After build_max_heap (bottom-up, O(n)):
+max-heap:  9 7 8 3 2 1
+  valid max-heap: yes
+
+After heapsort (extract-max loop):
+sorted:    1 2 3 7 8 9
+  ascending: yes;  matches std::sort: yes
+
+wrote heapsort_heap.svg
+#+end_example
+
+Bottom-up heapification turned =3 7 1 9 2 8= into the max-heap =9 7 8 3 2 1= in
+three sift-downs, and =is_max_heap= certifies the property holds: the root =9=
+is the array maximum, and every parent dominates its children. The extract-max
+loop then drained the heap into ascending order, agreeing with =std::sort= to
+the element. The heap that seeds the sort is the complete binary tree below:
+reading it level by level -- =9=; =7 8=; =3 2 1= -- is exactly reading the
+array, and every downward edge points from a larger value to a smaller one,
+the max-heap property made visible.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/heapsort_heap.svg]]
+
+The tree is complete -- the last level fills from the left -- which is precisely
+what lets the array indices stand in for pointers. Sorting it costs \(O(n\log
+n)\) no matter the input and spends only \(O(1)\) scratch: Heapsort's worst-case
+guarantee is its edge over quicksort, and its in-place operation its edge over
+merge sort, paid for with the loss of stability and cache locality.

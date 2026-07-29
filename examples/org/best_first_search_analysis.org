@@ -1,0 +1,19 @@
+#+title: Greedy Best-First Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics and algorithm
+Greedy best-first search expands the frontier vertex minimizing heuristic
+\(h(v)\), ignoring accumulated path cost.  A priority queue implements the
+rule in \(O((V+E)\log V)\); it is fast when \(h\) is informative but does not
+guarantee a shortest path.
+#+begin_example
+queue start by h; repeatedly pop minimum
+record unseen successors and predecessors; stop at goal
+#+end_example
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::best_first_search(3,{{0,1},{1,2}},0,2,{2,1,0});std::cout<<r.path.size();}
+#+end_src
+

@@ -1,0 +1,25 @@
+#+title: Reverse-Delete Minimum Spanning Trees
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+Reverse-delete is Kruskal run backward: scan edges from heaviest to lightest
+and delete an edge precisely when doing so does not increase the number of
+connected components.  The cycle property says a heaviest cycle edge belongs
+to some MST's complement, proving each deletion safe.
+* Pseudocode
+#+begin_example
+sort edges descending
+for edge e:
+  delete e if component count is unchanged without it
+return remaining minimum spanning forest
+#+end_example
+Direct connectivity checks cost \(O(E(V+E))\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/routing_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::reverse_delete(
+3,{{0,1,1},{1,2,2},{0,2,8}});std::cout<<r.total_weight<<'\n';}
+#+end_src
+The weight-8 cycle edge is removed, leaving total 3.
+

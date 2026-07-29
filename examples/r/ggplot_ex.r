@@ -5,6 +5,12 @@
 # any un-assigned top-level expression's result, including NULL from save_svg().
 library(datamunger)
 
+# GGPlot_show() opens an X11 window and aborts (uncaught C++ exception) when no display is
+# available, so gate it on $DISPLAY -- skip with a note when headless; the SVGs are still
+# written below. On a machine with an X server it displays normally.
+.real_ggplot_show <- GGPlot_show
+GGPlot_show <- function(...) if (nzchar(Sys.getenv("DISPLAY"))) .real_ggplot_show(...) else invisible(message("  (GGPlot_show skipped -- no DISPLAY)"))
+
 rgb <- function(r, g, b) {
   color <- RGB()
   RGB_r_set(color, r)

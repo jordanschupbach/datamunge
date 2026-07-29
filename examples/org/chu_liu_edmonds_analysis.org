@@ -1,0 +1,40 @@
+#+title: Chu--Liu/Edmonds Minimum Branching
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Chu--Liu/Edmonds generalizes minimum spanning trees to rooted directed graphs.
+We explain minimum incoming edges, cycle contraction, pseudocode, and a
+three-vertex example.
+#+end_abstract
+
+* Mathematics and algorithm
+
+Every non-root vertex needs exactly one incoming edge.  Selecting its cheapest
+incoming edge is optimal unless those choices form a directed cycle.  A cycle
+is contracted; an entering edge's reduced cost subtracts the chosen incoming
+cost of its destination.  Solving the contracted graph and expanding preserves
+the optimum.
+
+#+begin_example
+choose cheapest incoming edge of every non-root vertex
+if some vertex has none: no branching exists
+add their weights
+if there is no cycle: finish
+contract every cycle; reduce entering-edge weights; repeat
+#+end_example
+
+The dense implementation runs in \(O(VE)\).
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/advanced_graph.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::chu_liu_edmonds(
+3,{{0,1,5},{0,2,6},{1,2,1},{2,1,1}},0);std::cout<<r.total_weight<<'\n';}
+#+end_src
+
+The two unit edges form a cycle; contraction selects one root edge, yielding
+optimal weight \(5+1=6\).
+

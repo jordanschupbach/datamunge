@@ -16,23 +16,23 @@
   <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
   <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
   <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
-  <text x="90" y="580" font-size="12" text-anchor="middle">-3.971</text>
-  <text x="80" y="560" font-size="12" text-anchor="end">-nan</text>
-  <text x="259.2" y="580" font-size="12" text-anchor="middle">-3.091</text>
-  <text x="80" y="463.2" font-size="12" text-anchor="end">-nan</text>
-  <text x="428.4" y="580" font-size="12" text-anchor="middle">-2.211</text>
-  <text x="80" y="366.4" font-size="12" text-anchor="end">-nan</text>
-  <text x="597.6" y="580" font-size="12" text-anchor="middle">-1.331</text>
-  <text x="80" y="269.6" font-size="12" text-anchor="end">-nan</text>
-  <text x="766.8" y="580" font-size="12" text-anchor="middle">-0.451</text>
-  <text x="80" y="172.8" font-size="12" text-anchor="end">-nan</text>
-  <text x="936" y="580" font-size="12" text-anchor="middle">0.429</text>
-  <text x="80" y="76" font-size="12" text-anchor="end">-nan</text>
+  <text x="90" y="580" font-size="12" text-anchor="middle">-3.928</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-0.179</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">-3.057</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">0.523</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">-2.186</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">1.226</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">-1.315</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">1.928</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">-0.444</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">2.631</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">0.427</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">3.334</text>
   <text x="480" y="36" font-size="24" text-anchor="middle">Cross-Validation Curve</text>
   <text x="480" y="620" font-size="16" text-anchor="middle">log10(lambda)</text>
   <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">CV mean squared error</text>
-  <polyline fill="none" stroke="rgb(220,38,38)" stroke-width="2" points="897.545,-nan 889.777,-nan 882.008,-nan 874.24,-nan 866.471,-nan 858.702,-nan 850.934,-nan 843.165,-nan 835.397,-nan 827.628,-nan 819.86,-nan 812.091,-nan 804.322,-nan 796.554,-nan 788.785,-nan 781.017,-nan 773.248,-nan 765.479,-nan 757.711,-nan 749.942,-nan 742.174,-nan 734.405,-nan 726.636,-nan 718.868,-nan 711.099,-nan 703.331,-nan 695.562,-nan 687.793,-nan 680.025,-nan 672.256,-nan 664.488,-nan 656.719,-nan 648.95,-nan 641.182,-nan 633.413,-nan 625.645,-nan 617.876,-nan 610.107,-nan 602.339,-nan 594.57,-nan 586.802,-nan 579.033,-nan 571.264,-nan 563.496,-nan 555.727,-nan 547.959,-nan 540.19,-nan 532.421,-nan 524.653,-nan 516.884,-nan 509.116,-nan 501.347,-nan 493.579,-nan 485.81,-nan 478.041,-nan 470.273,-nan 462.504,-nan 454.736,-nan 446.967,-nan 439.198,-nan 431.43,-nan 423.661,-nan 415.893,-nan 408.124,-nan 400.355,-nan 392.587,-nan 384.818,-nan 377.05,-nan 369.281,-nan 361.512,-nan 353.744,-nan 345.975,-nan 338.207,-nan 330.438,-nan 322.669,-nan 314.901,-nan 307.132,-nan 299.364,-nan 291.595,-nan 283.826,-nan 276.058,-nan 268.289,-nan 260.521,-nan 252.752,-nan 244.983,-nan 237.215,-nan 229.446,-nan 221.678,-nan 213.909,-nan 206.14,-nan 198.372,-nan 190.603,-nan 182.835,-nan 175.066,-nan 167.298,-nan 159.529,-nan 151.76,-nan 143.992,-nan 136.223,-nan 128.455,-nan "/>
-  <circle cx="524.653" cy="-nan" r="8" fill="rgb(220,38,38)"/>
+  <polyline fill="none" stroke="rgb(220,38,38)" stroke-width="2" points="897.545,112.333 889.698,172.68 881.85,227.607 874.002,273.256 866.154,311.196 858.306,342.763 850.458,369.126 842.61,391.038 834.763,409.282 826.915,424.535 819.067,437.216 811.219,447.811 803.371,457.113 795.523,465.193 787.675,471.925 779.827,477.751 771.98,482.605 764.132,486.696 756.284,490.151 748.436,493.651 740.588,496.784 732.74,499.396 724.892,501.626 717.045,503.86 709.197,505.725 701.349,507.284 693.501,508.587 685.653,509.677 677.805,510.59 669.957,511.394 662.109,512.085 654.262,512.659 646.414,513.142 638.566,513.551 630.718,513.896 622.87,514.188 615.022,514.436 607.174,514.647 599.327,514.826 591.479,514.978 583.631,515.109 575.783,515.22 567.935,515.316 560.087,515.398 552.239,515.468 544.391,515.529 536.544,515.582 528.696,515.627 520.848,515.667 505.152,438.755 489.456,438.787 473.761,438.811 458.065,438.83 442.369,438.844 426.673,438.816 410.978,438.752 395.282,438.687 379.586,438.627 363.891,438.571 348.195,438.521 332.499,438.478 316.803,438.442 301.108,438.413 285.412,438.398 269.716,438.393 254.02,438.388 238.325,438.382 222.629,438.377 206.933,438.372 191.237,438.368 175.542,438.364 159.846,438.361 144.15,438.358 128.455,438.356 "/>
+  <circle cx="520.848" cy="515.667" r="8" fill="rgb(220,38,38)"/>
   <rect x="796" y="60" width="18" height="8" fill="rgb(220,38,38)"/>
   <text x="822" y="68" font-size="12">CV mean squared error</text>
   <rect x="796" y="80" width="18" height="8" fill="rgb(220,38,38)"/>

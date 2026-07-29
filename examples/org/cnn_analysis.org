@@ -1,0 +1,856 @@
+#+title: Convolutional Neural Networks: Weight Sharing, Learned Filters, and Translation Invariance
+#+subtitle: A literate C++ study of image classification with a convolutional network using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We implement a convolutional neural network (CNN) -- conv -> ReLU ->
+max-pool -> flatten -> dense -> softmax -- trained by backpropagation
+through its convolution and pooling layers, in =datamunge='s C++
+=stats::CNNClassifier=, and report it as a literate program: every
+fragment below is a real, compiled, executed chunk of the single C++
+binary that produced every number and figure in this document. A CNN
+adapts a neural network to images by two structural changes a
+fully-connected network lacks: a convolution layer applies one small set
+of weights at /every/ spatial position (weight sharing), so it learns
+local, translation-equivariant feature detectors with far fewer
+parameters, and pooling summarizes those detections to grant a degree of
+positional tolerance. We demonstrate the machinery on synthetic 12x12
+images of horizontal and vertical bars at random positions: the network
+classifies them at 100% test accuracy, its final training cross-entropy
+falling to 0.0006, and -- inspecting the eight 3x3 filters it learned -- we
+find exactly the horizontal- and vertical-edge detectors the task calls
+for, discovered from labels alone. The report's central result concerns
+/translation invariance/, and is deliberately honest about where it does
+and does not come from. Training on bars confined to the top-left of the
+image and testing on the same shapes shifted to the bottom-right -- positions
+never seen during training -- we find that convolution's weight sharing is
+necessary but /not sufficient/: a CNN with ordinary local (2x2) pooling,
+whose dense head still depends on where features land, scores 0% on the
+shifted test set, no better than a coin flip inverted. Replacing local
+pooling with /global/ pooling -- collapsing each feature map to "did this
+filter fire anywhere?", discarding position entirely -- lifts test accuracy
+to 82.6%, and does so with just 258 parameters, while a 4706-parameter
+fully-connected network manages only 17.2%. All three models fit the
+training data perfectly; only the globally-pooled convolutional network
+generalizes across position. Finally, we look /inside/ the trained network
+with /layer-wise relevance propagation/, which traces a prediction back to
+the input pixels that supported it: on our bar images 89-92% of the
+relevance lands squarely on the bar itself, and a class-contrastive view
+shows a horizontal bar carries strong evidence for "horizontal" and
+essentially none for "vertical." We derive the convolution, ReLU and
+pooling operations, the softmax/cross-entropy loss, backpropagation through
+convolution and max-pooling, the weight-sharing and invariance arguments,
+and the z+ relevance-propagation rule, tying each to the corresponding
+library call.
+#+end_abstract
+
+* Introduction
+
+The [[file:neural_network_analysis.org][feed-forward network report]]
+classifies data by flattening it into a vector and learning a fully-
+connected map. For images that is wasteful and fragile. Wasteful, because
+a fully-connected layer learns a separate weight for every (pixel, unit)
+pair, ignoring that an image's meaning is built from /local/ patterns --
+edges, corners, textures -- repeated across the frame. Fragile, because
+having learned that "a bright patch here means class X," the network knows
+nothing about the same patch appearing /there/: shift the object a few
+pixels and the learned weights no longer apply.
+
+A convolutional neural network fixes both by changing the architecture to
+respect image structure. Its central layer, the /convolution/, slides one
+small bank of weights -- a filter -- across every position of the image,
+computing the same local operation everywhere. This /weight sharing/ means
+a horizontal-edge detector, once learned, is applied at every location for
+free, so the network needs vastly fewer parameters, and its feature maps
+are /translation-equivariant/: move the input, and the detections move
+with it. A subsequent /pooling/ step then summarizes each detector's
+responses, trading spatial precision for tolerance to small shifts. This
+report builds a small but genuine CNN -- convolution, ReLU, pooling, a
+dense head, softmax, and backpropagation through all of it -- and shows
+both what it buys and, honestly, exactly where its celebrated translation
+invariance comes from.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.4.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the convolution, ReLU and pooling layers, the softmax/cross-
+entropy objective, backpropagation through convolution and max-pooling,
+the weight-sharing and invariance arguments, and layer-wise relevance
+propagation -- each tied to the specific piece of =CNNClassifier= that
+implements it. §3 describes the program chunk by chunk. §4 reports the
+bar-classification accuracy, the learned filters, the training loss curve,
+the relevance-propagation explanations, and the translation-invariance
+experiment. §5 discusses what convolution buys, where invariance really
+lives, and what the network attends to. §6 concludes.
+
+* Background: Convolutional Neural Networks
+
+** Setup and notation
+
+We classify single-channel (grayscale) images: each example is an \(H
+\times W\) matrix of pixel intensities in \([0, 1]\), with a categorical
+label in one of \(K\) classes. Because image structure is intrinsically
+two-dimensional, =CNNClassifier= takes images directly as a vector of
+=linalg::DenseMatrix= objects (all the same size) plus their labels,
+rather than through the tabular formula interface the other classifiers
+use. The network here has a single convolution layer of \(F\) filters
+(=n_filters=), each \(k \times k\) (=kernel_size=).
+
+** The convolution layer
+
+The convolution layer is the heart of the architecture. Each filter
+\(f\) is a small \(k \times k\) weight matrix \(W^{(f)}\) with a bias
+\(b_f\), and it produces a /feature map/ by computing, at every valid
+position \((i, j)\), a weighted sum of the \(k \times k\) image patch
+anchored there:
+
+\[
+Z^{(f)}_{ij} = b_f + \sum_{a=0}^{k-1} \sum_{b=0}^{k-1}
+   X_{\,i+a,\; j+b}\; W^{(f)}_{ab} .
+\]
+
+(This is technically a /cross-correlation/, the convention every practical
+CNN library uses.) The decisive property is that the /same/ weights
+\(W^{(f)}\) are used at every position \((i, j)\): the filter is /shared/
+across the whole image. A fully-connected layer would learn an independent
+weight for each pixel of each output; the convolution learns just \(k^2\)
+weights per filter and reuses them everywhere. =CNNClassifier::fit= builds
+these feature maps in its forward pass (the =conv_pre= cache), one \(f\)
+per filter, of size \((H-k+1) \times (W-k+1)\) under the "valid"
+convolution used here.
+
+** ReLU and pooling
+
+Each feature map passes through a ReLU nonlinearity, \(\max(0, Z^{(f)})\),
+exactly as in the [[file:neural_network_analysis.org][dense network]] --
+without it, stacked linear maps would collapse. Then a /max-pooling/ layer
+downsamples each map by taking the maximum over non-overlapping \(p \times
+p\) windows (=pool_size=):
+
+\[
+P^{(f)}_{pq} = \max_{0 \le a,b < p}
+   \operatorname{ReLU}\!\bigl(Z^{(f)}_{\,p\cdot p_{\mathrm{idx}}+a,\; \ldots}\bigr) .
+\]
+
+Pooling serves two ends: it shrinks the representation, and it grants
+/local/ translation tolerance -- a feature shifted by less than the pool
+window lands in the same pooled cell. Its extreme, /global/ pooling
+(a window covering the entire feature map, so each map collapses to a
+single number), discards position entirely and is what §4.5 shows confers
+genuine invariance. =fit= records, for each pooled cell, the argmax
+position (=pool_arg=), which backpropagation needs.
+
+** The dense head, softmax, and loss
+
+The pooled feature maps are flattened into one long vector and fed to a
+fully-connected /dense/ hidden layer (=dense_hidden= units, ReLU), whose
+output a final linear layer turns into \(K\) class scores. As in the dense
+network, a softmax converts the scores to probabilities and the network
+minimizes the cross-entropy against the true labels,
+
+\[
+\hat{p}_c = \frac{e^{s_c}}{\sum_j e^{s_j}}, \qquad
+\mathcal{L} = -\frac{1}{n}\sum_{i=1}^{n} \log \hat{p}_{i, y_i} .
+\]
+
+So a CNN is a feature-extracting front end (convolution and pooling)
+bolted onto the same softmax classifier the dense-network report already
+used; =loss_curve()= records this cross-entropy each epoch.
+
+** Backpropagation through convolution and pooling
+
+Training uses backpropagation, extended to the two new layer types. The
+dense head's gradients are identical to the ordinary network's. Through
+/max-pooling/, the gradient is /routed/: since each pooled output was the
+max of its window, only that argmax input affected the loss, so the
+incoming gradient flows to that one position and the rest receive zero --
+the =pool_arg= cache is exactly what makes this routing possible. Through
+the /convolution/, weight sharing means each filter weight influenced the
+loss at every position it was applied, so its gradient sums those
+contributions,
+
+\[
+\frac{\partial \mathcal{L}}{\partial W^{(f)}_{ab}} =
+   \sum_{i,j} X_{\,i+a,\;j+b}\; \Delta^{(f)}_{ij} ,
+\]
+
+where \(\Delta^{(f)}\) is the (post-pool, post-ReLU) gradient at the
+convolution output. =CNNClassifier::fit= implements exactly this: route
+the flattened gradient back through the argmax positions, mask it by the
+ReLU, and accumulate each filter's gradient as a correlation of the input
+patches with that error signal, then take a mini-batch SGD step.
+
+** Why convolution: parameters and invariance
+
+Weight sharing has two consequences this report measures directly. First,
+/parameter efficiency/: a convolution learns \(F k^2\) filter weights
+regardless of image size, where a dense layer over the same pixels learns
+a weight per pixel per unit -- §4.5's globally-pooled CNN classifies with
+258 parameters against a fully-connected network's 4706. Second,
+/equivariance/: because the same filter runs everywhere, shifting the
+input shifts the feature map identically, so a feature learned at one
+location is recognized at any other. Turning that equivariance into
+/invariance/ -- a prediction that does not change when the input shifts --
+requires pooling to discard the position information, and §4.5 shows this
+is the crux: convolution alone is not enough.
+
+** Explaining predictions: layer-wise relevance propagation
+
+A trained network's decision can be opaque -- which pixels actually made it
+say "horizontal"? /Layer-wise relevance propagation/ (LRP; Bach et al.,
+2015) answers this by running a conservation principle backward through the
+network. It starts with a single number, the target class's output score,
+and redistributes it layer by layer -- each neuron passing the relevance it
+received down to the inputs that most contributed to it -- until every unit
+of relevance has been assigned to an input pixel, producing a heatmap of
+support. =CNNClassifier::relevance= implements the /z+ rule/ (LRP-
+\(\alpha_1\beta_0\)), which for a linear step \(z_j = \sum_i a_i w_{ij}\)
+with non-negative activations \(a_i\) distributes each \(R_j\) in
+proportion to the /positive/ contributions,
+
+\[
+R_i = \sum_j \frac{a_i\, w_{ij}^{+}}{\sum_{i'} a_{i'} w_{i'j}^{+}}\; R_j ,
+\qquad w^{+} = \max(0, w) ,
+\]
+
+so relevance stays non-negative and (up to the bias terms) is conserved
+\(\sum_i R_i \approx \sum_j R_j\). This rule suits our network exactly: ReLU
+makes every hidden activation non-negative and the input pixels lie in
+\([0,1]\). =relevance= applies it through each layer in turn -- the output-
+to-dense and dense-to-flatten steps by the formula above, max-pooling by
+routing each pooled cell's relevance to the /argmax/ position it came from
+(the =pool_arg= cache), and the convolution back to the pixels by the same
+z+ rule over each filter's receptive field -- returning an
+\(H \times W\) relevance map. §4.4 shows these maps land squarely on the
+object the network is classifying.
+
+** What we will report
+
+Given the fits, we report the CNN's accuracy on bar images with example
+inputs, the edge-detector filters it learns, its training loss curve, the
+layer-wise relevance-propagation explanations of individual predictions,
+and the translation-invariance experiment comparing local-pooled and
+globally-pooled convolutional networks against a fully-connected one on
+shifted test positions.
+
+* Data and Methods
+
+** Synthetic bar images
+
+To have a task with known structure, we generate \(12 \times 12\) grayscale
+images, each containing a thickness-2 /bar/: a horizontal bar spans the
+full width at a random row (class "horizontal"), a vertical bar spans the
+full height at a random column (class "vertical"), and independent
+Gaussian noise is added to every pixel. The two classes differ only in the
+/orientation/ of an edge, which is precisely what a small convolution
+filter can detect -- and, by weight sharing, detect wherever the bar
+happens to sit. We generate 600 such images (300 per class) and split them
+70/30 into training and test sets.
+
+** The translation experiment
+
+To probe translation invariance we construct a deliberately adversarial
+split: bars appear only in the /top-left/ region during training (rows or
+columns 0-3) and only in the /bottom-right/ region at test (rows or columns
+8-10) -- positions the network never sees while learning. A model that has
+merely memorized which pixels are bright for each class cannot transfer;
+only one that has learned a position-independent notion of "horizontal
+edge versus vertical edge" can. We compare three models on this split: a
+CNN with local (2x2) pooling, a CNN with global pooling, and -- via the
+[[file:neural_network_analysis.org][companion]] =MLPClassifier= on the
+flattened pixels -- a fully-connected network.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=linalg::DenseMatrix= for the images, =stats::CNNClassifier= for the model
+(and =stats::MLPClassifier= plus =dstruct::DataFrame= for the
+fully-connected baseline), and =plot::RPlot= for every figure. No external
+deep-learning framework is used.
+
+** Program, presented as a literate whole
+
+*** Includes and image helpers
+
+Helpers to /prepare and draw/ image data: one builds a noisy bar image,
+one flattens a set of images into a pixel DataFrame so the fully-connected
+=MLPClassifier= can train on the same data, and two draw small images and
+filters as grids of squares (with an aspect-correcting background so the
+pixels render square).
+
+#+name: cnn-includes
+#+begin_src c++ :eval no
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/linalg/dense_matrix.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cnn_classifier.hpp>
+#include <datamunge/stats/mlp_classifier.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::linalg::DenseMatrix;
+using datamunge::stats::CNNClassifier;
+using datamunge::stats::CNNClassifierOptions;
+using datamunge::stats::MLPClassifier;
+using datamunge::stats::MLPClassifierOptions;
+using namespace datamunge::plot;
+
+static constexpr std::size_t H = 12, W = 12;
+
+// A 12x12 image with a thickness-2 bar: horizontal (a full-width bar at row `pos`) or vertical
+// (a full-height bar at column `pos`), plus Gaussian pixel noise.
+static DenseMatrix<double> make_bar(bool horizontal, std::size_t pos, std::mt19937_64& rng) {
+    std::normal_distribution<double> noise(0.0, 0.08);
+    DenseMatrix<double> img(H, W, 0.0);
+    for (std::size_t i = 0; i < H; ++i)
+        for (std::size_t j = 0; j < W; ++j) {
+            double v = 0.0;
+            if (horizontal && (i == pos || i == pos + 1)) v = 1.0;
+            if (!horizontal && (j == pos || j == pos + 1)) v = 1.0;
+            img(i, j) = std::clamp(v + noise(rng), 0.0, 1.0);
+        }
+    return img;
+}
+
+// Flatten images into a DataFrame with pixel columns p0..p{HW-1} plus a class column, so the
+// fully-connected MLPClassifier can be fit on the same data as the CNN.
+static DataFrame to_pixel_df(const std::vector<DenseMatrix<double>>& imgs, const std::vector<std::string>& labels) {
+    DataFrame d;
+    for (std::size_t p = 0; p < H * W; ++p) {
+        std::vector<double> col(imgs.size());
+        for (std::size_t n = 0; n < imgs.size(); ++n) col[n] = imgs[n](p / W, p % W);
+        d.add_column("p" + std::to_string(p), col);
+    }
+    d.add_column("class", labels);
+    return d;
+}
+
+// Draw a matrix as a grid of filled squares at offset (ox, oy); cmap maps a value to a color.
+template <typename Cmap>
+static void draw_grid(RPlot& plot, const DenseMatrix<double>& m, double ox, double oy, Cmap cmap) {
+    for (std::size_t i = 0; i < m.rows(); ++i)
+        for (std::size_t j = 0; j < m.cols(); ++j) {
+            const double x0 = ox + static_cast<double>(j);
+            const double y0 = oy + static_cast<double>(m.rows() - 1 - i);
+            plot.polygon({x0, x0 + 1, x0 + 1, x0}, {y0, y0, y0 + 1, y0 + 1}, cmap(m(i, j)), true);
+        }
+}
+
+// Draw a background rectangle padding content of size (cw x ch) to the canvas 3:2 aspect, so the
+// unit cells above render as squares rather than being stretched by independent x/y scaling.
+static void bg_box(RPlot& plot, double cw, double ch) {
+    const double aspect = 960.0 / 640.0;
+    double bw = cw, bh = cw / aspect;
+    if (bh < ch) { bh = ch; bw = ch * aspect; }
+    const double ox = (bw - cw) / 2.0, oy = (bh - ch) / 2.0;
+    plot.polygon({-ox, cw + ox, cw + ox, -ox}, {-oy, -oy, ch + oy, ch + oy}, {250, 250, 252}, true);
+}
+#+end_src
+
+*** Generating and splitting the bar images
+
+#+name: cnn-data-gen
+#+begin_src c++ :eval no
+    std::cout << "=== Synthetic images: horizontal vs. vertical bars at random positions ===\n";
+    const std::size_t per = 300;
+    std::mt19937_64 rng(20240815);
+    std::uniform_int_distribution<std::size_t> anypos(0, H - 2);
+    std::vector<DenseMatrix<double>> imgs;
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < per; ++i) {
+        imgs.push_back(make_bar(true, anypos(rng), rng));
+        labels.push_back("horizontal");
+        imgs.push_back(make_bar(false, anypos(rng), rng));
+        labels.push_back("vertical");
+    }
+    // 70/30 split.
+    std::vector<std::size_t> idx(imgs.size());
+    std::iota(idx.begin(), idx.end(), 0);
+    std::shuffle(idx.begin(), idx.end(), rng);
+    const std::size_t ntr = static_cast<std::size_t>(0.7 * imgs.size());
+    std::vector<DenseMatrix<double>> tr_img, te_img;
+    std::vector<std::string> tr_lab, te_lab;
+    for (std::size_t i = 0; i < idx.size(); ++i) {
+        if (i < ntr) { tr_img.push_back(imgs[idx[i]]); tr_lab.push_back(labels[idx[i]]); }
+        else { te_img.push_back(imgs[idx[i]]); te_lab.push_back(labels[idx[i]]); }
+    }
+    std::cout << "generated " << imgs.size() << " images (" << H << "x" << W << "), " << ntr << " train / "
+              << (imgs.size() - ntr) << " test\n";
+#+end_src
+
+*** Fitting the convolutional network
+
+#+name: cnn-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== Convolutional neural network ===\n";
+    CNNClassifier cnn(tr_img, tr_lab, CNNClassifierOptions{8, 3, 2, 32, 0.05, 40, 16, 0.0, 1});
+    cnn.print_summary();
+    std::cout << "\ntest accuracy: " << cnn.accuracy(te_img, te_lab) << "\n";
+#+end_src
+
+*** Sample images
+
+#+name: cnn-sample-plot
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::create();
+        auto gray = [](double v) { const int g = static_cast<int>(std::clamp(255.0 * (1.0 - v), 0.0, 255.0));
+                                   return RGB{static_cast<std::uint8_t>(g), static_cast<std::uint8_t>(g), static_cast<std::uint8_t>(g)}; };
+        bg_box(plot, 3 * (W + 2) - 2, 2 * (H + 2) - 2);  // 3 columns x 2 rows of images
+        // Three horizontal (top row) and three vertical (bottom row) training images.
+        std::size_t row = 0;
+        for (const std::string& want : {"horizontal", "vertical"}) {
+            std::size_t col = 0;
+            for (std::size_t n = 0; n < tr_img.size() && col < 3; ++n)
+                if (tr_lab[n] == want) {
+                    draw_grid(plot, tr_img[n], static_cast<double>(col) * (W + 2),
+                              static_cast<double>(1 - row) * (H + 2), gray);
+                    ++col;
+                }
+            ++row;
+        }
+        plot.title("Sample images: horizontal bars (top), vertical bars (bottom)").x_label("").y_label("");
+        plot.save_svg("build/org/cnn_samples.svg");
+        std::cout << "wrote cnn_samples.svg\n";
+    }
+#+end_src
+
+*** The learned filters and the loss curve
+
+#+name: cnn-filters-plot
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::create();
+        auto diverging = [](double t) {  // t in [-1,1]
+            t = std::clamp(t, -1.0, 1.0);
+            if (t >= 0) return RGB{static_cast<std::uint8_t>(255), static_cast<std::uint8_t>(255 - 217 * t),
+                                   static_cast<std::uint8_t>(255 - 217 * t)};
+            return RGB{static_cast<std::uint8_t>(255 + 218 * t), static_cast<std::uint8_t>(255 + 156 * t),
+                       static_cast<std::uint8_t>(255 - 20 * t)};
+        };
+        const auto& filters = cnn.filters();
+        const std::size_t k = filters[0].rows();
+        bg_box(plot, 4 * (k + 1) - 1, 2 * (k + 1) - 1);  // 4 columns x 2 rows of filters
+        for (std::size_t f = 0; f < filters.size(); ++f) {
+            double amax = 1e-9;
+            for (std::size_t a = 0; a < k; ++a)
+                for (std::size_t b = 0; b < k; ++b) amax = std::max(amax, std::abs(filters[f](a, b)));
+            DenseMatrix<double> norm(k, k, 0.0);
+            for (std::size_t a = 0; a < k; ++a)
+                for (std::size_t b = 0; b < k; ++b) norm(a, b) = filters[f](a, b) / amax;
+            const std::size_t col = f % 4, row = f / 4;
+            draw_grid(plot, norm, static_cast<double>(col) * (k + 1), static_cast<double>(1 - row) * (k + 1), diverging);
+        }
+        plot.title("Learned 3x3 convolution filters (red +, blue -)").x_label("").y_label("");
+        plot.save_svg("build/org/cnn_filters.svg");
+        std::cout << "wrote cnn_filters.svg\n";
+
+        auto loss = cnn.plot_loss_curve();
+        loss.background({250, 250, 252});
+        loss.save_svg("build/org/cnn_loss_curve.svg");
+        std::cout << "wrote cnn_loss_curve.svg\n";
+    }
+#+end_src
+
+*** Explaining predictions with relevance propagation
+
+For a handful of test images we compute the LRP relevance map of the
+predicted class and draw the input beside its heatmap, reporting the
+fraction of relevance that falls on the actual bar pixels; then, for one
+horizontal bar, we contrast the relevance for the "horizontal" target
+against the "vertical" target.
+
+#+name: cnn-lrp
+#+begin_src c++ :eval no
+    std::cout << "\n=== Explaining predictions with layer-wise relevance propagation ===\n";
+    {
+        auto gray = [](double v) { const int g = static_cast<int>(std::clamp(255.0 * (1.0 - v), 0.0, 255.0));
+                                   return RGB{static_cast<std::uint8_t>(g), static_cast<std::uint8_t>(g), static_cast<std::uint8_t>(g)}; };
+        auto redmap = [](double t) { t = std::clamp(t, 0.0, 1.0);
+                                     return RGB{255, static_cast<std::uint8_t>(255 * (1 - t)), static_cast<std::uint8_t>(255 * (1 - t))}; };
+        auto normalized = [](const DenseMatrix<double>& R) {
+            double mx = 1e-9;
+            for (std::size_t i = 0; i < R.rows(); ++i)
+                for (std::size_t j = 0; j < R.cols(); ++j) mx = std::max(mx, R(i, j));
+            DenseMatrix<double> N(R.rows(), R.cols(), 0.0);
+            for (std::size_t i = 0; i < R.rows(); ++i)
+                for (std::size_t j = 0; j < R.cols(); ++j) N(i, j) = std::max(0.0, R(i, j)) / mx;
+            return N;
+        };
+
+        // Pick two horizontal and two vertical test images.
+        std::vector<std::size_t> picks;
+        for (const std::string& want : {"horizontal", "vertical"}) {
+            std::size_t count = 0;
+            for (std::size_t n = 0; n < te_img.size() && count < 2; ++n)
+                if (te_lab[n] == want) { picks.push_back(n); ++count; }
+        }
+
+        // Figure: inputs (top row) and their LRP relevance heatmaps (bottom row).
+        auto plot = RPlot::create();
+        bg_box(plot, 4 * (W + 2) - 2, 2 * (H + 2) - 2);
+        std::cout << std::left << std::setw(14) << "true class" << std::right << std::setw(14) << "predicted"
+                  << std::setw(22) << "relevance on the bar\n";
+        for (std::size_t c = 0; c < picks.size(); ++c) {
+            const auto& img = te_img[picks[c]];
+            const auto R = cnn.relevance(img);  // explain the predicted class
+            draw_grid(plot, img, static_cast<double>(c) * (W + 2), 1 * (H + 2), gray);
+            draw_grid(plot, normalized(R), static_cast<double>(c) * (W + 2), 0.0, redmap);
+            // Concentration: fraction of positive relevance falling on actual bar pixels (input > 0.5).
+            double total = 0.0, on_bar = 0.0;
+            for (std::size_t i = 0; i < H; ++i)
+                for (std::size_t j = 0; j < W; ++j) {
+                    total += std::max(0.0, R(i, j));
+                    if (img(i, j) > 0.5) on_bar += std::max(0.0, R(i, j));
+                }
+            std::cout << std::left << std::setw(14) << te_lab[picks[c]] << std::right << std::setw(14)
+                      << cnn.predict({img})[0] << std::setw(20) << (on_bar / total) << "\n";
+        }
+        plot.title("Inputs (top) and LRP relevance for the predicted class (bottom)").x_label("").y_label("");
+        plot.save_svg("build/org/cnn_lrp.svg");
+        std::cout << "wrote cnn_lrp.svg\n";
+
+        // Class-contrastive: for one horizontal bar, explain "horizontal" vs "vertical".
+        const auto& himg = te_img[picks[0]];
+        const auto R_h = cnn.relevance(himg, 0);  // classes() sorted: 0 = horizontal, 1 = vertical
+        const auto R_v = cnn.relevance(himg, 1);
+        auto plot2 = RPlot::create();
+        bg_box(plot2, 3 * (W + 2) - 2, (H + 2) - 2);
+        draw_grid(plot2, himg, 0.0, 0.0, gray);
+        draw_grid(plot2, normalized(R_h), 1.0 * (W + 2), 0.0, redmap);
+        draw_grid(plot2, normalized(R_v), 2.0 * (W + 2), 0.0, redmap);
+        plot2.title("A horizontal bar: input, evidence for 'horizontal', evidence for 'vertical'")
+            .x_label("").y_label("");
+        plot2.save_svg("build/org/cnn_lrp_contrast.svg");
+        std::cout << "wrote cnn_lrp_contrast.svg\n";
+    }
+#+end_src
+
+*** The translation-invariance experiment
+
+#+name: cnn-translation
+#+begin_src c++ :eval no
+    std::cout << "\n=== Translation invariance: train on one region, test on a shifted one ===\n";
+    // Bars appear only in the top-left region during training, then only in the bottom-right region
+    // at test -- positions never seen while learning. What generalizes to the new positions?
+    {
+        std::mt19937_64 trng(7);
+        std::uniform_int_distribution<std::size_t> top(0, 3), bottom(8, 10);
+        std::vector<DenseMatrix<double>> train_i, test_i;
+        std::vector<std::string> train_l, test_l;
+        const std::size_t m = 250;
+        for (std::size_t i = 0; i < m; ++i) {
+            train_i.push_back(make_bar(true, top(trng), trng));    train_l.push_back("horizontal");
+            train_i.push_back(make_bar(false, top(trng), trng));   train_l.push_back("vertical");
+            test_i.push_back(make_bar(true, bottom(trng), trng));  test_l.push_back("horizontal");
+            test_i.push_back(make_bar(false, bottom(trng), trng)); test_l.push_back("vertical");
+        }
+        // Convolution with LOCAL (2x2) pooling: a flatten+dense head still depends on WHERE features
+        // are, so novel positions are unseen. GLOBAL pooling (a 10x10 window over the whole conv map)
+        // collapses each feature map to "did this filter fire anywhere?", discarding position.
+        CNNClassifier cnn_local(train_i, train_l, CNNClassifierOptions{8, 3, 2, 16, 0.05, 40, 16, 0.0, 1});
+        CNNClassifier cnn_global(train_i, train_l, CNNClassifierOptions{8, 3, 10, 16, 0.05, 40, 16, 0.0, 1});
+
+        DataFrame mlp_train_df = to_pixel_df(train_i, train_l);
+        DataFrame mlp_test_df  = to_pixel_df(test_i, test_l);
+        MLPClassifier mlp(mlp_train_df, "class ~ .", MLPClassifierOptions{{32}, "relu", 0.05, 200, 16, 0.0, 1});
+
+        std::cout << std::left << std::setw(28) << "model" << std::right << std::setw(10) << "params"
+                  << std::setw(12) << "train acc" << std::setw(16) << "test (shifted)\n";
+        auto row = [&](const std::string& name, std::size_t params, double tr, double te) {
+            std::cout << std::left << std::setw(28) << name << std::right << std::setw(10) << params << std::setw(12)
+                      << tr << std::setw(16) << te << "\n";
+        };
+        row("CNN, local 2x2 pooling", cnn_local.n_parameters(), cnn_local.training_accuracy(),
+            cnn_local.accuracy(test_i, test_l));
+        row("CNN, global pooling", cnn_global.n_parameters(), cnn_global.training_accuracy(),
+            cnn_global.accuracy(test_i, test_l));
+        row("MLP, fully connected", mlp.n_parameters(), mlp.training_accuracy(), mlp.accuracy(mlp_test_df));
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/cnn_analysis.cpp <<'CPP'
+<<cnn-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<cnn-data-gen>>
+
+<<cnn-fit>>
+
+<<cnn-sample-plot>>
+
+<<cnn-filters-plot>>
+
+<<cnn-lrp>>
+
+<<cnn-translation>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/cnn_analysis.cpp \
+  -o build/org/cnn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cnn_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Classifying the bar images
+
+#+ATTR_HTML: :alt Six sample images: three horizontal bars and three vertical bars at varying positions :width 100%
+[[file:../../build/org/cnn_samples.svg]]
+
+The data: horizontal bars (top row) and vertical bars (bottom row), each
+at a different position, buried in pixel noise. The two classes differ
+only in edge orientation, and only a method that reads /local 2D
+structure/ -- not a bag of independent pixels -- has an easy time of it.
+
+#+begin_example
+Convolutional Neural Network Classifier
+Input: 12x12 grayscale, 420 images, 2 classes
+Architecture: conv(8 x 3x3) -> relu -> maxpool(2) -> flatten(200) -> dense(32) -> softmax(2)
+Trainable parameters: 6578
+Epochs: 40, learning rate: 0.0500
+Final training cross-entropy: 0.0006
+Training accuracy: 1.0000
+
+test accuracy: 1.0000
+#+end_example
+
+The network -- eight \(3 \times 3\) filters, then ReLU, \(2 \times 2\)
+pooling, a 32-unit dense layer, and a softmax -- classifies the held-out
+images at 100% accuracy, its training cross-entropy driven down to 0.0006.
+Because the bars appear at /random/ positions in both the training and
+test sets here, the network sees the full range of positions during
+training, and its weight-shared filters plus the dense head handle them
+easily. §4.5 makes the harder demand, testing at positions never seen.
+
+** The filters it learned
+
+#+ATTR_HTML: :alt Eight learned 3x3 filters shown as red/blue heatmaps, several resembling edge detectors :width 100%
+[[file:../../build/org/cnn_filters.svg]]
+
+Inspecting the eight \(3 \times 3\) filters the network learned -- red for
+positive weights, blue for negative -- reveals it discovered exactly the
+detectors the task calls for, from labels alone. Several filters show a
+clear /horizontal/ split (a red row above a blue row, or vice versa): a
+horizontal-edge detector, which fires where image intensity changes from
+top to bottom, as at the boundary of a horizontal bar. Others show a
+/vertical/ split (red column beside blue column): a vertical-edge detector
+for the sides of a vertical bar. This is representation learning made
+visible -- nobody told the network what an edge is; minimizing
+classification loss made edge detectors the useful thing to build, and
+weight sharing made them reusable at every position.
+
+** The training loss curve
+
+#+ATTR_HTML: :alt Training cross-entropy falling steeply then flattening toward zero :width 100%
+[[file:../../build/org/cnn_loss_curve.svg]]
+
+Backpropagation through the pooling and convolution layers works exactly
+as it does for a dense network: the mean training cross-entropy falls
+steeply over the first several epochs and then flattens toward zero as the
+filters settle into good edge detectors. The gradient routed through the
+argmax pooling positions and accumulated across each filter's shared
+weights (§2.5) is enough to train the whole stack end to end.
+
+** Explaining predictions with relevance propagation
+
+#+begin_example
+true class         predicted relevance on the bar
+horizontal        horizontal              0.9210
+horizontal        horizontal              0.9221
+vertical            vertical              0.8975
+vertical            vertical              0.9021
+#+end_example
+
+Having a network that is 100% accurate is not the same as knowing /why/ it
+decides as it does. Layer-wise relevance propagation (§2.7) opens the box:
+for each test image it traces the predicted class's score back to the input
+pixels. The number that matters is in the last column -- the fraction of the
+total relevance that lands on the /actual bar pixels/ (those with intensity
+above 0.5), as opposed to the noisy background. Across the four examples it
+is 0.90 to 0.92: nine-tenths of the network's evidence comes from the bar
+itself, confirming that it classifies on the object and not on some
+spurious artifact of the background noise.
+
+#+ATTR_HTML: :alt Four input images on top with their red LRP relevance heatmaps below, each highlighting the bar :width 100%
+[[file:../../build/org/cnn_lrp.svg]]
+
+The picture makes it concrete. The top row shows four test inputs -- two
+horizontal bars, two vertical bars, at different positions; the bottom row
+shows each one's LRP relevance as a red heatmap. In every case the
+relevance concentrates exactly on the bar, tracking its position and
+orientation: red rows under the horizontal bars, red columns under the
+vertical ones, with the noisy background left nearly white. The network
+looks where a person would.
+
+#+ATTR_HTML: :alt A horizontal bar with strong red relevance for the horizontal class and a nearly blank map for the vertical class :width 100%
+[[file:../../build/org/cnn_lrp_contrast.svg]]
+
+Relevance is /class-specific/, and that is where it becomes an explanation
+rather than a saliency map. For a single horizontal bar (left), asking "why
+horizontal?" produces the strong red bar in the middle panel -- the pixels
+that evidence the winning class -- while asking "why vertical?" produces the
+nearly blank panel on the right: there is essentially /no/ evidence in this
+image for the class it did not pick. LRP thus answers not just "where did
+the network look" but "which pixels supported /this/ decision over the
+alternative," the question interpretability is really after.
+
+** Translation invariance: where it really comes from
+
+#+begin_example
+model                           params   train acc test (shifted)
+CNN, local 2x2 pooling            3330      1.0000          0.0000
+CNN, global pooling                258      1.0000          0.8260
+MLP, fully connected              4706      1.0000          0.1720
+#+end_example
+
+This is the report's central -- and most honest -- result. All three models
+are trained on bars in the /top-left/ and tested on bars in the /bottom-
+right/, positions never seen in training, and all three fit the training
+data perfectly (train accuracy 1.0000). What differs is transfer to the
+new positions. The fully-connected network scores 17.2%: having learned
+which specific pixels are bright for each class, it is lost when the bright
+pixels move, and 4706 parameters do not help. Strikingly, the convolutional
+network with ordinary /local/ (2x2) pooling does /worse/, 0.0%: its filters
+are shared and translation-equivariant, but the flatten-and-dense head
+still reads /where/ each feature landed, so a feature appearing in the
+bottom-right activates dense weights that were trained on the top-left, and
+the prediction flips. Only the /globally/-pooled CNN transfers: by
+collapsing each feature map to a single "did this filter fire anywhere?"
+value, it discards position and reaches 82.6% -- and it does so with just
+258 parameters, an eighteenth of the fully-connected network's. The lesson
+is precise: weight sharing gives convolution its efficiency and
+equivariance, but translation /invariance/ is a separate property that
+comes specifically from pooling away the spatial dimensions.
+
+* Discussion
+
+**Convolution learns the right features, and shares them.** §4.2 is
+representation learning caught in the act: the network was told only
+"horizontal" or "vertical," yet it built horizontal- and vertical-edge
+detectors, because those are what minimize the loss -- and, being shared
+filters, each is learned once and applied everywhere. This is the standard
+that dispenses with hand-designed image features: rather than a human
+choosing edge filters, gradient descent discovers them, and the same
+mechanism scales up to the rich hierarchies of features that make deep CNNs
+work on real images. The 258-parameter globally-pooled model in §4.5 shows
+how frugal this can be relative to connecting every pixel to every unit.
+
+**Accuracy is not understanding, and relevance propagation supplies some.**
+A model that is right 100% of the time can still be right for the wrong
+reasons -- keying on a background correlation, a watermark, a dataset
+artifact -- and no accuracy number would reveal it. §4.4's relevance maps
+are a cheap, principled check: by running the prediction backward under a
+conservation rule (§2.7), they show that our network's evidence really does
+come from the bar (0.90-0.92 of it) and not the noise, and that its evidence
+is /class-specific/ -- strong for the class it chose, absent for the one it
+did not. This is the same machinery, unchanged in principle, that flags
+when a real image classifier has latched onto the wrong cue; building it
+from the same forward-pass caches the training already needs makes
+interpretability a byproduct rather than an afterthought.
+
+**Equivariance and invariance are different, and the difference is
+pooling.** The temptation is to say "CNNs are translation invariant," but
+§4.5 shows that is imprecise, and the imprecision matters. Convolution is
+translation /equivariant/: shift the input and the feature maps shift with
+it. That is not the same as an invariant /prediction/, and a CNN whose
+dense head reads the full feature map -- the standard local-pooling design --
+is /not/ position-invariant, which is exactly why it scored 0% on shifted
+bars while training perfectly. Invariance is manufactured by /discarding/
+position, and global pooling is the operation that does it. (In practice,
+networks also buy invariance cheaply through /data augmentation/ -- training
+on randomly shifted copies -- which is the analogue of §4.1's random-
+position training set, where even the local-pooling CNN succeeded because
+it saw every position.) Naming the mechanism precisely is the difference
+between a model that transfers and one that silently does not.
+
+**A CNN is a feature extractor bolted to a classifier.** Structurally
+(§2.4) the network is nothing more exotic than the convolution-and-pooling
+front end feeding the very same softmax cross-entropy classifier the
+[[file:neural_network_analysis.org][dense-network report]] used, trained by
+the very same backpropagation, merely extended (§2.5) to route gradients
+through pooling and to sum them across shared filter weights. This is worth
+holding onto against the mystique of "deep learning": each ingredient here
+-- an affine map, a nonlinearity, a pooling summary, a softmax, a gradient
+step -- is simple and was implemented from scratch above, and it is their
+composition, plus the architectural priors of locality and weight sharing,
+that turns them into a working image classifier.
+
+* Conclusion
+
+Implementing a convolutional neural network in =datamunge='s C++
+=stats::CNNClassifier= -- convolution, ReLU, pooling, a dense head, softmax,
+and backpropagation through all of it -- we classify synthetic bar images at
+100% test accuracy with the training cross-entropy driven to 0.0006, and
+find that the eight filters it learns are precisely the horizontal- and
+vertical-edge detectors the task rewards, discovered from labels alone. The
+translation experiment is the report's central and most careful result:
+trained on shapes in one region and tested on the same shapes shifted to
+another, a fully-connected network transfers at only 17.2% and -- revealingly
+-- a convolutional network with ordinary local pooling does worse still, 0%,
+because its dense head remains position-sensitive; only a globally-pooled
+CNN, which discards position, generalizes, reaching 82.6% with just 258
+parameters against the fully-connected network's 4706. Convolution's weight
+sharing buys parameter efficiency and equivariance; translation invariance
+is the separate gift of pooling. And looking inside the trained network
+with layer-wise relevance propagation confirms it decides for the right
+reasons -- 0.90 to 0.92 of each prediction's evidence lands on the bar
+itself, and that evidence is specific to the class chosen -- turning a black
+box into an inspectable one with the same forward-pass machinery training
+already builds. As with its companions, this entire report
+is reproducible end to end via =just org-example cnn_analysis=, which
+re-executes §3.4.8's assembly block -- and therefore every number and figure
+above -- from the =datamunge= source tree.
+
+* References
+
+- Fukushima, K. (1980). "Neocognitron: a self-organizing neural network
+  model for a mechanism of pattern recognition unaffected by shift in
+  position." /Biological Cybernetics/, 36(4), 193--202.
+- LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). "Gradient-based
+  learning applied to document recognition." /Proceedings of the IEEE/,
+  86(11), 2278--2324.
+- Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). "ImageNet
+  classification with deep convolutional neural networks." /Advances in
+  Neural Information Processing Systems 25/.
+- Zeiler, M. D., & Fergus, R. (2014). "Visualizing and understanding
+  convolutional networks." /ECCV 2014/, 818--833.
+- Goodfellow, I., Bengio, Y., & Courville, A. (2016). /Deep Learning/,
+  ch. 9 ("Convolutional Networks"). MIT Press.

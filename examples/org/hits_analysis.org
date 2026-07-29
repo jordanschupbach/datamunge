@@ -1,0 +1,46 @@
+#+title: HITS: Hubs and Authorities
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+HITS assigns mutually reinforcing hub and authority scores to a directed
+network.  We derive the coupled eigenvectors, give power-iteration pseudocode,
+and rank a small web graph with =hits=.
+#+end_abstract
+
+* Mathematics
+
+For adjacency matrix \(A\), authority and hub vectors obey
+\[
+a=A^\top h,\qquad h=Aa.
+\]
+Thus \(a\) is the principal eigenvector of \(A^\top A\), while \(h\) is that
+of \(AA^\top\).  A good hub points to good authorities; a good authority is
+pointed to by good hubs.  Unit Euclidean normalization prevents divergence.
+
+* Pseudocode
+
+#+begin_example
+h,a <- uniform unit vectors
+repeat:
+  a <- normalize(A^T h)
+  h <- normalize(A a)
+until both vectors change by less than tolerance
+#+end_example
+
+Each iteration costs \(O(n+m)\) time and \(O(n)\) additional space.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/network_analysis.hpp>
+#include <iostream>
+int main() {
+  auto r=datamunge::algorithms::hits(4,{{0,2},{0,3},{1,2}});
+  for(std::size_t i=0;i<4;++i) std::cout<<i<<' '<<r.hubs[i]<<' '<<r.authorities[i]<<'\n';
+}
+#+end_src
+
+Vertex 0 is the strongest hub because it endorses two authorities; vertex 2
+is the strongest authority because both hubs endorse it.
+

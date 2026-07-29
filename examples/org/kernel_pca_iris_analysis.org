@@ -1,0 +1,890 @@
+#+title: Kernel PCA: Nonlinear Dimensionality Reduction via the Kernel Trick
+#+subtitle: A literate C++ study of feature-space principal components using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit Kernel Principal Component Analysis (Scholkopf, Smola & Muller,
+1998) to Fisher's (1936) iris measurements and to a synthetic
+two-concentric-circles dataset using =datamunge='s C++ =stats::KernelPCA=,
+and report it as a literate program: every fragment below is a real,
+compiled, executed chunk of the single C++ binary that produced every
+number and figure in this document. =Species= is withheld entirely from
+the fit. Kernel PCA generalizes ordinary PCA by eigendecomposing the
+centered \(n \times n\) kernel (Gram) matrix rather than the \(p \times
+p\) covariance matrix, so it can capture nonlinear structure that plain
+PCA -- a strictly linear method -- cannot. We first verify the theory
+empirically: with a /linear/ kernel, =KernelPCA= reproduces plain
+(unscaled) PCA's scores to within double-precision round-off (maximum
+coordinate difference 0.0000 across all 150 points and both components),
+and its centered-kernel eigenvalues equal PCA's covariance eigenvalues
+scaled by \((n-1)\) exactly (630.0080 and 36.1579). Switching to a
+Gaussian /RBF/ kernel then improves iris species separation over the
+linear kernel (a between/within embedded-distance ratio of 4.3087 at
+\(\gamma=0.13\), versus 3.8975 linear and 3.0091 for a cubic polynomial
+kernel), and a \(\gamma\) sweep shows this ratio is single-peaked, best
+near \(\gamma=0.05\) (4.4861) and collapsing to 1.6870 by \(\gamma=10\)
+as the kernel narrows to near-isolation. The report's central result is
+the concentric-circles experiment, the canonical demonstration of /why/
+a kernel method exists: two rings that are not linearly separable at all
+(no single linear axis, and therefore no plain-PCA component, splits
+them better than 73% accuracy) become /perfectly/ separable -- 100%
+accuracy on the first RBF kernel principal component alone at
+\(\gamma=0.3\). That success is not automatic: the same circles sweep
+shows accuracy is sharply non-monotonic in \(\gamma\) (0.69, 0.68, 1.00,
+0.75, 0.77, 0.83 across \(\gamma \in \{0.05, 0.1, 0.3, 1, 3, 10\}\)),
+a concrete illustration that the kernel bandwidth is the parameter that
+decides whether kernel PCA succeeds. We derive the feature-space
+covariance, the kernel trick, the double-centering of the Gram matrix,
+the eigendecomposition and its \(\sqrt{\lambda}\)-scaled embedding, and
+the linear-kernel/PCA equivalence, tying each to the corresponding
+library call.
+#+end_abstract
+
+* Introduction
+
+This project's [[file:pca_iris_analysis.org][PCA companion report]] asks
+for the directions of greatest variation in a dataset and answers with an
+eigendecomposition of the covariance matrix -- a strictly /linear/
+construction: every principal component is a linear combination of the
+original features, and no amount of them can bend a straight axis into a
+curved one. That is fine for iris, whose four measurements are close to
+linearly structured, but it fails completely on data whose interesting
+structure is curved. The classic example -- two concentric rings, where
+the meaningful coordinate is /radius/, a quadratic function of the inputs
+-- has no linear axis that separates the rings at all.
+
+Kernel PCA (Scholkopf, Smola & Muller, 1998) is the standard fix. It
+runs ordinary PCA not on the raw features but on their images under a
+(possibly infinite-dimensional) nonlinear feature map \(\phi\), without
+ever forming \(\phi\) explicitly: every computation PCA needs turns out
+to depend on the data only through /inner products/ \(\langle \phi(x_i),
+\phi(x_j) \rangle\), which a /kernel function/ \(k(x_i, x_j)\) supplies
+directly. This "kernel trick" replaces the \(p \times p\) covariance
+eigenproblem with an \(n \times n\) kernel-matrix eigenproblem, and lets a
+linear method operate in a nonlinear feature space -- the same trick that
+turns a linear separator into the nonlinear
+[[file:svm_iris_analysis.org][support vector machine]] this project also
+implements.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.4.12) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward
+is that program's literal output.
+
+§2 derives the feature-space covariance, the kernel trick, the
+double-centering of the Gram matrix, the eigendecomposition and its
+embedding, and the linear-kernel/PCA equivalence, each tied to the
+specific =KernelPCA= method that implements it. §3 describes the program
+chunk by chunk. §4 first confirms the linear-kernel equivalence
+empirically, then reports the RBF and polynomial fits on iris, a species
+separation comparison, a \(\gamma\)-sensitivity sweep, and -- on the
+concentric circles -- the linear-versus-RBF separation experiment that
+is this report's central result. §5 discusses what the kernel trick buys
+and what choosing \(\gamma\) costs. §6 concludes.
+
+* Background: Kernel Principal Component Analysis
+
+** Setup and notation
+
+\(n\) observations \(x_1, \ldots, x_n \in \mathbb{R}^p\) -- for iris,
+\(n=150\), \(p=4\) (=Sepal.Length=, =Sepal.Width=, =Petal.Length=,
+=Petal.Width=), with =Species= withheld from fitting exactly as in the
+[[file:pca_iris_analysis.org][PCA]] and other companion reports; for the
+circles, \(n=300\) synthetic 2D points described in §3.2. As in plain
+PCA, no response variable is used during fitting; the class labels are
+retained separately and used only afterward, to color figures and to
+measure separation.
+
+** From PCA to feature-space PCA: the kernel trick
+
+Plain PCA diagonalizes the \(p \times p\) sample covariance
+\(C = \tfrac{1}{n-1}\sum_i (x_i - \bar{x})(x_i - \bar{x})^\top\). Kernel
+PCA does exactly the same thing, but to the images
+\(\phi(x_1), \ldots, \phi(x_n)\) of the data under a nonlinear feature
+map \(\phi : \mathbb{R}^p \to \mathcal{H}\) into some (possibly
+infinite-dimensional) feature space \(\mathcal{H}\). The obstacle is that
+the feature-space covariance is a (possibly infinite) \(\dim\mathcal{H}
+\times \dim\mathcal{H}\) operator that we cannot form directly. The way
+around it is the observation that every principal eigenvector of that
+covariance must lie in the span of the centered data images, so it can
+be written \(v = \sum_i \alpha_i \, \phi(x_i)\), and substituting this
+into the eigenproblem collapses every appearance of \(\phi\) into
+/inner products/ \(\langle \phi(x_i), \phi(x_j) \rangle\) alone. A
+/kernel function/
+
+\[
+k(x_i, x_j) = \langle \phi(x_i), \phi(x_j) \rangle
+\]
+
+supplies exactly those inner products without ever evaluating \(\phi\).
+=KernelPCAOptions::kernel= selects one of three standard kernels, each
+computed elementwise in =KernelPCA::fit=:
+
+\[
+k_{\text{lin}}(x,y) = x^\top y, \quad
+k_{\text{rbf}}(x,y) = e^{-\gamma \lVert x - y \rVert^2}, \quad
+k_{\text{poly}}(x,y) = (\gamma \, x^\top y + c_0)^{d},
+\]
+
+with \(\gamma\) =gamma=, \(d\) =degree=, and \(c_0\) =coef0=. The RBF
+kernel corresponds to an /infinite/-dimensional \(\phi\), which is
+precisely why kernel PCA can express structure no finite linear basis
+could. Collecting all pairwise kernel values gives the \(n \times n\)
+symmetric /Gram matrix/ \(K_{ij} = k(x_i, x_j)\), which =fit= builds in a
+single symmetric double loop.
+
+** Centering in feature space
+
+PCA requires centered data, and the feature-space mean
+\(\bar{\phi} = \tfrac{1}{n}\sum_i \phi(x_i)\) is just as inaccessible as
+\(\phi\) itself -- but the Gram matrix of the /centered/ images can still
+be written using \(K\) alone. With \(\tilde{\phi}(x_i) = \phi(x_i) -
+\bar{\phi}\), the centered kernel matrix is
+
+\[
+\tilde{K} = K - \mathbf{1}_n K - K \mathbf{1}_n + \mathbf{1}_n K \mathbf{1}_n,
+\qquad (\mathbf{1}_n)_{ij} = \tfrac{1}{n},
+\]
+
+which expands to the elementwise form =fit= actually computes,
+
+\[
+\tilde{K}_{ij} = K_{ij} - r_i - r_j + g, \qquad
+r_i = \tfrac{1}{n}\sum_{j} K_{ij}, \quad
+g = \tfrac{1}{n^2}\sum_{i,j} K_{ij},
+\]
+
+with \(r_i\) the =row_mean= vector and \(g\) the =grand_mean= scalar in
+the source. This double-centering is the kernel-space analogue of
+subtracting the column means in plain PCA, and it is why =KernelPCA=
+needs no separate =center= option: centering the Gram matrix /is/
+centering the (unformed) feature vectors.
+
+** Eigendecomposition and the embedding
+
+\(\tilde{K}\) is symmetric and positive semi-definite, so it has a real
+eigendecomposition \(\tilde{K} = \sum_c \lambda_c \, \alpha_c
+\alpha_c^\top\) with orthonormal eigenvectors \(\alpha_c\) and
+non-negative eigenvalues \(\lambda_1 \geq \cdots \geq \lambda_n \geq 0\),
+computed by =linalg::jacobi_eigen= -- the same classical cyclic-Jacobi
+symmetric eigensolver the [[file:pca_iris_analysis.org][PCA]] and
+[[file:diffusion_maps_iris_analysis.org][diffusion maps]] reports use.
+Tiny negative eigenvalues from round-off are clamped to zero. The
+projection of observation \(i\) onto the \(c\)-th feature-space principal
+component works out to
+
+\[
+\text{embedding}_{i,c} = \sqrt{\lambda_c}\,\alpha_{c,i},
+\]
+
+which is exactly =embedding_(i, c) = eig.eigenvectors(i, c) *
+std::sqrt(lambda)= in the source -- the eigenvector component scaled by
+the square root of its eigenvalue. =eigenvalues()= returns the
+\(\lambda_c\) actually used (length =n_components()=, descending), and
+=embedding()= / =dimension(c)= return the coordinates. Unlike plain PCA,
+there is no =loadings()= method and no reconstruction: the principal
+axes live in the unformed feature space \(\mathcal{H}\), so a fitted
+point has coordinates but the axes themselves have no finite coordinate
+representation to report.
+
+** The linear kernel recovers plain PCA
+
+When \(k(x,y) = x^\top y\), the feature map is the identity and \(K = X
+X^\top\) is the ordinary Gram matrix of the (uncentered) data. Centering
+it as in §2.3 is identical to centering \(X\), and the nonzero
+eigenvalues of the centered \(X X^\top\) equal those of the \(p \times p\)
+scatter matrix \((X^c)^\top X^c = (n-1)\,C\). So linear-kernel PCA must
+reproduce plain PCA's scores (up to an arbitrary per-component sign), and
+its eigenvalues must equal plain PCA's covariance eigenvalues times
+\((n-1)\). This is a genuine, checkable identity, not merely asserted
+here: §4.2 confirms both halves of it to within double-precision
+round-off, exactly as this project's own =KernelPCA= unit test does.
+
+** What we will report
+
+Given the fits, we report exploratory data (true species, for later
+visual comparison), the linear-kernel/PCA equivalence check, the RBF fit
+and its eigenvalues, a kernel-by-kernel species separation comparison, a
+\(\gamma\)-sensitivity sweep, an RBF scores scatter, and -- on the
+concentric circles -- the raw data, a circles \(\gamma\) sweep, and the
+linear-versus-RBF single-component separation experiment.
+
+* Data and Methods
+
+** The iris data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. All four measurements are used as
+=KernelPCA= features throughout; =Species= is withheld from the
+constructor and used only for the exploratory and scores figures and the
+separation metric.
+
+** The concentric circles: a nonlinearly separable ground truth
+
+Iris is close enough to linearly structured that plain PCA already does
+well on it, so it cannot by itself demonstrate /why/ a nonlinear kernel
+is worth having. This report additionally generates the textbook kernel
+PCA dataset: two concentric noisy circles, 150 points each, sampled with
+=std::mt19937_64= (seed 42) as
+
+\[
+x = r\cos\theta + \varepsilon, \quad y = r\sin\theta + \varepsilon,
+\quad \theta \sim \text{Uniform}(0, 2\pi), \quad \varepsilon \sim
+\mathcal{N}(0, 0.08^2),
+\]
+
+with radius \(r = 1\) for the inner ring and \(r = 3\) for the outer.
+The ring membership (inner/outer) is the withheld ground truth:
+=KernelPCA= only ever sees the 2D =(x, y)= coordinates, and the labels
+are used purely afterward to color figures and to score how well a single
+component separates the rings. The two rings are /not/ linearly
+separable -- no straight line, and therefore no plain-PCA axis, divides
+them -- because the coordinate that distinguishes them, \(\sqrt{x^2 +
+y^2}\), is nonlinear in the inputs.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::KernelPCA= (and, for §4.2's
+equivalence check, =stats::PCA=) for the models, and =plot::RPlot= for
+every figure. No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and two scoring helpers
+
+Two small helpers used only to /score/ the fits after the fact, never as
+inputs to =KernelPCA=: an average between-class/within-class embedded
+distance ratio (larger means better-separated classes), and the best
+single-threshold classification accuracy obtainable from one coordinate
+(sweeping every midpoint, taking the better orientation).
+
+#+name: kpca-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/kernel_pca.hpp>
+#include <datamunge/stats/pca.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::KernelPCA;
+using datamunge::stats::KernelPCAOptions;
+using datamunge::stats::PCA;
+using datamunge::stats::PCAOptions;
+using namespace datamunge::plot;
+
+// Average between-class / within-class embedded-distance ratio: larger means the
+// classes sit further apart than they spread internally in the embedding.
+static double between_within_ratio(const datamunge::linalg::DenseMatrix<double>& emb,
+                                   const std::vector<std::string>& labels) {
+    const std::size_t n = emb.rows();
+    double within_sum = 0.0, between_sum = 0.0;
+    std::size_t within_n = 0, between_n = 0;
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = i + 1; j < n; ++j) {
+            double d = 0.0;
+            for (std::size_t c = 0; c < emb.cols(); ++c) {
+                const double e = emb(i, c) - emb(j, c);
+                d += e * e;
+            }
+            d = std::sqrt(d);
+            if (labels[i] == labels[j]) { within_sum += d; ++within_n; }
+            else { between_sum += d; ++between_n; }
+        }
+    return (between_sum / static_cast<double>(between_n)) /
+           (within_sum / static_cast<double>(within_n));
+}
+
+// Best single-threshold classification accuracy of a binary label from one
+// coordinate: sweep every midpoint, take the better of the two orientations.
+static double best_threshold_accuracy(const std::vector<double>& v,
+                                      const std::vector<int>& label) {
+    const std::size_t n = v.size();
+    std::vector<double> sorted(v);
+    std::sort(sorted.begin(), sorted.end());
+    double best = 0.0;
+    for (std::size_t t = 0; t + 1 < n; ++t) {
+        const double thr = 0.5 * (sorted[t] + sorted[t + 1]);
+        std::size_t correct_lo = 0;  // predict 1 when v < thr
+        for (std::size_t i = 0; i < n; ++i) {
+            const int pred = (v[i] < thr) ? 1 : 0;
+            if (pred == label[i]) ++correct_lo;
+        }
+        const double acc_lo = static_cast<double>(correct_lo) / static_cast<double>(n);
+        best = std::max({best, acc_lo, 1.0 - acc_lo});
+    }
+    return best;
+}
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The true species, plotted purely for later visual comparison against
+kernel PCA's own scores -- never used as an input to the =KernelPCA=
+constructor below.
+
+#+name: kpca-load-data
+#+begin_src c++ :eval no
+    std::cout << std::fixed << std::setprecision(4);
+
+    const auto iris = datamunge::datasets::iris();
+    std::vector<std::string> species(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        species[i] = iris.string_at("Species", i);
+    const std::vector<std::string> features{
+        "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+#+end_src
+
+#+name: kpca-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> sp = {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors = {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < sp.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == sp[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                           subset.numeric_column("Petal.Width").values(),
+                           sp[k], colors[k], 6.0);
+        }
+        scatter.title("True Species")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/kpca_iris_eda_true_species.svg");
+        std::cout << "wrote kpca_iris_eda_true_species.svg\n";
+    }
+#+end_src
+
+*** Linear kernel PCA versus plain PCA
+
+The empirical check of §2.5: fit a linear-kernel =KernelPCA= and a plain
+(unscaled) =PCA=, resolve the arbitrary per-component sign from the first
+observation, and report the largest score discrepancy across all points
+plus the eigenvalue identity.
+
+#+name: kpca-linear-vs-pca
+#+begin_src c++ :eval no
+    std::cout << "\n=== Linear kernel PCA reproduces plain (unscaled) PCA ===\n";
+    KernelPCA lin(iris, features, KernelPCAOptions{2, "linear", 1.0, 3.0, 1.0});
+    PCA pca(iris, features, PCAOptions{true, false});
+    {
+        const double s0 = (lin.embedding()(0, 0) * pca.scores()(0, 0) >= 0.0) ? 1.0 : -1.0;
+        const double s1 = (lin.embedding()(0, 1) * pca.scores()(0, 1) >= 0.0) ? 1.0 : -1.0;
+        double max_diff = 0.0;
+        for (std::size_t i = 0; i < lin.observations(); ++i) {
+            max_diff = std::max(max_diff, std::abs(lin.embedding()(i, 0) - s0 * pca.scores()(i, 0)));
+            max_diff = std::max(max_diff, std::abs(lin.embedding()(i, 1) - s1 * pca.scores()(i, 1)));
+        }
+        const double n_minus_1 = static_cast<double>(lin.observations() - 1);
+        std::cout << "max |KPC score - +/- PCA score| over all points/2 comps: " << max_diff << "\n";
+        std::cout << "linear-KPCA eigenvalue[0]:              " << lin.eigenvalues()[0] << "\n";
+        std::cout << "PCA explained_variance[0] * (n-1):     " << pca.explained_variance()[0] * n_minus_1 << "\n";
+        std::cout << "linear-KPCA eigenvalue[1]:              " << lin.eigenvalues()[1] << "\n";
+        std::cout << "PCA explained_variance[1] * (n-1):     " << pca.explained_variance()[1] * n_minus_1 << "\n";
+    }
+#+end_src
+
+*** Fitting RBF kernel PCA on iris
+
+#+name: kpca-rbf-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== RBF kernel PCA on iris (gamma=0.13) ===\n";
+    KernelPCA rbf(iris, features, KernelPCAOptions{2, "rbf", 0.13, 3.0, 1.0});
+    rbf.print_summary();
+#+end_src
+
+*** Kernel comparison: species separation
+
+#+name: kpca-separation-compare
+#+begin_src c++ :eval no
+    std::cout << "\n=== Species separation (between/within distance ratio) ===\n";
+    {
+        std::vector<std::string> lab(lin.observations());
+        for (std::size_t i = 0; i < lin.observations(); ++i)
+            lab[i] = species[lin.kept_row_indices()[i]];
+        KernelPCA poly(iris, features, KernelPCAOptions{2, "polynomial", 0.1, 3.0, 1.0});
+        std::cout << std::setw(14) << "kernel" << std::setw(18) << "between/within\n";
+        std::cout << std::setw(14) << "linear" << std::setw(18) << between_within_ratio(lin.embedding(), lab) << "\n";
+        std::cout << std::setw(14) << "rbf(0.13)" << std::setw(18) << between_within_ratio(rbf.embedding(), lab) << "\n";
+        std::cout << std::setw(14) << "poly(d=3)" << std::setw(18) << between_within_ratio(poly.embedding(), lab) << "\n";
+    }
+#+end_src
+
+*** RBF gamma sensitivity
+
+#+name: kpca-gamma-sweep
+#+begin_src c++ :eval no
+    std::cout << "\n=== RBF gamma sensitivity (iris species separation) ===\n";
+    {
+        std::vector<std::string> lab(iris.nrows());
+        std::cout << std::setw(10) << "gamma" << std::setw(18) << "between/within\n";
+        for (double g : {0.01, 0.05, 0.13, 0.5, 2.0, 10.0}) {
+            KernelPCA k(iris, features, KernelPCAOptions{2, "rbf", g, 3.0, 1.0});
+            std::vector<std::string> l(k.observations());
+            for (std::size_t i = 0; i < k.observations(); ++i) l[i] = species[k.kept_row_indices()[i]];
+            std::cout << std::setw(10) << g << std::setw(18) << between_within_ratio(k.embedding(), l) << "\n";
+        }
+    }
+#+end_src
+
+*** RBF scores scatter
+
+The library's own =plot_embedding= overload, which colors the scatter by
+a per-observation group label -- here the withheld species.
+
+#+name: kpca-rbf-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> sp = {"setosa", "versicolor", "virginica"};
+        std::vector<std::string> lab(rbf.observations());
+        for (std::size_t i = 0; i < rbf.observations(); ++i) lab[i] = species[rbf.kept_row_indices()[i]];
+        auto scatter = rbf.plot_embedding(lab);
+        scatter.background({250, 250, 252});
+        scatter.save_svg("build/org/kpca_iris_rbf_scores.svg");
+        std::cout << "\nwrote kpca_iris_rbf_scores.svg\n";
+    }
+#+end_src
+
+*** The two concentric circles: generation
+
+#+name: kpca-circles-gen
+#+begin_src c++ :eval no
+    std::cout << "\n=== Two concentric circles: a nonlinearly separable dataset ===\n";
+    const std::size_t n_per = 150;
+    std::mt19937_64 rng(42);
+    std::normal_distribution<double> noise(0.0, 0.08);
+    std::uniform_real_distribution<double> ang(0.0, 2.0 * M_PI);
+    std::vector<double> cx, cy;
+    std::vector<int> ring;         // 0 = inner, 1 = outer
+    std::vector<std::string> ring_label;
+    for (std::size_t klass = 0; klass < 2; ++klass) {
+        const double radius = (klass == 0) ? 1.0 : 3.0;
+        for (std::size_t i = 0; i < n_per; ++i) {
+            const double a = ang(rng);
+            cx.push_back(radius * std::cos(a) + noise(rng));
+            cy.push_back(radius * std::sin(a) + noise(rng));
+            ring.push_back(static_cast<int>(klass));
+            ring_label.push_back(klass == 0 ? "inner" : "outer");
+        }
+    }
+    DataFrame circles{{"x", DataFrame::numeric_column_type(cx)},
+                      {"y", DataFrame::numeric_column_type(cy)}};
+    const std::vector<std::string> cfeatures{"x", "y"};
+    std::cout << "generated " << cx.size() << " points (" << n_per << " per ring)\n";
+    {
+        const std::vector<RGB> colors = {{37, 99, 235}, {220, 38, 38}};
+        const std::vector<std::string> names = {"inner (r=1)", "outer (r=3)"};
+        std::vector<std::vector<double>> px(2), py(2);
+        for (std::size_t i = 0; i < cx.size(); ++i) { px[ring[i]].push_back(cx[i]); py[ring[i]].push_back(cy[i]); }
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < 2; ++k) scatter.points(px[k], py[k], names[k], colors[k], 5.0);
+        scatter.title("Two Concentric Circles (input space)")
+            .x_label("x").y_label("y").background({250, 250, 252});
+        scatter.save_svg("build/org/kpca_circles_raw.svg");
+        std::cout << "wrote kpca_circles_raw.svg\n";
+    }
+#+end_src
+
+*** RBF gamma sweep on the circles
+
+#+name: kpca-circles-gamma-sweep
+#+begin_src c++ :eval no
+    std::cout << "\n=== RBF gamma sweep on the circles (best KPC1 accuracy) ===\n";
+    std::cout << std::setw(10) << "gamma" << std::setw(20) << "KPC1 accuracy\n";
+    for (double g : {0.05, 0.1, 0.3, 1.0, 3.0, 10.0}) {
+        KernelPCA k(circles, cfeatures, KernelPCAOptions{2, "rbf", g, 3.0, 1.0});
+        std::cout << std::setw(10) << g << std::setw(18) << best_threshold_accuracy(k.dimension(0), ring) << "\n";
+    }
+#+end_src
+
+*** Linear versus RBF on the circles
+
+#+name: kpca-circles-compare
+#+begin_src c++ :eval no
+    std::cout << "\n=== Can component 1 alone separate the two rings? ===\n";
+    const double kBestGamma = 0.3;
+    KernelPCA clin(circles, cfeatures, KernelPCAOptions{2, "linear", 1.0, 3.0, 1.0});
+    KernelPCA crbf(circles, cfeatures, KernelPCAOptions{2, "rbf", kBestGamma, 3.0, 1.0});
+    {
+        std::vector<double> lin1 = clin.dimension(0);
+        std::vector<double> rbf1 = crbf.dimension(0);
+        std::cout << std::setw(24) << "method" << std::setw(26) << "best 1-D (KPC1) accuracy\n";
+        std::cout << std::setw(24) << "linear kernel" << std::setw(18) << best_threshold_accuracy(lin1, ring) << "\n";
+        std::cout << std::setw(24) << "rbf kernel (gamma=0.3)" << std::setw(18) << best_threshold_accuracy(rbf1, ring) << "\n";
+    }
+#+end_src
+
+*** Circle embedding scatters
+
+#+name: kpca-circles-scatters
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors = {{37, 99, 235}, {220, 38, 38}};
+        const std::vector<std::string> names = {"inner", "outer"};
+        auto draw = [&](const KernelPCA& k, const std::string& title, const std::string& file) {
+            std::vector<std::vector<double>> ex(2), ey(2);
+            for (std::size_t i = 0; i < k.observations(); ++i) {
+                const int r = ring[k.kept_row_indices()[i]];
+                ex[r].push_back(k.embedding()(i, 0));
+                ey[r].push_back(k.embedding()(i, 1));
+            }
+            auto scatter = RPlot::create();
+            for (std::size_t c = 0; c < 2; ++c) scatter.points(ex[c], ey[c], names[c], colors[c], 5.0);
+            scatter.title(title).x_label("KPC1").y_label("KPC2").background({250, 250, 252});
+            scatter.save_svg(file);
+            std::cout << "wrote " << file.substr(file.rfind('/') + 1) << "\n";
+        };
+        draw(clin, "Linear Kernel PCA of the Circles", "build/org/kpca_circles_linear.svg");
+        draw(crbf, "RBF Kernel PCA of the Circles (gamma=0.3)", "build/org/kpca_circles_rbf.svg");
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/kernel_pca_iris_analysis.cpp <<'CPP'
+<<kpca-includes>>
+
+int main() {
+<<kpca-load-data>>
+
+<<kpca-eda-scatter>>
+
+<<kpca-linear-vs-pca>>
+
+<<kpca-rbf-fit>>
+
+<<kpca-separation-compare>>
+
+<<kpca-gamma-sweep>>
+
+<<kpca-rbf-scatter>>
+
+<<kpca-circles-gen>>
+
+<<kpca-circles-gamma-sweep>>
+
+<<kpca-circles-compare>>
+
+<<kpca-circles-scatters>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/kernel_pca_iris_analysis.cpp \
+  -o build/org/kernel_pca_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kernel_pca_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by true species :width 100%
+[[file:../../build/org/kpca_iris_eda_true_species.svg]]
+
+The same picture as every companion report's exploratory figure:
+/setosa/ fully separated, /versicolor/ and /virginica/ overlapping in a
+thin band. §4.6's RBF scores scatter should be read against this figure,
+since =KernelPCA= itself never sees these color labels.
+
+** The linear kernel reproduces plain PCA
+
+#+begin_example
+max |KPC score - +/- PCA score| over all points/2 comps: 0.0000
+linear-KPCA eigenvalue[0]:              630.0080
+PCA explained_variance[0] * (n-1):     630.0080
+linear-KPCA eigenvalue[1]:              36.1579
+PCA explained_variance[1] * (n-1):     36.1579
+#+end_example
+
+Both halves of §2.5's identity hold to within double-precision
+round-off. The largest discrepancy between any linear-kernel PCA score
+and the corresponding plain-PCA score (after resolving the arbitrary
+per-component sign) is 0.0000 across all 150 flowers and both components:
+linear-kernel PCA /is/ plain (unscaled) PCA, computed the long way around
+via the \(150 \times 150\) Gram matrix instead of the \(4 \times 4\)
+covariance matrix. The eigenvalues match the other prediction exactly
+too: the centered-kernel eigenvalues (630.0080, 36.1579) equal PCA's
+covariance eigenvalues scaled by \((n-1) = 149\), confirming that the two
+routes diagonalize the same operator up to that scale factor. This is the
+sanity check that licenses trusting the RBF and polynomial fits below,
+whose answers we have no independent PCA to compare against.
+
+** Fitted RBF kernel PCA and its eigenvalues
+
+#+begin_example
+Kernel Principal Component Analysis
+Features: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
+Kernel: rbf
+Number of obs: 150, components: 2
+
+Eigenvalues used:
+  KPC1: 47.5085
+  KPC2: 14.4953
+#+end_example
+
+The RBF kernel's centered-Gram eigenvalues (47.5085, 14.4953) are on a
+completely different scale from the linear kernel's (630.0080, 36.1579)
+and are /not/ interpretable as variances in the original feature units:
+they are variances along axes in the infinite-dimensional RBF feature
+space, whose geometry has no direct correspondence to centimetres of
+sepal or petal. This is the first concrete sign that kernel PCA is doing
+something plain PCA cannot -- the eigenvalues no longer answer "how much
+raw-measurement variance," because there is no finite raw-measurement
+basis for the RBF feature space to begin with.
+
+** Species separation across kernels
+
+#+begin_example
+        kernel   between/within
+        linear            3.8975
+     rbf(0.13)            4.3087
+     poly(d=3)            3.0091
+#+end_example
+
+Measured by the average between-species/within-species embedded-distance
+ratio (§3.4.1's helper), the RBF kernel at \(\gamma=0.13\) separates the
+three iris species better (4.3087) than the linear kernel (3.8975, i.e.
+plain PCA), while the cubic polynomial kernel does /worse/ (3.0091). The
+RBF gain over linear is real but modest -- iris is only mildly nonlinear,
+so there is only so much curvature for the kernel to exploit -- and the
+polynomial result is a useful caution that "nonlinear kernel" does not
+automatically mean "better separation": a badly-matched kernel (here a
+degree-3 polynomial, which inflates large inner products and distorts the
+tight /setosa/ cluster) can actively hurt. §4.9's circles experiment
+shows the RBF advantage in a setting where it is not modest at all.
+
+** RBF gamma sensitivity
+
+#+begin_example
+     gamma   between/within
+    0.0100            4.1209
+    0.0500            4.4861
+    0.1300            4.3087
+    0.5000            3.8584
+    2.0000            2.8500
+   10.0000            1.6870
+#+end_example
+
+Separation is single-peaked in the kernel bandwidth \(\gamma\), best near
+\(\gamma=0.05\) (4.4861) and falling off on both sides. The reason is the
+same one that governs every RBF-kernel method (including this project's
+[[file:gaussian_process_regression_iris_analysis.org][Gaussian process]]
+and [[file:svm_iris_analysis.org][SVM]] reports): \(\gamma\) sets the
+kernel's length scale relative to the data. Too small (\(\gamma=0.01\))
+and the kernel is nearly flat -- every pair of points looks equally
+similar, so the embedding approaches the linear kernel's and the
+nonlinear advantage vanishes. Too large (\(\gamma=10\), ratio 1.6870) and
+the kernel is a near-spike -- every point resembles only itself, the
+centered Gram matrix approaches the identity, and no meaningful shared
+structure survives for the eigendecomposition to find. The best value is
+in between, and it is genuinely data-dependent: §4.8 finds a /different/
+optimal \(\gamma\) for the circles, because their scale is different. Our
+headline fit's \(\gamma=0.13\) (chosen to match this project's unit test)
+is close to, though not exactly at, the empirical iris optimum.
+
+** RBF scores scatter
+
+#+ATTR_HTML: :alt Scatter of RBF kernel PC1 vs PC2 scores colored by true species :width 100%
+[[file:../../build/org/kpca_iris_rbf_scores.svg]]
+
+Even though =Species= was never given to =KernelPCA::fit=, the first two
+RBF kernel principal components recover the same structure §4.1's
+true-species figure shows: /setosa/ isolated at one extreme, /versicolor/
+and /virginica/ adjacent and partially overlapping at the other -- the
+same qualitative finding every report in this project reaches on iris,
+here via a feature-space Gram-matrix eigendecomposition rather than a
+covariance one. The plot is =KernelPCA='s own =plot_embedding= overload,
+colored after the fact by the withheld labels.
+
+** The concentric circles: raw structure
+
+#+begin_example
+generated 300 points (150 per ring)
+#+end_example
+
+#+ATTR_HTML: :alt Scatter of the raw two concentric circles colored by ring :width 100%
+[[file:../../build/org/kpca_circles_raw.svg]]
+
+Two clean noisy rings, one inside the other. The crucial property is
+visible directly: /no straight line divides the blue inner ring from the
+red outer one/. Any linear method -- plain PCA, or equivalently
+linear-kernel PCA -- is therefore doomed here before it starts, because
+its components are by construction straight axes, and the coordinate that
+actually separates the rings (distance from the origin) is a nonlinear
+function of \(x\) and \(y\). This is the situation the kernel trick exists
+for.
+
+** The circles: linear fails, RBF succeeds
+
+#+begin_example
+     gamma      KPC1 accuracy
+    0.0500            0.6900
+    0.1000            0.6767
+    0.3000            1.0000
+    1.0000            0.7500
+    3.0000            0.7700
+   10.0000            0.8300
+#+end_example
+
+Sweeping \(\gamma\) and scoring how well the /first RBF component alone/
+separates the rings (best single-threshold accuracy on KPC1) reveals a
+sharply non-monotonic curve with a spike to /perfect/ separation at
+\(\gamma=0.3\). Away from that value the first component recovers much
+less -- 0.69, 0.68 for too-flat kernels, 0.75-0.83 for too-narrow ones --
+a vivid, quantitative demonstration that on this dataset the kernel
+bandwidth is not a minor tuning detail but the entire difference between
+success and failure. The non-monotonicity is real, not noise: at
+\(\gamma=0.3\) the RBF length scale matches the gap between the rings, so
+the radial structure collapses onto the leading eigenvector; at other
+scales the radial signal is split across several components or washed out,
+and no single coordinate captures it.
+
+#+begin_example
+                  method best 1-D (KPC1) accuracy
+           linear kernel            0.7300
+  rbf kernel (gamma=0.3)            1.0000
+#+end_example
+
+Head to head at the well-matched bandwidth, the contrast is total: the
+linear kernel's first component separates the rings at only 73% -- barely
+better than the 50% floor, and no better than guessing "outer" for the
+higher-variance points -- while the RBF kernel's first component separates
+them /perfectly/, 100%. This single pair of numbers is the whole reason
+kernel PCA exists: a strictly linear method cannot represent the rings'
+radial structure at all, and the kernel trick supplies exactly the
+nonlinear feature space in which that structure becomes a single linear
+axis.
+
+#+ATTR_HTML: :alt Linear kernel PCA embedding of the circles, still not separated :width 100%
+[[file:../../build/org/kpca_circles_linear.svg]]
+
+#+ATTR_HTML: :alt RBF kernel PCA embedding of the circles, cleanly separated :width 100%
+[[file:../../build/org/kpca_circles_rbf.svg]]
+
+The two embedding scatters make the numbers visual. Linear-kernel PCA
+(first figure) simply reproduces the raw circles rotated and rescaled --
+of course it does, since §4.2 established it /is/ plain PCA -- so the two
+rings remain concentric and interleaved, with no axis separating them.
+RBF kernel PCA (second figure) unfolds them: the inner ring collapses to
+a tight cluster at one end of KPC1 and the outer ring spreads to the
+other, so a single vertical line through the KPC1 axis cleanly divides
+the colors -- the geometric picture behind the 100% accuracy above.
+
+* Discussion
+
+**The kernel trick converts a hard nonlinear problem into an easy linear
+one -- when the kernel matches the data.** §4.9 is the whole argument in
+one experiment: the concentric rings are unseparable by any linear axis
+(73% on linear KPC1, §4.2 having proven that /is/ plain PCA), yet become
+perfectly separable by a single axis once the data is viewed through an
+RBF kernel of the right bandwidth (100%). Nothing about the data changed;
+only the inner-product structure did. This is the same mechanism that
+turns a linear classifier into the nonlinear
+[[file:svm_iris_analysis.org][support vector machine]] -- kernel PCA is
+simply the unsupervised member of the kernel-methods family, applying the
+trick to variance-maximization instead of margin-maximization.
+
+**"When the kernel matches the data" is doing real work in that
+sentence.** Both the iris \(\gamma\) sweep (§4.5) and the circles
+\(\gamma\) sweep (§4.8) show separation quality is single-peaked in the
+bandwidth, and -- crucially -- the two peaks are at /different/
+\(\gamma\), because the two datasets live at different scales. Kernel PCA
+has no built-in way to choose \(\gamma\); a value that is excellent for
+one dataset can be useless for another, and the circles sweep shows the
+penalty for a bad choice can be the entire difference between 100% and
+68% separation. In practice \(\gamma\) is chosen by cross-validation
+against a downstream task, or by a heuristic tied to the data's typical
+pairwise distance -- the same problem the
+[[file:diffusion_maps_iris_analysis.org][diffusion maps report]] confronts
+for its own =heat_kernel_epsilon=, and for the same underlying reason: any
+distance-based kernel needs a length scale, and the right one is a
+property of the data, not a universal constant.
+
+**Kernel PCA gives up interpretability that plain PCA has.** Plain PCA
+returns loadings -- each component is an explicit weighted combination of
+the original features -- and supports exact reconstruction, which is why
+its [[file:pca_iris_analysis.org][companion report]] can discuss a "flower
+size axis" and run a reconstruction-error sweep. Kernel PCA can do
+neither: with an RBF kernel the principal axes live in an
+infinite-dimensional feature space with no finite coordinate
+representation, so =KernelPCA= exposes an =embedding()= but no
+=loadings()= and no inverse transform (the "pre-image problem" is a known
+hard, only-approximately-solvable sub-field of its own). The RBF
+eigenvalues in §4.3 underline this: they are genuine variances, but along
+axes that cannot be written down in terms of sepals and petals. Kernel
+PCA buys the ability to see nonlinear structure at the cost of being able
+to say, in the original variables, what that structure /is/.
+
+* Conclusion
+
+Fitting =datamunge='s C++ =stats::KernelPCA= to Fisher's iris
+measurements -- with =Species= withheld throughout -- first confirms the
+theory: with a linear kernel it reproduces plain unscaled PCA's scores to
+0.0000 maximum error and its eigenvalues up to the exact \((n-1)\) scale
+factor, computed the long way through the \(150 \times 150\) Gram matrix.
+Switching to an RBF kernel improves iris species separation over the
+linear kernel (4.3087 versus 3.8975) with a single-peaked dependence on
+the bandwidth \(\gamma\), while a mismatched polynomial kernel does worse
+(3.0091) -- nonlinear is not automatically better. The concentric-circles
+experiment is the report's central result and the clearest possible
+statement of what kernel PCA is for: two rings that /no/ linear axis can
+separate (73% on the first linear-kernel component, which §4.2 proves is
+plain PCA) become /perfectly/ separable on the first RBF component alone
+(100% at \(\gamma=0.3\)) -- but only at the right bandwidth, the same
+sweep collapsing to 68% at a poorly-matched one. The trick's power and
+its central caveat -- choosing \(\gamma\) -- are thus both visible in a
+single dataset. As with its companions, this entire report is
+reproducible end to end via =just org-example kernel_pca_iris_analysis=,
+which re-executes §3.4.12's assembly block -- and therefore every number
+and figure above -- from the =datamunge= source tree.
+
+* References
+
+- Scholkopf, B., Smola, A., & Muller, K.-R. (1998). "Nonlinear component
+  analysis as a kernel eigenvalue problem." /Neural Computation/, 10(5),
+  1299--1319.
+- Scholkopf, B., & Smola, A. J. (2002). /Learning with Kernels: Support
+  Vector Machines, Regularization, Optimization, and Beyond/. MIT Press.
+- Mika, S., Scholkopf, B., Smola, A., Muller, K.-R., Scholz, M., &
+  Ratsch, G. (1999). "Kernel PCA and de-noising in feature spaces." In
+  /Advances in Neural Information Processing Systems 11/, 536--542.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 14 ("Unsupervised Learning").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

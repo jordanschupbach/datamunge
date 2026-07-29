@@ -1,0 +1,743 @@
+#+title: Feed-Forward Neural Networks: Backpropagation and Nonlinear Decision Boundaries
+#+subtitle: A literate C++ study of the multi-layer perceptron using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We implement a feed-forward neural network -- a multi-layer perceptron
+(MLP) -- trained by backpropagation with mini-batch stochastic gradient
+descent, in =datamunge='s C++ =stats::MLPClassifier=, and report it as a
+literate program: every fragment below is a real, compiled, executed chunk
+of the single C++ binary that produced every number and figure in this
+document. A neural network stacks simple units -- each an affine map
+followed by a nonlinearity -- so that hidden layers /learn features/ that
+render a problem linearly separable, letting the network fit decision
+boundaries no linear model can express. We demonstrate this on the
+canonical case that motivated the field: XOR, where a linear classifier is
+provably stuck -- here converging to exactly the chance floor, a training
+accuracy of 0.4983 at a cross-entropy of 0.6931 (which is \(\ln 2\) to four
+decimals, the loss of uniform guessing) -- while adding a single hidden
+layer of eight units drives training accuracy to 1.0000 at a loss of
+0.0108. On two interleaving half-moons, a linear classifier reaches only
+89.33% test accuracy with its straight boundary, while a two-hidden-layer
+network (354 parameters) learns a curved boundary and classifies the held-
+out set perfectly. A capacity sweep shows the decisive jump is from /zero/
+hidden layers to /one/ (89.33% to 100%), not from small to large -- even
+four hidden units suffice, while sixteenfold more parameters add nothing
+on this task. The training loss curve falls smoothly from 0.62 toward zero,
+the visible trace of gradient descent at work. On real iris data the
+network classifies species from two petal measurements at 91.11% held-out
+accuracy. Throughout, the same class with an /empty/ hidden-layer list
+reduces exactly to multinomial logistic regression, making "a neural
+network is a stack of logistic regressions with learned features between
+them" concrete rather than metaphorical. We derive the forward pass, the
+softmax/cross-entropy objective, the backpropagation gradient, the
+mini-batch SGD update, and the linear special case, tying each to the
+corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every classifier in this project so far draws its decision boundary in a
+fixed way: [[file:glm_iris_analysis.org][logistic regression]] and a
+linear [[file:svm_iris_analysis.org][SVM]] draw straight lines, the
+[[file:kernel_pca_iris_analysis.org][kernel]] methods draw curves fixed in
+advance by the choice of kernel, and [[file:dt_iris_analysis.org][decision
+trees]] draw axis-aligned steps. A feed-forward neural network is
+different in kind: it /learns/ the shape of its own boundary from the data,
+by learning intermediate features. This is what lets it solve problems
+that defeat every linear method -- most famously XOR, four points arranged
+so that no straight line can separate the two classes, the example whose
+apparent impossibility for a single-layer "perceptron" stalled the field
+for a decade until backpropagation through /hidden/ layers resolved it.
+
+The mechanism is a stack of simple layers. Each layer takes the previous
+layer's output, applies an affine map (a matrix of weights plus a bias),
+and passes the result through a nonlinear activation function. A single
+such layer is just linear regression or logistic regression; but /composed/,
+with nonlinearities between them, the layers build up increasingly
+expressive features, and a network with even one hidden layer can
+approximate any continuous function. The weights are learned by gradient
+descent, with the gradient computed efficiently by /backpropagation/ -- the
+chain rule applied layer by layer from the output back to the input. This
+report builds that machinery from scratch and shows it working.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.5.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the feed-forward architecture, the softmax/cross-entropy
+objective, why hidden layers overcome linear inseparability,
+backpropagation, the SGD training loop, and the linear special case -- each
+tied to the specific piece of =MLPClassifier= that implements it. §3
+describes the program chunk by chunk. §4 reports the XOR capacity result,
+the two-moons boundary with its figures, the training loss curve, a
+capacity sweep, and a real-data iris fit. §5 discusses what neural networks
+buy and what they cost. §6 concludes.
+
+* Background: Feed-Forward Neural Networks
+
+** Setup and notation
+
+We observe \(n\) labeled examples with predictors \(x_i \in \mathbb{R}^p\)
+and a categorical response in one of \(K\) classes. =MLPClassifier= takes
+them through the same formula interface as the other classifiers
+(=MLPClassifier(data, "Species ~ Petal.Length + Petal.Width")=) and
+standardizes the predictors. The network is a sequence of /layers/ of
+widths \(p = n_0, n_1, \ldots, n_{L} = K\), where the \(n_1, \ldots,
+n_{L-1}\) are the hidden layers (=MLPClassifierOptions::hidden_layer_sizes=).
+
+** The feed-forward architecture
+
+Writing \(a^{(0)} = x\) for the (standardized) input, each layer \(l = 1,
+\ldots, L\) computes an affine map followed by an elementwise nonlinearity:
+
+\[
+z^{(l)} = W^{(l)} a^{(l-1)} + b^{(l)}, \qquad
+a^{(l)} = \sigma\!\bigl(z^{(l)}\bigr),
+\]
+
+with weight matrix \(W^{(l)} \in \mathbb{R}^{n_l \times n_{l-1}}\) and bias
+\(b^{(l)} \in \mathbb{R}^{n_l}\) (=weights_= and =biases_= in the source).
+The hidden activation \(\sigma\) is =MLPClassifierOptions::activation=, one
+of
+
+\[
+\sigma_{\text{relu}}(z) = \max(0, z), \quad
+\sigma_{\text{tanh}}(z) = \tanh z, \quad
+\sigma_{\text{sigmoid}}(z) = \frac{1}{1 + e^{-z}} ,
+\]
+
+and =architecture()= reports the full width sequence, =n_parameters()= the
+total count of weights and biases. Composing affine maps through these
+nonlinearities is what gives the network its expressive power: without
+\(\sigma\), a stack of affine maps would collapse into a single affine map,
+and the network could do no more than a linear model.
+
+** The softmax output and cross-entropy loss
+
+The final layer produces one score per class, converted to a probability
+distribution by the /softmax/,
+
+\[
+\hat{p}_k = \frac{e^{z^{(L)}_k}}{\sum_{j=1}^{K} e^{z^{(L)}_j}} ,
+\]
+
+and the network is trained to minimize the /cross-entropy/ between these
+predicted probabilities and the true one-hot labels,
+
+\[
+\mathcal{L} = -\frac{1}{n}\sum_{i=1}^{n} \log \hat{p}_{i, y_i} ,
+\]
+
+the negative log-likelihood of the correct class. This is exactly the
+multinomial logistic loss, now applied on top of the learned features
+\(a^{(L-1)}\) rather than the raw inputs. =loss_curve()= records this
+quantity after each epoch; a network guessing uniformly scores \(\ln K\)
+(for two classes, \(\ln 2 \approx 0.6931\)), the floor §4.1 finds a linear
+model stuck at on XOR.
+
+** Why hidden layers: nonlinear separability
+
+A linear classifier partitions the input space with a single hyperplane,
+so it can only solve problems that are /linearly separable/. XOR is the
+minimal counterexample: with classes at the corners \((0,0), (1,1)\) versus
+\((0,1), (1,0)\), no straight line separates them, and both classes share
+the same centroid, so a linear model has literally no usable direction --
+its best is to guess, scoring \(\ln 2\). A hidden layer removes this
+ceiling by first mapping the inputs into a new feature space in which the
+classes /become/ linearly separable; the output layer then draws its
+hyperplane there, which pulls back to a curved boundary in the original
+space. The universal approximation theorem (Cybenko 1989; Hornik 1991)
+makes the general statement: a network with a single sufficiently wide
+hidden layer can approximate any continuous function to arbitrary accuracy.
+§4.1 and §4.2 exhibit both the failure of the linear model and the success
+of the hidden-layer network directly.
+
+** Backpropagation: computing the gradient
+
+Training needs the gradient of \(\mathcal{L}\) with respect to every weight
+and bias. Backpropagation computes it by the chain rule, sweeping backward
+from the output. The softmax-with-cross-entropy output has an especially
+clean gradient: the error signal at the output layer is simply the
+predicted minus the true distribution,
+
+\[
+\delta^{(L)} = \hat{p} - \mathbf{1}_{y} ,
+\]
+
+and it propagates to earlier layers through the transposed weights and the
+activation's derivative,
+
+\[
+\delta^{(l)} = \bigl(W^{(l+1)\top} \delta^{(l+1)}\bigr) \odot
+   \sigma'\!\bigl(z^{(l)}\bigr) ,
+\]
+
+where \(\odot\) is elementwise multiplication. Each layer's parameter
+gradients then follow immediately from its own error signal and input,
+
+\[
+\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \delta^{(l)}
+   \, a^{(l-1)\top}, \qquad
+\frac{\partial \mathcal{L}}{\partial b^{(l)}} = \delta^{(l)} .
+\]
+
+=MLPClassifier::fit= implements exactly this recursion: a forward pass
+caches every \(z^{(l)}\) and \(a^{(l)}\), then a backward pass accumulates
+these gradients over a mini-batch. The efficiency of reusing the cached
+forward quantities -- rather than perturbing each weight numerically -- is
+what makes training large networks feasible at all.
+
+** Training: mini-batch stochastic gradient descent
+
+The parameters are updated by gradient descent on mini-batches of the data.
+For each batch, =fit= averages the backpropagated gradients and steps every
+parameter downhill,
+
+\[
+W^{(l)} \leftarrow W^{(l)} - \eta \Bigl( \overline{\nabla_{W^{(l)}}
+   \mathcal{L}} + \lambda\, W^{(l)} \Bigr) ,
+\]
+
+with learning rate \(\eta\) (=learning_rate=), an optional \(L_2\) weight
+penalty \(\lambda\) (=l2=), and =batch_size= examples per step (0 meaning
+full-batch). One pass over all the data is an /epoch/, repeated
+=max_epochs= times, with the data reshuffled each epoch. Weights are
+initialized randomly -- He-scaled for ReLU, Xavier-scaled otherwise, from
+=seed= -- since starting them all equal would keep every unit in a layer
+identical forever. The whole procedure is deterministic given the seed.
+
+** The linear special case
+
+With =hidden_layer_sizes= empty there are no hidden layers at all: the
+network is just \(\hat{p} = \operatorname{softmax}(W x + b)\), which /is/
+multinomial logistic regression. So the MLP contains the linear classifier
+as its degenerate zero-hidden-layer case, and comparing the two (as §4.1,
+§4.2 and §4.4 do) isolates exactly what the hidden layers contribute:
+nothing about the code path changes except whether learned features sit
+between the input and the softmax.
+
+** What we will report
+
+Given the fits, we report the XOR capacity gap between a linear model and a
+hidden-layer network, the two-moons boundary with linear-versus-MLP
+decision-region figures and held-out accuracies, the training loss curve, a
+network-capacity sweep, and a real-data iris classification with its
+confusion matrix and decision regions.
+
+* Data and Methods
+
+** XOR
+
+The canonical non-linearly-separable problem: 150 points jittered around
+each of the four corners \((0,0), (0,1), (1,0), (1,1)\), labeled by parity
+(the two "even" corners one class, the two "odd" corners the other). Since
+XOR is about /representational capacity/ -- can the model fit the pattern
+at all? -- we train on the full, class-balanced dataset with full-batch
+gradient descent and report training accuracy, the honest measure of
+whether the boundary can even be drawn.
+
+** Two interleaving moons
+
+A harder, more realistic nonlinear problem: two half-circles ("moons")
+offset and interleaved so their boundary is a smooth curve, 250 points per
+moon with Gaussian noise. Here generalization matters, so we split 70/30
+into training and held-out test sets and report test accuracy, plus the
+decision-region figures that show the boundary each model draws.
+
+** The iris data
+
+=datamunge::datasets::iris()= supplies Fisher's 150 flowers; we classify
+=Species= from =Petal.Length= and =Petal.Width= (two predictors, so the
+decision regions can be drawn), again on a 70/30 train/test split.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::MLPClassifier= for the model,
+and =plot::RPlot= for every figure. No external machine-learning package is
+used.
+
+** Program, presented as a literate whole
+
+*** Includes and two data helpers
+
+Two helpers used only to /prepare/ data: one builds a two-feature-plus-label
+DataFrame, the other shuffles and splits rows into training and test sets.
+
+#+name: mlp-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/mlp_classifier.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::MLPClassifier;
+using datamunge::stats::MLPClassifierOptions;
+using namespace datamunge::plot;
+
+// Build a two-column-plus-label DataFrame.
+static DataFrame make_df(const std::vector<double>& x, const std::vector<double>& y,
+                         const std::vector<std::string>& label) {
+    DataFrame d;
+    d.add_column("x", x);
+    d.add_column("y", y);
+    d.add_column("class", label);
+    return d;
+}
+
+// Shuffle indices (seeded) and split rows into train/test DataFrames.
+static void split(const std::vector<double>& x, const std::vector<double>& y, const std::vector<std::string>& label,
+                  double train_frac, unsigned seed, DataFrame& train, DataFrame& test) {
+    const std::size_t n = x.size();
+    std::vector<std::size_t> idx(n);
+    std::iota(idx.begin(), idx.end(), 0);
+    std::mt19937_64 rng(seed);
+    std::shuffle(idx.begin(), idx.end(), rng);
+    const std::size_t n_train = static_cast<std::size_t>(train_frac * n);
+    std::vector<double> xtr, ytr, xte, yte;
+    std::vector<std::string> ltr, lte;
+    for (std::size_t i = 0; i < n; ++i) {
+        if (i < n_train) { xtr.push_back(x[idx[i]]); ytr.push_back(y[idx[i]]); ltr.push_back(label[idx[i]]); }
+        else            { xte.push_back(x[idx[i]]); yte.push_back(y[idx[i]]); lte.push_back(label[idx[i]]); }
+    }
+    train = make_df(xtr, ytr, ltr);
+    test  = make_df(xte, yte, lte);
+}
+#+end_src
+
+*** XOR: capacity, not generalization
+
+#+name: mlp-xor
+#+begin_src c++ :eval no
+    std::cout << "=== XOR: the problem a linear classifier cannot solve ===\n";
+    // XOR is about representational capacity, not generalization -- can the model even FIT the
+    // pattern? -- so we report training accuracy on the full, class-balanced dataset (150 points at
+    // each of the four corners), with full-batch gradient descent for a deterministic answer.
+    {
+        const std::size_t per = 150;
+        std::mt19937_64 rng(1);
+        std::normal_distribution<double> jitter(0.0, 0.12);
+        std::vector<double> x, y;
+        std::vector<std::string> label;
+        const int corners[4][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+        for (auto& c : corners)
+            for (std::size_t i = 0; i < per; ++i) {
+                x.push_back(c[0] + jitter(rng));
+                y.push_back(c[1] + jitter(rng));
+                label.push_back((c[0] ^ c[1]) ? "B" : "A");  // XOR
+            }
+        DataFrame xor_data = make_df(x, y, label);
+        MLPClassifier linear(xor_data, "class ~ x + y", MLPClassifierOptions{{}, "tanh", 0.1, 800, 0, 0.0, 7});
+        MLPClassifier mlp(xor_data, "class ~ x + y", MLPClassifierOptions{{8}, "tanh", 0.1, 800, 0, 0.0, 7});
+        std::cout << "linear (no hidden layer): training accuracy " << linear.training_accuracy()
+                  << ", final loss " << linear.loss_curve().back() << " (ln 2 = " << std::log(2.0)
+                  << ", the no-signal floor)\n";
+        std::cout << "MLP (one hidden layer of 8): training accuracy " << mlp.training_accuracy()
+                  << ", final loss " << mlp.loss_curve().back() << "\n";
+    }
+#+end_src
+
+*** Generating the two moons
+
+#+name: mlp-moons-gen
+#+begin_src c++ :eval no
+    std::cout << "\n=== Two interleaving moons: a nonlinear boundary ===\n";
+    const std::size_t moon_per = 250;
+    std::mt19937_64 mrng(3);
+    std::normal_distribution<double> mnoise(0.0, 0.12);
+    std::vector<double> mx, my;
+    std::vector<std::string> mlabel;
+    for (std::size_t i = 0; i < moon_per; ++i) {
+        const double t = M_PI * static_cast<double>(i) / static_cast<double>(moon_per - 1);
+        mx.push_back(std::cos(t) + mnoise(mrng));
+        my.push_back(std::sin(t) + mnoise(mrng));
+        mlabel.push_back("upper");
+        mx.push_back(1.0 - std::cos(t) + mnoise(mrng));
+        my.push_back(0.5 - std::sin(t) + mnoise(mrng));
+        mlabel.push_back("lower");
+    }
+    DataFrame moons_train, moons_test;
+    split(mx, my, mlabel, 0.7, 11, moons_train, moons_test);
+    std::cout << "generated " << mx.size() << " points (" << moon_per << " per moon)\n";
+#+end_src
+
+*** Fitting a linear model and a network on the moons
+
+#+name: mlp-moons-fit
+#+begin_src c++ :eval no
+    MLPClassifier moon_linear(moons_train, "class ~ x + y", MLPClassifierOptions{{}, "relu", 0.05, 500, 32, 0.0, 5});
+    MLPClassifier moon_mlp(moons_train, "class ~ x + y", MLPClassifierOptions{{16, 16}, "relu", 0.05, 500, 32, 0.0, 5});
+    moon_mlp.print_summary();
+    std::cout << "\nlinear     test accuracy: " << moon_linear.accuracy(moons_test) << "\n";
+    std::cout << "MLP (16,16) test accuracy: " << moon_mlp.accuracy(moons_test) << "\n";
+#+end_src
+
+*** Decision-boundary figures and the loss curve
+
+#+name: mlp-moons-plots
+#+begin_src c++ :eval no
+    {
+        auto lp = moon_linear.plot_decision_regions("x", "y");
+        // overlay the training points
+        auto overlay = [&](RPlot& plot, const DataFrame& d) {
+            for (const std::string& cls : {"upper", "lower"}) {
+                std::vector<double> px, py;
+                for (std::size_t i = 0; i < d.nrows(); ++i)
+                    if (d.string_at("class", i) == cls) { px.push_back(d.double_at("x", i)); py.push_back(d.double_at("y", i)); }
+                plot.points(px, py, cls, cls == "upper" ? RGB{37, 99, 235} : RGB{220, 38, 38}, 4.0);
+            }
+        };
+        lp.title("Linear Classifier Decision Boundary");
+        overlay(lp, moons_train);
+        lp.background({250, 250, 252});
+        lp.save_svg("build/org/mlp_moons_linear.svg");
+        auto mp = moon_mlp.plot_decision_regions("x", "y");
+        mp.title("MLP (16,16) Decision Boundary");
+        overlay(mp, moons_train);
+        mp.background({250, 250, 252});
+        mp.save_svg("build/org/mlp_moons_mlp.svg");
+        auto loss = moon_mlp.plot_loss_curve();
+        loss.background({250, 250, 252});
+        loss.save_svg("build/org/mlp_loss_curve.svg");
+        std::cout << "wrote mlp_moons_linear.svg, mlp_moons_mlp.svg, mlp_loss_curve.svg\n";
+    }
+#+end_src
+
+*** How much capacity is needed?
+
+#+name: mlp-width-sweep
+#+begin_src c++ :eval no
+    std::cout << "\n=== Effect of network capacity (moons test accuracy) ===\n";
+    {
+        std::cout << std::left << std::setw(22) << "architecture" << std::right << std::setw(12) << "params"
+                  << std::setw(16) << "test accuracy\n";
+        struct Arch { std::string name; std::vector<std::size_t> hidden; };
+        std::vector<Arch> archs = {{"none (linear)", {}}, {"one hidden: 4", {4}}, {"one hidden: 16", {16}},
+                                   {"two hidden: 16,16", {16, 16}}, {"two hidden: 64,64", {64, 64}}};
+        for (const auto& a : archs) {
+            MLPClassifier m(moons_train, "class ~ x + y", MLPClassifierOptions{a.hidden, "relu", 0.05, 500, 32, 0.0, 5});
+            std::cout << std::left << std::setw(22) << a.name << std::right << std::setw(12) << m.n_parameters()
+                      << std::setw(16) << m.accuracy(moons_test) << "\n";
+        }
+    }
+#+end_src
+
+*** Real data: iris
+
+#+name: mlp-iris
+#+begin_src c++ :eval no
+    std::cout << "\n=== Real data: iris species from petal measurements ===\n";
+    {
+        const auto iris = datamunge::datasets::iris();
+        // 70/30 split by row shuffle.
+        std::vector<double> pl, pw;
+        std::vector<std::string> sp;
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            pl.push_back(iris.double_at("Petal.Length", i));
+            pw.push_back(iris.double_at("Petal.Width", i));
+            sp.push_back(iris.string_at("Species", i));
+        }
+        DataFrame itr, ite;
+        {
+            const std::size_t n = pl.size();
+            std::vector<std::size_t> idx(n);
+            std::iota(idx.begin(), idx.end(), 0);
+            std::mt19937_64 rng(2024);
+            std::shuffle(idx.begin(), idx.end(), rng);
+            const std::size_t ntr = static_cast<std::size_t>(0.7 * n);
+            std::vector<double> a, b, c, d2;
+            std::vector<std::string> e, f;
+            for (std::size_t i = 0; i < n; ++i) {
+                if (i < ntr) { a.push_back(pl[idx[i]]); b.push_back(pw[idx[i]]); e.push_back(sp[idx[i]]); }
+                else { c.push_back(pl[idx[i]]); d2.push_back(pw[idx[i]]); f.push_back(sp[idx[i]]); }
+            }
+            itr.add_column("Petal.Length", a); itr.add_column("Petal.Width", b); itr.add_column("Species", e);
+            ite.add_column("Petal.Length", c); ite.add_column("Petal.Width", d2); ite.add_column("Species", f);
+        }
+        MLPClassifier m(itr, "Species ~ Petal.Length + Petal.Width",
+                        MLPClassifierOptions{{16}, "relu", 0.05, 600, 32, 0.0, 42});
+        m.print_summary();
+        std::cout << "\ntest accuracy: " << m.accuracy(ite) << "\n";
+        std::cout << "training confusion matrix (rows=actual, cols=predicted; order ";
+        for (const auto& c : m.classes()) std::cout << c << " ";
+        std::cout << "):\n";
+        const auto cm = m.confusion_matrix();
+        for (std::size_t r = 0; r < cm.rows(); ++r) {
+            std::cout << "  ";
+            for (std::size_t c = 0; c < cm.cols(); ++c) std::cout << std::setw(5) << static_cast<int>(cm(r, c));
+            std::cout << "\n";
+        }
+        auto dr = m.plot_decision_regions("Petal.Length", "Petal.Width");
+        const std::vector<std::string> names{"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> cols{{37, 99, 235}, {220, 38, 38}, {22, 163, 74}};
+        for (std::size_t k = 0; k < 3; ++k) {
+            std::vector<double> px, py;
+            for (std::size_t i = 0; i < itr.nrows(); ++i)
+                if (itr.string_at("Species", i) == names[k]) { px.push_back(itr.double_at("Petal.Length", i)); py.push_back(itr.double_at("Petal.Width", i)); }
+            dr.points(px, py, names[k], cols[k], 4.0);
+        }
+        dr.title("MLP Decision Regions on Iris").background({250, 250, 252});
+        dr.save_svg("build/org/mlp_iris_regions.svg");
+        std::cout << "wrote mlp_iris_regions.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/neural_network_analysis.cpp <<'CPP'
+<<mlp-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<mlp-xor>>
+
+<<mlp-moons-gen>>
+
+<<mlp-moons-fit>>
+
+<<mlp-moons-plots>>
+
+<<mlp-width-sweep>>
+
+<<mlp-iris>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/neural_network_analysis.cpp \
+  -o build/org/neural_network_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/neural_network_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** XOR: one hidden layer breaks the linear ceiling
+
+#+begin_example
+linear (no hidden layer): training accuracy 0.4983, final loss 0.6931 (ln 2 = 0.6931, the no-signal floor)
+MLP (one hidden layer of 8): training accuracy 1.0000, final loss 0.0108
+#+end_example
+
+This is the whole argument for hidden layers in two lines. The linear model
+-- the network with no hidden layer, i.e. plain multinomial logistic
+regression (§2.7) -- cannot fit XOR at all: it converges to a training
+accuracy of 0.4983 (a coin flip) at a cross-entropy of 0.6931, which is
+\(\ln 2\) to four decimals -- /exactly/ the loss of predicting 50/50 on
+every point, the provable floor for a model with no usable linear
+direction (§2.4). Inserting a single hidden layer of eight units changes
+the story completely: training accuracy 1.0000, loss 0.0108. The hidden
+units learn a feature representation in which the four XOR clusters become
+linearly separable, and the output layer then trivially separates them --
+the failure that once seemed to doom neural networks, resolved by the one
+architectural change backpropagation made trainable.
+
+** Two moons: a straight boundary versus a learned curve
+
+#+begin_example
+Multi-Layer Perceptron Classifier
+Formula: class ~ x + y
+Architecture: 2 -> 16 -> 16 -> 2 (relu hidden, softmax output)
+Trainable parameters: 354, observations: 350
+Epochs: 500, learning rate: 0.0500
+Final training cross-entropy: 0.0042
+Training accuracy: 1.0000
+
+linear     test accuracy: 0.8933
+MLP (16,16) test accuracy: 1.0000
+#+end_example
+
+On the interleaving moons, the linear classifier reaches 89.33% held-out
+accuracy -- respectable, because the two moons are /almost/ separable by a
+line, but capped by the handful of points where the crescents interleave.
+The two-hidden-layer network (2 -> 16 -> 16 -> 2, 354 parameters) classifies
+the held-out set perfectly. The figures show why.
+
+#+ATTR_HTML: :alt Linear decision boundary, a straight line cutting through both moons :width 100%
+[[file:../../build/org/mlp_moons_linear.svg]]
+
+The linear model can only offer a straight boundary (the tilted line
+between the shaded regions), which necessarily misclassifies the tips of
+each crescent that reach across it -- the blue upper-moon points dipping
+into the lower-right, and the red lower-moon points on the left.
+
+#+ATTR_HTML: :alt MLP decision boundary, a curve wrapping around the lower moon :width 100%
+[[file:../../build/org/mlp_moons_mlp.svg]]
+
+The network learns a /curved/ boundary that wraps around the lower (red)
+moon, following the true shape of the interface between the classes. This
+is the learned nonlinear boundary a linear model cannot express, and the
+visual counterpart of the jump from 89.33% to 100%.
+
+** The training loss curve
+
+#+ATTR_HTML: :alt Training cross-entropy falling smoothly toward zero over epochs :width 100%
+[[file:../../build/org/mlp_loss_curve.svg]]
+
+Gradient descent at work: the mean training cross-entropy falls smoothly
+from about 0.62 at the first epoch toward the 0.0042 it reaches by the last,
+steeply at first and then flattening as the network approaches a good fit.
+Each downward step is one epoch's worth of backpropagated gradient updates
+(§2.5-2.6); the smooth, monotone descent is the reassuring signature of a
+well-behaved learning rate.
+
+** How much network is enough?
+
+#+begin_example
+architecture                params  test accuracy
+none (linear)                    6          0.8933
+one hidden: 4                   22          1.0000
+one hidden: 16                  82          1.0000
+two hidden: 16,16              354          1.0000
+two hidden: 64,64             4482          1.0000
+#+end_example
+
+The capacity sweep locates where the value actually is: the decisive jump
+is from /zero/ hidden layers to /one/ (0.8933 to 1.0000), not from a small
+network to a large one. A single hidden layer of just four units -- 22
+parameters -- already classifies the moons perfectly, and multiplying the
+parameter count more than two-hundred-fold (to the 4482 of a 64-64 network)
+adds exactly nothing on this task. The lesson is the practical counterpart
+of the universal approximation theorem (§2.4): what matters first is
+/having/ a hidden layer at all, so the model can bend; how big it needs to
+be is a secondary, problem-dependent question, and bigger is not
+automatically better.
+
+** Real data: iris
+
+#+begin_example
+Multi-Layer Perceptron Classifier
+Formula: Species ~ Petal.Length + Petal.Width
+Architecture: 2 -> 16 -> 3 (relu hidden, softmax output)
+Trainable parameters: 99, observations: 105
+Epochs: 600, learning rate: 0.0500
+Final training cross-entropy: 0.0305
+Training accuracy: 0.9905
+
+test accuracy: 0.9111
+training confusion matrix (rows=actual, cols=predicted; order setosa versicolor virginica ):
+     36    0    0
+      0   34    0
+      0    1   34
+#+end_example
+
+On Fisher's iris, a small network (2 -> 16 -> 3, 99 parameters) classifies
+species from just petal length and width at 91.11% held-out accuracy. The
+training confusion matrix shows the familiar structure every classifier in
+this project rediscovers: /setosa/ is perfectly separated (36 of 36), and
+the only errors are a single /virginica/ misclassified as /versicolor/ --
+the two species whose petal measurements overlap. The multiclass softmax
+output handles three classes as naturally as two.
+
+#+ATTR_HTML: :alt MLP decision regions on iris petal length and width :width 100%
+[[file:../../build/org/mlp_iris_regions.svg]]
+
+The decision regions make the fit legible: three colored zones -- /setosa/
+isolated at low petal values, /versicolor/ and /virginica/ meeting along a
+gently curved boundary in the upper right -- with the training points
+overlaid. The curvature of the versicolor/virginica boundary is exactly
+what the hidden layer contributes over a purely linear partition.
+
+* Discussion
+
+**Hidden layers learn features; that is the whole idea.** §4.1 is the
+thesis in miniature: a linear model on XOR is not merely worse than a
+network, it is at the /chance floor/ (\(\ln 2\)), because the problem has no
+linear signal to find -- and one hidden layer takes it to perfect. The
+hidden units do not draw the final boundary; they learn a new coordinate
+system in which the old, impossible problem becomes linearly separable, and
+the output layer -- an ordinary logistic regression (§2.7) -- finishes the
+job there. Everything a neural network does beyond a linear model is this
+one idea, applied in stack.
+
+**Depth and width are means, not ends.** §4.4 is a useful corrective to the
+instinct that more network is better. On the moons, the entire gain came
+from the /first/ hidden layer; four units sufficed, and 4482 parameters did
+no better than 22. Real problems demand more capacity than this toy one
+does, but the principle holds: capacity should be matched to the problem,
+and the sharp, reliable win is qualitative (linear to nonlinear), not the
+marginal returns of ever-larger models -- which, past the point of fitting
+the data, buy only a greater risk of overfitting and a larger training
+bill.
+
+**Backpropagation is what makes it practical.** The forward pass (§2.2) and
+the loss (§2.3) define /what/ the network computes, but it is
+backpropagation (§2.5) that makes learning feasible: by reusing cached
+forward quantities and sweeping the chain rule backward once, it computes
+the gradient of every one of the (here up to 4482) parameters in a single
+pass, rather than perturbing each in turn. This report's networks train in
+a blink because of it; the same algorithm, unchanged in essence, is what
+trains models a billion times larger. The MLP here is deliberately small
+and transparent, but it is the genuine article -- affine layers,
+nonlinearities, softmax, cross-entropy, and backpropagation -- and every
+number above came from that machinery running end to end.
+
+* Conclusion
+
+Implementing a feed-forward neural network in =datamunge='s C++
+=stats::MLPClassifier= and training it by backpropagation, we reproduce the
+result that founded the field: on XOR a linear model sits exactly at the
+chance floor (training accuracy 0.4983, cross-entropy 0.6931 = \(\ln 2\)),
+while a single eight-unit hidden layer reaches 1.0000. On two interleaving
+moons the network learns a curved decision boundary a linear model cannot,
+lifting held-out accuracy from 89.33% to 100%, and a capacity sweep shows
+the decisive step is from zero hidden layers to one -- four hidden units
+suffice, and two-hundred-fold more parameters add nothing. The training
+loss falls smoothly toward zero as gradient descent proceeds, and on real
+iris data the network classifies species at 91.11% held-out accuracy, its
+only errors on the two species every method in this project finds
+overlapping. With an empty hidden-layer list the same class is exactly
+multinomial logistic regression, making precise what the hidden layers add.
+As with its companions, this entire report is reproducible end to end via
+=just org-example neural_network_analysis=, which re-executes §3.5.8's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Rosenblatt, F. (1958). "The perceptron: a probabilistic model for
+  information storage and organization in the brain." /Psychological
+  Review/, 65(6), 386--408.
+- Minsky, M., & Papert, S. (1969). /Perceptrons/. MIT Press.
+- Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). "Learning
+  representations by back-propagating errors." /Nature/, 323, 533--536.
+- Cybenko, G. (1989). "Approximation by superpositions of a sigmoidal
+  function." /Mathematics of Control, Signals, and Systems/, 2(4),
+  303--314.
+- Hornik, K. (1991). "Approximation capabilities of multilayer feedforward
+  networks." /Neural Networks/, 4(2), 251--257.
+- Goodfellow, I., Bengio, Y., & Courville, A. (2016). /Deep Learning/. MIT
+  Press.

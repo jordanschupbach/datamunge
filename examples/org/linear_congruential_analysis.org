@@ -1,0 +1,62 @@
+#+title: Linear Congruential Pseudorandom Generation
+#+subtitle: Affine modular dynamics with =datamunge::random::LinearCongruential64=
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+The linear congruential generator (LCG) is the simplest useful stateful PRNG.
+We derive its affine recurrence and full-period conditions, give pseudocode,
+and verify a configured instance using the production API.
+#+end_abstract
+
+* Mathematics
+
+An LCG evolves
+\[
+x_{n+1}=(a x_n+c)\bmod m.
+\]
+Here \(m=2^{64}\).  The Hull--Dobell theorem says the mixed generator has full
+period \(m\) precisely when \(\gcd(c,m)=1\), every prime factor of \(m\) divides
+\(a-1\), and \(4\mid a-1\) when \(4\mid m\).  Thus for this modulus \(c\) must
+be odd and \(a\equiv1\pmod4\).  The default constants satisfy these
+conditions.  One multiply-add gives \(O(1)\) time and state.  Raw LCG bits have
+visible lattice structure, so this engine is educational and reproducible,
+not cryptographic.
+
+* Algorithm
+
+#+begin_example
+LCG-NEXT(state, a, c):
+  state <- a*state + c mod 2^64
+  return state
+#+end_example
+
+Unsigned overflow is the desired modular reduction.  The API also permits
+custom odd parameters for studying the recurrence.
+
+* Executable C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/random/random.hpp>
+#include <iostream>
+
+int main() {
+  datamunge::random::LinearCongruential64 rng(1, 5, 3);
+  for (int i = 0; i < 3; ++i) std::cout << rng.next_u64() << ' ';
+  std::cout << '\n';
+}
+#+end_src
+
+Starting from \(1\), the states are \(5(1)+3=8\),
+\(5(8)+3=43\), and \(5(43)+3=218\):
+
+#+begin_example
+8 43 218
+#+end_example
+
+* Correctness
+
+The method assigns the right-hand side of the defining recurrence to the
+stored state, with C++ unsigned arithmetic reducing modulo \(2^{64}\), then
+returns that state.  Induction on the call count proves the \(n\)-th call
+returns \(x_n\).

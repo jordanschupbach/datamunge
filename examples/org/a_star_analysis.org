@@ -1,0 +1,23 @@
+#+title: A* Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+A* expands minimum \(f(v)=g(v)+h(v)\), where \(g\) is discovered path cost
+and admissible \(h\le h^*\) lower-bounds remaining cost.  When a goal leaves
+the queue, every competing frontier path has lower bound at least its cost,
+proving optimality.  Consistency prevents closed-node reopening.
+#+begin_example
+g[start]=0; queue by g+h
+pop best; stop if goal
+relax outgoing edges and record predecessors
+#+end_example
+Binary-heap graph search is \(O((V+E)\log V)\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::a_star_search(
+3,{{0,1,1},{1,2,2},{0,2,5}},0,2,{2,1,0});std::cout<<r.cost;}
+#+end_src
+The optimal path costs 3.
+

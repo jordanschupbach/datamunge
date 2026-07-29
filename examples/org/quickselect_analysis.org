@@ -1,0 +1,302 @@
+#+title: Quickselect: The k-th Order Statistic in Linear Time
+#+subtitle: A literate C++ study of selection without sorting, with =datamunge='s =algorithms::quickselect=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How do you find the median of a million numbers, or the 90th percentile, or the
+third smallest -- without paying to sort all million? Sorting answers /every/
+order-statistic question at once for O(n log n), but if you want just /one/ rank
+you can do better. Hoare's *Quickselect* (1961) partitions the array around a
+pivot exactly as quicksort does, then recurses into only the /one/ side that can
+contain the rank it is looking for, giving expected /linear/ time. Its Achilles'
+heel is pivot choice: an unlucky (or adversarial) pivot sequence degrades it to
+O(n^2). The *median-of-medians* algorithm of Blum, Floyd, Pratt, Rivest &
+Tarjan (1973) fixes this by spending a little more to /guarantee/ a good pivot,
+pinning the worst case at O(n). This report implements both in =datamunge='s C++
+=algorithms::quickselect= and =algorithms::quickselect_mom= and presents them as
+a literate program: every number and figure below is produced by a single
+compiled binary. A hand-traced worked example finds the median of a nine-element
+array with both variants agreeing exactly, and a scaling experiment shows
+Quickselect's per-element comparison cost staying flat as \(n\) grows -- the
+signature of linear, not \(n\log n\), work.
+#+end_abstract
+
+* The selection problem
+
+Given an array of \(n\) values and a rank \(k\) (0-indexed: \(k=0\) is the
+minimum, \(k=n-1\) the maximum), the *selection problem* asks for the element
+that would sit at position \(k\) if the array were sorted -- the *k-th order
+statistic*. The median is the special case \(k=\lfloor n/2\rfloor\); percentiles
+and quartiles are others.
+
+One answer is to sort and index: correct, but it does \(O(n\log n)\) work to
+compute every order statistic when we asked for one. Selection aims for
+\(O(n)\): reading a single ranked element should not cost more than a constant
+number of passes over the data. =datamunge= exposes two linear-expected/linear-worst
+selectors that take the array *by value* (they reorder a private copy) and
+return the requested order statistic.
+
+#+name: qs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/quickselect.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Quickselect: partition, then recurse into one side
+
+Quicksort partitions the array around a pivot -- smaller elements to the left,
+larger to the right -- and then recursively sorts /both/ sides. Quickselect
+makes one observation: after partitioning, the pivot sits at its final sorted
+position \(p\). If \(p = k\) we are done; if \(k < p\) the answer lies entirely
+in the left part; if \(k > p\) it lies in the right. Either way we recurse into
+*one* side and discard the other.
+
+#+begin_example
+PARTITION(A, lo, hi, pivot_index):        # Lomuto scheme
+    pivot <- A[pivot_index]
+    swap A[pivot_index] with A[hi]        # park pivot at the end
+    store <- lo
+    for i in lo .. hi-1:
+        if A[i] < pivot:
+            swap A[store] with A[i];  store <- store + 1
+    swap A[hi] with A[store]              # drop pivot into its final slot
+    return store                          # pivot's true sorted rank
+
+QUICKSELECT(A, k):                        # k is 0-indexed
+    lo <- 0;  hi <- n - 1
+    loop:
+        if lo == hi: return A[lo]
+        pivot_index <- MEDIAN_OF_THREE(A, lo, hi)
+        p <- PARTITION(A, lo, hi, pivot_index)
+        if k == p:      return A[k]        # pivot landed exactly on the target
+        else if k < p:  hi <- p - 1        # recurse left only
+        else:           lo <- p + 1        # recurse right only
+#+end_example
+
+*Why it is expected-linear.* Sorting recurses into both halves, giving
+\(T(n) = 2\,T(n/2) + O(n) = O(n\log n)\). Quickselect recurses into just one.
+If each pivot split the array in half, the recurrence would be
+
+\[ T(n) = T(n/2) + O(n) = O(n)\left(1 + \tfrac12 + \tfrac14 + \cdots\right) = O(2n) = O(n), \]
+
+a /geometric/ series that sums to a constant times \(n\), not the \(\log n\)
+levels sorting must pay. With random pivots the split is not exactly even, but
+the expected subproblem still shrinks by a constant factor each step, so the
+expectation is still \(O(n)\).
+
+*The worst case.* If the pivot is always near an extreme -- which happens when a
+naive "first element" pivot meets an already-sorted array -- each partition peels
+off just one element, and \(T(n) = T(n-1) + O(n) = O(n^2)\). =datamunge='s
+=quickselect= uses a *median-of-three* pivot (the median of the first, middle,
+and last elements), which defeats the sorted and reverse-sorted inputs cheaply,
+but a determined adversary can still construct a bad permutation. For a
+/guaranteed/ bound we need a smarter pivot.
+
+* Median of medians: a provably good pivot (BFPRT)
+
+The median-of-medians algorithm chooses a pivot that is guaranteed to be neither
+too large nor too small, so every partition throws away a constant fraction of
+the array.
+
+#+begin_example
+MEDIAN_OF_MEDIANS(A, lo, hi):
+    if hi - lo < 5:                        # <= 5 elements: sort and take the middle
+        return index of median of A[lo..hi]
+    m <- 0
+    for each group of 5 consecutive elements in A[lo..hi]:
+        j <- index of that group's median (sort <=5 elements)
+        swap A[lo + m] with A[j];  m <- m + 1     # pack medians to the front
+    # recursively select the median OF the m group-medians as the pivot
+    return SELECT_INDEX(A, lo, lo + m - 1, floor((m-1)/2))
+
+QUICKSELECT_MOM(A, k):   # as QUICKSELECT, but pivot_index <- MEDIAN_OF_MEDIANS(A, lo, hi)
+#+end_example
+
+*Why the pivot is good (the BFPRT 1973 argument).* Group the \(n\) elements into
+\(\lceil n/5\rceil\) groups of five and let \(x\) be the median of the group
+medians. Half of the \(\approx n/5\) group medians are \(\le x\), and each such
+median has two group-mates \(\le\) itself, so \(x\) is \(\ge\) at least
+\(3 \cdot \tfrac12 \cdot \tfrac{n}{5} = \tfrac{3n}{10}\) elements. Symmetrically
+\(x\) is \(\le\) at least \(3n/10\) elements. So whichever side we recurse into
+has at most \(7n/10\) elements. Finding the median-of-medians itself is a
+selection on \(n/5\) elements. The recurrence is therefore
+
+\[ T(n) \le T\!\left(\tfrac{n}{5}\right) + T\!\left(\tfrac{7n}{10}\right) + O(n), \]
+
+and because \(\tfrac15 + \tfrac{7}{10} = \tfrac{9}{10} < 1\), the subproblems
+shrink geometrically and \(T(n) = O(n)\) -- in the *worst* case. Groups of five
+are the smallest odd group size for which \(1/5 + 7/10 < 1\); groups of three
+fail. The price is a larger constant factor, so =quickselect_mom= is slower on
+average than =quickselect= but immune to adversarial input. Both always return
+the same value.
+
+* Example: finding a median two ways
+
+We take a fixed nine-element array, compute its minimum, median, and maximum
+with /both/ selectors, and check each against the fully sorted reference. Then
+we hand the classic worst case -- an already-sorted array -- to both variants and
+confirm they still return the correct median.
+
+#+name: qs-run
+#+begin_src c++ :eval no
+    std::vector<std::int64_t> data = {9, 3, 7, 1, 8, 2, 6, 5, 4};
+    std::vector<std::int64_t> reference = data;
+    std::sort(reference.begin(), reference.end());
+
+    std::cout << "=== Quickselect: the k-th order statistic without full sorting ===\n";
+    std::cout << "input  (n=" << data.size() << "): ";
+    for (auto v : data) std::cout << v << " ";
+    std::cout << "\nsorted reference: ";
+    for (auto v : reference) std::cout << v << " ";
+    std::cout << "\n\n";
+
+    struct Q { const char* name; std::size_t k; };
+    const Q queries[] = {{"minimum  (k=0)", 0}, {"median   (k=4)", 4}, {"maximum  (k=8)", 8}};
+    for (const auto& q : queries) {
+        const std::int64_t a = quickselect(data, q.k);
+        const std::int64_t b = quickselect_mom(data, q.k);
+        std::cout << q.name << ":  quickselect=" << a << "  quickselect_mom=" << b
+                  << "  sorted[" << q.k << "]=" << reference[q.k] << "\n";
+    }
+    std::cout << "\nBoth variants match each other and the sorted reference at every rank.\n\n";
+
+    std::vector<std::int64_t> adversarial(15);
+    std::iota(adversarial.begin(), adversarial.end(), 1); // 1..15, sorted ascending
+    const std::size_t km = 7; // 0-indexed median of 15 elements -> value 8
+    std::cout << "adversarial input (already sorted 1..15), median k=7:\n";
+    std::cout << "  quickselect=" << quickselect(adversarial, km)
+              << "  quickselect_mom=" << quickselect_mom(adversarial, km)
+              << "  expected=" << (km + 1) << "\n";
+
+    // --- Scaling experiment: comparisons PER ELEMENT vs n -----------------------------------
+    // An instrumented median-of-three Quickselect that counts element comparisons, so we can see
+    // the total stay proportional to n (flat per-element cost) rather than growing like n log n.
+    auto count_qs = [](std::vector<std::int64_t> a, std::size_t k) -> long long {
+        long long cmps = 0;
+        std::size_t lo = 0, hi = a.size() - 1;
+        for (;;) {
+            if (lo == hi) break;
+            const std::size_t mid = lo + (hi - lo) / 2;
+            const std::int64_t x = a[lo], y = a[mid], z = a[hi];
+            std::size_t pi = hi;
+            if ((x <= y && y <= z) || (z <= y && y <= x)) pi = mid;
+            else if ((y <= x && x <= z) || (z <= x && x <= y)) pi = lo;
+            const std::int64_t pivot = a[pi];
+            std::swap(a[pi], a[hi]);
+            std::size_t store = lo;
+            for (std::size_t i = lo; i < hi; ++i) { ++cmps; if (a[i] < pivot) std::swap(a[store++], a[i]); }
+            std::swap(a[hi], a[store]);
+            const std::size_t p = store;
+            if (k == p) break;
+            else if (k < p) hi = p - 1; else lo = p + 1;
+        }
+        return cmps;
+    };
+
+    std::mt19937_64 rng(20240727);
+    std::vector<double> ns, per_elem, log2n;
+    for (std::size_t n = 50; n <= 1000; n += 50) {
+        const int trials = 60;
+        long long total = 0;
+        for (int t = 0; t < trials; ++t) {
+            std::vector<std::int64_t> v(n);
+            std::uniform_int_distribution<std::int64_t> vd(0, 1000000);
+            for (auto& e : v) e = vd(rng);
+            total += count_qs(v, n / 2); // select the median
+        }
+        const double avg = static_cast<double>(total) / trials;
+        ns.push_back(static_cast<double>(n));
+        per_elem.push_back(avg / static_cast<double>(n));      // comparisons per element
+        log2n.push_back(std::log2(static_cast<double>(n)));    // what n log n per element would grow like
+    }
+
+    auto plot = RPlot::create();
+    if (!ns.empty() && !per_elem.empty()) {
+        plot.points(ns, per_elem, "quickselect comparisons / n", {37, 99, 235}, 6.0);
+        plot.lines(ns, per_elem, "", {37, 99, 235}, 1.5);
+    }
+    if (!ns.empty() && !log2n.empty()) {
+        plot.points(ns, log2n, "log2(n)  (n log n per element)", {220, 38, 38}, 6.0);
+        plot.lines(ns, log2n, "", {220, 38, 38}, 1.5);
+    }
+    plot.title("Quickselect cost per element stays flat: linear, not n log n")
+        .x_label("array size n").y_label("comparisons per element").background({250, 250, 252});
+    plot.save_svg("build/org/quickselect_comparisons.svg");
+    std::cout << "\nwrote quickselect_comparisons.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/quickselect_analysis.cpp <<'CPP'
+<<qs-includes>>
+
+int main() {
+<<qs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/quickselect_analysis.cpp -o build/org/quickselect_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/quickselect_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Quickselect: the k-th order statistic without full sorting ===
+input  (n=9): 9 3 7 1 8 2 6 5 4
+sorted reference: 1 2 3 4 5 6 7 8 9
+
+minimum  (k=0):  quickselect=1  quickselect_mom=1  sorted[0]=1
+median   (k=4):  quickselect=5  quickselect_mom=5  sorted[4]=5
+maximum  (k=8):  quickselect=9  quickselect_mom=9  sorted[8]=9
+
+Both variants match each other and the sorted reference at every rank.
+
+adversarial input (already sorted 1..15), median k=7:
+  quickselect=8  quickselect_mom=8  expected=8
+
+wrote quickselect_comparisons.svg
+#+end_example
+
+The sorted reference is =1 2 3 4 5 6 7 8 9=, so the minimum is \(1\), the median
+(the fifth smallest, \(k=4\)) is \(5\), and the maximum is \(9\) -- and both
+=quickselect= and =quickselect_mom= return exactly those, never having sorted the
+array. Handing the already-sorted =1..15= to the same code -- the input that
+sinks a naive first-element pivot into \(O(n^2)\) -- still yields the correct
+median \(8\) from both variants; median-of-three sidesteps the trap for the plain
+selector, and median-of-medians /guarantees/ it.
+
+The scaling experiment makes the linearity visible. For each array size \(n\) we
+average, over 60 random arrays, the number of element comparisons Quickselect
+makes to find the median, and plot that total /divided by \(n\)/:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/quickselect_comparisons.svg]]
+
+The blue curve -- comparisons per element -- stays essentially flat as \(n\) climbs
+from 50 to 1000: total work grows in proportion to \(n\), the definition of
+linear time. The red curve is \(\log_2 n\), the per-element cost we would see if
+selection cost \(n\log n\) (as sorting does); it climbs steadily away from the
+blue line. That widening gap /is/ the payoff of recursing into one side instead
+of two: Quickselect reads the order statistic you asked for in a constant number
+of passes, and median-of-medians secures that guarantee even against a
+worst-case adversary.

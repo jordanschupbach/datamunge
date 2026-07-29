@@ -1,0 +1,303 @@
+#+title: Merge Sort: Stable Sorting by Divide and Conquer
+#+subtitle: A literate C++ study of top-down merge sort with =datamunge='s =algorithms::merge_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Merge sort (von Neumann, 1945) is the archetypal /divide-and-conquer/ sort:
+cut the array in half, sort each half by the same method, and *merge* the two
+sorted halves back together in a single linear pass. Two properties make it a
+workhorse. First, its running time is \(\Theta(n\log n)\) on /every/ input --
+best, average, and worst case coincide -- because the split is always balanced,
+unlike quicksort, whose partition can degrade to \(\Theta(n^2)\). Second, it is
+naturally *stable*: when two elements compare equal, the merge takes the one
+from the left (earlier) run first, so equal elements never swap places. This
+report implements top-down merge sort in =datamunge='s C++
+=algorithms::merge_sort= and presents it as a literate program: every number
+and figure is produced by a single compiled binary. We derive the split-then-
+merge structure, show why the merge is linear and how its tie-break makes the
+sort stable, solve the recurrence \(T(n)=2T(n/2)+O(n)\) to the \(O(n\log n)\)
+bound, and note the \(O(n)\) scratch space it costs. A deterministic eight-
+element array is traced by hand through its split/merge tree -- 15 key
+comparisons against the worst-case bound of 17 -- keyed records demonstrate
+stability, and the worst-case comparison count is plotted against
+\(n\log_2 n\).
+#+end_abstract
+
+* The sorting problem and divide and conquer
+
+We are given a sequence of \(n\) comparable values and must reorder it into
+ascending order. Merge sort solves this by /divide and conquer/: an array of
+length \(\le 1\) is already sorted (the base case); otherwise split it into two
+halves of length \(\lceil n/2\rceil\) and \(\lfloor n/2\rfloor\), sort each half
+recursively, and combine the two sorted halves into one. All the real work
+happens in that last step -- the *merge* -- because everything else is just
+bookkeeping around it.
+
+The recursion draws a balanced binary tree over the array. Splitting the
+deterministic array \([4,1,3,2,6,5,2,6]\) all the way down and then merging back
+up looks like this:
+
+#+begin_example
+split (top-down):
+[4 1 3 2 6 5 2 6]
+[4 1 3 2] | [6 5 2 6]
+[4 1] [3 2] | [6 5] [2 6]
+[4][1] [3][2] | [6][5] [2][6]
+
+merge (bottom-up):
+[1 4] [2 3] | [5 6] [2 6]
+[1 2 3 4]   | [2 5 6 6]
+[1 2 2 3 4 5 6 6]
+#+end_example
+
+=datamunge= exposes the sort as =merge_sort(std::vector<std::int64_t>&)=, which
+sorts ascending in place using an \(O(n)\) scratch buffer, and a keyed overload
+=merge_sort_pairs= used below to make stability visible.
+
+#+name: ms-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/merge_sort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Instrumented copy of the library's top-down merge sort: identical logic and tie-breaking, but it
+// counts every key comparison so we can compare the empirical count to the theoretical bound.
+static void count_merge_sort(std::vector<std::int64_t>& a, std::vector<std::int64_t>& buf,
+                             std::size_t lo, std::size_t hi, long long& comps) {
+    if (hi - lo <= 1) return;
+    const std::size_t mid = lo + (hi - lo) / 2;
+    count_merge_sort(a, buf, lo, mid, comps);
+    count_merge_sort(a, buf, mid, hi, comps);
+    std::size_t i = lo, j = mid, k = lo;
+    while (i < mid && j < hi) {
+        ++comps;                                    // exactly one key comparison per merged element
+        if (a[j] < a[i]) buf[k++] = a[j++];         // take right only if strictly smaller ...
+        else buf[k++] = a[i++];                      // ... otherwise take left -> ties keep left (stable)
+    }
+    while (i < mid) buf[k++] = a[i++];
+    while (j < hi) buf[k++] = a[j++];
+    for (std::size_t t = lo; t < hi; ++t) a[t] = buf[t];
+}
+
+// Worst-case key-comparison count of top-down merge sort. A full merge of runs of sizes p and q
+// costs at most p + q - 1 comparisons (one run empties with the other holding a single element), so
+// W(n) = W(ceil n/2) + W(floor n/2) + (n - 1), with W(1) = 0.
+static long long worst_case(long long n) {
+    if (n <= 1) return 0;
+    return worst_case((n + 1) / 2) + worst_case(n / 2) + (n - 1);
+}
+#+end_src
+
+* The merge, its linear cost, and stability
+
+Merging two already-sorted runs is the heart of the algorithm. Keep one index
+at the front of each run; repeatedly compare the two front elements and move the
+smaller into the output, advancing that run's index; when one run is exhausted,
+copy the remainder of the other. Because every comparison moves exactly one
+element into the output and no element is ever revisited, merging two runs of
+combined length \(m\) costs \(\Theta(m)\) time and one \(O(m)\) buffer.
+
+#+begin_example
+MERGE(A, lo, mid, hi, buf):          # A[lo,mid) and A[mid,hi) are each sorted
+  i <- lo;  j <- mid;  k <- lo
+  while i < mid and j < hi:
+      if A[j] < A[i]:                # STRICTLY smaller: take from the right run
+          buf[k] <- A[j];  j <- j + 1
+      else:                          # tie or left smaller: take from the LEFT run  (stability)
+          buf[k] <- A[i];  i <- i + 1
+      k <- k + 1
+  while i < mid:  buf[k] <- A[i];  i <- i + 1;  k <- k + 1
+  while j < hi:   buf[k] <- A[j];  j <- j + 1;  k <- k + 1
+  copy buf[lo,hi) back into A[lo,hi)
+#+end_example
+
+*Stability.* The =else= branch is deliberate. When the two fronts are equal we
+take the *left* run's element first. The left run always holds elements that
+appeared earlier in the input, so equal elements are emitted in their original
+order; no merge ever reorders equal keys, and the whole sort is therefore
+stable. Had we written =A[j] <= A[i]= (taking the right run on ties) the sort
+would still be correct but /not/ stable.
+
+#+begin_example
+MERGE-SORT(A, lo, hi, buf):
+  if hi - lo <= 1: return            # 0 or 1 element is already sorted
+  mid <- lo + (hi - lo) / 2
+  MERGE-SORT(A, lo, mid, buf)        # sort the left half
+  MERGE-SORT(A, mid, hi, buf)        # sort the right half
+  MERGE(A, lo, mid, hi, buf)         # combine the two sorted halves
+#+end_example
+
+*Running time.* Let \(T(n)\) be the time to sort \(n\) elements. The two
+recursive calls handle \(n/2\) each and the merge is linear, giving
+
+\[ T(n) = 2\,T(n/2) + \Theta(n), \qquad T(1) = \Theta(1). \]
+
+There are \(\log_2 n\) levels of recursion, and the merges on each level touch
+every element once, for \(\Theta(n)\) work per level; multiplying gives
+\(T(n) = \Theta(n\log n)\). Crucially this holds for /every/ input, because the
+split is always into equal halves -- there is no bad pivot to choose, so no
+\(\Theta(n^2)\) worst case as in quicksort.
+
+*Space.* The merge cannot be done in place cheaply, so we allocate one scratch
+buffer of \(n\) elements and reuse it across all merges: \(O(n)\) auxiliary
+space, the price merge sort pays for its guaranteed \(O(n\log n)\) time and its
+stability.
+
+* Example: sorting, comparison counting, and stability
+
+We sort the deterministic array \([4,1,3,2,6,5,2,6]\) with the library
+=merge_sort=, cross-check the result against =std::sort=, and re-sort a counted
+copy to report how many key comparisons the merges actually used. We then sort
+keyed records to exhibit stability, and finally tabulate and plot the worst-case
+comparison count \(W(n)\) against \(n\log_2 n\).
+
+#+name: ms-run
+#+begin_src c++ :eval no
+    // ----- worked example: sort a deterministic eight-element array -----
+    const std::vector<std::int64_t> input{4, 1, 3, 2, 6, 5, 2, 6};
+
+    std::vector<std::int64_t> sorted = input;
+    merge_sort(sorted); // datamunge library, in place
+
+    std::vector<std::int64_t> ref = input;
+    std::sort(ref.begin(), ref.end()); // independent reference
+
+    long long comps = 0;
+    std::vector<std::int64_t> counted = input;
+    std::vector<std::int64_t> buf(counted.size());
+    count_merge_sort(counted, buf, 0, counted.size(), comps);
+
+    std::cout << "=== Top-down merge sort ===\n";
+    std::cout << "input:";
+    for (auto x : input) std::cout << " " << x;
+    std::cout << "\nsorted:";
+    for (auto x : sorted) std::cout << " " << x;
+    std::cout << "\nmatches std::sort: " << (sorted == ref && counted == ref ? "yes" : "NO") << "\n";
+    std::cout << "key comparisons used: " << comps
+              << "   (worst-case bound for n=8 is " << worst_case(8) << ")\n";
+
+    // ----- stability: sort keyed records, keep input order on equal keys -----
+    std::cout << "\n=== Stability on keyed records (sort by key, keep input order on ties) ===\n";
+    std::vector<std::pair<int, int>> recs{{3, 0}, {1, 1}, {3, 2}, {2, 3}, {1, 4}, {3, 5}, {2, 6}};
+    auto show = [](const char* label, const std::vector<std::pair<int, int>>& v) {
+        std::cout << label;
+        for (const auto& p : v) std::cout << " (k=" << p.first << ",#" << p.second << ")";
+        std::cout << "\n";
+    };
+    show("original:", recs);
+    merge_sort_pairs(recs); // stable, by key (.first), preserving .second order on ties
+    show("sorted:  ", recs);
+    bool stable = true;
+    for (std::size_t i = 1; i < recs.size(); ++i)
+        if (recs[i - 1].first == recs[i].first && recs[i - 1].second >= recs[i].second) stable = false;
+    std::cout << "equal-key records keep ascending input index: " << (stable ? "yes" : "NO") << "\n";
+
+    // ----- worst-case comparisons W(n) vs n*log2(n) -----
+    std::cout << "\n=== Worst-case key comparisons W(n) vs n*log2(n) ===\n";
+    std::vector<double> ns, wc, refline;
+    for (long long n = 1; n <= 1024; n *= 2) {
+        const long long k = static_cast<long long>(std::llround(std::log2(static_cast<double>(n))));
+        const long long w = worst_case(n);
+        std::cout << "n = " << n << ": W(n) = " << w << ", n*log2(n) = " << n * k << "\n";
+        ns.push_back(static_cast<double>(n));
+        wc.push_back(static_cast<double>(w));
+        refline.push_back(static_cast<double>(n * k));
+    }
+
+    auto plot = RPlot::create();
+    if (!ns.empty() && !wc.empty()) {
+        plot.points(ns, wc, "worst-case comparisons W(n)", {37, 99, 235}, 6.0);
+        plot.lines(ns, wc, "", {37, 99, 235}, 1.0);
+    }
+    if (!ns.empty() && !refline.empty()) {
+        plot.lines(ns, refline, "n * log2(n)", {220, 38, 38}, 2.0);
+    }
+    plot.title("Top-down merge sort: worst-case key comparisons vs n*log2(n)")
+        .x_label("n (array length)").y_label("key comparisons").background({250, 250, 252});
+    plot.save_svg("build/org/merge_sort_comparisons.svg");
+    std::cout << "\nwrote merge_sort_comparisons.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/merge_sort_analysis.cpp <<'CPP'
+<<ms-includes>>
+
+int main() {
+<<ms-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/merge_sort_analysis.cpp -o build/org/merge_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/merge_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Top-down merge sort ===
+input: 4 1 3 2 6 5 2 6
+sorted: 1 2 2 3 4 5 6 6
+matches std::sort: yes
+key comparisons used: 15   (worst-case bound for n=8 is 17)
+
+=== Stability on keyed records (sort by key, keep input order on ties) ===
+original: (k=3,#0) (k=1,#1) (k=3,#2) (k=2,#3) (k=1,#4) (k=3,#5) (k=2,#6)
+sorted:   (k=1,#1) (k=1,#4) (k=2,#3) (k=2,#6) (k=3,#0) (k=3,#2) (k=3,#5)
+equal-key records keep ascending input index: yes
+
+=== Worst-case key comparisons W(n) vs n*log2(n) ===
+n = 1: W(n) = 0, n*log2(n) = 0
+n = 2: W(n) = 1, n*log2(n) = 2
+n = 4: W(n) = 5, n*log2(n) = 8
+n = 8: W(n) = 17, n*log2(n) = 24
+n = 16: W(n) = 49, n*log2(n) = 64
+n = 32: W(n) = 129, n*log2(n) = 160
+n = 64: W(n) = 321, n*log2(n) = 384
+n = 128: W(n) = 769, n*log2(n) = 896
+n = 256: W(n) = 1793, n*log2(n) = 2048
+n = 512: W(n) = 4097, n*log2(n) = 4608
+n = 1024: W(n) = 9217, n*log2(n) = 10240
+
+wrote merge_sort_comparisons.svg
+#+end_example
+
+The sorted array \([1,2,2,3,4,5,6,6]\) matches =std::sort= exactly. Tracing the
+merges by hand, the two \([4],[1]\) and \([3],[2]\) leaf merges cost one
+comparison each, their parent merges three each, and the same on the right, with
+the final eight-element merge costing five -- \(1+1+3+1+1+3+5 = 15\) key
+comparisons, comfortably under the worst-case bound of 17 for \(n=8\).
+
+Stability is unmistakable in the keyed records: the three key-3 records entered
+as =#0 #2 #5= and leave in exactly that order, the two key-1 records as =#1 #4=,
+the two key-2 as =#3 #6= -- every group of equal keys keeps its original
+relative order, precisely because the merge breaks ties toward the left run.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/merge_sort_comparisons.svg]]
+
+The worst-case comparison count \(W(n)\) (blue) tracks the reference
+\(n\log_2 n\) (red) closely across three orders of magnitude in \(n\), sitting
+just below it -- the constant hidden in \(\Theta(n\log n)\) is a shade under one
+comparison per element per level. Because the split is always balanced, this
+curve /is/ the whole story: merge sort makes essentially \(n\log_2 n\)
+comparisons on every input, with no adversarial case to fear, which is exactly
+why it is the method of choice when a stable sort or a guaranteed running time
+matters.

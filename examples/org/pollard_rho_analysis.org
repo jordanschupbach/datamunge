@@ -1,0 +1,334 @@
+#+title: Pollard's Rho: Integer Factorization by Cycle Detection
+#+subtitle: A literate C++ study of Brent's rho factorization with =datamunge='s =algorithms::pollard_rho_factor=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Multiplying two large primes is easy; undoing it is the problem the security of
+RSA rests on. Trial division would need @f$\sqrt{n}@f$ operations to split a
+semiprime @f$n = pq@f$ -- astronomically many when @f$p@f$ and @f$q@f$ have
+hundreds of digits. *Pollard's rho* (Pollard 1975), sped up by *Brent* (1980),
+does far better: it finds a factor in expected @f$O(n^{1/4})@f$ time using only
+a constant amount of memory. The trick is pure cycle detection. Iterate
+@f$g(x) = (x^2 + c) \bmod n@f$; viewed modulo a /hidden/ prime factor @f$p@f$
+the sequence is an eventually-periodic walk on @f$\{0,\dots,p-1\}@f$, so by the
+birthday paradox it revisits a value after only @f$\approx\sqrt{p}@f$ steps,
+and @f$\gcd(|x_i - x_j|, n)@f$ then hands us @f$p@f$. This report implements the
+method in =datamunge='s C++ =algorithms::pollard_rho_factor= (and a full
+factorization driver =factorize=) and presents it as a literate program: every
+number and figure is produced by a single compiled binary. We tie the rho loop
+back to this library's =brent_cycle_detection=, give pseudocode and the
+@f$O(n^{1/4})@f$ argument, and work three deterministic examples -- the
+semiprime @f$8051 = 83\times 97@f$, the classic @f$600851475143 = 71 \times 839
+\times 1471 \times 6857@f$, and the prime @f$10^9+7@f$ -- while drawing the
+hidden length-5 cycle that the map traces modulo @f$p = 83@f$.
+#+end_abstract
+
+* Why trial division is hopeless
+
+To factor @f$n@f$ by trial division we test candidate divisors @f$2, 3, 5,
+\dots@f$ up to @f$\sqrt{n}@f$. For a *semiprime* @f$n = pq@f$ with @f$p \le q@f$,
+the smallest factor @f$p@f$ is about @f$\sqrt{n}@f$, so we do @f$\Theta(\sqrt{n})@f$
+work. That is fine for a 12-digit number but catastrophic for the numbers RSA
+uses: a 2048-bit modulus has @f$\sqrt{n} \approx 2^{1024}@f$ candidate divisors,
+more than the number of atoms in the observable universe raised to a large
+power. Encryption is easy /because/ multiplying @f$p@f$ and @f$q@f$ is cheap;
+security comes from this factorization being, as far as we know, hard.
+
+Pollard's rho attacks the same semiprime in @f$O(n^{1/4}) = O(\sqrt{p})@f$
+expected steps -- the square root of trial division's cost -- and needs no list
+of primes and only @f$O(1)@f$ memory. It will not break RSA (that gap between
+@f$n^{1/4}@f$ and feasibility is still vast for cryptographic sizes), but it
+demolishes the 40-to-60-bit composites that trial division already struggles
+with, and it is the workhorse for factoring machine-word-sized integers.
+
+=datamunge= exposes =pollard_rho_factor(n)=, returning one nontrivial divisor of
+a composite @f$n@f$, and =factorize(n)=, returning the complete sorted prime
+factorization with multiplicity.
+
+#+name: pr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pollard_rho.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The rho idea
+
+Pick a constant @f$c@f$ and iterate the polynomial map
+\[
+  x_{i+1} = g(x_i) = (x_i^2 + c) \bmod n, \qquad x_0 = 2.
+\]
+We do not know a factor @f$p@f$ of @f$n@f$ -- that is what we are hunting -- but
+imagine reducing the whole sequence modulo @f$p@f$. Because @f$g@f$ is a
+polynomial with integer coefficients, reduction commutes with iteration:
+@f$x_{i+1} \bmod p = (\,(x_i \bmod p)^2 + c\,) \bmod p@f$. So @f$(x_i \bmod
+p)@f$ is itself a functional-graph iteration, now on the tiny set
+@f$\{0,\dots,p-1\}@f$. Any such iteration is eventually periodic -- it traces
+the Greek letter @f$\rho@f$: a transient /tail/ running into a /cycle/ -- and
+by the *birthday paradox* the first repeat appears after only
+@f$\approx\sqrt{p}@f$ steps, long before the full sequence modulo @f$n@f$
+(period @f$\approx\sqrt{n}@f$) repeats.
+
+When the hidden sequence collides, @f$x_i \equiv x_j \pmod p@f$ for some
+@f$i \ne j@f$, so @f$p \mid (x_i - x_j)@f$. Unless the /same/ step also collides
+modulo the other factors -- which is unlikely until much later -- @f$n \nmid
+(x_i - x_j)@f$, and therefore
+\[
+  d = \gcd(|x_i - x_j|,\ n)
+\]
+is a proper multiple of @f$p@f$ strictly between @f$1@f$ and @f$n@f$: a
+nontrivial factor, delivered without our ever knowing @f$p@f$ in advance. If a
+run instead yields @f$d = n@f$ (all factors collided at once) or never leaves
+@f$d = 1@f$, we simply restart with the next constant @f$c = 1, 2, 3, \dots@f$;
+the fixed sequence keeps the result reproducible.
+
+** Connection to Brent's cycle detection
+
+Finding that collision is exactly the cycle-detection problem solved by this
+library's =algorithms::brent_cycle_detection=: detect a repeat in an
+eventually-periodic sequence @f$x_0, g(x_0), g(g(x_0)), \dots@f$ using @f$O(1)@f$
+memory. The only twist is that here the states we compare live modulo the
+/unknown/ @f$p@f$, so instead of testing @f$x_i = x_j@f$ we test @f$\gcd(x_i -
+x_j, n) > 1@f$, which detects the modulo-@f$p@f$ collision without knowing
+@f$p@f$. Floyd's tortoise-and-hare gives the textbook rho; *Brent's* variant --
+advancing one pointer in blocks whose length doubles, and *batching* the
+differences @f$|x_i - x_j|@f$ into a single product before one @f$\gcd@f$ --
+uses fewer function evaluations and far fewer gcds. Our factorization implements
+that gcd-collision loop directly rather than calling the generic detector,
+because it must fold the gcd test into the comparison, but it is Brent's rho.
+
+#+begin_example
+POLLARD-RHO-BRENT(n):                       # n odd composite
+  for c = 1, 2, 3, ... :
+      g(x) := (x*x + c) mod n
+      y <- 2;  r <- 1;  q <- 1;  d <- 1
+      repeat:
+          x <- y                            # save the round's start value
+          repeat r times: y <- g(y)         # jump the hare r steps ahead
+          k <- 0
+          while k < r and d == 1:
+              ys <- y                        # remember block start (for backtracking)
+              for i = 1 .. min(BATCH, r-k):
+                  y <- g(y)
+                  q <- q * |x - y| mod n     # batch the differences
+              d <- gcd(q, n)                 # one gcd certifies the whole block
+              k <- k + BATCH
+          r <- 2 * r                         # double the step budget
+      until d != 1
+      if d == n:                             # block folded several collisions together
+          repeat:                            # replay the last block one step at a time
+              ys <- g(ys);  d <- gcd(|x - ys|, n)
+          until d != 1
+      if 1 < d < n: return d                 # nontrivial factor
+      # else this c failed -> try the next constant
+
+FACTORIZE(n):
+  if n == 0: error
+  factors <- []
+  while n even: append 2; n <- n / 2
+  RECURSE(n):
+      if n == 1: return
+      if MILLER-RABIN(n): append n; return   # n is prime
+      d <- POLLARD-RHO-BRENT(n)
+      RECURSE(d);  RECURSE(n / d)
+  return sort(factors)
+#+end_example
+
+*Expected running time.* The hidden sequence modulo @f$p@f$ enters its cycle
+after @f$O(\sqrt{p})@f$ steps, so a collision -- and hence a factor -- is
+expected within @f$O(\sqrt{p})@f$ iterations. For the smallest prime factor
+@f$p \le \sqrt{n}@f$ this is @f$O(n^{1/4})@f$ map evaluations; each evaluation is
+a modular multiply, and gcds are amortized to near-nothing by the batching.
+=factorize= peels a factor and recurses, so the whole factorization also costs
+@f$O(n^{1/4})@f$ up to logarithmic factors, dominated by splitting the largest
+prime-power part.
+
+*Primality.* The recursion must not hand a prime to the rho search (which would
+loop forever hunting a factor that does not exist), so each subproblem is first
+tested with a deterministic *Miller-Rabin*: the twelve bases
+@f$\{2,3,\dots,37\}@f$ are a proven witness set for all 64-bit integers, making
+the test exact, not probabilistic.
+
+* Examples
+
+We factor a small semiprime, the classic Project Euler number, and a large
+prime, all with the fixed constant sequence @f$c = 1, 2, 3, \dots@f$ so the run
+is deterministic. We then expose the machinery: iterating @f$g(x) = (x^2 + 1)
+\bmod 8051@f$ and reducing modulo the hidden prime @f$p = 83@f$, we watch the
+sequence fall into a short cycle -- the collision the algorithm exploits.
+
+#+name: pr-run
+#+begin_src c++ :eval no
+    std::cout << "=== Pollard's rho integer factorization ===\n\n";
+
+    auto print_factors = [](const std::vector<std::uint64_t>& f) {
+        for (std::size_t i = 0; i < f.size(); ++i) std::cout << (i ? " " : "") << f[i];
+    };
+
+    // [1] Semiprime 8051 = 83 * 97. Normalize the returned divisor so the printout does not
+    // depend on which of the two factors the rho search happens to surface first.
+    {
+        const std::uint64_t n = 8051;
+        const std::uint64_t d = pollard_rho_factor(n);
+        const std::uint64_t lo = std::min(d, n / d), hi = std::max(d, n / d);
+        std::cout << "[1] Semiprime 8051 = 83 x 97\n";
+        std::cout << "    pollard_rho_factor(8051) returns a nontrivial divisor d (1 < d < 8051, 8051 % d == 0)\n";
+        std::cout << "    normalized factor pair: " << lo << " x " << hi << "\n";
+        std::cout << "    factorize(8051) = "; print_factors(factorize(n)); std::cout << "\n\n";
+    }
+
+    // [2] Small composite 12 = 2^2 * 3.
+    std::cout << "[2] Small composite 12\n";
+    std::cout << "    factorize(12) = "; print_factors(factorize(12)); std::cout << "\n\n";
+
+    // [3] Larger composite: the Project Euler #3 number.
+    {
+        const std::uint64_t n = 600851475143ull;
+        const auto f = factorize(n);
+        std::cout << "[3] Larger composite 600851475143 (Project Euler #3)\n";
+        std::cout << "    factorize(600851475143) = "; print_factors(f); std::cout << "\n";
+        std::uint64_t prod = 1;
+        for (auto p : f) prod *= p;
+        std::cout << "    product of factors = " << prod << "\n\n";
+    }
+
+    // [4] A large prime returns itself, both from the splitter and the full factorization.
+    {
+        const std::uint64_t p = 1000000007ull;
+        std::cout << "[4] Prime 1000000007\n";
+        std::cout << "    pollard_rho_factor(1000000007) = " << pollard_rho_factor(p)
+                  << "   (returns n unchanged for prime input)\n";
+        std::cout << "    factorize(1000000007) = "; print_factors(factorize(p)); std::cout << "\n\n";
+    }
+
+    // [5] The hidden cycle. Iterate g(x) = (x^2 + 1) mod 8051 and reduce modulo p = 83; the
+    // reduced sequence is a rho-shaped walk that collides after ~sqrt(83) steps.
+    const std::uint64_t n = 8051, p = 83, c = 1;
+    auto g = [&](std::uint64_t x) { return (x * x + c) % n; };
+
+    std::vector<std::uint64_t> seen; // mod-p values in visit order, to locate the first repeat
+    std::size_t mu = 0, lambda = 0, first_collision = 0;
+    {
+        std::uint64_t x = 2;
+        for (std::size_t i = 0; i < 64 && lambda == 0; ++i) {
+            const std::uint64_t v = x % p;
+            for (std::size_t j = 0; j < seen.size(); ++j)
+                if (seen[j] == v) { mu = j; lambda = seen.size() - j; first_collision = seen.size(); break; }
+            if (lambda) break;
+            seen.push_back(v);
+            x = g(x);
+        }
+    }
+
+    std::vector<double> li, lx, ti, tx, ci, cx; // full line, tail points, cycle points
+    {
+        std::uint64_t x = 2;
+        for (std::size_t i = 0; i < 16; ++i) {
+            const double xi = static_cast<double>(i), yi = static_cast<double>(x % p);
+            li.push_back(xi); lx.push_back(yi);
+            if (i < mu) { ti.push_back(xi); tx.push_back(yi); }
+            else { ci.push_back(xi); cx.push_back(yi); }
+            x = g(x);
+        }
+    }
+
+    std::cout << "[5] The hidden cycle modulo a prime factor p = 83\n";
+    std::cout << "    g(x) = (x^2 + 1) mod 8051, reduced mod 83, starting at x0 = 2:\n";
+    std::cout << "    enters a cycle after mu = " << mu << " steps, cycle length lambda = " << lambda << "\n";
+    std::cout << "    first collision at index " << first_collision
+              << "; round(sqrt(83)) = " << static_cast<int>(std::llround(std::sqrt(83.0)))
+              << " (birthday paradox)\n";
+
+    auto plot = RPlot::create();
+    plot.lines(li, lx, "", {156, 163, 175}, 1.0);
+    plot.points(ti, tx, "tail (transient)", {37, 99, 235}, 6.0);
+    plot.points(ci, cx, "cycle (period 5)", {220, 38, 38}, 6.0);
+    plot.title("Pollard rho: g(x)=(x^2+1) mod 8051 reduced mod the hidden prime p=83")
+        .x_label("iteration index i").y_label("x_i mod 83").background({250, 250, 252});
+    plot.save_svg("build/org/pollard_rho_sequence.svg");
+    std::cout << "\nwrote pollard_rho_sequence.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pollard_rho_analysis.cpp <<'CPP'
+<<pr-includes>>
+
+int main() {
+<<pr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pollard_rho_analysis.cpp -o build/org/pollard_rho_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pollard_rho_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pollard's rho integer factorization ===
+
+[1] Semiprime 8051 = 83 x 97
+    pollard_rho_factor(8051) returns a nontrivial divisor d (1 < d < 8051, 8051 % d == 0)
+    normalized factor pair: 83 x 97
+    factorize(8051) = 83 97
+
+[2] Small composite 12
+    factorize(12) = 2 2 3
+
+[3] Larger composite 600851475143 (Project Euler #3)
+    factorize(600851475143) = 71 839 1471 6857
+    product of factors = 600851475143
+
+[4] Prime 1000000007
+    pollard_rho_factor(1000000007) = 1000000007   (returns n unchanged for prime input)
+    factorize(1000000007) = 1000000007
+
+[5] The hidden cycle modulo a prime factor p = 83
+    g(x) = (x^2 + 1) mod 8051, reduced mod 83, starting at x0 = 2:
+    enters a cycle after mu = 4 steps, cycle length lambda = 5
+    first collision at index 9; round(sqrt(83)) = 9 (birthday paradox)
+#+end_example
+
+The semiprime @f$8051@f$ splits cleanly into @f$83 \times 97@f$, and
+=factorize= confirms both parts are prime; the small composite @f$12@f$ returns
+@f$2\times 2\times 3@f$; and the Project Euler number @f$600851475143@f$ is
+resolved all the way to @f$71 \times 839 \times 1471 \times 6857@f$, whose
+product the program multiplies back to the original -- a self-check printed in
+the run. The prime @f$10^9+7@f$ is recognized by Miller-Rabin and returned
+unchanged by both entry points.
+
+The last block makes the mechanism visible. Reducing the iteration @f$g(x) =
+(x^2+1) \bmod 8051@f$ modulo the hidden prime @f$p = 83@f$ produces the walk
+@f$2, 5, 26, 13, 4, 17, 41, 22, 70, 4, \dots@f$: a tail of length @f$\mu = 4@f$
+feeding a cycle of length @f$\lambda = 5@f$, with the first repeat at index
+@f$9 \approx \sqrt{83}@f$ -- exactly the birthday-paradox estimate. That
+collision, @f$x_9 \equiv x_4 \pmod{83}@f$, is what makes @f$83 \mid |x_9 -
+x_4|@f$ and hence lets @f$\gcd(|x_9 - x_4|, 8051)@f$ surface the factor, all
+without the algorithm ever being told that @f$83@f$ divides @f$8051@f$:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pollard_rho_sequence.svg]]
+
+The grey line is the reduced iteration; the blue points are its transient tail
+and the red points the length-5 cycle it settles into. The cycle is short --
+five states out of @f$83@f$ -- because the birthday paradox forces a repeat
+after only @f$\sqrt{p}@f$ steps, and it is precisely this shortness, hidden
+inside the much longer period modulo @f$n = 8051@f$, that Pollard's rho turns
+into an @f$O(n^{1/4})@f$ factorization.

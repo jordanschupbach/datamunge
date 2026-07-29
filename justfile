@@ -91,6 +91,122 @@ run-ocaml:
 run-octave: build-octave
   {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/{{ TARGET }}.m'
 
+# run-all-<lang>: build the binding once, then run EVERY example for that language,
+# printing a per-example header and a passed/failed summary (exits non-zero on any failure).
+
+run-all-lua: build-lua
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && \
+    export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && \
+    export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && \
+    export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
+    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
+    pass=0; fail=0; failed=""; \
+    for f in examples/lua/*.lua; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if lua "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## lua: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-guile: build-guile
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && \
+    guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && \
+    export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && \
+    export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
+    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
+    pass=0; fail=0; failed=""; \
+    for f in examples/guile/*.scm; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if guile --no-auto-compile -s "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## guile: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-ruby: build-ruby
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
+    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
+    pass=0; fail=0; failed=""; \
+    for f in examples/ruby/*.rb; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if ruby -I {{ BINDINGS_DIR }}/octruby/lib "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## ruby: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-tcl: build-tcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && \
+    if [ -f build/datamungetcl/Datamunge.so ] && [ ! -e "build/datamungetcl/Datamunge$ext" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi && \
+    export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && \
+    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
+    pass=0; fail=0; failed=""; \
+    for f in examples/tcl/*.tcl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if tclsh "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## tcl: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-octave: build-octave
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/octave/*.m; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if octave -qf --path "$(pwd)/build/datamungeoctave" "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## octave: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-perl: build-perl
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && \
+    export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && \
+    export DYLD_LIBRARY_PATH="$(pwd)/build:$DYLD_LIBRARY_PATH" && \
+    pass=0; fail=0; failed=""; \
+    for f in examples/perl/*.pl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if perl "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## perl: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-go: build-go
+  {{ NIX_DEVELOP }} .#go --command bash -c 'root="$(pwd)"; cd {{ BINDINGS_DIR }}/godatamunge && \
+    export LD_LIBRARY_PATH="$root/build:$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$root/build:$DYLD_LIBRARY_PATH" && \
+    export CGO_CPPFLAGS="-I$root/include" && export CGO_LDFLAGS="-L$root/build -ldatamunge" && \
+    pass=0; fail=0; failed=""; \
+    for f in "$root"/examples/go/*.go; do case "$f" in *_test.go) continue;; esac; n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if go run "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## go: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-d: build-d
+  {{ NIX_DEVELOP }} .#d --command bash -c 'compiler=""; if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    pass=0; fail=0; failed=""; \
+    for f in examples/d/examples-src/*.d; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      cp "$f" examples/d/source/app.d; \
+      if ( rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release ); then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## d: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-python: build-python
+  {{ NIX_DEVELOP }} .#python --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/python/*.py; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if build/venv/pydatamunge-run/bin/python "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## python: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-r: build-r
+  {{ NIX_DEVELOP }} .#r --command bash -c 'export R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER"; \
+    pass=0; fail=0; failed=""; \
+    for f in examples/r/*.r; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if Rscript "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## r: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-java: build-java
+  {{ NIX_DEVELOP }} .#java --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*.java; do \
+      cls="$(basename "$f" .java)"; [ "$cls" = "ExampleRunner" ] && continue; \
+      n="$(echo "$cls" | sed -E "s/([a-z0-9])([A-Z])/\1_\2/g" | tr "[:upper:]" "[:lower:]")"; \
+      printf "\n========== %s ==========\n" "$n"; \
+      if gradle run --no-configuration-cache --args="$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## java: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-cpp: examples
+  {{ NIX_DEVELOP }} .#cpp --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/cpp/source/*.cpp; do n="$(basename "$f" .cpp)"; b="build/debug/examples/$n"; \
+      printf "\n========== %s ==========\n" "$n"; \
+      if [ -x "$b" ] && "$b"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## cpp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
     {{ NIX_DEVELOP }} .#cpp --command bash -c './build/debug/examples/{{ TARGET }}'

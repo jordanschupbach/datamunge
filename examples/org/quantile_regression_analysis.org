@@ -1,0 +1,468 @@
+#+title: Quantile Regression: Modeling Conditional Distributions
+#+subtitle: A literate C++ study of pinball loss, ADMM, robustness, and heterogeneous effects using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Ordinary least squares describes how the conditional /mean/ of a response
+changes with predictors. Quantile regression asks the richer question:
+how do the lower tail, median, and upper tail change? We implement linear
+quantile regression in =datamunge::stats::QuantileRegression= and exercise
+it as a literate C++ program. The implementation minimizes the convex,
+nondifferentiable check (pinball) loss with the alternating direction
+method of multipliers (ADMM), decomposing each iteration into one
+QR-based least-squares update and an exact asymmetric soft-thresholding
+update. Three analyses show why that matters: synthetic heteroskedastic
+data produce genuinely different lower/median/upper slopes; median
+regression remains stable when a single extreme outlier pulls OLS away;
+and 10th, 50th, and 90th percentile models of Palmer penguin body mass
+show how a predictor can affect the shape of a real conditional
+distribution rather than only its center.
+#+end_abstract
+
+* Introduction
+
+A regression line is often described as "the relationship" between \(x\)
+and \(y\), but an OLS line is only the conditional mean
+\(\mathbb E[Y\mid X=x]\). Two populations can have the same mean and
+radically different tails, asymmetry, or spread. In risk analysis the
+upper tail may be the estimand; in growth studies the lower tail may be
+the vulnerable population; and under heteroskedasticity a single mean
+line deliberately erases how variability changes with \(x\).
+
+Quantile regression, introduced by Koenker and Bassett (1978), estimates
+the conditional quantile
+
+\[
+Q_Y(\tau\mid x)=\inf\{y:\Pr(Y\le y\mid X=x)\ge\tau\},
+\qquad 0<\tau<1.
+\]
+
+The special case \(\tau=0.5\) is median regression. Fitting several
+values of \(\tau\) traces the conditional distribution without assuming
+Gaussian, constant-variance errors.
+
+This document is a /literate program/: the code fragments are woven into
+one C++ program, compiled, and executed during export. The figures and
+numerical diagnostics below are produced by that program.
+
+* Mathematics
+
+** From a sample quantile to regression
+
+The sample mean minimizes squared error. Analogously, a sample
+\(\tau\)-quantile minimizes the asymmetric absolute-error objective
+
+\[
+\hat q_\tau=\arg\min_q\sum_{i=1}^n\rho_\tau(y_i-q),
+\]
+
+where the /check loss/ is
+
+\[
+\rho_\tau(r)=r\bigl(\tau-\mathbf 1\{r<0\}\bigr)
+=
+\begin{cases}
+\tau r, & r\ge0,\\
+(\tau-1)r, & r<0.
+\end{cases}
+\]
+
+Positive residuals cost \(\tau\) per unit and negative residuals cost
+\(1-\tau\) per unit. At \(\tau=0.9\), underprediction is nine times as
+expensive as overprediction, pushing the fitted value to the 90th
+percentile. At \(\tau=0.5\), the objective is one half of absolute error,
+so the solution is a median.
+
+Replacing the constant \(q\) by a linear predictor \(x_i^\top\beta\)
+gives linear quantile regression:
+
+\[
+\hat\beta_\tau
+=\arg\min_{\beta\in\mathbb R^p}
+\sum_{i=1}^n w_i\rho_\tau(y_i-x_i^\top\beta).
+\]
+
+No Gaussian likelihood or constant variance is required. The linearity
+assumption applies to the chosen conditional quantile, not necessarily
+to the conditional mean.
+
+** Why ordinary smooth optimization is a poor fit
+
+The check loss is convex but has a kink at zero. Its subgradient with
+respect to a residual is \(\tau\) above zero, \(\tau-1\) below zero, and
+the interval \([\tau-1,\tau]\) at zero. A smooth optimizer can approximate
+that kink, but doing so changes the problem and introduces a smoothing
+parameter. The classical alternative is a linear program. The
+implementation here uses ADMM, which preserves the exact objective while
+reducing every iteration to operations already native to =datamunge='s
+dense linear algebra.
+
+** ADMM splitting
+
+Introduce a residual vector \(r=y-X\beta\):
+
+\[
+\min_{\beta,r}\sum_iw_i\rho_\tau(r_i)
+\quad\text{subject to}\quad y-X\beta-r=0.
+\]
+
+For penalty \(\varrho>0\) and scaled dual variable \(u\), ADMM alternates
+
+\[
+\begin{aligned}
+\beta^{k+1}
+&=\arg\min_\beta\|y-r^k+u^k-X\beta\|_2^2,\\
+r^{k+1}
+&=\operatorname{prox}_{\sum_iw_i\rho_\tau/\varrho}
+  (y-X\beta^{k+1}+u^k),\\
+u^{k+1}&=u^k+y-X\beta^{k+1}-r^{k+1}.
+\end{aligned}
+\]
+
+The first line is least squares. =QuantileRegression= factorizes \(X\)
+with Householder QR once, then reuses that factorization for every
+right-hand side. The second line separates by observation and has the
+closed form asymmetric soft threshold
+
+\[
+\operatorname{prox}(v_i)=
+\begin{cases}
+v_i-w_i\tau/\varrho,&v_i>w_i\tau/\varrho,\\
+v_i+w_i(1-\tau)/\varrho,&v_i<-w_i(1-\tau)/\varrho,\\
+0,&\text{otherwise}.
+\end{cases}
+\]
+
+** Pseudocode
+
+#+begin_example
+input: design X, response y, quantile tau, weights w, penalty rho
+check 0 < tau < 1, rho > 0, and that X has full column rank
+factor X = QR once
+initialize beta with least squares; r = 0; u = 0
+
+repeat until the primal and dual residual tests pass:
+    beta = least_squares_QR(X, y - r + u)
+    v = y - X beta + u
+    for each observation i:
+        if v[i] > w[i] * tau / rho:
+            r[i] = v[i] - w[i] * tau / rho
+        else if v[i] < -w[i] * (1 - tau) / rho:
+            r[i] = v[i] + w[i] * (1 - tau) / rho
+        else:
+            r[i] = 0
+    u = u + y - X beta - r
+
+return beta, fitted values, residuals, check loss, convergence diagnostics
+#+end_example
+
+The primal residual measures violation of \(y-X\beta-r=0\). The dual
+residual is \(\varrho X^\top(r^k-r^{k-1})\), the change in the split
+residual projected into coefficient space. Absolute and relative
+tolerances are used for both, following standard ADMM stopping rules.
+
+** Goodness of fit
+
+Squared-error \(R^2\) is tied to a mean model and is inappropriate here.
+We report Koenker--Machado pseudo-\(R^2\):
+
+\[
+R^1_\tau
+=1-\frac{\sum_iw_i\rho_\tau(y_i-x_i^\top\hat\beta_\tau)}
+{\sum_iw_i\rho_\tau(y_i-\hat q_\tau)}.
+\]
+
+The denominator is the check loss of an intercept-only model at the same
+quantile. It measures improvement over that baseline, but it should not
+be interpreted as a fraction of variance explained.
+
+* Program
+
+** Includes and helpers
+
+#+name: qr-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/stats/quantile_regression.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::plot::RPlot;
+using datamunge::stats::LM;
+using datamunge::stats::QuantileRegression;
+using datamunge::stats::QuantileRegressionOptions;
+
+QuantileRegression fit_quantile(const DataFrame& data,
+                                const std::string& formula,
+                                double tau) {
+    QuantileRegressionOptions options;
+    options.quantile = tau;
+    // The response is measured in grams in the real-data analysis; a smaller
+    // fixed penalty is a better scale match than the library's neutral default.
+    options.rho = 0.1;
+    options.max_iterations = 20000;
+    // Report-scale fits do not need machine-precision optimization. This
+    // standard ADMM tolerance retains stable displayed coefficients while
+    // avoiding thousands of iterations at the nonsmooth optimum.
+    options.absolute_tolerance = 1e-5;
+    options.relative_tolerance = 1e-3;
+    return QuantileRegression(data, formula, options);
+}
+
+void print_fit(const std::string& label, const QuantileRegression& model) {
+    std::cout << label << ": beta = [";
+    for (std::size_t j = 0; j < model.coefficients().size(); ++j)
+        std::cout << (j ? ", " : "") << model.coefficients()[j];
+    std::cout << "], loss = " << model.objective()
+              << ", pseudo-R1 = " << model.pseudo_r_squared()
+              << ", iterations = " << model.iterations()
+              << ", converged = " << (model.converged() ? "yes" : "no")
+              << ", primal residual = " << model.primal_residual_norm()
+              << ", dual residual = " << model.dual_residual_norm()
+              << "\n";
+}
+#+end_src
+
+** Analysis 1: heteroskedastic synthetic data
+
+The first dataset is deterministic so the report is reproducible. Its
+center follows \(10+2x\), while deviations are multiplied by
+\(1+0.12x\). The spread therefore fans out with \(x\). If quantile
+regression is doing more than moving a mean line vertically, the lower
+quantile should have a shallower slope and the upper quantile a steeper
+one.
+
+#+name: qr-heteroskedastic
+#+begin_src c++ :eval no
+const auto make_heteroskedastic_data = [] {
+    std::vector<double> x, y;
+    const std::array<double, 9> pattern{
+        -1.8, -1.1, -0.6, -0.2, 0.0, 0.2, 0.6, 1.1, 1.8
+    };
+    for (int xi = 0; xi <= 40; ++xi) {
+        for (const double z : pattern) {
+            x.push_back(static_cast<double>(xi));
+            y.push_back(10.0 + 2.0 * xi + (1.0 + 0.12 * xi) * z);
+        }
+    }
+    DataFrame data;
+    data.add_column("x", x);
+    data.add_column("y", y);
+    return data;
+};
+
+const auto hetero = make_heteroskedastic_data();
+const auto q10 = fit_quantile(hetero, "y ~ x", 0.10);
+const auto q50 = fit_quantile(hetero, "y ~ x", 0.50);
+const auto q90 = fit_quantile(hetero, "y ~ x", 0.90);
+print_fit("tau=0.10", q10);
+print_fit("tau=0.50", q50);
+print_fit("tau=0.90", q90);
+
+{
+    const auto& xs = hetero.numeric_column("x").values();
+    const auto& ys = hetero.numeric_column("y").values();
+    auto plot = RPlot::create();
+    plot.points(xs, ys, "observations", {148, 163, 184}, 2.5);
+    const std::vector<double> grid{0.0, 40.0};
+    const auto line = [&](const QuantileRegression& model) {
+        return std::vector<double>{
+            model.coefficients()[0],
+            model.coefficients()[0] + 40.0 * model.coefficients()[1]
+        };
+    };
+    plot.line(grid, line(q10), "tau = 0.10", {37, 99, 235}, 2.2);
+    plot.lines(grid, line(q50), "tau = 0.50", {22, 163, 74}, 2.2);
+    plot.lines(grid, line(q90), "tau = 0.90", {220, 38, 38}, 2.2);
+    plot.legend({"tau = 0.10", "tau = 0.50", "tau = 0.90"},
+                {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}});
+    plot.title("Heteroskedastic data: conditional quantile lines")
+        .x_label("x").y_label("y");
+    plot.save_svg("build/org/quantile_heteroskedastic.svg");
+}
+#+end_src
+
+** Analysis 2: resistance to an extreme response
+
+Absolute loss gives median regression bounded response influence in a
+way squared loss does not. We fit a nearly exact line, replace one
+response with an extreme value, and compare slopes. This is not a claim
+that quantile regression is immune to leverage points in predictor
+space; the contamination here is specifically vertical.
+
+#+name: qr-outlier
+#+begin_src c++ :eval no
+DataFrame outlier_data;
+std::vector<double> outlier_x, outlier_y;
+for (int i = 0; i <= 20; ++i) {
+    outlier_x.push_back(i);
+    outlier_y.push_back(5.0 + 1.5 * i + ((i % 3) - 1) * 0.2);
+}
+outlier_y.back() = 250.0;
+outlier_data.add_column("x", outlier_x);
+outlier_data.add_column("y", outlier_y);
+
+const LM outlier_ols(outlier_data, "y ~ x");
+const auto outlier_median = fit_quantile(outlier_data, "y ~ x", 0.50);
+std::cout << "outlier OLS:    beta = [" << outlier_ols.coefficients()[0]
+          << ", " << outlier_ols.coefficients()[1] << "]\n";
+print_fit("outlier median", outlier_median);
+#+end_src
+
+** Analysis 3: Palmer penguin body-mass quantiles
+
+The real-data analysis models =body_mass_g= from =flipper_length_mm= and
+=species=. The formula engine applies the same null omission and
+alphabetical-reference dummy encoding used by =LM=. Separate 10th,
+median, and 90th percentile fits show how the flipper-length association
+and species shifts vary across the conditional body-mass distribution.
+
+#+name: qr-penguins
+#+begin_src c++ :eval no
+const auto penguins = datamunge::datasets::penguins();
+const std::string penguin_formula =
+    "body_mass_g ~ flipper_length_mm + species";
+const auto penguin_q10 = fit_quantile(penguins, penguin_formula, 0.10);
+const auto penguin_q50 = fit_quantile(penguins, penguin_formula, 0.50);
+const auto penguin_q90 = fit_quantile(penguins, penguin_formula, 0.90);
+print_fit("penguins tau=0.10", penguin_q10);
+print_fit("penguins tau=0.50", penguin_q50);
+print_fit("penguins tau=0.90", penguin_q90);
+
+{
+    DataFrame grid;
+    std::vector<double> flipper;
+    std::vector<std::string> species;
+    for (int length = 170; length <= 230; ++length) {
+        flipper.push_back(length);
+        species.push_back("Adelie");
+    }
+    grid.add_column("flipper_length_mm", flipper);
+    grid.add_column("species", species);
+
+    const auto p10 = penguin_q10.predict(grid);
+    const auto p50 = penguin_q50.predict(grid);
+    const auto p90 = penguin_q90.predict(grid);
+    auto plot = RPlot::create();
+    plot.line(flipper, p10, "tau = 0.10", {37, 99, 235}, 2.2);
+    plot.lines(flipper, p50, "tau = 0.50", {22, 163, 74}, 2.2);
+    plot.lines(flipper, p90, "tau = 0.90", {220, 38, 38}, 2.2);
+    plot.legend({"tau = 0.10", "tau = 0.50", "tau = 0.90"},
+                {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}});
+    plot.title("Adelie body-mass quantiles vs. flipper length")
+        .x_label("flipper length (mm)").y_label("conditional body mass (g)");
+    plot.save_svg("build/org/quantile_penguins.svg");
+}
+#+end_src
+
+** Assembling and running
+
+#+begin_src shell :exports results
+set -euo pipefail
+mkdir -p build/org
+cat > build/org/quantile_regression_analysis.cpp <<'CPP'
+<<qr-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+<<qr-heteroskedastic>>
+<<qr-outlier>>
+<<qr-penguins>>
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/quantile_regression_analysis.cpp \
+  -o build/org/quantile_regression_analysis \
+  $(pkg-config --cflags --libs datamunge)
+./build/org/quantile_regression_analysis
+#+end_src
+
+* Results and interpretation
+
+** Heteroskedasticity changes slopes, not only intercepts
+
+#+ATTR_HTML: :alt Synthetic fan-shaped data with fitted 10th, 50th, and 90th percentile regression lines :width 100%
+[[file:../../build/org/quantile_heteroskedastic.svg]]
+
+The three lines spread apart as \(x\) increases. That geometry is the
+central result: a mean model could describe the center, and a
+heteroskedastic standard-error correction could repair inference about
+that mean, but neither would estimate these distinct tail relationships.
+The median line follows the constructed center near slope \(2\); the
+lower slope is smaller and the upper slope larger.
+
+** Median regression resists a vertical outlier
+
+The uncontaminated slope is \(1.5\). Because OLS squares the final
+observation's enormous residual, it rotates toward that point. Median
+regression pays only linearly for the same residual and remains close to
+the relationship supported by the other twenty observations. This
+robustness is a consequence of the objective, not an after-the-fact
+diagnostic adjustment.
+
+** Real conditional body-mass distributions
+
+#+ATTR_HTML: :alt Fitted 10th, median, and 90th percentile Adelie penguin body-mass curves across flipper length :width 100%
+[[file:../../build/org/quantile_penguins.svg]]
+
+The vertical distance between the curves is an estimated conditional
+spread for Adelie penguins. Nonparallel curves mean that spread changes
+with flipper length. The categorical coefficients should be interpreted
+at a fixed flipper length and relative to the formula engine's Adelie
+reference level; fitting each quantile separately allows those species
+shifts to differ across the distribution.
+
+* Practical considerations
+
+- Quantile regression estimates conditional quantiles. They are not
+  obtained by taking quantiles of OLS predictions.
+- Coefficients at different \(\tau\) values may cross, especially with
+  small samples or extrapolation. Independent linear fits do not impose
+  global noncrossing constraints.
+- The current API reports point estimates and optimization diagnostics,
+  not coefficient standard errors. Bootstrap inference is a natural
+  extension because the check loss is nondifferentiable and analytic
+  sandwich estimators require estimating the conditional density near
+  zero residual.
+- ADMM's \(\varrho\) affects convergence speed, not the optimum. Fixed
+  penalties are reproducible and remain the default; optional residual
+  balancing can adapt the penalty on harder problems. =rho=,
+  =adaptive_rho=, iteration limits, and tolerances are exposed through
+  =QuantileRegressionOptions=.
+- The design must have full column rank. As in =LM=, categorical
+  predictors and formula transformations are resolved before fitting.
+
+* Conclusion
+
+=QuantileRegression= adds a distribution-aware regression primitive to
+the canonical C++ core. Its formula interface matches the existing model
+layer, while its solver respects the exact convex, nonsmooth pinball
+objective. The examples demonstrate three distinct uses: discovering
+heterogeneous effects hidden by a mean, obtaining a response-outlier-
+resistant median relationship, and describing lower/central/upper
+patterns in real data. The main conceptual shift is simple but powerful:
+there need not be one regression line when the scientific question is
+about an entire conditional distribution.
+
+* References
+
+- Koenker, R., & Bassett, G. (1978). Regression Quantiles.
+  /Econometrica/, 46(1), 33--50.
+- Boyd, S., Parikh, N., Chu, E., Peleato, B., & Eckstein, J. (2011).
+  Distributed Optimization and Statistical Learning via the Alternating
+  Direction Method of Multipliers. /Foundations and Trends in Machine
+  Learning/, 3(1), 1--122.
+- Koenker, R. (2005). /Quantile Regression/. Cambridge University Press.

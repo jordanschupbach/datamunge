@@ -1,0 +1,20 @@
+#+title: Exhaustive Brute-Force Graph Search
+#+property: header-args:c++ :eval no
+* Mathematics and pseudocode
+Enumerate every simple start--goal path and retain the shortest.  Simplicity
+bounds depth by \(V-1\), but the number of paths is factorial in dense graphs.
+#+begin_example
+DFS(path): for each successor not in path, recurse
+on reaching goal, replace incumbent if this path is shorter
+#+end_example
+Exhaustiveness proves optimality among unweighted simple paths.
+* Example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using datamunge::algorithms::brute_force_search;
+  const auto result =
+      brute_force_search(3, {{0, 1}, {1, 2}}, 0, 2);
+  return result.found ? 0 : 1;
+}
+#+end_src

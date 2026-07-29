@@ -1,0 +1,24 @@
+#+title: Warnsdorff's Knight-Tour Rule
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+At each square, choose the legal unvisited move with smallest onward degree.
+This fail-first heuristic consumes constrained squares before they become
+unreachable.  It is not a proof of existence on every board, but is remarkably
+effective; deterministic row/column tie-breaking completes the standard 8x8.
+#+begin_example
+mark start
+repeat until board is full:
+  enumerate legal unvisited knight moves
+  choose one having fewest legal onward moves
+  fail if none exists; otherwise mark it
+#+end_example
+Direct degree checks cost \(O(RC)\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){std::cout<<datamunge::algorithms::warnsdorff_knight_tour(8,8).size();}
+#+end_src
+It prints 64.
+

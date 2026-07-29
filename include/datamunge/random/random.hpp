@@ -3,6 +3,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 namespace datamunge::random {
 
@@ -42,6 +43,62 @@ class SplitMix64 : public RandomGenerator {
 
  private:
   std::uint64_t state_;
+};
+
+/// ACORN: an add-with-carry-style generator modulo 2^64.
+class Acorn64 : public RandomGenerator {
+ public:
+  explicit Acorn64(std::uint64_t seed, std::size_t order = 12);
+  explicit Acorn64(std::vector<std::uint64_t> state);
+
+  std::uint64_t next_u64() override;
+
+ private:
+  std::vector<std::uint64_t> state_;
+};
+
+/// Blum-Blum-Shub, using two supplied primes congruent to 3 modulo 4.
+class BlumBlumShub : public RandomGenerator {
+ public:
+  explicit BlumBlumShub(std::uint64_t seed, std::uint64_t p = 1000003,
+                        std::uint64_t q = 2001911);
+
+  std::uint64_t next_u64() override;
+
+ private:
+  std::uint64_t step();
+
+  std::uint64_t modulus_;
+  std::uint64_t state_;
+};
+
+/// Additive lagged-Fibonacci generator x[n] = x[n-j] + x[n-k] (mod 2^64).
+class LaggedFibonacci64 : public RandomGenerator {
+ public:
+  explicit LaggedFibonacci64(std::uint64_t seed, std::size_t short_lag = 24,
+                             std::size_t long_lag = 55);
+
+  std::uint64_t next_u64() override;
+
+ private:
+  std::vector<std::uint64_t> state_;
+  std::size_t                short_lag_;
+  std::size_t                index_{0};
+};
+
+/// A 64-bit linear congruential generator x[n+1] = a*x[n] + c (mod 2^64).
+class LinearCongruential64 : public RandomGenerator {
+ public:
+  explicit LinearCongruential64(
+      std::uint64_t seed, std::uint64_t multiplier = 6364136223846793005ULL,
+      std::uint64_t increment = 1442695040888963407ULL);
+
+  std::uint64_t next_u64() override;
+
+ private:
+  std::uint64_t state_;
+  std::uint64_t multiplier_;
+  std::uint64_t increment_;
 };
 
 /// MT19937-64: the 64-bit Mersenne Twister with period 2^19937 - 1.
