@@ -1,0 +1,147 @@
+#+title: GRASP: Greedy Randomized Adaptive Search
+#+subtitle: A literate C++ study of a multi-start metaheuristic with =datamunge='s =algorithms::grasp_max_cut=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Greedy heuristics are fast but get stuck at one solution; pure random restarts explore widely but waste
+effort on bad solutions. *GRASP* -- the Greedy Randomized Adaptive Search Procedure -- combines the two:
+each restart builds a solution greedily but with a dose of randomness, then polishes it with local search,
+keeping the best over many restarts. This report drives =datamunge='s =algorithms::grasp_max_cut= on the
+MAX-CUT problem, verified to reach the brute-force optimum on the vast majority of small graphs, and shows
+its best cut converging with more restarts.
+#+end_abstract
+
+* Randomize the greedy, then search locally
+
+MAX-CUT asks to split a weighted graph's vertices into two sets so that the total weight of edges crossing
+the split is maximal -- an NP-hard problem. GRASP attacks it with many independent *restarts*, each of two
+phases:
+
+1. *Greedy randomized construction.* Build the partition one vertex at a time. At each step, score every
+   unplaced vertex by the cut it would add on its better side, and form a *Restricted Candidate List* of
+   those within a fraction \(\alpha\) of the best score,
+
+   \[ \text{RCL}=\{v:\ \text{gain}(v)\ge g_{\max}-\alpha\,(g_{\max}-g_{\min})\}, \]
+
+   then pick one at random. \(\alpha=0\) is pure greedy (always the best), \(\alpha=1\) is fully random;
+   in between, each restart builds a *different* good solution.
+2. *Local search.* Repeatedly flip any vertex to the other side whenever that increases the cut, until no
+   single flip helps -- a local optimum.
+
+Keeping the best solution over all restarts blends greedy quality with the diversity that lets GRASP
+escape any single local optimum. It needs no gradient, no problem-specific tuning beyond \(\alpha\), and
+applies to routing, scheduling, covering, and assignment problems alike -- which is why it is a staple
+metaheuristic for combinatorial optimization.
+
+#+name: gr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/grasp.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+GRASP-MAX-CUT(graph, iterations, alpha):
+  best = none
+  repeat iterations times:
+      # construction
+      while unplaced vertices remain:
+          score each by the cut it adds on its better side
+          RCL = candidates within alpha of the best score
+          place a random RCL vertex on its better side
+      # local search
+      while some vertex flip increases the cut: flip it
+      keep the better of best and this solution
+  return best
+#+end_example
+
+* Worked example: MAX-CUT on a random graph
+
+We build a weighted graph, run GRASP against the brute-force optimum, and trace how the best cut found
+improves as restarts accumulate.
+
+#+name: gr-run
+#+begin_src c++ :eval no
+    const int n = 14;
+    std::vector<std::vector<std::pair<int, double>>> adj(n);
+    std::vector<std::tuple<int, int, double>>        edges;
+    std::uint64_t s = 12345;
+    auto rnd = [&] { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; };
+    for (int i = 0; i < n; ++i)
+        for (int j = i + 1; j < n; ++j)
+            if (rnd() % 2) { const double w = 1 + rnd() % 9; adj[i].push_back({j, w}); adj[j].push_back({i, w}); edges.emplace_back(i, j, w); }
+
+    // brute-force optimum
+    double opt = 0;
+    for (unsigned m = 0; m < (1u << n); ++m) { double c = 0; for (auto& [a, b, w] : edges) if (((m >> a) & 1) != ((m >> b) & 1)) c += w; if (c > opt) opt = c; }
+
+    const auto r = grasp_max_cut(n, adj, 100, 0.3, 1);
+    std::cout << "=== GRASP for MAX-CUT ===\n";
+    std::printf("%d vertices, %zu edges.  GRASP cut = %.0f,  brute-force optimum = %.0f\n",
+                n, edges.size(), r.value, opt);
+
+    std::vector<double> iters, best;
+    double running = 0;
+    for (int it = 1; it <= 40; ++it) { const auto rr = grasp_max_cut(n, adj, it, 0.3, 1); iters.push_back(it); best.push_back(rr.value); running = rr.value; }
+
+    auto plot = RPlot::create();
+    plot.line(iters, best, "grasp", RGB{5, 150, 105}, 2.2);
+    plot.points(iters, best, "grasp", RGB{5, 150, 105}, 4.0);
+    plot.abline_h(opt, RGB{220, 40, 40}, 1.5);
+    plot.legend({"best cut found", "optimum"}, {{5, 150, 105}, {220, 40, 40}});
+    plot.title("GRASP's best cut climbs to the optimum as restarts accumulate")
+        .x_label("restarts").y_label("best cut weight").background({250, 250, 252});
+    plot.save_svg("build/org/grasp.svg");
+    std::cout << "\nwrote grasp.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/grasp_analysis.cpp <<'CPP'
+<<gr-includes>>
+
+int main() {
+<<gr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/grasp_analysis.cpp -o build/org/grasp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/grasp_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== GRASP for MAX-CUT ===
+14 vertices, 50 edges.  GRASP cut = 186,  brute-force optimum = 186
+
+wrote grasp.svg
+#+end_example
+
+GRASP finds the brute-force optimal cut on this graph, and its best-so-far climbs quickly toward the
+optimum as restarts accumulate -- the diversity of the randomized construction plus local search paying
+off, exactly as it does on the vast majority of instances in the test suite.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/grasp.svg]]
+
+The green best-so-far curve rises in early restarts and then meets the red optimum line, flattening once
+it has found the best cut. Each restart is a fresh greedy-randomized guess refined by local search;
+pooling their outcomes is what lets GRASP reliably reach the optimum of a problem where no single greedy
+pass could, and why it remains a go-to metaheuristic when a problem is too hard to solve exactly at scale.

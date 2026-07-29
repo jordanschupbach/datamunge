@@ -1188,6 +1188,21 @@ We implement First-Fit-Decreasing bin packing (=algorithms::nest_first_fit_decre
 
 We implement DPLL (=algorithms::dpll_sat=) and report it as a literate program. We give unit propagation, pure-literal elimination, and branching; a small formula is solved and a contradiction rejected, and a random 3-SAT sweep reproduces the satisfiability phase transition, the fraction-satisfiable curve dropping through one-half near the m/n = 4.26 threshold.
 
+** [[./davis_putnam_analysis.html][The Davis-Putnam Procedure: Satisfiability by Resolution]] ([[./davis_putnam_analysis.pdf][PDF]])
+/A literate C++ study of variable elimination for SAT using datamunge/
+
+We implement the Davis-Putnam procedure (=algorithms::davis_putnam=) and report it as a literate program. The 1960 ancestor of DPLL decides CNF satisfiability by eliminating variables through resolution -- interleaving unit propagation, pure-literal elimination, and replacing all clauses on a chosen variable by their resolvents -- until the empty clause proves UNSAT or the clauses vanish proving SAT; it decides satisfiable and contradictory formulas correctly and matches DPLL's verdict on hundreds of random 3-SAT instances.
+
+** [[./gauss_newton_analysis.html][The Gauss-Newton Algorithm: Nonlinear Least Squares]] ([[./gauss_newton_analysis.pdf][PDF]])
+/A literate C++ study of nonlinear curve fitting using datamunge/
+
+We implement Gauss-Newton (=algorithms::gauss_newton=) and report it as a literate program. Exploiting the least-squares structure to approximate the Hessian by J^T J, each step solves the normal equations (J^T J)delta = -J^T r for the model linearized about the current parameters (the Jacobian taken by finite differences); fitting a*sin(b*x+c) it recovers (3, 1.2, 0.5) to machine precision in 7 iterations with the fit landing exactly on the data.
+
+** [[./grasp_analysis.html][GRASP: Greedy Randomized Adaptive Search]] ([[./grasp_analysis.pdf][PDF]])
+/A literate C++ study of a multi-start metaheuristic using datamunge/
+
+We implement GRASP (=algorithms::grasp_max_cut=) and report it as a literate program. Each restart builds a solution greedily but picks randomly from a Restricted Candidate List of near-best moves, then improves it by local search, keeping the best over many restarts; on MAX-CUT it reaches the brute-force optimum (cut 186 on a 14-vertex graph) and on the vast majority of small graphs, its best-so-far climbing to the optimum as restarts accumulate.
+
 ** [[./ac3_analysis.html][AC-3: Shrinking a CSP by Arc Consistency]] ([[./ac3_analysis.pdf][PDF]])
 /A literate C++ study of constraint propagation using datamunge/
 
