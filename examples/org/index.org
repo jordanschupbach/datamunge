@@ -1173,6 +1173,21 @@ We implement Neville's algorithm (=algorithms::neville_interpolate=) and report 
 
 We implement the natural cubic spline (=algorithms::natural_cubic_spline=, =cubic_spline_eval=) and report it as a literate program. We derive the C2 smoothness conditions, the tridiagonal moment system (Thomas algorithm), and the natural boundary; on the same Runge data that defeats the polynomial (error 1.9) the spline stays within 0.02.
 
+** [[./bicubic_interpolation_analysis.html][Bicubic Interpolation: Smooth Resampling on a Grid]] ([[./bicubic_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of Keys' cubic convolution using datamunge/
+
+We implement bicubic interpolation (=algorithms::bicubic_interpolate=) and report it as a literate program. Keys' cubic-convolution kernel (a=-1/2) applied separably over the 4x4 neighborhood gives a C1, third-order interpolant that passes exactly through grid nodes and reproduces bilinear functions in the interior; on a smooth bump sampled on a 9x9 grid its profile error (8.4e-3) is an order below bilinear's (6.6e-2), with the two reconstructions plotted against the truth.
+
+** [[./lanczos_resampling_analysis.html][Lanczos Resampling: Windowed-Sinc Reconstruction]] ([[./lanczos_resampling_analysis.pdf][PDF]])
+/A literate C++ study of windowed-sinc resampling using datamunge/
+
+We implement Lanczos resampling (=algorithms::lanczos_resample=, =lanczos_resample_at=) and report it as a literate program. Windowing the ideal sinc reconstructor with a dilated sinc lobe gives the compact kernel L(x)=sinc(x)sinc(x/a) that touches only 2a samples; it passes exactly through the samples and reconstructs a smooth signal with error (9.1e-3) far below linear interpolation's (3.9e-2), with the Lanczos-3, linear, and true curves plotted over the samples.
+
+** [[./birkhoff_interpolation_analysis.html][Birkhoff Interpolation: Fitting a Polynomial to Scattered Derivative Data]] ([[./birkhoff_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of lacunary interpolation using datamunge/
+
+We implement Birkhoff (lacunary) interpolation (=algorithms::birkhoff_polynomial=, =birkhoff_eval=) and report it as a literate program. Prescribing an arbitrary assortment of derivative orders at each node -- not the consecutive block Hermite requires -- turns each constraint into a linear equation in the polynomial coefficients; a cubic pinned by values and second derivatives (no slopes) at two nodes is recovered exactly (error 3.6e-15) and a non-poised scheme is correctly rejected as singular, with the interpolant drawn through its constrained nodes.
+
 ** [[./de_casteljau_analysis.html][De Casteljau's Algorithm: Bezier Curves by Repeated Lerping]] ([[./de_casteljau_analysis.pdf][PDF]])
 /A literate C++ study of Bezier evaluation using datamunge/
 

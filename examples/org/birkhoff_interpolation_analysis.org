@@ -1,0 +1,152 @@
+#+title: Birkhoff Interpolation: Fitting a Polynomial to Scattered Derivative Data
+#+subtitle: A literate C++ study of lacunary interpolation with =datamunge='s =algorithms::birkhoff_polynomial=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Lagrange interpolation fits a polynomial to *values* at nodes; Hermite interpolation adds *consecutive*
+derivatives at each node. *Birkhoff* (or *lacunary*) interpolation lifts the last restriction: you may
+prescribe any assortment of derivative orders at each node -- a value here, a second derivative there,
+with gaps in between. This report drives =datamunge='s =algorithms::birkhoff_polynomial=, verified to
+reconstruct known polynomials from mixed value/derivative data and to detect when a scheme is not poised,
+and shows a curve pinned by heterogeneous constraints.
+#+end_abstract
+
+* One linear equation per constraint
+
+With \(N\) constraints, seek the degree-\((N-1)\) polynomial \(p(x)=\sum_{k=0}^{N-1}c_k x^k\). A single
+constraint fixes some derivative order \(d\) at a node \(x_i\):
+
+\[ p^{(d)}(x_i)=v_i. \]
+
+Since \(\dfrac{d^d}{dx^d}x^k=\dfrac{k!}{(k-d)!}\,x^{k-d}\) (and \(0\) for \(k<d\)), each constraint is a
+*linear equation in the coefficients*:
+
+\[ \sum_{k=d}^{N-1}\frac{k!}{(k-d)!}\,x_i^{\,k-d}\,c_k=v_i. \]
+
+Stacking all \(N\) constraints gives a square system \(A\mathbf c=\mathbf v\); solving it yields the
+interpolant. The subtlety that sets Birkhoff apart from Lagrange and Hermite is *poisedness*: for some
+node/order patterns the matrix \(A\) is singular, so no unique polynomial exists (the classic example is
+prescribing \(p\) at the ends and \(p'\) only at the midpoint of three equally spaced nodes). The solver
+therefore checks for singularity and reports failure rather than returning a spurious answer. When the
+scheme *is* poised, Birkhoff interpolation reconstructs the unique polynomial consistent with the
+scattered derivative data -- useful whenever the information you have about a function is a grab-bag of
+values and slopes and curvatures at different points.
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/birkhoff_interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+BIRKHOFF(constraints):                     # each = (node, order d, value v)
+  N = number of constraints                # polynomial degree N-1
+  for i in 0..N-1:
+      for k in 0..N-1:
+          A[i][k] = (k!/(k-d_i)!) * node_i^(k-d_i)   if k >= d_i else 0
+      b[i] = v_i
+  solve A c = b by Gaussian elimination with partial pivoting
+  if A singular: return "not poised"
+  return coefficients c
+#+end_example
+
+* Worked example: a curve from mixed constraints
+
+We pin a cubic with a genuine Birkhoff scheme -- values and *second* derivatives at two nodes, no first
+derivatives -- reconstruct it, and confirm it reproduces the source polynomial. We also show the solver
+rejecting a non-poised scheme.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    // Source polynomial p(x) = 1 + 2x + 3x^2 + 4x^3.
+    auto p   = [](double x) { return 1 + 2 * x + 3 * x * x + 4 * x * x * x; };
+    auto d2p = [](double x) { return 6 + 24 * x; };
+
+    std::vector<BirkhoffConstraint> cons{
+        {-1.0, 0, p(-1.0)}, {-1.0, 2, d2p(-1.0)}, {1.0, 0, p(1.0)}, {1.0, 2, d2p(1.0)}};
+    const auto c = birkhoff_polynomial(cons);
+
+    std::cout << "=== Birkhoff interpolation ===\n";
+    std::cout << "constraints: p(-1), p''(-1), p(1), p''(1)\n";
+    std::cout << "recovered coefficients (c0..c3): ";
+    for (double v : c) std::printf("%.4f ", v);
+    std::cout << "\n(source was 1, 2, 3, 4)\n";
+
+    double max_err = 0;
+    for (double x = -1.5; x <= 1.5; x += 0.1) max_err = std::max(max_err, std::fabs(birkhoff_eval(c, x) - p(x)));
+    std::printf("max |interp - source| on [-1.5, 1.5]: %.2e\n", max_err);
+
+    // A non-poised scheme: p'(0), p''(-1), p''(1) -> singular (identical curvature rows).
+    std::vector<BirkhoffConstraint> bad{{0.0, 1, 0.0}, {-1.0, 2, 0.0}, {1.0, 2, 0.0}};
+    std::cout << "non-poised scheme {p'(0), p''(-1), p''(1)}: "
+              << (birkhoff_polynomial(bad).empty() ? "rejected (singular)" : "SOLVED?!") << "\n";
+
+    std::vector<double> px, py, cx, cy;
+    for (double x = -1.5; x <= 1.5; x += 0.02) { px.push_back(x); py.push_back(birkhoff_eval(c, x)); }
+    for (const auto& con : cons) { cx.push_back(con.node); cy.push_back(p(con.node)); }
+
+    auto plot = RPlot::create();
+    plot.line(px, py, "interp", RGB{124, 58, 237}, 2.2);
+    plot.points(cx, cy, "nodes", RGB{220, 40, 40}, 6.0);
+    plot.legend({"Birkhoff interpolant", "constrained nodes"}, {{124, 58, 237}, {220, 40, 40}});
+    plot.title("A cubic pinned by values and second derivatives at two nodes")
+        .x_label("x").y_label("p(x)").background({250, 250, 252});
+    plot.save_svg("build/org/birkhoff_interpolation.svg");
+    std::cout << "\nwrote birkhoff_interpolation.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/birkhoff_interpolation_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/birkhoff_interpolation_analysis.cpp -o build/org/birkhoff_interpolation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/birkhoff_interpolation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Birkhoff interpolation ===
+constraints: p(-1), p''(-1), p(1), p''(1)
+recovered coefficients (c0..c3): 1.0000 2.0000 3.0000 4.0000
+(source was 1, 2, 3, 4)
+max |interp - source| on [-1.5, 1.5]: 3.55e-15
+non-poised scheme {p'(0), p''(-1), p''(1)}: rejected (singular)
+
+wrote birkhoff_interpolation.svg
+#+end_example
+
+The recovered coefficients are exactly the source polynomial's, the interpolation error is at machine
+precision, and the singular scheme is correctly rejected -- the three things that distinguish a correct
+Birkhoff solver.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/birkhoff_interpolation.svg]]
+
+The purple curve is the unique cubic consistent with the value-and-curvature data at the two red nodes --
+note there is no slope information anywhere, the hallmark of a lacunary scheme. Solving the small linear
+system recovers the polynomial exactly, while the poisedness check guards against the node/order patterns
+where Birkhoff data, unlike Lagrange or Hermite data, fails to determine a unique fit.
