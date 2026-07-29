@@ -32,6 +32,7 @@
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
+#include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
@@ -100,6 +101,7 @@
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/todd_coxeter.hpp>
+#include <datamunge/algorithms/tricubic_interpolation.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
 #include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
