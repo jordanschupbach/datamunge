@@ -1,0 +1,144 @@
+#+title: Inverse Iteration: An Eigenvector From an Eigenvalue
+#+subtitle: A literate C++ study of shifted inverse power iteration with =datamunge='s =algorithms::inverse_iteration=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Once you know (approximately) an eigenvalue of a matrix, how do you get its eigenvector? *Inverse
+iteration* answers this with a beautifully simple trick: shifting by a near-eigenvalue makes the matrix
+*nearly singular* in exactly the direction you want, so repeatedly solving a linear system amplifies that
+eigenvector above all others. This report drives =datamunge='s =algorithms::inverse_iteration=, verified
+to recover the eigenvector for the eigenvalue nearest a given shift to machine precision across hundreds
+of random symmetric matrices, and shows the convergence.
+#+end_abstract
+
+* Amplifying the wanted direction
+
+Expand any vector in the eigenbasis, \(x=\sum_i c_i v_i\). Applying \((A-\mu I)^{-1}\) scales each component
+by \(1/(\lambda_i-\mu)\):
+
+\[ (A-\mu I)^{-1}x=\sum_i \frac{c_i}{\lambda_i-\mu}\,v_i. \]
+
+If \(\mu\) is close to a particular eigenvalue \(\lambda_j\), the factor \(1/(\lambda_j-\mu)\) is *enormous*
+compared to the others, so that component dominates. Normalizing and repeating,
+
+\[ y=(A-\mu I)^{-1}x_k,\qquad x_{k+1}=\frac{y}{\lVert y\rVert}, \]
+
+drives \(x_k\) toward \(v_j\) geometrically, with ratio \(\max_{i\ne j}|\lambda_j-\mu|/|\lambda_i-\mu|\) --
+tiny when \(\mu\) is a good estimate. The apparent paradox -- that \(A-\mu I\) is *ill-conditioned* exactly
+when \(\mu\) is accurate -- is not a bug but the mechanism: the huge amplification lands almost entirely in
+the eigenvector direction, and the ill-conditioning does not spoil the *direction* of the solution.
+Because it needs only a shift and a linear solve, inverse iteration is the standard way to compute an
+eigenvector after an eigenvalue has been found (for instance by the QR algorithm), and to refine
+eigenpairs of large sparse matrices.
+
+#+name: ii-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/inverse_iteration.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static double residual(const std::vector<std::vector<double>>& A, double lam, const std::vector<double>& v) {
+    const int n = static_cast<int>(A.size());
+    double r = 0;
+    for (int i = 0; i < n; ++i) { double s = 0; for (int j = 0; j < n; ++j) s += A[i][j] * v[j]; const double e = s - lam * v[i]; r += e * e; }
+    return std::sqrt(r);
+}
+#+end_src
+
+* Algorithm
+
+#+begin_example
+INVERSE-ITERATION(A, mu):
+  x = normalized starting vector
+  repeat:
+      solve (A - mu I) y = x       # amplifies the eigenvector nearest mu
+      x = y / ||y||
+  return (Rayleigh quotient x^T A x, x)
+#+end_example
+
+* Worked example: recovering an eigenvector
+
+We build a symmetric matrix with eigenvalues \(\{2,5,9\}\), aim a shift near \(5\), and recover that
+eigenvector -- confirming the residual \(\lVert Av-\lambda v\rVert\) is essentially zero. The figure traces
+the residual falling per iteration.
+
+#+name: ii-run
+#+begin_src c++ :eval no
+    // Symmetric A with eigenvalues {2, 5, 9} via a fixed orthonormal Q.
+    const double Q[3][3] = {{0.6667, -0.6667, 0.3333}, {0.6667, 0.3333, -0.6667}, {0.3333, 0.6667, 0.6667}};
+    const double d[3] = {2, 5, 9};
+    std::vector<std::vector<double>> A(3, std::vector<double>(3, 0));
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) { double s = 0; for (int k = 0; k < 3; ++k) s += Q[i][k] * d[k] * Q[j][k]; A[i][j] = s; }
+
+    const auto p = inverse_iteration(A, 5.05, 60); // shift near the middle eigenvalue
+    std::cout << "=== Inverse iteration (shift mu = 5.05) ===\n";
+    std::printf("recovered eigenvalue = %.6f  (nearest true = 5)\n", p.value);
+    std::printf("eigenvector = (%.4f, %.4f, %.4f)\n", p.vector[0], p.vector[1], p.vector[2]);
+    std::printf("residual ||A v - lambda v|| = %.2e\n", residual(A, p.value, p.vector));
+
+    std::vector<double> it, res;
+    // Trace the residual by running with increasing iteration caps.
+    for (int cap = 1; cap <= 8; ++cap) { const auto pp = inverse_iteration(A, 5.05, cap); it.push_back(cap); res.push_back(std::max(1e-17, residual(A, pp.value, pp.vector))); }
+
+    auto plot = RPlot::create();
+    plot.line(it, res, "r", RGB{147, 51, 234}, 2.2);
+    plot.points(it, res, "r", RGB{147, 51, 234}, 5.0);
+    plot.legend({"residual ||A v - lambda v||"}, {{147, 51, 234}});
+    plot.title("Inverse iteration converges the eigenvector geometrically (log scale)")
+        .x_label("iteration").y_label("residual").background({250, 250, 252});
+    plot.save_svg("build/org/inverse_iteration.svg");
+    std::cout << "\nwrote inverse_iteration.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/inverse_iteration_analysis.cpp <<'CPP'
+<<ii-includes>>
+
+int main() {
+<<ii-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/inverse_iteration_analysis.cpp -o build/org/inverse_iteration_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/inverse_iteration_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Inverse iteration (shift mu = 5.05) ===
+recovered eigenvalue = 5.000333  (nearest true = 5)
+eigenvector = (-0.6668, 0.3334, 0.6666)
+residual ||A v - lambda v|| = 8.51e-16
+
+wrote inverse_iteration.svg
+#+end_example
+
+Aiming the shift near \(5\) recovers exactly that eigenvalue and its eigenvector, with the residual driven
+to the floor of double precision -- the amplification of the wanted direction doing its job, as it does
+over hundreds of random matrices in the test suite.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/inverse_iteration.svg]]
+
+The residual drops steeply and then bottoms out at machine precision: each solve of the nearly-singular
+system \((A-\mu I)y=x\) magnifies the eigenvector for \(\lambda=5\) far above the others, so a few
+iterations suffice. That an *ill-conditioned* solve is exactly what makes the method work is the elegant
+heart of inverse iteration -- and why it is the standard companion to any eigenvalue solver when the
+eigenvectors are wanted too.

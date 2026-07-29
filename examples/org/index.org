@@ -1023,6 +1023,21 @@ We implement the modified Gram-Schmidt process (=algorithms::gram_schmidt=) and 
 
 We implement power iteration (=algorithms::power_iteration=) and report it as a literate program. We show why repeated multiply-and-normalize aligns with the top eigenvector and the Rayleigh quotient gives the eigenvalue; on [[2,1],[1,2]] the estimate climbs 2, 2.8, 2.976, ... to the true 3 with eigenvector (1,1).
 
+** [[./qr_algorithm_analysis.html][The QR Algorithm: All Eigenvalues by Iterated Factorization]] ([[./qr_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of the shifted QR eigenvalue method using datamunge/
+
+We implement the QR algorithm (=algorithms::qr_eigenvalues=) and report it as a literate program. Factoring A = QR and reforming RQ = Q^T A Q is an orthogonal similarity that preserves the spectrum while driving the off-diagonals to zero; a Wilkinson shift from the trailing 2x2 gives cubic convergence and each converged corner eigenvalue is deflated off. It recovers a planted spectrum {-4, 1, 3, 8} exactly and known spectra to machine precision over hundreds of random symmetric matrices, with the eigenvalue error plotted against the iteration cap.
+
+** [[./inverse_iteration_analysis.html][Inverse Iteration: An Eigenvector From an Eigenvalue]] ([[./inverse_iteration_analysis.pdf][PDF]])
+/A literate C++ study of shifted inverse power iteration using datamunge/
+
+We implement inverse iteration (=algorithms::inverse_iteration=) and report it as a literate program. Solving (A - mu I) y = x repeatedly amplifies the eigenvector whose eigenvalue is nearest the shift mu -- the very ill-conditioning of the near-singular system is the mechanism; aiming mu near 5 recovers that eigenpair with residual 8.5e-16, verified over hundreds of random symmetric matrices, with the residual's geometric decay plotted.
+
+** [[./rayleigh_quotient_iteration_analysis.html][Rayleigh Quotient Iteration: Cubically-Convergent Eigenpairs]] ([[./rayleigh_quotient_iteration_analysis.pdf][PDF]])
+/A literate C++ study of adaptive-shift eigen-iteration using datamunge/
+
+We implement Rayleigh quotient iteration (=algorithms::rayleigh_quotient_iteration=) and report it as a literate program. Updating the inverse-iteration shift to the current vector's Rayleigh quotient x^T A x each step lets vector and eigenvalue refine each other, giving cubic convergence for symmetric matrices; from a generic start the residual falls 0.12 -> 4.8e-4 -> 2.8e-11 -> 3.1e-16 in a few steps, verified to reach a true eigenpair over hundreds of random matrices.
+
 ** [[./strassen_analysis.html][The Strassen Algorithm: Matrix Multiplication in Seven Products]] ([[./strassen_analysis.pdf][PDF]])
 /A literate C++ study of sub-cubic matrix multiplication using datamunge/
 

@@ -48,6 +48,7 @@
 #include <datamunge/algorithms/hungarian.hpp>
 #include <datamunge/algorithms/index_calculus.hpp>
 #include <datamunge/algorithms/interpolation.hpp>
+#include <datamunge/algorithms/inverse_iteration.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
@@ -85,7 +86,9 @@
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
 #include <datamunge/algorithms/quadratic_sieve.hpp>
+#include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>

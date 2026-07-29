@@ -445,12 +445,12 @@ Further information: Numerical linear algebra
 
     Eigenvalue algorithms
         Arnoldi iteration
-        Inverse iteration
+        [x] Inverse iteration  -- datamunge::algorithms::inverse_iteration (shifted inverse power iteration for the eigenvector nearest mu); report examples/org/inverse_iteration_analysis.org
         Jacobi method
         Lanczos iteration
         [x] Power iteration  -- datamunge::algorithms::power_iteration; report examples/org/power_iteration_analysis.org
-        QR algorithm
-        Rayleigh quotient iteration
+        [x] QR algorithm  -- datamunge::algorithms::qr_eigenvalues (shifted QR iteration with Wilkinson shift and deflation, symmetric); report examples/org/qr_algorithm_analysis.org
+        [x] Rayleigh quotient iteration  -- datamunge::algorithms::rayleigh_quotient_iteration (adaptive-shift inverse iteration, cubic convergence); report examples/org/rayleigh_quotient_iteration_analysis.org
     [x] Gram–Schmidt process: orthogonalizes a set of vectors  -- datamunge::algorithms::gram_schmidt (modified, numerically stable); report examples/org/gram_schmidt_analysis.org
     Krylov methods (for large sparse matrix problems; third most-important numerical method class of the 20th century as ranked by SISC; after fast-fourier and fast-multipole)
     Matrix multiplication algorithms
