@@ -466,7 +466,7 @@ Further information: Numerical linear algebra
         [x] Gauss–Seidel method: solves systems of linear equations iteratively  -- datamunge::algorithms::gauss_seidel; report examples/org/gauss_seidel_analysis.org
         [x] Gaussian elimination  -- datamunge::algorithms::gaussian_elimination (partial pivoting); report examples/org/gaussian_elimination_analysis.org
         [x] Levinson recursion: solves equation involving a Toeplitz matrix  -- datamunge::algorithms::levinson_solve (symmetric Toeplitz, O(n^2)); report examples/org/levinson_analysis.org
-        Stone's method: also known as the strongly implicit procedure or SIP, is an algorithm for solving a sparse linear system of equations
+        [x] Stone's method: also known as the strongly implicit procedure or SIP, is an algorithm for solving a sparse linear system of equations  -- datamunge::algorithms::stone_sip (incomplete LU with alpha-cancelled fill, 5-point stencil); report examples/org/stone_sip_analysis.org
         [x] Successive over-relaxation (SOR): method used to speed up convergence of the Gauss–Seidel method  -- datamunge::algorithms::sor; report examples/org/sor_analysis.org
         [x] Tridiagonal matrix algorithm (Thomas algorithm): solves systems of tridiagonal equations  -- datamunge::algorithms::thomas_solve; report examples/org/thomas_algorithm_analysis.org
     SMAWK Algorithm
@@ -481,7 +481,7 @@ Further information: Monte Carlo method
     Gibbs sampling: generates a sequence of samples from the joint probability distribution of two or more random variables
     Hybrid Monte Carlo: generates a sequence of samples using Hamiltonian weighted Markov chain Monte Carlo, from a probability distribution which is difficult to sample directly.
     Metropolis–Hastings algorithm: used to generate a sequence of samples from the probability distribution of one or more variables
-    Wang and Landau algorithm: an extension of Metropolis–Hastings algorithm sampling
+    [x] Wang and Landau algorithm: an extension of Metropolis–Hastings algorithm sampling  -- datamunge::algorithms::wang_landau_dos (flat-histogram density-of-states estimation); report examples/org/wang_landau_analysis.org
 
 Numerical integration
 Further information: Numerical integration
@@ -557,7 +557,7 @@ Hybrid Algorithms
             Branch and cut
             Cutting-plane method
         Karmarkar's algorithm: The first reasonably efficient algorithm that solves the linear programming problem in polynomial time.
-        Simplex algorithm: an algorithm for solving linear programming problems
+        [x] Simplex algorithm: an algorithm for solving linear programming problems  -- datamunge::algorithms::simplex_maximize (tableau pivots, Bland's rule, unbounded detection); report examples/org/simplex_analysis.org
     Local search: a metaheuristic for solving computationally hard optimization problems
         Random-restart hill climbing
         Tabu search

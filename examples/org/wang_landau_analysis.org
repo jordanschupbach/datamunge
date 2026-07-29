@@ -1,0 +1,143 @@
+#+title: The Wang-Landau Algorithm: Estimating the Density of States
+#+subtitle: A literate C++ study of flat-histogram sampling with =datamunge='s =algorithms::wang_landau_dos=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+How many configurations of a system have each possible energy? That count -- the *density of states*
+\(g(E)\) -- determines all of a system's thermodynamics, but ordinary Monte Carlo, which samples with
+Boltzmann weight, almost never visits the rare high- or low-energy states. The *Wang-Landau* algorithm
+(2001) estimates \(g(E)\) directly by performing a random walk that *flattens its own energy histogram*,
+building \(g\) on the fly. This report drives =datamunge='s =algorithms::wang_landau_dos=, verified to
+recover an exactly-known binomial density of states, and shows the estimate matching the truth.
+#+end_abstract
+
+* A random walk that flattens its histogram
+
+The idea is to sample configurations with probability proportional to \(1/g(E)\), which makes every
+energy equally likely -- a *flat* energy histogram. Since \(g\) is unknown, Wang-Landau *learns* it while
+walking. It proposes a move (here, flipping one spin) and accepts it with
+
+\[ P_{\text{acc}}=\min\!\left(1,\ \frac{g(E_{\text{old}})}{g(E_{\text{new}})}\right), \]
+
+using the *current estimate* of \(g\). After every step it multiplies \(g(E)\) at the current energy by a
+modification factor \(f>1\) (added in the log domain) and increments a histogram bin. This self-correcting
+bias pushes the walk away from energies it has already visited often. Once the histogram is *flat* --
+every bin within a fraction of the mean -- the factor is reduced, \(f\to\sqrt f\), the histogram is
+reset, and the walk continues with finer updates. As \(f\to1\), \(g(E)\) converges to the true density of
+states (up to an overall normalization).
+
+For a toy system of \(N\) spins whose energy is the number of up-spins, the exact answer is the binomial
+coefficient \(g(E)=\binom{N}{E}\), giving a clean target: \(\log g(E)=\log\binom{N}{E}\). Wang-Landau
+recovers it without ever enumerating the \(2^N\) configurations -- the reason it is a standard tool for
+the thermodynamics of spin systems, polymers, and other models with rugged energy landscapes.
+
+#+name: wl-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/wang_landau.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+WANG-LANDAU(N):
+  log g[E] = 0;  histogram H[E] = 0;  log_f = 1
+  while log_f > threshold:
+      repeat until H is flat:
+          propose a spin flip: E -> E'
+          accept with prob min(1, exp(log g[E] - log g[E']))
+          log g[current E] += log_f;  H[current E] += 1
+      log_f /= 2                          # f -> sqrt(f)
+      reset H
+  return log g normalized so log g(0) = 0
+#+end_example
+
+* Worked example: recovering a binomial density of states
+
+We run Wang-Landau on \(N=30\) spins and compare the estimated \(\log g(E)\) against the exact
+\(\log\binom{N}{E}\).
+
+#+name: wl-run
+#+begin_src c++ :eval no
+    const int  N    = 30;
+    const auto logg = wang_landau_dos(N, 0.85, 1e-6, 1);
+
+    std::cout << "=== Wang-Landau density of states (N = " << N << ") ===\n";
+    std::cout << "  E    WL log g(E)   exact log C(N,E)   |diff|\n";
+    double maxerr = 0;
+    std::vector<double> es, wl, exact;
+    for (int E = 0; E <= N; ++E) {
+        const double ex = std::lgamma(N + 1) - std::lgamma(E + 1) - std::lgamma(N - E + 1);
+        maxerr = std::max(maxerr, std::fabs(logg[E] - ex));
+        es.push_back(E); wl.push_back(logg[E]); exact.push_back(ex);
+        if (E % 5 == 0) std::printf("  %2d    %9.4f     %9.4f      %.4f\n", E, logg[E], ex, std::fabs(logg[E] - ex));
+    }
+    std::printf("max |WL - exact| over all E: %.4f\n", maxerr);
+
+    auto plot = RPlot::create();
+    plot.line(es, exact, "exact", RGB{30, 30, 30}, 2.5);
+    plot.points(es, wl, "wl", RGB{37, 99, 235}, 5.0);
+    plot.legend({"exact log C(N,E)", "Wang-Landau estimate"}, {{30, 30, 30}, {37, 99, 235}});
+    plot.title("Wang-Landau recovers the exact log density of states")
+        .x_label("energy E (up-spins)").y_label("log g(E)").background({250, 250, 252});
+    plot.save_svg("build/org/wang_landau.svg");
+    std::cout << "\nwrote wang_landau.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/wang_landau_analysis.cpp <<'CPP'
+<<wl-includes>>
+
+int main() {
+<<wl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/wang_landau_analysis.cpp -o build/org/wang_landau_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/wang_landau_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Wang-Landau density of states (N = 30) ===
+  E    WL log g(E)   exact log C(N,E)   |diff|
+   0       0.0000        0.0000      0.0000
+   5      11.9490       11.8671      0.0819
+  10      17.2745       17.2182      0.0563
+  15      18.9150       18.8597      0.0553
+  20      17.3034       17.2182      0.0852
+  25      11.8532       11.8671      0.0140
+  30       0.0182        0.0000      0.0182
+max |WL - exact| over all E: 0.0854
+
+wrote wang_landau.svg
+#+end_example
+
+The estimated \(\log g(E)\) tracks the exact binomial curve across all energies to a few tenths -- the
+residual statistical error left by a finite final modification factor -- without ever enumerating the
+\(2^{30}\) configurations.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/wang_landau.svg]]
+
+The blue Wang-Landau points sit right on the black exact-density curve, peaked at the middle energy where
+the most configurations live. Learning that entire curve from a single self-adjusting random walk -- with
+no prior knowledge of where the states are -- is what makes Wang-Landau sampling so powerful for systems
+whose energy landscape is too rugged for ordinary Monte Carlo to explore.
