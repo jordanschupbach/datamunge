@@ -383,6 +383,16 @@ We implement Kosaraju's algorithm (=algorithms::kosaraju_scc=) and report it as 
 
 We implement Tarjan's SCC algorithm (=algorithms::tarjan_scc=) and report it as a literate program. A single DFS with discovery times, low-links, and a stack pops off a component whenever a vertex's low-link equals its discovery time; it recovers the same partition as Kosaraju in one pass, verified over thousands of random graphs, with the component sizes plotted.
 
+** [[./max_clique_dyn_analysis.html][MaxCliqueDyn: The Maximum Clique by Branch and Bound]] ([[./max_clique_dyn_analysis.pdf][PDF]])
+/A literate C++ study of colouring-bounded clique search using datamunge/
+
+We implement MaxCliqueDyn (=algorithms::max_clique_dyn=) and report it as a literate program. A greedy graph colouring bounds the clique still reachable from a candidate set (k colours => no clique bigger than k), so a depth-first search prunes any branch that cannot beat the best clique found; it matches brute force over thousands of random graphs, with the maximum clique size plotted against edge density.
+
+** [[./subgraph_isomorphism_analysis.html][Subgraph Isomorphism: Finding a Pattern Inside a Graph]] ([[./subgraph_isomorphism_analysis.pdf][PDF]])
+/A literate C++ study of backtracking graph matching using datamunge/
+
+We implement subgraph isomorphism (=algorithms::subgraph_isomorphism=) and report it as a literate program. A backtracking search assigns pattern vertices to target vertices one at a time, rejecting any partial map that already breaks a pattern edge (plus a degree filter), until the whole pattern is embedded; it matches brute force over thousands of random graph pairs, with a paw pattern located in a target graph.
+
 ** [[./bron_kerbosch_analysis.html][The Bron-Kerbosch Algorithm: All Maximal Cliques]] ([[./bron_kerbosch_analysis.pdf][PDF]])
 /A literate C++ study of clique enumeration using datamunge/
 

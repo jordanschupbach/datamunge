@@ -95,12 +95,12 @@ Subgraphs
 
     Cliques
         [x] Bron–Kerbosch algorithm: a technique for finding maximal cliques in an undirected graph  -- datamunge::algorithms::bron_kerbosch (pivoting); report examples/org/bron_kerbosch_analysis.org
-        MaxCliqueDyn maximum clique algorithm: find a maximum clique in an undirected graph
+        [x] MaxCliqueDyn maximum clique algorithm: find a maximum clique in an undirected graph  -- datamunge::algorithms::max_clique_dyn (branch and bound, colouring bound); report examples/org/max_clique_dyn_analysis.org
     Strongly connected components
         [x] Kosaraju's algorithm  -- datamunge::algorithms::kosaraju_scc (SCC via DFS + transpose); report examples/org/kosaraju_analysis.org
         Path-based strong component algorithm
         [x] Tarjan's strongly connected components algorithm  -- datamunge::algorithms::tarjan_scc (single-DFS low-link); report examples/org/tarjan_scc_analysis.org
-    Subgraph isomorphism problem
+    [x] Subgraph isomorphism problem  -- datamunge::algorithms::subgraph_isomorphism (backtracking monomorphism); report examples/org/subgraph_isomorphism_analysis.org
 
 Sequence algorithms
 Further information: Sequences
