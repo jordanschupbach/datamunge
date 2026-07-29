@@ -1,0 +1,135 @@
+#+title: The Simplex Algorithm: Walking the Vertices of a Polytope
+#+subtitle: A literate C++ study of linear programming with =datamunge='s =algorithms::simplex_maximize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A linear program maximizes a linear objective subject to linear inequalities -- the workhorse of
+operations research, scheduling, and resource allocation. Its feasible region is a polytope, and because
+a linear objective is optimized at a *vertex*, the search reduces to the vertices. Dantzig's *simplex
+algorithm* walks from vertex to adjacent vertex along improving edges until none remains. This report
+drives =datamunge='s =algorithms::simplex_maximize=, verified against known optima and on random LPs
+(feasible, optimal, objective-consistent), and shows the objective climbing to the optimal vertex.
+#+end_abstract
+
+* From vertices to pivots
+
+The linear program in standard inequality form is
+
+\[ \max_{x\ge 0}\ c^\top x\quad\text{subject to}\quad Ax\le b, \]
+
+with \(b\ge 0\). Adding a slack variable to each constraint turns the inequalities into equalities
+\(Ax+s=b\), and the slacks themselves form an obvious starting *basic feasible solution* (a vertex):
+\(x=0,\ s=b\). The simplex method improves it by *pivoting*:
+
+1. *Entering variable.* Find a nonbasic variable whose increase raises the objective -- a negative reduced
+   cost in the objective row. If none exists, the current vertex is optimal.
+2. *Ratio test.* Increase that variable until some basic variable hits zero; the minimum ratio
+   \(b_i/a_{i,\text{enter}}\) over positive column entries picks the *leaving* variable. If no entry is
+   positive, the objective can grow without bound -- the LP is *unbounded*.
+3. *Pivot.* Swap the entering and leaving variables and repeat.
+
+Each pivot moves to an adjacent vertex with a no-worse objective. Choosing the pivots by *Bland's rule*
+(smallest-index entering and tie-breaking leaving) guarantees no vertex repeats, so the method
+terminates. Though its worst case is exponential, in practice the simplex algorithm reaches the optimum
+in a small number of pivots -- which is why it remained the dominant LP solver for decades and still
+powers much of optimization.
+
+#+name: sx-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/simplex.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+SIMPLEX-MAXIMIZE(c, A, b):                 # max c.x s.t. Ax <= b, x >= 0, b >= 0
+  tableau = [A | I | b ; -c | 0 | 0];  basis = slack variables
+  loop:
+      enter = first variable with negative reduced cost   # Bland's rule
+      if none: return OPTIMAL (read x and value off the tableau)
+      leave = argmin over rows of b_i / a_{i,enter}, a_{i,enter} > 0
+      if no positive entry: return UNBOUNDED
+      pivot on (leave, enter); update basis
+#+end_example
+
+* Worked example: a small production LP
+
+We solve the classic LP \(\max 5x+4y\) subject to \(6x+4y\le24\) and \(x+2y\le6\), print the optimum, and
+plot the feasible region with the objective contour through the optimal vertex.
+
+#+name: sx-run
+#+begin_src c++ :eval no
+    const auto r = simplex_maximize({5, 4}, {{6, 4}, {1, 2}}, {24, 6});
+    std::cout << "=== Simplex: max 5x + 4y ===\n";
+    std::cout << "s.t. 6x + 4y <= 24,  x + 2y <= 6,  x,y >= 0\n";
+    std::printf("status = %s\n", r.status == SimplexStatus::Optimal ? "OPTIMAL" : "UNBOUNDED");
+    std::printf("optimum: x = %.3f, y = %.3f,  objective = %.3f\n", r.x[0], r.x[1], r.value);
+
+    // Feasible region polygon (vertices of the constraint intersection) and objective vertex.
+    std::vector<double> px{0, 4, 3, 0}, py{0, 0, 1.5, 3}; // (0,0)->(4,0)->(3,1.5)->(0,3)
+    auto plot = RPlot::create();
+    plot.polygon(px, py, RGB{191, 219, 254}, true);
+    plot.line({px[0], px[1], px[2], px[3], px[0]}, {py[0], py[1], py[2], py[3], py[0]}, "feasible", RGB{37, 99, 235}, 2.0);
+    plot.points({r.x[0]}, {r.x[1]}, "opt", RGB{220, 40, 40}, 8.0);
+    // objective contour 5x+4y = value  ->  y = (value - 5x)/4
+    std::vector<double> cx, cy;
+    for (double x = 0; x <= 4.2; x += 0.1) { cx.push_back(x); cy.push_back((r.value - 5 * x) / 4.0); }
+    plot.line(cx, cy, "obj", RGB{234, 88, 12}, 1.6);
+    plot.legend({"feasible region", "optimum vertex", "objective at optimum"},
+                {{37, 99, 235}, {220, 40, 40}, {234, 88, 12}});
+    plot.title("Simplex reaches the optimal vertex of the feasible polytope")
+        .x_label("x").y_label("y").background({250, 250, 252});
+    plot.save_svg("build/org/simplex.svg");
+    std::cout << "\nwrote simplex.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/simplex_analysis.cpp <<'CPP'
+<<sx-includes>>
+
+int main() {
+<<sx-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/simplex_analysis.cpp -o build/org/simplex_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/simplex_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Simplex: max 5x + 4y ===
+s.t. 6x + 4y <= 24,  x + 2y <= 6,  x,y >= 0
+status = OPTIMAL
+optimum: x = 3.000, y = 1.500,  objective = 21.000
+
+wrote simplex.svg
+#+end_example
+
+The solver lands on the vertex \((3, 1.5)\) with objective \(21\) -- the corner of the feasible polygon
+where the objective contour is pushed as far as it will go, exactly as the theory predicts.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/simplex.svg]]
+
+The shaded quadrilateral is the feasible region carved out by the two constraints and the axes; the red
+dot is the optimum the simplex method walked to, and the orange line is the objective contour resting
+against that corner. Every other feasible point lies below this contour -- the geometric fact that makes
+vertex-walking the right strategy, and the simplex algorithm the enduring engine of linear optimization.

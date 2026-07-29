@@ -84,6 +84,8 @@
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
+#include <datamunge/algorithms/simplex.hpp>
+#include <datamunge/algorithms/stone_sip.hpp>
 #include <datamunge/algorithms/search_batch.hpp>
 #include <datamunge/algorithms/schreier_sims.hpp>
 #include <datamunge/algorithms/search_more.hpp>
@@ -109,4 +111,5 @@
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/uniform_binary_search.hpp>
 #include <datamunge/algorithms/uniform_cost_search.hpp>
+#include <datamunge/algorithms/wang_landau.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>

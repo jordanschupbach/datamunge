@@ -1423,6 +1423,21 @@ We implement the minimum-degree ordering (=algorithms::minimum_degree_ordering=)
 
 We implement symbolic Cholesky (=algorithms::symbolic_cholesky=) and report it as a literate program. Propagating the cliques that elimination creates gives the exact nonzero pattern of L from the pattern alone; a 5x5 grid's factor is predicted as 40 original entries plus 64 fill (verified to cover every numeric nonzero), so the numeric phase allocates once.
 
+** [[./stone_sip_analysis.html][Stone's Method: A Strongly Implicit Sparse Solver]] ([[./stone_sip_analysis.pdf][PDF]])
+/A literate C++ study of the SIP iterative solver using datamunge/
+
+We implement Stone's Strongly Implicit Procedure (=algorithms::stone_sip=) and report it as a literate program. An incomplete LU factorization whose L and U keep the operator's 3-diagonal footprint, with the extra diagonal fill partially cancelled by a parameter alpha, gives an M ~ A that inverts cheaply per iteration; on a 30x30 Poisson system the residual falls geometrically from 77 to below 1e-12 in 136 iterations, recovering a manufactured solution to 2.9e-12, plotted on a log axis.
+
+** [[./simplex_analysis.html][The Simplex Algorithm: Walking the Vertices of a Polytope]] ([[./simplex_analysis.pdf][PDF]])
+/A literate C++ study of linear programming using datamunge/
+
+We implement the simplex algorithm (=algorithms::simplex_maximize=) and report it as a literate program. Adding slacks gives an initial vertex, and tableau pivots -- entering variable by negative reduced cost, leaving by the ratio test, Bland's rule for termination -- walk to the optimum, detecting unboundedness when no ratio bounds the step; the LP max 5x+4y over 6x+4y<=24, x+2y<=6 is solved at the vertex (3, 1.5) with value 21, drawn against the feasible polytope, and 200 random LPs return feasible, objective-consistent optima.
+
+** [[./wang_landau_analysis.html][The Wang-Landau Algorithm: Estimating the Density of States]] ([[./wang_landau_analysis.pdf][PDF]])
+/A literate C++ study of flat-histogram sampling using datamunge/
+
+We implement the Wang-Landau algorithm (=algorithms::wang_landau_dos=) and report it as a literate program. A random walk that accepts moves with probability min(1, g(E_old)/g(E_new)) using a running estimate of g, multiplying g(E) by a shrinking modification factor until the energy histogram is flat, learns the density of states directly; for N=30 spins it recovers the exact log-binomial density to within 0.09 across all energies without enumerating the 2^30 configurations, plotted against the exact curve.
+
 ** [[./cannon_analysis.html][Cannon's Algorithm: Matrix Multiplication on a Mesh]] ([[./cannon_analysis.pdf][PDF]])
 /A literate C++ study of shift-and-multiply matmul using datamunge/
 
