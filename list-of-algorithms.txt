@@ -413,7 +413,7 @@ Further information: Special functions
 
 Geometric
 
-    Filtered back-projection: efficiently computes the inverse 2-dimensional Radon transform.
+    [x] Filtered back-projection: efficiently computes the inverse 2-dimensional Radon transform.  -- datamunge::algorithms::filtered_back_projection / radon_transform (Ram-Lak ramp filter + back-projection); report examples/org/filtered_back_projection_analysis.org
     Level set method (LSM): a numerical technique for tracking interfaces and shapes
 
 Interpolation and extrapolation
@@ -486,7 +486,7 @@ Further information: Monte Carlo method
 Numerical integration
 Further information: Numerical integration
 
-    MISER algorithm: Monte Carlo simulation, numerical integration
+    [x] MISER algorithm: Monte Carlo simulation, numerical integration  -- datamunge::algorithms::miser_integrate (recursive stratified sampling, variance-proportional split allocation); report examples/org/miser_analysis.org
 
 Root finding
 Main article: Root-finding algorithm
@@ -563,7 +563,7 @@ Hybrid Algorithms
         Tabu search
     Minimax used in game programming
     Nearest neighbor search (NNS): find closest points in a metric space
-        Best Bin First: find an approximate solution to the nearest neighbor search problem in very-high-dimensional spaces
+        [x] Best Bin First: find an approximate solution to the nearest neighbor search problem in very-high-dimensional spaces  -- datamunge::geometry::BestBinFirst (priority-queue k-d tree search with an examination budget); report examples/org/best_bin_first_analysis.org
     Newton's method in optimization
     Nonlinear optimization
         BFGS method: a nonlinear optimization algorithm

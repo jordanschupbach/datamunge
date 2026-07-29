@@ -598,6 +598,21 @@ We drive the minimum-area bounding rectangle (=geometry::minimum_bounding_rectan
 
 We drive nearest-neighbor search (=geometry::KDTree2D=) and report it as a literate program. We give the axis-alternating binary tree and the plane-distance pruning that yields O(log n) average queries; the tree's nearest to (10,10) among 200 points matches a brute-force scan exactly, and the 5 nearest are returned in increasing distance.
 
+** [[./best_bin_first_analysis.html][Best Bin First: Approximate Nearest Neighbors on a Budget]] ([[./best_bin_first_analysis.pdf][PDF]])
+/A literate C++ study of priority-queue k-d tree search using datamunge/
+
+We implement Best Bin First (=geometry::BestBinFirst=) and report it as a literate program. Visiting the k-d tree's bins in order of their distance to the query via a priority queue, and stopping after a fixed budget of examined points, gives an approximate neighbor most cheaply -- exact for an unbounded budget; over datasets from 500 to 16000 points it finds the exact neighbor while examining only ~14 to ~20 points versus the brute-force scan's n, a near-logarithmic cost plotted against the linear scan.
+
+** [[./miser_analysis.html][MISER: Monte Carlo Integration That Spends Where It Matters]] ([[./miser_analysis.pdf][PDF]])
+/A literate C++ study of recursive stratified sampling using datamunge/
+
+We implement MISER (=algorithms::miser_integrate=) and report it as a literate program. Recursively bisecting the domain along the coordinate that best separates high- from low-variance regions and allocating samples in proportion to each half's standard deviation concentrates effort on the peak; integrating a narrow Gaussian bump to 2.5e-5, its RMS error sits roughly 5x below plain Monte Carlo's across sample budgets from 2000 to 100000, plotted on a log axis.
+
+** [[./filtered_back_projection_analysis.html][Filtered Back-Projection: Reconstructing an Image From Its Shadows]] ([[./filtered_back_projection_analysis.pdf][PDF]])
+/A literate C++ study of the inverse Radon transform using datamunge/
+
+We implement filtered back-projection (=algorithms::filtered_back_projection=, =radon_transform=) and report it as a literate program. Sharpening each projection with the Ram-Lak ramp filter before smearing it back across the image cancels the 1/|omega| blur of naive back-projection and inverts the Radon transform; a disk phantom forward-projected over 120 angles is reconstructed to 0.994 correlation with interior value ~1 and near-zero background, with the recovered central profile plotted against the phantom -- the algorithm behind CT.
+
 ** [[./delaunay_analysis.html][Delaunay Triangulation: The Triangulation That Avoids Slivers]] ([[./delaunay_analysis.pdf][PDF]])
 /A literate C++ study of the empty-circumcircle triangulation using datamunge/
 

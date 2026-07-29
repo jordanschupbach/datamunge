@@ -32,6 +32,7 @@
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
+#include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
@@ -55,6 +56,7 @@
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
 #include <datamunge/algorithms/merge.hpp>
+#include <datamunge/algorithms/miser.hpp>
 #include <datamunge/algorithms/min_conflicts.hpp>
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>

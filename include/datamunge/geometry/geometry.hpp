@@ -6,6 +6,7 @@
 // diagram, and two curve/sequence-similarity measures (dynamic time warping, discrete Frechet
 // distance).
 
+#include <datamunge/geometry/best_bin_first.hpp>
 #include <datamunge/geometry/bounding_box.hpp>
 #include <datamunge/geometry/closest_pair.hpp>
 #include <datamunge/geometry/convex_hull.hpp>
