@@ -518,7 +518,7 @@ Hybrid Algorithms
         [x] AC-3 algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::ac3; report examples/org/ac3_analysis.org
         Chaff algorithm: an algorithm for solving instances of the Boolean satisfiability problem
         [x] Davis–Putnam algorithm: check the validity of a first-order logic formula  -- datamunge::algorithms::davis_putnam (CNF-SAT by unit propagation, pure-literal, and resolution variable elimination); report examples/org/davis_putnam_analysis.org
-        Difference map algorithm general algorithms for the constraint satisfaction
+        [x] Difference map algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::difference_map (Elser's projection-based feasibility solver; beta=1 is Douglas-Rachford); report examples/org/difference_map_analysis.org
         [x] Davis–Putnam–Logemann–Loveland algorithm (DPLL): an algorithm for deciding the satisfiability of propositional logic formula in conjunctive normal form, i.e. for solving the CNF-SAT problem  -- datamunge::algorithms::dpll_sat; report examples/org/dpll_analysis.org
         [x] Exact cover problem  -- datamunge::algorithms::exact_cover (Dancing Links); report examples/org/exact_cover_analysis.org
         [x] Min conflicts algorithm general algorithms for the constraint satisfaction  -- datamunge::algorithms::min_conflicts_nqueens; report examples/org/min_conflicts_analysis.org
@@ -536,7 +536,7 @@ Hybrid Algorithms
             [x] Stochastic universal sampling  -- datamunge::algorithms::stochastic_universal_sampling (single spin, N evenly-spaced pointers, deviation <= 1); report examples/org/stochastic_universal_sampling_analysis.org
             [x] Tournament selection  -- datamunge::algorithms::tournament_sample (fittest of k random contestants, pressure tuned by k); report examples/org/tournament_selection_analysis.org
             Truncation selection
-        Memetic algorithm
+        [x] Memetic algorithm  -- datamunge::algorithms::memetic_max_cut (GA + local-search refinement of every offspring, on MAX-CUT); report examples/org/memetic_analysis.org
         Swarm intelligence
             Ant colony optimization
             Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees
@@ -559,7 +559,7 @@ Hybrid Algorithms
         Karmarkar's algorithm: The first reasonably efficient algorithm that solves the linear programming problem in polynomial time.
         [x] Simplex algorithm: an algorithm for solving linear programming problems  -- datamunge::algorithms::simplex_maximize (tableau pivots, Bland's rule, unbounded detection); report examples/org/simplex_analysis.org
     Local search: a metaheuristic for solving computationally hard optimization problems
-        Random-restart hill climbing
+        [x] Random-restart hill climbing  -- datamunge::algorithms::random_restart_hill_climbing (multi-start derivative-free local search, keep best summit); report examples/org/random_restart_hill_climbing_analysis.org
         Tabu search
     Minimax used in game programming
     Nearest neighbor search (NNS): find closest points in a metric space

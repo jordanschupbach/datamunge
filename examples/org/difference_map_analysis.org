@@ -1,0 +1,132 @@
+#+title: The Difference Map: Constraint Satisfaction by Projection
+#+subtitle: A literate C++ study of Elser's difference map with =datamunge='s =algorithms::difference_map=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Many hard problems -- phase retrieval, protein folding, packing, Sudoku -- reduce to finding a point that
+lies in the *intersection* of two constraint sets, given only how to *project* onto each. The naive fix,
+alternating projections, gets trapped whenever the sets are non-convex. Elser's *difference map* combines
+the two projections in a way that escapes those traps, and is a leading general-purpose constraint solver.
+This report drives =datamunge='s =algorithms::difference_map=, verified to converge to the exact
+intersection of constraint sets, and shows it homing in on a feasible point.
+#+end_abstract
+
+* Combining two projections to avoid the traps
+
+Suppose the goal is a point in \(A\cap B\), and all we can do is project onto \(A\) (nearest point of
+\(A\)) and onto \(B\). *Alternating projections* -- \(x\gets P_A(P_B(x))\) -- converges for convex sets but
+stalls at spurious near-misses when \(A\) or \(B\) is non-convex. The *difference map* instead updates
+
+\[ f_A(x)=\Bigl(1-\tfrac1\beta\Bigr)P_A(x)+\tfrac1\beta x,\qquad f_B(x)=\Bigl(1+\tfrac1\beta\Bigr)P_B(x)-\tfrac1\beta x, \]
+\[ x\ \gets\ x+\beta\bigl(P_A(f_B(x))-P_B(f_A(x))\bigr). \]
+
+The two "over-projected" estimates \(f_A,f_B\) push the iterate *past* each set so that the difference of
+the cross-projections cancels only when a genuine intersection point is reached -- the construction is
+built to have *no* fixed points except real solutions, which is exactly why it escapes the local traps
+that snare alternating projection. At a fixed point the two projected estimates coincide and yield a point
+of \(A\cap B\). With \(\beta=1\) the update is the Douglas-Rachford iteration, provably convergent for
+convex \(A,B\); for non-convex problems the same driver, with \(\beta\approx\pm1\), is the workhorse
+behind X-ray phase retrieval and combinatorial feasibility solvers -- all from two projection routines.
+
+#+name: dm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/difference_map.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+DIFFERENCE-MAP(P_A, P_B, x0, beta):
+  repeat:
+      f_A = (1 - 1/beta) P_A(x) + (1/beta) x
+      f_B = (1 + 1/beta) P_B(x) - (1/beta) x
+      x = x + beta ( P_A(f_B) - P_B(f_A) )
+  until the step is tiny
+  return P_B(x)                             # a point in A cap B
+#+end_example
+
+* Worked example: intersecting two lines
+
+We solve for the intersection of two lines by supplying only their projection operators, and watch the
+step size collapse as the iterate reaches the crossing point.
+
+#+name: dm-run
+#+begin_src c++ :eval no
+    // A: the line y = x ;  B: the line y = -x + 4.  Intersection: (2, 2).
+    auto projA = [](const std::vector<double>& p) { const double t = (p[0] + p[1]) / 2; return std::vector<double>{t, t}; };
+    auto projB = [](const std::vector<double>& p) { const double t = (p[0] - p[1] + 4) / 2; return std::vector<double>{t, -t + 4}; };
+
+    const auto r = difference_map(projA, projB, {7.0, -3.0}, 1.0, 10000, 1e-13);
+    std::cout << "=== Difference map (intersection of two lines) ===\n";
+    std::printf("A: y = x,  B: y = -x + 4   (true intersection: (2, 2))\n");
+    std::printf("difference map solution: (%.8f, %.8f)\n", r.solution[0], r.solution[1]);
+    std::printf("converged in %d iterations, final step %.2e\n", r.iterations, r.residual);
+
+    // Trace the step size per iteration by running with increasing caps.
+    std::vector<double> it, res;
+    for (int cap = 1; cap <= 12; ++cap) { const auto rr = difference_map(projA, projB, {7.0, -3.0}, 1.0, cap, 0.0); it.push_back(cap); res.push_back(std::max(1e-17, rr.residual)); }
+
+    auto plot = RPlot::create();
+    plot.line(it, res, "r", RGB{5, 150, 105}, 2.2);
+    plot.points(it, res, "r", RGB{5, 150, 105}, 5.0);
+    plot.legend({"step size ||x_{n+1} - x_n||"}, {{5, 150, 105}});
+    plot.title("The difference map converges to the constraint intersection (log scale)")
+        .x_label("iteration").y_label("step size").background({250, 250, 252});
+    plot.save_svg("build/org/difference_map.svg");
+    std::cout << "\nwrote difference_map.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/difference_map_analysis.cpp <<'CPP'
+<<dm-includes>>
+
+int main() {
+<<dm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/difference_map_analysis.cpp -o build/org/difference_map_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/difference_map_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Difference map (intersection of two lines) ===
+A: y = x,  B: y = -x + 4   (true intersection: (2, 2))
+difference map solution: (2.00000000, 2.00000000)
+converged in 2 iterations, final step 0.00e+00
+
+wrote difference_map.svg
+#+end_example
+
+Supplied with nothing but the two projection operators, the difference map converges to the exact
+intersection \((2,2)\) -- the fixed point where the two projected estimates agree, which is by
+construction a point satisfying both constraints.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/difference_map.svg]]
+
+The step size drops to the floor of double precision within a few iterations, marking the fixed point
+where a feasible solution sits. Reaching \(A\cap B\) from two black-box projections -- with an update
+engineered to have no spurious fixed points -- is what lets the difference map crack constraint problems,
+from reconstructing a diffraction pattern's lost phases to placing the last digit in a Sudoku, that trap
+simpler projection schemes.

@@ -1253,10 +1253,25 @@ We implement Gauss-Newton (=algorithms::gauss_newton=) and report it as a litera
 
 We implement GRASP (=algorithms::grasp_max_cut=) and report it as a literate program. Each restart builds a solution greedily but picks randomly from a Restricted Candidate List of near-best moves, then improves it by local search, keeping the best over many restarts; on MAX-CUT it reaches the brute-force optimum (cut 186 on a 14-vertex graph) and on the vast majority of small graphs, its best-so-far climbing to the optimum as restarts accumulate.
 
+** [[./random_restart_hill_climbing_analysis.html][Random-Restart Hill Climbing: Escaping Local Optima by Trying Again]] ([[./random_restart_hill_climbing_analysis.pdf][PDF]])
+/A literate C++ study of multi-start local search using datamunge/
+
+We implement random-restart hill climbing (=algorithms::random_restart_hill_climbing=) and report it as a literate program. Wrapping a derivative-free coordinate-ascent climb in an outer loop of random starts samples every basin of attraction, turning a purely local method into a global one; on the multimodal f(x)=sin x + sin 2.2x + 0.3x it locates the global maximum (x=14.91, f=6.17) that a single climb would miss, with the peak marked on the landscape.
+
+** [[./memetic_analysis.html][Memetic Algorithms: Evolution That Also Learns]] ([[./memetic_analysis.pdf][PDF]])
+/A literate C++ study of GA + local search using datamunge/
+
+We implement a memetic algorithm (=algorithms::memetic_max_cut=) and report it as a literate program. A genetic algorithm whose every offspring is refined by local search before competing evolves over the landscape of local optima, pairing the GA's exploration with local search's exploitation; on MAX-CUT it reaches the brute-force optimum (cut 195 on a 16-vertex graph) within a few generations, its best-so-far climbing to the optimum plotted.
+
 ** [[./ac3_analysis.html][AC-3: Shrinking a CSP by Arc Consistency]] ([[./ac3_analysis.pdf][PDF]])
 /A literate C++ study of constraint propagation using datamunge/
 
 We implement AC-3 arc consistency (=algorithms::ac3=) and report it as a literate program. We give the revise/re-enqueue worklist that deletes unsupported values; on the ordering chain x0<x1<x2<x3<x4 over domains 1..9, propagation alone contracts every nine-value domain to a five-value band, leaving all arcs consistent.
+
+** [[./difference_map_analysis.html][The Difference Map: Constraint Satisfaction by Projection]] ([[./difference_map_analysis.pdf][PDF]])
+/A literate C++ study of Elser's projection-based feasibility solver using datamunge/
+
+We implement Elser's difference map (=algorithms::difference_map=) and report it as a literate program. Given only projections onto two constraint sets A and B, the update x <- x + beta(P_A(f_B(x)) - P_B(f_A(x))) combines them so that its only fixed points are genuine solutions in A cap B, escaping the traps of alternating projection (beta=1 is Douglas-Rachford); it converges to the exact intersection of two lines from black-box projections alone, the step size collapsing to machine precision -- the engine behind phase retrieval and combinatorial feasibility.
 
 ** [[./exact_cover_analysis.html][Exact Cover and Dancing Links: Knuth's Algorithm X]] ([[./exact_cover_analysis.pdf][PDF]])
 /A literate C++ study of DLX using datamunge/
