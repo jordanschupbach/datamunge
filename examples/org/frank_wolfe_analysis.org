@@ -1,0 +1,143 @@
+#+title: The Frank-Wolfe Algorithm: Optimization Without Projection
+#+subtitle: A literate C++ study of the conditional gradient method with =datamunge='s =algorithms::frank_wolfe=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Constrained optimization usually means repeatedly *projecting* back onto the feasible set -- often the
+expensive part. The *Frank-Wolfe* algorithm (conditional gradient, 1956) avoids projection entirely: at
+each step it minimizes a *linear* approximation of the objective over the feasible set -- a call to a
+cheap *linear minimization oracle* -- and takes a convex step toward that vertex. This report drives
+=datamunge='s =algorithms::frank_wolfe=, verified to converge to the constrained optimum at the
+theoretical \(O(1/k)\) rate, and shows the objective gap closing.
+#+end_abstract
+
+* Linearize, step to a vertex, repeat
+
+To minimize a smooth convex \(f\) over a compact convex set \(C\), Frank-Wolfe replaces the projection of
+projected-gradient methods with a *linear minimization oracle* (LMO). At iterate \(x_k\):
+
+\[ s_k=\arg\min_{s\in C}\ \langle \nabla f(x_k),\,s\rangle,\qquad x_{k+1}=(1-\gamma_k)\,x_k+\gamma_k\,s_k, \]
+
+with the default step size \(\gamma_k=\dfrac{2}{k+2}\). The oracle minimizes a *linear* function over
+\(C\), which for structured sets is trivial: over the probability simplex it returns the unit vector on
+the smallest-gradient coordinate; over an \(\ell_1\) ball, a signed unit vector; over a polytope, a
+vertex. Because each iterate is a convex combination of these vertices, it stays feasible with no
+projection, and over the simplex or \(\ell_1\) ball it stays *sparse* -- only \(k\) vertices can have
+entered by step \(k\). The objective gap satisfies
+
+\[ f(x_k)-f^\star\le \frac{2L\,\mathrm{diam}(C)^2}{k+2}=O\!\left(\tfrac1k\right), \]
+
+the sublinear rate that, combined with projection-free steps and sparse iterates, makes Frank-Wolfe the
+method of choice for large-scale problems over simplices, trace-norm balls, and flow polytopes where a
+projection would be prohibitive.
+
+#+name: fw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/frank_wolfe.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+FRANK-WOLFE(f, grad, LMO, x0, iters):
+  x = x0
+  for k = 0 .. iters-1:
+      g = grad(x)
+      s = LMO(g)                 # argmin_{s in C} <g, s>   (a vertex of C)
+      gamma = 2 / (k + 2)
+      x = (1 - gamma) x + gamma s
+  return x
+#+end_example
+
+* Worked example: a quadratic over the simplex
+
+We minimize \(f(x)=\tfrac12\lVert x-c\rVert^2\) over the probability simplex, with \(c\) chosen *on* the
+simplex so the optimum is \(c\) itself and \(f^\star=0\). We track the objective gap as it closes.
+
+#+name: fw-run
+#+begin_src c++ :eval no
+    const std::vector<double> c{0.5, 0.2, 0.3}; // target, lies on the simplex
+    auto f = [&](const std::vector<double>& x) {
+        double s = 0; for (std::size_t i = 0; i < x.size(); ++i) s += (x[i] - c[i]) * (x[i] - c[i]); return 0.5 * s;
+    };
+    auto grad = [&](const std::vector<double>& x) {
+        std::vector<double> g(x.size()); for (std::size_t i = 0; i < x.size(); ++i) g[i] = x[i] - c[i]; return g;
+    };
+
+    const auto res = frank_wolfe(f, grad, simplex_lmo, std::vector<double>{1, 0, 0}, 4000);
+    std::cout << "=== Frank-Wolfe (quadratic over the simplex) ===\n";
+    std::printf("target c = (%.2f, %.2f, %.2f),  optimum f* = 0\n", c[0], c[1], c[2]);
+    std::printf("final x  = (%.4f, %.4f, %.4f),  sum = %.6f\n", res.x[0], res.x[1], res.x[2],
+                res.x[0] + res.x[1] + res.x[2]);
+    for (int k : {1, 10, 100, 1000, 4000})
+        std::printf("  gap after %5d steps: %.3e\n", k, res.objective[k]);
+
+    std::vector<double> it, gap;
+    for (std::size_t k = 1; k < res.objective.size(); ++k) { it.push_back(k); gap.push_back(std::max(1e-12, res.objective[k])); }
+
+    auto plot = RPlot::create();
+    plot.line(it, gap, "gap", RGB{234, 88, 12}, 2.0);
+    plot.legend({"objective gap f(x_k) - f*"}, {{234, 88, 12}});
+    plot.title("Frank-Wolfe closes the objective gap at the O(1/k) rate")
+        .x_label("iteration k").y_label("gap (log scale)").background({250, 250, 252});
+    plot.save_svg("build/org/frank_wolfe.svg");
+    std::cout << "\nwrote frank_wolfe.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/frank_wolfe_analysis.cpp <<'CPP'
+<<fw-includes>>
+
+int main() {
+<<fw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/frank_wolfe_analysis.cpp -o build/org/frank_wolfe_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/frank_wolfe_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Frank-Wolfe (quadratic over the simplex) ===
+target c = (0.50, 0.20, 0.30),  optimum f* = 0
+final x  = (0.5001, 0.2001, 0.2998),  sum = 1.000000
+  gap after     1 steps: 3.900e-01
+  gap after    10 steps: 3.223e-03
+  gap after   100 steps: 9.909e-05
+  gap after  1000 steps: 5.587e-07
+  gap after  4000 steps: 2.346e-08
+
+wrote frank_wolfe.svg
+#+end_example
+
+The iterate stays on the simplex (its coordinates sum to one at every step) and converges to the target
+\(c\), the objective gap shrinking steadily and comfortably inside the \(O(1/k)\) guarantee (here even
+faster, since the optimum lies in the interior).
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/frank_wolfe.svg]]
+
+On the logarithmic axis the gap descends steadily under its \(O(1/k)\) envelope -- a sublinear rate,
+slower than a projected method's linear one, but every step is a single cheap oracle call and no
+projection at all. That trade is exactly
+why Frank-Wolfe dominates when the feasible set is easy to *linearize* but hard to *project onto*, as with
+the trace-norm balls of low-rank learning or the flow polytopes of structured prediction.

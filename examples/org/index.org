@@ -878,6 +878,16 @@ We implement Jump-and-Walk point location (=geometry::locate_triangle=, =Triangu
 
 We implement geometric hashing (=geometry::build_geometric_hash=, =recognize=) and report it as a literate program. Expressing points in the similarity-invariant frame that sends a chosen basis pair to (0,0) and (1,0) -- the complex quotient (p - b0)/(b1 - b0) -- lets a precomputed hash table turn recognition into a voting game; a model scaled 1.7x, rotated 0.9 rad, and translated amid clutter is recovered exactly (all six points inliers), verified over dozens of random transforms, with the recovered model drawn landing on the scene.
 
+** [[./icp_analysis.html][Iterative Closest Point: Aligning Two Point Clouds]] ([[./icp_analysis.pdf][PDF]])
+/A literate C++ study of rigid registration using datamunge/
+
+We implement Iterative Closest Point (=geometry::icp=) and report it as a literate program. ICP splits the joint pose-and-correspondence problem into two easy steps -- match each source point to its nearest target, then solve the closed-form 2D Kabsch alignment (theta = atan2(sum p x q, sum p . q)) -- repeated until the mean-squared error stops falling; a cloud transformed by a known pose is recovered exactly (RMSE 1.8e-15) and the alignment error is verified non-increasing across iterations, with the aligned cloud drawn landing on the target.
+
+** [[./frank_wolfe_analysis.html][The Frank-Wolfe Algorithm: Optimization Without Projection]] ([[./frank_wolfe_analysis.pdf][PDF]])
+/A literate C++ study of the projection-free conditional gradient method using datamunge/
+
+We implement Frank-Wolfe (=algorithms::frank_wolfe=, =simplex_lmo=) and report it as a literate program. Instead of projecting, each step minimizes the linearized objective over the feasible set via a linear minimization oracle and takes a convex step (gamma=2/(k+2)) toward that vertex, keeping the iterate feasible and sparse; minimizing a quadratic over the probability simplex, the objective gap closes from 3.9e-1 to 2.3e-8 over 4000 steps within the O(1/k) guarantee, plotted on a log axis.
+
 ** [[./baby_step_giant_step_analysis.html][Baby-Step Giant-Step: The Discrete Logarithm by Meet-in-the-Middle]] ([[./baby_step_giant_step_analysis.pdf][PDF]])
 /A literate C++ study of Shanks's discrete-log algorithm using datamunge/
 
@@ -1197,6 +1207,11 @@ We implement Lanczos resampling (=algorithms::lanczos_resample=, =lanczos_resamp
 /A literate C++ study of lacunary interpolation using datamunge/
 
 We implement Birkhoff (lacunary) interpolation (=algorithms::birkhoff_polynomial=, =birkhoff_eval=) and report it as a literate program. Prescribing an arbitrary assortment of derivative orders at each node -- not the consecutive block Hermite requires -- turns each constraint into a linear equation in the polynomial coefficients; a cubic pinned by values and second derivatives (no slopes) at two nodes is recovered exactly (error 3.6e-15) and a non-poised scheme is correctly rejected as singular, with the interpolant drawn through its constrained nodes.
+
+** [[./tricubic_interpolation_analysis.html][Tricubic Interpolation: Smooth Resampling of a Volume]] ([[./tricubic_interpolation_analysis.pdf][PDF]])
+/A literate C++ study of 3-D cubic convolution using datamunge/
+
+We implement tricubic interpolation (=algorithms::tricubic_interpolate=) and report it as a literate program. Keys' cubic-convolution kernel applied separably over the 4x4x4 grid neighborhood gives a C1, third-order volume interpolant that passes through grid nodes and reproduces trilinear functions in the interior; on a smooth 3-D field its profile error (1.2e-2) is well below the eight-corner trilinear blend's (5.9e-2), with the two reconstructions plotted against the truth.
 
 ** [[./de_casteljau_analysis.html][De Casteljau's Algorithm: Bezier Curves by Repeated Lerping]] ([[./de_casteljau_analysis.pdf][PDF]])
 /A literate C++ study of Bezier evaluation using datamunge/

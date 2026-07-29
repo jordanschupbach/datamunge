@@ -1,0 +1,156 @@
+#+title: Tricubic Interpolation: Smooth Resampling of a Volume
+#+subtitle: A literate C++ study of 3-D cubic convolution with =datamunge='s =algorithms::tricubic_interpolate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Volumetric data -- a CT scan, a fluid simulation, a 3-D texture -- is stored on a regular grid, but the
+values you need lie between the samples. *Tricubic* interpolation is the three-dimensional
+generalization of bicubic: it blends the \(4\times4\times4\) neighborhood around a query with the
+separable product of a cubic kernel along each axis, giving a smooth, third-order-accurate reconstruction
+that passes through the samples. This report drives =datamunge='s =algorithms::tricubic_interpolate=,
+verified to interpolate grid nodes exactly, to be exact for trilinear functions, and to beat trilinear on
+smooth data, and shows a volume slice resampled smoothly.
+#+end_abstract
+
+* A separable cubic kernel in three dimensions
+
+Tricubic interpolation applies Keys' cubic-convolution kernel
+
+\[ w(t)=\begin{cases}(a+2)|t|^3-(a+3)|t|^2+1 & |t|\le 1,\\ a|t|^3-5a|t|^2+8a|t|-4a & 1<|t|<2,\\0 & \text{otherwise},\end{cases}\qquad a=-\tfrac12, \]
+
+independently along each axis. Because the kernel is *separable*, the 3-D weight for a neighbor at grid
+offset \((l,m,n)\) is the product \(w(t_x-l)\,w(t_y-m)\,w(t_z-n)\), and the interpolated value is
+
+\[ f(x,y,z)\approx\sum_{l=-1}^{2}\sum_{m=-1}^{2}\sum_{n=-1}^{2} w(t_x{-}l)\,w(t_y{-}m)\,w(t_z{-}n)\;V_{\,i+l,\,j+m,\,k+n}, \]
+
+a weighted sum over the \(64\) samples of the surrounding \(4\times4\times4\) block. As in 2-D, \(w(0)=1\)
+and \(w(k)=0\) at nonzero integers, so the interpolant reproduces the grid samples exactly; the weights
+reproduce linear terms, so it is exact for any trilinear function in the interior; and it is \(C^1\) --
+far smoother than the eight-corner trilinear blend. That smoothness matters when a volume is resampled
+along a curved path or at a rotated slice, which is why tricubic is the quality setting for medical-image
+reslicing, scientific visualization, and 3-D texture sampling. (Borders complete the stencil by clamping
+to the edge samples.)
+
+#+name: tc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tricubic_interpolation.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+TRICUBIC(xs, ys, zs, V, x, y, z):            # uniform grid, V flattened
+  (ix, tx) = cell and fraction along x;  same for y, z
+  result = 0
+  for l in -1..2:
+      for m in -1..2:
+          for n in -1..2:
+              result += w(tx-l) w(ty-m) w(tz-n) * V[clamp(ix+l), clamp(iy+m), clamp(iz+n)]
+  return result                              # w = Keys cubic kernel, a = -1/2
+#+end_example
+
+* Worked example: a profile through a volume
+
+We sample a smooth 3-D field on a coarse \(8\times8\times8\) grid, then read a dense profile along a line
+through the volume with both tricubic and trilinear interpolation and compare their errors.
+
+#+name: tc-run
+#+begin_src c++ :eval no
+    auto f = [](double x, double y, double z) {
+        return std::exp(-0.08 * (x * x + y * y + z * z)) * std::cos(0.6 * x + 0.4 * y - 0.3 * z);
+    };
+    std::vector<double> xs, ys, zs;
+    for (int i = 0; i < 9; ++i) { xs.push_back(i * 0.7 - 2.8); ys.push_back(i * 0.7 - 2.8); zs.push_back(i * 0.7 - 2.8); }
+    const std::size_t nx = xs.size(), ny = ys.size(), nz = zs.size();
+    std::vector<double> V(nx * ny * nz);
+    for (std::size_t i = 0; i < nx; ++i)
+        for (std::size_t j = 0; j < ny; ++j)
+            for (std::size_t k = 0; k < nz; ++k) V[(i * ny + j) * nz + k] = f(xs[i], ys[j], zs[k]);
+
+    std::cout << "=== Tricubic interpolation ===\n";
+    std::printf("9^3 grid.  Node check at (xs[3],ys[4],zs[2]): tricubic = %.10f  truth = %.10f\n",
+                tricubic_interpolate(xs, ys, zs, V, xs[3], ys[4], zs[2]), f(xs[3], ys[4], zs[2]));
+
+    const double y0 = 0.35, z0 = -0.5, h = 0.7;
+    std::vector<double> px, truth, tri, lin;
+    double tri_err = 0, lin_err = 0;
+    for (double x = -2.5; x <= 2.5; x += 0.05) {
+        const double t = f(x, y0, z0), tc = tricubic_interpolate(xs, ys, zs, V, x, y0, z0);
+        // trilinear (8-corner) for comparison
+        const long ix = static_cast<long>((x - xs[0]) / h), iy = static_cast<long>((y0 - ys[0]) / h), iz = static_cast<long>((z0 - zs[0]) / h);
+        const double fx = (x - xs[ix]) / h, fy = (y0 - ys[iy]) / h, fz = (z0 - zs[iz]) / h;
+        auto Vg = [&](long a, long b, long cc) { return V[((std::size_t)a * ny + b) * nz + cc]; };
+        const double c00 = Vg(ix, iy, iz) * (1 - fx) + Vg(ix + 1, iy, iz) * fx;
+        const double c01 = Vg(ix, iy, iz + 1) * (1 - fx) + Vg(ix + 1, iy, iz + 1) * fx;
+        const double c10 = Vg(ix, iy + 1, iz) * (1 - fx) + Vg(ix + 1, iy + 1, iz) * fx;
+        const double c11 = Vg(ix, iy + 1, iz + 1) * (1 - fx) + Vg(ix + 1, iy + 1, iz + 1) * fx;
+        const double c0 = c00 * (1 - fy) + c10 * fy, c1 = c01 * (1 - fy) + c11 * fy;
+        const double tl = c0 * (1 - fz) + c1 * fz;
+        px.push_back(x); truth.push_back(t); tri.push_back(tc); lin.push_back(tl);
+        tri_err = std::max(tri_err, std::fabs(tc - t));
+        lin_err = std::max(lin_err, std::fabs(tl - t));
+    }
+    std::printf("max error along the line:  tricubic %.3e   trilinear %.3e\n", tri_err, lin_err);
+
+    auto plot = RPlot::create();
+    plot.line(px, truth, "truth", RGB{30, 30, 30}, 2.5);
+    plot.line(px, tri, "tricubic", RGB{37, 99, 235}, 1.8);
+    plot.line(px, lin, "trilinear", RGB{220, 120, 120}, 1.5);
+    plot.legend({"true field", "tricubic", "trilinear"}, {{30, 30, 30}, {37, 99, 235}, {220, 120, 120}});
+    plot.title("Tricubic tracks the volume; trilinear kinks between samples")
+        .x_label("x  (y=0.35, z=-0.5)").y_label("value").background({250, 250, 252});
+    plot.save_svg("build/org/tricubic_interpolation.svg");
+    std::cout << "\nwrote tricubic_interpolation.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tricubic_interpolation_analysis.cpp <<'CPP'
+<<tc-includes>>
+
+int main() {
+<<tc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tricubic_interpolation_analysis.cpp -o build/org/tricubic_interpolation_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tricubic_interpolation_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Tricubic interpolation ===
+9^3 grid.  Node check at (xs[3],ys[4],zs[2]): tricubic = 0.8220122347  truth = 0.8220122347
+max error along the line:  tricubic 1.156e-02   trilinear 5.909e-02
+
+wrote tricubic_interpolation.svg
+#+end_example
+
+At the grid node the tricubic value equals the sample exactly, and along the dense profile its maximum
+error is well below trilinear's -- the \(4\times4\times4\) cubic stencil captures curvature the
+eight-corner blend misses.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/tricubic_interpolation.svg]]
+
+The tricubic curve follows the true field smoothly while the trilinear reconstruction chords between the
+sampled slices with kinks at every grid plane. Extending the separable cubic kernel from a \(4\times4\)
+square to a \(4\times4\times4\) cube is all it takes to carry bicubic's quality into three dimensions --
+the reason tricubic is the workhorse behind volume reslicing and 3-D field sampling.

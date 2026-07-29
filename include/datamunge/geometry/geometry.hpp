@@ -13,6 +13,7 @@
 #include <datamunge/geometry/dtw.hpp>
 #include <datamunge/geometry/frechet.hpp>
 #include <datamunge/geometry/geometric_hashing.hpp>
+#include <datamunge/geometry/icp.hpp>
 #include <datamunge/geometry/jump_and_walk.hpp>
 #include <datamunge/geometry/kdtree.hpp>
 #include <datamunge/geometry/laplacian_smoothing.hpp>

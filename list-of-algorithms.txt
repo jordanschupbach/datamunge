@@ -291,7 +291,7 @@ Further information: Computational geometry
     [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
     Nesting algorithm: make the most efficient use of material or space
     [x] Point in polygon algorithms: tests whether a given point lies within a given polygon  -- datamunge::geometry::point_in_polygon (PNPOLY even-odd ray casting); report examples/org/point_in_polygon_analysis.org
-    Point set registration algorithms: finds the transformation between two point sets to optimally align them.
+    [x] Point set registration algorithms: finds the transformation between two point sets to optimally align them.  -- datamunge::geometry::icp (Iterative Closest Point: nearest-neighbor correspondence + closed-form 2D Kabsch alignment); report examples/org/icp_analysis.org
     [x] Rotating calipers: determine all antipodal pairs of points and vertices on a convex polygon or convex hull.  -- datamunge::geometry::polygon_diameter; report examples/org/rotating_calipers_analysis.org
     [x] Shoelace algorithm: determine the area of a polygon whose vertices are described by ordered pairs in the plane  -- datamunge::geometry::signed_polygon_area / polygon_area; report examples/org/shoelace_analysis.org
     Triangulation
@@ -430,7 +430,7 @@ Further information: Extrapolation and Interpolation
         [x] Bilinear interpolation: an extension of linear interpolation for interpolating functions of two variables on a regular grid  -- datamunge::algorithms::bilinear_interpolate; report examples/org/bilinear_analysis.org
         [x] Lanczos resampling ("Lanzosh"): a multivariate interpolation method used to compute new values for any digitally sampled data  -- datamunge::algorithms::lanczos_resample / lanczos_resample_at (windowed-sinc kernel L(x)=sinc(x)sinc(x/a)); report examples/org/lanczos_resampling_analysis.org
         Nearest-neighbor interpolation
-        Tricubic interpolation: a generalization of cubic interpolation to three dimensions
+        [x] Tricubic interpolation: a generalization of cubic interpolation to three dimensions  -- datamunge::algorithms::tricubic_interpolate (Keys cubic convolution, separable 4x4x4 stencil); report examples/org/tricubic_interpolation_analysis.org
     Pareto interpolation: a method of estimating the median and other properties of a population that follows a Pareto distribution.
     Polynomial interpolation
         [x] Neville's algorithm  -- datamunge::algorithms::neville_interpolate; report examples/org/neville_analysis.org
@@ -541,7 +541,7 @@ Hybrid Algorithms
             Ant colony optimization
             Bees algorithm: a search algorithm which mimics the food foraging behavior of swarms of honey bees
             Particle swarm
-    Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization
+    [x] Frank-Wolfe algorithm: an iterative first-order optimization algorithm for constrained convex optimization  -- datamunge::algorithms::frank_wolfe / simplex_lmo (conditional gradient, projection-free, linear minimization oracle, O(1/k)); report examples/org/frank_wolfe_analysis.org
     [x] Golden-section search: an algorithm for finding the maximum of a real function  -- datamunge::algorithms::golden_section_search; report examples/org/golden_section_search_analysis.org
     Gradient descent
     Grid Search
