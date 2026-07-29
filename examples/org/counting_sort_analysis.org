@@ -1,0 +1,298 @@
+#+title: Counting Sort: Stable Non-Comparison Sorting by Key Frequency
+#+subtitle: A literate C++ study of bucketed integer sorting with =datamunge='s =algorithms::counting_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every comparison sort pays an \(\Omega(n \log n)\) toll: to order \(n\) items by
+asking only "is \(a\) before \(b\)?", you cannot do better. Counting sort
+sidesteps the toll entirely by refusing to compare. When the keys are integers
+drawn from a small range \([\,\text{min},\text{max}\,]\), it simply *tallies*
+how many times each key occurs, turns those tallies into final positions with a
+running sum, and drops every element straight into place -- \(O(n + k)\) time,
+where \(k = \text{max} - \text{min} + 1\) is the width of the key range. This
+report implements it in =datamunge='s C++ =algorithms::counting_sort= and
+presents it as a literate program: every number and figure is produced by a
+single compiled binary. We give the three phases -- count, prefix-sum, place --
+with pseudocode, explain why placing elements *right to left* is exactly what
+makes the sort *stable*, and pin down when the method wins (a narrow integer
+range) versus when it is hopeless (a range far larger than \(n\)). A worked
+eight-element run exposes the count array and prefix sums by hand, a
+keyed-record example demonstrates stability against =std::stable_sort=, and we
+note the sort's real job: the stable inner loop of radix sort.
+#+end_abstract
+
+* Sorting without comparing
+
+Give a comparison sort a black box that only answers "does \(a\) come before
+\(b\)?" and the best it can do is \(\Theta(n \log n)\): there are \(n!\)
+possible orderings and each yes/no question at most halves the survivors, so at
+least \(\log_2 n! = \Theta(n \log n)\) questions are needed. Counting sort
+escapes this bound by using more than a comparison -- it uses the key *value*
+itself as an array index.
+
+Suppose the data are integers, all within a known range
+\([\,\text{min},\text{max}\,]\). Let \(k = \text{max} - \text{min} + 1\) be the
+number of distinct key slots. Counting sort allocates a length-\(k\) array of
+counters, tallies how often each key appears, and from those tallies computes
+precisely where each key's block of equal values begins in the output. No two
+elements are ever compared; the arithmetic of *where does key \(v\) go* does all
+the work.
+
+=datamunge= exposes two overloads. The first auto-detects the range by scanning
+for the minimum and maximum key; the second takes the range explicitly -- the
+form radix sort calls once per digit, where the digit range \([0,9]\) or
+\([0,255]\) is known up front.
+
+#+name: cs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/counting_sort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstdint>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The three phases
+
+Counting sort runs in three passes over its data.
+
+1. *Count.* Sweep the input once, incrementing =count[x - min]= for each element
+   =x=. Afterward =count[v]= is exactly how many elements have key \(\text{min}+v\).
+2. *Prefix-sum to positions.* Turn the histogram into placement information with
+   a running sum. The elements with key \(v\) must occupy a contiguous block; the
+   number of elements that precede that block is the sum of all counts for keys
+   below \(v\). Accumulating the counts therefore yields, for each key, the start
+   (or, equivalently, the end) of its block in the sorted output.
+3. *Place.* Sweep the input a second time and drop each element into the next
+   free slot of its key's block.
+
+#+begin_example
+COUNTING-SORT(A, min, max):              # keys are integers in [min, max]
+  k <- max - min + 1
+  count[0 .. k-1] <- 0
+
+  # Phase 1 -- tally the frequency of each key.
+  for each x in A:
+      count[x - min] <- count[x - min] + 1
+
+  # Phase 2 -- prefix-sum the counts into an END cursor for each key's block.
+  running <- 0
+  for v <- 0 to k-1:
+      running   <- running + count[v]
+      pos[v]    <- running                # one past the last slot of key v's block
+
+  # Phase 3 -- place elements, scanning the input RIGHT TO LEFT (for stability).
+  allocate output[0 .. length(A)-1]
+  for i <- length(A)-1 down to 0:
+      v          <- A[i] - min
+      pos[v]     <- pos[v] - 1
+      output[pos[v]] <- A[i]
+
+  A <- output
+#+end_example
+
+** Why right-to-left placement is stable
+
+A sort is *stable* when elements that share a key keep their original relative
+order. With bare integers stability is invisible -- two \(3\)s are
+interchangeable -- but the moment each key carries a payload (a record sorted by
+one field, or a digit inside radix sort) it matters, and it is the whole reason
+counting sort is useful as a subroutine.
+
+Phase 2 leaves =pos[v]= pointing at the slot just past key \(v\)'s block. Phase 3
+walks the *input* from its last element to its first; each time it meets a key
+\(v\) it pre-decrements =pos[v]= and writes there. So the first element of key
+\(v\) that the reverse scan encounters -- the *last* one in the input -- lands in
+the *highest* slot of the block, and successively earlier input elements fill
+successively lower slots. The result: within each block, elements appear in
+their original input order. Scanning left to right with the same end cursors, or
+right to left with start cursors, would reverse ties and break stability. The
+direction is not incidental; it is the mechanism.
+
+* Cost, and when to reach for it
+
+Both passes over the input are \(O(n)\) and both passes over the count array are
+\(O(k)\), so counting sort runs in *\(O(n + k)\) time* and needs *\(O(n + k)\)
+space* (the output buffer plus the counters). When the key range is proportional
+to the element count, \(k = O(n)\), this is genuinely *linear* -- beating the
+\(\Theta(n\log n)\) comparison barrier because it never compares.
+
+The catch is \(k\). Sorting a handful of 64-bit values that happen to span
+billions would demand a billion counters: all cost, no benefit. Counting sort is
+the right tool exactly when the range is narrow -- small integers, byte values,
+ballot tallies, ages, a radix's single digit -- and the wrong tool when the range
+dwarfs \(n\). =datamunge= makes the failure mode explicit: past
+=kCountingSortMaxRange= the explicit-range overload throws =std::length_error=
+rather than attempt a ruinous allocation.
+
+That narrowness requirement is also what makes counting sort the natural *inner
+loop of radix sort*. Radix sort orders wide integers one digit at a time, from
+least to most significant, and each pass is a counting sort over a single digit's
+tiny range (\([0,9]\), or \([0,255]\) for a byte). Because each digit-pass is
+*stable*, digits already sorted stay sorted as later, more-significant digits are
+processed -- so \(d\) linear passes sort \(d\)-digit keys in \(O(d\,(n+b))\) time
+for base \(b\). Stability is not a nicety there; radix sort is simply wrong
+without it.
+
+* A worked run
+
+We sort a small deterministic array by hand and by library, printing the count
+array and the prefix-summed starting positions so every phase is visible, then
+demonstrate stability by sorting keyed records and comparing, element for
+element, against =std::stable_sort=.
+
+#+name: cs-run
+#+begin_src c++ :eval no
+    auto show = [](const std::vector<std::int64_t>& v) {
+        for (std::size_t i = 0; i < v.size(); ++i) std::cout << (i ? " " : "") << v[i];
+    };
+
+    // ---- A deterministic worked example -------------------------------------
+    std::cout << "=== Counting sort: a worked example ===\n";
+    std::vector<std::int64_t> data = {2, 5, 3, 0, 2, 3, 0, 3};
+    std::cout << "input:  ";  show(data);  std::cout << "\n";
+
+    const std::int64_t lo = *std::min_element(data.begin(), data.end());
+    const std::int64_t hi = *std::max_element(data.begin(), data.end());
+    const std::size_t  k  = static_cast<std::size_t>(hi - lo) + 1;
+    std::cout << "range:  [" << lo << ", " << hi << "]  (k = " << k << " buckets)\n";
+
+    // Phase 1: tally the frequency of each key.
+    std::vector<std::size_t> count(k, 0);
+    for (auto x : data) ++count[static_cast<std::size_t>(x - lo)];
+    std::cout << "counts:";
+    for (std::size_t i = 0; i < k; ++i)
+        std::cout << "  key " << (lo + static_cast<std::int64_t>(i)) << "=" << count[i];
+    std::cout << "\n";
+
+    // Phase 2: prefix-sum the counts into starting positions.
+    std::vector<std::size_t> start(k, 0);
+    std::size_t running = 0;
+    for (std::size_t i = 0; i < k; ++i) { start[i] = running; running += count[i]; }
+    std::cout << "starts:";
+    for (std::size_t i = 0; i < k; ++i)
+        std::cout << "  key " << (lo + static_cast<std::int64_t>(i)) << "@" << start[i];
+    std::cout << "\n";
+
+    // Phase 3: stable placement, right to left (performed by the library).
+    counting_sort(data);
+    std::cout << "sorted:  ";  show(data);  std::cout << "\n";
+    std::cout << "is_sorted: " << (std::is_sorted(data.begin(), data.end()) ? "yes" : "NO") << "\n";
+
+    // ---- Stability on keyed records -----------------------------------------
+    std::cout << "\n=== Stability: sorting keyed records by key ===\n";
+    struct Rec { std::int64_t key; std::string who; };
+    const std::vector<Rec> records = {
+        {1, "Ann"}, {0, "Bob"}, {2, "Cy"},  {1, "Dan"},
+        {0, "Eve"}, {1, "Fay"}, {2, "Gil"}, {0, "Hal"},
+    };
+    // Pack the key into the high part and the arrival index into the low part, so a plain
+    // ascending sort orders by key and breaks ties by original position -- what a STABLE sort
+    // must do, and exactly how counting sort is used inside radix sort.
+    constexpr std::int64_t place = 100;
+    std::vector<std::int64_t> packed;
+    for (std::size_t i = 0; i < records.size(); ++i)
+        packed.push_back(records[i].key * place + static_cast<std::int64_t>(i));
+    counting_sort(packed);
+
+    std::cout << "counting_sort order:   ";
+    for (std::size_t i = 0; i < packed.size(); ++i)
+        std::cout << (i ? " " : "") << records[static_cast<std::size_t>(packed[i] % place)].who
+                  << "(" << (packed[i] / place) << ")";
+    std::cout << "\n";
+
+    std::vector<Rec> reference = records;
+    std::stable_sort(reference.begin(), reference.end(),
+                     [](const Rec& a, const Rec& b) { return a.key < b.key; });
+    std::cout << "std::stable_sort order: ";
+    for (std::size_t i = 0; i < reference.size(); ++i)
+        std::cout << (i ? " " : "") << reference[i].who << "(" << reference[i].key << ")";
+    std::cout << "\n";
+
+    bool identical = packed.size() == reference.size();
+    for (std::size_t i = 0; identical && i < reference.size(); ++i)
+        identical = records[static_cast<std::size_t>(packed[i] % place)].who == reference[i].who;
+    std::cout << "identical ordering: " << (identical ? "yes" : "NO") << "\n";
+
+    // ---- Figure: bar chart of the count array -------------------------------
+    std::vector<double> keys, freqs;
+    for (std::size_t i = 0; i < k; ++i) {
+        keys.push_back(static_cast<double>(lo + static_cast<std::int64_t>(i)));
+        freqs.push_back(static_cast<double>(count[i]));
+    }
+    auto plot = RPlot::create();
+    if (!keys.empty() && !freqs.empty())
+        plot.bars(keys, freqs, "frequency", {37, 99, 235}, 0.8);
+    plot.title("Counting sort: frequency of each key (the count array)")
+        .x_label("key value").y_label("count").background({250, 250, 252});
+    plot.save_svg("build/org/counting_sort_counts.svg");
+    std::cout << "\nwrote counting_sort_counts.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/counting_sort_analysis.cpp <<'CPP'
+<<cs-includes>>
+
+int main() {
+<<cs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/counting_sort_analysis.cpp -o build/org/counting_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/counting_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Counting sort: a worked example ===
+input:  2 5 3 0 2 3 0 3
+range:  [0, 5]  (k = 6 buckets)
+counts:  key 0=2  key 1=0  key 2=2  key 3=3  key 4=0  key 5=1
+starts:  key 0@0  key 1@2  key 2@2  key 3@4  key 4@7  key 5@7
+sorted:  0 0 2 2 3 3 3 5
+is_sorted: yes
+
+=== Stability: sorting keyed records by key ===
+counting_sort order:   Bob(0) Eve(0) Hal(0) Ann(1) Dan(1) Fay(1) Cy(2) Gil(2)
+std::stable_sort order: Bob(0) Eve(0) Hal(0) Ann(1) Dan(1) Fay(1) Cy(2) Gil(2)
+identical ordering: yes
+#+end_example
+
+Reading the worked run against the pseudocode: the input =2 5 3 0 2 3 0 3= over
+the range \([0,5]\) tallies to the count array \((2,0,2,3,0,1)\) -- two \(0\)s,
+no \(1\)s, two \(2\)s, three \(3\)s, no \(4\)s, one \(5\). Prefix-summing those
+counts gives each key's starting slot \((0,2,2,4,7,7)\): the \(0\)s begin at
+index \(0\), the \(2\)s at index \(2\) (index \(1\)'s empty block collapses to a
+zero-width gap, so key \(1\) and key \(2\) share a start), the \(3\)s at \(4\),
+and the lone \(5\) at \(7\). Placing every element into its block yields
+=0 0 2 2 3 3 3 5=, confirmed sorted. The histogram those counts form is the
+figure below.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/counting_sort_counts.svg]]
+
+The stability check makes the payload-preserving property concrete. Eight
+records carry keys \(\{1,0,2,1,0,1,2,0\}\) in arrival order; counting sort
+groups them by key -- all \(0\)s, then all \(1\)s, then all \(2\)s -- and *within
+each group keeps arrival order*: Bob, Eve, Hal for key \(0\); Ann, Dan, Fay for
+key \(1\); Cy, Gil for key \(2\). Element for element this is precisely what
+=std::stable_sort= produces, and it is precisely the invariant that lets radix
+sort chain counting-sort passes over successive digits without ever undoing the
+work of an earlier pass.

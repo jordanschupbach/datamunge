@@ -1,0 +1,38 @@
+#+title: Push--Relabel Maximum Flow
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Push--relabel maintains a preflow and local height labels rather than complete
+augmenting paths.  We give its invariants, pseudocode, and a production example.
+#+end_abstract
+
+* Mathematics and algorithm
+
+A preflow permits positive excess \(e(v)\).  Heights satisfy
+\(h(u)\le h(v)+1\) on residual arcs; flow may be pushed only on an admissible
+arc with \(h(u)=h(v)+1\).  If none exists, relabeling to
+\(1+\min h(v)\) restores progress.
+
+#+begin_example
+saturate every edge leaving source; set h(source)=V
+queue active nonterminal vertices
+while queue nonempty:
+  push on admissible residual arcs
+  if blocked, relabel
+return sink excess and residual minimum cut
+#+end_example
+
+The generic FIFO implementation is \(O(V^2E)\).
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/advanced_graph.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::push_relabel_max_flow(
+2,{{0,1,9}},0,1);std::cout<<r.max_flow<<'\n';}
+#+end_src
+
+It prints 9; focused tests independently recover the CLRS value 23.
+

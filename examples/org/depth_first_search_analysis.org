@@ -1,0 +1,19 @@
+#+title: Depth-First Search
+#+property: header-args:c++ :eval no
+* Mathematics and pseudocode
+DFS marks a vertex, follows one unseen successor recursively, and backtracks
+only at a dead end.  Every reachable vertex is eventually marked, giving
+\(O(V+E)\) time and \(O(V)\) space.
+#+begin_example
+DFS(u): mark u; if goal return
+for each unseen successor v: DFS(v)
+#+end_example
+* Example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using datamunge::algorithms::depth_first_search;
+  const auto result = depth_first_search(2, {{0, 1}}, 0, 1);
+  return result.found ? 0 : 1;
+}
+#+end_src

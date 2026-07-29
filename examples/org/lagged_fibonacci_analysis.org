@@ -1,0 +1,61 @@
+#+title: Additive Lagged-Fibonacci Generation
+#+subtitle: A circular-buffer recurrence with =datamunge::random::LaggedFibonacci64=
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+A lagged-Fibonacci generator replaces the two terms of Fibonacci's recurrence
+by distant state words.  This report derives the additive variant, explains
+the circular buffer, supplies pseudocode, and samples the implementation.
+#+end_abstract
+
+* Mathematics
+
+For lags \(0<j<k\), define
+\[
+x_n=(x_{n-j}+x_{n-k})\bmod 2^{64}.
+\]
+The library defaults to \((j,k)=(24,55)\).  The last \(k\) values suffice:
+when the circular cursor points at \(x_{n-k}\), the cell \(k-j\) positions
+ahead holds \(x_{n-j}\).  Adding that cell into the cursor cell creates
+\(x_n\), after which the cursor advances.  Each word costs \(O(1)\) time and
+the generator stores \(O(k)\) words.  SplitMix64 expands a single public seed
+into the initial table.  This family is useful for reproducible simulation,
+not secrets.
+
+* Algorithm
+
+#+begin_example
+LFG-NEXT(state[0..k-1], cursor, j):
+  short <- (cursor + k - j) mod k
+  state[cursor] <- state[cursor] + state[short] mod 2^64
+  answer <- state[cursor]
+  cursor <- (cursor + 1) mod k
+  return answer
+#+end_example
+
+* Executable C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/random/random.hpp>
+#include <iostream>
+
+int main() {
+  datamunge::random::LaggedFibonacci64 a(2026, 2, 5);
+  datamunge::random::LaggedFibonacci64 b(2026, 2, 5);
+  for (int i = 0; i < 5; ++i)
+    std::cout << (a.next_u64() == b.next_u64()) << ' ';
+  std::cout << '\n';
+}
+#+end_src
+
+#+begin_example
+1 1 1 1 1
+#+end_example
+
+* Correctness
+
+Before a step, the cursor cell contains \(x_{n-k}\).  The index formula selects
+the cell last overwritten \(j\) outputs ago, hence \(x_{n-j}\).  Unsigned
+addition supplies exact arithmetic modulo \(2^{64}\), so the overwritten word
+is \(x_n\).  Advancing the cursor restores the invariant for \(n+1\).

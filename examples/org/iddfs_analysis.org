@@ -1,0 +1,20 @@
+#+title: Iterative Deepening Depth-First Search
+#+property: header-args:c++ :eval no
+* Mathematics and pseudocode
+IDDFS runs depth-limited DFS with limits \(0,1,\ldots,d\).  It combines BFS's
+shallowest-solution guarantee with DFS's \(O(d)\) path space.  Re-expanding
+upper levels costs only a constant factor for branching factor \(b>1\).
+#+begin_example
+for limit = 0..maximum:
+  if depth-limited DFS finds goal: return its path
+#+end_example
+* Example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using datamunge::algorithms::iterative_deepening_dfs;
+  const auto result =
+      iterative_deepening_dfs(2, {{0, 1}}, 0, 1, 1);
+  return result.found ? 0 : 1;
+}
+#+end_src

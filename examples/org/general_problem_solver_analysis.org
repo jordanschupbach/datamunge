@@ -1,0 +1,21 @@
+#+title: General Problem Solver and Means--Ends Planning
+#+property: header-args:c++ :eval no
+* Mathematics and pseudocode
+A state is a bitset of facts.  An action applies when all preconditions hold,
+then removes and adds facts.  Means--ends DFS chooses applicable operators
+until every goal bit holds.
+#+begin_example
+PLAN(state): if goals subset state return success
+for applicable action: recurse on (state-remove) union add
+#+end_example
+State memoization prevents loops; bounded planning remains exponential.
+* Example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using namespace datamunge::algorithms;
+  const PlanningAction make{"make", 0, 1, 0};
+  const auto result = general_problem_solver(0, 1, {make});
+  return result.found ? 0 : 1;
+}
+#+end_src

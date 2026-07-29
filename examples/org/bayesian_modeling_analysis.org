@@ -536,7 +536,8 @@ out of the same kind of careful figure-by-figure verification.
 #+begin_export latex
 \tiny
 #+end_export
-#+begin_src shell :exports results
+#+begin_src shell :exports results :dir ../../
+set -euo pipefail
 mkdir -p build/org
 cat > build/org/bayes_analysis.cpp <<'CPP'
 <<bayes-includes>>

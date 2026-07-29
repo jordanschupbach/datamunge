@@ -1,0 +1,91 @@
+#+title: Edmonds' Blossom Algorithm
+#+subtitle: Maximum-cardinality general-graph matching with =blossom_maximum_matching=
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Augmenting paths characterise maximum matchings, but odd cycles defeat the
+straightforward alternating-tree search.  Edmonds' algorithm contracts each
+such blossom, searches the smaller graph, and expands it without losing an
+augmenting path.  We explain the mathematics, present pseudocode, and solve a
+six-vertex example with the library.
+#+end_abstract
+
+* Matching and augmenting paths
+
+A matching \(M\subseteq E\) contains no two edges sharing a vertex.  An
+\(M\)-augmenting path begins and ends at unmatched vertices and alternates
+between edges outside and inside \(M\).  Flipping membership along it increases
+\(|M|\) by one.  Berge's theorem states:
+\[
+M\text{ is maximum}\quad\Longleftrightarrow\quad
+\text{there is no }M\text{-augmenting path}.
+\]
+
+In bipartite graphs a BFS alternating forest is enough.  In a general graph,
+an edge joining two even-level vertices creates an odd alternating cycle: a
+*blossom*.  Treating the cycle as one supervertex preserves existence of an
+augmenting path.  After a path is found, its passage through the cycle can
+always be expanded by alternating around the appropriate side.
+
+* Algorithm
+
+#+begin_example
+EDMONDS(G):
+  M <- empty
+  for each free root r:
+    initialise alternating BFS forest rooted at r
+    while queue nonempty:
+      inspect edge (v,u)
+      if v and u lie in distinct even branches:
+        b <- least common ancestor of v and u
+        mark both alternating paths from v,u to b
+        contract the resulting odd cycle to base b
+      else if u is unseen:
+        parent[u] <- v
+        if u is free: augment through parent links; restart
+        otherwise enqueue mate[u] as an even vertex
+  return M
+#+end_example
+
+The implementation stores a representative =base= for every contracted
+vertex and performs at most \(O(V)\) searches, each \(O(V^2)\), for
+\(O(V^3)\) time and \(O(V+E)\) space.
+
+* Executable C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/blossom.hpp>
+#include <iostream>
+
+int main() {
+  auto m = datamunge::algorithms::blossom_maximum_matching(
+      6, {{0,1}, {1,2}, {2,0}, {1,3}, {3,4}, {2,5}});
+  std::cout << "pairs = " << m.size << '\n';
+  for (std::size_t v = 0; v < m.mate.size(); ++v)
+    if (v < m.mate[v]) std::cout << v << '-' << m.mate[v] << '\n';
+}
+#+end_src
+
+The triangle \(0,1,2\) is the odd blossom.  Contracting it exposes an
+augmenting route and the program obtains three pairs:
+
+#+begin_example
+pairs = 3
+0-1
+2-5
+3-4
+#+end_example
+
+The exact maximum is certified without trusting the algorithm: six vertices
+place the universal upper bound \(|M|\le\lfloor6/2\rfloor=3\), and the result
+attains it.
+
+* Correctness sketch
+
+Every augmentation preserves the matching property and increases cardinality.
+Blossom contraction preserves the existence of an augmenting path; expanding
+a contracted path chooses the alternating side of the odd cycle that connects
+its entry to the blossom base.  Therefore a failed contracted search implies
+no augmenting path exists in the original graph.  When all free roots fail,
+Berge's theorem proves the returned matching maximum.

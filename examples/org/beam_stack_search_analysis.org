@@ -1,0 +1,20 @@
+#+title: Beam-Stack Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics and algorithm
+Beam-stack search keeps beam search's best \(B\) paths but stores pruned
+alternatives on a stack.  If the active beam dies, the most recent deferred
+path is restored, combining bounded forward search with backtracking.
+#+begin_example
+expand and rank current beam
+push candidates beyond width B onto deferred stack
+if beam empties, pop one deferred path and continue
+#+end_example
+Finite simple-path search is complete, though exponential in the worst case.
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::beam_stack_search(3,{{0,1},{0,2}},0,2,{1,0,2},1);std::cout<<r.found;}
+#+end_src
+

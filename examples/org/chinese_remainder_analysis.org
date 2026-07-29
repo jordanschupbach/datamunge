@@ -1,0 +1,276 @@
+#+title: The Chinese Remainder Theorem: Solving Simultaneous Congruences by Pairwise Merging
+#+subtitle: A literate C++ study of general (non-coprime) CRT with =datamunge='s =algorithms::chinese_remainder=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A clock says the hour is 3, a weekly planner says it is day 2, a 100-day
+countdown says it is day 47 -- is there a single instant consistent with all
+three, and if so when does the pattern repeat? Questions of this shape --
+"find a number leaving prescribed remainders on division by several moduli" --
+are answered by the *Chinese Remainder Theorem*, whose earliest known
+statement is a 3rd-century puzzle of Sun-Tzu. This report implements the
+theorem in its *general* form, where the moduli need /not/ be pairwise coprime,
+as =datamunge='s C++ =algorithms::chinese_remainder=, and presents it as a
+literate program: every number and figure is produced by a single compiled
+binary. We state the classical coprime theorem and the general consistency
+condition, derive the constructive *pairwise merge* via the extended Euclidean
+algorithm and its solvability criterion \(\gcd(m_1,m_2)\mid(r_1-r_2)\), and
+give pseudocode. A worked example solves Sun-Tzu's system by hand -- merging
+\(x\equiv2\ (3)\) and \(x\equiv3\ (5)\) into \(x\equiv8\ (15)\), then folding in
+\(x\equiv2\ (7)\) to reach the famous \(23\pmod{105}\) -- alongside a consistent
+non-coprime system and an inconsistent one that the solver correctly rejects.
+A grid figure draws the bijection \(\mathbb{Z}/15\cong\mathbb{Z}/3\times\mathbb{Z}/5\)
+that underlies the whole construction.
+#+end_abstract
+
+* Simultaneous congruences
+
+We are given \(n\) congruences
+\[
+  x \equiv r_1 \pmod{m_1},\quad
+  x \equiv r_2 \pmod{m_2},\quad\dots,\quad
+  x \equiv r_n \pmod{m_n},
+\]
+with positive moduli \(m_i\), and want the set of integers \(x\) satisfying all
+of them at once. The *Chinese Remainder Theorem* describes that solution set.
+
+*Coprime case (the classical theorem).* If the moduli are /pairwise coprime/
+-- \(\gcd(m_i,m_j)=1\) for \(i\neq j\) -- then for /any/ choice of residues
+\(r_i\) there is a solution, and it is *unique modulo* the product
+\(M=m_1m_2\cdots m_n\). Equivalently the map
+\[
+  \mathbb{Z}/M \;\longrightarrow\; \mathbb{Z}/m_1 \times \cdots \times \mathbb{Z}/m_n,
+  \qquad x \bmod M \;\mapsto\; (x\bmod m_1,\dots,x\bmod m_n)
+\]
+is a *bijection* (in fact a ring isomorphism): every tuple of residues is hit
+by exactly one \(x\) in \([0,M)\).
+
+*General case (moduli not coprime).* When the moduli share factors a solution
+need /not/ exist: \(x\equiv1\ (2)\) forces \(x\) odd while \(x\equiv0\ (4)\)
+forces \(x\) even. The system is *solvable iff every pair is consistent*, and
+the pairwise consistency condition is
+\[
+  \gcd(m_i,m_j)\ \big|\ (r_i-r_j)\qquad\text{for all }i,j .
+\]
+When solvable, the solution is again unique -- now *modulo* the /least common
+multiple/ \(\operatorname{lcm}(m_1,\dots,m_n)\) (which equals the product \(M\)
+exactly in the coprime case).
+
+=datamunge= returns both facts in one struct: =solvable= records whether a
+solution exists, and when it does, =remainder= is the unique representative in
+\([0,\texttt{modulus})\) with =modulus= \(=\operatorname{lcm}\) of all the
+moduli.
+
+#+name: crt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/chinese_remainder.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Constructive solution: pairwise merging
+
+Rather than solve all \(n\) congruences at once, we *merge them two at a time*,
+maintaining a single running congruence \(x\equiv r\ (\bmod\ m)\) that captures
+everything seen so far. We start from the vacuous \(x\equiv0\ (\bmod\ 1)\)
+(satisfied by every integer) and fold in the input congruences one by one; if
+any merge is inconsistent the whole system is unsolvable.
+
+*Merging two congruences.* Suppose we must satisfy
+\[
+  x \equiv r_1 \pmod{m_1}\qquad\text{and}\qquad x \equiv r_2 \pmod{m_2}.
+\]
+Write \(g=\gcd(m_1,m_2)\). The extended Euclidean algorithm gives integers
+\(p,q\) with
+\[
+  m_1 p + m_2 q = g .
+\]
+Any \(x\) of the form \(x=r_1+m_1 t\) already satisfies the first congruence for
+every integer \(t\); we must choose \(t\) so it also satisfies the second:
+\[
+  r_1 + m_1 t \equiv r_2 \pmod{m_2}
+  \quad\Longleftrightarrow\quad
+  m_1 t \equiv (r_2-r_1) \pmod{m_2}.
+\]
+This linear congruence in \(t\) is solvable *iff* \(g\mid(r_2-r_1)\) -- the
+*solvability criterion*. When it holds, divide through by \(g\) and use that
+\(m_1 p\equiv g\ (\bmod\ m_2)\), so \(p\) inverts \(m_1/g\) modulo \(m_2/g\):
+\[
+  t \equiv \frac{r_2-r_1}{g}\,\cdot\, p \pmod{m_2/g}.
+\]
+Substituting back, \(x=r_1+m_1 t\) satisfies both congruences, and it is unique
+modulo
+\[
+  \operatorname{lcm}(m_1,m_2)=\frac{m_1 m_2}{g}.
+\]
+Reducing \(x\) into \([0,\operatorname{lcm})\) gives the merged residue; the
+merged modulus is the lcm. Iterating over all inputs yields the answer.
+
+#+begin_example
+CHINESE-REMAINDER(remainders r[1..n], moduli m[1..n]):
+  # running solution x = R (mod M); start with the everywhere-true congruence
+  R <- 0;  M <- 1
+  for i in 1..n:
+      r2 <- r[i] mod m[i]                  # normalize target into [0, m[i])
+      (g, p, q) <- EXT-GCD(M, m[i])        # M*p + m[i]*q = g = gcd(M, m[i])
+      if (r2 - R) mod g != 0:              # solvability: g must divide the difference
+          return NOT-SOLVABLE
+      md  <- m[i] / g
+      t   <- ((r2 - R) / g) * p   mod md   # solve M*t = (r2 - R)  (mod m[i])
+      lcm <- M * md                        # = M * m[i] / g = lcm(M, m[i])
+      R   <- (R + M * t)   mod lcm         # merged residue, normalized into [0, lcm)
+      M   <- lcm
+  return (R, M)                            # x = R (mod M),  0 <= R < M
+#+end_example
+
+*Correctness of a merge.* By construction \(x=R+Mt\equiv R\ (\bmod\ M)\), so the
+accumulated congruences still hold. And \(Mp\equiv g\ (\bmod\ m_i)\) gives
+\(x-R\equiv \frac{r_2-R}{g}\,Mp\equiv \frac{r_2-R}{g}\,g=r_2-R\ (\bmod\ m_i)\),
+hence \(x\equiv r_2\ (\bmod\ m_i)\): the new congruence holds too.
+
+*Uniqueness.* If \(x\) and \(x'\) both satisfy every congruence then \(m_i\mid
+(x-x')\) for all \(i\), so \(\operatorname{lcm}(m_i)\mid(x-x')\); the solution is
+therefore unique modulo the lcm.
+
+*Overflow.* The products \(M\cdot t\) and the running lcm can exceed 32 bits
+long before the final modulus does, so =chinese_remainder= forms them in
+128-bit arithmetic; it is exact whenever \(\operatorname{lcm}\) of all moduli
+fits in a signed 64-bit integer.
+
+* A worked example
+
+We solve three systems and draw the coprime bijection. The first is Sun-Tzu's
+\(x\equiv2\ (3),\ x\equiv3\ (5),\ x\equiv2\ (7)\); by hand the merge proceeds
+\((2\bmod3)\oplus(3\bmod5)\to(8\bmod15)\), then \((8\bmod15)\oplus(2\bmod7)\to
+(23\bmod105)\). The second, \(x\equiv2\ (6),\ x\equiv8\ (12)\), has non-coprime
+moduli but is consistent because \(\gcd(6,12)=6\) divides \(8-2\); it collapses
+to \(x\equiv8\ (12)\). The third, \(x\equiv1\ (2),\ x\equiv0\ (4)\), fails the
+criterion (\(\gcd(2,4)=2\nmid1\)) and is reported unsolvable.
+
+#+name: crt-run
+#+begin_src c++ :eval no
+    // Print a system, solve it, and (when solvable) verify the residues against every modulus.
+    auto report = [](const std::string& title, const std::vector<std::int64_t>& r,
+                     const std::vector<std::int64_t>& m) {
+        std::cout << title << "\n";
+        const auto s = chinese_remainder(r, m);
+        if (!s.solvable) {
+            std::cout << "  solvable: no  (no x satisfies all congruences)\n\n";
+            return;
+        }
+        std::cout << "  solvable: yes\n";
+        std::cout << "  x = " << s.remainder << " (mod " << s.modulus << ")\n";
+        for (std::size_t i = 0; i < m.size(); ++i)
+            std::cout << "    check: " << s.remainder << " mod " << m[i] << " = "
+                      << s.remainder % m[i] << "  (target " << ((r[i] % m[i] + m[i]) % m[i]) << ")\n";
+        std::cout << "\n";
+    };
+
+    std::cout << "=== Chinese Remainder Theorem (general moduli) ===\n\n";
+    report("Sun-Tzu:  x = 2 (mod 3),  x = 3 (mod 5),  x = 2 (mod 7)", {2, 3, 2}, {3, 5, 7});
+    report("Non-coprime (consistent):  x = 2 (mod 6),  x = 8 (mod 12)", {2, 8}, {6, 12});
+    report("Inconsistent:  x = 1 (mod 2),  x = 0 (mod 4)", {1, 0}, {2, 4});
+
+    // Figure: the CRT bijection Z/15 <-> Z/3 x Z/5. Cell (a, b) holds the unique x in [0, 15)
+    // with x mod 3 = a and x mod 5 = b. Highlight the Sun-Tzu target residues (a=2, b=3) -> x=8.
+    const std::int64_t M1 = 3, M2 = 5;
+    const std::int64_t ta = 2, tb = 3;
+    auto plot = RPlot::create();
+    std::vector<double> hx{static_cast<double>(tb) - 0.5, static_cast<double>(tb) + 0.5,
+                           static_cast<double>(tb) + 0.5, static_cast<double>(tb) - 0.5};
+    std::vector<double> hy{static_cast<double>(ta) - 0.5, static_cast<double>(ta) - 0.5,
+                           static_cast<double>(ta) + 0.5, static_cast<double>(ta) + 0.5};
+    plot.polygon(hx, hy, {253, 224, 71}, true); // highlight the target cell
+    std::vector<double> px, py;
+    for (std::int64_t a = 0; a < M1; ++a)
+        for (std::int64_t b = 0; b < M2; ++b) {
+            const auto cell = chinese_remainder({a, b}, {M1, M2});
+            px.push_back(static_cast<double>(b));
+            py.push_back(static_cast<double>(a));
+            plot.text(static_cast<double>(b), static_cast<double>(a),
+                      std::to_string(cell.remainder), {17, 24, 39}, 16.0);
+        }
+    plot.points(px, py, "", {37, 99, 235}, 5.0);
+    plot.title("CRT bijection  Z/15 <-> Z/3 x Z/5   (cell (a,b) = unique x, 0<=x<15)")
+        .x_label("b = x mod 5")
+        .y_label("a = x mod 3")
+        .x_limits(-0.7, 4.7)
+        .y_limits(-0.7, 2.7)
+        .background({250, 250, 252});
+    plot.save_svg("build/org/chinese_remainder_grid.svg");
+    std::cout << "wrote chinese_remainder_grid.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/chinese_remainder_analysis.cpp <<'CPP'
+<<crt-includes>>
+
+int main() {
+<<crt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/chinese_remainder_analysis.cpp -o build/org/chinese_remainder_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/chinese_remainder_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Chinese Remainder Theorem (general moduli) ===
+
+Sun-Tzu:  x = 2 (mod 3),  x = 3 (mod 5),  x = 2 (mod 7)
+  solvable: yes
+  x = 23 (mod 105)
+    check: 23 mod 3 = 2  (target 2)
+    check: 23 mod 5 = 3  (target 3)
+    check: 23 mod 7 = 2  (target 2)
+
+Non-coprime (consistent):  x = 2 (mod 6),  x = 8 (mod 12)
+  solvable: yes
+  x = 8 (mod 12)
+    check: 8 mod 6 = 2  (target 2)
+    check: 8 mod 12 = 8  (target 8)
+
+Inconsistent:  x = 1 (mod 2),  x = 0 (mod 4)
+  solvable: no  (no x satisfies all congruences)
+
+wrote chinese_remainder_grid.svg
+#+end_example
+
+Sun-Tzu's system returns the classical \(23\pmod{105}\), and since \(3,5,7\) are
+pairwise coprime the modulus is exactly their product \(3\cdot5\cdot7=105\). The
+non-coprime pair \(x\equiv2\ (6),\ x\equiv8\ (12)\) is consistent -- their
+difference \(6\) is divisible by \(\gcd(6,12)=6\) -- and collapses to
+\(x\equiv8\pmod{12}\), the modulus being \(\operatorname{lcm}(6,12)=12\) rather
+than the product \(72\). The inconsistent pair \(x\equiv1\ (2),\ x\equiv0\ (4)\)
+is correctly rejected: no integer is simultaneously odd and a multiple of four.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/chinese_remainder_grid.svg]]
+
+The figure makes the coprime case tangible. For \(m_1=3,m_2=5\) the grid has
+\(3\times5=15\) cells, one per residue pair \((a,b)=(x\bmod3,\,x\bmod5)\), and
+each cell holds the /unique/ \(x\in[0,15)\) landing there -- exactly the
+bijection \(\mathbb{Z}/15\cong\mathbb{Z}/3\times\mathbb{Z}/5\). Reading off the
+highlighted cell \((a,b)=(2,3)\) gives \(x=8\), which is precisely the
+intermediate \(8\pmod{15}\) from the first merge of Sun-Tzu's system before the
+modulus 7 is folded in. Every tuple of residues is reachable and none is
+reachable twice: that is why, for coprime moduli, the Chinese Remainder Theorem
+always has a solution and always exactly one modulo the product.

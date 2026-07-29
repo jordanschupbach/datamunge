@@ -1,0 +1,24 @@
+#+title: Boruvka's Minimum Spanning Tree Algorithm
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+For every current component, the lightest outgoing edge is safe by the cut
+property.  Adding all such edges simultaneously at least halves the number of
+components, so there are \(O(\log V)\) phases.
+* Pseudocode
+#+begin_example
+start one union-find component per vertex
+while a merge is possible:
+  find each component's cheapest outgoing edge
+  union all distinct chosen edges
+#+end_example
+The cost is \(O(E\log V)\) time and \(O(V)\) auxiliary space.
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/routing_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::boruvka(
+4,{{0,1,1},{1,2,2},{2,3,1},{0,3,9}});std::cout<<r.total_weight<<'\n';}
+#+end_src
+The accepted weights \(1,1,2\) total 4.
+

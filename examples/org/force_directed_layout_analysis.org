@@ -1,0 +1,47 @@
+#+title: Force-Directed Graph Layout
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+The Fruchterman--Reingold model treats edges as springs and vertices as
+repelling particles.  We derive its forces, present the cooling algorithm, and
+lay out a path with =force_directed_layout=.
+#+end_abstract
+
+* Mathematics
+
+For drawing area \(A\) and \(n\) vertices set \(k=\sqrt{A/n}\).  At distance
+\(d\), every pair repels with \(f_r(d)=k^2/d\), while an edge attracts with
+\(f_a(d)=d^2/k\).  Summing vector forces approximates a low-energy drawing.
+A temperature cap \(t\) prevents unstable early steps and cools linearly.
+
+* Pseudocode
+
+#+begin_example
+seed deterministic random positions
+repeat T times:
+  displacement <- all zero
+  add k^2/d repulsion for every vertex pair
+  add d^2/k attraction for every edge
+  move each vertex by min(|displacement|, temperature)
+  cool temperature
+centre and scale positions
+#+end_example
+
+The direct method is \(O(T(n^2+m))\); Barnes--Hut approximations can accelerate
+large graphs.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_layout.hpp>
+#include <iostream>
+int main() {
+  auto p=datamunge::algorithms::force_directed_layout(4,{{0,1},{1,2},{2,3}},500,7);
+  for(const auto& x:p) std::cout<<x.x<<' '<<x.y<<'\n';
+}
+#+end_src
+
+The fixed seed makes the coordinates reproducible.  Tests confirm adjacent
+vertices are pulled closer than an isolated comparison vertex.
+

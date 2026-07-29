@@ -1,0 +1,48 @@
+#+title: Spectral Graph Layout
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Spectral layout turns graph drawing into an eigenproblem for the combinatorial
+Laplacian.  We derive the energy, give Jacobi-eigensolver pseudocode, and embed
+a path using =spectral_layout=.
+#+end_abstract
+
+* Mathematics
+
+Let \(L=D-A\).  For coordinate vector \(x\),
+\[
+x^\top Lx=\sum_{ij\in E}(x_i-x_j)^2.
+\]
+Minimizing this energy subject to \(x^\top\mathbf1=0\) and \(\|x\|=1\) gives
+the eigenvector belonging to the second-smallest eigenvalue: the Fiedler
+vector.  The next nontrivial eigenvector supplies the second coordinate.
+Orthogonality prevents collapse and separates graph bottlenecks.
+
+* Pseudocode
+
+#+begin_example
+L <- degree matrix - adjacency matrix
+V,lambda <- symmetric Jacobi eigendecomposition(L)
+sort eigenpairs by lambda
+x <- second eigenvector; y <- third eigenvector
+centre and scale (x,y); return positions
+#+end_example
+
+The dense implementation uses \(O(n^3)\) time and \(O(n^2)\) space; sparse
+Lanczos iteration is preferable for very large graphs.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_layout.hpp>
+#include <iostream>
+int main() {
+  auto p=datamunge::algorithms::spectral_layout(4,{{0,1},{1,2},{2,3}});
+  for(const auto& x:p) std::cout<<x.x<<' '<<x.y<<'\n';
+}
+#+end_src
+
+The path endpoints separate strongly along its low-frequency eigenmodes, as
+the focused test checks.
+

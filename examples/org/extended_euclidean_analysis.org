@@ -1,0 +1,269 @@
+#+title: The Extended Euclidean Algorithm: Greatest Common Divisors, Bezout Coefficients, and Modular Inverses
+#+subtitle: A literate C++ study of Euclid's algorithm and its extension with =datamunge='s =algorithms::extended_gcd=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Euclid's algorithm for the greatest common divisor is more than two thousand
+years old and still one of the fastest things a computer does: it replaces the
+larger of two numbers by its remainder modulo the smaller and repeats, and the
+last nonzero remainder is the gcd. Its /extended/ form carries a little more
+bookkeeping and pays an outsized dividend -- alongside \(g=\gcd(a,b)\) it
+returns integers \(x,y\) with \(ax+by=g\), the *Bezout identity*. Those
+coefficients are the key to modular arithmetic: when \(a\) and \(m\) are
+coprime, \(ax+my=1\) says \(ax\equiv 1\pmod m\), so \(x\) is the *modular
+inverse* of \(a\) -- the operation at the heart of RSA key generation, the
+Chinese Remainder Theorem, and rational reconstruction. This report implements
+both in =datamunge='s C++ =algorithms::extended_gcd= and =modular_inverse= and
+presents them as a literate program: every number and the figure below are
+produced by a single compiled binary. We give the algorithm, its coefficient
+extension, arguments for correctness and its \(O(\log\min(a,b))\) running time,
+a worked example computed by hand -- \(\gcd(240,46)=2=240\cdot(-9)+46\cdot47\)
+-- and a modular inverse, \(3^{-1}\equiv 4\pmod{11}\).
+#+end_abstract
+
+* The Euclidean algorithm
+
+Let \(a\) and \(b\) be integers, not both zero. Their *greatest common divisor*
+\(\gcd(a,b)\) is the largest integer dividing both. Euclid's insight is a single
+identity: for \(b\neq 0\),
+\[
+\gcd(a,b) \;=\; \gcd(b,\; a \bmod b),
+\]
+because any common divisor of \(a\) and \(b\) also divides \(a - qb = a\bmod b\)
+for the quotient \(q=\lfloor a/b\rfloor\), and vice versa -- the two pairs share
+exactly the same set of common divisors. Since \(a\bmod b\) is strictly smaller
+than \(b\), iterating drives the second argument down to \(0\); at that point
+\(\gcd(g,0)=g\) reads off the answer as the last nonzero remainder. We take
+\(\gcd(0,0)=0\) by convention.
+
+=datamunge= exposes =extended_gcd(a, b)= returning an =ExtendedGcd{gcd, x, y}=,
+and =modular_inverse(a, m)= built on top of it.
+
+#+name: ee-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/extended_euclidean.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Tracking the Bezout coefficients
+
+Plain Euclid throws away everything but the final remainder. The extension keeps
+just enough history to /reconstruct/ the gcd as a combination of the original
+inputs. Alongside each running remainder \(r\) we carry a pair \((s,t)\)
+maintaining the invariant
+\[
+s\cdot a + t\cdot b \;=\; r .
+\]
+We seed two rows -- \((r,s,t)=(a,1,0)\) and \((b,0,1)\), which obviously satisfy
+it -- and every Euclidean step \(r' \leftarrow r_{\text{old}} - q\,r\) is applied
+identically to the coefficients: \(s' \leftarrow s_{\text{old}} - q\,s\) and
+\(t' \leftarrow t_{\text{old}} - q\,t\). Linearity guarantees the invariant
+survives each step, so when the remainder reaches \(0\) the previous row holds
+\((g, x, y)\) with \(ax+by=g\).
+
+#+begin_example
+EXTENDED-GCD(a, b):
+  (old_r, r) <- (a, b)
+  (old_s, s) <- (1, 0)          # s*a + t*b == r  is maintained for both rows
+  (old_t, t) <- (0, 1)
+
+  while r != 0:
+      q <- old_r / r                        # integer (truncating) quotient
+      (old_r, r) <- (r, old_r - q*r)        # Euclidean remainder step
+      (old_s, s) <- (s, old_s - q*s)        # same step on a's coefficient
+      (old_t, t) <- (t, old_t - q*t)        # same step on b's coefficient
+
+  if old_r < 0:                             # normalise sign (negative inputs)
+      (old_r, old_s, old_t) <- (-old_r, -old_s, -old_t)
+
+  return gcd = old_r,  x = old_s,  y = old_t   # a*x + b*y == gcd
+#+end_example
+
+*Correctness.* The invariant \(s a + t b = r\) holds initially and is preserved
+by the identical linear update, so the returned \((x,y)\) satisfy
+\(ax+by=\text{old\_r}\); and old_r is the gcd by the Euclidean argument above.
+Truncating division can momentarily leave the gcd negative when an input is
+negative, so a final sign flip -- which negates both sides of \(ax+by=g\)
+and thus preserves it -- forces \(g\ge 0\).
+
+*Complexity.* Each iteration replaces \((r_{\text{old}}, r)\) by \((r, r_{\text{old}}\bmod r)\).
+Two successive remainders sum to at most the larger one, which forces the pair
+to shrink geometrically; the worst case is consecutive Fibonacci numbers
+(Lame's theorem), giving \(O(\log\min(|a|,|b|))\) division steps. Every step
+does a constant amount of 64-bit arithmetic, so the whole computation is
+logarithmic in the inputs.
+
+* From Bezout to the modular inverse
+
+The *modular inverse* of \(a\) modulo \(m\) is the residue \(x\in[0,m)\) with
+\(a x \equiv 1 \pmod m\). It exists exactly when \(\gcd(a,m)=1\): running the
+extended algorithm on \((a,m)\) yields \(x,y\) with
+\[
+a x + m y = \gcd(a,m) = 1 \;\Longrightarrow\; a x \equiv 1 \pmod m,
+\]
+so \(x\) -- reduced into \([0,m)\) -- is the inverse. If \(\gcd(a,m)>1\) no
+inverse can exist, since \(ax\) would always share that factor with \(m\) and
+never be \(\equiv 1\); =modular_inverse= throws =std::invalid_argument= in that
+case, and also when \(m\le 0\). This single routine underlies division in a
+prime field, RSA's computation of the private exponent \(d = e^{-1}\bmod
+\varphi(n)\), and the Chinese Remainder Theorem.
+
+* A worked example, by hand
+
+Take \(a=240\), \(b=46\). Running the extended algorithm gives the following
+trace; each row is a Euclidean step with quotient \(q=\lfloor
+\text{old\_r}/r\rfloor\), remainder \(r\), and the coefficients \((s,t)\)
+satisfying \(s\cdot 240 + t\cdot 46 = r\):
+
+#+begin_example
+  q  |    r  |   s  |    t     |  check: s*240 + t*46
+-----+-------+------+----------+----------------------
+  -  |  240  |   1  |    0     |  240
+  -  |   46  |   0  |    1     |   46
+  5  |   10  |   1  |   -5     |  240 - 230 = 10
+  4  |    6  |  -4  |   21     |  -960 + 966 =  6
+  1  |    4  |   5  |  -26     |  1200 - 1196 = 4
+  1  |    2  |  -9  |   47     |  -2160 + 2162 = 2   <- gcd
+  2  |    0  |  23  | -120     |  remainder 0: stop
+#+end_example
+
+The last nonzero remainder is \(2=\gcd(240,46)\), read off with its
+coefficients \(x=-9\), \(y=47\), so
+\[
+240\cdot(-9) + 46\cdot 47 \;=\; -2160 + 2162 \;=\; 2 .
+\]
+For a modular inverse, take \(a=3\), \(m=11\): the extended algorithm gives
+\(3\cdot 4 + 11\cdot(-1) = 1\), so \(x=4\) and indeed \(3\cdot 4 = 12 \equiv 1
+\pmod{11}\) -- the inverse of \(3\) modulo \(11\) is \(4\).
+
+The program below reproduces these two results, cross-checks the Bezout
+identity and the gcd (against =std::gcd=) on a hundred thousand random pairs,
+and plots the decreasing remainder sequence of \(\gcd(240,46)\).
+
+#+name: ee-run
+#+begin_src c++ :eval no
+    std::cout << "=== Extended Euclidean algorithm ===\n\n";
+
+    // 1) A worked gcd together with its Bezout coefficients.
+    const std::int64_t a = 240, b = 46;
+    const ExtendedGcd g = extended_gcd(a, b);
+    std::cout << "extended_gcd(" << a << ", " << b << "):\n";
+    std::cout << "  gcd = " << g.gcd << ",  x = " << g.x << ",  y = " << g.y << "\n";
+    std::cout << "  Bezout check: " << a << "*(" << g.x << ") + " << b << "*(" << g.y << ") = "
+              << a * g.x + b * g.y << "\n\n";
+
+    // 2) A modular inverse: 3^{-1} mod 11.
+    const std::int64_t v = 3, m = 11;
+    const std::int64_t inv = modular_inverse(v, m);
+    std::cout << "modular_inverse(" << v << ", " << m << ") = " << inv << "\n";
+    std::cout << "  check: " << v << " * " << inv << " mod " << m << " = " << (v * inv) % m << "\n\n";
+
+    // 3) Bezout identity a*x + b*y == gcd, and gcd == std::gcd, on many random pairs.
+    std::mt19937_64 rng(20240927);
+    std::uniform_int_distribution<std::int64_t> dist(-100000, 100000);
+    int checked = 0, ok = 0;
+    for (int t = 0; t < 100000; ++t) {
+        const std::int64_t p = dist(rng), q = dist(rng);
+        const ExtendedGcd e = extended_gcd(p, q);
+        const bool identity = (p * e.x + q * e.y == e.gcd);
+        const bool matches_std = (e.gcd == static_cast<std::int64_t>(std::gcd(p, q)));
+        ++checked;
+        if (identity && matches_std) ++ok;
+    }
+    std::cout << "Randomized check over " << checked << " pairs in [-100000, 100000]:\n";
+    std::cout << "  a*x + b*y == gcd AND gcd == std::gcd held in " << ok << " / " << checked
+              << " cases\n\n";
+
+    // 4) The decreasing remainder sequence of gcd(240, 46), for the figure.
+    std::vector<double> step, rem;
+    std::int64_t r0 = a, r1 = b, k = 0;
+    step.push_back(static_cast<double>(k++));
+    rem.push_back(static_cast<double>(r0));
+    while (r1 != 0) {
+        step.push_back(static_cast<double>(k++));
+        rem.push_back(static_cast<double>(r1));
+        const std::int64_t r2 = r0 % r1;
+        r0 = r1;
+        r1 = r2;
+    }
+    std::cout << "Remainder sequence for extended_gcd(240, 46): ";
+    for (auto rv : rem) std::cout << static_cast<std::int64_t>(rv) << " ";
+    std::cout << "\n";
+
+    auto plot = RPlot::create();
+    plot.points(step, rem, "remainder r_k", {37, 99, 235}, 6.0);
+    plot.lines(step, rem, "", {37, 99, 235}, 1.0);
+    plot.title("Euclidean remainder sequence for gcd(240, 46)")
+        .x_label("step k").y_label("remainder r_k").background({250, 250, 252});
+    plot.save_svg("build/org/extended_euclidean_steps.svg");
+    std::cout << "\nwrote extended_euclidean_steps.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/extended_euclidean_analysis.cpp <<'CPP'
+<<ee-includes>>
+
+int main() {
+<<ee-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/extended_euclidean_analysis.cpp -o build/org/extended_euclidean_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/extended_euclidean_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Extended Euclidean algorithm ===
+
+extended_gcd(240, 46):
+  gcd = 2,  x = -9,  y = 47
+  Bezout check: 240*(-9) + 46*(47) = 2
+
+modular_inverse(3, 11) = 4
+  check: 3 * 4 mod 11 = 1
+
+Randomized check over 100000 pairs in [-100000, 100000]:
+  a*x + b*y == gcd AND gcd == std::gcd held in 100000 / 100000 cases
+
+Remainder sequence for extended_gcd(240, 46): 240 46 10 6 4 2
+
+wrote extended_euclidean_steps.svg
+#+end_example
+
+The compiled binary confirms the hand computation exactly:
+\(\gcd(240,46)=2\) with \(240\cdot(-9)+46\cdot47=2\), and \(3^{-1}\equiv
+4\pmod{11}\). The Bezout identity and agreement with =std::gcd= hold on all one
+hundred thousand random pairs -- including negatives and zeros, where the sign
+normalisation keeps the gcd non-negative. The remainder sequence
+\(240, 46, 10, 6, 4, 2\) collapses to the gcd in only five division steps, a
+concrete instance of the logarithmic bound:
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/extended_euclidean_steps.svg]]
+
+The remainders plunge rapidly toward the gcd rather than decreasing by fixed
+amounts -- each is a remainder modulo its predecessor, so the sequence contracts
+geometrically. That steepness is exactly why Euclid's algorithm, and the
+extension that hands us Bezout coefficients and modular inverses for free, runs
+in \(O(\log\min(a,b))\) time and remains the workhorse behind modern
+public-key cryptography.

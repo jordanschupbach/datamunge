@@ -1,0 +1,64 @@
+#+title: The ACORN Pseudorandom Number Generator
+#+subtitle: Modular cumulative sums with =datamunge::random::Acorn64=
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+ACORN turns a row of modular accumulators into a deterministic stream.  This
+report derives its recurrence, gives pseudocode, and exercises the actual
+=Acorn64= implementation on a hand-checkable order-two example.
+#+end_abstract
+
+* Mathematics
+
+Choose a modulus \(M=2^{64}\), an order \(k\), and state
+\((Y_0,\ldots,Y_k)\).  One output step performs
+\[
+Y_j\leftarrow(Y_j+Y_{j-1})\bmod M,\qquad j=1,\ldots,k,
+\]
+and returns \(Y_k\).  \(Y_0\) is an odd Weyl increment; oddness makes its
+additive orbit visit every residue modulo \(2^{64}\).  Higher coordinates are
+successive discrete integrals of that orbit.  Unsigned C++ overflow implements
+reduction modulo \(2^{64}\) exactly.  A step costs \(O(k)\) time and the state
+uses \(O(k)\) words.  ACORN is intended for simulation, not cryptography.
+
+* Algorithm
+
+#+begin_example
+ACORN-NEXT(Y[0..k]):
+  for j <- 1 to k:
+    Y[j] <- (Y[j] + Y[j-1]) mod 2^64
+  return Y[k]
+#+end_example
+
+The constructor taking one seed expands it with SplitMix64 and forces \(Y_0\)
+odd.  The vector constructor exposes small states for proofs and tests.
+
+* Executable C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/random/random.hpp>
+#include <iostream>
+#include <vector>
+
+int main() {
+  datamunge::random::Acorn64 rng(std::vector<std::uint64_t>{1, 2, 3});
+  for (int i = 0; i < 3; ++i) std::cout << rng.next_u64() << ' ';
+  std::cout << '\n';
+}
+#+end_src
+
+The states evolve as \((1,3,6)\), \((1,4,10)\), and \((1,5,15)\), so the
+program prints:
+
+#+begin_example
+6 10 15
+#+end_example
+
+* Correctness
+
+The loop invariant after iteration \(j\) is that coordinates \(1,\ldots,j\)
+have their new values and the rest retain their old values.  Thus the value
+added into \(Y_j\) is precisely the newly updated \(Y_{j-1}\), matching the
+recurrence.  At loop exit all coordinates are updated and the returned word
+is \(Y_k\).

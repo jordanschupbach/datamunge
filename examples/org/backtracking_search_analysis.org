@@ -1,0 +1,21 @@
+#+title: Backtracking Graph Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics and algorithm
+Depth-first backtracking maintains a simple partial path.  Mark a vertex while
+it is on that path; if every continuation fails, unmark it and remove it.
+#+begin_example
+SEARCH(u): append and mark u; if goal return true
+for unmarked successor v: if SEARCH(v) return true
+unmark u; remove u; return false
+#+end_example
+Every simple path may be explored, so worst-case time is exponential; stack
+space is \(O(V)\).  The invariant that the stack is simple proves any returned
+sequence is a valid path.
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::backtracking_search(4,{{0,1},{1,3},{0,2}},0,3);std::cout<<r.found;}
+#+end_src
+

@@ -1,0 +1,20 @@
+#+title: Breadth-First Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics and algorithm
+BFS uses a FIFO queue.  Before depth \(k+1\) is removed, every vertex at depth
+\(k\) has been removed, so the first discovery of a vertex uses a minimum-edge
+path.  Each vertex and edge is processed once: \(O(V+E)\) time and \(O(V)\)
+space.
+#+begin_example
+mark and enqueue start
+pop u; enqueue every unseen successor and record predecessor u
+stop when goal is removed; reconstruct the path
+#+end_example
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::breadth_first_search(3,{{0,1},{1,2}},0,2);std::cout<<r.path.size();}
+#+end_src
+

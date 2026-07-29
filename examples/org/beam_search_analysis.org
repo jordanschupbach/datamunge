@@ -1,0 +1,19 @@
+#+title: Beam Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics and algorithm
+Beam search expands one depth layer, ranks candidates by heuristic \(h\), and
+retains only the best \(B\).  It bounds memory by \(O(Bd)\) but may discard the
+only solution and is therefore incomplete.
+#+begin_example
+beam <- {start path}
+repeat: expand all beam paths; return a goal if found
+sort children by h(endpoint); retain first B
+#+end_example
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::beam_search(3,{{0,1},{1,2}},0,2,{2,1,0},1);std::cout<<r.found;}
+#+end_src
+

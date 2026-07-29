@@ -1,0 +1,47 @@
+#+title: Coin and Circle-Packing Graph Layout
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Circle packing represents vertices by interior-disjoint disks and adjacency by
+tangency.  We derive the geometric objective, give relaxation pseudocode, and
+exercise =circle_packing_layout= on a triangle.
+#+end_abstract
+
+* Mathematics
+
+For circle \(i\), centre \(p_i\) and radius \(r_i\), tangency of edge \(ij\)
+means \(\|p_i-p_j\|=r_i+r_j\), while non-overlap requires
+\(\|p_i-p_j\|\ge r_i+r_j\).  The implementation uses equal radii and minimizes
+edge stress \(\sum_{ij\in E}(\|p_i-p_j\|-2r)^2\), adding repulsion whenever
+two nonadjacent disks overlap.  This is an approximate finite relaxation of
+the Koebe--Andreev--Thurston packing guaranteed for planar graphs.
+
+* Pseudocode
+
+#+begin_example
+place centres on a large circle
+repeat:
+  for every vertex pair i,j:
+    target <- 2r for edges, slightly more for nonedges
+    move both centres along their joining line toward feasibility
+centre and scale the result; return disks
+#+end_example
+
+With \(n\) vertices and \(T\) iterations the direct relaxation costs
+\(O(Tn^2)\) time and \(O(n)\) auxiliary space.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/graph_layout.hpp>
+#include <iostream>
+int main() {
+  auto c=datamunge::algorithms::circle_packing_layout(3,{{0,1},{1,2},{2,0}});
+  for (const auto& x:c) std::cout<<x.center.x<<' '<<x.center.y<<' '<<x.radius<<'\n';
+}
+#+end_src
+
+The three equal disks form a symmetric triangular packing; the automated test
+also verifies every centre distance is at least the sum of the two radii.
+

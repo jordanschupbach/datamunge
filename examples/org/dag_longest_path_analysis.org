@@ -1,0 +1,27 @@
+#+title: Longest Paths in a Directed Acyclic Graph
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+The unrestricted simple longest-path problem is NP-hard.  In a DAG, a
+topological order makes it dynamic programming:
+\[
+d(v)=\max_{(u,v)\in E}\{d(u)+w(u,v)\},\quad d(s)=0.
+\]
+Every predecessor has already been finalized, proving the recurrence exact.
+* Pseudocode
+#+begin_example
+topologically sort; reject a cycle
+distance <- -infinity; distance[source] <- 0
+for u in topological order:
+  relax every u->v by maximum rather than minimum
+#+end_example
+Time is \(O(V+E)\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/routing_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::dag_longest_paths(
+4,{{0,1,2},{0,2,1},{1,3,3},{2,3,8}},0);std::cout<<r.distance[3]<<'\n';}
+#+end_src
+The best route is \(0\to2\to3\), of length 9.
+

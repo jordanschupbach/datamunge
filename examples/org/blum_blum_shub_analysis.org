@@ -1,0 +1,71 @@
+#+title: Blum--Blum--Shub Pseudorandom Generation
+#+subtitle: Quadratic residues with =datamunge::random::BlumBlumShub=
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Blum--Blum--Shub (BBS) repeatedly squares modulo a composite whose factorisation
+is secret.  We derive the recurrence, state its security assumptions, give
+pseudocode, and reproduce a small cycle with the library implementation.
+#+end_abstract
+
+* Mathematics
+
+Choose distinct primes \(p\equiv q\equiv3\pmod4\), put \(N=pq\), and choose a
+seed \(s\) coprime to \(N\).  Initialise \(x_0=s^2\bmod N\), then compute
+\[
+x_{i+1}=x_i^2\bmod N,\qquad b_i=x_{i+1}\bmod2.
+\]
+Predicting the next bit from the preceding bits is computationally related to
+quadratic residuosity when the factorisation of \(N\) is unknown.  Unlike the
+other generators in this batch, BBS has a cryptographic foundation, but only
+with suitably large, securely generated secret primes.  Producing a 64-bit
+word requires 64 modular squarings.
+
+* Algorithm
+
+#+begin_example
+BBS(seed, p, q):
+  require p,q distinct primes and p mod 4 = q mod 4 = 3
+  N <- p*q; require gcd(seed,N)=1
+  x <- seed^2 mod N
+
+NEXT-WORD:
+  word <- 0
+  for i <- 0 to 63:
+    x <- x*x mod N
+    word <- word OR ((x mod 2) << i)
+  return word
+#+end_example
+
+=BlumBlumShub= validates the structural conditions, requires the caller to
+supply primes, and uses a 128-bit intermediate so multiplication cannot
+silently overflow.
+
+* Executable C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+
+int main() {
+  datamunge::random::BlumBlumShub rng(3, 7, 11);
+  std::cout << std::hex << (rng.next_u64() & 0xf) << '\n';
+}
+#+end_src
+
+Here \(N=77\), \(x_0=9\), and the next states are \(4,16,25,9\).  Their low
+bits are \(0,0,1,1\), stored least-significant bit first, hence:
+
+#+begin_example
+c
+#+end_example
+
+* Correctness and cost
+
+The constructor establishes \(x_0=s^2\bmod N\).  Each loop iteration replaces
+the state by the recurrence's next quadratic residue and copies exactly its
+least-significant bit into position \(i\).  Induction therefore proves the
+returned word contains \(b_0,\ldots,b_{63}\).  Time is \(O(64)\) modular
+squarings per word and storage is \(O(1)\).

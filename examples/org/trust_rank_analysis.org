@@ -1,0 +1,41 @@
+#+title: TrustRank
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+TrustRank biases PageRank's random surfer toward a curated trusted seed set.
+We derive the personalized Markov chain, give pseudocode, and use
+=trust_rank= on a directed cycle.
+#+end_abstract
+
+* Mathematics and algorithm
+
+Let \(p\) place mass \(1/|S|\) on each trusted seed and zero elsewhere.
+TrustRank is the unique solution
+\[
+r=(1-d)p+dP^\top r.
+\]
+Teleportation and dangling mass both return through \(p\), so trust propagates
+along links but continually re-enters at vetted pages.
+
+#+begin_example
+r <- trusted teleport vector p
+repeat:
+  next <- (1-d)p + d*(dangling mass)*p
+  distribute each linked page's mass over its outgoing links
+until L1 change < tolerance
+#+end_example
+
+Each iteration is \(O(n+m)\).
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/network_analysis.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::trust_rank(3,{{0,1},{1,2},{2,0}},{0});
+for(double x:r)std::cout<<x<<'\n';}
+#+end_src
+
+The scores sum to one and trusted vertex 0 outranks its immediate successor.
+

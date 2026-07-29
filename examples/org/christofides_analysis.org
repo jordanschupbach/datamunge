@@ -1,0 +1,24 @@
+#+title: Christofides' Metric TSP Algorithm
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+For a metric complete graph, take an MST \(T\), a minimum perfect matching
+\(M\) on the odd-degree vertices, an Euler tour of \(T\cup M\), then shortcut
+repeated vertices.  \(w(T)\le OPT\), \(w(M)\le OPT/2\), and the triangle
+inequality makes shortcutting non-increasing, hence \(w(C)\le3OPT/2\).
+* Pseudocode
+#+begin_example
+MST; exact minimum matching of odd vertices
+Euler circuit of their multigraph
+shortcut repeats and close the Hamiltonian tour
+#+end_example
+This implementation uses exact bitmask matching, limiting the odd set to 22.
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::christofides_tsp(
+{{0,1,1.414,1},{1,0,1,1.414},{1.414,1,0,1},{1,1.414,1,0}});std::cout<<r.cost;}
+#+end_src
+The square tour costs 4.
+

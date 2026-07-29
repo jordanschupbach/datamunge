@@ -6351,6 +6351,1525 @@ class MDS {
   }
 }
 
+class Isomap {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Isomap(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, string metric) {
+    this(datamunge_im.new_Isomap__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_Isomap__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_Isomap__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_Isomap__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, string metric) {
+    this(datamunge_im.new_Isomap__SWIG_4(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_Isomap__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_Isomap__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_Isomap__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.Isomap_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.Isomap_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.Isomap_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.Isomap_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector eigenvalues() const {
+    DVector ret = new DVector(datamunge_im.Isomap_eigenvalues(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double goodness_of_fit() const {
+    auto ret = datamunge_im.Isomap_goodness_of_fit(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.Isomap_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.Isomap_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.Isomap_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.Isomap_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.Isomap_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class LLE {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LLE(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double regularization, string metric) {
+    this(datamunge_im.new_LLE__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, regularization, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double regularization) {
+    this(datamunge_im.new_LLE__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, regularization), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_LLE__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_LLE__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_LLE__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double regularization, string metric) {
+    this(datamunge_im.new_LLE__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, regularization, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double regularization) {
+    this(datamunge_im.new_LLE__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, regularization), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_LLE__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_LLE__SWIG_8(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_LLE__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.LLE_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.LLE_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.LLE_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.LLE_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector eigenvalues() const {
+    DVector ret = new DVector(datamunge_im.LLE_eigenvalues(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.LLE_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.LLE_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.LLE_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.LLE_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.LLE_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class TSNE {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_TSNE(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration, string metric, ulong seed) {
+    this(datamunge_im.new_TSNE__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration, string metric) {
+    this(datamunge_im.new_TSNE__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration) {
+    this(datamunge_im.new_TSNE__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum) {
+    this(datamunge_im.new_TSNE__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum) {
+    this(datamunge_im.new_TSNE__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations) {
+    this(datamunge_im.new_TSNE__SWIG_5(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration) {
+    this(datamunge_im.new_TSNE__SWIG_6(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate, early_exaggeration), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate) {
+    this(datamunge_im.new_TSNE__SWIG_7(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity, size_t max_iterations) {
+    this(datamunge_im.new_TSNE__SWIG_8(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double perplexity) {
+    this(datamunge_im.new_TSNE__SWIG_9(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, perplexity), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_TSNE__SWIG_10(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_TSNE__SWIG_11(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration, string metric, ulong seed) {
+    this(datamunge_im.new_TSNE__SWIG_12(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration, string metric) {
+    this(datamunge_im.new_TSNE__SWIG_13(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum, size_t momentum_switch_iteration) {
+    this(datamunge_im.new_TSNE__SWIG_14(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum, momentum_switch_iteration), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum, double final_momentum) {
+    this(datamunge_im.new_TSNE__SWIG_15(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum, final_momentum), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations, double initial_momentum) {
+    this(datamunge_im.new_TSNE__SWIG_16(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations, initial_momentum), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration, size_t early_exaggeration_iterations) {
+    this(datamunge_im.new_TSNE__SWIG_17(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration, early_exaggeration_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate, double early_exaggeration) {
+    this(datamunge_im.new_TSNE__SWIG_18(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate, early_exaggeration), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations, double learning_rate) {
+    this(datamunge_im.new_TSNE__SWIG_19(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity, size_t max_iterations) {
+    this(datamunge_im.new_TSNE__SWIG_20(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double perplexity) {
+    this(datamunge_im.new_TSNE__SWIG_21(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, perplexity), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_TSNE__SWIG_22(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_TSNE__SWIG_23(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.TSNE_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.TSNE_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.TSNE_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.TSNE_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector achieved_perplexity() const {
+    DVector ret = new DVector(datamunge_im.TSNE_achieved_perplexity(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.TSNE_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.TSNE_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.TSNE_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.TSNE_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.TSNE_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class LaplacianEigenmaps {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LaplacianEigenmaps(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double heat_kernel_t) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, heat_kernel_t), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double heat_kernel_t) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_4(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, heat_kernel_t), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_LaplacianEigenmaps__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.LaplacianEigenmaps_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.LaplacianEigenmaps_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.LaplacianEigenmaps_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.LaplacianEigenmaps_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector eigenvalues() const {
+    DVector ret = new DVector(datamunge_im.LaplacianEigenmaps_eigenvalues(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.LaplacianEigenmaps_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.LaplacianEigenmaps_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.LaplacianEigenmaps_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.LaplacianEigenmaps_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class DiffusionMaps {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DiffusionMaps(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double heat_kernel_epsilon, double alpha, double diffusion_time) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, heat_kernel_epsilon, alpha, diffusion_time), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double heat_kernel_epsilon, double alpha) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, heat_kernel_epsilon, alpha), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double heat_kernel_epsilon) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, heat_kernel_epsilon), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double heat_kernel_epsilon, double alpha, double diffusion_time) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, heat_kernel_epsilon, alpha, diffusion_time), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double heat_kernel_epsilon, double alpha) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, heat_kernel_epsilon, alpha), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double heat_kernel_epsilon) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, heat_kernel_epsilon), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_8(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_DiffusionMaps__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.DiffusionMaps_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.DiffusionMaps_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.DiffusionMaps_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.DiffusionMaps_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector eigenvalues() const {
+    DVector ret = new DVector(datamunge_im.DiffusionMaps_eigenvalues(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.DiffusionMaps_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.DiffusionMaps_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.DiffusionMaps_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.DiffusionMaps_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.DiffusionMaps_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class KernelPCA {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KernelPCA(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, string kernel, double gamma, double degree, double coef0) {
+    this(datamunge_im.new_KernelPCA__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma, degree, coef0), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, string kernel, double gamma, double degree) {
+    this(datamunge_im.new_KernelPCA__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma, degree), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, string kernel, double gamma) {
+    this(datamunge_im.new_KernelPCA__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, string kernel) {
+    this(datamunge_im.new_KernelPCA__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, (kernel ? std.string.toStringz(kernel) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_KernelPCA__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_KernelPCA__SWIG_5(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, string kernel, double gamma, double degree, double coef0) {
+    this(datamunge_im.new_KernelPCA__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma, degree, coef0), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, string kernel, double gamma, double degree) {
+    this(datamunge_im.new_KernelPCA__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma, degree), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, string kernel, double gamma) {
+    this(datamunge_im.new_KernelPCA__SWIG_8(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, (kernel ? std.string.toStringz(kernel) : null), gamma), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, string kernel) {
+    this(datamunge_im.new_KernelPCA__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, (kernel ? std.string.toStringz(kernel) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_KernelPCA__SWIG_10(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_KernelPCA__SWIG_11(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.KernelPCA_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.KernelPCA_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.KernelPCA_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.KernelPCA_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector eigenvalues() const {
+    DVector ret = new DVector(datamunge_im.KernelPCA_eigenvalues(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.KernelPCA_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.KernelPCA_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.KernelPCA_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.KernelPCA_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.KernelPCA_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class SammonMapping {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SammonMapping(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance, string metric, ulong seed) {
+    this(datamunge_im.new_SammonMapping__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, learning_rate, max_iterations, tolerance, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance, string metric) {
+    this(datamunge_im.new_SammonMapping__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, learning_rate, max_iterations, tolerance, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance) {
+    this(datamunge_im.new_SammonMapping__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, learning_rate, max_iterations, tolerance), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double learning_rate, size_t max_iterations) {
+    this(datamunge_im.new_SammonMapping__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, learning_rate, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, double learning_rate) {
+    this(datamunge_im.new_SammonMapping__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_SammonMapping__SWIG_5(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_SammonMapping__SWIG_6(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance, string metric, ulong seed) {
+    this(datamunge_im.new_SammonMapping__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, learning_rate, max_iterations, tolerance, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance, string metric) {
+    this(datamunge_im.new_SammonMapping__SWIG_8(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, learning_rate, max_iterations, tolerance, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double learning_rate, size_t max_iterations, double tolerance) {
+    this(datamunge_im.new_SammonMapping__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, learning_rate, max_iterations, tolerance), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double learning_rate, size_t max_iterations) {
+    this(datamunge_im.new_SammonMapping__SWIG_10(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, learning_rate, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, double learning_rate) {
+    this(datamunge_im.new_SammonMapping__SWIG_11(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_SammonMapping__SWIG_12(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_SammonMapping__SWIG_13(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.SammonMapping_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.SammonMapping_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.SammonMapping_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.SammonMapping_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.SammonMapping_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.SammonMapping_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public double stress() const {
+    auto ret = datamunge_im.SammonMapping_stress(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t iterations_run() const {
+    auto ret = datamunge_im.SammonMapping_iterations_run(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.SammonMapping_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.SammonMapping_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.SammonMapping_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class UMAP {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_UMAP(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate, string metric, ulong seed) {
+    this(datamunge_im.new_UMAP__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate, string metric) {
+    this(datamunge_im.new_UMAP__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate) {
+    this(datamunge_im.new_UMAP__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate) {
+    this(datamunge_im.new_UMAP__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist, max_iterations, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations) {
+    this(datamunge_im.new_UMAP__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors, double min_dist) {
+    this(datamunge_im.new_UMAP__SWIG_5(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors, min_dist), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_UMAP__SWIG_6(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_components) {
+    this(datamunge_im.new_UMAP__SWIG_7(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_UMAP__SWIG_8(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate, string metric, ulong seed) {
+    this(datamunge_im.new_UMAP__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate, (metric ? std.string.toStringz(metric) : null), seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate, string metric) {
+    this(datamunge_im.new_UMAP__SWIG_10(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate, double negative_sample_rate) {
+    this(datamunge_im.new_UMAP__SWIG_11(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist, max_iterations, learning_rate, negative_sample_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations, double learning_rate) {
+    this(datamunge_im.new_UMAP__SWIG_12(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist, max_iterations, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist, size_t max_iterations) {
+    this(datamunge_im.new_UMAP__SWIG_13(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors, double min_dist) {
+    this(datamunge_im.new_UMAP__SWIG_14(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors, min_dist), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components, size_t n_neighbors) {
+    this(datamunge_im.new_UMAP__SWIG_15(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components, n_neighbors), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_components) {
+    this(datamunge_im.new_UMAP__SWIG_16(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_components), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_UMAP__SWIG_17(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.UMAP_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.UMAP_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_components() const {
+    auto ret = datamunge_im.UMAP_n_components(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector kept_row_indices() const {
+    SizeVector ret = new SizeVector(datamunge_im.UMAP_kept_row_indices(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector dimension(size_t index) const {
+    DVector ret = new DVector(datamunge_im.UMAP_dimension(cast(void*)swigCPtr, index), true);
+    return ret;
+  }
+
+  public DataFrame embedding_frame() const {
+    void* cPtr = datamunge_im.UMAP_embedding_frame(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DVector sigmas() const {
+    DVector ret = new DVector(datamunge_im.UMAP_sigmas(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector rhos() const {
+    DVector ret = new DVector(datamunge_im.UMAP_rhos(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.UMAP_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.UMAP_print_summary(cast(void*)swigCPtr);
+  }
+
+  public RPlot plot_embedding(size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding__SWIG_0(cast(void*)swigCPtr, dimension_x, dimension_y), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding(size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding__SWIG_1(cast(void*)swigCPtr, dimension_x), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding() const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding__SWIG_2(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x, size_t dimension_y) const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding_grouped__SWIG_0(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x, dimension_y), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels, size_t dimension_x) const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding_grouped__SWIG_1(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels), dimension_x), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot plot_embedding_grouped(SVector group_labels) const {
+    RPlot ret = new RPlot(datamunge_im.UMAP_plot_embedding_grouped__SWIG_2(cast(void*)swigCPtr, SVector.swigGetCPtr(group_labels)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
 class AgglomerativeClustering {
   private void* swigCPtr;
   protected bool swigCMemOwn;

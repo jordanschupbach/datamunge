@@ -1,0 +1,27 @@
+#+title: Johnson's All-Pairs Shortest Paths
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+Bellman--Ford potentials \(h\) reweight
+\[
+w'(u,v)=w(u,v)+h(u)-h(v)\ge0.
+\]
+Path weights telescope, so shortest paths are unchanged; Dijkstra can then run
+from every source, after which distances are unweighted.
+* Pseudocode
+#+begin_example
+Bellman-Ford from a synthetic zero-edge source; reject negative cycle
+reweight every edge with potentials
+run Dijkstra from every vertex
+restore d(u,v)=d'(u,v)-h(u)+h(v)
+#+end_example
+With binary heaps this is \(O(VE+VE\log V)\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/routing_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::johnson_all_pairs_shortest_paths(
+3,{{0,1,1},{1,2,-2},{0,2,4}});std::cout<<r.distance[0][2]<<'\n';}
+#+end_src
+The shortest distance is \(-1\).
+

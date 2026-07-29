@@ -1,0 +1,48 @@
+#+title: Girvan--Newman Community Detection
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Girvan--Newman reveals communities by repeatedly deleting edges that carry the
+largest fraction of shortest paths.  We derive edge betweenness, give Brandes
+pseudocode, and split two triangles joined by one bridge.
+#+end_abstract
+
+* Mathematics
+
+Edge betweenness is
+\[
+c_B(e)=\sum_{s<t}\frac{\sigma_{st}(e)}{\sigma_{st}},
+\]
+where \(\sigma_{st}\) counts shortest \(s\)-to-\(t\) paths.  Inter-community
+bridges occur on unusually many shortest paths.  Brandes' dependency
+accumulation computes all scores in \(O(nm)\) for an unweighted graph.
+
+* Pseudocode
+
+#+begin_example
+while component count < target:
+  for each source s:
+    BFS distances, shortest-path counts, and predecessors
+    back-propagate dependencies to score edges
+  remove every edge tied for maximum score
+return connected components
+#+end_example
+
+Repeated recomputation gives \(O(m^2n)\) worst-case time and \(O(n+m)\) space.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/network_analysis.hpp>
+#include <iostream>
+int main() {
+  auto c=datamunge::algorithms::girvan_newman(
+    6,{{0,1},{1,2},{2,0},{2,3},{3,4},{4,5},{5,3}},2);
+  for(const auto& g:c){for(auto v:g)std::cout<<v<<' ';std::cout<<'\n';}
+}
+#+end_src
+
+The unique bridge \(2-3\) is removed first, returning communities
+\(\{0,1,2\}\) and \(\{3,4,5\}\).
+

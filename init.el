@@ -120,8 +120,13 @@ an up-to-date .pdf already exists -- and emit a plain \\includegraphics."
     found))
 
 (defun datamunge--apply-direnv-exec (workdir)
-  "Apply the evaluated direnv environment for WORKDIR."
-  (let ((direnv (executable-find "direnv"))
+  "Apply the evaluated direnv environment for WORKDIR.
+Preserve the current PATH entries so the export shell's tools remain available."
+  (let ((original-path (getenv "PATH"))
+        (original-dyld-library-path (getenv "DYLD_LIBRARY_PATH"))
+        (original-ld-library-path (getenv "LD_LIBRARY_PATH"))
+        (original-nix-ldflags (getenv "NIX_LDFLAGS"))
+        (direnv (executable-find "direnv"))
         (root (datamunge--direnv-root workdir)))
     (when (and direnv root)
       (with-temp-buffer
@@ -134,13 +139,31 @@ an up-to-date .pdf already exists -- and emit a plain \\includegraphics."
                           (substring entry (1+ eq-pos))))))
             (let ((path (getenv "PATH")))
               (when path
+                (when original-path
+                  (setq path
+                        (mapconcat #'identity
+                                   (delete-dups
+                                    (append (parse-colon-path path)
+                                            (parse-colon-path original-path)))
+                                   path-separator))
+                  (setenv "PATH" path))
                 (setq exec-path
                       (append (parse-colon-path path)
-                              (list exec-directory)))))))))))
+                              (list exec-directory))))
+            ;; These paths belong to the outer export shell and are required
+            ;; by freshly compiled Babel executables. A nested direnv must not
+            ;; discard them.
+            (when original-dyld-library-path
+              (setenv "DYLD_LIBRARY_PATH" original-dyld-library-path))
+            (when original-ld-library-path
+              (setenv "LD_LIBRARY_PATH" original-ld-library-path))
+            (when original-nix-ldflags
+              (setenv "NIX_LDFLAGS" original-nix-ldflags)))))))))
 
 (defun datamunge--apply-direnv-environment (workdir)
   "Apply the nearest direnv environment for WORKDIR."
-  (datamunge--apply-direnv-exec workdir))
+  (unless (getenv "DATAMUNGE_SKIP_DIRENV")
+    (datamunge--apply-direnv-exec workdir)))
 
 (defun datamunge--backend-for-output (output)
   "Infer the Org export backend from OUTPUT."
@@ -187,7 +210,14 @@ an up-to-date .pdf already exists -- and emit a plain \\includegraphics."
         (unwind-protect
             (progn
               (org-mode)
-              (datamunge--export-current-buffer output))
+              ;; Generate every Babel result and side-effect artifact before
+              ;; export filters inspect links.  In particular, the LaTeX SVG
+              ;; filter must not race ahead of a block that creates its image.
+              ;; Disable Babel during the subsequent export so each block runs
+              ;; exactly once.
+              (org-babel-execute-buffer)
+              (let ((org-export-use-babel nil))
+                (datamunge--export-current-buffer output)))
           (set-buffer-modified-p nil)
           (kill-buffer (current-buffer)))))))
 

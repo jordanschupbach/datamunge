@@ -1,0 +1,37 @@
+#+title: Dinic's Maximum-Flow Algorithm
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+Dinic groups augmentations into blocking-flow phases.  We derive the residual
+level graph, give pseudocode, and recover the classic maximum flow 23.
+#+end_abstract
+
+* Mathematics and algorithm
+
+A residual arc has capacity \(c_f(u,v)=c(u,v)-f(u,v)\).  BFS retains only arcs
+advancing one level; DFS saturates a blocking flow in this acyclic level graph.
+After each phase the shortest residual source--sink distance strictly grows.
+
+#+begin_example
+while BFS reaches sink:
+  build level graph
+  while DFS can push source-to-sink flow:
+    augment and maintain reverse residual arcs
+return flow and residual reachable minimum-cut side
+#+end_example
+
+The general bound is \(O(V^2E)\), with \(O(V+E)\) storage.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/advanced_graph.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::dinic_max_flow(
+2,{{0,1,7.5}},0,1);std::cout<<r.max_flow<<'\n';}
+#+end_src
+
+The single edge saturates, printing \(7.5\); the test suite also verifies the
+CLRS network's value \(23\).
+

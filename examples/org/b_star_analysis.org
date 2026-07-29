@@ -1,0 +1,23 @@
+#+title: B* Multi-Goal Best-First Search
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+Here B* follows the list's graph-search meaning: find the least-cost member of
+a goal set.  A lower bound \(h(v)\) estimates cost to the nearest goal, and
+the frontier is ordered by \(g+h\).  If \(h\) is admissible for the goal set,
+the first removed goal is globally cheapest by the same lower-bound proof as
+A*.
+#+begin_example
+mark every allowed goal
+best-first search from start by path-cost + goal-set lower bound
+stop at the first removed goal
+#+end_example
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::b_star_search(
+4,{{0,1,1},{1,2,5},{0,3,2}},0,{2,3},{2,5,0,0});std::cout<<r.path.back();}
+#+end_src
+It selects goal 3 at cost 2.
+

@@ -1,0 +1,328 @@
+#+title: The Miller-Rabin Primality Test: Deterministic Prime Testing for 64-bit Integers
+#+subtitle: A literate C++ study of strong probable primes, witnesses, and Carmichael numbers with =datamunge='s =algorithms::is_probable_prime=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Is a given 64-bit integer prime? Trial division answers it but costs
+\(O(\sqrt{n})\); Fermat's little theorem suggests a far cheaper probabilistic
+test, yet it is defeated outright by the *Carmichael numbers*, composites that
+impersonate primes to every base. The Miller-Rabin test repairs the Fermat
+test by exploiting one more fact about a prime modulus -- that \(1\) has only
+\(\pm1\) as square roots -- and turns each base into a potential *witness* to
+compositeness. This report implements it in =datamunge='s C++
+=algorithms::is_probable_prime= and presents it as a literate program: every
+number and figure below is produced by a single compiled binary. We derive
+Fermat's test and watch it fail on \(561\), develop the strong-probable-prime
+refinement with pseudocode, and explain why a *fixed* set of twelve small
+prime bases makes the test not merely probable but *deterministic and exact*
+across the entire =std::uint64_t= range. Three rounds are then worked by hand:
+the prime \(13\) reaches \(1\) through \(-1\); the composite \(15\) is caught in
+a single step; and \(561\) -- a Fermat liar -- is exposed when the sequence
+\(263, 166, 67, 1\) reveals \(67\) as a nontrivial square root of \(1\)
+modulo \(561\), something impossible for a prime.
+#+end_abstract
+
+* Primality, Fermat, and the Carmichael problem
+
+A prime is an integer \(n \ge 2\) whose only divisors are \(1\) and \(n\).
+*Fermat's little theorem* gives a one-directional certificate: if \(n\) is
+prime then for every base \(a\) with \(1 \le a < n\),
+\[
+a^{\,n-1} \equiv 1 \pmod n .
+\]
+Read as a test, the contrapositive is what bites: if we ever find a base with
+\(a^{\,n-1} \not\equiv 1 \pmod n\), then \(n\) is *certainly composite*, and
+\(a\) is a *Fermat witness*. Modular exponentiation costs only
+\(O(\log n)\) multiplications, so this is enormously cheaper than trial
+division.
+
+The catch is the converse. \(a^{\,n-1} \equiv 1\) does *not* prove primality:
+\(a\) may be a *Fermat liar*. Worse, the *Carmichael numbers* --
+\(561 = 3\cdot11\cdot17\), \(1105\), \(1729\), \(2465\), ... -- are composites
+for which /every/ base coprime to \(n\) is a liar. No amount of Fermat testing
+with coprime bases can ever unmask them; the Fermat test is not just
+occasionally wrong but *systematically* wrong on an infinite family.
+
+=datamunge= exposes the fixed test =is_probable_prime(n)= together with a
+single-round =is_strong_probable_prime_base(n, a)=, whose trace is exactly what
+exposes a Carmichael number.
+
+#+name: mr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Self-contained modular arithmetic, used only to trace the rounds by hand in this report.
+// The 128-bit intermediate keeps (a*b) % m exact even when a and b approach 2^64.
+static std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
+    return static_cast<std::uint64_t>((static_cast<unsigned __int128>(a) * b) % m);
+}
+static std::uint64_t modpow(std::uint64_t a, std::uint64_t e, std::uint64_t m) {
+    std::uint64_t r = 1 % m;
+    a %= m;
+    while (e) {
+        if (e & 1u) r = mulmod(r, a, m);
+        a = mulmod(a, a, m);
+        e >>= 1;
+    }
+    return r;
+}
+
+// Print the strong-probable-prime sequence x0 = a^d, x1 = x0^2, ... (mod n) and the verdict.
+static void trace(std::uint64_t n, std::uint64_t a) {
+    std::uint64_t d = n - 1;
+    int s = 0;
+    while ((d & 1u) == 0u) { d >>= 1; ++s; }
+    std::cout << "  n = " << n << ", base a = " << a << ":  n-1 = " << d << " * 2^" << s << "\n";
+    std::uint64_t x = modpow(a, d, n);
+    std::cout << "      x0 = a^d mod n = " << x << "\n";
+    bool prime_consistent = (x == 1 || x == n - 1);
+    for (int r = 1; r < s; ++r) {
+        x = mulmod(x, x, n);
+        std::cout << "      x" << r << " = x" << (r - 1) << "^2 mod n = " << x << "\n";
+        if (x == n - 1) { prime_consistent = true; break; }
+    }
+    std::cout << "      -> "
+              << (prime_consistent ? "strong probable prime (consistent with PRIME)" : "COMPOSITE")
+              << "   [is_strong_probable_prime_base = "
+              << (is_strong_probable_prime_base(n, a) ? "true" : "false") << "]\n\n";
+}
+#+end_src
+
+* The Miller-Rabin refinement
+
+Miller-Rabin adds one algebraic fact the Fermat test ignores: modulo a
+*prime* \(p\), the equation \(x^2 \equiv 1\) has only the two roots
+\(x \equiv \pm1\), because \(p \mid (x-1)(x+1)\) forces \(p \mid x-1\) or
+\(p \mid x+1\). A composite modulus, by contrast, can have *nontrivial* square
+roots of \(1\) -- and finding one is a proof of compositeness.
+
+To use this, strip the twos from \(n-1\): write
+\[
+n - 1 = d \cdot 2^{s}, \qquad d \text{ odd}.
+\]
+For prime \(n\), the value \(a^{\,n-1} = a^{\,d\cdot 2^{s}}\) equals \(1\), and
+the sequence obtained by repeatedly *taking square roots*,
+\[
+a^{d},\; a^{2d},\; a^{4d},\; \dots,\; a^{2^{s-1}d},\; a^{2^{s}d} = 1,
+\]
+must therefore reach that final \(1\) *only through \(\pm1\)*. Concretely, one
+of two things holds for a prime:
+- \(a^{d} \equiv 1 \pmod n\) (the sequence is \(1\) from the start), or
+- \(a^{2^{r}d} \equiv n-1 \equiv -1 \pmod n\) for some \(r \in [0, s)\) (the
+  sequence hits \(-1\) before squaring to \(1\)).
+
+If /neither/ holds, then somewhere in the sequence a value \(x \ne \pm1\)
+satisfied \(x^2 \equiv 1\): a nontrivial square root of \(1\), impossible modulo
+a prime. Then \(a\) is a *witness* and \(n\) is composite. A number that passes
+this test for base \(a\) is called a *strong probable prime* to base \(a\).
+
+#+begin_example
+STRONG-PROBABLE-PRIME(n, a):        # one Miller-Rabin round; true = "no witness found"
+  if n < 2:                return false
+  if n is even:            return (n == 2)
+  a <- a mod n
+  if a == 0:               return true          # base is a multiple of n: vacuous
+
+  write n - 1 = d * 2^s  with d odd             # strip trailing zero bits
+  x <- a^d mod n                                # fast modular exponentiation
+  if x == 1 or x == n - 1:  return true         # opens at 1, or already at -1
+
+  repeat s - 1 times:                           # square, hunting for -1
+      x <- x*x mod n
+      if x == n - 1:        return true
+  return false                                  # a nontrivial sqrt of 1 was crossed: COMPOSITE
+
+MILLER-RABIN(n):                    # deterministic over all 64-bit n
+  for p in {2,3,5,7,11,13,17,19,23,29,31,37}:   # doubles as a trial-division screen
+      if n == p:            return true
+      if n mod p == 0:      return false
+  for a in {2,3,5,7,11,13,17,19,23,29,31,37}:
+      if not STRONG-PROBABLE-PRIME(n, a): return false
+  return true
+#+end_example
+
+** Witnesses and why a fixed base set is deterministic
+
+For a /random/ base, at least three quarters of the bases in \([2, n-2]\) are
+witnesses for any odd composite \(n\) (Rabin's theorem), so \(k\) random rounds
+leave an error probability below \(4^{-k}\) -- the classic probabilistic test.
+But we can do better than "probable". The set of composites that survive a
+given collection of bases thins out fast as the collection grows, and it has
+been computed exactly how far a *fixed*, small set of prime bases reaches
+before the first composite slips through:
+
+- \(\{2\}\) fails first at \(2047 = 23\cdot89\);
+- \(\{2,3\}\) fails at \(1373653\);
+- and, extending the sequence (Jaeschke 1993; Sinclair), the twelve bases
+  \[
+  \{2,3,5,7,11,13,17,19,23,29,31,37\}
+  \]
+  witness *every* composite below \(3.317 \times 10^{24}\).
+
+Since \(2^{64} \approx 1.8 \times 10^{19}\) is far below that threshold, running
+exactly those twelve bases decides primality *with certainty* for any
+=std::uint64_t=. That is why the function is deterministic despite its
+=is_probable_prime= name: over the whole 64-bit range it never errs. The cost
+is a fixed twelve modular exponentiations, each \(O(\log n)\) multiplications,
+for an \(O(\log^3 n)\)-ish test independent of \(\sqrt n\).
+
+The one arithmetic hazard is the modular multiply: two factors below \(2^{64}\)
+have a product up to \(2^{128}\), which overflows every 64-bit type. The
+implementation forms each product in an =unsigned __int128= before reducing,
+so =mulmod= stays exact all the way to \(2^{64}-1\).
+
+* Worked example: three rounds by hand
+
+We trace =base 2= against a prime, a plain composite, and the Carmichael
+number \(561\), printing the square-root sequence \(x_0 = a^d,\, x_1 = x_0^2,\,
+\dots \pmod n\) and cross-checking each verdict against the library's
+=is_strong_probable_prime_base=. We then run the full deterministic
+=is_probable_prime= on a spread of values including large 64-bit primes, and
+confirm that four Carmichael numbers -- Fermat liars all -- are reported
+composite.
+
+#+name: mr-run
+#+begin_src c++ :eval no
+    std::cout << "=== Miller-Rabin: strong-probable-prime rounds worked by hand ===\n\n";
+
+    std::cout << "A prime (13), base 2 -- reaches 1 through -1 (== n-1):\n";
+    trace(13, 2);
+
+    std::cout << "A composite (15), base 2 -- base 2 is a witness:\n";
+    trace(15, 2);
+
+    std::cout << "The Carmichael number 561, base 2 -- a nontrivial square root of 1 appears:\n";
+    trace(561, 2);
+
+    std::cout << "Deterministic is_probable_prime over the fixed 12-base witness set:\n";
+    for (std::uint64_t n : {2ULL, 3ULL, 97ULL, 7919ULL, 561ULL, 1729ULL,
+                            1000000007ULL, 2147483647ULL, 67280421310721ULL})
+        std::cout << "  is_probable_prime(" << n << ") = "
+                  << (is_probable_prime(n) ? "prime" : "composite") << "\n";
+
+    std::cout << "\nCarmichael numbers fool the Fermat test but not Miller-Rabin:\n";
+    for (std::uint64_t c : {561ULL, 1105ULL, 1729ULL, 2465ULL})
+        std::cout << "  " << c << ": Fermat 2^(n-1) mod n = " << modpow(2, c - 1, c)
+                  << " (a Fermat liar), Miller-Rabin verdict = "
+                  << (is_probable_prime(c) ? "prime" : "COMPOSITE") << "\n";
+
+    // Spike plot: a vertical spike at every prime in [2, 2000]; red dots mark the Carmichael numbers,
+    // which sit on the composite baseline (no spike) though the Fermat test would raise them.
+    std::vector<double> x0, y0, x1, y1;
+    for (std::uint64_t k = 2; k <= 2000; ++k)
+        if (is_probable_prime(k)) {
+            x0.push_back(static_cast<double>(k)); y0.push_back(0.0);
+            x1.push_back(static_cast<double>(k)); y1.push_back(1.0);
+        }
+    std::vector<double> cx, cy;
+    for (std::uint64_t c : {561ULL, 1105ULL, 1729ULL}) {
+        cx.push_back(static_cast<double>(c)); cy.push_back(0.0);
+    }
+
+    auto plot = RPlot::create();
+    plot.segments(x0, y0, x1, y1, {37, 99, 235}, 1.0);
+    plot.points(cx, cy, "Carmichael numbers (composite)", {220, 38, 38}, 7.0);
+    plot.title("Miller-Rabin over [2, 2000]: a spike at every prime")
+        .x_label("n").y_label("is_probable_prime(n)").background({250, 250, 252});
+    plot.y_limits(-0.15, 1.2);
+    plot.save_svg("build/org/miller_rabin_primes.svg");
+    std::cout << "\nwrote miller_rabin_primes.svg (" << x0.size() << " primes in [2, 2000])\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/miller_rabin_analysis.cpp <<'CPP'
+<<mr-includes>>
+
+int main() {
+<<mr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/miller_rabin_analysis.cpp -o build/org/miller_rabin_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/miller_rabin_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Miller-Rabin: strong-probable-prime rounds worked by hand ===
+
+A prime (13), base 2 -- reaches 1 through -1 (== n-1):
+  n = 13, base a = 2:  n-1 = 3 * 2^2
+      x0 = a^d mod n = 8
+      x1 = x0^2 mod n = 12
+      -> strong probable prime (consistent with PRIME)   [is_strong_probable_prime_base = true]
+
+A composite (15), base 2 -- base 2 is a witness:
+  n = 15, base a = 2:  n-1 = 7 * 2^1
+      x0 = a^d mod n = 8
+      -> COMPOSITE   [is_strong_probable_prime_base = false]
+
+The Carmichael number 561, base 2 -- a nontrivial square root of 1 appears:
+  n = 561, base a = 2:  n-1 = 35 * 2^4
+      x0 = a^d mod n = 263
+      x1 = x0^2 mod n = 166
+      x2 = x1^2 mod n = 67
+      x3 = x2^2 mod n = 1
+      -> COMPOSITE   [is_strong_probable_prime_base = false]
+
+Deterministic is_probable_prime over the fixed 12-base witness set:
+  is_probable_prime(2) = prime
+  is_probable_prime(3) = prime
+  is_probable_prime(97) = prime
+  is_probable_prime(7919) = prime
+  is_probable_prime(561) = composite
+  is_probable_prime(1729) = composite
+  is_probable_prime(1000000007) = prime
+  is_probable_prime(2147483647) = prime
+  is_probable_prime(67280421310721) = prime
+
+Carmichael numbers fool the Fermat test but not Miller-Rabin:
+  561: Fermat 2^(n-1) mod n = 1 (a Fermat liar), Miller-Rabin verdict = COMPOSITE
+  1105: Fermat 2^(n-1) mod n = 1 (a Fermat liar), Miller-Rabin verdict = COMPOSITE
+  1729: Fermat 2^(n-1) mod n = 1 (a Fermat liar), Miller-Rabin verdict = COMPOSITE
+  2465: Fermat 2^(n-1) mod n = 1 (a Fermat liar), Miller-Rabin verdict = COMPOSITE
+
+wrote miller_rabin_primes.svg (303 primes in [2, 2000])
+#+end_example
+
+The three traces tell the whole story. For the prime \(13\), with
+\(13-1 = 3\cdot2^2\), the sequence \(8, 12\) reaches \(-1\) (\(=12\)) before it
+would square to \(1\): the prime signature. For the composite \(15\), with
+\(15-1 = 7\cdot2^1\), the single value \(x_0 = 8\) is neither \(1\) nor \(-1\)
+and there is nothing left to square, so base \(2\) is a witness. The Carmichael
+number \(561\) is the crux: with \(561-1 = 35\cdot2^4\) the sequence is
+\(263, 166, 67, 1\). It *does* end in \(1\) -- exactly why the Fermat test,
+which only checks that endpoint, is fooled -- but the step just before it,
+\(67^2 \equiv 1 \pmod{561}\) with \(67 \ne \pm1\), is a nontrivial square root
+of \(1\). No prime modulus admits one, so \(561\) is unmasked. The Fermat check
+=2^(n-1) mod n = 1= for all four Carmichael numbers confirms they are liars to
+base \(2\), yet the deterministic test calls every one composite.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/miller_rabin_primes.svg]]
+
+Each blue spike marks a prime that =is_probable_prime= accepts across
+\([2, 2000]\); their thinning-out to the right is the Prime Number Theorem made
+visible. The red dots sit on the composite baseline at the Carmichael numbers
+\(561\), \(1105\), and \(1729\): there is deliberately *no* spike above them,
+even though a Fermat test would have raised one. That gap is the entire point
+of Miller-Rabin -- and, fixed to twelve small bases, it is not a probable
+verdict but a certain one for every 64-bit integer.

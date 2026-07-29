@@ -1,0 +1,26 @@
+#+title: Rearranging a Nonblocking Minimal Spanning Switch
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Clos-switch model
+Restrict attention to calls using two middle switches \(A,B\).  Calls are
+edges in a bipartite graph of input and output subswitches; every vertex has
+degree at most two.  Its components are paths or even cycles, hence alternating
+two-edge-coloring assigns each call to \(A\) or \(B\) without conflicts.
+* Pseudocode
+#+begin_example
+build incident-call lists; require degree <= 2
+for each unassigned chain or cycle:
+  assign its first call A
+  traverse shared endpoints, alternating A,B
+#+end_example
+This is \(O(C+I+O)\).
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/routing_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::nonblocking_switch_routes(
+2,2,{{0,0},{0,1},{1,1},{1,0}});for(auto x:r)std::cout<<x<<' ';}
+#+end_src
+The four-cycle alternates 0,1,0,1, so neither outer subswitch reuses a middle
+link.  This matches the historical chain-rearrangement description.
+

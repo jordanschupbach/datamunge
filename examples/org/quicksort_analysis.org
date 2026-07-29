@@ -1,0 +1,301 @@
+#+title: Quicksort: In-Place Sorting by Divide and Conquer
+#+subtitle: A literate C++ study of median-of-three quicksort with =datamunge='s =algorithms::quicksort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Quicksort (Hoare, 1961) is the sort that most standard libraries reach for: it
+sorts /in place/, needs no auxiliary array, and on random input beats its
+O(n log n) rivals by a healthy constant factor thanks to its tight,
+cache-friendly inner loop. Its idea is pure divide and conquer -- pick a
+*pivot*, *partition* the array into the elements below it and the elements at
+or above it, then recurse on each side -- but the idea has a famous soft spot:
+a careless pivot turns already-sorted input into quadratic misery. This report
+implements Quicksort in =datamunge='s C++ =algorithms::quicksort= and presents
+it as a literate program in which every number and figure is produced by a
+single compiled binary. We derive the O(n log n) average-case recurrence and
+the O(n^2) worst case, explain how *median-of-three* pivoting defuses that
+worst case while staying fully deterministic, and note the two further
+refinements the implementation uses -- recursing on the smaller side (to bound
+the stack to O(log n)) and an insertion-sort cutoff for tiny ranges. A
+by-hand-traced seven-element example makes the partition scheme concrete, and
+an instrumented scaling study confirms the theory empirically: across inputs
+from fifty to ten thousand elements the measured comparison count tracks
+\(n\log_2 n\) to within about ten percent.
+#+end_abstract
+
+* The sorting problem and divide and conquer
+
+We are given an array of =std::int64_t= and must rearrange it into ascending
+order, in place. Quicksort solves this by *partitioning*. Choose one element as
+the *pivot*. Rearrange the range so that every element strictly less than the
+pivot comes first, then the pivot, then every element greater than or equal to
+it. The pivot is now in its final sorted position, and the two sides -- "less
+than" and "at least" -- are independent subproblems that can be sorted the same
+way. Recursion bottoms out at ranges of length zero or one, which are already
+sorted.
+
+Partitioning is the whole algorithm; everything else is bookkeeping. Because
+the pivot never moves again and the two sides never interact, no merge step is
+needed -- this is what lets Quicksort work *in place*, unlike merge sort. The
+flip side is that Quicksort is *not stable*: the swaps that partition the array
+can reorder equal elements relative to one another.
+
+=datamunge= exposes the sort as =algorithms::quicksort(data)=, plus an
+instrumented overload =quicksort(data, comparisons)= that additionally reports
+how many element-to-element comparisons it performed -- the measure we plot
+below.
+
+#+name: qs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/quicksort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Pretty-print a vector as "{ a b c }".
+static void print_vec(const std::vector<std::int64_t>& v) {
+    std::cout << "{";
+    for (std::size_t i = 0; i < v.size(); ++i) std::cout << " " << v[i];
+    std::cout << " }";
+}
+
+// An *illustrative* traced quicksort: median-of-three pivot + Lomuto partition, with no
+// small-range cutoff and a plain left-then-right recursion, printing each partition step so the
+// divide-and-conquer structure is visible. The library quicksort is what we actually rely on;
+// this mirror exists only to narrate the worked example, and we check it agrees with the library.
+static std::ptrdiff_t traced_partition(std::vector<std::int64_t>& a, std::ptrdiff_t lo, std::ptrdiff_t hi) {
+    const std::ptrdiff_t mid = lo + (hi - lo) / 2;
+    if (a[mid] < a[lo]) std::swap(a[mid], a[lo]); // order a[lo] <= a[mid] <= a[hi]:
+    if (a[hi] < a[lo]) std::swap(a[hi], a[lo]);   //   the median of the three ends up at a[mid]
+    if (a[hi] < a[mid]) std::swap(a[hi], a[mid]);
+    const std::int64_t pivot = a[mid];
+    std::swap(a[mid], a[hi]); // park the pivot at the end, then sweep smaller elements forward
+    std::ptrdiff_t store = lo;
+    for (std::ptrdiff_t j = lo; j < hi; ++j)
+        if (a[j] < pivot) { std::swap(a[store], a[j]); ++store; }
+    std::swap(a[store], a[hi]); // pivot into place
+    std::cout << "  a[" << lo << ".." << hi << "]  pivot=" << pivot << "  ->  ";
+    print_vec(a);
+    std::cout << "   (pivot at index " << store << ")\n";
+    return store;
+}
+
+static void traced_quicksort(std::vector<std::int64_t>& a, std::ptrdiff_t lo, std::ptrdiff_t hi) {
+    if (lo >= hi) return; // length 0 or 1: already sorted
+    const std::ptrdiff_t p = traced_partition(a, lo, hi);
+    traced_quicksort(a, lo, p - 1);
+    traced_quicksort(a, p + 1, hi);
+}
+#+end_src
+
+* The partition scheme and the algorithm
+
+The implementation uses the *Lomuto* partition. The pivot is parked at the end
+of the range; a cursor =store= marks the boundary of the "known less than
+pivot" prefix; a single left-to-right scan swaps every smaller element into
+that prefix; finally the pivot is dropped into the gap just past the prefix.
+
+#+begin_example
+PARTITION(a, lo, hi):                      # returns the pivot's final index p
+    pivot <- MEDIAN-OF-THREE(a, lo, mid, hi)   # (also moves the pivot to a[hi])
+    store <- lo
+    for j from lo to hi-1:
+        if a[j] < pivot:
+            swap a[store], a[j]
+            store <- store + 1
+    swap a[store], a[hi]                    # pivot into its final resting place
+    return store                           # a[lo..store-1] < pivot <= a[store..hi]
+
+QUICKSORT(a, lo, hi):
+    while hi - lo + 1 > CUTOFF:             # small ranges finished by insertion sort
+        p <- PARTITION(a, lo, hi)
+        if p - lo < hi - p:                # recurse on the SMALLER side, loop on the larger
+            QUICKSORT(a, lo, p - 1)         #   -> live recursion depth stays O(log n)
+            lo <- p + 1
+        else:
+            QUICKSORT(a, p + 1, hi)
+            hi <- p - 1
+    INSERTION-SORT(a, lo, hi)
+#+end_example
+
+** Cost: the average-case recurrence and the quadratic trap
+
+Partitioning a range of \(n\) elements costs \(\Theta(n)\) comparisons -- one
+scan. If each partition split the range into two roughly equal halves, the
+total cost would obey
+
+\[ T(n) = 2\,T(n/2) + \Theta(n) = \Theta(n \log n), \]
+
+the same recurrence as merge sort. A random pivot splits well /on average/, and
+one can show the expected number of comparisons is \(\approx 1.39\,n\log_2 n\),
+so the average case is \(\Theta(n\log n)\).
+
+The danger is an /unbalanced/ split. With a naive pivot -- say "always take the
+last element" -- an *already-sorted* (or reverse-sorted) array partitions into
+one empty side and one side of size \(n-1\), every single time. The recurrence
+degenerates to
+
+\[ T(n) = T(n-1) + \Theta(n) = \Theta(n^2), \]
+
+and the sort crawls -- precisely on the tidy inputs a user is most likely to
+hand it.
+
+** How median-of-three mitigates it
+
+Rather than trust one position, we sample three -- the first, middle, and last
+elements of the range -- and use their *median* as the pivot. On a sorted array
+the middle element /is/ the true median, so the split is perfectly balanced and
+the algorithm runs in \(\Theta(n\log n)\); the ends being sorted no longer
+hurts. A pivot is now bad only if all three samples are extreme, which random
+data makes rare and which no /fixed/ input can force once the sampling straddles
+the range. Because the three positions are fixed and no randomness is used, the
+result is completely deterministic and reproducible. A true \(O(n^2)\) case
+still exists in principle, but it must be constructed adversarially against this
+exact sampling rule; ordinary and even structured inputs stay \(\Theta(n\log
+n)\). The implementation adds two more refinements: it always recurses into the
+/smaller/ partition and loops on the larger (bounding the live stack to \(O(\log
+n)\) so no input can overflow it), and it finishes ranges of at most sixteen
+elements with insertion sort, whose low overhead wins on tiny inputs.
+
+* A worked example
+
+We sort the seven-element array \([9, 3, 7, 1, 8, 5, 2]\), printing the array
+after each partition together with the median-of-three pivot used and the index
+where that pivot lands. We then confirm the library's =quicksort= produces the
+identical result, and report the comparisons it charged.
+
+#+name: qs-run
+#+begin_src c++ :eval no
+    std::cout << "=== Worked example: quicksort of a 7-element array ===\n";
+    std::vector<std::int64_t> w = {9, 3, 7, 1, 8, 5, 2};
+    std::cout << "input   = "; print_vec(w); std::cout << "\n";
+    std::cout << "partition steps (median-of-three pivot, elements < pivot to the left):\n";
+    std::vector<std::int64_t> traced = w;
+    traced_quicksort(traced, 0, static_cast<std::ptrdiff_t>(traced.size()) - 1);
+    std::cout << "sorted  = "; print_vec(traced); std::cout << "\n";
+
+    std::vector<std::int64_t> lib = w;
+    std::uint64_t cmps = 0;
+    quicksort(lib, cmps);
+    std::cout << "library quicksort agrees: " << (lib == traced ? "yes" : "NO")
+              << "   (" << cmps << " comparisons)\n";
+
+    // Scaling study: comparisons vs n on random inputs, against the reference curve n*log2(n).
+    std::cout << "\n=== Scaling study: comparisons vs n on random inputs ===\n";
+    std::cout << "     n     comparisons    n*log2(n)     ratio\n";
+    const std::vector<std::size_t> sizes = {50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    std::mt19937_64 rng(20240927);
+    std::vector<double> ns, measured, reference;
+    for (std::size_t n : sizes) {
+        std::vector<std::int64_t> v(n);
+        for (auto& x : v) x = static_cast<std::int64_t>(rng() % 1000000);
+        std::uint64_t c = 0;
+        quicksort(v, c);
+        const double ref = static_cast<double>(n) * std::log2(static_cast<double>(n));
+        std::cout << std::setw(6) << n << std::setw(15) << c
+                  << std::setw(13) << static_cast<long long>(std::llround(ref))
+                  << std::setw(10) << static_cast<double>(c) / ref << "\n";
+        ns.push_back(static_cast<double>(n));
+        measured.push_back(static_cast<double>(c));
+        reference.push_back(ref);
+    }
+
+    auto plot = RPlot::create();
+    if (!ns.empty() && !measured.empty()) {           // guard: RPlot throws on empty series
+        plot.points(ns, measured, "measured comparisons", {37, 99, 235}, 6.0);
+        plot.lines(ns, measured, "", {37, 99, 235}, 1.5);
+    }
+    if (!ns.empty() && !reference.empty()) {
+        plot.lines(ns, reference, "n * log2(n)", {220, 38, 38}, 2.0);
+    }
+    plot.title("Quicksort comparison count vs input size (random inputs)")
+        .x_label("input size n").y_label("element comparisons").background({250, 250, 252});
+    plot.save_svg("build/org/quicksort_comparisons.svg");
+    std::cout << "\nwrote quicksort_comparisons.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/quicksort_analysis.cpp <<'CPP'
+<<qs-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(2);
+<<qs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/quicksort_analysis.cpp -o build/org/quicksort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/quicksort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Worked example: quicksort of a 7-element array ===
+input   = { 9 3 7 1 8 5 2 }
+partition steps (median-of-three pivot, elements < pivot to the left):
+  a[0..6]  pivot=2  ->  { 1 2 7 9 8 5 3 }   (pivot at index 1)
+  a[2..6]  pivot=7  ->  { 1 2 3 5 7 9 8 }   (pivot at index 4)
+  a[2..3]  pivot=3  ->  { 1 2 3 5 7 9 8 }   (pivot at index 2)
+  a[5..6]  pivot=8  ->  { 1 2 3 5 7 8 9 }   (pivot at index 5)
+sorted  = { 1 2 3 5 7 8 9 }
+library quicksort agrees: yes   (18 comparisons)
+
+=== Scaling study: comparisons vs n on random inputs ===
+     n     comparisons    n*log2(n)     ratio
+    50            291          282      1.03
+   100            663          664      1.00
+   200           1549         1529      1.01
+   500           4593         4483      1.02
+  1000          10618         9966      1.07
+  2000          22570        21932      1.03
+  5000          68151        61439      1.11
+ 10000         144671       132877      1.09
+
+wrote quicksort_comparisons.svg
+#+end_example
+
+Read the trace top to bottom. The first partition of \([9,3,7,1,8,5,2]\) samples
+positions 0, 3, and 6 -- values \(9, 1, 2\) -- whose median is \(2\); with
+pivot \(2\) only the single element \(1\) is smaller, so the pivot lands at
+index 1 and the array becomes \([1,\,2,\,7,9,8,5,3]\). The left side is a lone
+element, already done; the right side \([7,9,8,5,3]\) is partitioned around its
+own median-of-three (\(7\)), then its pieces around \(3\) and \(8\), and after
+four partitions the array is fully sorted as \([1,2,3,5,7,8,9]\). The library
+=quicksort= reaches the same result and charges 18 comparisons for these seven
+elements. (Because the trace switches recursion off below the cutoff while the
+library uses insertion sort on small ranges, the /pictures/ of the partitions
+match even though the two count comparisons slightly differently.)
+
+The scaling study drives home the average-case bound. For each size \(n\) we
+sort one random vector and count comparisons; the =ratio= column divides that
+count by \(n\log_2 n\):
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/quicksort_comparisons.svg]]
+
+The measured comparison counts (blue) hug the \(n\log_2 n\) reference curve
+(red) across more than two orders of magnitude in \(n\), with the ratio staying
+between \(1.00\) and \(1.11\). This is exactly the \(\Theta(n\log n)\) average
+case the recurrence predicts -- and, thanks to median-of-three pivoting, it is
+the behaviour we get on ordinary inputs rather than the quadratic worst case
+that stalks naive Quicksort.

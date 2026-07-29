@@ -1,0 +1,39 @@
+#+title: Euclidean Minimum Spanning Tree
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+
+#+begin_abstract
+The Euclidean MST connects planar points with minimum total segment length.
+We reduce the complete geometric graph to the tested Kruskal implementation,
+give pseudocode, and solve the unit square.
+#+end_abstract
+
+* Mathematics and algorithm
+
+For points \(p_i=(x_i,y_i)\), edge weight is
+\[
+w_{ij}=\sqrt{(x_i-x_j)^2+(y_i-y_j)^2}.
+\]
+The cut property makes the lightest edge crossing any component cut safe.
+
+#+begin_example
+construct every pair (i,j,distance(p_i,p_j))
+sort edges by distance
+use union-find to accept exactly cycle-free component joins
+stop after n-1 edges
+#+end_example
+
+This direct form costs \(O(n^2\log n)\) time and \(O(n^2)\) space; Delaunay
+triangulation can reduce the candidate edge set.
+
+* C++ example
+
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/advanced_graph.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::euclidean_minimum_spanning_tree(
+{{0,0},{1,0},{1,1},{0,1}});std::cout<<r.total_weight<<'\n';}
+#+end_src
+
+Three unit sides span the square, so the program and focused test return 3.
+

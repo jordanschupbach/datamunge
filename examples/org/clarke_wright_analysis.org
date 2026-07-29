@@ -1,0 +1,25 @@
+#+title: Clarke--Wright Savings for Vehicle Routing
+#+options: toc:t num:t
+#+property: header-args:c++ :eval no
+* Mathematics
+Serving \(i,j\) separately costs \(2d_{0i}+2d_{0j}\); joining them saves
+\[
+s_{ij}=d_{0i}+d_{0j}-d_{ij}.
+\]
+Process savings descending and merge routes only at compatible endpoints when
+combined demand fits vehicle capacity.
+#+begin_example
+start one depot-customer-depot route per customer
+sort all savings descending
+merge distinct endpoint routes whenever capacity permits
+#+end_example
+The implementation is \(O(n^3)\) with simple route lookup.
+* C++ example
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::clarke_wright_savings(
+{{0,0},{1,0},{2,0}},{0,1,1},2);std::cout<<r.routes.size();}
+#+end_src
+Both customers merge into one capacity-feasible route.
+

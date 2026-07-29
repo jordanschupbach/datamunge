@@ -6,15 +6,15 @@
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
 #
-#   MakeMaker ARGV: (q[INSTALL_BASE=/mnt/projects/datamunge/src/perldatamunge/../../build/perl])
+#   MakeMaker ARGV: (q[INSTALL_BASE=/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build/perl])
 #
 
 #   MakeMaker Parameters:
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     INC => q[-I/mnt/projects/datamunge/src/perldatamunge/../../include]
-#     LIBS => [q[-L/mnt/projects/datamunge/src/perldatamunge/../../build -ldatamunge]]
+#     INC => q[-I/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../include]
+#     LIBS => [q[-L/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build -ldatamunge]]
 #     NAME => q[Datamunge]
 #     OBJECT => q[Datamunge_wrap$(OBJ_EXT)]
 #     PM => { lib/Datamunge.pm=>q[$(INST_LIBDIR)/Datamunge.pm] }
@@ -22,36 +22,36 @@
 #     TEST_REQUIRES => {  }
 #     VERSION => q[0.0.1]
 #     clean => { FILES=>q[Datamunge_wrap.* Datamunge.pm lib/Datamunge.pm] }
-#     dynamic_lib => { OTHERLDFLAGS=>q[-shared -O2 -L/nix/store/wb6rhpznjfczwlwx23zmdrrw74bayxw4-glibc-2.42-47/lib -fstack-protector-strong] }
+#     dynamic_lib => { OTHERLDFLAGS=>q[-bundle -undefined dynamic_lookup -mmacosx-version-min=14.0 -L/no-such-path/lib -fstack-protector-strong] }
 
 # --- MakeMaker post_initialize section:
 
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi/Config.pm).
+# These definitions are from config.sh (via /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
-CCCDLFLAGS = -fPIC
-CCDLFLAGS = -Wl,-E -Wl,-rpath,/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi/CORE
+CCCDLFLAGS =  
+CCDLFLAGS =  
 CPPRUN = cc  -E
-DLEXT = so
+DLEXT = bundle
 DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = ar
 LD = cc
-LDDLFLAGS = -shared -O2 -L/nix/store/wb6rhpznjfczwlwx23zmdrrw74bayxw4-glibc-2.42-47/lib -fstack-protector-strong
-LDFLAGS =  -fstack-protector-strong -L/nix/store/wb6rhpznjfczwlwx23zmdrrw74bayxw4-glibc-2.42-47/lib
+LDDLFLAGS = -bundle -undefined dynamic_lookup -mmacosx-version-min=14.0 -L/no-such-path/lib -fstack-protector-strong
+LDFLAGS =  -mmacosx-version-min=14.0 -fstack-protector-strong -L/no-such-path/lib
 LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
-OSNAME = linux
-OSVERS = gnulinux
-RANLIB = :
-SITELIBEXP = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/site_perl/5.42.0
-SITEARCHEXP = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/site_perl/5.42.0/x86_64-linux-thread-multi
-SO = so
+OSNAME = darwin
+OSVERS = 25.2.0
+RANLIB = ranlib
+SITELIBEXP = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/site_perl/5.42.0
+SITEARCHEXP = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/site_perl/5.42.0/darwin-thread-multi-2level
+SO = dylib
 VENDORARCHEXP = 
 VENDORLIBEXP = 
 
@@ -80,7 +80,7 @@ MAN3EXT = 3
 MAN1SECTION = 1
 MAN3SECTION = 3
 INSTALLDIRS = site
-INSTALL_BASE = /mnt/projects/datamunge/src/perldatamunge/../../build/perl
+INSTALL_BASE = /Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build/perl
 DESTDIR = 
 PREFIX = $(INSTALL_BASE)
 INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
@@ -89,11 +89,11 @@ INSTALLSITELIB = $(INSTALL_BASE)/lib/perl5
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
 INSTALLVENDORLIB = $(INSTALL_BASE)/lib/perl5
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/x86_64-linux-thread-multi
+INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/x86_64-linux-thread-multi
+INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/x86_64-linux-thread-multi
+INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
 INSTALLBIN = $(INSTALL_BASE)/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
@@ -119,18 +119,18 @@ INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
 INSTALLVENDORMAN3DIR = none
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
-PERL_LIB = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0
-PERL_ARCHLIB = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi
-PERL_ARCHLIBDEP = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi
+PERL_LIB = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0
+PERL_ARCHLIB = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level
+PERL_ARCHLIBDEP = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi/CORE
-PERL_INCDEP = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi/CORE
-PERL = "/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/bin/perl"
-FULLPERL = "/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/bin/perl"
+PERL_INC = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level/CORE
+PERL_INCDEP = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level/CORE
+PERL = "/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/bin/perl"
+FULLPERL = "/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/bin/perl"
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -143,7 +143,7 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /nix/store/57m0p8bnnm92ycrynjwwlij7h6amkvd5-perl5.42.0-ExtUtils-MakeMaker-7.70/lib/perl5/site_perl/5.42.0/ExtUtils/MakeMaker.pm
+MAKEMAKER   = /nix/store/kk7h1sggynipl2q76b135akqv6dz6kwm-perl5.42.0-ExtUtils-MakeMaker-7.70/lib/perl5/site_perl/5.42.0/ExtUtils/MakeMaker.pm
 MM_VERSION  = 7.70
 MM_REVISION = 77000
 
@@ -157,7 +157,7 @@ BASEEXT = Datamunge
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = 
-INC = -I/mnt/projects/datamunge/src/perldatamunge/../../include
+INC = -I/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../include
 OBJECT = Datamunge_wrap$(OBJ_EXT)
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -208,12 +208,12 @@ AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$$$ARGV[0], $$$$AR
 
 # --- MakeMaker tool_xsubpp section:
 
-XSUBPPDIR = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/ExtUtils
+XSUBPPDIR = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/ExtUtils
 XSUBPP = "$(XSUBPPDIR)$(DFSEP)xsubpp"
 XSUBPPRUN = $(PERLRUN) $(XSUBPP)
 XSPROTOARG = 
-XSUBPPDEPS = /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/ExtUtils/typemap /nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/ExtUtils$(DFSEP)xsubpp
-XSUBPPARGS = -typemap '/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/ExtUtils/typemap'
+XSUBPPDEPS = /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/ExtUtils/typemap /nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/ExtUtils$(DFSEP)xsubpp
+XSUBPPARGS = -typemap '/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/ExtUtils/typemap'
 XSUBPP_EXTRA_ARGS =
 
 
@@ -255,7 +255,7 @@ makemakerdflt : all
 
 
 # --- MakeMaker dist section:
-TAR = tar
+TAR = COPY_EXTENDED_ATTRIBUTES_DISABLE=1 COPYFILE_DISABLE=1 tar
 TARFLAGS = cvf
 ZIP = zip
 ZIPFLAGS = -r
@@ -281,10 +281,9 @@ DISTVNAME = Datamunge-0.0.1
 
 # --- MakeMaker cflags section:
 
-CCFLAGS = -D_REENTRANT -D_GNU_SOURCE -D_GNU_SOURCE -fwrapv -fno-strict-aliasing -pipe -fstack-protector-strong -I/no-such-path/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
-OPTIMIZE = -O2
+CCFLAGS = -fno-common -DPERL_DARWIN -mmacosx-version-min=14.0 -DNO_THREAD_SAFE_QUERYLOCALE -DNO_POSIX_2008_LOCALE -DHAS_BROKEN_LANGINFO_CODESET -DNO_LOCALE_COLLATE -D_GNU_SOURCE -fno-strict-aliasing -pipe -fstack-protector-strong -I/no-such-path/include -Wno-error=implicit-function-declaration
+OPTIMIZE = -O3
 PERLTYPE = 
-MPOLLUTE = 
 
 
 # --- MakeMaker const_loadlibs section:
@@ -292,10 +291,10 @@ MPOLLUTE =
 # Datamunge might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
-EXTRALIBS = -L/mnt/projects/datamunge/src/perldatamunge/../../build -ldatamunge
-LDLOADLIBS = -L/mnt/projects/datamunge/src/perldatamunge/../../build -ldatamunge
+EXTRALIBS = -L/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build -ldatamunge
+LDLOADLIBS = -L/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build -ldatamunge
 BSLOADLIBS = 
-LD_RUN_PATH = /mnt/projects/datamunge/src/perldatamunge/../../build
+LD_RUN_PATH = /Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build
 
 
 # --- MakeMaker const_cccmd section:
@@ -315,7 +314,7 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	PREFIX="$(PREFIX)"\
 	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
-	PASTHRU_INC='-I/mnt/projects/datamunge/src/perldatamunge/../../include $(PASTHRU_INC)'
+	PASTHRU_INC='-I/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../include $(PASTHRU_INC)'
 
 
 # --- MakeMaker special_targets section:
@@ -473,13 +472,13 @@ dynamic :: $(FIRST_MAKEFILE) config $(INST_BOOT) $(INST_DYNAMIC)
 # This section creates the dynamically loadable objects from relevant
 # objects and possibly $(MYEXTLIB).
 ARMAYBE = :
-OTHERLDFLAGS = -shared -O2 -L/nix/store/wb6rhpznjfczwlwx23zmdrrw74bayxw4-glibc-2.42-47/lib -fstack-protector-strong
+OTHERLDFLAGS = -bundle -undefined dynamic_lookup -mmacosx-version-min=14.0 -L/no-such-path/lib -fstack-protector-strong
 INST_DYNAMIC_DEP = 
 INST_DYNAMIC_FIX = 
 
 $(INST_DYNAMIC) : $(OBJECT) $(MYEXTLIB) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVEDEP) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP) 
 	$(RM_F) $@
-	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
+	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD) -Wl,-rpath,"/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build" $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST) \
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@
@@ -717,7 +716,7 @@ distdir : create_distdir distmeta
 
 # --- MakeMaker dist_test section:
 disttest : distdir
-	cd $(DISTVNAME) && $(ABSPERLRUN) Makefile.PL "INSTALL_BASE=/mnt/projects/datamunge/src/perldatamunge/../../build/perl"
+	cd $(DISTVNAME) && $(ABSPERLRUN) Makefile.PL "INSTALL_BASE=/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build/perl"
 	cd $(DISTVNAME) && $(MAKE) $(PASTHRU)
 	cd $(DISTVNAME) && $(MAKE) test $(PASTHRU)
 
@@ -972,7 +971,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 	-$(NOECHO) $(RM_F) $(MAKEFILE_OLD)
 	-$(NOECHO) $(MV)   $(FIRST_MAKEFILE) $(MAKEFILE_OLD)
 	- $(MAKE) $(USEMAKEFILE) $(MAKEFILE_OLD) clean $(DEV_NULL)
-	$(PERLRUN) Makefile.PL "INSTALL_BASE=/mnt/projects/datamunge/src/perldatamunge/../../build/perl"
+	$(PERLRUN) Makefile.PL "INSTALL_BASE=/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build/perl"
 	$(NOECHO) $(ECHO) "==> Your Makefile has been rebuilt. <=="
 	$(NOECHO) $(ECHO) "==> Please rerun the $(MAKE) command.  <=="
 	$(FALSE)
@@ -983,8 +982,8 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = "/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/bin/perl"
-MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0/x86_64-linux-thread-multi" "-I/nix/store/0m9dv7ml6vddmxj79s98l102d03sf9f1-perl-5.42.0/lib/perl5/5.42.0"
+FULLPERL      = "/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/bin/perl"
+MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0/darwin-thread-multi-2level" "-I/nix/store/wgxri0zmbb9ar0lz1f5a47v7a2rdha5a-perl-5.42.0/lib/perl5/5.42.0"
 
 $(MAP_TARGET) :: $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -995,7 +994,7 @@ $(MAKE_APERL_FILE) : static $(FIRST_MAKEFILE) pm_to_blib
 		Makefile.PL DIR="" \
 		MAKEFILE=$(MAKE_APERL_FILE) LINKTYPE=static \
 		MAKEAPERL=1 NORECURS=1 CCCDLFLAGS= \
-		INSTALL_BASE=/mnt/projects/datamunge/src/perldatamunge/../../build/perl
+		INSTALL_BASE=/Users/jordanschupbach/projects/datamunge/src/perldatamunge/../../build/perl
 
 
 # --- MakeMaker test section:
@@ -1034,7 +1033,7 @@ ppd :
 	$(NOECHO) $(ECHO) '    <ABSTRACT></ABSTRACT>' >> Datamunge.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR></AUTHOR>' >> Datamunge.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Datamunge.ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-thread-multi-5.42" />' >> Datamunge.ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.42" />' >> Datamunge.ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Datamunge.ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Datamunge.ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Datamunge.ppd

@@ -1,0 +1,771 @@
+#+title: Kernel Ridge Regression: Nonlinear Regression, Regularization, and the Kernel Trick
+#+subtitle: A literate C++ study of penalized least squares in an RKHS using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We implement Kernel Ridge Regression (KRR) in =datamunge='s C++
+=stats::KernelRidgeRegression= and report it as a literate program: every
+fragment below is a real, compiled, executed chunk of the single C++
+binary that produced every number and figure in this document. KRR is
+ridge regression performed in a (possibly infinite-dimensional) kernel
+feature space: it minimizes squared error plus a penalty on the fitted
+function's roughness, which by the representer theorem has the closed-form
+dual solution alpha = (K + lambda I)^{-1} y, so a prediction is a
+kernel-weighted combination of the training responses. It thus unifies
+three ideas this project treats separately -- the "kernel trick" of the
+[[file:kernel_pca_iris_analysis.org][kernel PCA]] report, the ridge penalty
+of the [[file:elastic_net_iris_analysis.org][regularized-regression]]
+report, and the predictive machinery of
+[[file:gaussian_process_regression_iris_analysis.org][Gaussian process
+regression]] (whose posterior mean KRR reproduces exactly). We fit it to
+120 noisy samples of a sine wave: with both the ridge strength lambda and
+the RBF bandwidth gamma chosen automatically by an exact, refit-free
+leave-one-out cross-validation, KRR recovers the true function to an RMSE
+of 0.0195, at a leave-one-out R^2 of 0.9596 whose 0.1513 error is
+essentially the 0.15 noise floor. A bias-variance study then turns the
+regularization dial explicitly: holding a deliberately narrow bandwidth
+fixed and sweeping lambda across six orders of magnitude, the model's
+effective degrees of freedom -- the continuous complexity measure
+tr[K(K+lambda I)^{-1}] -- fall monotonically from 21.6 to 4.6, while the
+error against the true function traces the classic U (0.0603 when
+under-regularized, 0.0298 at the optimum, 0.2026 when over-regularized).
+The RBF kernel's leave-one-out R^2 of 0.9596 dwarfs a linear kernel's
+0.6236 on this nonlinear target -- and we confirm the theory's promise
+that a linear kernel /is/ ordinary ridge regression, reproducing a
+closed-form ridge fit to a maximum discrepancy of 0.0000. Finally, on
+iris, KRR recovers a mildly nonlinear petal-length-versus-width
+relationship at a leave-one-out R^2 of 0.9516, edging the 0.9260 of its
+own linear-kernel (ridge) special case. We derive the RKHS penalty, the
+representer theorem, the dual solution and its hat matrix, effective
+degrees of freedom, the closed-form leave-one-out identity, and the
+linear-kernel/ridge equivalence, tying each to the corresponding library
+call.
+#+end_abstract
+
+* Introduction
+
+This project already contains several ways to fit a curve. Ordinary least
+squares and its [[file:elastic_net_iris_analysis.org][ridge/lasso
+variants]] fit /linear/ functions of the predictors; Nadaraya-Watson
+[[file:kernel_regression_iris_analysis.org][kernel regression]] fits a
+nonlinear curve as a local weighted average; and
+[[file:gaussian_process_regression_iris_analysis.org][Gaussian process
+regression]] fits a nonlinear curve with Bayesian uncertainty. Kernel
+Ridge Regression sits at the intersection of the first and the third: it
+is /exactly/ ridge regression -- the same squared-error-plus-quadratic-
+penalty recipe -- but carried out in the rich, nonlinear feature space of
+a kernel, so it fits smooth nonlinear functions while keeping ridge's
+clean closed-form linear-algebra solution and its single, interpretable
+regularization knob.
+
+The mechanism is the "kernel trick" the
+[[file:kernel_pca_iris_analysis.org][kernel PCA report]] introduces:
+although the feature space may be infinite-dimensional, the fit depends on
+the data only through inner products, which a kernel function supplies
+directly. The representer theorem then guarantees the solution is a finite
+combination of kernels centered at the training points, reducing the
+whole problem to solving one \(n \times n\) linear system. The result is a
+method that is at once flexible (it can fit any smooth function given the
+right kernel) and controlled (a single penalty \(\lambda\) governs how
+much it is allowed to bend), with the bias-variance tradeoff laid bare in
+a way few methods make so explicit.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.4.10) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the RKHS penalty, the representer theorem, the dual solution
+and its hat matrix, the effective-degrees-of-freedom complexity measure,
+the closed-form leave-one-out cross-validation =KernelRidgeRegression=
+uses to tune itself, and the linear-kernel/ridge equivalence -- each tied
+to the specific method that implements it. §3 describes the program chunk
+by chunk. §4 reports the recovery of a known nonlinear function, an
+explicit bias-variance regularization study, a comparison across kernels,
+the ridge-regression identity, and a real-data iris fit. §5 discusses when
+KRR is the right tool and how it relates to its neighbors. §6 concludes.
+
+* Background: Kernel Ridge Regression
+
+** Setup and notation
+
+We observe \(n\) pairs \((x_i, y_i)\) with predictors \(x_i \in
+\mathbb{R}^p\) and a numeric response \(y_i\). =KernelRidgeRegression=
+takes them through the same formula interface as the other regressors
+(=KernelRidgeRegression(data, "y ~ x")=), standardizes the predictors by
+default, and centers the response (the penalty below does not shrink the
+intercept, so the response mean is added back after fitting).
+
+** Penalized least squares in a function space
+
+Ordinary ridge regression fits the best /linear/ function under an
+\(\ell_2\) penalty on its coefficients. KRR generalizes "linear function"
+to "any function in a reproducing-kernel Hilbert space (RKHS)
+\(\mathcal{H}\)," penalizing the function's RKHS norm \(\lVert f
+\rVert_{\mathcal{H}}\) -- a measure of its roughness. It solves
+
+\[
+\min_{f \in \mathcal{H}} \; \sum_{i=1}^{n} \bigl(y_i - f(x_i)\bigr)^2
+   \; + \; \lambda \, \lVert f \rVert_{\mathcal{H}}^2 ,
+\]
+
+with \(\lambda \ge 0\) (=KernelRidgeRegressionOptions::lambda=) trading
+data fidelity against smoothness. The RKHS is defined implicitly by a
+/kernel/ \(k(x, x') = \langle \phi(x), \phi(x') \rangle\), an inner
+product of feature maps \(\phi\) we never form explicitly.
+=KernelRidgeRegressionOptions::kernel= selects among
+
+\[
+k_{\text{rbf}}(x, x') = e^{-\gamma \lVert x - x' \rVert^2}, \quad
+k_{\text{lin}}(x, x') = x^\top x', \quad
+k_{\text{poly}}(x, x') = (\gamma\, x^\top x' + c_0)^{d},
+\]
+
+the RBF (squared-exponential) kernel corresponding to an infinite-
+dimensional \(\phi\) -- which is what lets KRR represent arbitrary smooth
+functions.
+
+** The representer theorem and the dual solution
+
+The objective ranges over an infinite-dimensional function space, yet its
+minimizer is finite-dimensional. The /representer theorem/ states that the
+solution must lie in the span of the kernels centered at the training
+points,
+
+\[
+f(x) = \sum_{i=1}^{n} \alpha_i \, k(x, x_i) ,
+\]
+
+so only the \(n\) dual coefficients \(\alpha\) (=dual_coefficients()=) need
+be found. Substituting this form collapses the objective to \(\lVert y -
+K\alpha \rVert^2 + \lambda\,\alpha^\top K \alpha\), where \(K_{ij} = k(x_i,
+x_j)\) is the \(n \times n\) Gram matrix, and minimizing over \(\alpha\)
+gives the closed form
+
+\[
+\alpha = (K + \lambda I)^{-1} y ,
+\]
+
+a single symmetric linear system. =KernelRidgeRegression::fit= solves it
+through an eigendecomposition of \(K\) (=linalg::jacobi_eigen=, as in the
+[[file:pca_iris_analysis.org][PCA]] and
+[[file:kernel_pca_iris_analysis.org][kernel PCA]] reports), which also
+yields the cross-validation and complexity quantities below for free. A
+prediction at a new point is then \(f(x_\ast) = \sum_i \alpha_i k(x_\ast,
+x_i)\) plus the response mean.
+
+** The hat matrix and effective degrees of freedom
+
+The fitted training values are \(\hat{y} = K\alpha = K(K + \lambda
+I)^{-1} y = H y\), a /linear smoother/ with hat matrix \(H = K(K + \lambda
+I)^{-1}\). Diagonalizing \(K = U D U^\top\) gives \(H = U \operatorname{diag}
+\!\bigl(d_i/(d_i + \lambda)\bigr) U^\top\), so its trace -- the /effective
+degrees of freedom/ (=effective_degrees_of_freedom()=) --
+
+\[
+\mathrm{df}(\lambda) = \operatorname{tr}(H) = \sum_{i=1}^{n}
+   \frac{d_i}{d_i + \lambda}
+\]
+
+is a continuous count of how many parameters the fit effectively spends.
+As \(\lambda \to 0\) each ratio approaches 1 and \(\mathrm{df} \to
+\operatorname{rank}(K)\) (the model interpolates); as \(\lambda \to
+\infty\) every ratio approaches 0 and \(\mathrm{df} \to 0\) (the model
+collapses toward a constant). §4.2 dials \(\lambda\) and watches this
+number fall, making the abstract notion of "model complexity" a concrete,
+measured quantity.
+
+** Leave-one-out cross-validation in closed form
+
+Because KRR is a linear smoother, its leave-one-out (LOO) cross-validation
+error needs no refitting. The standard identity for linear smoothers gives
+the \(i\)-th LOO residual directly from the full fit,
+
+\[
+y_i - \hat{f}^{(-i)}(x_i) = \frac{y_i - \hat{y}_i}{1 - H_{ii}} ,
+\]
+
+so a single fit yields the exact error of \(n\) leave-one-out fits.
+=KernelRidgeRegression= uses this both to /report/ honest performance
+(=fitted_values()=, =r_squared()=, =rmse()= are all leave-one-out, not
+resubstitution) and to /select/ \(\lambda\) and the RBF bandwidth
+\(\gamma\): when either option is left negative it is chosen by minimizing
+this LOO error over an internal grid (a cheap \(\lambda\) sweep in the
+fixed eigenbasis of \(K\), repeated per candidate \(\gamma\)). §4.2's
+cross-validation curve is exactly this criterion plotted against
+\(\lambda\).
+
+** The linear kernel is ordinary ridge regression
+
+With \(k(x, x') = x^\top x'\) the Gram matrix is \(K = X X^\top\), and a
+standard push-through identity gives
+
+\[
+K(K + \lambda I)^{-1} y = X (X^\top X + \lambda I)^{-1} X^\top y ,
+\]
+
+whose right-hand side is precisely the prediction of ordinary ridge
+regression with penalty \(\lambda\). So linear-kernel KRR /is/ ridge
+regression, computed the dual way through the \(n \times n\) Gram matrix
+instead of the \(p \times p\) normal equations -- a genuine, checkable
+identity that §4.4 confirms to within double-precision round-off, and the
+regression analogue of the [[file:kernel_pca_iris_analysis.org][kernel PCA
+report's]] linear-kernel-equals-PCA check.
+
+** What we will report
+
+Given the fits, we report the recovery of a known nonlinear function
+against its ground truth, an explicit bias-variance study of the
+regularizer (effective degrees of freedom and error versus \(\lambda\),
+with under-, well-, and over-regularized fits), a comparison of the RBF,
+linear, and polynomial kernels, the linear-kernel/ridge identity, and a
+real-data iris fit.
+
+* Data and Methods
+
+** The synthetic nonlinear target
+
+To check recovery against a known ground truth -- impossible with real
+data, where the true regression function is unobservable -- we draw
+\(n = 120\) points with \(x \sim \text{Uniform}(0, 1)\) and \(y = \sin(2\pi
+x) + \varepsilon\), \(\varepsilon \sim \mathcal{N}(0, 0.15^2)\). The
+true function \(\sin(2\pi x)\) is withheld from every fit and used only
+afterward, to measure how closely the fitted curve matches it (an RMSE on
+a dense grid). A sine over a full period is markedly nonlinear, so it
+cleanly separates a genuinely nonlinear method from a linear one.
+
+** The iris data
+
+=datamunge::datasets::iris()= supplies Fisher's 150 flowers; we regress
+=Petal.Length= on =Petal.Width=, a single-predictor problem that is mostly
+but not perfectly linear, so it exercises KRR on real data and lets its
+RBF and linear (ridge) forms be compared directly.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::KernelRidgeRegression= for the
+model, and =plot::RPlot= for every figure. No external statistics package
+is used.
+
+** Program, presented as a literate whole
+
+*** Includes and a ground-truth error helper
+
+One helper, used only to /score/ a fit after the fact: the RMSE of its
+predictions, on a dense grid, against the known true function
+\(\sin(2\pi x)\) -- never an input to the model.
+
+#+name: krr-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/kernel_ridge_regression.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::KernelRidgeRegression;
+using datamunge::stats::KernelRidgeRegressionOptions;
+using namespace datamunge::plot;
+
+static constexpr double kTwoPi = 6.283185307179586;
+
+// RMSE of a model's predictions on a dense grid against the known true function sin(2*pi*x).
+static double truth_rmse(const KernelRidgeRegression& m, std::size_t grid = 400) {
+    std::vector<double> gx(grid);
+    for (std::size_t i = 0; i < grid; ++i) gx[i] = static_cast<double>(i) / static_cast<double>(grid - 1);
+    DataFrame g;
+    g.add_column("x", gx);
+    const auto pred = m.predict(g);
+    double ss = 0.0;
+    for (std::size_t i = 0; i < grid; ++i) {
+        const double d = pred[i] - std::sin(kTwoPi * gx[i]);
+        ss += d * d;
+    }
+    return std::sqrt(ss / static_cast<double>(grid));
+}
+#+end_src
+
+*** Generating the noisy nonlinear data
+
+#+name: krr-synth-gen
+#+begin_src c++ :eval no
+    std::cout << "=== A nonlinear target: y = sin(2*pi*x) + noise ===\n";
+    const std::size_t n = 120;
+    std::mt19937_64 rng(20240815);
+    std::uniform_real_distribution<double> ux(0.0, 1.0);
+    std::normal_distribution<double> noise(0.0, 0.15);
+    std::vector<double> x(n), y(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        x[i] = ux(rng);
+        y[i] = std::sin(kTwoPi * x[i]) + noise(rng);
+    }
+    DataFrame synth;
+    synth.add_column("x", x);
+    synth.add_column("y", y);
+    std::cout << "generated " << n << " noisy samples on [0,1] (noise sd 0.15)\n";
+#+end_src
+
+*** Fitting KRR with automatic regularization
+
+#+name: krr-synth-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== Kernel ridge regression (RBF, lambda and gamma auto-selected by LOO-CV) ===\n";
+    KernelRidgeRegression krr(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf"});
+    krr.print_summary();
+    std::cout << "RMSE of the fitted curve against the TRUE function: " << truth_rmse(krr) << "\n";
+#+end_src
+
+*** The fit against the true function
+
+#+name: krr-synth-plot
+#+begin_src c++ :eval no
+    {
+        const std::size_t g = 200;
+        std::vector<double> gx(g), gtruth(g);
+        for (std::size_t i = 0; i < g; ++i) {
+            gx[i] = static_cast<double>(i) / static_cast<double>(g - 1);
+            gtruth[i] = std::sin(kTwoPi * gx[i]);
+        }
+        DataFrame grid;
+        grid.add_column("x", gx);
+        const auto gfit = krr.predict(grid);
+        auto plot = RPlot::create();
+        plot.points(x, y, "noisy data", {156, 163, 175}, 4.0);
+        plot.line(gx, gtruth, "true sin(2*pi*x)", {22, 163, 74}, 2.0);
+        plot.line(gx, gfit, "KRR fit", {220, 38, 38}, 2.5);
+        plot.title("Kernel Ridge Regression vs. the True Function")
+            .x_label("x").y_label("y").background({250, 250, 252});
+        plot.save_svg("build/org/krr_synth_fit.svg");
+        std::cout << "wrote krr_synth_fit.svg\n";
+    }
+#+end_src
+
+*** The regularization dial: complexity and error versus lambda
+
+#+name: krr-regularization
+#+begin_src c++ :eval no
+    std::cout << "\n=== The regularization dial: lambda vs. complexity and error ===\n";
+    // To isolate lambda's effect we hold a deliberately NARROW bandwidth (gamma=5) fixed -- narrow
+    // enough that the model can interpolate noise unless lambda restrains it, so all three regimes
+    // (over-, well-, and under-regularized) become visible.
+    const double kGammaReg = 5.0;
+    {
+        std::cout << "(holding gamma fixed at a deliberately narrow " << kGammaReg << ")\n";
+        std::cout << std::left << std::setw(12) << "lambda" << std::right << std::setw(16) << "effective dof"
+                  << std::setw(14) << "LOO RMSE" << std::setw(14) << "truth RMSE\n";
+        for (double lam : {1e-5, 1e-3, 1e-2, 1e-1, 1.0, 10.0}) {
+            KernelRidgeRegression m(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf", lam, kGammaReg});
+            std::ostringstream ls;
+            ls << std::scientific << std::setprecision(0) << lam;
+            std::cout << std::left << std::setw(12) << ls.str() << std::right << std::setw(16)
+                      << m.effective_degrees_of_freedom() << std::setw(14) << m.rmse() << std::setw(14)
+                      << truth_rmse(m) << "\n";
+        }
+    }
+#+end_src
+
+*** The CV curve and under/well/over-regularized fits
+
+#+name: krr-cv-plot
+#+begin_src c++ :eval no
+    {
+        // A LOO-CV curve at the narrow bandwidth: sweeping lambda with gamma fixed traces a clear
+        // U (plotted against log10 lambda so the log-spaced grid reads evenly), and the class
+        // selects its minimum.
+        KernelRidgeRegression krr_g5(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf", -1.0, kGammaReg});
+        const auto& lg = krr_g5.lambda_grid();
+        const auto& mse = krr_g5.cv_mean_squared_error();
+        std::vector<double> log_lambda(lg.size());
+        std::size_t best = 0;
+        for (std::size_t i = 0; i < lg.size(); ++i) {
+            log_lambda[i] = std::log10(lg[i]);
+            if (mse[i] < mse[best]) best = i;
+        }
+        auto cv = RPlot::create();
+        cv.line(log_lambda, mse, "LOO CV mean squared error", {37, 99, 235}, 2.0);
+        cv.points({log_lambda[best]}, {mse[best]}, "selected lambda", {220, 38, 38}, 8.0);
+        cv.title("Regularization Cross-Validation Curve (gamma=5)")
+            .x_label("log10(lambda)").y_label("LOO mean squared error").background({250, 250, 252});
+        cv.save_svg("build/org/krr_cv_curve.svg");
+        std::cout << "wrote krr_cv_curve.svg (selected lambda " << krr_g5.lambda() << ")\n";
+
+        // Under-, well-, and over-regularized fits overlaid (all at gamma=5).
+        const std::size_t g = 200;
+        std::vector<double> gx(g);
+        for (std::size_t i = 0; i < g; ++i) gx[i] = static_cast<double>(i) / static_cast<double>(g - 1);
+        DataFrame grid;
+        grid.add_column("x", gx);
+        KernelRidgeRegression under(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf", 1e-5, kGammaReg});
+        KernelRidgeRegression good(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf", 1.0, kGammaReg});
+        KernelRidgeRegression over(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf", 10.0, kGammaReg});
+        auto plot = RPlot::create();
+        plot.points(x, y, "noisy data", {156, 163, 175}, 4.0);
+        plot.line(gx, under.predict(grid), "lambda=1e-5 (overfit)", {220, 38, 38}, 2.0);
+        plot.line(gx, good.predict(grid), "lambda=1 (good)", {22, 163, 74}, 2.5);
+        plot.line(gx, over.predict(grid), "lambda=10 (underfit)", {37, 99, 235}, 2.0);
+        plot.title("Under-, Well-, and Over-Regularized Fits (gamma=5)")
+            .x_label("x").y_label("y").background({250, 250, 252});
+        plot.save_svg("build/org/krr_regularization.svg");
+        std::cout << "wrote krr_regularization.svg\n";
+    }
+#+end_src
+
+*** Comparing kernels
+
+#+name: krr-kernel-compare
+#+begin_src c++ :eval no
+    std::cout << "\n=== Kernel comparison on the same data ===\n";
+    {
+        std::cout << std::left << std::setw(14) << "kernel" << std::right << std::setw(14) << "LOO R^2"
+                  << std::setw(14) << "LOO RMSE" << std::setw(14) << "truth RMSE\n";
+        KernelRidgeRegression krbf(synth, "y ~ x", KernelRidgeRegressionOptions{"rbf"});
+        KernelRidgeRegression klin(synth, "y ~ x", KernelRidgeRegressionOptions{"linear"});
+        KernelRidgeRegression kpoly(synth, "y ~ x", KernelRidgeRegressionOptions{"polynomial", -1.0, -1.0, 3.0, 1.0});
+        auto row = [&](const std::string& name, const KernelRidgeRegression& m) {
+            std::cout << std::left << std::setw(14) << name << std::right << std::setw(14) << m.r_squared()
+                      << std::setw(14) << m.rmse() << std::setw(14) << truth_rmse(m) << "\n";
+        };
+        row("rbf", krbf);
+        row("linear", klin);
+        row("polynomial", kpoly);
+    }
+#+end_src
+
+*** The linear-kernel/ridge identity
+
+#+name: krr-linear-is-ridge
+#+begin_src c++ :eval no
+    std::cout << "\n=== Identity: KRR with a linear kernel IS ridge regression ===\n";
+    {
+        const double lam = 1.0;
+        KernelRidgeRegression klin(synth, "y ~ x", KernelRidgeRegressionOptions{"linear", lam});
+        const auto krr_pred = klin.predict(synth);
+        // Primal ridge on the standardized single predictor, closed form.
+        double mean = 0.0;
+        for (double v : x) mean += v;
+        mean /= n;
+        double var = 0.0;
+        for (double v : x) var += (v - mean) * (v - mean);
+        const double sd = std::sqrt(var / n);  // population sd, matching the class
+        double ymean = 0.0;
+        for (double v : y) ymean += v;
+        ymean /= n;
+        double sxx = 0.0, sxy = 0.0;
+        for (std::size_t i = 0; i < n; ++i) {
+            const double xs = (x[i] - mean) / sd;
+            sxx += xs * xs;
+            sxy += xs * (y[i] - ymean);
+        }
+        const double beta = sxy / (sxx + lam);
+        double max_abs_diff = 0.0;
+        for (std::size_t i = 0; i < n; ++i) {
+            const double ridge_pred = ymean + ((x[i] - mean) / sd) * beta;
+            max_abs_diff = std::max(max_abs_diff, std::abs(ridge_pred - krr_pred[i]));
+        }
+        std::cout << "max |KRR-linear prediction - closed-form ridge prediction| (lambda=1): " << max_abs_diff << "\n";
+    }
+#+end_src
+
+*** Real data: iris
+
+#+name: krr-iris
+#+begin_src c++ :eval no
+    std::cout << "\n=== Real data: iris Petal.Length ~ Petal.Width ===\n";
+    {
+        const auto iris = datamunge::datasets::iris();
+        KernelRidgeRegression rbf(iris, "Petal.Length ~ Petal.Width", KernelRidgeRegressionOptions{"rbf"});
+        rbf.print_summary();
+        KernelRidgeRegression lin(iris, "Petal.Length ~ Petal.Width", KernelRidgeRegressionOptions{"linear"});
+        std::cout << "linear-kernel KRR leave-one-out R^2: " << lin.r_squared() << " (vs RBF " << rbf.r_squared()
+                  << ")\n";
+        auto plot = rbf.plot_fit(iris);
+        plot.background({250, 250, 252});
+        plot.save_svg("build/org/krr_iris_fit.svg");
+        std::cout << "wrote krr_iris_fit.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/kernel_ridge_analysis.cpp <<'CPP'
+<<krr-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<krr-synth-gen>>
+
+<<krr-synth-fit>>
+
+<<krr-synth-plot>>
+
+<<krr-regularization>>
+
+<<krr-cv-plot>>
+
+<<krr-kernel-compare>>
+
+<<krr-linear-is-ridge>>
+
+<<krr-iris>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/kernel_ridge_analysis.cpp \
+  -o build/org/kernel_ridge_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kernel_ridge_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Recovering the true function
+
+#+begin_example
+Kernel Ridge Regression
+Formula: y ~ x
+Kernel: rbf, observations: 120
+lambda: 0.0041 (LOO-CV selected), gamma: 0.1924 (LOO-CV selected)
+Effective degrees of freedom: 5.1556 (of 120)
+Leave-one-out R^2: 0.9596, RMSE: 0.1513
+RMSE of the fitted curve against the TRUE function: 0.0195
+#+end_example
+
+With both hyperparameters chosen by leave-one-out cross-validation, KRR
+lands on \(\lambda = 0.0041\) and \(\gamma = 0.1924\), spending only 5.16
+effective degrees of freedom (of a possible 120) to describe the data. Its
+leave-one-out RMSE of 0.1513 is essentially the irreducible noise floor --
+the data were generated with noise standard deviation 0.15, so no method
+could do materially better on held-out points. The decisive number is the
+last one: the fitted curve matches the /true/, noiseless \(\sin(2\pi x)\)
+to an RMSE of just 0.0195. KRR did not merely track the noisy points; it
+recovered the function beneath them.
+
+#+ATTR_HTML: :alt KRR fit closely tracking the true sine through noisy data :width 100%
+[[file:../../build/org/krr_synth_fit.svg]]
+
+The picture confirms it: the red KRR fit lies almost exactly on the green
+true sine, threading through the gray noisy cloud without chasing
+individual points -- the visual signature of a well-regularized nonlinear
+fit.
+
+** The regularization dial
+
+#+begin_example
+lambda         effective dof      LOO RMSE   truth RMSE
+1e-05                21.6104        0.1696        0.0603
+1e-03                17.5737        0.1632        0.0490
+1e-02                15.2085        0.1601        0.0435
+1e-01                12.4417        0.1570        0.0308
+1e+00                 9.0064        0.1586        0.0298
+1e+01                 4.5553        0.2674        0.2026
+#+end_example
+
+To expose the bias-variance tradeoff we fix a deliberately /narrow/
+bandwidth (\(\gamma = 5\)), so that the RBF kernel is local enough to
+interpolate noise unless \(\lambda\) holds it back, and sweep \(\lambda\).
+The effective degrees of freedom (§2.4) fall monotonically from 21.6 to
+4.6 as \(\lambda\) grows -- a direct, continuous readout of the model
+simplifying. The error against the true function traces the classic U:
+0.0603 when barely regularized (\(\lambda = 10^{-5}\), where the extra
+degrees of freedom are spent fitting noise), improving to a minimum near
+0.0298 (\(\lambda \approx 1\)), then rising sharply to 0.2026 when
+over-regularized (\(\lambda = 10\), where the fit is too stiff to follow
+the sine at all). The leave-one-out RMSE -- computable /without/ the true
+function, from §2.5's identity -- has its own minimum in the same region
+(0.1570 at \(\lambda = 0.1\)), which is exactly why cross-validation can
+find a good \(\lambda\) using only the observed data.
+
+#+ATTR_HTML: :alt Cross-validation curve with a clear minimum :width 100%
+[[file:../../build/org/krr_cv_curve.svg]]
+
+Letting the class /select/ \(\lambda\) at this bandwidth traces the CV
+curve above (against \(\log_{10}\lambda\), so the log-spaced grid reads
+evenly): a flat valley of near-equivalent small-\(\lambda\) fits, a broad
+minimum where the selected \(\lambda\) (red) sits, and a steep climb into
+the over-regularized regime on the right. This is §2.5's leave-one-out
+criterion made visual, and the shape every practitioner hopes for when
+tuning a regularizer.
+
+#+ATTR_HTML: :alt Overfit, well-fit, and underfit curves on the same data :width 100%
+[[file:../../build/org/krr_regularization.svg]]
+
+The three regimes, drawn: the barely-regularized fit (\(\lambda =
+10^{-5}\), red) wiggles to chase noise; the over-regularized fit
+(\(\lambda = 10\), blue) is too stiff, flattening the peaks and troughs;
+and the well-chosen fit (\(\lambda = 1\), green) recovers the smooth
+underlying shape. A single scalar \(\lambda\) moves the model continuously
+between these extremes -- the defining virtue of a penalized method.
+
+** Comparing kernels
+
+#+begin_example
+kernel               LOO R^2      LOO RMSE   truth RMSE
+rbf                   0.9596        0.1513        0.0195
+linear                0.6236        0.4614        0.4492
+polynomial            0.9504        0.1675        0.0720
+#+end_example
+
+The kernel is where the nonlinearity lives, and it matters. The RBF kernel
+(leave-one-out \(R^2 = 0.9596\), true-function RMSE 0.0195) far outperforms
+the /linear/ kernel (\(R^2 = 0.6236\), true RMSE 0.4492), which -- being
+ordinary ridge regression (§4.4) -- can only fit a straight line through a
+full sine wave and necessarily fails. The cubic polynomial kernel lands in
+between (\(R^2 = 0.9504\), true RMSE 0.0720): flexible enough to bend
+through most of the sine, but a globally polynomial basis fits a periodic
+function less faithfully than the RBF's local bumps. The lesson mirrors
+the [[file:kernel_pca_iris_analysis.org][kernel PCA report's]]: "nonlinear
+kernel" is not one choice but a modeling decision, and the RBF is the
+robust default for smooth functions.
+
+** The linear kernel is ridge regression
+
+#+begin_example
+max |KRR-linear prediction - closed-form ridge prediction| (lambda=1): 0.0000
+#+end_example
+
+§2.6's identity, confirmed: linear-kernel KRR's predictions match an
+independently computed, closed-form ridge regression (with the same
+\(\lambda\)) to a maximum discrepancy of 0.0000 across all 120 points. The
+two are the same estimator viewed from two sides -- KRR through the \(n
+\times n\) Gram matrix \(K(K + \lambda I)^{-1}\), ridge through the \(p
+\times p\) normal equations \((X^\top X + \lambda I)^{-1}\) -- and the
+kernel machinery reduces exactly to the familiar linear method when the
+kernel is linear, just as it should.
+
+** Real data: iris
+
+#+begin_example
+Kernel Ridge Regression
+Formula: Petal.Length ~ Petal.Width
+Kernel: rbf, observations: 150
+lambda: 0.2572 (LOO-CV selected), gamma: 0.6250 (LOO-CV selected)
+Effective degrees of freedom: 4.9538 (of 150)
+Leave-one-out R^2: 0.9516, RMSE: 0.3870
+linear-kernel KRR leave-one-out R^2: 0.9260 (vs RBF 0.9516)
+#+end_example
+
+On iris, KRR predicts =Petal.Length= from =Petal.Width= at a leave-one-out
+\(R^2\) of 0.9516, spending 4.95 effective degrees of freedom. Its own
+linear-kernel (ridge) special case reaches 0.9260 -- close, because the
+relationship is /mostly/ linear, but visibly bettered by the RBF fit,
+which picks up the mild curvature a straight line must miss.
+
+#+ATTR_HTML: :alt KRR fit of iris petal length on petal width :width 100%
+[[file:../../build/org/krr_iris_fit.svg]]
+
+The fitted curve shows where that 2.5-point \(R^2\) gain comes from: the
+relationship flattens slightly at both ends of the petal-width range (the
+tight low-width /setosa/ cluster, and a gentle plateau at the high-width
+end) and steepens in the middle -- a mild S-shape the RBF kernel captures
+and a line cannot. With cross-validation choosing a moderate \(\lambda\)
+and \(\gamma\), KRR fits that curvature without overreacting to it, a
+concrete example of the method behaving well on data whose true form is
+unknown.
+
+* Discussion
+
+**KRR unifies three things this project treats separately.** It is ridge
+regression (§4.4 makes the identity exact), it uses the kernel trick (the
+same \(K(K+\lambda I)^{-1}\) machinery as the
+[[file:kernel_pca_iris_analysis.org][kernel PCA]] and
+[[file:gaussian_process_regression_iris_analysis.org][GP]] reports), and
+its predictive mean is /identical/ to a Gaussian process's with the same
+kernel and \(\lambda\) playing the role of the noise variance. The
+practical difference from the GP is what each reports: KRR is a point
+estimator returning only the mean curve, while the GP additionally returns
+a posterior variance and selects its hyperparameters by marginal
+likelihood rather than cross-validation. When only the fit is needed, KRR
+is the leaner tool; when calibrated uncertainty matters, the GP earns its
+extra cost.
+
+**The effective degrees of freedom make regularization legible.** §4.2's
+central number, \(\mathrm{df}(\lambda) = \sum_i d_i/(d_i+\lambda)\), turns
+the abstract "amount of regularization" into a concrete count that fell
+from 21.6 to 4.6 as \(\lambda\) swept its range. It is what lets one say
+precisely /how much/ model a given \(\lambda\) buys, connects the
+continuous ridge penalty to the discrete language of "number of
+parameters," and -- because it is a byproduct of the same eigendecomposition
+that solves the system -- costs nothing extra to report. It is also the
+bridge to the closed-form leave-one-out identity (§2.5), the two together
+letting KRR both measure its own complexity and tune it without any
+external validation set.
+
+**The kernel is the model; the penalty is the control.** §4.3 and §4.2
+separate the two knobs cleanly: the /kernel/ (and its bandwidth) decides
+what shapes the fit can take -- straight lines, local bumps, global
+polynomials -- while \(\lambda\) decides how much of that flexibility is
+actually used. Getting a good fit means getting both right, and the
+report's two failure directions illustrate it: a linear kernel is the
+wrong /shape/ for a sine no matter how \(\lambda\) is set (§4.3), while a
+narrow RBF with a bad \(\lambda\) has the right shape but the wrong
+/amount/ of it (§4.2). Cross-validation, tuning both at once, is what
+navigates between them.
+
+* Conclusion
+
+Implementing Kernel Ridge Regression in =datamunge='s C++
+=stats::KernelRidgeRegression= and applying it to 120 noisy samples of a
+sine wave, we recover the true underlying function to an RMSE of 0.0195
+with a leave-one-out \(R^2\) of 0.9596 -- at the noise floor -- using ridge
+and bandwidth parameters chosen automatically by an exact, refit-free
+leave-one-out cross-validation. An explicit bias-variance study dials the
+regularizer across six orders of magnitude, watching the effective degrees
+of freedom fall from 21.6 to 4.6 and the error against the truth trace the
+classic U from 0.0603 (overfit) through 0.0298 (optimal) to 0.2026
+(underfit). The RBF kernel's \(R^2\) of 0.9596 dwarfs a linear kernel's
+0.6236 on this nonlinear target, while that same linear kernel is confirmed
+to reproduce ordinary ridge regression to a discrepancy of 0.0000, and on
+real iris data KRR edges its own ridge special case (0.9516 versus 0.9260)
+by capturing a mild curvature. As with its companions, this entire report
+is reproducible end to end via =just org-example kernel_ridge_analysis=,
+which re-executes §3.4.10's assembly block -- and therefore every number
+and figure above -- from the =datamunge= source tree.
+
+* References
+
+- Hoerl, A. E., & Kennard, R. W. (1970). "Ridge regression: biased
+  estimation for nonorthogonal problems." /Technometrics/, 12(1), 55--67.
+- Saunders, C., Gammerman, A., & Vovk, V. (1998). "Ridge regression
+  learning algorithm in dual variables." /Proceedings of the 15th
+  International Conference on Machine Learning/, 515--521.
+- Scholkopf, B., & Smola, A. J. (2002). /Learning with Kernels: Support
+  Vector Machines, Regularization, Optimization, and Beyond/. MIT Press.
+- Kimeldorf, G., & Wahba, G. (1971). "Some results on Tchebycheffian
+  spline functions." /Journal of Mathematical Analysis and Applications/,
+  33(1), 82--95.
+- Rasmussen, C. E., & Williams, C. K. I. (2006). /Gaussian Processes for
+  Machine Learning/, ch. 2. MIT Press.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 5 and 12. Springer.
