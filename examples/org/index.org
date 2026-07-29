@@ -383,6 +383,11 @@ We implement Kosaraju's algorithm (=algorithms::kosaraju_scc=) and report it as 
 
 We implement Tarjan's SCC algorithm (=algorithms::tarjan_scc=) and report it as a literate program. A single DFS with discovery times, low-links, and a stack pops off a component whenever a vertex's low-link equals its discovery time; it recovers the same partition as Kosaraju in one pass, verified over thousands of random graphs, with the component sizes plotted.
 
+** [[./gabow_scc_analysis.html][Gabow's Algorithm: Strong Components With Two Stacks]] ([[./gabow_scc_analysis.pdf][PDF]])
+/A literate C++ study of path-based SCC using datamunge/
+
+We implement Gabow's path-based SCC algorithm (=algorithms::gabow_scc=) and report it as a literate program. A single DFS maintains a path stack and a boundary stack of candidate component roots; a back edge collapses the boundary stack down to the reached vertex, and a vertex finishing as its own root closes a component -- no numeric low-link needed, just stack positions. It recovers the same partition as Kosaraju over thousands of random digraphs, with the component sizes plotted.
+
 ** [[./max_clique_dyn_analysis.html][MaxCliqueDyn: The Maximum Clique by Branch and Bound]] ([[./max_clique_dyn_analysis.pdf][PDF]])
 /A literate C++ study of colouring-bounded clique search using datamunge/
 
@@ -867,6 +872,11 @@ We implement de Boor's algorithm (=geometry::de_boor=) and report it as a litera
 /A literate C++ study of the sweep-line intersection algorithm using datamunge/
 
 We implement the Bentley-Ottmann sweep (=geometry::bentley_ottmann=) and report it as a literate program. A vertical sweep line processes endpoint and crossing events, testing only segments adjacent in the sweep-line order, to report all k intersections in O((n+k) log n); it matches a brute-force all-pairs check over hundreds of random inputs, with the segments and crossings plotted.
+
+** [[./shamos_hoey_analysis.html][The Shamos-Hoey Algorithm: Do Any Segments Cross?]] ([[./shamos_hoey_analysis.pdf][PDF]])
+/A literate C++ study of sweep-line intersection detection using datamunge/
+
+We implement the Shamos-Hoey algorithm (=geometry::any_segments_intersect=) and report it as a literate program. The detection-only ancestor of Bentley-Ottmann sweeps a vertical line and tests only segments that become vertically adjacent -- at a left endpoint against its new neighbors, at a right endpoint the pair its removal makes adjacent -- deciding in O(n log n) whether any two of n segments cross; it matches the brute-force all-pairs check over thousands of random inputs, correctly separating parallel from crossing arrangements.
 
 ** [[./distance_transform_analysis.html][The Euclidean Distance Transform: Distance to the Nearest Site]] ([[./distance_transform_analysis.pdf][PDF]])
 /A literate C++ study of Felzenszwalb's exact transform using datamunge/
@@ -1392,6 +1402,11 @@ We implement odd-even (brick) sort (=algorithms::odd_even_sort=) and report it a
 /A literate C++ study of prefix-reversal sorting using datamunge/
 
 We implement pancake sort (=algorithms::pancake_sort=) and report it as a literate program. We give the greedy strategy that sorts using only prefix reversals in at most 2(n-1) flips; sorting [5,3,8,1,9,2,7] uses 8 flips (bound 12), with the stack drawn after each flip and the largest pancake tracked.
+
+** [[./library_sort_analysis.html][Library Sort: Insertion Sort With Room to Grow]] ([[./library_sort_analysis.pdf][PDF]])
+/A literate C++ study of gapped insertion sort using datamunge/
+
+We implement library sort (=algorithms::library_sort=) and report it as a literate program. Storing the sorted elements spread out with empty gaps in an array of size (1+eps)n lets each new element drop into a nearby gap with only a short local shift -- rebalancing to re-spread the gaps when the array fills -- turning insertion sort's O(n^2) shifting into O(n log n) expected time; it matches std::sort over thousands of random arrays, with a shuffled input drawn beside its sorted staircase.
 
 ** [[./extended_euclidean_analysis.html][The Extended Euclidean Algorithm: GCDs, Bezout Coefficients, and Modular Inverses]] ([[./extended_euclidean_analysis.pdf][PDF]])
 /Euclid's ancient gcd algorithm, extended to return Bezout coefficients and modular inverses -- the engine behind RSA and the CRT/

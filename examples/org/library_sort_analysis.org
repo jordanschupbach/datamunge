@@ -1,0 +1,134 @@
+#+title: Library Sort: Insertion Sort With Room to Grow
+#+subtitle: A literate C++ study of gapped insertion sort with =datamunge='s =algorithms::library_sort=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Insertion sort is beautifully simple but slow: inserting each element shifts, on average, half the array,
+giving \(O(n^2)\). *Library sort* keeps the elegance while removing the bottleneck by leaving *gaps*
+between the sorted elements -- like a librarian shelving books with empty space so a new arrival slides in
+without pushing the whole shelf. This report drives =datamunge='s =algorithms::library_sort=, verified to
+match the standard library's sort over thousands of random arrays, and shows the sorted result.
+#+end_abstract
+
+* Leave gaps, shift locally, rebalance
+
+The cost of insertion sort is all in the *shifting*: to open a slot for a new element you move everything
+after it one place over. Library sort's fix is to store the sorted elements *spread out* in an array of
+size \((1+\varepsilon)n\), with empty gaps interspersed. To insert an element you binary-search for its
+position and then shift only until the nearest gap -- a tiny, local move rather than half the array. Two
+mechanisms keep it working:
+
+- *Gapped insertion.* Elements sit in a sorted-but-sparse array; a new element drops into an adjacent
+  empty slot, shifting only the short run up to the next gap.
+- *Rebalancing.* When the array gets too full, all elements are re-spread evenly with fresh gaps, so
+  future insertions again find space nearby. Rebalancing costs \(O(n)\) but happens only a logarithmic
+  number of times.
+
+With the gaps proportional to the array size, the expected shift per insertion is \(O(\log n)\) (with high
+probability, for randomly ordered input), so the whole sort runs in \(O(n\log n)\) expected time -- the
+speed of the good sorts, reached by keeping insertion sort's one-element-at-a-time simplicity and just
+giving it room to grow. It is a neat illustration that leaving space on purpose can be faster than packing
+tightly.
+
+#+name: ls-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/library_sort.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Algorithm
+
+#+begin_example
+LIBRARY-SORT(A):
+  keep the sorted elements in an array of size (1+eps)n with empty gaps
+  for each new element x:
+      if the array is getting full: rebalance (re-spread with fresh gaps)
+      binary search for x's position among the occupied slots
+      place x in the nearest gap, shifting only the short run up to it
+  read the occupied slots left to right -> sorted output
+#+end_example
+
+* Worked example: sorting a shuffled array
+
+We sort a shuffled sequence and confirm the output is ordered, then plot the input against the sorted
+result.
+
+#+name: ls-run
+#+begin_src c++ :eval no
+    std::vector<int> data;
+    unsigned s = 20240501;
+    for (int i = 0; i < 40; ++i) { s = s * 1103515245u + 12345u; data.push_back(static_cast<int>((s >> 16) % 100)); }
+
+    const auto sorted = library_sort(data);
+    std::cout << "=== Library sort ===\n";
+    std::cout << "input  (first 12): ";
+    for (int i = 0; i < 12; ++i) std::printf("%d ", data[i]);
+    std::cout << "\nsorted (first 12): ";
+    for (int i = 0; i < 12; ++i) std::printf("%d ", sorted[i]);
+    bool ok = true;
+    for (std::size_t i = 1; i < sorted.size(); ++i) if (sorted[i] < sorted[i - 1]) ok = false;
+    std::printf("\nfully sorted? %s   (%zu elements)\n", ok ? "yes" : "NO", sorted.size());
+
+    std::vector<double> ix, iy, sx, sy;
+    for (std::size_t i = 0; i < data.size(); ++i) { ix.push_back(i); iy.push_back(data[i]); sx.push_back(i); sy.push_back(sorted[i]); }
+
+    auto plot = RPlot::create();
+    plot.points(ix, iy, "in", RGB{200, 205, 214}, 4.0);
+    plot.line(sx, sy, "out", RGB{37, 99, 235}, 2.0);
+    plot.points(sx, sy, "out", RGB{37, 99, 235}, 4.0);
+    plot.legend({"input order", "library-sorted"}, {{200, 205, 214}, {37, 99, 235}});
+    plot.title("Library sort orders the shuffled input (gapped insertion)")
+        .x_label("index").y_label("value").background({250, 250, 252});
+    plot.save_svg("build/org/library_sort.svg");
+    std::cout << "\nwrote library_sort.svg\n";
+#+end_src
+
+** Assembling and running the program
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/library_sort_analysis.cpp <<'CPP'
+<<ls-includes>>
+
+int main() {
+<<ls-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/library_sort_analysis.cpp -o build/org/library_sort_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/library_sort_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Library sort ===
+input  (first 12): 70 53 44 63 12 33 12 76 70 81 48 95
+sorted (first 12): 0 1 1 8 9 12 12 13 14 16 17 18
+fully sorted? yes   (40 elements)
+
+wrote library_sort.svg
+#+end_example
+
+The shuffled input comes back fully ordered -- matching =std::sort= over thousands of random arrays in the
+test suite -- with each element having slid into a nearby gap rather than shoving the whole array aside.
+
+#+attr_html: :width 640
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/library_sort.svg]]
+
+The gray input scatters randomly while the blue output rises in a clean monotone staircase. The payoff is
+invisible in the result but real in the work done to get there: by leaving gaps and rebalancing
+occasionally, library sort turns insertion sort's \(O(n^2)\) shifting into \(O(n\log n)\) expected time,
+keeping the algorithm's one-at-a-time simplicity while shedding its cost.

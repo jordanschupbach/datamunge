@@ -98,7 +98,7 @@ Subgraphs
         [x] MaxCliqueDyn maximum clique algorithm: find a maximum clique in an undirected graph  -- datamunge::algorithms::max_clique_dyn (branch and bound, colouring bound); report examples/org/max_clique_dyn_analysis.org
     Strongly connected components
         [x] Kosaraju's algorithm  -- datamunge::algorithms::kosaraju_scc (SCC via DFS + transpose); report examples/org/kosaraju_analysis.org
-        Path-based strong component algorithm
+        [x] Path-based strong component algorithm  -- datamunge::algorithms::gabow_scc (Gabow's two-stack single-DFS SCC, O(V+E)); report examples/org/gabow_scc_analysis.org
         [x] Tarjan's strongly connected components algorithm  -- datamunge::algorithms::tarjan_scc (single-DFS low-link); report examples/org/tarjan_scc_analysis.org
     [x] Subgraph isomorphism problem  -- datamunge::algorithms::subgraph_isomorphism (backtracking monomorphism); report examples/org/subgraph_isomorphism_analysis.org
 
@@ -188,7 +188,7 @@ This article appears to contradict the article Sorting_algorithm#Comparison_of_a
     Insertion sorts
         [x] Cycle sort: in-place with theoretically optimal number of writes  -- datamunge::algorithms::cycle_sort; report examples/org/cycle_sort_analysis.org
         [x] Insertion sort: determine where the current item belongs in the list of sorted ones, and insert it there  -- datamunge::algorithms::insertion_sort; report examples/org/insertion_sort_analysis.org
-        Library sort
+        [x] Library sort  -- datamunge::algorithms::library_sort (gapped insertion sort with rebalancing, O(n log n) expected); report examples/org/library_sort_analysis.org
         [x] Patience sorting  -- datamunge::algorithms::patience_sort (piles + k-way merge, #piles = LIS); report examples/org/patience_sort_analysis.org
         [x] Shell sort: an attempt to improve insertion sort  -- datamunge::algorithms::shell_sort; report examples/org/shell_sort_analysis.org
         [x] Tree sort (binary tree sort): build binary tree, then traverse it to create sorted list  -- datamunge::algorithms::tree_sort; report examples/org/tree_sort_analysis.org
@@ -286,7 +286,7 @@ Further information: Computational geometry
     [x] Laplacian smoothing: an algorithm to smooth a polygonal mesh  -- datamunge::geometry::laplacian_smooth / dirichlet_energy (umbrella-average Jacobi sweeps, energy descent); report examples/org/laplacian_smoothing_analysis.org
     [x] Line segment intersection: finding whether lines intersect, usually with a sweep line algorithm  -- datamunge::geometry::segments_intersect / segment_intersection_point; report examples/org/segment_intersection_analysis.org
         [x] Bentley–Ottmann algorithm  -- datamunge::geometry::bentley_ottmann (sweep-line segment intersections, O((n+k) log n)); report examples/org/bentley_ottmann_analysis.org
-        Shamos–Hoey algorithm
+        [x] Shamos–Hoey algorithm  -- datamunge::geometry::any_segments_intersect (sweep-line detection of any segment intersection, O(n log n)); report examples/org/shamos_hoey_analysis.org
     [x] Minimum bounding box algorithms: find the oriented minimum bounding box enclosing a set of points  -- datamunge::geometry::minimum_bounding_rectangle (rotating calipers); report examples/org/min_bounding_box_analysis.org
     [x] Nearest neighbor search: find the nearest point or points to a query point  -- datamunge::geometry::KDTree2D (k-d tree nearest / k_nearest); report examples/org/kdtree_nn_analysis.org
     [x] Nesting algorithm: make the most efficient use of material or space  -- datamunge::algorithms::nest_first_fit_decreasing (First-Fit-Decreasing bin packing, 11/9-approximation); report examples/org/nesting_analysis.org
