@@ -1,0 +1,140 @@
+#+title: Token-Bucket Rate Limiting
+#+subtitle: A literate C++ study of burst-tolerant rate limiting, using =datamunge='s =algorithms::TokenBucket=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *token bucket* limits a request rate while permitting controlled bursts. Tokens drip into a
+bucket at a fixed *rate* up to a *capacity*; each request spends a token and is allowed only if
+one is available. A full bucket lets a burst through instantly (up to the capacity), after which
+the sustained rate is capped at the refill rate. It is the standard mechanism behind API rate
+limits, network traffic shaping, and quota enforcement. This report drives =datamunge='s
+=algorithms::TokenBucket= as a literate program: every number and figure comes from one compiled
+binary.
+#+end_abstract
+
+* Drip in, spend on request
+
+The bucket holds up to \(C\) tokens and refills at \(r\) tokens per unit time (lazily: on each
+check it credits \((\text{now}-\text{last})\cdot r\) tokens, clamped to \(C\)). A request for
+one token succeeds if the bucket is non-empty, consuming a token; otherwise it is rejected (or
+delayed). Two regimes result: while tokens are banked, requests pass at whatever rate they
+arrive -- a *burst* up to \(C\); once the bucket empties, requests pass only as fast as tokens
+refill, i.e. at the long-run rate \(r\). The capacity thus tunes *burstiness* and the rate tunes
+*throughput*, independently.
+
+#+name: tk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/token_bucket.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+allow(now, cost):
+    tokens = min(capacity, tokens + (now - last) * rate)   # lazy refill
+    last = now
+    if tokens >= cost: tokens -= cost; return ALLOW
+    else: return DENY
+#+end_example
+
+* A worked example
+
+A bucket of capacity 5 refilling at 1 token/sec. A burst of 8 requests hits at \(t=0\); then one
+request arrives at each of \(t=1,2,\dots,6\). We record which are allowed and track the token
+level.
+
+#+name: tk-run
+#+begin_src c++ :eval no
+    TokenBucket tb(5.0, 1.0);
+    std::cout << "=== Token bucket (capacity 5, 1 token/sec) ===\n";
+
+    std::vector<double> ts, levels;
+    int burst_allowed = 0;
+    std::cout << "burst of 8 requests at t=0:\n";
+    for (int i = 0; i < 8; ++i) {
+        bool ok = tb.allow(0.0);
+        if (ok) ++burst_allowed;
+    }
+    std::cout << "  " << burst_allowed << "/8 allowed (bucket held " << 5 << " tokens)\n";
+    ts.push_back(0.0); levels.push_back(tb.available(0.0));
+
+    std::cout << "steady requests, one per second:\n";
+    for (int t = 1; t <= 6; ++t) {
+        bool ok = tb.allow((double)t);
+        std::cout << "  t=" << t << ": " << (ok ? "ALLOW" : "deny")
+                  << " (tokens now " << tb.available((double)t) << ")\n";
+        ts.push_back((double)t); levels.push_back(tb.available((double)t));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(ts, levels, "tokens available", {37, 99, 235}, 2.0);
+    p.points(ts, levels, "", {37, 99, 235}, 4.0);
+    p.abline_h(5.0, {120, 120, 120}, 1.0);   // capacity
+    p.save_svg("build/org/token_bucket.svg");
+    std::cout << "\nwrote build/org/token_bucket.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/token_bucket_analysis.cpp <<'CPP'
+<<tk-includes>>
+
+int main() {
+<<tk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/token_bucket_analysis.cpp -o build/org/token_bucket_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/token_bucket_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Token bucket (capacity 5, 1 token/sec) ===
+burst of 8 requests at t=0:
+  5/8 allowed (bucket held 5 tokens)
+steady requests, one per second:
+  t=1: ALLOW (tokens now 0)
+  t=2: ALLOW (tokens now 0)
+  t=3: ALLOW (tokens now 0)
+  t=4: ALLOW (tokens now 0)
+  t=5: ALLOW (tokens now 0)
+  t=6: ALLOW (tokens now 0)
+#+end_example
+
+The initial burst drains the five banked tokens -- five of the eight simultaneous requests pass,
+three are rejected -- demonstrating the bucket's tolerance for short spikes up to its capacity.
+Thereafter each request arrives just as one token has refilled, so they all pass at exactly the
+1/sec sustained rate, and the token level hovers near empty. This is the token bucket's
+signature: absorb a burst, then throttle to the steady rate, with the capacity setting how big a
+burst is forgiven.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/token_bucket.svg]]
+
+* Character and relatives
+
+The token bucket is the rate limiter of choice when *some* burstiness is acceptable and even
+desirable -- API gateways, cloud quotas, and QoS traffic shaping all use it. Its mirror image,
+the *leaky bucket* (companion report), enforces a strictly smooth output with no burst
+allowance. Hierarchical token buckets (Linux =tc htb=) compose many buckets to share bandwidth
+across traffic classes. The key knobs -- capacity for burst size, rate for throughput -- make it
+easy to reason about and to tune.
+
+* Complexity
+
+\(O(1)\) per request: a lazy refill computation and a comparison, with no background timer
+needed.

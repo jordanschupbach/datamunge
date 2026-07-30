@@ -1,0 +1,151 @@
+#+title: Karn's Algorithm: Robust TCP Round-Trip Estimation
+#+subtitle: A literate C++ study of RTT/RTO estimation, using =datamunge='s =algorithms::KarnEstimator=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+TCP sets its *retransmission timeout* (RTO) from a smoothed estimate of the round-trip time. The
+estimate is maintained by the Jacobson/Karels filter, but *Karn's algorithm* (1987) adds two
+rules that make it robust. First, when a segment has been retransmitted, an arriving ACK is
+*ambiguous* -- it could acknowledge the original transmission or the retransmission -- so the RTT
+sample is unreliable and must be *discarded*. Second, on a retransmission timeout the RTO is
+*backed off* (doubled) and held there until a fresh, unambiguous sample arrives. This report
+runs the estimator with =datamunge='s =algorithms::KarnEstimator= as a literate program: every
+number and figure comes from one compiled binary.
+#+end_abstract
+
+* Why ambiguous samples poison the estimate
+
+The smoothed RTT and its variation are updated as
+\[
+  \text{RTTVAR} \leftarrow \tfrac34\,\text{RTTVAR} + \tfrac14\,\lvert \text{SRTT}-R\rvert,\quad
+  \text{SRTT} \leftarrow \tfrac78\,\text{SRTT} + \tfrac18\,R,
+\]
+with \(\text{RTO}=\text{SRTT}+4\,\text{RTTVAR}\). The danger: if a segment was retransmitted and
+the ACK returns, you cannot tell *which* copy it acknowledges. Measuring from the retransmission
+underestimates the RTT (making the RTO too tight, causing more spurious retransmissions);
+measuring from the original overestimates it. Karn's fix is to simply *not sample* across a
+retransmission. To still adapt when the network slows, the RTO is doubled on each timeout, so
+the timeout grows even without new samples -- and is recomputed from measurements once an
+unambiguous ACK arrives.
+
+#+name: kn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/karn.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+on ACK with sample R (segment was retransmitted?):
+    if retransmitted: return                    # Karn: discard ambiguous sample
+    update SRTT, RTTVAR from R;  RTO = SRTT + 4*RTTVAR
+on retransmission timeout:
+    RTO = RTO * 2                                # Karn: exponential backoff, no sample
+#+end_example
+
+* A worked example
+
+A run of round-trip samples around 200 ms, then a spike that triggers a retransmission (its ACK
+sample is *ignored*), a timeout that backs off the RTO, and recovery as clean samples resume.
+
+#+name: kn-run
+#+begin_src c++ :eval no
+    KarnEstimator k(1.0);
+    struct Step { double rtt; bool retransmit; bool timeout; const char* note; };
+    std::vector<Step> steps = {
+        {0.20, false, false, "clean"}, {0.22, false, false, "clean"},
+        {0.19, false, false, "clean"}, {0.21, false, false, "clean"},
+        {0.80, true,  false, "retransmitted ACK -> sample ignored"},
+        {0.00, false, true,  "timeout -> RTO doubled"},
+        {0.23, false, false, "clean (recompute from sample)"},
+        {0.20, false, false, "clean"}, {0.21, false, false, "clean"},
+    };
+
+    std::cout << "=== Karn's algorithm: RTT/RTO estimation ===\n";
+    std::cout << "step : SRTT : RTO : note\n";
+    std::vector<double> xs, srtts, rtos;
+    int i = 0;
+    for (const auto& s : steps) {
+        if (s.timeout) k.on_timeout();
+        else           k.on_ack(s.rtt, s.retransmit);
+        std::cout << "  " << i << "  : " << (k.initialized() ? k.srtt() : 0.0) << " : "
+                  << k.rto() << " : " << s.note << "\n";
+        xs.push_back(i); srtts.push_back(k.srtt()); rtos.push_back(k.rto());
+        ++i;
+    }
+
+    RPlot p = RPlot::create();
+    p.line(xs, srtts, "SRTT", {37, 99, 235}, 2.0);
+    p.line(xs, rtos, "RTO", {220, 38, 38}, 2.0);
+    p.points(xs, rtos, "", {220, 38, 38}, 3.5);
+    p.legend({"SRTT", "RTO"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/karn.svg");
+    std::cout << "\nwrote build/org/karn.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/karn_analysis.cpp <<'CPP'
+<<kn-includes>>
+
+int main() {
+<<kn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/karn_analysis.cpp -o build/org/karn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/karn_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Karn's algorithm: RTT/RTO estimation ===
+step : SRTT : RTO : note
+  0  : 0.2 : 0.6 : clean
+  1  : 0.2025 : 0.5225 : clean
+  2  : 0.200938 : 0.453438 : clean
+  3  : 0.20207 : 0.400508 : clean
+  4  : 0.20207 : 0.400508 : retransmitted ACK -> sample ignored
+  5  : 0.20207 : 0.801016 : timeout -> RTO doubled
+  6  : 0.205562 : 0.382319 : clean (recompute from sample)
+  7  : 0.204866 : 0.342996 : clean
+  8  : 0.205508 : 0.314239 : clean
+#+end_example
+
+The SRTT settles near 200 ms while the samples are clean. When the retransmitted segment's ACK
+arrives with an 800 ms sample, Karn's rule *ignores* it -- SRTT does not move -- so one ambiguous
+measurement cannot corrupt the estimate. The subsequent timeout instead *doubles* the RTO,
+adapting to the apparent slowdown without a trusted sample; and once a clean 230 ms sample
+resumes, the RTO is recomputed from measurements again. This discard-and-backoff discipline is
+what keeps TCP's timeout stable through the very losses that make samples untrustworthy.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/karn.svg]]
+
+* Character and relatives
+
+Karn's algorithm is a small but essential patch to the Jacobson/Karels RTT filter that together
+define TCP's timeout behavior; without it, retransmissions feed bad samples into the estimator
+and destabilize it precisely when the network is already stressed. It shares the
+*exponential-backoff* idea (companion report) with retry and collision schemes -- doubling the
+wait on repeated failure -- specialized here to the retransmission timeout. Modern TCP refines
+the surrounding machinery (timestamps for unambiguous RTT samples, RACK-based loss detection)
+but keeps Karn's core caution about ambiguous measurements.
+
+* Complexity
+
+\(O(1)\) per ACK or timeout: a constant number of multiply-add updates to the smoothed RTT,
+its variation, and the timeout.

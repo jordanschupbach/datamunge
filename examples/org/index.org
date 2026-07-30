@@ -921,6 +921,38 @@ We collect garbage with =datamunge='s C++ =algorithms::cheney_copy=, and report 
 
 We run a minor collection with =datamunge='s C++ =algorithms::minor_gc=, and report it as a literate program: tracing only the young generation (with a remembered set for old-to-young pointers) scans far fewer objects than a full-heap trace, as the compiled binary quantifies.
 
+* Networking & Flow Control
+
+** [[./exponential_backoff_analysis.html][Exponential Backoff: Spreading Out Retries]] ([[./exponential_backoff_analysis.pdf][PDF]])
+/A literate C++ study of capped backoff with jitter using datamunge/
+
+We compute retry delays with =datamunge='s C++ =algorithms::exponential_backoff_sequence=, and report it as a literate program: doubling the wait after each failure (capped) controls the retry rate while jitter decorrelates clients, defusing the thundering herd, as the compiled binary shows.
+
+** [[./truncated_backoff_analysis.html][Truncated Binary Exponential Backoff: Ethernet Collision Resolution]] ([[./truncated_backoff_analysis.pdf][PDF]])
+/A literate C++ study of CSMA/CD backoff using datamunge/
+
+We compute the contention window with =datamunge='s C++ =algorithms::contention_window=, and report it as a literate program: the window doubles per collision (truncated at 1024, frame abandoned at 16) so competing stations scatter across ever-wider retry slots, as the compiled binary tabulates.
+
+** [[./nagle_analysis.html][Nagle's Algorithm: Coalescing Small TCP Segments]] ([[./nagle_analysis.pdf][PDF]])
+/A literate C++ study of TCP packetization using datamunge/
+
+We simulate TCP sending with =datamunge='s C++ =algorithms::nagle_simulate=, and report it as a literate program: holding small segments while data is unacknowledged coalesces a burst of tiny writes into a few full packets, cutting header overhead, as the compiled binary measures.
+
+** [[./karn_analysis.html][Karn's Algorithm: Robust TCP Round-Trip Estimation]] ([[./karn_analysis.pdf][PDF]])
+/A literate C++ study of RTT/RTO estimation using datamunge/
+
+We estimate TCP timeouts with =datamunge='s C++ =algorithms::KarnEstimator=, and report it as a literate program: discarding ambiguous RTT samples from retransmitted segments and backing off the RTO on timeout keeps the estimate stable through loss, as the compiled binary traces.
+
+** [[./token_bucket_analysis.html][Token-Bucket Rate Limiting]] ([[./token_bucket_analysis.pdf][PDF]])
+/A literate C++ study of burst-tolerant rate limiting using datamunge/
+
+We limit request rates with =datamunge='s C++ =algorithms::TokenBucket=, and report it as a literate program: tokens dripping in up to a capacity let a burst through and then cap the sustained rate at the refill rate, as the compiled binary shows.
+
+** [[./leaky_bucket_analysis.html][Leaky-Bucket Rate Limiting]] ([[./leaky_bucket_analysis.pdf][PDF]])
+/A literate C++ study of traffic smoothing using datamunge/
+
+We smooth traffic with =datamunge='s C++ =algorithms::LeakyBucket=, and report it as a literate program: a level that fills on arrival and drains at a constant rate paces output to a steady rate with no burst reward, the dual of the token bucket, as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])
