@@ -1,0 +1,184 @@
+#+title: Approximate Counting: Morris's Algorithm
+#+subtitle: A literate C++ study of probabilistic counting in loglog space, using =datamunge='s =algorithms::MorrisCounter=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Counting \(n\) events exactly needs \(\lceil\log_2 n\rceil\) bits. When you must
+maintain millions of counters in tiny registers, that is too much. *Morris's
+approximate counting algorithm* (1978) stores not the count but an *exponent*, and
+increments it only *probabilistically*, so the register grows like \(\log_2 n\) and
+occupies only about \(\log_2\log_2 n\) bits -- doubly logarithmic. The estimator is
+*unbiased*, and its (initially large) variance is tunable via the counter's base.
+This report implements it in =datamunge='s C++ =algorithms::MorrisCounter= as a
+literate program: every number and figure comes from one compiled binary. We show
+a single base-2 counter tracking a true count of tens of thousands from a handful
+of bits, confirm the estimator is unbiased by averaging replicas, and show a base
+close to 1 shrinking the variance.
+#+end_abstract
+
+* Counting by exponent
+
+A Morris counter stores a value \(c\) and, on each event, increments \(c\) with
+probability \(2^{-c}\) (base 2). Since it takes about \(2^{c}\) events to push \(c\)
+one higher, \(c\) tracks \(\log_2 n\), and the estimate
+\[
+  \hat n = 2^{c} - 1
+\]
+recovers the count. The register holds \(c\approx\log_2 n\), i.e.
+\(\log_2\log_2 n\) bits: counting to a billion needs \(c\approx 30\), which fits in
+5 bits.
+
+The estimator is *unbiased*, \(\mathbb{E}[\hat n]=n\), but a single counter is
+noisy: its relative standard deviation is about \(1/\sqrt2\) for base 2. Two knobs
+reduce this: *averaging many independent counters*, or using a *smaller base*
+\(a=1+2\varepsilon\), incrementing with probability \(a^{-c}\) and estimating
+\(\hat n = (a^{c}-1)/(a-1)\), which drives the relative variance down to about
+\(\varepsilon\) at the cost of a few more bits.
+
+#+name: ac-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/approximate_counting.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MorrisCounter(base a):
+    c = 0
+    on event:
+        with probability a^(-c):  c += 1
+    estimate():
+        return (a^c - 1) / (a - 1)      # = 2^c - 1 for a = 2
+#+end_example
+
+* A worked example
+
+We count \(20{,}000\) events. First we watch one base-2 counter's estimate against
+the true running count. Then we average many independent counters to expose the
+unbiasedness, and compare the spread of base-2 versus base-1.03 counters.
+
+#+name: ac-run
+#+begin_src c++ :eval no
+    const int true_count = 20000;
+
+    // One base-2 counter: record its estimate at checkpoints.
+    std::mt19937_64     rng(7);
+    MorrisCounter       single(2.0);
+    std::vector<double> cp_x, cp_est, cp_true;
+    for (int i = 1; i <= true_count; ++i) {
+        single.increment(rng);
+        if (i % 1000 == 0) {
+            cp_x.push_back(i);
+            cp_est.push_back(single.estimate());
+            cp_true.push_back(i);
+        }
+    }
+    std::cout << "=== One base-2 Morris counter after " << true_count << " events ===\n";
+    std::cout << "stored exponent c = " << single.exponent() << "  (about log2(n) = " << std::log2(true_count)
+              << ")\n";
+    std::cout << "estimate = " << single.estimate() << "   (true " << true_count << ")\n";
+    std::cout << "bits to store c: ~" << std::ceil(std::log2(single.exponent() + 1)) << " vs "
+              << std::ceil(std::log2(true_count)) << " for an exact counter\n\n";
+
+    // Unbiasedness: average many independent base-2 counters.
+    auto averaged = [&](double base, int replicas) {
+        double sum = 0.0, sumsq = 0.0;
+        for (int r = 0; r < replicas; ++r) {
+            std::mt19937_64 rr(static_cast<std::uint64_t>(r) + 1);
+            MorrisCounter   mc(base);
+            for (int i = 0; i < true_count; ++i) mc.increment(rr);
+            sum += mc.estimate();
+            sumsq += mc.estimate() * mc.estimate();
+        }
+        double mean = sum / replicas;
+        double rel  = std::sqrt(sumsq / replicas - mean * mean) / true_count;
+        return std::pair<double, double>{mean, rel};
+    };
+    auto [mean2, rel2]   = averaged(2.0, 2000);
+    auto [mean103, rel103] = averaged(1.03, 2000);
+    std::cout << "averaged over 2000 counters (true " << true_count << "):\n";
+    std::cout << "  base 2.00: mean estimate " << mean2 << ", relative std " << rel2 << '\n';
+    std::cout << "  base 1.03: mean estimate " << mean103 << ", relative std " << rel103 << '\n';
+
+    // Figure: single counter's estimate vs the true count (identity line).
+    RPlot p = RPlot::create();
+    p.points(cp_x, cp_est, "estimate", {37, 99, 235}, 4.0);
+    p.line(cp_true, cp_true, "true count (identity)", {22, 163, 74}, 2.0);
+    p.legend({"base-2 counter estimate", "true count"}, {{37, 99, 235}, {22, 163, 74}});
+    p.save_svg("build/org/approximate_counting.svg");
+    std::cout << "\nwrote build/org/approximate_counting.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/approximate_counting_analysis.cpp <<'CPP'
+<<ac-includes>>
+
+int main() {
+<<ac-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/approximate_counting_analysis.cpp -o build/org/approximate_counting_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/approximate_counting_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== One base-2 Morris counter after 20000 events ===
+stored exponent c = 15  (about log2(n) = 14.2877)
+estimate = 32767   (true 20000)
+bits to store c: ~4 vs 15 for an exact counter
+
+averaged over 2000 counters (true 20000):
+  base 2.00: mean estimate 20299.8, relative std 0.738437
+  base 1.03: mean estimate 20013.5, relative std 0.12636
+#+end_example
+
+A single base-2 counter reaches an exponent around \(\log_2(20000)\approx 14.3\),
+so it stores the count of twenty thousand in roughly four bits rather than the
+fifteen an exact counter needs -- and its estimate is the right order of magnitude,
+though, being a power of two minus one, a single counter is coarse and noisy. Averaging two thousand independent counters exposes
+the *unbiasedness*: the mean estimate sits right on the true count. The base-1.03
+counter has a far smaller relative spread than the base-2 one, confirming the
+base as the accuracy/space dial. The scatter of the single counter around the
+identity line in the figure is exactly the variance that averaging (or a smaller
+base) removes.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/approximate_counting.svg]]
+
+* Where it is used, and relatives
+
+Approximate counting is the seed of *streaming/sketch* algorithms, where sublinear
+space is the whole point. Its descendants count *distinct* elements rather than
+total events -- Flajolet-Martin, LogLog, and HyperLogLog, the last of which
+estimates cardinalities of billions using a few kilobytes and is ubiquitous in
+databases and analytics. Morris counters themselves appear wherever vast numbers of
+small counters must fit in cache or hardware (per-flow statistics, approximate
+frequency tables). The common theme: accept a controlled random error in exchange
+for exponential space savings.
+
+* Complexity
+
+Each increment is \(O(1)\): one random draw and a comparison. A base-\(a\) counter
+stores a single number whose magnitude is \(O(\log_a n)\), i.e. \(O(\log\log n)\)
+bits for fixed accuracy. Averaging \(m\) counters multiplies space by \(m\) and cuts
+the relative variance by \(m\).

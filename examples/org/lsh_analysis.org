@@ -1,0 +1,207 @@
+#+title: Locality-Sensitive Hashing: Approximate Nearest Neighbors by Random Hyperplanes
+#+subtitle: A literate C++ study of cosine LSH, using =datamunge='s =algorithms::CosineLSH=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Exact nearest-neighbor search scans the whole dataset per query -- fine for
+thousands of points, hopeless for millions in high dimensions. *Locality-sensitive
+hashing* (LSH) trades exactness for speed using hash functions under which *nearby
+points collide far more often than distant ones*. For cosine similarity the classic
+family is the *random hyperplane* hash \(h_r(x)=\operatorname{sign}(r\cdot x)\): two
+vectors agree on a random bit with probability exactly \(1-\theta/\pi\), where
+\(\theta\) is the angle between them. This report implements it in =datamunge='s C++
+=algorithms::CosineLSH= as a literate program: every number and figure comes from
+one compiled binary. We verify the collision-probability law empirically, then use
+a multi-table index to answer approximate nearest-neighbor queries while examining
+only a small fraction of the data.
+#+end_abstract
+
+* The locality-sensitive property
+
+A hash family is *locality-sensitive* if the collision probability is a decreasing
+function of distance. The random-hyperplane (SimHash) family achieves, for the
+angle \(\theta(x,y)\) between two vectors,
+\[
+  \Pr_r\big[\operatorname{sign}(r\cdot x) = \operatorname{sign}(r\cdot y)\big] = 1 - \frac{\theta}{\pi}.
+\]
+So each random bit is a noisy indicator of angular closeness, and the fraction of
+agreeing bits across many hyperplanes estimates \(1-\theta/\pi\) -- turning "are
+these vectors similar?" into "do their bit-signatures match?".
+
+#+name: lsh-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lsh.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* From bits to sublinear search: AND then OR
+
+One bit is a weak signal. LSH amplifies it by *banding*:
+
+- *AND* (\(k\) bits per table): concatenate \(k\) random-hyperplane bits into a
+  bucket key. Two points share a bucket only if all \(k\) bits agree, so the
+  per-table collision probability is \((1-\theta/\pi)^k\) -- accidental collisions of
+  distant points become rare.
+- *OR* (\(L\) tables): build \(L\) independent tables and, at query time, gather
+  candidates from the query's bucket in *every* table. A true neighbor missed by
+  one table is likely caught by another; the probability of missing it in all \(L\)
+  is \((1-(1-\theta/\pi)^k)^L\).
+
+Choosing \(k\) and \(L\) tunes the precision/recall/speed trade-off: larger \(k\)
+prunes harder (fewer candidates), larger \(L\) restores recall. A query then
+verifies only the gathered candidates by exact similarity -- far fewer than the
+whole dataset.
+
+** Pseudocode
+
+#+begin_example
+Build(data, L, k):
+    for each table t in 1..L:
+        draw k random hyperplanes r_{t,1..k}
+        for each point p: bucket[t][ signature_t(p) ].append(p)
+
+Query(q):
+    candidates = union over t of bucket[t][ signature_t(q) ]
+    return argmax_{p in candidates} cosine(q, p)
+#+end_example
+
+* Verifying the collision law
+
+We take pairs of 2-D vectors at known angles and measure the empirical fraction of
+agreeing random-hyperplane bits, comparing against \(1-\theta/\pi\).
+
+#+name: lsh-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(3);
+    std::normal_distribution<double> g(0.0, 1.0);
+
+    std::cout << "=== Random-hyperplane collision probability ===\n";
+    std::cout << "angle(deg)  empirical  theory(1 - theta/pi)\n";
+    std::vector<double> ang_x, emp_y, th_y;
+    for (int deg = 0; deg <= 180; deg += 20) {
+        double theta = deg * M_PI / 180.0;
+        std::vector<double> a = {1.0, 0.0}, b = {std::cos(theta), std::sin(theta)};
+        int agree = 0, trials = 20000;
+        for (int t = 0; t < trials; ++t) {
+            double r0 = g(rng), r1 = g(rng);
+            double da = r0 * a[0] + r1 * a[1];
+            double db = r0 * b[0] + r1 * b[1];
+            if ((da >= 0) == (db >= 0)) ++agree;
+        }
+        double emp = static_cast<double>(agree) / trials, th = 1.0 - theta / M_PI;
+        std::cout << "   " << (deg < 100 ? " " : "") << deg << "       " << emp << "     " << th << '\n';
+        ang_x.push_back(deg);
+        emp_y.push_back(emp);
+        th_y.push_back(th);
+    }
+
+    // Approximate nearest-neighbor search: a random haystack, queries are near-duplicates.
+    const std::size_t n = 2000, dim = 30;
+    std::vector<std::vector<double>> data(n, std::vector<double>(dim));
+    for (auto& v : data)
+        for (double& x : v) x = g(rng);
+    CosineLSH                                  index(data, 15, 14, 99);
+    std::uniform_int_distribution<std::size_t> pick(0, n - 1);
+    std::normal_distribution<double>           noise(0.0, 0.3);
+    int         hits = 0, tries = 200;
+    double      examined_total = 0.0;
+    for (int t = 0; t < tries; ++t) {
+        std::size_t         src = pick(rng);
+        std::vector<double> q   = data[src];
+        for (double& x : q) x += noise(rng);
+        // Exact NN.
+        std::size_t exact = 0; double bs = -2.0;
+        for (std::size_t i = 0; i < n; ++i) { double s = CosineLSH::cosine(q, data[i]); if (s > bs) { bs = s; exact = i; } }
+        std::size_t examined = 0;
+        std::size_t approx = index.query(q, &examined);
+        examined_total += examined;
+        if (approx == exact) ++hits;
+    }
+    std::cout << "\n=== Approximate NN: " << n << " points in " << dim << "-D, 15 tables x 14 bits ===\n";
+    std::cout << "recall (exact NN found): " << (100.0 * hits / tries) << "%\n";
+    std::cout << "avg candidates examined per query: " << (examined_total / tries) << " of " << n
+              << "  (" << (100.0 * examined_total / tries / n) << "% of the data)\n";
+
+    RPlot p = RPlot::create();
+    p.points(ang_x, emp_y, "empirical", {37, 99, 235}, 5.0);
+    p.line(ang_x, th_y, "1 - theta/pi", {220, 38, 38}, 2.0);
+    p.legend({"empirical", "theory 1 - theta/pi"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/lsh_collision.svg");
+    std::cout << "\nwrote build/org/lsh_collision.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lsh_analysis.cpp <<'CPP'
+<<lsh-includes>>
+
+int main() {
+<<lsh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lsh_analysis.cpp -o build/org/lsh_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lsh_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Random-hyperplane collision probability ===
+angle(deg)  empirical  theory(1 - theta/pi)
+    0       1     1
+    20       0.8896     0.888889
+    40       0.77905     0.777778
+    60       0.6629     0.666667
+    80       0.5607     0.555556
+   100       0.449     0.444444
+   120       0.3315     0.333333
+   140       0.2236     0.222222
+   160       0.11555     0.111111
+   180       0     0
+
+=== Approximate NN: 2000 points in 30-D, 15 tables x 14 bits ===
+recall (exact NN found): 95.5%
+avg candidates examined per query: 6.24 of 2000  (0.312% of the data)
+#+end_example
+
+The empirical bit-agreement matches the \(1-\theta/\pi\) law across the full range
+of angles: identical vectors always agree, orthogonal vectors agree half the time,
+opposite vectors never agree. Using that property, the multi-table index answers
+nearest-neighbor queries at high recall while examining only a small fraction of
+the dataset per query -- the sublinear speedup that makes LSH useful at scale. More
+tables raise recall; more bits per table cut the candidate count.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/lsh_collision.svg]]
+
+* Variants and relatives
+
+Different similarity measures have their own LSH families: *MinHash* for Jaccard
+similarity of sets, *p-stable* projections (E2LSH) for Euclidean distance, and
+random-hyperplane SimHash (used here) for cosine/angular distance. LSH underpins
+near-duplicate detection, large-scale recommendation and retrieval, and clustering
+of massive high-dimensional collections. Its modern cousins -- learned hashing and
+graph-based ANN indexes (HNSW) -- often win in practice, but LSH remains the
+theoretically clean baseline with provable collision guarantees.
+
+* Complexity
+
+Building \(L\) tables hashes \(n\) points with \(Lk\) projections each, \(O(nLk\,d)\).
+A query hashes once per table (\(O(Lk\,d)\)) and verifies only the pooled bucket
+candidates, which is sublinear in \(n\) when \(k\) is large enough. Memory is
+\(O(nL)\) for the bucket postings plus \(O(Lk\,d)\) for the hyperplanes.

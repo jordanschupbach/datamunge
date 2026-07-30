@@ -1,0 +1,170 @@
+#+title: The Linde-Buzo-Gray Algorithm: Vector-Quantization Codebook Design
+#+subtitle: A literate C++ study of codebook design by splitting, using =datamunge='s =algorithms::linde_buzo_gray=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Vector quantization* (VQ) compresses data by replacing each vector with the
+nearest entry of a small *codebook*; the design problem is to choose a codebook
+that minimizes the average distortion between vectors and their codewords. The
+*Linde-Buzo-Gray* (LBG) algorithm (1980) solves it by *doubling*: start from the
+single centroid of the data, repeatedly *split* every codeword into two and re-run
+Lloyd's k-means relaxation, until the codebook reaches the target size. This report
+implements it in =datamunge='s C++ =algorithms::linde_buzo_gray= as a literate
+program: every number and figure comes from one compiled binary. We design a
+codebook for a 2-D distribution, watch the distortion fall as the codebook doubles
+from 1 to 16 codewords, and plot the final codebook over the data.
+#+end_abstract
+
+* Vector quantization and distortion
+
+Given training vectors \(x_1,\dots,x_n\) and a codebook \(C=\{c_1,\dots,c_K\}\),
+each vector is quantized to its nearest codeword; the *average distortion* is
+\[
+  D = \frac1n\sum_{i=1}^{n} \min_{1\le j\le K} \|x_i - c_j\|^2.
+\]
+The goal is the size-\(K\) codebook minimizing \(D\). This is exactly the k-means
+objective, but VQ cares about the *codebook* (used to encode/decode a stream) and
+about building a *family* of codebooks at successive sizes.
+
+#+name: lbg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/linde_buzo_gray.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Design by splitting
+
+LBG grows the codebook as a power of two:
+
+1. *Initialize* with one codeword: the centroid of all data.
+2. *Split*: replace each codeword \(c\) by two nearby ones, \(c(1-\epsilon)\) and
+   \(c(1+\epsilon)\), doubling the codebook.
+3. *Refine*: run Lloyd's algorithm -- assign each point to its nearest codeword,
+   move each codeword to the centroid of its assigned points -- to convergence.
+4. Repeat 2-3 until the codebook reaches the target size.
+
+Splitting seeds each larger codebook from the (already good) smaller one, giving
+data-adapted initializations and a nested sequence of codebooks -- useful for
+progressive or embedded coding. LBG is the *generalized Lloyd algorithm*; the split
+step is what distinguishes it from plain k-means with random restarts.
+
+** Pseudocode
+
+#+begin_example
+LBG(data, target_size, epsilon):
+    C = { mean(data) }
+    D = lloyd(data, C)
+    while |C| < target_size:
+        C = { c*(1-eps), c*(1+eps) : c in C }     # split
+        D = lloyd(data, C)                         # refine (assign + recentroid)
+    return C, D
+#+end_example
+
+* A worked example
+
+We draw a 2-D distribution (a mixture of a few Gaussian clusters) and design
+codebooks of sizes \(1,2,4,8,16\), tracking the distortion at each size and drawing
+the final 16-codeword codebook over the data.
+
+#+name: lbg-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(12);
+    std::normal_distribution<double> j(0.0, 0.6);
+    std::vector<std::vector<double>> data;
+    const std::vector<std::vector<double>> centers = {{0, 0}, {6, 1}, {2, 6}, {7, 7}, {3, 3}};
+    for (const auto& c : centers)
+        for (int i = 0; i < 120; ++i) data.push_back({c[0] + j(rng), c[1] + j(rng)});
+
+    LBGResult vq = linde_buzo_gray(data, 16, 0.01, 100, 1e-8);
+
+    std::cout << "=== LBG codebook design on a 2D mixture (" << data.size() << " points) ===\n";
+    std::cout << "codebook size  ->  distortion\n";
+    std::size_t sz = 1;
+    for (double d : vq.distortion_history) {
+        std::cout << "   " << (sz < 10 ? " " : "") << sz << "          " << d << '\n';
+        sz *= 2;
+    }
+    std::cout << "\nfinal codebook: " << vq.codebook.size() << " codewords, distortion " << vq.distortion
+              << '\n';
+
+    // Figure: data (light) with the final codebook (dark).
+    std::vector<double> dx, dy;
+    for (const auto& x : data) { dx.push_back(x[0]); dy.push_back(x[1]); }
+    std::vector<double> cx, cy;
+    for (const auto& c : vq.codebook) { cx.push_back(c[0]); cy.push_back(c[1]); }
+    RPlot p = RPlot::create();
+    p.points(dx, dy, "data", {191, 219, 254}, 3.0);
+    p.points(cx, cy, "codewords", {220, 38, 38}, 8.0);
+    p.legend({"data", "codewords (K=16)"}, {{191, 219, 254}, {220, 38, 38}});
+    p.save_svg("build/org/lbg_codebook.svg");
+    std::cout << "\nwrote build/org/lbg_codebook.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/linde_buzo_gray_analysis.cpp <<'CPP'
+<<lbg-includes>>
+
+int main() {
+<<lbg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/linde_buzo_gray_analysis.cpp -o build/org/linde_buzo_gray_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/linde_buzo_gray_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LBG codebook design on a 2D mixture (600 points) ===
+codebook size  ->  distortion
+    1          15.1447
+    2          8.1254
+    4          1.6698
+    8          0.535037
+   16          0.3182
+
+final codebook: 16 codewords, distortion 0.3182
+#+end_example
+
+The distortion falls monotonically and steeply as the codebook doubles: each split
+gives Lloyd's relaxation twice as many codewords to cover the data, so the average
+squared quantization error shrinks toward zero. The final 16-codeword codebook
+spreads its codewords over the dense regions of the distribution, placing more of
+them where the data concentrates -- exactly the adaptive allocation that makes VQ an
+efficient lossy code.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/lbg_codebook.svg]]
+
+* Uses and relatives
+
+LBG is the foundation of classic vector-quantization codecs for speech (CELP-style
+coders) and images, and of codebook learning for bag-of-features image
+representations. It is essentially k-means with a principled splitting
+initialization, and is closely related to tree-structured VQ (which keeps the
+split hierarchy for fast encoding) and to the self-organizing map (a VQ that also
+imposes a grid topology on the codewords). Its limitations are k-means's: Euclidean
+distortion favors round Voronoi cells, and the result is a local optimum.
+
+* Complexity
+
+Each Lloyd relaxation costs \(O(I\,n\,K\,d)\) for \(I\) iterations, and there are
+\(\log_2 K\) doubling stages, so total design is
+\(O(I\,n\,K\,d)\) dominated by the largest codebook. Encoding a new vector is a
+nearest-codeword search, \(O(K\,d)\) (or \(O(\log K)\) with a tree-structured
+codebook).
