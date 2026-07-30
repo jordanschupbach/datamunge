@@ -1,0 +1,157 @@
+#+title: Rice Coding: The Power-of-Two Golomb Code
+#+subtitle: A literate C++ study of Rice coding, using =datamunge='s =algorithms::rice_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Rice coding (Robert Rice, 1979) is Golomb coding restricted to the parameter \(M=2^k\). That
+single restriction removes all the truncated-binary bookkeeping: the remainder becomes a plain
+\(k\)-bit field, so encoding is a shift and a mask and the codeword is a unary quotient followed
+by \(k\) literal bits. It gives up a little optimality versus a freely chosen Golomb \(M\), but
+its speed and simplicity make it the residual coder in FLAC, Shorten, and many spacecraft
+telemetry systems. This report runs it with =datamunge='s =algorithms::rice_encode= as a
+literate program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* A shift instead of a division
+
+For \(M=2^k\), the quotient \(q=n\gg k\) and remainder \(r=n\ \&\ (2^k-1)\) are a shift and a
+mask -- no division, no truncated-binary special cases. The codeword is \(q\) ones, a zero, then
+the \(k\)-bit remainder, for a total of \(q+1+k=(n\gg k)+1+k\) bits. The single parameter \(k\)
+sets the split between the (cheap-for-small-values) unary part and the fixed \(k\)-bit part:
+small \(k\) favors tiny values, large \(k\) favors a heavier tail. Because \(M\) is constrained
+to powers of two, the optimal Rice \(k\) is simply the Golomb optimum rounded to the nearest
+power of two -- a negligible loss for a large gain in simplicity.
+
+#+name: rc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/golomb_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline int rice_len(std::uint64_t n, int k) { return (int)(n >> k) + 1 + k; }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Rice(n, k):     # Golomb with M = 2^k
+    q = n >> k;  r = n & (2^k - 1)
+    emit q ones then a zero        # unary quotient
+    emit r as a plain k-bit field  # no truncated-binary needed
+#+end_example
+
+* A worked example
+
+We confirm Rice equals Golomb with \(M=2^k\), then sweep \(k\) to find the best parameter for a
+geometric source (value \(n\) with probability \(\propto (1/2)^{n/8}\), mean about 8).
+
+#+name: rc-run
+#+begin_src c++ :eval no
+    std::vector<std::uint64_t> demo = {0, 1, 2, 5, 9, 17, 3, 42};
+    std::cout << "=== Rice coding ===\n";
+    std::cout << "Rice(k=3) == Golomb(M=8)? "
+              << (rice_encode(demo, 3) == golomb_encode(demo, 8) ? "yes" : "no") << "\n\n";
+
+    std::cout << "codeword lengths (bits):\nvalue :  k=1  k=2  k=3  k=4\n";
+    for (std::uint64_t n : {0ull, 1ull, 4ull, 8ull, 16ull, 32ull})
+        std::cout << "  " << n << "   :   " << rice_len(n, 1) << "    " << rice_len(n, 2)
+                  << "    " << rice_len(n, 3) << "    " << rice_len(n, 4) << "\n";
+
+    // Sweep k: expected bits/symbol on the geometric source.
+    std::vector<double> ks, bpsk;
+    int best = 1; double bestbits = 1e18;
+    std::cout << "\nexpected bits/symbol vs k (geometric source, mean ~8):\n";
+    for (int k = 0; k <= 6; ++k) {
+        double bits = 0, norm = 0;
+        for (int n = 0; n < 300; ++n) { double pr = std::pow(0.5, n / 8.0); bits += pr * rice_len(n, k); norm += pr; }
+        bits /= norm;
+        std::cout << "  k=" << k << " (M=" << (1 << k) << "): " << bits << " bits/symbol\n";
+        ks.push_back(k); bpsk.push_back(bits);
+        if (bits < bestbits) { bestbits = bits; best = k; }
+    }
+    std::cout << "best parameter here: k=" << best << " (M=" << (1 << best) << ")\n";
+
+    RPlot p = RPlot::create();
+    p.line(ks, bpsk, "bits/symbol", {37, 99, 235}, 2.0);
+    p.points(ks, bpsk, "", {37, 99, 235}, 5.0);
+    p.points({(double)best}, {bestbits}, "optimal k", {220, 38, 38}, 7.0);
+    p.legend({"bits/symbol", "optimal k"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/rice_coding.svg");
+    std::cout << "\nwrote build/org/rice_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rice_coding_analysis.cpp <<'CPP'
+<<rc-includes>>
+
+int main() {
+<<rc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rice_coding_analysis.cpp -o build/org/rice_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rice_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Rice coding ===
+Rice(k=3) == Golomb(M=8)? yes
+
+codeword lengths (bits):
+value :  k=1  k=2  k=3  k=4
+  0   :   2    3    4    5
+  1   :   2    3    4    5
+  4   :   4    4    4    5
+  8   :   6    5    5    5
+  16   :   10    7    6    6
+  32   :   18    11    8    7
+
+expected bits/symbol vs k (geometric source, mean ~8):
+  k=0 (M=1): 12.0488 bits/symbol
+  k=1 (M=2): 7.28521 bits/symbol
+  k=2 (M=4): 5.41421 bits/symbol
+  k=3 (M=8): 5 bits/symbol
+  k=4 (M=16): 5.33333 bits/symbol
+  k=5 (M=32): 6.06667 bits/symbol
+  k=6 (M=64): 7.00392 bits/symbol
+best parameter here: k=3 (M=8)
+#+end_example
+
+Rice coding reproduces Golomb coding exactly at \(M=2^k\), as the identity check confirms. The
+\(k\)-sweep is U-shaped: too small a \(k\) lets the unary quotient explode on the tail, too large
+a \(k\) wastes fixed bits on the common small values, and the minimum sits at the \(k\) whose
+\(2^k\) matches the source's scale (mean about 8). That is the whole tuning story for Rice
+coding -- pick the \(k\) at the bottom of the curve, often adapted per block in real codecs.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rice_coding.svg]]
+
+* Character and relatives
+
+Rice coding trades Golomb's freely-chosen \(M\) for the speed of shift-and-mask arithmetic, which
+is why it dominates in performance- and hardware-sensitive settings: lossless audio (FLAC,
+Shorten, ALS), the Rice-Golomb residual stage of many image codecs, and CCSDS space-data
+compression. Real encoders pick \(k\) *adaptively* per block (or estimate it from the running
+mean) so the code tracks a non-stationary source. Where the source is far from geometric, a
+general entropy coder (arithmetic, companion report) does better.
+
+* Complexity
+
+\(O(1)\) per value -- a shift, a mask, and a bounded emit -- with codeword length
+\((n\gg k)+1+k\) bits.
