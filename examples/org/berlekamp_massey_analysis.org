@@ -1,0 +1,166 @@
+#+title: The Berlekamp-Massey Algorithm: Shortest LFSR for a Sequence
+#+subtitle: A literate C++ study of linear complexity, using =datamunge='s =algorithms::berlekamp_massey=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Berlekamp-Massey algorithm (1968) finds the *shortest* linear feedback shift register (LFSR)
+that produces a given sequence -- equivalently, the minimal-degree *connection polynomial* of the
+linear recurrence it satisfies. It scans the sequence once, keeping a current LFSR and, whenever
+the next term disagrees with the LFSR's prediction (a nonzero *discrepancy*), correcting the
+polynomial from a saved earlier version. The final register length is the sequence's *linear
+complexity*, a fundamental measure of pseudorandomness -- and the same computation is the
+error-locator step of BCH and Reed-Solomon decoding. This report runs it over \(\mathrm{GF}(2)\)
+with =datamunge='s =algorithms::berlekamp_massey= as a literate program: every number and figure
+comes from one compiled binary.
+#+end_abstract
+
+* Predict, measure the discrepancy, correct
+
+Process the sequence \(s_0,s_1,\dots\) left to right, maintaining a connection polynomial
+\(C(x)\) of degree \(L\). At step \(i\), predict \(s_i\) from the last \(L\) terms via \(C\); the
+*discrepancy* \(d\) is the XOR of the prediction and the actual \(s_i\). If \(d=0\), the current
+LFSR still works. If \(d=1\), correct \(C\) by adding a shifted copy of the polynomial \(B\) saved
+just before the last length increase; if the register was "too short" (\(2L\le i\)), the length
+jumps to \(i+1-L\) and the current polynomial is saved as the new \(B\). The register only ever
+grows when forced, so it ends at the *minimum* length -- the linear complexity. A truly random
+sequence has complexity near \(n/2\); a sequence from a short LFSR plateaus at that LFSR's length.
+
+#+name: bm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/berlekamp_massey.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Linear-complexity profile: L of each prefix s[0..i].
+inline std::vector<double> complexity_profile(const std::vector<int>& s) {
+    std::vector<double> prof;
+    for (std::size_t i = 1; i <= s.size(); ++i)
+        prof.push_back(berlekamp_massey(std::vector<int>(s.begin(), s.begin() + i)).length);
+    return prof;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+BerlekampMassey(s):
+    C = [1], B = [1], L = 0, m = 1
+    for i in 0..n-1:
+        d = s[i] XOR sum_{j=1..L} C[j] * s[i-j]      # discrepancy over GF(2)
+        if d == 1:
+            T = C
+            C = C XOR (B shifted by m)
+            if 2L <= i: L = i+1-L; B = T; m = 1
+            else: m += 1
+        else: m += 1
+    return L, C
+#+end_example
+
+* A worked example
+
+Two sequences: the output of the LFSR \(x^3+x+1\) (period 7), whose complexity should plateau at
+3, and a high-complexity sequence whose profile climbs toward \(n/2\).
+
+#+name: bm-run
+#+begin_src c++ :eval no
+    std::vector<int> lfsr = {0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1};  // x^3 + x + 1, two periods
+    auto r = berlekamp_massey(lfsr);
+    std::cout << "=== Berlekamp-Massey ===\n";
+    std::cout << "LFSR sequence (x^3+x+1): recovered L=" << r.length << ", polynomial ";
+    for (int c : r.polynomial) std::cout << c;
+    std::cout << " (= 1 + x + x^3)\n";
+
+    std::vector<int> hi = {1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1};   // no short recurrence
+    std::cout << "high-complexity sequence: L=" << berlekamp_massey(hi).length
+              << " (near n/2 = " << hi.size() / 2 << ")\n";
+
+    auto pl = complexity_profile(lfsr), ph = complexity_profile(hi);
+    std::vector<double> xs;
+    for (std::size_t i = 0; i < pl.size(); ++i) xs.push_back(i + 1);
+    std::cout << "\nlinear-complexity profile (index : LFSR L : high-complexity L):\n";
+    for (std::size_t i = 0; i < pl.size(); ++i)
+        std::cout << "  " << (i + 1) << " : " << (int)pl[i] << " : " << (int)ph[i] << "\n";
+
+    RPlot p = RPlot::create();
+    p.line(xs, pl, "LFSR x^3+x+1", {37, 99, 235}, 2.0);
+    p.points(xs, pl, "", {37, 99, 235}, 3.5);
+    p.line(xs, ph, "high complexity", {220, 38, 38}, 2.0);
+    p.points(xs, ph, "", {220, 38, 38}, 3.5);
+    p.legend({"LFSR x^3+x+1", "high complexity"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/berlekamp_massey.svg");
+    std::cout << "\nwrote build/org/berlekamp_massey.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/berlekamp_massey_analysis.cpp <<'CPP'
+<<bm-includes>>
+
+int main() {
+<<bm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/berlekamp_massey_analysis.cpp -o build/org/berlekamp_massey_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/berlekamp_massey_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Berlekamp-Massey ===
+LFSR sequence (x^3+x+1): recovered L=3, polynomial 1101 (= 1 + x + x^3)
+high-complexity sequence: L=6 (near n/2 = 7)
+
+linear-complexity profile (index : LFSR L : high-complexity L):
+  1 : 0 : 1
+  2 : 0 : 1
+  3 : 3 : 2
+  4 : 3 : 2
+  5 : 3 : 3
+  6 : 3 : 3
+  7 : 3 : 3
+  8 : 3 : 5
+  9 : 3 : 5
+  10 : 3 : 5
+  11 : 3 : 6
+  12 : 3 : 6
+  13 : 3 : 6
+  14 : 3 : 6
+#+end_example
+
+For the LFSR sequence the algorithm recovers exactly the generating register -- length 3, connection
+polynomial \(1+x+x^3\) -- and its complexity profile climbs to 3 and then *plateaus*: once three
+terms pin down the recurrence, every later term is predicted correctly, so no further length
+increase is forced. The high-complexity sequence instead keeps forcing corrections, its profile
+climbing toward \(n/2\). This contrast is the cryptographic point: linear complexity measures how
+"LFSR-like" a bit stream is, and a keystream with low linear complexity is fatally weak, because
+Berlekamp-Massey reconstructs its generator from only \(2L\) observed bits.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/berlekamp_massey.svg]]
+
+* Character and relatives
+
+Berlekamp-Massey has two lives. In *coding theory* it is the decoder core of BCH and
+Reed-Solomon codes, computing the error-locator polynomial from the syndromes (the Berlekamp-
+Massey and the equivalent Euclidean-algorithm decoders). In *cryptanalysis* it measures the
+linear complexity of keystreams, and the *linear complexity profile* it induces is a standard
+randomness test -- a good stream cipher must resist it, which is why nonlinear combiners and
+filters are layered over LFSRs. The algorithm generalizes from \(\mathrm{GF}(2)\) to any field.
+
+* Complexity
+
+\(O(n^2)\) over \(\mathrm{GF}(2)\) for a length-\(n\) sequence (each step does \(O(L)\) work), and
+it needs only the first \(2L\) terms to determine an LFSR of length \(L\).

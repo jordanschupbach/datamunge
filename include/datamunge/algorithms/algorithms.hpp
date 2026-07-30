@@ -13,8 +13,10 @@
 #include <datamunge/algorithms/association_rules.hpp>
 #include <datamunge/algorithms/arnoldi_iteration.hpp>
 #include <datamunge/algorithms/arithmetic_extra.hpp>
+#include <datamunge/algorithms/arithmetic_coding.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
 #include <datamunge/algorithms/berlekamp.hpp>
+#include <datamunge/algorithms/berlekamp_massey.hpp>
 #include <datamunge/algorithms/bicubic_interpolation.hpp>
 #include <datamunge/algorithms/birkhoff_interpolation.hpp>
 #include <datamunge/algorithms/bkm.hpp>
@@ -65,9 +67,11 @@
 #include <datamunge/algorithms/ellipsoid.hpp>
 #include <datamunge/algorithms/elias_gamma.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/exponential_backoff.hpp>
 #include <datamunge/algorithms/fft.hpp>
+#include <datamunge/algorithms/fibonacci_coding.hpp>
 #include <datamunge/algorithms/flood_fill.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
@@ -85,6 +89,7 @@
 #include <datamunge/algorithms/grover.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/goertzel.hpp>
+#include <datamunge/algorithms/golomb_coding.hpp>
 #include <datamunge/algorithms/generational.hpp>
 #include <datamunge/algorithms/grasp.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>

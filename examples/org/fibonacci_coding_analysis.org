@@ -1,0 +1,158 @@
+#+title: Fibonacci Coding: Self-Delimiting Codes from Zeckendorf's Theorem
+#+subtitle: A literate C++ study of Fibonacci codes, using =datamunge='s =algorithms::fibonacci_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Fibonacci coding represents a positive integer using *Zeckendorf's theorem*: every positive
+integer is a unique sum of *non-consecutive* Fibonacci numbers. The code writes one bit per
+Fibonacci number (smallest first) marking which are used, then appends a terminating \(1\).
+Because no two consecutive Fibonacci numbers appear, the only place two \(1\)s sit adjacent is
+that terminator -- so \(11\) is an unambiguous end marker, making the code *self-delimiting* and
+unusually *robust to bit errors*: a corrupted bit cannot desynchronize the stream past the next
+\(11\). This report runs it with =datamunge='s =algorithms::fibonacci_encode= as a literate
+program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Zeckendorf digits plus a delimiter
+
+To encode \(n\), greedily subtract the largest Fibonacci number \(\le n\), repeat, and mark the
+used ones -- Zeckendorf's theorem guarantees this representation exists, is unique, and uses no
+two consecutive Fibonacci numbers. Writing the marks from the smallest Fibonacci upward gives a
+bit string ending in the highest used position (a \(1\)); appending one more \(1\) produces the
+tell-tale \(11\). The decoder simply reads bits, summing the corresponding Fibonacci numbers,
+until it meets \(11\). The codeword length is about \(\log_\varphi n\approx 1.44\log_2 n\) bits
+(\(\varphi\) the golden ratio) -- slightly longer than the tightest universal codes, bought back
+in error resilience.
+
+#+name: fc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline std::string fib_code(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); std::string s; for (bool x : b) s += x ? '1' : '0'; return s; }
+inline int fib_len(std::uint64_t n) { std::vector<bool> b; fibonacci_encode_value(n, b); return (int)b.size(); }
+inline int eg_len(std::uint64_t n) { std::vector<bool> b; exp_golomb0_encode_value(n, b); return (int)b.size(); }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Fibonacci(n):
+    greedily write n as a sum of non-consecutive Fibonacci numbers (Zeckendorf)
+    emit one bit per Fibonacci number (smallest first): 1 if used
+    emit a terminating 1        # adjacent to the top 1 -> the "11" delimiter
+decode: read bits, summing Fibonacci numbers, until "11" ends the codeword
+#+end_example
+
+* A worked example
+
+We show a few codewords (note each ends in \(11\)), verify a round trip, and compare codeword
+length against order-0 Exp-Golomb.
+
+#+name: fc-run
+#+begin_src c++ :eval no
+    std::cout << "=== Fibonacci codewords (Zeckendorf + '11' delimiter) ===\n";
+    for (std::uint64_t n : {1ull, 2ull, 3ull, 4ull, 10ull, 20ull, 50ull, 100ull})
+        std::cout << "  " << n << " -> " << fib_code(n) << "\n";
+
+    std::vector<std::uint64_t> vals = {1, 2, 3, 4, 7, 10, 50, 100, 1000, 100000};
+    auto bits = fibonacci_encode(vals);
+    std::cout << "\nround trip over sample values: "
+              << (fibonacci_decode(bits) == vals ? "ok" : "FAIL") << "\n";
+
+    std::cout << "\nvalue : Fibonacci bits : Exp-Golomb0 bits\n";
+    std::vector<double> xs, flen, elen;
+    for (std::uint64_t n : {1ull, 2ull, 4ull, 8ull, 16ull, 64ull, 256ull, 1024ull, 8192ull, 65536ull}) {
+        std::cout << "  " << n << "  :   " << fib_len(n) << "   :   " << eg_len(n) << "\n";
+        xs.push_back(n); flen.push_back(fib_len(n)); elen.push_back(eg_len(n));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(xs, flen, "Fibonacci", {37, 99, 235}, 2.0);
+    p.points(xs, flen, "", {37, 99, 235}, 4.0);
+    p.line(xs, elen, "Exp-Golomb0", {220, 38, 38}, 2.0);
+    p.legend({"Fibonacci", "Exp-Golomb0"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/fibonacci_coding.svg");
+    std::cout << "\nwrote build/org/fibonacci_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fibonacci_coding_analysis.cpp <<'CPP'
+<<fc-includes>>
+
+int main() {
+<<fc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fibonacci_coding_analysis.cpp -o build/org/fibonacci_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fibonacci_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fibonacci codewords (Zeckendorf + '11' delimiter) ===
+  1 -> 11
+  2 -> 011
+  3 -> 0011
+  4 -> 1011
+  10 -> 010011
+  20 -> 0101011
+  50 -> 001001011
+  100 -> 00101000011
+
+round trip over sample values: ok
+
+value : Fibonacci bits : Exp-Golomb0 bits
+  1  :   2   :   3
+  2  :   3   :   3
+  4  :   4   :   5
+  8  :   6   :   7
+  16  :   7   :   9
+  64  :   10   :   13
+  256  :   13   :   17
+  1024  :   16   :   21
+  8192  :   20   :   27
+  65536  :   24   :   33
+#+end_example
+
+Every codeword ends in the \(11\) delimiter, and no interior pair of \(1\)s appears, which is
+what makes the code self-synchronizing -- corruption is confined to at most the two codewords
+around an error. The length comparison is striking: Fibonacci coding is not only robust but
+actually *more compact* than order-0 Exp-Golomb here, asymptotically about \(1.44\log_2 n\) bits
+versus \(2\log_2 n\) (24 vs 33 bits at 65536). So on this range it wins on both fronts -- fewer
+bits *and* error confinement -- which is why it is attractive for storing sorted-integer
+differences and for transmission over noisy channels lacking heavier error correction.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/fibonacci_coding.svg]]
+
+* Character and relatives
+
+Fibonacci coding is prized less for compactness than for *robustness*: its \(11\) delimiter makes
+it self-synchronizing, so it appears where bitstreams face errors without a separate framing
+layer. It sits in the *universal code* family with *Elias* and *Exponential-Golomb* codes
+(companion report); higher-order Fibonacci codes (using higher-order Fibonacci-like sequences)
+trade a longer forbidden pattern for shorter codewords. For pure compression of a known
+distribution, arithmetic or Golomb coding (companion reports) is tighter.
+
+* Complexity
+
+\(O(\log n)\) time and bits per value -- proportional to the number of Fibonacci numbers below
+\(n\), which is \(\Theta(\log n)\).

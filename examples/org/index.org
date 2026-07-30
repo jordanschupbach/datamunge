@@ -985,6 +985,38 @@ We compute genome rearrangement distance with =datamunge='s C++ =algorithms::sor
 
 We assemble sequences with =datamunge='s C++ =algorithms::velvet_assemble=, and report it as a literate program: chopping reads into k-mers and finding an Eulerian path through the de Bruijn graph reconstructs the original sequence, as the compiled binary confirms across k.
 
+* Entropy Coding & Error Correction
+
+** [[./arithmetic_coding_analysis.html][Arithmetic Coding: Fractional Bits per Symbol]] ([[./arithmetic_coding_analysis.pdf][PDF]])
+/A literate C++ study of near-optimal entropy coding using datamunge/
+
+We compress with =datamunge='s C++ =algorithms::arithmetic_encode=, and report it as a literate program: narrowing an interval by each symbol's probability spends fractional bits per symbol and approaches the Shannon entropy, beating fixed-length and Huffman on skewed sources, as the compiled binary measures.
+
+** [[./golomb_coding_analysis.html][Golomb Coding: Optimal Codes for Geometric Distributions]] ([[./golomb_coding_analysis.pdf][PDF]])
+/A literate C++ study of parameterized entropy coding using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::golomb_encode=, and report it as a literate program: a unary quotient plus truncated-binary remainder, tuned by the parameter M, is optimal for geometric sources, as the compiled binary shows by finding the best M.
+
+** [[./rice_coding_analysis.html][Rice Coding: The Power-of-Two Golomb Code]] ([[./rice_coding_analysis.pdf][PDF]])
+/A literate C++ study of Rice coding using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::rice_encode=, and report it as a literate program: restricting Golomb's M to 2^k turns encoding into a shift and a mask, and the optimal k sits at the bottom of a U-shaped bits/symbol curve, as the compiled binary shows.
+
+** [[./exp_golomb_analysis.html][Exponential-Golomb Coding: Universal Codes for the Unbounded]] ([[./exp_golomb_analysis.pdf][PDF]])
+/A literate C++ study of Exp-Golomb codes using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::exp_golomb_encode=, and report it as a literate program: a logarithmic-length, self-delimiting code (the H.264/H.265 syntax code) whose leading zeros announce the value's bit width, as the compiled binary charts against a fixed-width field.
+
+** [[./fibonacci_coding_analysis.html][Fibonacci Coding: Self-Delimiting Codes from Zeckendorf's Theorem]] ([[./fibonacci_coding_analysis.pdf][PDF]])
+/A literate C++ study of Fibonacci codes using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::fibonacci_encode=, and report it as a literate program: Zeckendorf's non-consecutive Fibonacci representation plus a terminating "11" gives a self-synchronizing, error-resilient code that is also more compact than Exp-Golomb, as the compiled binary shows.
+
+** [[./berlekamp_massey_analysis.html][The Berlekamp-Massey Algorithm: Shortest LFSR for a Sequence]] ([[./berlekamp_massey_analysis.pdf][PDF]])
+/A literate C++ study of linear complexity using datamunge/
+
+We find shortest LFSRs with =datamunge='s C++ =algorithms::berlekamp_massey=, and report it as a literate program: scanning a sequence and correcting on each discrepancy recovers the minimal connection polynomial (the linear complexity), the decoder core of BCH/Reed-Solomon and a keystream randomness test, as the compiled binary's complexity profile shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

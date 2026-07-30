@@ -1,0 +1,166 @@
+#+title: Arithmetic Coding: Fractional Bits per Symbol
+#+subtitle: A literate C++ study of near-optimal entropy coding, using =datamunge='s =algorithms::arithmetic_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Arithmetic coding represents an entire message as a single number in \([0,1)\). Beginning with
+the full interval, each symbol narrows it to the sub-interval whose width equals the symbol's
+probability; the final interval identifies the message, and any number inside it -- written in
+as few bits as possible -- is the code. Unlike Huffman coding, which must spend a *whole* bit
+per symbol, arithmetic coding spends *fractional* bits and approaches the Shannon entropy
+arbitrarily closely, which matters most for skewed sources. This report runs the classic 32-bit
+integer coder with =datamunge='s =algorithms::arithmetic_encode= as a literate program: every
+number and figure comes from one compiled binary.
+#+end_abstract
+
+* Narrowing an interval
+
+Maintain a current interval \([\text{low},\text{high})\). To encode symbol \(s\) with
+cumulative frequencies, replace the interval by the slice corresponding to \(s\):
+\[
+  \text{high} \leftarrow \text{low} + \text{range}\cdot\frac{\text{cum}[s{+}1]}{\text{total}},\quad
+  \text{low}  \leftarrow \text{low} + \text{range}\cdot\frac{\text{cum}[s]}{\text{total}} .
+\]
+Each symbol multiplies the interval width by its probability, so after the message the width is
+the product of the symbol probabilities -- and \(-\log_2\) of that width is the Shannon
+information content. The integer implementation keeps \(\text{low}\) and \(\text{high}\) as
+32-bit values, emitting a bit whenever the interval settles into the lower or upper half
+(*renormalization*), with the *bit-plus-follow* trick handling the tricky straddling-the-middle
+case without carries.
+
+#+name: ar-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/arithmetic_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+encode(symbols, freq):
+    low=0, high=MAX
+    for each symbol s:
+        range = high - low + 1
+        high = low + range * cum[s+1] / total - 1
+        low  = low + range * cum[s]   / total
+        renormalize: emit bits as the interval settles into a half (bit-plus-follow)
+    flush the interval
+#+end_example
+
+* A worked example
+
+A skewed four-symbol source (frequencies 90:6:3:1). We encode messages of increasing length
+drawn from it and compare the achieved *bits per symbol* to the source's Shannon entropy and to
+the 2 bits/symbol a fixed-length code would spend.
+
+#+name: ar-run
+#+begin_src c++ :eval no
+    std::vector<std::uint32_t> freq = {90, 6, 3, 1};
+    double total = 100.0, entropy = 0.0;
+    for (auto f : freq) if (f) entropy -= (f / total) * std::log2(f / total);
+
+    std::cout << "=== Arithmetic coding of a skewed source (90:6:3:1) ===\n";
+    std::cout << "Shannon entropy: " << entropy << " bits/symbol (fixed-length would use 2)\n\n";
+
+    // Deterministic message from the distribution (a repeating pattern matching the frequencies).
+    std::vector<int> pattern;
+    for (int i = 0; i < 90; ++i) pattern.push_back(0);
+    for (int i = 0; i < 6; ++i)  pattern.push_back(1);
+    for (int i = 0; i < 3; ++i)  pattern.push_back(2);
+    pattern.push_back(3);
+
+    std::vector<double> lengths, bps;
+    std::cout << "message length : bits : bits/symbol\n";
+    for (int reps = 1; reps <= 10; ++reps) {
+        std::vector<int> msg;
+        for (int r = 0; r < reps; ++r) msg.insert(msg.end(), pattern.begin(), pattern.end());
+        auto bits = arithmetic_encode(msg, freq);
+        // Verify decodability.
+        bool ok = arithmetic_decode(bits, freq, (int)msg.size()) == msg;
+        double bp = (double)bits.size() / msg.size();
+        std::cout << "     " << msg.size() << "     :  " << bits.size() << "  :  " << bp
+                  << (ok ? "" : "  (DECODE ERROR)") << "\n";
+        lengths.push_back(msg.size()); bps.push_back(bp);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(lengths, bps, "arithmetic bits/symbol", {37, 99, 235}, 2.0);
+    p.points(lengths, bps, "", {37, 99, 235}, 4.0);
+    p.abline_h(entropy, {22, 163, 74}, 1.5);   // Shannon entropy
+    p.abline_h(2.0, {220, 38, 38}, 1.5);       // fixed-length cost
+    p.legend({"arithmetic", "entropy", "fixed-length"}, {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}});
+    p.save_svg("build/org/arithmetic_coding.svg");
+    std::cout << "\nwrote build/org/arithmetic_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/arithmetic_coding_analysis.cpp <<'CPP'
+<<ar-includes>>
+
+int main() {
+<<ar-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/arithmetic_coding_analysis.cpp -o build/org/arithmetic_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/arithmetic_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Arithmetic coding of a skewed source (90:6:3:1) ===
+Shannon entropy: 0.598542 bits/symbol (fixed-length would use 2)
+
+message length : bits : bits/symbol
+     100     :  61  :  0.61
+     200     :  121  :  0.605
+     300     :  181  :  0.603333
+     400     :  241  :  0.6025
+     500     :  301  :  0.602
+     600     :  360  :  0.6
+     700     :  420  :  0.6
+     800     :  480  :  0.6
+     900     :  539  :  0.598889
+     1000     :  600  :  0.6
+#+end_example
+
+The achieved bits per symbol drop toward the Shannon entropy (about 0.6 bits/symbol here) as the
+message grows and the fixed per-message flush overhead amortizes -- landing far below the 2
+bits/symbol a fixed-length code would spend on a four-symbol alphabet. A Huffman code, forced to
+assign the dominant symbol a whole bit, could not beat 1 bit/symbol on this source; arithmetic
+coding's fractional bits are exactly what capture the redundancy of a skewed distribution. Every
+encoded message decoded back to the original, confirming the coder is exact.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/arithmetic_coding.svg]]
+
+* Character and relatives
+
+Arithmetic coding is the entropy-coding backend of choice when maximum compression matters:
+JPEG/JPEG2000, H.264/H.265 (as *CABAC*), and modern compressors all use it or its variants. Its
+close cousin *range coding* (companion in spirit) is the same idea renormalized a byte at a time
+and was historically used to sidestep patents. *Asymmetric numeral systems* (ANS, used in Zstd
+and LZFSE) achieve arithmetic-coding compression at Huffman-like speed and now dominate new
+designs. Against *Huffman* coding, arithmetic coding wins on skewed and adaptive sources at the
+cost of more computation per symbol.
+
+* Complexity
+
+\(O(1)\) arithmetic operations per symbol (a couple of multiplies and the renormalization loop),
+so \(O(n)\) for an \(n\)-symbol message; the compressed size approaches \(nH\) bits for entropy
+\(H\).

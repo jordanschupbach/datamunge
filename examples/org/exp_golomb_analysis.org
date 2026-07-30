@@ -1,0 +1,155 @@
+#+title: Exponential-Golomb Coding: Universal Codes for the Unbounded
+#+subtitle: A literate C++ study of Exp-Golomb codes, using =datamunge='s =algorithms::exp_golomb_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Exponential-Golomb (Exp-Golomb) codes are *universal*, *self-delimiting* codes for non-negative
+integers whose length grows only *logarithmically* with the value -- so they encode an unbounded
+range without a fixed width and without a separate length field. The order-0 code writes \(n\)
+as \(m=\lfloor\log_2(n+1)\rfloor\) leading zeros followed by the \((m{+}1)\)-bit binary of
+\(n+1\). They are the syntax-element codes of H.264/H.265 video, where most values are small but
+occasionally large. This report runs it with =datamunge='s =algorithms::exp_golomb_encode= as a
+literate program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* A prefix that announces the length
+
+The leading zeros of an Exp-Golomb codeword *are* its length header: \(m\) zeros say "the value
+occupies \(m{+}1\) bits", and the terminating 1 (the top bit of \(n+1\)) begins that field. So
+the decoder counts zeros, then reads that many more bits -- no ambiguity, no delimiter. The code
+length is \(2\lfloor\log_2(n+1)\rfloor+1\) bits, logarithmic in \(n\): value 0 costs 1 bit, and
+each doubling of the value adds only 2 bits. The order-\(k\) variant appends \(k\) verbatim low
+bits, shifting the code to favour slightly larger typical values while keeping the logarithmic
+prefix.
+
+#+name: eg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline int eg_len(std::uint64_t n, int k) { std::vector<bool> b; auto v = std::vector<std::uint64_t>{n}; b = exp_golomb_encode(v, k); return (int)b.size(); }
+inline std::string eg_code(std::uint64_t n) { std::vector<bool> b; exp_golomb0_encode_value(n, b); std::string s; for (bool x : b) s += x ? '1' : '0'; return s; }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ExpGolomb0(n):
+    v = n + 1;  m = floor(log2 v)
+    emit m zeros                       # length header
+    emit v in (m+1) bits               # starts with the terminating 1
+decode: count leading zeros m; read m more bits; value = (that (m+1)-bit number) - 1
+#+end_example
+
+* A worked example
+
+We list the first few order-0 codewords, chart codeword length against value (its logarithmic
+growth) versus a fixed 16-bit field, and verify a round trip.
+
+#+name: eg-run
+#+begin_src c++ :eval no
+    std::cout << "=== Exponential-Golomb (order 0) codewords ===\n";
+    for (std::uint64_t n = 0; n <= 8; ++n) std::cout << "  " << n << " -> " << eg_code(n) << "\n";
+
+    std::vector<std::uint64_t> vals = {0, 1, 3, 7, 15, 100, 1000, 65535};
+    auto bits = exp_golomb_encode(vals, 0);
+    bool ok = exp_golomb_decode(bits, (int)vals.size(), 0) == vals;
+    std::cout << "\nround trip over {0..65535 sample}: " << (ok ? "ok" : "FAIL") << "\n";
+
+    std::cout << "\nvalue : EG0 bits : fixed 16-bit\n";
+    std::vector<double> xs, eglen, fixed;
+    for (std::uint64_t n : {0ull, 1ull, 3ull, 7ull, 15ull, 63ull, 255ull, 1023ull, 4095ull, 65535ull}) {
+        int L = eg_len(n, 0);
+        std::cout << "  " << n << "  :   " << L << "   :   16\n";
+        xs.push_back(std::log2((double)(n + 1))); eglen.push_back(L); fixed.push_back(16);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(xs, eglen, "Exp-Golomb bits", {37, 99, 235}, 2.0);
+    p.points(xs, eglen, "", {37, 99, 235}, 4.0);
+    p.line(xs, fixed, "fixed 16-bit", {220, 38, 38}, 1.5);
+    p.legend({"Exp-Golomb bits", "fixed 16-bit"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/exp_golomb.svg");
+    std::cout << "\nwrote build/org/exp_golomb.svg  (x = log2(n+1))\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/exp_golomb_analysis.cpp <<'CPP'
+<<eg-includes>>
+
+int main() {
+<<eg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/exp_golomb_analysis.cpp -o build/org/exp_golomb_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/exp_golomb_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Exponential-Golomb (order 0) codewords ===
+  0 -> 1
+  1 -> 010
+  2 -> 011
+  3 -> 00100
+  4 -> 00101
+  5 -> 00110
+  6 -> 00111
+  7 -> 0001000
+  8 -> 0001001
+
+round trip over {0..65535 sample}: ok
+
+value : EG0 bits : fixed 16-bit
+  0  :   1   :   16
+  1  :   3   :   16
+  3  :   5   :   16
+  7  :   7   :   16
+  15  :   9   :   16
+  63  :   13   :   16
+  255  :   17   :   16
+  1023  :   21   :   16
+  4095  :   25   :   16
+  65535  :   33   :   16
+#+end_example
+
+The codewords grow gracefully -- 0 costs 1 bit, and each power-of-two threshold adds just two
+bits -- so the length is linear in \(\log_2(n+1)\), the straight line in the figure. It stays below
+a fixed 16-bit field for all values up to about 180 (17 bits by 255) and only then costs more,
+which is exactly the right trade when small values dominate: the common case is very cheap, yet
+arbitrarily large values remain representable without any pre-agreed maximum, all while staying
+self-delimiting. The full round trip over values up to 65535 confirms the decoder recovers each
+one exactly.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/exp_golomb.svg]]
+
+* Character and relatives
+
+Exp-Golomb coding is the workhorse integer code of *video compression*: H.264 and H.265 encode
+macroblock types, motion-vector differences, and coefficient counts with it (the =ue(v)= and
+=se(v)= syntax). It belongs to the family of *universal codes* alongside *Elias gamma/delta* (of
+which order-0 Exp-Golomb is essentially Elias gamma) and *Fibonacci coding* (companion report),
+all achieving logarithmic length without a maximum. Where the source is known to be geometric,
+the parameterized *Golomb/Rice* codes (companion reports) fit it more tightly.
+
+* Complexity
+
+\(O(\log n)\) bits per value and \(O(\log n)\) time to encode or decode -- proportional to the
+codeword length.

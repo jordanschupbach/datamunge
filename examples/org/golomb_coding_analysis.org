@@ -1,0 +1,162 @@
+#+title: Golomb Coding: Optimal Codes for Geometric Distributions
+#+subtitle: A literate C++ study of parameterized entropy coding, using =datamunge='s =algorithms::golomb_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Golomb coding (Solomon Golomb, 1966) encodes non-negative integers with a tunable parameter
+\(M\). A value \(n\) splits into a quotient \(q=\lfloor n/M\rfloor\), written in *unary*, and a
+remainder \(r=n\bmod M\), written in *truncated binary*. Matched to a *geometric* source -- where
+small values dominate -- Golomb coding is *optimal*, which is why it encodes run lengths and
+prediction residuals in FLAC, JPEG-LS, and countless codecs. The parameter \(M\) tunes the code
+to the distribution's decay rate. This report runs it with =datamunge='s =algorithms::golomb_encode=
+as a literate program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Unary quotient, truncated-binary remainder
+
+The unary quotient spends \(q+1\) bits, so it is cheap for small \(q\) (small \(n/M\)) and
+expensive for large -- exactly the profile that suits a geometric source, where large values are
+rare. The remainder takes \(\lfloor\log_2 M\rfloor\) or \(\lceil\log_2 M\rceil\) bits via
+*truncated binary* (the shorter length for the first \(2^{\lceil\log_2 M\rceil}-M\) values), so
+no bits are wasted when \(M\) is not a power of two. The optimal \(M\) for a geometric
+distribution with mean \(\mu\) is about \(M\approx -1/\log_2 p\) where \(p\) is the success
+probability -- roughly proportional to the mean -- so a heavier tail wants a larger \(M\).
+
+#+name: gc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/golomb_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline int golomb_len(std::uint64_t n, int M) { std::vector<bool> b; golomb_encode_value(n, M, b); return (int)b.size(); }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Golomb(n, M):
+    q = n / M;  r = n mod M
+    emit q ones then a zero           # unary quotient
+    emit r in truncated binary        # b-1 or b bits, b = ceil(log2 M)
+#+end_example
+
+* A worked example
+
+We chart codeword length versus value for several \(M\), then measure which \(M\) compresses a
+geometric source best -- one where value \(n\) has probability \(\propto (1/2)^{n/8}\) (mean about
+8).
+
+#+name: gc-run
+#+begin_src c++ :eval no
+    std::cout << "=== Golomb codeword lengths (bits) ===\n";
+    std::cout << "value :  M=2  M=4  M=8  M=16\n";
+    std::vector<double> vals;
+    std::vector<std::vector<double>> lens(4);
+    std::vector<int> Ms = {2, 4, 8, 16};
+    for (int n = 0; n <= 24; n += 2) {
+        std::cout << "  " << n << "   :   ";
+        vals.push_back(n);
+        for (std::size_t m = 0; m < Ms.size(); ++m) {
+            int L = golomb_len(n, Ms[m]); lens[m].push_back(L);
+            std::cout << L << "    ";
+        }
+        std::cout << "\n";
+    }
+
+    // Expected bits/symbol on a geometric source with decay 1/2 every 8 values.
+    std::cout << "\nexpected bits/symbol on a geometric source (mean ~8):\n";
+    int    best = 0; double bestbits = 1e18;
+    for (std::size_t m = 0; m < Ms.size(); ++m) {
+        double bits = 0, norm = 0;
+        for (int n = 0; n < 200; ++n) { double pr = std::pow(0.5, n / 8.0); bits += pr * golomb_len(n, Ms[m]); norm += pr; }
+        bits /= norm;
+        std::cout << "  M=" << Ms[m] << ": " << bits << " bits/symbol\n";
+        if (bits < bestbits) { bestbits = bits; best = (int)m; }
+    }
+    std::cout << "best parameter here: M=" << Ms[best] << "\n";
+
+    RPlot p = RPlot::create();
+    RGB colors[] = {{37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {202, 138, 4}};
+    for (std::size_t m = 0; m < Ms.size(); ++m) p.line(vals, lens[m], "M=" + std::to_string(Ms[m]), colors[m], 2.0);
+    p.legend({"M=2", "M=4", "M=8", "M=16"}, {colors[0], colors[1], colors[2], colors[3]});
+    p.save_svg("build/org/golomb_coding.svg");
+    std::cout << "\nwrote build/org/golomb_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/golomb_coding_analysis.cpp <<'CPP'
+<<gc-includes>>
+
+int main() {
+<<gc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/golomb_coding_analysis.cpp -o build/org/golomb_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/golomb_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Golomb codeword lengths (bits) ===
+value :  M=2  M=4  M=8  M=16
+  0   :   2    3    4    5
+  2   :   3    3    4    5
+  4   :   4    4    4    5
+  6   :   5    4    4    5
+  8   :   6    5    5    5
+  10   :   7    5    5    5
+  12   :   8    6    5    5
+  14   :   9    6    5    5
+  16   :   10    7    6    6
+  18   :   11    7    6    6
+  20   :   12    8    6    6
+  22   :   13    8    6    6
+  24   :   14    9    7    6
+
+expected bits/symbol on a geometric source (mean ~8):
+  M=2: 7.28521 bits/symbol
+  M=4: 5.41421 bits/symbol
+  M=8: 5 bits/symbol
+  M=16: 5.33333 bits/symbol
+best parameter here: M=8
+#+end_example
+
+The length curves show the trade-off: a small \(M\) (e.g. 2) codes tiny values in very few bits
+but its unary quotient balloons for larger values, while a large \(M\) (16) is flatter -- cheap
+for the tail but wasteful on the common small values. On the geometric source with mean about 8,
+the parameter that matches the distribution's decay minimizes the expected code length, exactly
+as Golomb's optimality result predicts: choosing \(M\) is choosing where to put the unary/binary
+boundary to fit the data.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/golomb_coding.svg]]
+
+* Character and relatives
+
+Golomb coding is the entropy coder for geometric and near-geometric sources -- lossless audio
+residuals (FLAC, Shorten), image prediction errors (JPEG-LS via the LOCO-I model), and run
+lengths. Its power-of-two special case, *Rice coding* (companion report), drops the truncated-
+binary complication for a plain bit field and is common in hardware. *Exponential-Golomb*
+(companion report) removes the parameter entirely at some cost in optimality. When the source is
+not geometric, a general entropy coder (Huffman, arithmetic) is preferred.
+
+* Complexity
+
+\(O(1)\) per value to encode or decode (a division and a bit-length-bounded emit), and codeword
+length \(O(n/M + \log M)\) bits for value \(n\).
