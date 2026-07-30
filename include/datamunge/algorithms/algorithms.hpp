@@ -22,9 +22,12 @@
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
+#include <datamunge/algorithms/bakery.hpp>
+#include <datamunge/algorithms/bully_election.hpp>
 #include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
+#include <datamunge/algorithms/clock_synchronization.hpp>
 #include <datamunge/algorithms/check_digits.hpp>
 #include <datamunge/algorithms/checksums.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
@@ -86,6 +89,7 @@
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/lanczos_iteration.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
+#include <datamunge/algorithms/lamport_clock.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/library_sort.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
@@ -188,5 +192,6 @@
 #include <datamunge/algorithms/wang_landau.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>
 #include <datamunge/algorithms/ziggurat.hpp>
+#include <datamunge/algorithms/vector_clock.hpp>
 #include <datamunge/algorithms/zobrist_hashing.hpp>
 #include <datamunge/algorithms/xiaolin_wu_line.hpp>

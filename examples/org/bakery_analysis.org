@@ -1,0 +1,146 @@
+#+title: Lamport's Bakery Algorithm: Mutual Exclusion
+#+subtitle: A literate C++ study of software mutual exclusion, using =datamunge='s =algorithms::bakery_service_order=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Lamport's *bakery algorithm* (1974) coordinates threads' access to a critical section using
+only atomic reads and writes -- no test-and-set, no locks. Like a bakery counter, each
+thread wanting in draws a *number* one greater than the maximum it sees, then waits until it
+holds the smallest \((\text{number}, \text{id})\) pair (ties broken by id) before entering.
+That total order guarantees *mutual exclusion* and *first-come-first-served fairness* with
+no starvation. This report implements the ordering it induces in =datamunge='s C++
+=algorithms::bakery_service_order= as a literate program: every number and figure comes from
+one compiled binary. We compute the service order from a set of drawn tickets and check the
+mutual-exclusion invariant.
+#+end_abstract
+
+* Draw a number, wait your turn
+
+A thread entering the "doorway" reads all current numbers and draws
+\(1+\max_j(\text{number}_j)\). Because two threads can read the same max concurrently and
+draw equal numbers, ties are broken by thread id: the order is lexicographic on
+\((\text{number}, \text{id})\). A thread enters the critical section only when its pair is
+the smallest among all threads currently requesting, and resets its number to 0 on exit.
+Since \((\text{number}, \text{id})\) pairs are distinct and totally ordered, exactly one
+thread is ever "first" -- mutual exclusion -- and lower numbers (earlier arrivals) go first --
+fairness.
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bakery.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Bakery, per thread i:
+    # doorway
+    choosing[i] = true
+    number[i] = 1 + max(number[*])
+    choosing[i] = false
+    # wait
+    for each other thread j:
+        wait until not choosing[j]
+        wait until number[j]==0 or (number[j], j) >= (number[i], i)
+    # critical section ...
+    number[i] = 0   # exit
+#+end_example
+
+* A worked example
+
+Five threads draw tickets (thread 4 is not requesting). We compute the order they enter the
+critical section and verify mutual exclusion.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    std::vector<BakeryTicket> tickets = {{3, 0}, {1, 1}, {2, 2}, {1, 3}, {0, 4}};
+
+    std::cout << "=== Lamport's bakery: 5 threads ===\ndrawn tickets (number, id):\n";
+    for (const auto& t : tickets)
+        std::cout << "  thread " << t.id << ": number " << t.number << (t.number == 0 ? "  (not requesting)\n" : "\n");
+
+    auto order = bakery_service_order(tickets);
+    std::cout << "\ncritical-section service order (by (number, id)): ";
+    for (std::size_t id : order) std::cout << "T" << id << " ";
+    std::cout << "\nnext to enter: T" << bakery_next(tickets) << '\n';
+    std::cout << "mutual exclusion holds (distinct (number,id) keys): "
+              << (bakery_mutual_exclusion_holds(tickets) ? "yes" : "no") << '\n';
+
+    // Figure: ticket number per requesting thread (order of service follows number, then id).
+    std::vector<double>      nums;
+    std::vector<std::string> labels;
+    for (const auto& t : tickets)
+        if (t.number > 0) { nums.push_back(t.number); labels.push_back("T" + std::to_string(t.id)); }
+    RPlot p = RPlot::barplot(nums, labels, "ticket number", {37, 99, 235});
+    p.save_svg("build/org/bakery.svg");
+    std::cout << "\nwrote build/org/bakery.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bakery_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bakery_analysis.cpp -o build/org/bakery_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bakery_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lamport's bakery: 5 threads ===
+drawn tickets (number, id):
+  thread 0: number 3
+  thread 1: number 1
+  thread 2: number 2
+  thread 3: number 1
+  thread 4: number 0  (not requesting)
+
+critical-section service order (by (number, id)): T1 T3 T2 T0
+next to enter: T1
+mutual exclusion holds (distinct (number,id) keys): yes
+#+end_example
+
+The two threads that drew number 1 (T1 and T3) go first, ordered by id, then number 2 (T2),
+then number 3 (T0); the non-requesting thread T4 is skipped. Because every requesting
+thread's \((\text{number}, \text{id})\) key is distinct, exactly one is smallest at any time,
+so mutual exclusion holds -- and lower numbers (earlier arrivals) are served first, the
+fairness guarantee.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/bakery.svg]]
+
+* Significance and relatives
+
+The bakery algorithm is famous for needing *no atomic read-modify-write* -- only safe reads
+and writes -- so it works on hardware without special synchronization instructions, and it was
+one of the first provably-correct, starvation-free mutual-exclusion algorithms. Its cost is
+the unbounded growing numbers and \(O(n)\) work to enter. Dekker's and Peterson's algorithms
+solve the two-process case more simply; in practice modern systems use hardware atomics
+(compare-and-swap) and OS mutexes, but the bakery algorithm remains the canonical proof that
+mutual exclusion is achievable in pure software.
+
+* Complexity
+
+Entering the critical section is \(O(n)\) per thread (scan all numbers) for \(n\) threads;
+computing the service order here is \(O(n\log n)\) (a sort on the \((\text{number},
+\text{id})\) keys).
