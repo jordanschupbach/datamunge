@@ -3,6 +3,7 @@
 // Umbrella header for datamunge::algorithms -- general combinatorial, graph, and string algorithms.
 
 #include <datamunge/algorithms/aho_corasick.hpp>
+#include <datamunge/algorithms/automaton.hpp>
 #include <datamunge/algorithms/adaboost.hpp>
 #include <datamunge/algorithms/almeida_pineda.hpp>
 #include <datamunge/algorithms/alopex.hpp>
@@ -51,6 +52,7 @@
 #include <datamunge/algorithms/doomsday.hpp>
 #include <datamunge/algorithms/double_dabble.hpp>
 #include <datamunge/algorithms/dda_line.hpp>
+#include <datamunge/algorithms/dfa_minimization.hpp>
 #include <datamunge/algorithms/dithering.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
@@ -143,18 +145,21 @@
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
+#include <datamunge/algorithms/petrick.hpp>
 #include <datamunge/algorithms/phase_estimation.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
 #include <datamunge/algorithms/pollard_kangaroo.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
+#include <datamunge/algorithms/powerset_construction.hpp>
 #include <datamunge/algorithms/polynomial_gf.hpp>
 #include <datamunge/algorithms/primality.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
 #include <datamunge/algorithms/qft.hpp>
 #include <datamunge/algorithms/quadratic_sieve.hpp>
+#include <datamunge/algorithms/quine_mccluskey.hpp>
 #include <datamunge/algorithms/quantum_sim.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>

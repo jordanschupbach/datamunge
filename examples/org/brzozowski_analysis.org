@@ -1,0 +1,150 @@
+#+title: Brzozowski's Algorithm: Minimization by Double Reversal
+#+subtitle: A literate C++ study of reverse-and-determinize, using =datamunge='s =algorithms::brzozowski_minimize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Brzozowski's algorithm (1962) minimizes a DFA by a strikingly simple recipe: *reverse,
+determinize, reverse, determinize*. No partition refinement, no equivalence classes -- just two
+rounds of edge-reversal followed by the subset construction. The key fact is that determinizing
+a reversed automaton (whose reachable states are all distinguishable) yields a *minimal* DFA
+for the reversed language; doing it twice minimizes the original. It can blow up exponentially
+in the middle, but its brevity makes it a favourite. This report runs it with =datamunge='s
+=algorithms::brzozowski_minimize= as a literate program: every number and figure comes from one
+compiled binary. We minimize a six-state DFA and watch the state count through each stage.
+#+end_abstract
+
+* Why reversing twice minimizes
+
+Reversing a DFA (flip every edge, swap start and accepting roles) gives an NFA for the reversed
+language. Determinizing it by the subset construction, keeping only *reachable* subsets,
+produces a DFA in which every state is reachable *and* distinguishable -- so it is already
+minimal for the reversed language (this is Brzozowski's theorem). Applying the same
+reverse-then-determinize to *that* machine minimizes the original language. The whole algorithm
+is therefore two calls to a reversal and two to the subset construction:
+\[
+  \min(A) = \mathcal{D}\big(\mathrm{rev}(\mathcal{D}(\mathrm{rev}(A)))\big),
+\]
+where \(\mathcal D\) is determinize (subset construction) and \(\mathrm{rev}\) is reversal.
+
+#+name: bz-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dfa_minimization.hpp>
+#include <datamunge/algorithms/powerset_construction.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
+inline DFA example_dfa() {
+    DFA d; d.num_symbols = 2; d.num_states = 6; d.start = 0;
+    d.delta  = {{1, 2}, {0, 3}, {4, 5}, {4, 5}, {4, 5}, {5, 5}};
+    d.accept = {0, 0, 1, 1, 1, 0};
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Brzozowski(A):
+    B = determinize(reverse(A))     # minimal DFA for reverse(language of A)
+    return determinize(reverse(B))  # minimal DFA for language of A
+    # reverse: flip edges, accepting states become starts, old start becomes the accept
+    # determinize: subset construction, keeping reachable subsets
+#+end_example
+
+* A worked example
+
+We minimize the six-state DFA and record the state count after each of the two
+reverse-and-determinize stages.
+
+#+name: bz-run
+#+begin_src c++ :eval no
+    DFA d = example_dfa();
+
+    DFA stage1 = powerset_construction(reverse_dfa(d), true);        // determinize(reverse(A))
+    DFA stage2 = powerset_construction(reverse_dfa(stage1), true);   // determinize(reverse(stage1))
+    DFA m      = brzozowski_minimize(d);
+
+    std::cout << "=== Brzozowski minimization of a 6-state DFA ===\n";
+    std::cout << "stage 0 (original):                 " << d.num_states << " states\n";
+    std::cout << "stage 1 (reverse + determinize):    " << stage1.num_states << " states\n";
+    std::cout << "stage 2 (reverse + determinize):    " << stage2.num_states << " states  (minimal)\n";
+    std::cout << "library brzozowski_minimize:        " << m.num_states << " states\n";
+
+    bool ok = true;
+    for (int len = 0; len <= 6 && ok; ++len)
+        for (int mask = 0; mask < (1 << len); ++mask) {
+            std::vector<int> w; for (int i = len - 1; i >= 0; --i) w.push_back((mask >> i) & 1);
+            if (dfa_accepts(d, w) != dfa_accepts(m, w)) ok = false;
+        }
+    std::cout << "same language (strings up to length 6)? " << (ok ? "yes" : "NO") << "\n";
+
+    std::vector<double>      heights = {(double)d.num_states, (double)stage1.num_states, (double)stage2.num_states};
+    std::vector<std::string> labels  = {"original", "rev+det #1", "rev+det #2"};
+    RPlot p = RPlot::barplot(heights, labels, "DFA states", {37, 99, 235});
+    p.save_svg("build/org/brzozowski.svg");
+    std::cout << "\nwrote build/org/brzozowski.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/brzozowski_analysis.cpp <<'CPP'
+<<bz-includes>>
+
+int main() {
+<<bz-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/brzozowski_analysis.cpp -o build/org/brzozowski_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/brzozowski_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Brzozowski minimization of a 6-state DFA ===
+stage 0 (original):                 6 states
+stage 1 (reverse + determinize):    3 states
+stage 2 (reverse + determinize):    3 states  (minimal)
+library brzozowski_minimize:        3 states
+same language (strings up to length 6)? yes
+#+end_example
+
+Two rounds of reverse-and-determinize take the six-state DFA to the three-state minimal machine,
+the same result Moore and Hopcroft reach by partition refinement -- but with no equivalence
+computation at all, just reversals and subset constructions. Here the very first
+reverse-and-determinize already reaches three states (the reversed language happens to have the
+same minimal size), and the second round confirms it -- an illustration of Brzozowski's theorem
+that determinizing a reversed automaton yields a minimal machine directly. In the worst case,
+though, the intermediate DFA can be exponentially larger than either end, the price of the
+method's simplicity.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/brzozowski.svg]]
+
+* Character and relatives
+
+Brzozowski's algorithm is prized for its elegance and for working directly on *NFAs* too
+(determinize the reverse of an NFA), which the refinement-based minimizers cannot do without a
+separate determinization. Its Achilles' heel is the possible exponential intermediate blow-up,
+so for large DFAs *Hopcroft's* \(O(kn\log n)\) algorithm (companion report) is preferred, with
+*Moore's* simpler refinement (companion report) for small ones. Remarkably, despite its
+exponential worst case, Brzozowski's algorithm is often competitive in practice, especially on
+automata derived from regular expressions.
+
+* Complexity
+
+Two subset constructions, each \(O(2^n)\) worst case -- exponential in the intermediate -- but
+frequently far better in practice; both outputs are guaranteed minimal by Brzozowski's theorem.

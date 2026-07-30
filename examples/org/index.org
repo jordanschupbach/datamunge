@@ -857,6 +857,38 @@ We transform quantum states with =datamunge='s C++ =algorithms::qft=, and report
 
 We estimate a unitary's eigenphase with =datamunge='s C++ =algorithms::phase_estimation=, and report it as a literate program: phase kickback onto a counting register followed by an inverse QFT reads out the phase to t bits -- exactly for dyadic phases, with a sharp peak otherwise -- the subroutine behind Shor's algorithm, as the compiled binary shows.
 
+* Boolean Logic & Automata
+
+** [[./quine_mccluskey_analysis.html][The Quine-McCluskey Algorithm: Boolean Minimization by Table]] ([[./quine_mccluskey_analysis.pdf][PDF]])
+/A literate C++ study of prime-implicant minimization using datamunge/
+
+We minimize Boolean functions with =datamunge='s C++ =algorithms::quine_mccluskey=, and report it as a literate program: iterated single-bit merging finds prime implicants, then essentials plus Petrick's method give a minimum sum-of-products, as the compiled binary shows on a classic four-variable example.
+
+** [[./petrick_analysis.html][Petrick's Method: Minimum Prime-Implicant Covers]] ([[./petrick_analysis.pdf][PDF]])
+/A literate C++ study of exact Boolean covering using datamunge/
+
+We solve the covering step with =datamunge='s C++ =algorithms::petrick=, and report it as a literate program: expanding a product-of-sums over prime implicants (with absorption) enumerates the irredundant covers and finds the minimum ones, handling cyclic charts with no essentials, as the compiled binary shows.
+
+** [[./powerset_construction_analysis.html][The Powerset Construction: From NFA to DFA]] ([[./powerset_construction_analysis.pdf][PDF]])
+/A literate C++ study of subset construction using datamunge/
+
+We determinize automata with =datamunge='s C++ =algorithms::powerset_construction=, and report it as a literate program: each DFA state is a subset of NFA states, preserving the language while sometimes blowing up to 2^n states, as the compiled binary demonstrates on an explicit exponential family.
+
+** [[./moore_analysis.html][Moore's Algorithm: DFA Minimization by Partition Refinement]] ([[./moore_analysis.pdf][PDF]])
+/A literate C++ study of iterative refinement using datamunge/
+
+We minimize DFAs with =datamunge='s C++ =algorithms::moore_minimize=, and report it as a literate program: starting from accepting-vs-non-accepting and splitting blocks whose members behave differently converges to the unique minimal DFA, traced round by round, as the compiled binary shows.
+
+** [[./hopcroft_analysis.html][Hopcroft's Algorithm: Near-Optimal DFA Minimization]] ([[./hopcroft_analysis.pdf][PDF]])
+/A literate C++ study of worklist refinement using datamunge/
+
+We minimize DFAs with =datamunge='s C++ =algorithms::hopcroft_minimize=, and report it as a literate program: a worklist of splitters that processes only the smaller half of each split achieves O(kn log n), pulling away from Moore's O(kn^2) at scale, as the compiled binary charts.
+
+** [[./brzozowski_analysis.html][Brzozowski's Algorithm: Minimization by Double Reversal]] ([[./brzozowski_analysis.pdf][PDF]])
+/A literate C++ study of reverse-and-determinize using datamunge/
+
+We minimize DFAs with =datamunge='s C++ =algorithms::brzozowski_minimize=, and report it as a literate program: reverse-determinize-reverse-determinize reaches the unique minimal DFA with no equivalence computation, tracking the state count through each stage, as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])
