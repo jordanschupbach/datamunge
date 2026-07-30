@@ -1,0 +1,155 @@
+#+title: The Verhoeff Algorithm: A Check Digit That Catches All Transpositions
+#+subtitle: A literate C++ study of the dihedral-group check digit, using =datamunge='s =algorithms::verhoeff_validate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Luhn's mod-10 check has a blind spot: it misses the 09<->90 transposition. Verhoeff
+(1969) proved that *no* check-digit scheme based on ordinary modular arithmetic can
+catch all single-digit errors *and* all adjacent transpositions -- and then built one
+that does, by replacing addition with the non-commutative multiplication of the
+*dihedral group* \(D_5\) plus a position-dependent permutation. This report implements
+it in =datamunge='s C++ =algorithms::verhoeff_check_digit= / =verhoeff_validate= as a
+literate program: every number and figure comes from one compiled binary. We verify a
+reference value and then re-run the exact error-coverage experiment from the Luhn
+report -- confirming Verhoeff catches every single-digit error and every adjacent
+transposition, including the ones Luhn misses.
+#+end_abstract
+
+* Dihedral-group arithmetic
+
+Verhoeff works in \(D_5\), the symmetry group of a pentagon (10 elements, matching the
+10 digits). Its multiplication is *non-commutative*, which is the crucial property:
+because \(a\cdot b \ne b\cdot a\) in general, swapping two digits changes the product,
+so transpositions are caught. The algorithm folds three fixed 10-element tables --
+the group multiplication \(d\), a permutation \(p\) applied by position, and the
+inverse \(\mathrm{inv}\) -- into a single running product over the digits (least
+significant first). The check digit is the inverse that drives the running product to
+the identity; validation checks that a full number's product is the identity.
+
+#+name: verhoeff-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/check_digits.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Verhoeff-check-digit(payload):        # tables d (D5 mult), p (permutation), inv
+    c = 0
+    for i, digit in enumerate(reverse(payload)):
+        c = d[c][ p[(i+1) mod 8][digit] ]
+    return inv[c]
+
+Verhoeff-valid(full):
+    c = 0
+    for i, digit in enumerate(reverse(full)):
+        c = d[c][ p[i mod 8][digit] ]
+    return c == 0
+#+end_example
+
+* A worked example: full transposition coverage
+
+We verify the reference check digit, then take the same number used in the Luhn report
+and enumerate every single-digit substitution and every adjacent transposition,
+counting Verhoeff's detections for a direct comparison.
+
+#+name: verhoeff-run
+#+begin_src c++ :eval no
+    std::cout << "=== Verhoeff algorithm ===\n";
+    std::cout << "verhoeff_check_digit(\"236\") = " << verhoeff_check_digit("236") << "  (so \"2363\" is valid: "
+              << (verhoeff_validate("2363") ? "yes" : "no") << ")\n\n";
+
+    // Same base as the Luhn report (which contains 0<->9 adjacencies).
+    std::string base = "1230904560907";
+    std::string num  = base + std::to_string(verhoeff_check_digit(base));
+    std::cout << "test number " << num << " valid: " << (verhoeff_validate(num) ? "yes" : "no") << "\n\n";
+
+    std::size_t sub_total = 0, sub_caught = 0;
+    for (std::size_t i = 0; i < num.size(); ++i)
+        for (char c = '0'; c <= '9'; ++c) {
+            if (c == num[i]) continue;
+            std::string e = num; e[i] = c;
+            ++sub_total;
+            if (!verhoeff_validate(e)) ++sub_caught;
+        }
+    std::size_t tr_total = 0, tr_caught = 0;
+    for (std::size_t i = 0; i + 1 < num.size(); ++i) {
+        if (num[i] == num[i + 1]) continue;
+        std::string e = num; std::swap(e[i], e[i + 1]);
+        ++tr_total;
+        if (!verhoeff_validate(e)) ++tr_caught;
+    }
+    std::cout << "single-digit errors caught:     " << sub_caught << " / " << sub_total << '\n';
+    std::cout << "adjacent transpositions caught: " << tr_caught << " / " << tr_total
+              << "  (including 09<->90, which Luhn misses)\n";
+
+    RPlot p = RPlot::barplot(
+        {100.0 * sub_caught / sub_total, 100.0 * tr_caught / tr_total},
+        {"single-digit", "transposition"}, "% errors detected", {22, 163, 74});
+    p.save_svg("build/org/verhoeff_detection.svg");
+    std::cout << "\nwrote build/org/verhoeff_detection.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/verhoeff_analysis.cpp <<'CPP'
+<<verhoeff-includes>>
+
+int main() {
+<<verhoeff-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/verhoeff_analysis.cpp -o build/org/verhoeff_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/verhoeff_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Verhoeff algorithm ===
+verhoeff_check_digit("236") = 3  (so "2363" is valid: yes)
+
+test number 12309045609076 valid: yes
+
+single-digit errors caught:     126 / 126
+adjacent transpositions caught: 13 / 13  (including 09<->90, which Luhn misses)
+#+end_example
+
+Verhoeff catches *100%* of both error classes: every single-digit substitution and
+every adjacent transposition -- including the 09<->90 swaps that slipped past Luhn on
+this very number. That completeness is exactly what the non-commutative dihedral-group
+product buys, at the cost of three lookup tables instead of a running sum.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/verhoeff_detection.svg]]
+
+* Verhoeff versus Luhn, and relatives
+
+Verhoeff dominates Luhn on error coverage (all single-digit errors and all adjacent
+transpositions, plus most twin and phonetic errors) at the price of table lookups and
+less intuitive by-hand computation. The *Damm* algorithm (2004) achieves the same
+guarantees with a single quasigroup table and is even simpler. Both answer Verhoeff's
+own impossibility result -- that a pure mod-10 sum cannot do it -- by leaving commutative
+arithmetic behind. Verhoeff-style checks appear where transposition robustness matters,
+such as some national identification numbers.
+
+* Complexity
+
+\(O(n)\) over the digits with three constant-size table lookups per digit and \(O(1)\)
+state -- the same linear cost as Luhn, with strictly better error coverage.

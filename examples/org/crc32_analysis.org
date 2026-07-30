@@ -1,0 +1,154 @@
+#+title: CRC-32: Cyclic Redundancy Check
+#+subtitle: A literate C++ study of polynomial checksums, using =datamunge='s =algorithms::crc32=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A cyclic redundancy check treats a message as the coefficients of a polynomial over
+\(\mathrm{GF}(2)\) and returns its remainder modulo a fixed *generator polynomial*.
+That algebra gives CRCs their power: they detect *all* single- and double-bit errors,
+all odd numbers of bit errors, and *all burst errors* shorter than the check width --
+which is why CRC-32 guards Ethernet frames, ZIP archives, PNG chunks, and disk
+sectors. This report implements the reflected IEEE 802.3 CRC-32 in =datamunge='s C++
+=algorithms::crc32= as a literate program: every number and figure comes from one
+compiled binary. We verify the standard =0xCBF43926= check value, confirm every
+single-bit corruption is caught, and measure the avalanche -- how thoroughly one
+flipped input bit scrambles the 32-bit result.
+#+end_abstract
+
+* Polynomial remainders over GF(2)
+
+Interpret the message bits as a polynomial \(M(x)\); the CRC is the remainder of
+\(M(x)\cdot x^{32}\) divided by the 33-bit generator \(G(x)\) in \(\mathrm{GF}(2)\)
+arithmetic (XOR for add/subtract, no carries). The bit-at-a-time implementation shifts
+the register and conditionally XORs the (reflected) polynomial constant
+\(\mathtt{0xEDB88320}\); a table-driven version processes a byte at a time. Because a
+burst error corresponds to adding a low-degree polynomial, and \(G(x)\) is chosen so no
+such polynomial (up to the check width) divides evenly, CRCs catch every short burst.
+
+#+name: crc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/checksums.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+CRC32(bytes):
+    crc = 0xFFFFFFFF
+    for each byte:
+        crc ^= byte
+        repeat 8 times:
+            if crc & 1: crc = (crc >> 1) ^ 0xEDB88320
+            else:       crc = crc >> 1
+    return crc ^ 0xFFFFFFFF
+#+end_example
+
+* A worked example
+
+We check the canonical value for "123456789", then take a message, flip each of its
+bits in turn, and (a) confirm the CRC always changes -- every single-bit error is
+detected -- and (b) count how many of the 32 output bits differ, the avalanche.
+
+#+name: crc-run
+#+begin_src c++ :eval no
+    std::cout << std::hex << std::uppercase;
+    std::cout << "=== CRC-32 ===\n";
+    std::cout << "crc32(\"123456789\") = 0x" << crc32("123456789") << "  (reference 0xCBF43926)\n";
+    std::cout << std::dec << std::nouppercase;
+
+    std::string msg  = "The quick brown fox";
+    std::uint32_t c0 = crc32(msg);
+    std::size_t   detected = 0;
+    std::vector<double> flip_idx, avalanche;
+    const std::size_t nbits = msg.size() * 8;
+    for (std::size_t bit = 0; bit < nbits; ++bit) {
+        std::string m = msg;
+        m[bit / 8] ^= static_cast<char>(1u << (bit % 8));
+        std::uint32_t c = crc32(m);
+        if (c != c0) ++detected;
+        // Popcount of the CRC difference = number of output bits changed.
+        std::uint32_t x = c ^ c0;
+        int           bits = 0;
+        while (x) { bits += x & 1u; x >>= 1; }
+        flip_idx.push_back(static_cast<double>(bit));
+        avalanche.push_back(bits);
+    }
+    double mean_av = 0.0;
+    for (double a : avalanche) mean_av += a;
+    mean_av /= avalanche.size();
+
+    std::cout << "message: \"" << msg << "\"  crc = 0x" << std::hex << c0 << std::dec << '\n';
+    std::cout << "single-bit corruptions detected: " << detected << " / " << nbits << '\n';
+    std::cout << "mean output bits changed per input-bit flip (avalanche): " << mean_av << " / 32\n";
+
+    RPlot p = RPlot::create();
+    p.points(flip_idx, avalanche, "bits changed", {37, 99, 235}, 3.0);
+    p.abline_h(16.0, {220, 38, 38}, 1.5);
+    p.legend({"CRC bits changed", "ideal avalanche (16)"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/crc32_avalanche.svg");
+    std::cout << "\nwrote build/org/crc32_avalanche.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/crc32_analysis.cpp <<'CPP'
+<<crc-includes>>
+
+int main() {
+<<crc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/crc32_analysis.cpp -o build/org/crc32_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/crc32_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== CRC-32 ===
+crc32("123456789") = 0xCBF43926  (reference 0xCBF43926)
+message: "The quick brown fox"  crc = 0xb74574de
+single-bit corruptions detected: 152 / 152
+mean output bits changed per input-bit flip (avalanche): 15.4605 / 32
+#+end_example
+
+The implementation reproduces the standard =0xCBF43926= check value, and *every*
+single-bit corruption of the message changes the CRC -- all are detected. The
+avalanche scatter hovers around 16 of 32 bits changed per flipped input bit, close to
+the ideal half: one flipped bit propagates through the polynomial division to scramble
+roughly half the output, which is what makes accidental collisions vanishingly
+unlikely.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/crc32_avalanche.svg]]
+
+* Strengths and non-uses
+
+CRCs are the gold standard for *accidental* error detection: guaranteed to catch all
+bursts up to the register width and all low-weight error patterns, cheap in hardware
+(a shift register with XOR taps). They are *not* cryptographic -- an adversary can
+easily forge data with a chosen CRC, so authentication needs a MAC (HMAC) instead.
+Different applications pick different generator polynomials and widths (CRC-8, CRC-16,
+CRC-32C); the table-driven byte-at-a-time form is the fast production variant of the
+bit loop shown here.
+
+* Complexity
+
+\(O(8n)\) for the bit-at-a-time loop over \(n\) bytes (or \(O(n)\) table-driven), with
+\(O(1)\) state (a 32-bit register) plus a 256-entry table in the fast variant.

@@ -1,0 +1,149 @@
+#+title: The Hamming(7,4) Code: Single-Error Correction
+#+subtitle: A literate C++ study of Hamming's error-correcting code, using =datamunge='s =algorithms::hamming74_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Detecting an error is easy; *correcting* it without retransmission is the harder,
+more valuable trick, and *Hamming codes* (1950) were the first to do it. The
+Hamming(7,4) code adds three parity bits to four data bits, placed so that on
+decoding the three recomputed parities form a 3-bit *syndrome* whose value is exactly
+the position of the flipped bit -- flip it back and the message is restored. This
+report implements it in =datamunge='s C++ =algorithms::hamming74_encode= /
+=hamming74_decode= as a literate program: every number and figure comes from one
+compiled binary. We encode a nibble, corrupt each of its seven transmitted bits in
+turn, and watch the syndrome pinpoint and correct every one.
+#+end_abstract
+
+* Parity placement and the syndrome
+
+The seven positions are numbered 1-7; parity bits sit at the powers of two (1, 2, 4)
+and data bits fill the rest (3, 5, 6, 7). Parity \(p_1\) checks positions
+\(\{1,3,5,7\}\), \(p_2\) checks \(\{2,3,6,7\}\), \(p_4\) checks \(\{4,5,6,7\}\) -- exactly
+the positions whose binary index has the corresponding bit set. On decode, recomputing
+the three parities gives bits \(s_1, s_2, s_4\); the *syndrome* \(s = s_1 + 2s_2 +
+4s_4\) is 0 if no single error occurred, and otherwise is the *binary position* of the
+flipped bit, because a bit at position \(k\) participates in exactly the parities whose
+index-bits appear in \(k\). Correcting is then a single flip. The code has minimum
+distance 3: it corrects any 1 error (or detects any 2).
+
+#+name: hamming-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hamming_code.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Encode(d1,d2,d3,d4):
+    p1 = d1^d2^d4;  p2 = d1^d3^d4;  p4 = d2^d3^d4
+    code = [p1, p2, d1, p4, d2, d3, d4]        # positions 1..7
+
+Decode(code):
+    s1 = parity of {1,3,5,7};  s2 = parity of {2,3,6,7};  s4 = parity of {4,5,6,7}
+    syndrome = s1 + 2*s2 + 4*s4                 # = position of the flipped bit (0 = none)
+    if syndrome != 0: flip code[syndrome]
+    return data bits, syndrome
+#+end_example
+
+* A worked example
+
+We encode the nibble \(1011\), then flip each of the seven transmitted bits one at a
+time and decode, recording the syndrome and whether the original data was recovered.
+
+#+name: hamming-run
+#+begin_src c++ :eval no
+    std::array<int, 4> data = {1, 0, 1, 1};
+    auto               code = hamming74_encode(data);
+
+    std::cout << "=== Hamming(7,4) encoding of 1011 ===\ncodeword: ";
+    for (int b : code) std::cout << b;
+    std::cout << "  (positions 1..7: p1 p2 d1 p4 d2 d3 d4)\n\n";
+
+    std::cout << "flip pos  syndrome  recovered data  ok\n";
+    std::vector<double> pos_x, syn_y;
+    for (int pos = 0; pos < 7; ++pos) {
+        auto corrupted = code;
+        corrupted[pos] ^= 1;
+        auto dec = hamming74_decode(corrupted);
+        std::cout << "    " << (pos + 1) << "        " << dec.error_position << "        ";
+        for (int b : dec.data) std::cout << b;
+        std::cout << "         " << (dec.data == data ? "yes" : "NO") << '\n';
+        pos_x.push_back(pos + 1);
+        syn_y.push_back(dec.error_position);
+    }
+
+    RPlot p = RPlot::create();
+    p.points(pos_x, syn_y, "syndrome", {220, 38, 38}, 7.0);
+    p.line(pos_x, syn_y, "", {148, 163, 184}, 1.5);
+    p.save_svg("build/org/hamming_syndrome.svg");
+    std::cout << "\nwrote build/org/hamming_syndrome.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hamming_code_analysis.cpp <<'CPP'
+<<hamming-includes>>
+
+int main() {
+<<hamming-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hamming_code_analysis.cpp -o build/org/hamming_code_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hamming_code_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Hamming(7,4) encoding of 1011 ===
+codeword: 0110011  (positions 1..7: p1 p2 d1 p4 d2 d3 d4)
+
+flip pos  syndrome  recovered data  ok
+    1        1        1011         yes
+    2        2        1011         yes
+    3        3        1011         yes
+    4        4        1011         yes
+    5        5        1011         yes
+    6        6        1011         yes
+    7        7        1011         yes
+#+end_example
+
+Every single-bit corruption is detected *and corrected*: the syndrome equals the
+position of the flipped bit (the plot is the identity line \(1,2,\dots,7\)), the code
+flips that bit back, and the original nibble \(1011\) is recovered in all seven cases.
+This is the essence of forward error correction -- fix the error in place, no
+retransmission -- from just three redundant bits.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hamming_syndrome.svg]]
+
+* Reach and relatives
+
+Adding an overall parity bit turns Hamming(7,4) into the (8,4) *SECDED* code --
+Single Error Correct, Double Error Detect -- the scheme that protects computer RAM
+(ECC memory) and caches. General Hamming codes exist for any \(2^m-1\) length; more
+powerful families (BCH, Reed-Solomon, LDPC, turbo codes) correct many errors and
+underpin storage, deep-space links, and modern wireless. All descend from Hamming's
+insight that placing parities at power-of-two positions makes the syndrome *point at*
+the error.
+
+* Complexity
+
+Encoding and decoding are \(O(1)\) for the fixed (7,4) block -- a handful of XORs -- and
+scale linearly in the number of blocks for a stream. Storage overhead is 3 parity bits
+per 4 data bits (a rate of 4/7).
