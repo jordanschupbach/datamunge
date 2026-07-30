@@ -1,0 +1,137 @@
+#+title: The Berkeley Algorithm: Internal Clock Synchronization
+#+subtitle: A literate C++ study of averaging-based clock sync, using =datamunge='s =algorithms::berkeley_sync=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Unlike Cristian's algorithm, the *Berkeley algorithm* (Gusella & Zatti 1989) needs *no
+authoritative time server*: a master polls every node's clock, computes the *average*
+(discarding outliers), and sends each node the *adjustment* needed to reach it. The group
+ends up mutually consistent even if none of them is externally accurate. This report
+implements it in =datamunge='s C++ =algorithms::berkeley_sync= as a literate program: every
+number and figure comes from one compiled binary. We synchronize a set of drifting clocks
+and show the per-node adjustments, including rejection of a faulty outlier.
+#+end_abstract
+
+* Poll, average, adjust
+
+The master periodically asks each node for its clock reading (correcting for round-trip
+delay). It averages the readings -- optionally *discarding outliers* far from the group so a
+single broken clock cannot skew everyone -- and computes each node's *adjustment* =
+average - reading. Nodes then step or slew their clocks by that amount. Because the target
+is the group average rather than an external reference, Berkeley provides *internal*
+consistency: all nodes agree, which is often what a cluster actually needs.
+
+#+name: bk2-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/clock_synchronization.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Berkeley(master):
+    poll each node's clock (adjusting for message delay)
+    drop readings that differ from the master's by more than a margin (outliers)
+    avg = mean of the surviving readings
+    for each node: adjustment = avg - node_clock;  tell the node to apply it
+#+end_example
+
+* A worked example
+
+Four nodes have drifted to different times; one (node 3) is a wild outlier. We synchronize
+without outlier rejection, then with it, to show the difference.
+
+#+name: bk2-run
+#+begin_src c++ :eval no
+    std::vector<double> clocks = {100.0, 104.0, 97.0, 130.0};  // node 3 is far off
+
+    std::cout << "=== Berkeley clock synchronization ===\n";
+    std::cout << "node clocks: ";
+    for (double c : clocks) std::cout << c << ' ';
+    std::cout << '\n';
+
+    auto naive = berkeley_sync(clocks, 0.0, 0);  // no outlier rejection
+    std::cout << "\nwithout outlier rejection:\n";
+    std::cout << "  synchronized time = " << naive.synchronized_time << " (skewed by node 3)\n";
+
+    auto robust = berkeley_sync(clocks, 15.0, 0);  // reject clocks > 15 from master
+    std::cout << "\nwith outlier rejection (margin 15):\n";
+    std::cout << "  synchronized time = " << robust.synchronized_time << '\n';
+    std::cout << "  adjustments: ";
+    for (double a : robust.adjustments) std::cout << a << ' ';
+    std::cout << "\n  (node 3 is told to jump back the most)\n";
+
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < clocks.size(); ++i) labels.push_back("node " + std::to_string(i));
+    RPlot p = RPlot::barplot(robust.adjustments, labels, "adjustment (ms)", {37, 99, 235});
+    p.abline_h(0.0, {120, 120, 120}, 1.0);
+    p.save_svg("build/org/berkeley.svg");
+    std::cout << "\nwrote build/org/berkeley.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/berkeley_analysis.cpp <<'CPP'
+<<bk2-includes>>
+
+int main() {
+<<bk2-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/berkeley_analysis.cpp -o build/org/berkeley_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/berkeley_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Berkeley clock synchronization ===
+node clocks: 100 104 97 130
+
+without outlier rejection:
+  synchronized time = 107.75 (skewed by node 3)
+
+with outlier rejection (margin 15):
+  synchronized time = 100.333
+  adjustments: 0.333333 -3.66667 3.33333 -29.6667
+  (node 3 is told to jump back the most)
+#+end_example
+
+Without outlier rejection the far-off node 3 drags the average up, mis-synchronizing everyone;
+with a rejection margin it is excluded, the average settles on the three healthy clocks, and
+each node's adjustment brings it to that consensus (node 3 gets the largest correction). This
+is the Berkeley design point: internal agreement that is robust to a faulty clock, with no
+external reference required.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/berkeley.svg]]
+
+* Character and relatives
+
+Berkeley is *internal* synchronization -- the cluster agrees with itself -- whereas Cristian's
+algorithm and NTP are *external* (agree with a reference). Berkeley's averaging with outlier
+rejection is a simple form of fault tolerance; more rigorous schemes use fault-tolerant
+averaging (e.g. Marzullo's / the intersection algorithm, which NTP uses to combine multiple
+sources) to bound the effect of Byzantine clocks. Where absolute accuracy matters (finance,
+telecoms) systems use GPS-disciplined clocks and PTP; where only mutual consistency matters,
+Berkeley-style averaging suffices.
+
+* Complexity
+
+\(O(n)\) per synchronization round for \(n\) nodes -- one poll each, one average, one
+adjustment each.

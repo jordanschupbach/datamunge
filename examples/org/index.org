@@ -729,6 +729,38 @@ We hash game positions with =datamunge='s C++ =algorithms::zobrist_hash= / =zobr
 
 We convert binary integers to decimal digits with =datamunge='s C++ =algorithms::double_dabble=, and report it as a literate program: shifting into a BCD field with an add-3 correction before each shift converts values up to the full 32-bit range using only shifts and adds -- no division -- as the compiled binary verifies.
 
+* Distributed Systems
+
+** [[./lamport_clock_analysis.html][Lamport Clocks: Logical Time in Distributed Systems]] ([[./lamport_clock_analysis.pdf][PDF]])
+/A literate C++ study of scalar logical clocks using datamunge/
+
+We timestamp events across processes with =datamunge='s C++ =algorithms::LamportClock=, and report it as a literate program: incrementing on each event and taking the max on receive gives a scalar clock that preserves the happened-before relation, as the compiled binary shows.
+
+** [[./vector_clock_analysis.html][Vector Clocks: Detecting Causality and Concurrency]] ([[./vector_clock_analysis.pdf][PDF]])
+/A literate C++ study of vector logical time using datamunge/
+
+We stamp and compare events with =datamunge='s C++ =algorithms::VectorClock=, and report it as a literate program: an n-entry vector per process lets componentwise comparison decide exactly whether one event happened-before another or whether they are concurrent, as the compiled binary shows.
+
+** [[./bully_election_analysis.html][The Bully Algorithm: Leader Election]] ([[./bully_election_analysis.pdf][PDF]])
+/A literate C++ study of coordinator election using datamunge/
+
+We elect a coordinator with =datamunge='s C++ =algorithms::bully_elect=, and report it as a literate program: a failed leader triggers a cascade that always converges on the highest-id alive process, and we tally the ELECTION/OK/COORDINATOR messages exchanged, as the compiled binary shows.
+
+** [[./bakery_analysis.html][Lamport's Bakery Algorithm: Mutual Exclusion]] ([[./bakery_analysis.pdf][PDF]])
+/A literate C++ study of software mutual exclusion using datamunge/
+
+We compute critical-section entry order with =datamunge='s C++ =algorithms::bakery_service_order=, and report it as a literate program: drawing a (number, id) ticket and serving the smallest first gives mutual exclusion and first-come-first-served fairness using only atomic reads and writes, as the compiled binary shows.
+
+** [[./cristian_analysis.html][Cristian's Algorithm: Clock Synchronization to a Time Server]] ([[./cristian_analysis.pdf][PDF]])
+/A literate C++ study of external clock synchronization using datamunge/
+
+We synchronize a client to a time server with =datamunge='s C++ =algorithms::cristian_estimate=, and report it as a literate program: estimating the true time as the server reading plus half the round trip gives an accuracy bound that tightens as the round trip shortens, as the compiled binary shows.
+
+** [[./berkeley_analysis.html][The Berkeley Algorithm: Internal Clock Synchronization]] ([[./berkeley_analysis.pdf][PDF]])
+/A literate C++ study of averaging-based clock synchronization using datamunge/
+
+We synchronize a cluster with no authoritative server using =datamunge='s C++ =algorithms::berkeley_sync=, and report it as a literate program: averaging the nodes' clocks (with outlier rejection) and sending each the needed adjustment gives internal consistency robust to a faulty clock, as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

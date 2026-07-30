@@ -1,0 +1,146 @@
+#+title: Vector Clocks: Detecting Causality and Concurrency
+#+subtitle: A literate C++ study of vector logical time, using =datamunge='s =algorithms::VectorClock=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A Lamport scalar clock preserves causality but cannot *detect* it -- equal or ordered
+timestamps do not prove one event caused another. *Vector clocks* (Fidge & Mattern 1988)
+fix this: each of \(n\) processes carries an \(n\)-entry vector, and comparing two stamps
+componentwise decides exactly whether one happened-before the other or whether they are
+*concurrent*. This report implements it in =datamunge='s C++ =algorithms::VectorClock= as
+a literate program: every number and figure comes from one compiled binary. We run a
+three-process scenario and let the vector comparison classify each pair of events as
+causal or concurrent.
+#+end_abstract
+
+* One counter per process
+
+Process \(i\) keeps a vector \(V\) with an entry per process. It increments \(V[i]\) on each
+local event or send; on receiving a message with vector \(M\), it sets
+\(V \leftarrow \max(V, M)\) componentwise and then increments \(V[i]\). Given two stamps,
+\[
+  a \to b \iff V(a)\le V(b)\ \text{componentwise and}\ V(a)\ne V(b),
+\]
+and \(a, b\) are *concurrent* iff neither dominates the other. So a vector clock records,
+in each component, "how many events of that process this event depends on" -- enough to
+recover the full causal partial order.
+
+#+name: vc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/vector_clock.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+event/send at i:  V[i] += 1
+receive M at i:   V = componentwise-max(V, M);  V[i] += 1
+happens-before(a,b): a <= b componentwise and a != b
+concurrent(a,b):     not hb(a,b) and not hb(b,a) and a != b
+#+end_example
+
+* A worked example
+
+Three processes. P0 does an event then sends to P1; P1 receives; meanwhile P2 acts
+independently. We stamp each event and classify pairs.
+
+#+name: vc-run
+#+begin_src c++ :eval no
+    auto show = [](const char* name, const VectorClock& c) {
+        std::cout << "  " << name << " = [" << c.v[0] << "," << c.v[1] << "," << c.v[2] << "]\n";
+    };
+
+    VectorClock c0(3), c1(3), c2(3);
+    vc_event(c0, 0);                    VectorClock A = c0;      // A: P0 local  [1,0,0]
+    VectorClock msg = vc_send(c0, 0);   VectorClock S = msg;     // S: P0 send   [2,0,0]
+    vc_receive(c1, 1, msg);             VectorClock R = c1;      // R: P1 recv   [2,1,0]
+    vc_event(c2, 2);                    VectorClock C = c2;      // C: P2 local  [0,0,1]
+
+    std::cout << "=== Vector clocks: three processes ===\nevent vectors:\n";
+    show("A  (P0 local)", A);
+    show("S  (P0 send) ", S);
+    show("R  (P1 recv) ", R);
+    show("C  (P2 local)", C);
+
+    std::cout << "\ncausality tests:\n";
+    std::cout << "  A -> S : " << (vc_happens_before(A, S) ? "yes" : "no") << " (program order in P0)\n";
+    std::cout << "  S -> R : " << (vc_happens_before(S, R) ? "yes" : "no") << " (message send -> receive)\n";
+    std::cout << "  A -> R : " << (vc_happens_before(A, R) ? "yes" : "no") << " (transitive)\n";
+    std::cout << "  C || S : " << (vc_concurrent(C, S) ? "concurrent" : "ordered") << "\n";
+    std::cout << "  C || R : " << (vc_concurrent(C, R) ? "concurrent" : "ordered") << "\n";
+
+    // Figure: the receive event's vector [2,1,0] -- it "knows about" 2 of P0's events and 1 of its own.
+    RPlot p = RPlot::barplot({static_cast<double>(R.v[0]), static_cast<double>(R.v[1]), static_cast<double>(R.v[2])},
+                             {"P0", "P1", "P2"}, "vector clock of event R", {37, 99, 235});
+    p.save_svg("build/org/vector_clock.svg");
+    std::cout << "\nwrote build/org/vector_clock.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/vector_clock_analysis.cpp <<'CPP'
+<<vc-includes>>
+
+int main() {
+<<vc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/vector_clock_analysis.cpp -o build/org/vector_clock_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/vector_clock_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Vector clocks: three processes ===
+event vectors:
+  A  (P0 local) = [1,0,0]
+  S  (P0 send)  = [2,0,0]
+  R  (P1 recv)  = [2,1,0]
+  C  (P2 local) = [0,0,1]
+
+causality tests:
+  A -> S : yes (program order in P0)
+  S -> R : yes (message send -> receive)
+  A -> R : yes (transitive)
+  C || S : concurrent
+  C || R : concurrent
+#+end_example
+
+The vectors classify every pair correctly: A -> S -> R form a causal chain (each vector
+dominates the previous), and P2's independent event C is *concurrent* with both the send
+and the receive -- neither vector dominates the other. The receive R = [2,1,0] literally
+counts its causal past: it has seen 2 events of P0 and 1 of P1, and nothing of P2, which is
+exactly why it is concurrent with C.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/vector_clock.svg]]
+
+* Uses and cost
+
+Vector clocks are the standard way to *detect* concurrent updates in eventually-consistent
+data stores (Amazon Dynamo, Riak use them to flag conflicting versions for resolution) and
+to build consistent snapshots and causal-order multicast. Their cost is size: an \(n\)-entry
+vector per message in an \(n\)-process system, which *version vectors* and *dotted version
+vectors* optimize when process membership is dynamic. Where only causality *preservation*
+(not detection) is needed, the cheaper Lamport scalar clock suffices.
+
+* Complexity
+
+\(O(n)\) time and space per event and per message for \(n\) processes -- the max/compare is
+componentwise over the vector.

@@ -1,0 +1,127 @@
+#+title: The Bully Algorithm: Leader Election
+#+subtitle: A literate C++ study of coordinator election, using =datamunge='s =algorithms::bully_elect=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When a distributed system's coordinator fails, the survivors must elect a new one. The
+*Bully algorithm* (Garcia-Molina 1982) elects the *highest-id alive* process: a process
+that notices the leader is gone sends ELECTION to all higher-id processes; if none answer
+it becomes coordinator, and if a higher one answers, that one takes over -- so the largest
+id ultimately "bullies" the rest and broadcasts COORDINATOR. This report implements it in
+=datamunge='s C++ =algorithms::bully_elect= as a literate program: every number and figure
+comes from one compiled binary. We elect a leader with the top processes down and tally the
+messages exchanged.
+#+end_abstract
+
+* Bullying up to the highest id
+
+Each process knows the ids of all others. On suspecting the coordinator failed, process
+\(P\) sends ELECTION to every process with a *higher* id. Any alive higher process replies
+OK (stopping \(P\)) and starts its own election. If \(P\) gets no OK, it wins and sends
+COORDINATOR to all lower ids. Because control always passes upward to a responding higher
+process, the election converges on the highest-id alive process. It is simple and fast when
+the top process is usually up, at the cost of \(O(n^2)\) messages in the worst case.
+
+#+name: be-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bully_election.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Bully(P detects failure):
+    send ELECTION to all higher-id processes
+    if no OK received: declare self COORDINATOR; announce to all lower ids
+    else: a higher process answered OK and runs its own election
+    (control passes upward until the highest alive process wins)
+#+end_example
+
+* A worked example
+
+Six processes (ids 0-5). The two highest (4 and 5) are down. Process 1 detects the failure
+and starts the election.
+
+#+name: be-run
+#+begin_src c++ :eval no
+    std::vector<char> alive = {1, 1, 1, 1, 0, 0};  // 4 and 5 are down
+    auto              r     = bully_elect(6, alive, /*initiator=*/1);
+
+    std::cout << "=== Bully election (processes 4,5 down, initiator P1) ===\n";
+    std::cout << "elected leader: P" << r.leader << " (highest alive id)\n";
+    std::cout << "ELECTION messages:    " << r.election_messages << '\n';
+    std::cout << "OK/answer messages:   " << r.answer_messages << '\n';
+    std::cout << "COORDINATOR messages: " << r.coordinator_messages << '\n';
+
+    // If the very top process is alive, it wins immediately.
+    std::vector<char> all_up(6, 1);
+    std::cout << "\nwith all processes up, leader = P" << bully_elect(6, all_up, 0).leader << '\n';
+
+    RPlot p = RPlot::barplot(
+        {static_cast<double>(r.election_messages), static_cast<double>(r.answer_messages),
+         static_cast<double>(r.coordinator_messages)},
+        {"ELECTION", "OK", "COORDINATOR"}, "messages", {37, 99, 235});
+    p.save_svg("build/org/bully_election.svg");
+    std::cout << "\nwrote build/org/bully_election.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bully_election_analysis.cpp <<'CPP'
+<<be-includes>>
+
+int main() {
+<<be-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bully_election_analysis.cpp -o build/org/bully_election_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bully_election_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bully election (processes 4,5 down, initiator P1) ===
+elected leader: P3 (highest alive id)
+ELECTION messages:    6
+OK/answer messages:   2
+COORDINATOR messages: 3
+
+with all processes up, leader = P5
+#+end_example
+
+With the top two processes down, the election elects P3 -- the highest *alive* id -- and P3
+then announces itself to the three lower processes. When every process is up, the highest id
+(P5) wins immediately with no cascade. The message tallies show the ELECTION/OK/COORDINATOR
+traffic the protocol generates.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/bully_election.svg]]
+
+* Character and relatives
+
+The Bully algorithm is simple and elects deterministically (highest id), but it is chatty --
+\(O(n^2)\) messages in the worst case -- and assumes reliable message delivery and failure
+detection. The *ring algorithm* elects with \(O(n)\) messages by passing a token around a
+logical ring. Modern fault-tolerant systems fold leader election into a *consensus* protocol
+(Raft's randomized-timeout election, Paxos, ZooKeeper's ZAB), which also handles network
+partitions and split-brain -- scenarios the classic Bully algorithm does not.
+
+* Complexity
+
+\(O(n^2)\) messages worst case (a low initiator triggering a full cascade); \(O(n)\) when the
+top process is alive. Time is \(O(n)\) message rounds.

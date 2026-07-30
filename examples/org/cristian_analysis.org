@@ -1,0 +1,140 @@
+#+title: Cristian's Algorithm: Clock Synchronization to a Time Server
+#+subtitle: A literate C++ study of external clock sync, using =datamunge='s =algorithms::cristian_estimate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Cristian's algorithm (1989) synchronizes a client's clock to an authoritative *time
+server*. The client requests the time; because the reply took a round trip, it estimates
+the true time as the server's reading plus *half* the round-trip time -- assuming the
+request and reply legs took roughly equal time. This report implements it in =datamunge='s
+C++ =algorithms::cristian_estimate= as a literate program: every number and figure comes
+from one compiled binary. We estimate the client time from a server reading and show the
+accuracy bound tightening as the round trip shortens.
+#+end_abstract
+
+* Half the round trip
+
+The client records the round-trip time \(RTT\) between sending its request and receiving the
+reply carrying the server's time \(T_s\). If latency is symmetric, the reply left the server
+\(RTT/2\) ago, so the current true time is estimated as
+\[
+  T_{\text{client}} = T_s + \frac{RTT}{2}.
+\]
+The error comes from *asymmetry*: if the minimum one-way latency is \(L_{\min}\), the true
+time lies within \(\pm(RTT/2 - L_{\min})\) of the estimate, so a *shorter* round trip (or
+taking the fastest of several requests) gives a tighter bound.
+
+#+name: cr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/clock_synchronization.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Cristian(client):
+    t0 = local time; send request
+    receive reply with server time T_s; t1 = local time
+    RTT = t1 - t0
+    set client clock to T_s + RTT/2
+    error bound = RTT/2 - min_one_way_latency
+#+end_example
+
+* A worked example
+
+The server reports \(T_s = 1000.0\) with a 40 ms round trip and a known 5 ms minimum one-way
+latency. We estimate the client time and chart how the error bound shrinks with the round
+trip.
+
+#+name: cr-run
+#+begin_src c++ :eval no
+    const double server_time = 1000.0, rtt = 40.0, min_lat = 5.0;
+    std::cout << "=== Cristian's algorithm ===\n";
+    std::cout << "server time T_s = " << server_time << " ms, RTT = " << rtt << " ms\n";
+    std::cout << "estimated client time = " << cristian_estimate(server_time, rtt) << " ms  (T_s + RTT/2)\n";
+    std::cout << "accuracy bound = +/- " << cristian_error_bound(rtt, min_lat) << " ms  (RTT/2 - min_latency)\n";
+
+    std::vector<double> rtts, bounds;
+    for (double r = 10.0; r <= 100.0; r += 10.0) {
+        rtts.push_back(r);
+        bounds.push_back(cristian_error_bound(r, min_lat));
+    }
+    std::cout << "\nRTT (ms)  error bound (ms)\n";
+    for (std::size_t i = 0; i < rtts.size(); ++i) std::cout << "  " << rtts[i] << "      " << bounds[i] << '\n';
+
+    RPlot p = RPlot::create();
+    p.line(rtts, bounds, "error bound", {37, 99, 235}, 2.5);
+    p.points(rtts, bounds, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/cristian.svg");
+    std::cout << "\nwrote build/org/cristian.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cristian_analysis.cpp <<'CPP'
+<<cr-includes>>
+
+int main() {
+<<cr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cristian_analysis.cpp -o build/org/cristian_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cristian_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cristian's algorithm ===
+server time T_s = 1000 ms, RTT = 40 ms
+estimated client time = 1020 ms  (T_s + RTT/2)
+accuracy bound = +/- 15 ms  (RTT/2 - min_latency)
+
+RTT (ms)  error bound (ms)
+  10      0
+  20      5
+  30      10
+  40      15
+  50      20
+  60      25
+  70      30
+  80      35
+  90      40
+  100      45
+#+end_example
+
+The estimate adds half the round trip to the server's reading, and the accuracy bound falls
+linearly as the round trip shortens -- so a client on a fast link, or one that keeps the
+*fastest* of several probes, gets a tighter synchronization. The whole method rests on the
+symmetric-latency assumption; the bound quantifies exactly how much asymmetry could cost.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/cristian.svg]]
+
+* Character and relatives
+
+Cristian's algorithm is *external* synchronization -- it ties clients to an authoritative
+source -- and is the conceptual core of the *Network Time Protocol* (NTP), which refines it
+with multiple servers, statistical filtering of many round-trip samples, and drift
+compensation. Its weakness is the symmetric-latency assumption (asymmetric routes bias the
+estimate) and reliance on a trustworthy server. The *Berkeley algorithm* (companion report)
+is the *internal* counterpart: no authoritative server, just mutual averaging.
+
+* Complexity
+
+\(O(1)\) per synchronization -- one request/reply and a couple of arithmetic operations.
+Accuracy improves by taking the minimum RTT over several probes.

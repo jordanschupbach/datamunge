@@ -1,0 +1,146 @@
+#+title: Lamport Logical Clocks
+#+subtitle: A literate C++ study of scalar logical time, using =datamunge='s =algorithms::LamportClock=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Distributed processes share no physical clock, yet distributed algorithms need a
+consistent "before". Lamport's *logical clock* (1978) is a per-process counter with two
+rules -- increment on each local event or send, and on receive jump to
+\(\max(\text{local}, \text{message}) + 1\) -- that guarantees the *clock condition*: if
+\(a\) happened-before \(b\), then \(C(a) < C(b)\). This report implements it in
+=datamunge='s C++ =algorithms::LamportClock= as a literate program: every number and
+figure comes from one compiled binary. We run a two-process message exchange and show the
+timestamps honoring causality.
+#+end_abstract
+
+* The happened-before relation and the clock condition
+
+Lamport's *happened-before* \(\to\) is the smallest relation with: events in one process
+are ordered by program order, and a send happens-before its matching receive (and it is
+transitive). Two events unrelated by \(\to\) are *concurrent*. A logical clock \(C\)
+respects it -- \(a\to b \Rightarrow C(a)<C(b)\) -- via: bump the counter before every event
+and send, and on receiving a message stamped \(t\), set \(C \leftarrow \max(C, t) + 1\).
+The +1 and the max together ensure a receive is always numbered after the send it
+depends on. (The converse fails -- equal or ordered numbers do not prove causality --
+which vector clocks fix.)
+
+#+name: lc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lamport_clock.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+LocalEvent(): C = C + 1
+Send():       C = C + 1;  attach C to the message
+Receive(t):   C = max(C, t) + 1
+#+end_example
+
+* A worked example
+
+Two processes exchange messages. We record each event's Lamport timestamp and confirm every
+message's receive is numbered after its send.
+
+#+name: lc-run
+#+begin_src c++ :eval no
+    LamportClock p0, p1;
+    std::vector<double> ev, ts0, ts1;
+
+    std::cout << "=== Lamport clocks: two processes exchanging messages ===\n";
+    std::cout << "step  event                     P0    P1\n";
+    int step = 0;
+    auto show = [&](const char* what, long a, long b) {
+        std::cout << "  " << step << "   " << what;
+        for (int k = 0; k < 24 - static_cast<int>(std::string(what).size()); ++k) std::cout << ' ';
+        std::cout << a << "     " << b << '\n';
+        ev.push_back(step); ts0.push_back(static_cast<double>(a)); ts1.push_back(static_cast<double>(b));
+        ++step;
+    };
+
+    p0.local_event();                          show("P0 local", p0.time(), p1.time());
+    long m1 = p0.send();                        show("P0 send m1 ->", p0.time(), p1.time());
+    p1.local_event();                           show("P1 local", p0.time(), p1.time());
+    long m1_recv = p1.receive(m1);              show("P1 recv m1", p0.time(), p1.time());
+    long m2 = p1.send();                        show("P1 send m2 ->", p0.time(), p1.time());
+    p0.receive(m2);                             show("P0 recv m2", p0.time(), p1.time());
+    p0.local_event();                           show("P0 local", p0.time(), p1.time());
+
+    std::cout << "\nm1 sent at C=" << m1 << ", received at C=" << m1_recv
+              << "  (send < receive: causality preserved)\n";
+
+    RPlot p = RPlot::create();
+    p.line(ev, ts0, "P0 clock", {37, 99, 235}, 2.0);
+    p.points(ev, ts0, "", {37, 99, 235}, 4.0);
+    p.line(ev, ts1, "P1 clock", {220, 38, 38}, 2.0);
+    p.points(ev, ts1, "", {220, 38, 38}, 4.0);
+    p.legend({"P0 clock", "P1 clock"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/lamport_clock.svg");
+    std::cout << "\nwrote build/org/lamport_clock.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lamport_clock_analysis.cpp <<'CPP'
+<<lc-includes>>
+
+int main() {
+<<lc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lamport_clock_analysis.cpp -o build/org/lamport_clock_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lamport_clock_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Lamport clocks: two processes exchanging messages ===
+step  event                     P0    P1
+  0   P0 local                1     0
+  1   P0 send m1 ->           2     0
+  2   P1 local                2     1
+  3   P1 recv m1              2     3
+  4   P1 send m2 ->           2     4
+  5   P0 recv m2              5     4
+  6   P0 local                6     4
+
+m1 sent at C=2, received at C=3  (send < receive: causality preserved)
+#+end_example
+
+The receive of =m1= is numbered strictly after its send, and likewise for =m2=: every
+causal message edge increases the timestamp, so the clock condition holds. Notice P1's
+clock *jumps* on receiving =m1= (to one past the message stamp), which is the
+\(\max(\cdot)+1\) rule pulling a lagging clock forward to stay consistent with the sender.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/lamport_clock.svg]]
+
+* Uses and the total-order trick
+
+Lamport timestamps give a *partial* order consistent with causality; breaking ties by
+process id extends them to a *total* order, which is exactly how Lamport's distributed
+mutual-exclusion and state-machine-replication protocols sequence requests. They also
+underlie snapshot and multicast ordering. Their limitation -- that \(C(a)<C(b)\) does not
+imply \(a\to b\) -- is why systems that must *detect* concurrency (conflict resolution in
+replicated stores) use vector clocks instead.
+
+* Complexity
+
+\(O(1)\) time and space per event -- a single integer per process, updated with a compare
+and an add.
