@@ -478,9 +478,9 @@ Further information: Numerical linear algebra
 Monte Carlo
 Further information: Monte Carlo method
 
-    Gibbs sampling: generates a sequence of samples from the joint probability distribution of two or more random variables
-    Hybrid Monte Carlo: generates a sequence of samples using Hamiltonian weighted Markov chain Monte Carlo, from a probability distribution which is difficult to sample directly.
-    Metropolis–Hastings algorithm: used to generate a sequence of samples from the probability distribution of one or more variables
+    [x] Gibbs sampling: generates a sequence of samples from the joint probability distribution of two or more random variables -- datamunge::bayes (bayes/gibbs.hpp; Metropolis-within-Gibbs); report examples/org/bayesian_sampling_analysis.org
+    [x] Hybrid Monte Carlo: generates a sequence of samples using Hamiltonian weighted Markov chain Monte Carlo, from a probability distribution which is difficult to sample directly. -- datamunge::bayes (bayes/hmc.hpp, Hamiltonian Monte Carlo); report examples/org/bayesian_modeling_analysis.org
+    [x] Metropolis–Hastings algorithm: used to generate a sequence of samples from the probability distribution of one or more variables -- datamunge::bayes (bayes/rwm.hpp, random-walk Metropolis); report examples/org/bayesian_sampling_analysis.org
     [x] Wang and Landau algorithm: an extension of Metropolis–Hastings algorithm sampling  -- datamunge::algorithms::wang_landau_dos (flat-histogram density-of-states estimation); report examples/org/wang_landau_analysis.org
 
 Numerical integration
@@ -643,26 +643,26 @@ Further information: Computational statistics
     Bayesian statistics
         Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics
     Clustering algorithms
-        Average-linkage clustering: a simple agglomerative clustering algorithm
+        [x] Average-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (average linkage); report examples/org/clustering_iris_analysis.org
         Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm
         Chinese whispers
-        Complete-linkage clustering: a simple agglomerative clustering algorithm
-        DBSCAN: a density based clustering algorithm
+        [x] Complete-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (complete linkage); report examples/org/clustering_iris_analysis.org
+        [x] DBSCAN: a density based clustering algorithm -- datamunge::stats::DBSCAN; report examples/org/clustering_iris_analysis.org
         Expectation-maximization algorithm
         Fuzzy clustering: a class of clustering algorithms where each point has a degree of belonging to clusters
             FLAME clustering (Fuzzy clustering by Local Approximation of MEmberships): define clusters in the dense parts of a dataset and perform cluster assignment solely based on the neighborhood relationships among objects
             [x] Fuzzy c-means  -- datamunge::algorithms::fuzzy_c_means (soft clustering, alternating center/membership updates); report examples/org/fuzzy_c_means_analysis.org
-        k-means clustering: cluster objects based on attributes into partitions
-        k-means++: a variation of this, using modified random seeds
+        [x] k-means clustering: cluster objects based on attributes into partitions -- datamunge::stats::KMeans; report examples/org/clustering_iris_analysis.org
+        [x] k-means++: a variation of this, using modified random seeds -- datamunge::stats::KMeans (k-means++ initialization); report examples/org/clustering_iris_analysis.org
         [x] k-medoids: similar to k-means, but chooses datapoints or medoids as centers  -- datamunge::algorithms::k_medoids (PAM: build + swap, robust to outliers); report examples/org/k_medoids_analysis.org
         KHOPCA clustering algorithm: a local clustering algorithm, which produces hierarchical multi-hop clusters in static and mobile environments.
         [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray (codebook design by splitting + Lloyd); report examples/org/linde_buzo_gray_analysis.org
-        Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering
+        [x] Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering -- datamunge::stats::KMeans (Lloyd iteration); report examples/org/clustering_iris_analysis.org
         [x] OPTICS: a density based clustering algorithm with a visual evaluation method  -- datamunge::algorithms::optics (+ optics_extract_dbscan; reachability ordering across varying densities); report examples/org/optics_analysis.org
-        Single-linkage clustering: a simple agglomerative clustering algorithm
+        [x] Single-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (single linkage); report examples/org/clustering_iris_analysis.org
         SUBCLU: a subspace clustering algorithm
         WACA clustering algorithm: a local clustering algorithm with potentially multi-hop structures; for dynamic networks
-        Ward's method: an agglomerative clustering algorithm, extended to more general Lance–Williams algorithms
+        [x] Ward's method: an agglomerative clustering algorithm, extended to more general Lance–Williams algorithms -- datamunge::stats::AgglomerativeClustering (Ward linkage); report examples/org/clustering_iris_analysis.org
     Estimation Theory
         Expectation-maximization algorithm A class of related algorithms for finding maximum likelihood estimates of parameters in probabilistic models
             Ordered subset expectation maximization (OSEM): used in medical imaging for positron emission tomography, single-photon emission computed tomography and X-ray computed tomography.
@@ -817,32 +817,32 @@ Further information: Machine learning and Statistical classification
         BrownBoost: a boosting algorithm that may be robust to noisy datasets
         LogitBoost: logistic regression boosting
         LPBoost: linear programming boosting
-    Bootstrap aggregating (bagging): technique to improve stability and classification accuracy
+    [x] Bootstrap aggregating (bagging): technique to improve stability and classification accuracy -- datamunge::stats::RandomForestClassifier (bagging of trees); report examples/org/rf_iris_analysis.org
     Clustering: a class of unsupervised learning algorithms for grouping and bucketing related input vector
     Computer Vision
         Grabcut based on Graph cuts
     Decision Trees
         C4.5 algorithm: an extension to ID3
         ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees
-    k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space
+    [x] k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space -- datamunge::stats::KNNClassifier; report examples/org/knn_iris_analysis.org
     [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray; report examples/org/linde_buzo_gray_analysis.org
     [x] Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data  -- datamunge::algorithms::CosineLSH (random-hyperplane multi-table cosine ANN); report examples/org/lsh_analysis.org
-    Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem
+    [x] Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem -- datamunge::stats::NaiveBayesClassifier; report examples/org/naive_bayes_penguins_analysis.org
     Neural Network
-        Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input
+        [x] Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input -- datamunge::stats::MLPClassifier (feed-forward net trained by backpropagation); report examples/org/neural_network_analysis.org
         [x] Hopfield net: a Recurrent neural network in which all connections are symmetric  -- datamunge::algorithms::hopfield_train (Hebbian associative memory, energy-descent recall); report examples/org/hopfield_network_analysis.org
         [x] Perceptron: the simplest kind of feedforward neural network: a linear classifier.  -- datamunge::algorithms::perceptron_train (mistake-driven additive updates, Novikoff bound); report examples/org/perceptron_analysis.org
         Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing.
         [x] Radial basis function network: an artificial neural network that uses radial basis functions as activation functions  -- datamunge::algorithms::rbf_train (k-means centers + linear least-squares readout); report examples/org/rbf_network_analysis.org
         [x] Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples  -- datamunge::algorithms::som_train (Kohonen competitive learning, topology-preserving); report examples/org/self_organizing_map_analysis.org
-    Random forest: classify using many decision trees
+    [x] Random forest: classify using many decision trees -- datamunge::stats::RandomForestClassifier; report examples/org/rf_iris_analysis.org
     Reinforcement learning:
         [x] Q-learning: learns an action-value function that gives the expected utility of taking a given action in a given state and following a fixed policy thereafter  -- datamunge::algorithms::q_learning (off-policy TD control, epsilon-greedy); report examples/org/q_learning_analysis.org
         [x] State–Action–Reward–State–Action (SARSA): learn a Markov decision process policy  -- datamunge::algorithms::sarsa (on-policy TD control); report examples/org/sarsa_analysis.org
         [x] Temporal difference learning  -- datamunge::algorithms::td_prediction (TD(0) policy evaluation by bootstrapping); report examples/org/td_learning_analysis.org
     Relevance-Vector Machine (RVM): similar to SVM, but provides probabilistic classification
     Supervised learning: Learning by examples (labelled data-set split into training-set and test-set)
-    Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets
+    [x] Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets -- datamunge::stats::SVM; report examples/org/svm_iris_analysis.org
         Structured SVM: allows training of a classifier for general structured output labels.
     [x] Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme  -- datamunge::algorithms::winnow_train (Winnow2, O(k log n) mistake bound); report examples/org/winnow_analysis.org
 
