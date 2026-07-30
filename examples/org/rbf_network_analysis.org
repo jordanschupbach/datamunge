@@ -1,0 +1,194 @@
+#+title: Radial Basis Function Networks: Function Approximation with Gaussian Bumps
+#+subtitle: A literate C++ study of RBF regression -- centers, widths, and a linear readout -- using =datamunge='s =algorithms::rbf_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A radial basis function (RBF) network approximates a function as a weighted sum of
+localized Gaussian bumps centered at data-driven points. Its charm is a clean
+two-stage recipe: place the centers by an *unsupervised* method (here k-means), fix
+a Gaussian width, and then -- because the map from bump activations to the output is
+*linear* -- solve for the output weights in closed form by least squares. No
+gradient descent, no backpropagation. This report implements it in =datamunge='s
+C++ =algorithms::rbf_train= as a literate program: every number and figure comes
+from one compiled binary. We fit a noisy nonlinear signal, recover the smooth
+underlying curve, and show where the network placed its Gaussian centers.
+#+end_abstract
+
+* The model
+
+An RBF network with \(K\) centers computes
+\[
+  \hat f(x) = w_0 + \sum_{k=1}^{K} w_k\,\phi_k(x),\qquad
+  \phi_k(x) = \exp\!\Big(-\frac{\|x-c_k\|^2}{2\sigma^2}\Big).
+\]
+Each \(\phi_k\) is a *radial* basis function -- it depends only on the distance from
+a center \(c_k\) -- and acts as a localized feature that "lights up" for inputs near
+its center. The output is a linear combination of these features plus a bias.
+Increasing \(K\) or shrinking \(\sigma\) makes the fit more local and flexible;
+widening \(\sigma\) makes it smoother.
+
+#+name: rbf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/rbf_network.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Two-stage training
+
+The key structural insight is that *once the centers and width are fixed, the model
+is linear in the output weights* \(w\). Training therefore splits cleanly:
+
+1. *Unsupervised stage -- place the bumps.* Choose centers \(c_k\) where the data
+   lives (k-means gives a good spread), and set a common width \(\sigma\) by a
+   spread heuristic such as \(\sigma = d_{\max}/\sqrt{2K}\), with \(d_{\max}\) the
+   largest distance between centers.
+2. *Supervised stage -- solve for the readout.* Form the design matrix
+   \(\Phi_{ik}=\phi_k(x_i)\) (plus a bias column) and solve the ridge-regularized
+   normal equations
+   \[
+     (\Phi^\top\Phi + \lambda I)\,w = \Phi^\top y,
+   \]
+   a single linear system. The regularizer \(\lambda\) tames near-collinear bumps.
+
+This "fixed nonlinear features + linear readout" pattern is exactly what makes RBF
+networks fast, and it recurs in kernel ridge regression and extreme learning
+machines.
+
+** Pseudocode
+
+#+begin_example
+RBFTrain(X, y, K, lambda):
+    C = kmeans(X, K)                          # unsupervised center placement
+    sigma = dmax(C) / sqrt(2K)                # width heuristic
+    Phi[i][0] = 1;  Phi[i][k] = exp(-||X[i]-C[k]||^2 / (2 sigma^2))
+    w = solve( Phi^T Phi + lambda I ,  Phi^T y )   # linear least squares
+    return C, sigma, w
+
+RBFPredict(x): return w[0] + sum_k w[k] * exp(-||x-C[k]||^2 / (2 sigma^2))
+#+end_example
+
+* A worked example: denoising a nonlinear signal
+
+The target is \(f(x)=\sin(x)+\tfrac13\sin(3x)\) on \([0,2\pi]\), observed with
+additive noise. We fit an RBF network with 15 centers and report the fit error
+against the *true* (noise-free) function on a dense test grid, then plot the noisy
+data, the true curve, the RBF fit, and the learned centers.
+
+#+name: rbf-run
+#+begin_src c++ :eval no
+    auto target = [](double x) { return std::sin(x) + std::sin(3.0 * x) / 3.0; };
+
+    std::mt19937_64                  rng(11);
+    std::normal_distribution<double> noise(0.0, 0.15);
+    std::vector<std::vector<double>> X;
+    std::vector<double>              y;
+    for (int i = 0; i <= 60; ++i) {
+        double x = 2.0 * M_PI * i / 60.0;
+        X.push_back({x});
+        y.push_back(target(x) + noise(rng));
+    }
+
+    RBFNetwork net = rbf_train(X, y, 15, 1e-4, 0.0, 40, 1);
+    std::cout << "=== RBF network: 15 Gaussian centers ===\n";
+    std::cout << "training points: " << X.size() << ",  width sigma = " << net.width << "\n\n";
+
+    // Error against the TRUE function on a dense test grid.
+    double se = 0.0;
+    const int M = 200;
+    for (int i = 0; i <= M; ++i) {
+        double x = 2.0 * M_PI * i / M;
+        double e = rbf_predict(net, {x}) - target(x);
+        se += e * e;
+    }
+    std::cout << "RMSE vs true function (dense grid): " << std::sqrt(se / (M + 1)) << '\n';
+    std::cout << "sample fit: f_hat(pi/2) = " << rbf_predict(net, {M_PI / 2.0}) << "  true = " << target(M_PI / 2.0)
+              << '\n';
+
+    // Figure: noisy data, true curve, RBF fit, and center locations.
+    std::vector<double> dx, dy;
+    for (std::size_t i = 0; i < X.size(); ++i) { dx.push_back(X[i][0]); dy.push_back(y[i]); }
+    std::vector<double> gx, gtrue, gfit;
+    for (int i = 0; i <= M; ++i) {
+        double x = 2.0 * M_PI * i / M;
+        gx.push_back(x);
+        gtrue.push_back(target(x));
+        gfit.push_back(rbf_predict(net, {x}));
+    }
+    std::vector<double> cx, cy;
+    for (const auto& c : net.centers) { cx.push_back(c[0]); cy.push_back(-1.6); }
+    RPlot p = RPlot::create();
+    p.points(dx, dy, "noisy data", {148, 163, 184}, 4.0);
+    p.line(gx, gtrue, "true f", {22, 163, 74}, 2.0);
+    p.line(gx, gfit, "RBF fit", {220, 38, 38}, 2.0);
+    p.points(cx, cy, "centers", {17, 24, 39}, 6.0);
+    p.legend({"noisy data", "true f", "RBF fit", "centers"},
+             {{148, 163, 184}, {22, 163, 74}, {220, 38, 38}, {17, 24, 39}});
+    p.save_svg("build/org/rbf_fit.svg");
+    std::cout << "\nwrote build/org/rbf_fit.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rbf_network_analysis.cpp <<'CPP'
+<<rbf-includes>>
+
+int main() {
+<<rbf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rbf_network_analysis.cpp -o build/org/rbf_network_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rbf_network_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RBF network: 15 Gaussian centers ===
+training points: 61,  width sigma = 1.08979
+
+RMSE vs true function (dense grid): 0.043022
+sample fit: f_hat(pi/2) = 0.645776  true = 0.666667
+#+end_example
+
+The network recovers the smooth two-frequency signal from noisy samples: the RBF
+fit tracks the true green curve closely, with an RMSE well below the noise level of
+the observations -- the ridge-regularized least-squares readout averages out the
+noise rather than chasing it. The learned centers (bottom row) are spread across
+the input range by k-means, denser where the data is, so a Gaussian bump is always
+nearby to shape the fit.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rbf_fit.svg]]
+
+* Choices and relatives
+
+Three knobs govern an RBF network: the *number of centers* (model capacity), their
+*placement* (k-means here; alternatives include random subsets, all training points
+as in exact RBF interpolation, or supervised placement), and the *width* \(\sigma\)
+(the bias-variance dial -- too small overfits with spiky bumps, too large
+oversmooths). Taking every training point as a center and \(\lambda\to0\) recovers
+*exact RBF interpolation*; keeping the Gaussian kernel but working implicitly in
+feature space gives *kernel ridge regression* and the Gaussian-process predictor.
+The decoupled unsupervised-then-linear training is what distinguishes RBF networks
+from multilayer perceptrons, which train all layers jointly by backpropagation.
+
+* Complexity
+
+Center placement by k-means is \(O(I\cdot n\cdot K\cdot d)\) for \(I\) iterations.
+Building \(\Phi\) is \(O(n\,K\,d)\), and solving the \((K{+}1)\times(K{+}1)\) normal
+equations is \(O(K^3)\). Prediction evaluates \(K\) Gaussians, \(O(K\,d)\).

@@ -39,6 +39,8 @@
 #include <datamunge/algorithms/floyd_warshall.hpp>
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
+#include <datamunge/algorithms/fuzzy_c_means.hpp>
+#include <datamunge/algorithms/hopfield_network.hpp>
 #include <datamunge/algorithms/gabow_scc.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/gauss_newton.hpp>
@@ -55,6 +57,7 @@
 #include <datamunge/algorithms/interpolation.hpp>
 #include <datamunge/algorithms/inverse_iteration.hpp>
 #include <datamunge/algorithms/joke_sorts.hpp>
+#include <datamunge/algorithms/k_medoids.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
@@ -84,7 +87,10 @@
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/odds_algorithm.hpp>
 #include <datamunge/algorithms/online_linear_classifiers.hpp>
+#include <datamunge/algorithms/optics.hpp>
 #include <datamunge/algorithms/ode.hpp>
+#include <datamunge/algorithms/rbf_network.hpp>
+#include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>

@@ -210,6 +210,38 @@ We fit a Bayesian binomial mixed model to the Palmer penguins data using =datamu
 
 We fit three unsupervised clustering algorithms -- K-means, agglomerative (hierarchical) clustering, and DBSCAN -- to Fisher's (1936) iris measurements using =datamunge='s C++ =stats::KMeans=, =stats::AgglomerativeClustering=, and =stats::DBSCAN=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./k_medoids_analysis.html][k-medoids Clustering (PAM): Robust Prototypes That Are Real Points]] ([[./k_medoids_analysis.pdf][PDF]])
+/A literate C++ study of Partitioning Around Medoids using datamunge/
+
+We cluster blobs contaminated with outliers using =datamunge='s C++ =algorithms::k_medoids=, and report it as a literate program: PAM's build-and-swap search picks medoids that are actual data points and, minimizing summed (not squared) distance, keeps them anchored in the blobs where k-means centers would be dragged toward the outliers -- reproduced by the compiled binary.
+
+** [[./fuzzy_c_means_analysis.html][Fuzzy c-means: Soft Clustering with Graded Memberships]] ([[./fuzzy_c_means_analysis.pdf][PDF]])
+/A literate C++ study of the fuzzy generalization of k-means using datamunge/
+
+We softly cluster two overlapping blobs using =datamunge='s C++ =algorithms::fuzzy_c_means=, and report it as a literate program: alternating center/membership updates give each point a graded membership that crosses smoothly from one cluster to the other through the ambiguous middle, plotted by the compiled binary.
+
+** [[./optics_analysis.html][OPTICS: Ordering Points To Identify the Clustering Structure]] ([[./optics_analysis.pdf][PDF]])
+/A literate C++ study of density-based clustering across varying densities using datamunge/
+
+We cluster three blobs of different densities plus noise using =datamunge='s C++ =algorithms::optics=, and report it as a literate program: the reachability plot shows one valley per cluster regardless of density -- something no single DBSCAN threshold achieves -- and a cut through it extracts the clusters, all computed by the compiled binary.
+
+* Neural Networks & Associative Memory
+
+** [[./hopfield_network_analysis.html][The Hopfield Network: An Associative Memory]] ([[./hopfield_network_analysis.pdf][PDF]])
+/A literate C++ study of content-addressable memory and energy descent using datamunge/
+
+We store binary patterns as energy minima and recover them from noisy probes using =datamunge='s C++ =algorithms::hopfield_train=, and report it as a literate program: asynchronous energy-descent recall restores a corrupted pattern exactly, and the compiled binary charts recovery accuracy degrading only as the probe approaches 50% noise.
+
+** [[./self_organizing_map_analysis.html][The Self-Organizing Map: Topology-Preserving Unsupervised Learning]] ([[./self_organizing_map_analysis.pdf][PDF]])
+/A literate C++ study of Kohonen's SOM using datamunge/
+
+We learn a 2-D topology-preserving map of clustered data using =datamunge='s C++ =algorithms::som_train=, and report it as a literate program: competitive learning with a shrinking neighborhood drapes the grid lattice over three blobs, with the compiled binary drawing the learned lattice and reporting the quantization error.
+
+** [[./rbf_network_analysis.html][Radial Basis Function Networks: Function Approximation with Gaussian Bumps]] ([[./rbf_network_analysis.pdf][PDF]])
+/A literate C++ study of RBF regression using datamunge/
+
+We approximate a noisy nonlinear signal with a sum of Gaussian bumps using =datamunge='s C++ =algorithms::rbf_train=, and report it as a literate program: k-means places the centers and a linear least-squares readout solves for the weights in closed form, recovering the smooth curve at an RMSE well below the noise level -- plotted by the compiled binary.
+
 * Time Series & State Estimation
 
 ** [[./arima_analysis.html][Time Series Forecasting: SARIMA and Exponential Smoothing]] ([[./arima_analysis.pdf][PDF]])

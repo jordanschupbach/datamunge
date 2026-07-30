@@ -1,0 +1,197 @@
+#+title: The Self-Organizing Map: Topology-Preserving Unsupervised Learning
+#+subtitle: A literate C++ study of Kohonen's SOM, using =datamunge='s =algorithms::som_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A Self-Organizing Map (Kohonen 1982) learns, without labels, a low-dimensional grid
+of prototypes that both *quantizes* a data distribution and *preserves its
+topology*: prototypes that are neighbors on the grid end up representing nearby
+regions of the input space. Training is competitive -- each input pulls its nearest
+prototype and, crucially, that prototype's grid neighbors toward itself -- with the
+pull strength and neighborhood radius shrinking over time so the map first unfolds
+globally, then refines locally. This report implements it in =datamunge='s C++
+=algorithms::som_train= as a literate program: every number and figure comes from
+one compiled binary. We train a 2-D map on three well-separated blobs and draw the
+learned lattice draped over the data, then read off the quantization error and the
+distinct grid regions the three clusters occupy.
+#+end_abstract
+
+* Competitive learning with a neighborhood
+
+The map is a grid (here \(\text{rows}\times\text{cols}\)) of neurons, each holding a
+*codebook* weight vector \(w_k\) living in the input space. For an input \(x\) the
+*best-matching unit* (BMU) is the neuron whose codebook is nearest,
+\(b=\arg\min_k\|x-w_k\|\). The BMU and its grid neighbors are updated toward \(x\):
+\[
+  w_k \leftarrow w_k + \alpha(t)\,h_{bk}(t)\,(x-w_k),
+\]
+with a decaying learning rate \(\alpha(t)=\alpha_0 e^{-t/T}\) and a Gaussian
+neighborhood in *grid coordinates*
+\[
+  h_{bk}(t) = \exp\!\Big(-\frac{\|r_b-r_k\|^2}{2\,\sigma(t)^2}\Big),\qquad
+  \sigma(t)=\sigma_0 e^{-t/\lambda}.
+\]
+The neighborhood is the whole point: because neurons near the BMU on the grid move
+together, adjacent grid cells learn to represent adjacent input regions, so the
+grid becomes an ordered, topology-preserving chart of the data. A large early
+radius unfolds the sheet; a shrinking radius fine-tunes it.
+
+#+name: som-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/self_organizing_map.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+SOM(data, rows, cols, iterations, alpha0, sigma0):
+    initialize codebook w[k] from random data samples
+    for t = 0 .. iterations-1:
+        x = random sample
+        b = argmin_k || x - w[k] ||               # best-matching unit
+        alpha = alpha0 * exp(-t / iterations)
+        sigma = sigma0 * exp(-t / lambda)
+        for each grid cell k:
+            h = exp( -||grid(b) - grid(k)||^2 / (2 sigma^2) )
+            w[k] += alpha * h * (x - w[k])
+    return codebook grid
+#+end_example
+
+* A worked example: three blobs
+
+We draw three well-separated Gaussian blobs in the plane and train a \(5\times5\)
+map. Afterward we report the mean quantization error (average distance from a point
+to its BMU codebook vector) and confirm the three blob centers claim three distinct
+grid units. The figure drapes the learned lattice over the data.
+
+#+name: som-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(7);
+    std::normal_distribution<double> jitter(0.0, 0.4);
+    std::vector<std::vector<double>> data;
+    std::vector<int>                 blob;
+    const std::vector<std::vector<double>> centers = {{0, 0}, {10, 1}, {4, 9}};
+    for (std::size_t b = 0; b < centers.size(); ++b)
+        for (int i = 0; i < 80; ++i) {
+            data.push_back({centers[b][0] + jitter(rng), centers[b][1] + jitter(rng)});
+            blob.push_back(static_cast<int>(b));
+        }
+
+    SOMParameters params;
+    params.rows = params.cols = 5;
+    params.iterations         = 4000;
+    params.learning_rate      = 0.5;
+    params.seed               = 1;
+    SelfOrganizingMap som = som_train(data, params);
+
+    std::cout << "=== 5x5 SOM on three 2D blobs ===\n";
+    std::cout << "training points: " << data.size() << "\n";
+    std::cout << "mean quantization error: " << som_quantization_error(som, data) << "\n\n";
+
+    for (std::size_t b = 0; b < centers.size(); ++b) {
+        auto [r, c] = som_bmu(som, centers[b]);
+        std::cout << "blob at (" << centers[b][0] << "," << centers[b][1] << ") -> grid unit (" << r << ","
+                  << c << ")\n";
+    }
+
+    // Figure: data points (light, by blob) with the SOM lattice draped over them.
+    RPlot p = RPlot::create();
+    const std::vector<RGB> cols = {{252, 165, 165}, {147, 197, 253}, {134, 239, 172}};
+    for (std::size_t b = 0; b < centers.size(); ++b) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < data.size(); ++i)
+            if (blob[i] == static_cast<int>(b)) {
+                xs.push_back(data[i][0]);
+                ys.push_back(data[i][1]);
+            }
+        p.points(xs, ys, "", cols[b], 3.0);
+    }
+    // Lattice edges: connect each node to its right and down grid neighbors.
+    std::vector<double> x0, y0, x1, y1;
+    for (std::size_t r = 0; r < som.rows; ++r)
+        for (std::size_t c = 0; c < som.cols; ++c) {
+            const auto& w = som.weights[som.index(r, c)];
+            if (c + 1 < som.cols) {
+                const auto& wr = som.weights[som.index(r, c + 1)];
+                x0.push_back(w[0]); y0.push_back(w[1]); x1.push_back(wr[0]); y1.push_back(wr[1]);
+            }
+            if (r + 1 < som.rows) {
+                const auto& wd = som.weights[som.index(r + 1, c)];
+                x0.push_back(w[0]); y0.push_back(w[1]); x1.push_back(wd[0]); y1.push_back(wd[1]);
+            }
+        }
+    p.segments(x0, y0, x1, y1, {30, 41, 59}, 1.5);
+    std::vector<double> nx, ny;
+    for (const auto& w : som.weights) { nx.push_back(w[0]); ny.push_back(w[1]); }
+    p.points(nx, ny, "SOM nodes", {17, 24, 39}, 4.0);
+    p.save_svg("build/org/som_lattice.svg");
+    std::cout << "\nwrote build/org/som_lattice.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/self_organizing_map_analysis.cpp <<'CPP'
+<<som-includes>>
+
+int main() {
+<<som-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/self_organizing_map_analysis.cpp -o build/org/self_organizing_map_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/self_organizing_map_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== 5x5 SOM on three 2D blobs ===
+training points: 240
+mean quantization error: 0.299886
+
+blob at (0,0) -> grid unit (0,1)
+blob at (10,1) -> grid unit (2,4)
+blob at (4,9) -> grid unit (4,1)
+#+end_example
+
+The quantization error is small relative to the ~10-unit spacing between blobs,
+and the three blob centers land on three different grid units -- the map has
+allocated distinct regions of its sheet to distinct regions of the data. In the
+figure the lattice stretches to cover all three blobs, with grid nodes clustering
+where the data is dense and the connecting edges keeping neighboring nodes near
+one another: the visible signature of topology preservation.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/som_lattice.svg]]
+
+* Uses and relatives
+
+Because it maps high-dimensional data onto a 2-D grid while preserving
+neighborhood structure, the SOM is a workhorse for *visualization* and
+*exploratory clustering* -- the U-matrix (distances between adjacent codebooks)
+reveals cluster boundaries as ridges. It is also a *vector quantizer*: the
+codebook is a compressed representation of the data, closely related to k-means
+(a SOM with zero neighborhood radius reduces to online k-means) and to the
+Linde-Buzo-Gray codebook design. Its topology-preserving objective connects it to
+manifold-learning methods like the generative topographic mapping.
+
+* Complexity
+
+Each of the \(T\) updates finds the BMU in \(O(\text{grid}\cdot d)\) and updates all
+grid cells in \(O(\text{grid}\cdot d)\), so training is
+\(O(T\cdot\text{grid}\cdot d)\). Memory is \(O(\text{grid}\cdot d)\) for the
+codebook.

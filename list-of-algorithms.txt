@@ -651,14 +651,14 @@ Further information: Computational statistics
         Expectation-maximization algorithm
         Fuzzy clustering: a class of clustering algorithms where each point has a degree of belonging to clusters
             FLAME clustering (Fuzzy clustering by Local Approximation of MEmberships): define clusters in the dense parts of a dataset and perform cluster assignment solely based on the neighborhood relationships among objects
-            Fuzzy c-means
+            [x] Fuzzy c-means  -- datamunge::algorithms::fuzzy_c_means (soft clustering, alternating center/membership updates); report examples/org/fuzzy_c_means_analysis.org
         k-means clustering: cluster objects based on attributes into partitions
         k-means++: a variation of this, using modified random seeds
-        k-medoids: similar to k-means, but chooses datapoints or medoids as centers
+        [x] k-medoids: similar to k-means, but chooses datapoints or medoids as centers  -- datamunge::algorithms::k_medoids (PAM: build + swap, robust to outliers); report examples/org/k_medoids_analysis.org
         KHOPCA clustering algorithm: a local clustering algorithm, which produces hierarchical multi-hop clusters in static and mobile environments.
         Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook
         Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering
-        OPTICS: a density based clustering algorithm with a visual evaluation method
+        [x] OPTICS: a density based clustering algorithm with a visual evaluation method  -- datamunge::algorithms::optics (+ optics_extract_dbscan; reachability ordering across varying densities); report examples/org/optics_analysis.org
         Single-linkage clustering: a simple agglomerative clustering algorithm
         SUBCLU: a subspace clustering algorithm
         WACA clustering algorithm: a local clustering algorithm with potentially multi-hop structures; for dynamic networks
@@ -830,11 +830,11 @@ Further information: Machine learning and Statistical classification
     Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem
     Neural Network
         Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input
-        Hopfield net: a Recurrent neural network in which all connections are symmetric
+        [x] Hopfield net: a Recurrent neural network in which all connections are symmetric  -- datamunge::algorithms::hopfield_train (Hebbian associative memory, energy-descent recall); report examples/org/hopfield_network_analysis.org
         [x] Perceptron: the simplest kind of feedforward neural network: a linear classifier.  -- datamunge::algorithms::perceptron_train (mistake-driven additive updates, Novikoff bound); report examples/org/perceptron_analysis.org
         Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing.
-        Radial basis function network: an artificial neural network that uses radial basis functions as activation functions
-        Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples
+        [x] Radial basis function network: an artificial neural network that uses radial basis functions as activation functions  -- datamunge::algorithms::rbf_train (k-means centers + linear least-squares readout); report examples/org/rbf_network_analysis.org
+        [x] Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples  -- datamunge::algorithms::som_train (Kohonen competitive learning, topology-preserving); report examples/org/self_organizing_map_analysis.org
     Random forest: classify using many decision trees
     Reinforcement learning:
         [x] Q-learning: learns an action-value function that gives the expected utility of taking a given action in a given state and following a fixed policy thereafter  -- datamunge::algorithms::q_learning (off-policy TD control, epsilon-greedy); report examples/org/q_learning_analysis.org
