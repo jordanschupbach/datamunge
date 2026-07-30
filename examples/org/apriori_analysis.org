@@ -1,0 +1,219 @@
+#+title: The Apriori Algorithm: Mining Frequent Itemsets and Association Rules
+#+subtitle: A literate C++ study of level-wise mining with downward-closure pruning, using =datamunge='s =algorithms::apriori_frequent_itemsets=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Which products sell together? Given a database of transactions -- shopping
+baskets, each a set of items -- *frequent-itemset mining* finds every combination
+of items that appears in at least a minimum number of baskets, and
+*association-rule mining* turns those into implications like "diapers \(\Rightarrow\)
+beer". The naive approach is hopeless: with \(m\) items there are \(2^m\) possible
+itemsets. *Apriori* (Agrawal & Srikant 1994) tames this with one powerful
+observation -- the *downward-closure* principle: every subset of a frequent
+itemset is itself frequent, so any itemset with an infrequent subset can be
+discarded *before* it is ever counted. This report implements it in
+=datamunge='s C++ =algorithms::apriori_frequent_itemsets= as a literate program:
+every number below comes from one compiled binary. We mine a small grocery
+database level by level, then extract the association rules with their confidence
+and lift.
+#+end_abstract
+
+* Itemsets, support, and the rule-mining problem
+
+A *transaction database* is a list of transactions, each a set of *items*. The
+*support* of an itemset \(I\) is the number of transactions that contain all of
+\(I\) (sometimes expressed as a fraction). An itemset is *frequent* if its support
+meets a threshold \(\text{minsup}\). An *association rule* \(A\Rightarrow C\)
+(disjoint itemsets) is scored by
+
+- *support* \(\operatorname{supp}(A\cup C)\): how often the whole pattern occurs;
+- *confidence* \(\operatorname{supp}(A\cup C)/\operatorname{supp}(A)\): the
+  conditional probability of \(C\) given \(A\); and
+- *lift* \(\operatorname{conf}(A\Rightarrow C)/(\operatorname{supp}(C)/N)\): how
+  much more often \(A\) and \(C\) co-occur than if they were independent
+  (\(\text{lift}>1\) means positive association).
+
+#+name: apriori-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/association_rules.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::string name_set(const std::vector<std::size_t>& items) {
+    static const char* names[] = {"bread", "milk", "butter", "beer", "diapers"};
+    std::string        s = "{";
+    for (std::size_t i = 0; i < items.size(); ++i) s += (i ? ", " : "") + std::string(names[items[i]]);
+    return s + "}";
+}
+#+end_src
+
+* Downward closure and level-wise search
+
+The engine of Apriori is *anti-monotonicity of support*: if \(I\) is frequent then
+so is every subset of \(I\), because any transaction containing \(I\) also
+contains each subset. Contrapositively, *if any subset of a candidate is
+infrequent, the candidate is infrequent* -- and can be pruned without counting.
+Apriori exploits this by searching breadth-first, one itemset *size* at a time:
+
+1. Find all frequent 1-itemsets \(L_1\) by counting single items.
+2. From \(L_k\), *generate* candidate \((k{+}1)\)-itemsets by joining pairs of
+   \(k\)-itemsets that share their first \(k-1\) items.
+3. *Prune* any candidate that has a \(k\)-subset not in \(L_k\) (downward closure).
+4. *Count* the survivors in one database scan; keep those meeting minsup as
+   \(L_{k+1}\).
+5. Repeat until no candidates remain.
+
+The prune step is what makes Apriori practical: it eliminates most candidates
+using only the already-known frequent sets, before paying for a database scan.
+
+** Pseudocode
+
+#+begin_example
+Apriori(transactions, minsup):
+    L_1 = { {i} : support({i}) >= minsup }
+    k = 1
+    while L_k is not empty:
+        C = generate_candidates(L_k)              # join on shared (k-1)-prefix
+        C = { c in C : every k-subset of c is in L_k }   # prune (downward closure)
+        count support of each c by scanning transactions
+        L_{k+1} = { c in C : support(c) >= minsup }
+        k = k + 1
+    return union of all L_k
+#+end_example
+
+* A worked example: a grocery database
+
+Eight baskets over five items (bread, milk, butter, beer, diapers). We mine at
+\(\text{minsup}=2\) and list the frequent itemsets by size, then generate the
+association rules with confidence \(\ge 0.7\).
+
+#+name: apriori-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<std::size_t>> txns = {
+        {0, 1, 2}, {0, 1}, {1, 2}, {0, 1, 2}, {3, 4}, {0, 3, 4}, {3, 4}, {0, 1, 2, 3}};
+
+    auto freq = apriori_frequent_itemsets(txns, 2);
+
+    std::cout << "=== Apriori on 8 grocery baskets (minsup = 2) ===\n";
+    std::cout << freq.size() << " frequent itemsets:\n";
+    std::size_t max_k = 0;
+    for (const auto& fs : freq) max_k = std::max(max_k, fs.items.size());
+    std::vector<std::size_t> per_size(max_k + 1, 0);
+    for (const auto& fs : freq) {
+        std::cout << "  " << name_set(fs.items) << "  support " << fs.support << '\n';
+        ++per_size[fs.items.size()];
+    }
+
+    std::cout << "\nfrequent itemsets per size:\n";
+    for (std::size_t k = 1; k <= max_k; ++k) std::cout << "  size " << k << ": " << per_size[k] << '\n';
+
+    auto rules = association_rules(freq, txns.size(), 0.7);
+    std::cout << "\nassociation rules (confidence >= 0.7):\n";
+    for (const auto& r : rules)
+        std::cout << "  " << name_set(r.antecedent) << " => " << name_set(r.consequent) << "  conf "
+                  << r.confidence << "  lift " << r.lift << "  (supp " << r.support << ")\n";
+
+    // Figure: number of frequent itemsets by size.
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    for (std::size_t k = 1; k <= max_k; ++k) {
+        heights.push_back(static_cast<double>(per_size[k]));
+        labels.push_back("size " + std::to_string(k));
+    }
+    RPlot p = RPlot::barplot(heights, labels, "frequent itemsets", {22, 163, 74});
+    p.save_svg("build/org/apriori_levels.svg");
+    std::cout << "\nwrote build/org/apriori_levels.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/apriori_analysis.cpp <<'CPP'
+<<apriori-includes>>
+
+int main() {
+<<apriori-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/apriori_analysis.cpp -o build/org/apriori_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/apriori_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Apriori on 8 grocery baskets (minsup = 2) ===
+11 frequent itemsets:
+  {bread}  support 5
+  {milk}  support 5
+  {butter}  support 4
+  {beer}  support 4
+  {diapers}  support 3
+  {bread, milk}  support 4
+  {bread, butter}  support 3
+  {bread, beer}  support 2
+  {milk, butter}  support 4
+  {beer, diapers}  support 3
+  {bread, milk, butter}  support 3
+
+frequent itemsets per size:
+  size 1: 5
+  size 2: 5
+  size 3: 1
+
+association rules (confidence >= 0.7):
+  {bread, butter} => {milk}  conf 1  lift 1.6  (supp 3)
+  {butter} => {milk}  conf 1  lift 1.6  (supp 4)
+  {diapers} => {beer}  conf 1  lift 2  (supp 3)
+  {bread} => {milk}  conf 0.8  lift 1.28  (supp 4)
+  {milk} => {bread}  conf 0.8  lift 1.28  (supp 4)
+  {milk} => {butter}  conf 0.8  lift 1.6  (supp 4)
+  {bread, milk} => {butter}  conf 0.75  lift 1.5  (supp 3)
+  {milk, butter} => {bread}  conf 0.75  lift 1.2  (supp 3)
+  {butter} => {bread}  conf 0.75  lift 1.2  (supp 3)
+  {butter} => {bread, milk}  conf 0.75  lift 1.5  (supp 3)
+  {beer} => {diapers}  conf 0.75  lift 2  (supp 3)
+#+end_example
+
+The mined itemsets recover the two shopping patterns baked into the data: the
+=bread/milk/butter= cluster and the =beer/diapers= pair. The strongest rules are
+the perfect-confidence ones -- =diapers => beer= holds in every basket containing
+diapers -- with lift well above \(1\), confirming a genuine association rather than
+a coincidence of popular items. The bar chart shows the frequent-itemset count
+peaking at pairs and thinning at triples, the usual shape as the support
+threshold bites harder on larger sets.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/apriori_levels.svg]]
+
+* Cost, and what came after
+
+Apriori's weakness is the flip side of its strength: it may generate a very large
+number of candidate itemsets and, crucially, it *rescans the whole database once
+per level*. On dense data with long frequent patterns those scans dominate. Two
+influential successors attack exactly this: *Eclat* switches to a vertical
+tid-set layout so support is computed by set intersection with no repeated scans,
+and *FP-growth* compresses the database into a frequent-pattern tree and mines it
+recursively with no candidate generation at all. Both are covered in companion
+reports and, by construction, return the identical frequent-itemset collection.
+
+* Complexity
+
+Let \(L\) be the number of frequent itemsets and \(w\) the largest transaction
+size. Each level performs one \(O(N\cdot w \cdot |C_k|)\)-ish scan to count its
+candidates; the total work is output-sensitive but worst-case exponential in the
+number of items, since there can be exponentially many frequent itemsets. The
+downward-closure prune is what keeps the constant factors manageable in practice.

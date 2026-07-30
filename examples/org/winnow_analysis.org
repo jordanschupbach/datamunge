@@ -1,0 +1,208 @@
+#+title: Winnow: Multiplicative-Update Online Learning
+#+subtitle: A literate C++ study of Littlestone's algorithm and its logarithmic mistake bound, using =datamunge='s =algorithms::winnow_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When most of your features are irrelevant, how fast can you learn? The Perceptron's
+mistake bound scales with the squared norm of the data, so a flood of noise
+features hurts it. *Winnow* (Littlestone 1988) instead updates its weights
+*multiplicatively* and pays only *logarithmically* for irrelevant features: it
+learns a \(k\)-literal disjunction over \(n\) boolean attributes in
+\(O(k\log n)\) mistakes, essentially independent of how many distractors are
+present. This report implements Winnow2 in =datamunge='s C++
+=algorithms::winnow_train= as a literate program: every number and figure comes
+from one compiled binary. We hide the target concept \(y = x_2 \lor x_5\) among
+ten boolean features -- eight of them pure noise -- and watch Winnow converge to a
+perfect classifier while driving the two relevant weights up and leaving the
+irrelevant ones behind.
+#+end_abstract
+
+* Learning boolean concepts with many irrelevant features
+
+Each example is a boolean vector \(x\in\{0,1\}^n\) with label \(y\in\{0,1\}\).
+Winnow maintains positive weights \(w_i\) and a threshold \(\theta\), predicting
+\[
+  \hat y(x) = \big[\, w\cdot x > \theta \,\big].
+\]
+It is designed for concepts where only a few features matter -- monotone
+disjunctions, low-order thresholds -- but those relevant features are buried among
+many irrelevant ones, the regime where its multiplicative updates shine.
+
+=datamunge= trains it with =algorithms::winnow_train=, returning a =WinnowModel=
+carrying the learned =weights=, the =threshold=, whether it =converged=, and the
+=total_mistakes=; =winnow_predict= applies it.
+
+#+name: winnow-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/online_linear_classifiers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The multiplicative update
+
+Weights start at \(1\) and the threshold at \(\theta=n\). On a mistake, Winnow
+scales only the *active* weights (those with \(x_i=1\)) by a factor
+\(\alpha>1\), in the direction that would have fixed the error:
+\[
+  \text{false negative } (\hat y=0,\,y=1):\ w_i \leftarrow \alpha\,w_i \quad(\text{promote}),
+\]
+\[
+  \text{false positive } (\hat y=1,\,y=0):\ w_i \leftarrow w_i/\alpha \quad(\text{demote}),
+\]
+for every \(i\) with \(x_i=1\); weights of inactive features are untouched, and a
+correct prediction changes nothing. Because an irrelevant feature is active on
+positive and negative examples about equally often, its promotions and demotions
+cancel and its weight stays near \(1\) -- it never accumulates influence. A truly
+relevant feature, active exactly when the label is on, is promoted until it can
+cross the threshold on its own.
+
+The payoff is the mistake bound. For a monotone disjunction of \(k\) literals
+over \(n\) variables, Winnow2 makes at most \(O(k\log n)\) mistakes -- the
+dependence on the number of features is *logarithmic*, versus the Perceptron's
+polynomial dependence through \(R^2\). This is the multiplicative-weights
+advantage: exponentially fast to focus on a few relevant experts among many.
+
+** Pseudocode
+
+#+begin_example
+Winnow2(examples (x in {0,1}^n, y in {0,1}), alpha, theta = n):
+    w = (1, 1, ..., 1)
+    repeat until a full pass makes no mistake:
+        for each (x, y):
+            yhat = [ w . x > theta ]
+            if yhat == 0 and y == 1:              # false negative: promote
+                for i with x_i = 1: w_i *= alpha
+            else if yhat == 1 and y == 0:         # false positive: demote
+                for i with x_i = 1: w_i /= alpha
+    return w, theta
+#+end_example
+
+* A worked example: a disjunction among noise
+
+The target is \(y = x_2 \lor x_5\). We draw 400 random boolean vectors over ten
+features (the other eight irrelevant), train Winnow, and inspect the learned
+weights and mistake count.
+
+#+name: winnow-run
+#+begin_src c++ :eval no
+    std::mt19937_64             rng(2024);
+    std::bernoulli_distribution bit(0.5);
+    const std::size_t           dim = 10;
+    std::vector<std::vector<int>> X;
+    std::vector<int>              y;
+    for (int i = 0; i < 400; ++i) {
+        std::vector<int> row(dim);
+        for (std::size_t j = 0; j < dim; ++j) row[j] = bit(rng) ? 1 : 0;
+        X.push_back(row);
+        y.push_back((row[2] || row[5]) ? 1 : 0);  // target concept
+    }
+
+    WinnowModel model = winnow_train(X, y, 2.0, -1.0, 100);
+
+    std::cout << "=== Winnow learning y = x2 OR x5 among 10 features ===\n";
+    std::cout << "converged: " << (model.converged ? "yes" : "no") << " after " << model.epochs_run
+              << " epochs\n";
+    std::cout << "total mistakes: " << model.total_mistakes << "  (threshold theta = " << model.threshold
+              << ")\n\n";
+    std::cout << "learned weights:\n";
+    for (std::size_t j = 0; j < dim; ++j)
+        std::cout << "  w[" << j << "] = " << model.weights[j] << (j == 2 || j == 5 ? "   <- relevant" : "")
+                  << '\n';
+
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) correct += (winnow_predict(model, X[i]) == y[i]);
+    std::cout << "\ntraining accuracy: " << correct << "/" << X.size() << '\n';
+
+    // Figure: learned weight per feature (relevant features 2 and 5 dominate).
+    std::vector<double>      heights;
+    std::vector<std::string> names;
+    for (std::size_t j = 0; j < dim; ++j) {
+        heights.push_back(model.weights[j]);
+        names.push_back("x" + std::to_string(j));
+    }
+    RPlot p = RPlot::barplot(heights, names, "learned weight", {96, 165, 250});
+    p.abline_h(model.threshold, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/winnow_weights.svg");
+    std::cout << "\nwrote build/org/winnow_weights.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/winnow_analysis.cpp <<'CPP'
+<<winnow-includes>>
+
+int main() {
+<<winnow-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/winnow_analysis.cpp -o build/org/winnow_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/winnow_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Winnow learning y = x2 OR x5 among 10 features ===
+converged: yes after 2 epochs
+total mistakes: 11  (threshold theta = 10)
+
+learned weights:
+  w[0] = 1
+  w[1] = 1
+  w[2] = 16   <- relevant
+  w[3] = 1
+  w[4] = 2
+  w[5] = 16   <- relevant
+  w[6] = 1
+  w[7] = 1
+  w[8] = 0.5
+  w[9] = 1
+
+training accuracy: 400/400
+#+end_example
+
+Winnow converges to perfect accuracy after very few mistakes. The learned weights
+tell the story of the concept directly: the two relevant features \(x_2\) and
+\(x_5\) are promoted until each alone can exceed the threshold \(\theta\), while
+the eight irrelevant features remain near their initial value of \(1\) -- their
+promotions and demotions cancelled out. The dashed line marks \(\theta\): any
+single active relevant feature clears it, exactly encoding the disjunction. The
+mistake count is tiny relative to the 400 examples, illustrating the
+\(O(k\log n)\) bound.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/winnow_weights.svg]]
+
+* Winnow versus the Perceptron
+
+Winnow and the Perceptron are the canonical additive-vs-multiplicative pair.
+The Perceptron's additive update gives an \(L_2\) mistake bound \((R/\gamma)^2\)
+that grows with the number of features when they contribute to the norm; Winnow's
+multiplicative update gives a bound that is logarithmic in the number of features
+but assumes non-negative weights and a target expressible as a linear threshold
+over \(\{0,1\}\) features. The rule of thumb: prefer Winnow when you expect *few
+relevant features among many* (sparse targets, high-dimensional boolean data);
+prefer the Perceptron (or its margin-maximizing cousin, the SVM) when most
+features carry signal. The same multiplicative-weights principle underlies the
+Weighted Majority algorithm, Hedge, and AdaBoost.
+
+* Complexity
+
+Each example costs \(O(n)\) to score and \(O(n)\) to update on a mistake; the
+number of passes is controlled by the \(O(k\log n)\) mistake bound. Memory is
+\(O(n)\) for the weight vector.

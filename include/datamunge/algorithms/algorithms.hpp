@@ -3,8 +3,10 @@
 // Umbrella header for datamunge::algorithms -- general combinatorial, graph, and string algorithms.
 
 #include <datamunge/algorithms/aho_corasick.hpp>
+#include <datamunge/algorithms/adaboost.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
+#include <datamunge/algorithms/association_rules.hpp>
 #include <datamunge/algorithms/arnoldi_iteration.hpp>
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/bellman_ford.hpp>
@@ -81,6 +83,7 @@
 #include <datamunge/algorithms/number_theory_advanced.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/odds_algorithm.hpp>
+#include <datamunge/algorithms/online_linear_classifiers.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/permutations.hpp>

@@ -807,13 +807,13 @@ Further information: Machine learning and Statistical classification
     Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs
     ALOPEX: a correlation-based machine-learning algorithm
     Association rule learning: discover interesting relations between variables, used in data mining
-        Apriori algorithm
-        Eclat algorithm
-        FP-growth algorithm
+        [x] Apriori algorithm  -- datamunge::algorithms::apriori_frequent_itemsets (+ association_rules); level-wise downward-closure pruning; report examples/org/apriori_analysis.org
+        [x] Eclat algorithm  -- datamunge::algorithms::eclat_frequent_itemsets (depth-first vertical tidset intersection); report examples/org/eclat_analysis.org
+        [x] FP-growth algorithm  -- datamunge::algorithms::fp_growth_frequent_itemsets (FP-tree + conditional pattern bases, no candidate generation); report examples/org/fp_growth_analysis.org
         One-attribute rule
         Zero-attribute rule
     Boosting (meta-algorithm): Use many weak learners to boost effectiveness
-        AdaBoost: adaptive boosting
+        [x] AdaBoost: adaptive boosting  -- datamunge::algorithms::adaboost_train (AdaBoost.M1 over decision stumps); report examples/org/adaboost_analysis.org
         BrownBoost: a boosting algorithm that may be robust to noisy datasets
         LogitBoost: logistic regression boosting
         LPBoost: linear programming boosting
@@ -831,7 +831,7 @@ Further information: Machine learning and Statistical classification
     Neural Network
         Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input
         Hopfield net: a Recurrent neural network in which all connections are symmetric
-        Perceptron: the simplest kind of feedforward neural network: a linear classifier.
+        [x] Perceptron: the simplest kind of feedforward neural network: a linear classifier.  -- datamunge::algorithms::perceptron_train (mistake-driven additive updates, Novikoff bound); report examples/org/perceptron_analysis.org
         Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing.
         Radial basis function network: an artificial neural network that uses radial basis functions as activation functions
         Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples
@@ -844,7 +844,7 @@ Further information: Machine learning and Statistical classification
     Supervised learning: Learning by examples (labelled data-set split into training-set and test-set)
     Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets
         Structured SVM: allows training of a classifier for general structured output labels.
-    Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme
+    [x] Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme  -- datamunge::algorithms::winnow_train (Winnow2, O(k log n) mistake bound); report examples/org/winnow_analysis.org
 
 Programming language theory
 Further information: Programming language theory
