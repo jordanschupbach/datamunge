@@ -1,0 +1,172 @@
+#+title: Flood Fill: Filling a Connected Region
+#+subtitle: A literate C++ study of the paint-bucket algorithm, using =datamunge='s =algorithms::flood_fill=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Flood fill is the "paint bucket" of every image editor: click a cell, and every cell
+reachable from it through same-colored neighbors is recolored. It is a graph traversal
+over the implicit grid graph whose edges join equal-valued neighbors, so it visits
+each cell of the connected region exactly once. This report implements it in
+=datamunge='s C++ =algorithms::flood_fill= (an iterative depth-first fill supporting 4-
+or 8-connectivity) as a literate program: every number and figure comes from one
+compiled binary. We fill one connected region of a small grid and confirm that only
+that region -- not a same-colored but disconnected one -- changes.
+
+#+end_abstract
+
+* The algorithm
+
+Given a grid, a seed cell, and a new value, flood fill records the seed's *original*
+value \(v\), then explores outward, changing to the new value every cell that (a) holds
+value \(v\) and (b) is reachable from the seed through a chain of same-valued
+neighbors. It is exactly breadth-/depth-first search on the grid graph. Using an
+explicit stack (iterative DFS) avoids recursion-depth limits on large regions;
+4-connectivity treats only orthogonal neighbors as adjacent, 8-connectivity also
+diagonals.
+
+#+name: floodfill-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/flood_fill.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+FloodFill(grid, seed, new_value):
+    target = grid[seed]
+    if target == new_value: return
+    stack = [seed]
+    grid[seed] = new_value
+    while stack not empty:
+        (r, c) = stack.pop()
+        for each neighbor (nr, nc) of (r, c):     # 4- or 8-connected
+            if grid[nr][nc] == target:
+                grid[nr][nc] = new_value
+                stack.push((nr, nc))
+#+end_example
+
+* A worked example
+
+Our grid has a value-1 "blob" in the upper-left and a *separate* value-1 blob in the
+lower-right, on a sea of 0s. Filling the upper-left blob with 9 must recolor only that
+connected component, leaving the disconnected one untouched.
+
+#+name: floodfill-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<int>> grid = {
+        {1, 1, 1, 0, 0, 0, 0, 0},
+        {1, 1, 1, 0, 0, 0, 0, 0},
+        {1, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 0, 0, 1, 0},
+    };
+    auto print_grid = [](const std::vector<std::vector<int>>& g) {
+        for (const auto& row : g) {
+            std::cout << "  ";
+            for (int v : row) std::cout << v << ' ';
+            std::cout << '\n';
+        }
+    };
+
+    std::cout << "=== Flood fill: recolor the upper-left region ===\nbefore:\n";
+    print_grid(grid);
+
+    std::size_t filled = flood_fill(grid, 0, 0, 9, /*eight_connected=*/false);
+    std::cout << "\nfilled " << filled << " cells (seed at (0,0), value 1 -> 9)\nafter:\n";
+    print_grid(grid);
+
+    // Confirm the disconnected region is untouched.
+    std::cout << "\nlower-right region still value 1: " << (grid[3][5] == 1 ? "yes" : "no") << '\n';
+
+    // Figure: cells colored by value after the fill.
+    std::vector<double> zx, zy, nx, ny, ox, oy;
+    for (std::size_t i = 0; i < grid.size(); ++i)
+        for (std::size_t j = 0; j < grid[i].size(); ++j) {
+            double X = static_cast<double>(j), Y = -static_cast<double>(i);
+            if (grid[i][j] == 0) { zx.push_back(X); zy.push_back(Y); }
+            else if (grid[i][j] == 9) { nx.push_back(X); ny.push_back(Y); }
+            else { ox.push_back(X); oy.push_back(Y); }
+        }
+    RPlot p = RPlot::create();
+    p.points(zx, zy, "0 (background)", {226, 232, 240}, 9.0);
+    p.points(ox, oy, "1 (untouched region)", {22, 163, 74}, 9.0);
+    p.points(nx, ny, "9 (filled region)", {220, 38, 38}, 9.0);
+    p.legend({"0 background", "1 untouched", "9 filled"}, {{148, 163, 184}, {22, 163, 74}, {220, 38, 38}});
+    p.save_svg("build/org/flood_fill_grid.svg");
+    std::cout << "\nwrote build/org/flood_fill_grid.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/flood_fill_analysis.cpp <<'CPP'
+<<floodfill-includes>>
+
+int main() {
+<<floodfill-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/flood_fill_analysis.cpp -o build/org/flood_fill_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/flood_fill_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Flood fill: recolor the upper-left region ===
+before:
+  1 1 1 0 0 0 0 0
+  1 1 1 0 0 0 0 0
+  1 1 0 0 0 0 0 0
+  0 0 0 0 0 1 1 0
+  0 0 0 0 0 1 1 0
+  0 0 0 0 0 0 1 0
+
+filled 8 cells (seed at (0,0), value 1 -> 9)
+after:
+  9 9 9 0 0 0 0 0
+  9 9 9 0 0 0 0 0
+  9 9 0 0 0 0 0 0
+  0 0 0 0 0 1 1 0
+  0 0 0 0 0 1 1 0
+  0 0 0 0 0 0 1 0
+
+lower-right region still value 1: yes
+#+end_example
+
+The fill recolors exactly the eight cells of the upper-left connected component to 9,
+and the disconnected lower-right region of 1s is left alone -- because there is no
+same-valued path between them under 4-connectivity. The figure shows the three cell
+classes after the fill: background, the untouched region, and the newly filled one.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/flood_fill_grid.svg]]
+
+* Connectivity and relatives
+
+The choice of 4- versus 8-connectivity matters: two regions touching only at a corner
+are separate under 4-connectivity but joined under 8-connectivity. Flood fill is the
+kernel of *connected-component labeling* (run it from each unlabeled cell, giving each
+component a new label), of maze and region analysis, and -- with a similarity predicate
+instead of exact equality -- of *region-growing* image segmentation. Scanline flood
+fill reduces the stack size by filling whole horizontal spans at once; the same
+traversal underlies "bucket fill" tolerance and magic-wand selection tools.
+
+* Complexity
+
+\(O(\text{region size})\) time and, in the worst case, \(O(\text{region size})\) stack
+space -- each cell of the filled component is pushed and processed once.

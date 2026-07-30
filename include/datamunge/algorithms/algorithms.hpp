@@ -22,6 +22,7 @@
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
+#include <datamunge/algorithms/bresenham.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
@@ -40,16 +41,20 @@
 #include <datamunge/algorithms/ellipsoid.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
+#include <datamunge/algorithms/fft.hpp>
+#include <datamunge/algorithms/flood_fill.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/fuzzy_c_means.hpp>
 #include <datamunge/algorithms/hopfield_network.hpp>
+#include <datamunge/algorithms/huffman_coding.hpp>
 #include <datamunge/algorithms/gabow_scc.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/gauss_newton.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
+#include <datamunge/algorithms/goertzel.hpp>
 #include <datamunge/algorithms/grasp.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_connectivity.hpp>
@@ -121,6 +126,7 @@
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
+#include <datamunge/algorithms/run_length_encoding.hpp>
 #include <datamunge/algorithms/rule_learners.hpp>
 #include <datamunge/algorithms/structured_svm.hpp>
 #include <datamunge/algorithms/rvm.hpp>

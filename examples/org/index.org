@@ -539,6 +539,38 @@ We implement tournament selection (=algorithms::tournament_sample=) and report i
 
 We implement MOEA/D (Zhang & Li 2007) in =datamunge='s C++ =optim::MOEAD= and report it as a literate program: every number and figure below is real, compiled, executed output. We build the Das-Dennis weight lattice, derive the ideal-point-anchored Tchebycheff scalarization, show numerically how different weights steer to different parts of the front, and converge the decomposed population to the ZDT1 front to within \(\approx1.4\times10^{-3}\).
 
+* Signal Processing, Compression & Graphics
+
+** [[./fft_analysis.html][The Cooley-Tukey Fast Fourier Transform]] ([[./fft_analysis.pdf][PDF]])
+/A literate C++ study of the radix-2 FFT using datamunge/
+
+We transform a two-tone signal with =datamunge='s C++ =algorithms::fft=, and report it as a literate program: the divide-and-conquer butterfly recursion computes the DFT in O(N log N), the spectrum picks out the exact tone bins above the noise, and the inverse FFT reconstructs the signal to machine precision -- all shown by the compiled binary.
+
+** [[./goertzel_analysis.html][The Goertzel Algorithm: Single-Frequency Detection]] ([[./goertzel_analysis.pdf][PDF]])
+/A literate C++ study of Goertzel tone detection (DTMF) using datamunge/
+
+We decode a telephone touch-tone with =datamunge='s C++ =algorithms::goertzel_power=, and report it as a literate program: a second-order recurrence computes each DFT bin's power in O(N) with no complex arithmetic, and the two strongest of the eight DTMF frequencies decode the pressed digit -- as the compiled binary shows.
+
+** [[./huffman_analysis.html][Huffman Coding: Optimal Prefix-Free Compression]] ([[./huffman_analysis.pdf][PDF]])
+/A literate C++ study of Huffman's greedy code construction using datamunge/
+
+We compress text with =datamunge='s C++ =algorithms::huffman_build=, and report it as a literate program: the greedy merge of least-frequent symbols builds the optimal prefix code, giving frequent characters short codes and an average length within one bit of the entropy -- roughly half the fixed-8-bit size, as the compiled binary reports.
+
+** [[./run_length_encoding_analysis.html][Run-Length Encoding: Compression by Counting Runs]] ([[./run_length_encoding_analysis.pdf][PDF]])
+/A literate C++ study of RLE using datamunge/
+
+We compress a bitmap scanline with =datamunge='s C++ =algorithms::rle_encode=, and report it as a literate program: replacing each run of a repeated symbol with a (symbol, count) pair collapses a 67-character scanline to seven runs, while a run-free string would expand -- the compiled binary shows both.
+
+** [[./bresenham_analysis.html][Bresenham's Line Algorithm: Integer-Only Line Rasterization]] ([[./bresenham_analysis.pdf][PDF]])
+/A literate C++ study of Bresenham's algorithm using datamunge/
+
+We rasterize a line with =datamunge='s C++ =algorithms::bresenham_line=, and report it as a literate program: an integer error term picks the grid cell nearest the ideal line with only adds and comparisons, and the chosen cells sit right on the exact geometric line -- as the compiled binary plots.
+
+** [[./flood_fill_analysis.html][Flood Fill: Filling a Connected Region]] ([[./flood_fill_analysis.pdf][PDF]])
+/A literate C++ study of the paint-bucket algorithm using datamunge/
+
+We recolor a connected region with =datamunge='s C++ =algorithms::flood_fill=, and report it as a literate program: an iterative DFS over same-valued neighbors fills exactly the connected component of the seed and leaves a disconnected same-colored region untouched -- as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

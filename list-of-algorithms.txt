@@ -708,7 +708,7 @@ Further information: Computer graphics
         Marching squares: generates contour lines for a two-dimensional scalar field
         Marching tetrahedrons: an alternative to Marching cubes
     Discrete Green's theorem: an algorithm for computing double integral over a generalized rectangular domain in constant time. It is a natural extension to the summed area table algorithm
-    Flood fill: fills a connected region of a multi-dimensional array with a specified symbol
+    [x] Flood fill: fills a connected region of a multi-dimensional array with a specified symbol -- datamunge::algorithms::flood_fill (iterative DFS, 4/8-connectivity); report examples/org/flood_fill_analysis.org
     Global illumination algorithms: Considers direct illumination and reflection from other objects.
         Ambient occlusion
         Beam tracing
@@ -725,7 +725,7 @@ Further information: Computer graphics
         Scanline rendering: constructs an image by moving an imaginary line over the image
         Warnock algorithm
     Line drawing: graphical algorithm for approximating a line segment on discrete graphical media.
-        Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables)
+        [x] Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables) -- datamunge::algorithms::bresenham_line (integer all-octant midpoint); report examples/org/bresenham_analysis.org
         DDA line algorithm: plots points of a 2-dimensional array to form a straight line between specified points
         Xiaolin Wu's line algorithm: algorithm for line antialiasing.
     Midpoint circle algorithm: an algorithm used to determine the points needed for drawing a circle
@@ -969,7 +969,7 @@ Main pages: Lossless compression algorithms and List of compression algorithms
     Entropy encoding: coding scheme that assigns codes to symbols so as to match code lengths with the probabilities of the symbols
         Arithmetic coding: advanced entropy coding
             Range encoding: same as arithmetic coding, but looked at in a slightly different way
-        Huffman coding: simple lossless compression taking advantage of relative character frequencies
+        [x] Huffman coding: simple lossless compression taking advantage of relative character frequencies -- datamunge::algorithms::huffman_build (+ encode/decode; optimal prefix code); report examples/org/huffman_analysis.org
             Adaptive Huffman coding: adaptive coding technique based on Huffman coding
             Package-merge algorithm: Optimizes Huffman coding subject to a length restriction on code strings
         Shannon–Fano coding
@@ -987,7 +987,7 @@ Main pages: Lossless compression algorithms and List of compression algorithms
     Fast Efficient & Lossless Image Compression System (FELICS): a lossless image compression algorithm
     Incremental encoding: delta encoding applied to sequences of strings
     Prediction by partial matching (PPM): an adaptive statistical data compression technique based on context modeling and prediction
-    Run-length encoding: lossless data compression taking advantage of strings of repeated characters
+    [x] Run-length encoding: lossless data compression taking advantage of strings of repeated characters -- datamunge::algorithms::rle_encode / rle_decode; report examples/org/run_length_encoding_analysis.org
     SEQUITUR algorithm: lossless compression by incremental grammar inference on a string
 
 Lossy compression algorithms
@@ -1019,13 +1019,13 @@ Further information: Digital signal processing
     Discrete Fourier transform: determines the frequencies contained in a (segment of a) signal
         Bluestein's FFT algorithm
         Bruun's FFT algorithm
-        Cooley–Tukey FFT algorithm
-        Fast Fourier transform
+        [x] Cooley–Tukey FFT algorithm -- datamunge::algorithms::fft (radix-2 iterative, + inverse); report examples/org/fft_analysis.org
+        [x] Fast Fourier transform -- realized by datamunge::algorithms::fft (Cooley-Tukey radix-2); report examples/org/fft_analysis.org
         Prime-factor FFT algorithm
         Rader's FFT algorithm
     Fast folding algorithm: an efficient algorithm for the detection of approximately periodic events within time series data
     Gerchberg–Saxton algorithm: Phase retrieval algorithm for optical planes
-    Goertzel algorithm: identify a particular frequency component in a signal. Can be used for DTMF digit decoding.
+    [x] Goertzel algorithm: identify a particular frequency component in a signal. Can be used for DTMF digit decoding. -- datamunge::algorithms::goertzel_power / goertzel_power_bin (single-bin detection, DTMF); report examples/org/goertzel_analysis.org
     Karplus-Strong string synthesis: physical modelling synthesis to simulate the sound of a hammered or plucked string or some types of percussion
 
 Image processing

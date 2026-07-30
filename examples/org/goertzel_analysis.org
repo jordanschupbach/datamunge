@@ -1,0 +1,165 @@
+#+title: The Goertzel Algorithm: Single-Frequency Detection
+#+subtitle: A literate C++ study of Goertzel tone detection (DTMF decoding), using =datamunge='s =algorithms::goertzel_power=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When you need the strength of just *one* frequency -- not the whole spectrum -- a full
+FFT is overkill. The *Goertzel algorithm* (1958) computes a single DFT bin with a
+tiny second-order recurrence, \(O(N)\) work and two state variables, no complex
+arithmetic in the loop. Its classic application is *DTMF decoding*: recognizing which
+telephone touch-tone button was pressed, each of which sends a pair of sine tones.
+This report implements it in =datamunge='s C++ =algorithms::goertzel_power= as a
+literate program: every number and figure comes from one compiled binary. We
+synthesize a touch-tone, run Goertzel at the eight DTMF frequencies, and read off the
+pressed digit from the two strongest responses.
+#+end_abstract
+
+* The recurrence
+
+For target bin \(k\) with \(\omega=2\pi k/N\) and \(c=2\cos\omega\), Goertzel runs the
+real second-order filter
+\[
+  s_n = x_n + c\,s_{n-1} - s_{n-2}
+\]
+over the \(N\) samples, then reads the bin power
+\(|X_k|^2 = s_{N-1}^2 + s_{N-2}^2 - c\,s_{N-1}s_{N-2}\). This is exactly the DFT
+coefficient's magnitude, obtained with one multiply-add per sample and no storage of
+the spectrum -- ideal for embedded and streaming detection of a handful of known
+frequencies.
+
+#+name: goertzel-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/goertzel.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Goertzel(x[0..N-1], k):
+    c = 2*cos(2*pi*k/N)
+    s1 = 0;  s2 = 0
+    for n = 0 .. N-1:
+        s0 = x[n] + c*s1 - s2
+        s2 = s1;  s1 = s0
+    return s1^2 + s2^2 - c*s1*s2       # |X_k|^2
+#+end_example
+
+* A worked example: decoding a touch-tone
+
+Each DTMF digit is the sum of one *row* tone (697/770/852/941 Hz) and one *column*
+tone (1209/1336/1477/1633 Hz). We synthesize the tone pair for the digit "5"
+(770 + 1336 Hz) at an 8 kHz sample rate, run Goertzel at all eight frequencies, and
+decode the digit from the strongest row and column responses.
+
+#+name: goertzel-run
+#+begin_src c++ :eval no
+    const double        fs = 8000.0;
+    const std::size_t   N  = 410;  // ~51 ms, the DTMF standard block
+    const double        row_hz[4] = {697, 770, 852, 941};
+    const double        col_hz[4] = {1209, 1336, 1477, 1633};
+    const char          keypad[4][4] = {{'1', '2', '3', 'A'}, {'4', '5', '6', 'B'},
+                                        {'7', '8', '9', 'C'}, {'*', '0', '#', 'D'}};
+
+    // Synthesize digit '5' = row 770 Hz + col 1336 Hz.
+    std::vector<double> x(N);
+    for (std::size_t n = 0; n < N; ++n)
+        x[n] = std::sin(2.0 * M_PI * 770.0 * n / fs) + std::sin(2.0 * M_PI * 1336.0 * n / fs);
+
+    std::cout << "=== Goertzel DTMF decode (tone = 770 + 1336 Hz) ===\n";
+    std::cout << "row powers:\n";
+    std::vector<double> powers, labels_x;
+    std::vector<std::string> labels;
+    int    best_row = 0; double br = -1;
+    for (int r = 0; r < 4; ++r) {
+        double p = goertzel_power(x, row_hz[r], fs);
+        std::cout << "  " << row_hz[r] << " Hz: " << p << '\n';
+        if (p > br) { br = p; best_row = r; }
+        powers.push_back(p); labels_x.push_back(powers.size()); labels.push_back(std::to_string((int)row_hz[r]));
+    }
+    std::cout << "column powers:\n";
+    int best_col = 0; double bc = -1;
+    for (int c = 0; c < 4; ++c) {
+        double p = goertzel_power(x, col_hz[c], fs);
+        std::cout << "  " << col_hz[c] << " Hz: " << p << '\n';
+        if (p > bc) { bc = p; best_col = c; }
+        powers.push_back(p); labels_x.push_back(powers.size()); labels.push_back(std::to_string((int)col_hz[c]));
+    }
+    std::cout << "\nstrongest row = " << row_hz[best_row] << " Hz, strongest column = " << col_hz[best_col]
+              << " Hz\n";
+    std::cout << "=> decoded digit: " << keypad[best_row][best_col] << '\n';
+
+    RPlot p = RPlot::barplot(powers, labels, "Goertzel power", {37, 99, 235});
+    p.save_svg("build/org/goertzel_dtmf.svg");
+    std::cout << "\nwrote build/org/goertzel_dtmf.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/goertzel_analysis.cpp <<'CPP'
+<<goertzel-includes>>
+
+int main() {
+<<goertzel-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/goertzel_analysis.cpp -o build/org/goertzel_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/goertzel_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Goertzel DTMF decode (tone = 770 + 1336 Hz) ===
+row powers:
+  697 Hz: 469.788
+  770 Hz: 20512.7
+  852 Hz: 116.612
+  941 Hz: 13.3298
+column powers:
+  1209 Hz: 60.6455
+  1336 Hz: 18635.1
+  1477 Hz: 98.2659
+  1633 Hz: 27.1843
+
+strongest row = 770 Hz, strongest column = 1336 Hz
+=> decoded digit: 5
+#+end_example
+
+Exactly two of the eight Goertzel responses stand out -- 770 Hz among the rows and
+1336 Hz among the columns -- towering over the six absent frequencies. Their
+intersection on the keypad is the digit "5", correctly decoded. Detecting these eight
+tones with Goertzel costs eight cheap \(O(N)\) passes, far less than a full FFT and
+with no need to store a spectrum, which is exactly why real DTMF receivers use it.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/goertzel_dtmf.svg]]
+
+* Character and relatives
+
+Goertzel is the right tool when the frequencies of interest are *few and known*:
+touch-tone and signaling-tone detection, tuner/pitch detection, and monitoring
+specific spectral lines. Its cost is \(O(NM)\) for \(M\) target bins, so once \(M\)
+approaches \(\log N\) a single FFT wins. It is a special case of a *sliding-DFT* / IIR
+resonator, and its numerical stability degrades for very long blocks (the poles sit
+on the unit circle), which streaming and windowed variants address.
+
+* Complexity
+
+\(O(N)\) time and \(O(1)\) memory per target frequency -- one multiply-add and two
+stored values per sample -- versus \(O(N\log N)\) and \(O(N)\) for a full FFT.
