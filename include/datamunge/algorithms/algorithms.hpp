@@ -30,12 +30,14 @@
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
+#include <datamunge/algorithms/cyk_parser.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/decision_tree_induction.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
+#include <datamunge/algorithms/double_dabble.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
@@ -47,6 +49,7 @@
 #include <datamunge/algorithms/flood_fill.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
 #include <datamunge/algorithms/floyd_warshall.hpp>
+#include <datamunge/algorithms/fnv_hash.hpp>
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/fuzzy_c_means.hpp>
@@ -109,8 +112,10 @@
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
+#include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
+#include <datamunge/algorithms/pearson_hashing.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
@@ -167,3 +172,4 @@
 #include <datamunge/algorithms/wang_landau.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>
 #include <datamunge/algorithms/ziggurat.hpp>
+#include <datamunge/algorithms/zobrist_hashing.hpp>

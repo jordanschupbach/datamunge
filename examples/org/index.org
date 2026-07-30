@@ -603,6 +603,38 @@ We validate identification numbers with =datamunge='s C++ =algorithms::luhn_vali
 
 We validate numbers with =datamunge='s C++ =algorithms::verhoeff_validate=, and report it as a literate program: the non-commutative dihedral-group product catches 100% of single-digit errors and 100% of adjacent transpositions -- including the 09<->90 swaps Luhn misses on the very same number -- as the compiled binary shows.
 
+* Parsing, Hashing & Bit Manipulation
+
+** [[./shunting_yard_analysis.html][The Shunting-Yard Algorithm: Infix to Postfix]] ([[./shunting_yard_analysis.pdf][PDF]])
+/A literate C++ study of Dijkstra's expression parser using datamunge/
+
+We convert and evaluate arithmetic expressions with =datamunge='s C++ =algorithms::shunting_yard_to_postfix=, and report it as a literate program: an operator stack turns infix into postfix in one pass, correctly handling precedence, parentheses, and right-associative exponentiation, as the compiled binary shows.
+
+** [[./cyk_analysis.html][The CYK Algorithm: Parsing Context-Free Grammars]] ([[./cyk_analysis.pdf][PDF]])
+/A literate C++ study of Cocke-Younger-Kasami recognition using datamunge/
+
+We recognize a context-free language with =datamunge='s C++ =algorithms::cyk_recognize=, and report it as a literate program: an O(n^3) dynamic program over substrings accepts exactly the balanced strings of the non-regular language a^n b^n and rejects the rest, as the compiled binary shows.
+
+** [[./fnv_analysis.html][FNV-1a: A Fast Non-Cryptographic Hash]] ([[./fnv_analysis.pdf][PDF]])
+/A literate C++ study of the Fowler-Noll-Vo hash using datamunge/
+
+We hash keys with =datamunge='s C++ =algorithms::fnv1a_64=, and report it as a literate program: an XOR-then-multiply per byte reproduces the FNV reference values and scatters a word list near-uniformly across buckets, as the compiled binary measures.
+
+** [[./pearson_analysis.html][Pearson Hashing: An 8-Bit Hash from a Permutation Table]] ([[./pearson_analysis.pdf][PDF]])
+/A literate C++ study of Pearson's hash using datamunge/
+
+We hash strings with =datamunge='s C++ =algorithms::pearson_hash=, and report it as a literate program: a single 256-byte permutation table and one XOR-lookup per byte give good dispersion and guaranteed one-byte sensitivity, as the compiled binary shows.
+
+** [[./zobrist_analysis.html][Zobrist Hashing: Incremental Hashing of Board Positions]] ([[./zobrist_analysis.pdf][PDF]])
+/A literate C++ study of Zobrist hashing using datamunge/
+
+We hash game positions with =datamunge='s C++ =algorithms::zobrist_hash= / =zobrist_update=, and report it as a literate program: XOR of per-(cell,piece) random keys makes a move an O(1) update whose result matches a full recompute at every step, with no collisions over 20000 random positions, as the compiled binary confirms.
+
+** [[./double_dabble_analysis.html][Double Dabble: Binary to BCD with Shifts and Adds]] ([[./double_dabble_analysis.pdf][PDF]])
+/A literate C++ study of the shift-and-add-3 algorithm using datamunge/
+
+We convert binary integers to decimal digits with =datamunge='s C++ =algorithms::double_dabble=, and report it as a literate program: shifting into a BCD field with an add-3 correction before each shift converts values up to the full 32-bit range using only shifts and adds -- no division -- as the compiled binary verifies.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

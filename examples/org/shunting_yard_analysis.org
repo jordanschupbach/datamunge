@@ -1,0 +1,145 @@
+#+title: The Shunting-Yard Algorithm: Infix to Postfix
+#+subtitle: A literate C++ study of Dijkstra's expression parser, using =datamunge='s =algorithms::shunting_yard_to_postfix=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Humans write arithmetic *infix* (`3 + 4 * 2`), where precedence and parentheses
+decide the order; computers evaluate *postfix* (`3 4 2 * +`) with a single stack and
+no rules at all. Dijkstra's *shunting-yard algorithm* (1961) converts one to the other
+in a single left-to-right pass, using an operator stack -- operators are "shunted"
+aside like railway cars until precedence says to emit them. This report implements it
+in =datamunge='s C++ =algorithms::shunting_yard_to_postfix= (plus an RPN evaluator) as
+a literate program: every number and figure comes from one compiled binary. We convert
+and evaluate several expressions, confirming precedence, parentheses, and right
+associativity are all handled.
+#+end_abstract
+
+* Precedence, associativity, and the operator stack
+
+Scan the infix tokens left to right. A *number* goes straight to the output. An
+*operator* first pops from the stack every operator of higher precedence (or equal
+precedence when the current operator is left-associative), emitting them, then is
+pushed. A *left parenthesis* is pushed; a *right parenthesis* pops until the matching
+left parenthesis. At the end, remaining operators are emitted. The result is postfix,
+which an RPN evaluator runs by pushing operands and, on each operator, popping two and
+pushing the result. Exponentiation `^` is right-associative, so `2 ^ 3 ^ 2` means
+`2 ^ (3 ^ 2)`.
+
+#+name: sy-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/shunting_yard.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ShuntingYard(infix tokens):
+    for each token:
+        if number:  output.append(number)
+        if operator o1:
+            while operator o2 on top with (prec(o2) > prec(o1)
+                    or (prec(o2)==prec(o1) and o1 left-associative)):
+                output.append(pop)
+            push o1
+        if '(':  push
+        if ')':  pop to output until '('; discard '('
+    pop remaining operators to output
+#+end_example
+
+* A worked example
+
+We convert a few expressions to postfix and evaluate them, exercising precedence,
+parentheses, and right-associative exponentiation.
+
+#+name: sy-run
+#+begin_src c++ :eval no
+    std::vector<std::string> exprs = {"3 + 4 * 2", "( 3 + 4 ) * 2", "3 + 4 * 2 / ( 1 - 5 )", "2 ^ 3 ^ 2",
+                                      "100 * 2 + 12"};
+    std::cout << "=== Shunting-yard: infix -> postfix -> value ===\n";
+    std::vector<double>      vals;
+    std::vector<std::string> labels;
+    for (const auto& e : exprs) {
+        std::string post = shunting_yard_to_postfix(e);
+        double      v    = evaluate_rpn(post);
+        std::cout << "  " << e << "\n     postfix: " << post << "\n     value:   " << v << '\n';
+        vals.push_back(v);
+        labels.push_back(post);
+    }
+
+    RPlot p = RPlot::barplot(vals, {"3+4*2", "(3+4)*2", "3+4*2/(1-5)", "2^3^2", "100*2+12"}, "evaluated value",
+                             {37, 99, 235});
+    p.save_svg("build/org/shunting_yard_values.svg");
+    std::cout << "\nwrote build/org/shunting_yard_values.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/shunting_yard_analysis.cpp <<'CPP'
+<<sy-includes>>
+
+int main() {
+<<sy-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/shunting_yard_analysis.cpp -o build/org/shunting_yard_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/shunting_yard_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Shunting-yard: infix -> postfix -> value ===
+  3 + 4 * 2
+     postfix: 3 4 2 * +
+     value:   11
+  ( 3 + 4 ) * 2
+     postfix: 3 4 + 2 *
+     value:   14
+  3 + 4 * 2 / ( 1 - 5 )
+     postfix: 3 4 2 * 1 5 - / +
+     value:   1
+  2 ^ 3 ^ 2
+     postfix: 2 3 2 ^ ^
+     value:   512
+  100 * 2 + 12
+     postfix: 100 2 * 12 +
+     value:   212
+#+end_example
+
+Each conversion respects the rules: `3 + 4 * 2` binds the multiplication first
+(postfix `3 4 2 * +` = 11), parentheses override that in `( 3 + 4 ) * 2` (= 14),
+right-associative `^` makes `2 ^ 3 ^ 2` = \(2^{9}\) = 512, and the mixed expression
+evaluates to 1. The postfix forms need no precedence rules to evaluate -- a single
+stack pass suffices -- which is exactly what the algorithm buys.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/shunting_yard_values.svg]]
+
+* Reach and relatives
+
+Shunting-yard is the canonical *operator-precedence* parser: compilers, calculators,
+and spreadsheet engines use it (or its close relatives) to turn expressions into
+postfix or expression trees. Extended, it handles unary operators, function calls, and
+comma-separated arguments. It is a special case of *Pratt* (top-down operator
+precedence) parsing, and the postfix it produces is exactly what a stack-based virtual
+machine executes.
+
+* Complexity
+
+\(O(n)\) time over \(n\) tokens -- each token is pushed and popped at most once -- and
+\(O(n)\) stack/output space.

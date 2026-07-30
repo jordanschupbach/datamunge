@@ -858,7 +858,7 @@ Further information: Programming language theory
 Parsing
 Further information: Parsing
 
-    CYK algorithm: an O(n3) algorithm for parsing context-free grammars in Chomsky normal form
+    [x] CYK algorithm: an O(n3) algorithm for parsing context-free grammars in Chomsky normal form -- datamunge::algorithms::cyk_recognize (CNF dynamic-programming parser); report examples/org/cyk_analysis.org
     Earley parser: another O(n3) algorithm for parsing any context-free grammar
     GLR parser: an algorithm for parsing any context-free grammar by Masaru Tomita. It is tuned for deterministic grammars, on which it performs almost linear time and O(n3) in worst case.[clarification needed]
     Inside-outside algorithm: an O(n3) algorithm for re-estimating production probabilities in probabilistic context-free grammars
@@ -873,7 +873,7 @@ Further information: Parsing
     Packrat parser: a linear time parsing algorithm supporting some context-free grammars and parsing expression grammars
     Pratt parser
     Recursive descent parser: a top-down parser suitable for LL(k) grammars
-    Shunting-yard algorithm: converts an infix-notation math expression to postfix
+    [x] Shunting-yard algorithm: converts an infix-notation math expression to postfix -- datamunge::algorithms::shunting_yard_to_postfix (+ evaluate_rpn); report examples/org/shunting_yard_analysis.org
 
 Quantum algorithms
 Further information: Quantum algorithm
@@ -1062,11 +1062,11 @@ Further information: Software engineering
 
     Cache algorithms
     CHS conversion: converting between disk addressing systems
-    Double dabble: convert binary numbers to BCD
+    [x] Double dabble: convert binary numbers to BCD -- datamunge::algorithms::double_dabble (shift-and-add-3 binary->BCD); report examples/org/double_dabble_analysis.org
     Hash function: convert a large, possibly variable-sized amount of data into a small datum, usually a single integer that may serve as an index into an array
-        Fowler–Noll–Vo hash function: fast with low collision rate
-        Pearson hashing: computes 8-bit value only, optimized for 8-bit computers
-        Zobrist hashing: used in the implementation of transposition tables
+        [x] Fowler–Noll–Vo hash function: fast with low collision rate -- datamunge::algorithms::fnv1a_64 / fnv1a_32; report examples/org/fnv_analysis.org
+        [x] Pearson hashing: computes 8-bit value only, optimized for 8-bit computers -- datamunge::algorithms::pearson_hash (permutation-table 8-bit hash); report examples/org/pearson_analysis.org
+        [x] Zobrist hashing: used in the implementation of transposition tables -- datamunge::algorithms::zobrist_hash / zobrist_update (incremental XOR hashing); report examples/org/zobrist_analysis.org
     Unicode collation algorithm
     Xor swap algorithm: swaps the values of two variables without using a buffer
 

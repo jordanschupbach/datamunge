@@ -1,0 +1,143 @@
+#+title: The CYK Algorithm: Parsing Context-Free Grammars
+#+subtitle: A literate C++ study of Cocke-Younger-Kasami recognition, using =datamunge='s =algorithms::cyk_recognize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Deciding whether a string belongs to a context-free language looks like it might need
+backtracking search, but the *CYK algorithm* does it in guaranteed \(O(n^3)\) time by
+dynamic programming, provided the grammar is in *Chomsky normal form* (every rule is
+\(A\to BC\) or \(A\to a\)). It fills a triangular table of "which nonterminals derive
+this substring", combining shorter spans into longer ones. This report implements it
+in =datamunge='s C++ =algorithms::cyk_recognize= as a literate program: every result
+below comes from one compiled binary. We give it a grammar for the non-regular
+language \(a^n b^n\) and watch it accept exactly the balanced strings and reject the
+rest.
+#+end_abstract
+
+* Dynamic programming over substrings
+
+CYK builds a table where cell \((i,\ell)\) holds every nonterminal that can derive the
+length-\(\ell\) substring starting at position \(i\). Length-1 cells are filled directly
+from the terminal rules \(A\to a\). A longer cell is filled by trying every way to
+*split* its substring into a left part of length \(k\) and a right part of length
+\(\ell-k\): if some rule \(A\to BC\) has \(B\) in the left cell and \(C\) in the right
+cell, then \(A\) derives the whole substring. The string is accepted iff the *start
+symbol* appears in the top cell spanning the entire string. Chomsky normal form is what
+makes the "two children" split well-defined.
+
+#+name: cyk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/cyk_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+CYK(grammar in CNF, string s of length n):
+    for i in 0..n-1:  P[1][i] = { A : A -> s[i] }
+    for len in 2..n:
+        for i in 0..n-len:
+            for k in 1..len-1:                        # split point
+                for each rule A -> B C:
+                    if B in P[k][i] and C in P[len-k][i+k]:
+                        add A to P[len][i]
+    accept iff start symbol in P[n][0]
+#+end_example
+
+* A worked example: the language a^n b^n
+
+The grammar \(S\to AB\mid AC,\; C\to SB,\; A\to a,\; B\to b\) generates exactly
+\(a^n b^n\) for \(n\ge 1\) -- a classic *non-regular* language no finite automaton can
+recognize. We test a range of strings.
+
+#+name: cyk-run
+#+begin_src c++ :eval no
+    // Ids: S=0, A=1, B=2, C=3.
+    CNFGrammar g;
+    g.start      = 0;
+    g.unary['a'] = {1};
+    g.unary['b'] = {2};
+    g.binary     = {{0, 1, 2}, {0, 1, 3}, {3, 0, 2}};
+
+    std::vector<std::string> tests = {"ab", "aabb", "aaabbb", "aab", "abb", "ba", "aabbb", "aaaabbbb"};
+    std::cout << "=== CYK recognition of a^n b^n ===\nstring        in language?\n";
+    std::vector<double>      accept;
+    std::vector<std::string> labels;
+    for (const auto& t : tests) {
+        bool ok = cyk_recognize(g, t);
+        std::cout << "  " << t << std::string(12 - t.size(), ' ') << (ok ? "yes" : "no") << '\n';
+        accept.push_back(ok ? 1.0 : 0.0);
+        labels.push_back(t);
+    }
+
+    RPlot p = RPlot::barplot(accept, labels, "accepted (1) / rejected (0)", {22, 163, 74});
+    p.save_svg("build/org/cyk_accept.svg");
+    std::cout << "\nwrote build/org/cyk_accept.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cyk_analysis.cpp <<'CPP'
+<<cyk-includes>>
+
+int main() {
+<<cyk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cyk_analysis.cpp -o build/org/cyk_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cyk_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== CYK recognition of a^n b^n ===
+string        in language?
+  ab          yes
+  aabb        yes
+  aaabbb      yes
+  aab         no
+  abb         no
+  ba          no
+  aabbb       no
+  aaaabbbb    yes
+#+end_example
+
+CYK accepts exactly the balanced strings \(ab, aabb, aaabbb, aaaabbbb\) and rejects
+everything else -- the unbalanced \(aab, abb, aabbb\) and the out-of-order \(ba\). It
+recognizes \(a^n b^n\), a language provably beyond any regular expression or finite
+automaton, using only its \(O(n^3)\) table fill. The accept/reject bar chart shows the
+clean separation.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/cyk_accept.svg]]
+
+* Reach and relatives
+
+CYK is the standard general CFG parser: it handles *any* context-free grammar (after
+conversion to Chomsky normal form) in cubic time, where specialized parsers (LL, LR)
+handle only restricted subclasses in linear time. Its dynamic-programming table extends
+to *probabilistic* CFGs -- weighting each derivation and taking max (Viterbi parse) or
+sum (the inside algorithm) -- which underlies statistical parsing and RNA secondary-
+structure prediction. The Earley parser is an alternative that avoids the CNF
+conversion.
+
+* Complexity
+
+\(O(n^3\,|G|)\) time -- \(n^2\) cells, each trying \(n\) split points against \(|G|\)
+rules -- and \(O(n^2)\) space for the table.

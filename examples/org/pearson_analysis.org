@@ -1,0 +1,132 @@
+#+title: Pearson Hashing: An 8-Bit Hash from a Permutation Table
+#+subtitle: A literate C++ study of Pearson's hash, using =datamunge='s =algorithms::pearson_hash=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Pearson hashing (1990) computes an 8-bit hash of a byte string using nothing but a
+fixed *permutation of the 256 byte values* and one table lookup per input byte. Despite
+its simplicity -- designed for 8-bit machines with no multiply -- it distributes well and
+guarantees that changing any input byte changes the hash. This report implements it in
+=datamunge='s C++ =algorithms::pearson_hash= as a literate program: every number and
+figure comes from one compiled binary. We hash a word list, show the 8-bit outputs
+spread across their range, and confirm the one-byte sensitivity that makes it a decent
+small hash.
+#+end_abstract
+
+* Lookup-driven mixing
+
+Start from \(h = 0\). For each byte \(b\), update \(h \leftarrow T[h \oplus b]\), where
+\(T\) is a fixed permutation of \(\{0,\dots,255\}\). Because \(T\) is a *permutation*
+(a bijection), the mixing step never collapses distinct states, so distinct one-byte
+changes always land on distinct table entries -- there is no trivial way for two inputs
+differing in one byte to hash the same. Wider hashes are built by re-running with
+different initial offsets and concatenating the 8-bit results.
+
+#+name: pearson-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pearson_hashing.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Pearson(bytes, table T):        # T is a permutation of 0..255
+    h = 0
+    for each byte b:
+        h = T[ h XOR b ]
+    return h
+#+end_example
+
+* A worked example
+
+We hash a word list to 8-bit values, bucket them into 16 groups to check spread, and
+verify that a single changed letter changes the hash.
+
+#+name: pearson-run
+#+begin_src c++ :eval no
+    const std::vector<std::string> words = {
+        "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "hash", "table",
+        "algorithm", "data", "structure", "vector", "matrix", "graph", "tree", "heap", "queue", "stack",
+        "alpha", "beta", "gamma", "delta", "one", "two", "three", "four", "five", "six", "seven", "eight"};
+
+    std::cout << "=== Pearson hashing (8-bit) ===\n";
+    std::cout << "hash(\"hash\") = " << static_cast<int>(pearson_hash("hash")) << '\n';
+    std::cout << "hash(\"hush\") = " << static_cast<int>(pearson_hash("hush"))
+              << "  (one-byte change flips it)\n\n";
+
+    std::vector<double> buckets(16, 0.0);
+    for (const auto& w : words) buckets[pearson_hash(w) / 16] += 1.0;  // high nibble bucket
+    std::cout << words.size() << " words into 16 buckets (by high nibble of the 8-bit hash):\n  ";
+    for (double b : buckets) std::cout << static_cast<int>(b) << ' ';
+    std::cout << "\n(ideal ~" << double(words.size()) / 16.0 << " per bucket)\n";
+
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(buckets, labels, "words per bucket", {147, 51, 234});
+    p.abline_h(double(words.size()) / 16.0, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/pearson_distribution.svg");
+    std::cout << "\nwrote build/org/pearson_distribution.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pearson_analysis.cpp <<'CPP'
+<<pearson-includes>>
+
+int main() {
+<<pearson-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pearson_analysis.cpp -o build/org/pearson_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pearson_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pearson hashing (8-bit) ===
+hash("hash") = 12
+hash("hush") = 39  (one-byte change flips it)
+
+32 words into 16 buckets (by high nibble of the 8-bit hash):
+  4 1 4 2 0 1 2 0 7 2 2 1 2 2 1 1
+(ideal ~2 per bucket)
+#+end_example
+
+Changing one letter of "hash" to "hush" changes the 8-bit output, and the word list
+spreads across the buckets near the two-per-bucket ideal -- good dispersion from a single
+lookup table and an XOR per byte. Pearson's permutation-table mixing is what buys both
+the spread and the guaranteed one-byte sensitivity.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pearson_distribution.svg]]
+
+* Uses and character
+
+Pearson hashing suits *small* hash tables and 8-bit environments, or as a cheap
+building block for wider hashes. Its 8-bit output means only 256 possible values, so
+collisions are unavoidable on large sets -- the wide variant (concatenating several
+byte-hashes) extends the range. Like FNV it is non-cryptographic. The choice of
+permutation table matters only mildly for typical data; the standard table shipped here
+is the one from Pearson's paper.
+
+* Complexity
+
+\(O(n)\) time -- one XOR and one table lookup per byte -- with \(O(1)\) state plus a
+256-byte table.

@@ -1,0 +1,137 @@
+#+title: FNV-1a: A Fast Non-Cryptographic Hash
+#+subtitle: A literate C++ study of the Fowler-Noll-Vo hash, using =datamunge='s =algorithms::fnv1a_64=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Hash tables need a fast function that scatters keys uniformly across buckets. *FNV-1a*
+(Fowler-Noll-Vo) does it with one XOR and one multiply per byte -- tiny, fast, and with
+good dispersion for short keys. This report implements it in =datamunge='s C++
+=algorithms::fnv1a_64= / =fnv1a_32= as a literate program: every number and figure
+comes from one compiled binary. We verify reference values, hash a word list, and show
+the low bits distribute nearly uniformly across buckets -- the property that matters for
+a hash table.
+#+end_abstract
+
+* XOR then multiply
+
+FNV-1a starts from a fixed 64-bit *offset basis* and, for each byte \(b\), updates
+\[
+  h \leftarrow (h \oplus b)\times \text{FNV\_prime},
+\]
+with the 64-bit prime \(1099511628211\). XOR-before-multiply (the "1a" order) mixes each
+byte into the low bits *before* the multiply spreads them upward, giving better
+avalanche than the original multiply-first FNV-1. The prime and offset basis are chosen
+to disperse well over the byte alphabet.
+
+#+name: fnv-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/fnv_hash.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+FNV-1a(bytes):
+    h = offset_basis                       # 14695981039346656037 (64-bit)
+    for each byte b:
+        h = h XOR b
+        h = h * FNV_prime                  # 1099511628211
+    return h
+#+end_example
+
+* A worked example
+
+We verify the empty-string and single-byte reference values, then hash a list of words
+and count how they fall into 16 buckets (the low 4 bits of the hash) to check
+uniformity.
+
+#+name: fnv-run
+#+begin_src c++ :eval no
+    std::cout << std::hex << std::uppercase;
+    std::cout << "=== FNV-1a ===\n";
+    std::cout << "fnv1a_32(\"\")  = 0x" << fnv1a_32("") << "  (offset basis 0x811C9DC5)\n";
+    std::cout << "fnv1a_32(\"a\") = 0x" << fnv1a_32("a") << "  (reference 0xE40C292C)\n";
+    std::cout << std::dec << std::nouppercase;
+
+    const std::vector<std::string> words = {
+        "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "hash", "table",
+        "algorithm", "data", "structure", "vector", "matrix", "graph", "tree", "heap", "queue", "stack",
+        "alpha", "beta", "gamma", "delta", "one", "two", "three", "four", "five", "six", "seven", "eight"};
+    std::vector<double> buckets(16, 0.0);
+    for (const auto& w : words) buckets[fnv1a_64(w) & 0xF] += 1.0;
+
+    std::cout << "\n" << words.size() << " words into 16 buckets (low 4 bits of the hash):\n  ";
+    for (double b : buckets) std::cout << static_cast<int>(b) << ' ';
+    std::cout << "\n(ideal ~" << (double(words.size()) / 16.0) << " per bucket)\n";
+
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(buckets, labels, "words per bucket", {37, 99, 235});
+    p.abline_h(double(words.size()) / 16.0, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/fnv_distribution.svg");
+    std::cout << "\nwrote build/org/fnv_distribution.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fnv_analysis.cpp <<'CPP'
+<<fnv-includes>>
+
+int main() {
+<<fnv-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fnv_analysis.cpp -o build/org/fnv_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fnv_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== FNV-1a ===
+fnv1a_32("")  = 0x811C9DC5  (offset basis 0x811C9DC5)
+fnv1a_32("a") = 0xE40C292C  (reference 0xE40C292C)
+
+32 words into 16 buckets (low 4 bits of the hash):
+  1 2 1 1 0 4 1 2 1 2 3 2 3 0 2 7
+(ideal ~2 per bucket)
+#+end_example
+
+The implementation reproduces the FNV reference values, and the 32 words scatter across
+the 16 buckets around the ideal two-per-bucket average -- most buckets hold one to four
+words, with the spread expected of such a small sample rather than any systematic
+clustering. That near-uniform low-bit distribution is what a hash table relies on to keep
+its chains short, and FNV delivers it with just an XOR and a multiply per byte.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fnv_distribution.svg]]
+
+* Uses and cautions
+
+FNV-1a is a fine default for in-memory hash tables and quick content fingerprints:
+fast, simple, low collision rate on typical keys. It is *not* cryptographic -- it is
+invertible and easy to find collisions for deliberately, so it must never guard against
+an adversary (use SipHash for hash-flooding resistance, or a real cryptographic hash for
+integrity/authentication). Modern alternatives like xxHash and MurmurHash mix more per
+step for better avalanche on long inputs, but FNV remains popular for its one-line core.
+
+* Complexity
+
+\(O(n)\) time over \(n\) bytes with two operations per byte and \(O(1)\) state.
