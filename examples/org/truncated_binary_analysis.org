@@ -1,0 +1,144 @@
+#+title: Truncated Binary Encoding: Optimal Fixed Codes for a Finite Alphabet
+#+subtitle: A literate C++ study of truncated binary codes, using =datamunge='s =algorithms::truncated_binary_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When the alphabet size \(n\) is not a power of two, plain \(\lceil\log_2 n\rceil\)-bit binary
+wastes the unused codewords. *Truncated binary* encoding avoids the waste: with
+\(k=\lfloor\log_2 n\rfloor\), the first \(u=2^{k+1}-n\) symbols get \(k\)-bit codewords and the
+rest get \(k+1\)-bit codewords, so every symbol is within one bit of \(\log_2 n\). It is the
+optimal *fixed* code for a *uniform* alphabet, and it is the remainder stage of Golomb coding.
+This report runs it with =datamunge='s =algorithms::truncated_binary_encode= as a literate
+program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Short codes for the first few, long for the rest
+
+For \(n\) equiprobable symbols the entropy is \(\log_2 n\), which is generally fractional. A
+fixed \(\lceil\log_2 n\rceil\)-bit code rounds *every* symbol up. Truncated binary instead
+splits the difference: it assigns the shorter \(k=\lfloor\log_2 n\rfloor\)-bit codewords to the
+first \(u=2^{k+1}-n\) symbols and the longer \((k{+}1)\)-bit codewords (offset by \(u\)) to the
+remaining \(n-u\), so the average length is just above \(\log_2 n\) rather than at
+\(\lceil\log_2 n\rceil\). Decoding reads \(k\) bits and, only if their value is at least \(u\),
+reads one more -- unambiguous because the short and long codewords never collide.
+
+#+name: tb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/truncated_binary.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline int tb_len(std::uint64_t v, std::uint64_t n) { std::vector<bool> b; truncated_binary_encode_value(v, n, b); return (int)b.size(); }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+truncated_binary(v, n):     # v in [0, n)
+    k = floor(log2 n);  u = 2^(k+1) - n
+    if v < u: emit v in k bits
+    else:     emit (v + u) in k+1 bits
+decode: read k bits -> x; if x >= u: read 1 more bit; value = (2x + bit) - u; else value = x
+#+end_example
+
+* A worked example
+
+We list the codewords for a 5-symbol alphabet, verify a round trip, and compare the average
+codeword length against a fixed 3-bit code and the entropy \(\log_2 5\).
+
+#+name: tb-run
+#+begin_src c++ :eval no
+    std::uint64_t n = 5;
+    std::cout << "=== Truncated binary, alphabet size " << n << " ===\n";
+    std::vector<double> syms, lens;
+    double avg = 0;
+    for (std::uint64_t v = 0; v < n; ++v) {
+        std::vector<bool> b; truncated_binary_encode_value(v, n, b);
+        std::cout << "  " << v << " -> ";
+        for (bool x : b) std::cout << (x ? '1' : '0');
+        std::cout << " (" << b.size() << " bits)\n";
+        syms.push_back(v); lens.push_back(b.size()); avg += b.size();
+    }
+    avg /= n;
+    std::cout << "\naverage length: " << avg << " bits/symbol\n";
+    std::cout << "fixed ceil(log2 " << n << ") code: 3 bits/symbol\n";
+    std::cout << "entropy log2(" << n << "): " << std::log2((double)n) << " bits/symbol\n";
+
+    std::vector<std::uint64_t> v = {0, 1, 2, 3, 4, 2, 0, 4};
+    auto bits = truncated_binary_encode(v, n);
+    std::cout << "round trip: " << (truncated_binary_decode(bits, n, (int)v.size()) == v ? "ok" : "FAIL") << "\n";
+
+    RPlot p = RPlot::create();
+    std::vector<std::string> labels; for (std::uint64_t s = 0; s < n; ++s) labels.push_back(std::to_string(s));
+    RPlot bp = RPlot::barplot(lens, labels, "codeword length (bits)", {37, 99, 235});
+    bp.abline_h(std::log2((double)n), {22, 163, 74}, 1.5);   // entropy
+    bp.abline_h(3.0, {220, 38, 38}, 1.5);                    // fixed 3-bit
+    bp.save_svg("build/org/truncated_binary.svg");
+    std::cout << "\nwrote build/org/truncated_binary.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/truncated_binary_analysis.cpp <<'CPP'
+<<tb-includes>>
+
+int main() {
+<<tb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/truncated_binary_analysis.cpp -o build/org/truncated_binary_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/truncated_binary_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Truncated binary, alphabet size 5 ===
+  0 -> 00 (2 bits)
+  1 -> 01 (2 bits)
+  2 -> 10 (2 bits)
+  3 -> 110 (3 bits)
+  4 -> 111 (3 bits)
+
+average length: 2.4 bits/symbol
+fixed ceil(log2 5) code: 3 bits/symbol
+entropy log2(5): 2.32193 bits/symbol
+round trip: ok
+#+end_example
+
+Three of the five symbols get 2-bit codewords and two get 3-bit codewords, for an average of 2.4
+bits -- below the 3 bits a fixed code would spend and within a whisker of the \(\log_2 5\approx
+2.32\) entropy of a uniform 5-symbol source. The bar chart shows the split clearly, with the
+entropy and fixed-length lines bracketing the codeword lengths. That near-optimal fixed coding of
+a non-power-of-two alphabet is exactly why truncated binary is the remainder stage of Golomb
+coding.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/truncated_binary.svg]]
+
+* Character and relatives
+
+Truncated binary is the go-to code for a *uniform* alphabet whose size is not a power of two --
+selecting one of \(n\) equally likely options with minimal average bits. It underlies the
+remainder coding in *Golomb* codes (companion report) and appears in video and image codecs
+wherever a bounded index must be coded compactly. For a *non-uniform* alphabet, a
+frequency-aware code (Huffman, arithmetic, Shannon-Fano-Elias -- companion report) does better.
+
+* Complexity
+
+\(O(\log n)\) bits and time per symbol -- one or two machine words of shifting -- with no tables
+required.

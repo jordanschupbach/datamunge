@@ -122,6 +122,7 @@
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/lsh.hpp>
 #include <datamunge/algorithms/lz77.hpp>
+#include <datamunge/algorithms/levenshtein_coding.hpp>
 #include <datamunge/algorithms/lzw.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/lll.hpp>
@@ -159,12 +160,14 @@
 #include <datamunge/algorithms/reference_counting.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
+#include <datamunge/algorithms/shannon_fano_elias.hpp>
 #include <datamunge/algorithms/sobel.hpp>
 #include <datamunge/algorithms/signed_reversals.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
+#include <datamunge/algorithms/package_merge.hpp>
 #include <datamunge/algorithms/petrick.hpp>
 #include <datamunge/algorithms/phase_estimation.hpp>
 #include <datamunge/algorithms/permutations.hpp>
@@ -183,6 +186,7 @@
 #include <datamunge/algorithms/quantum_sim.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/range_coding.hpp>
 #include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 #include <datamunge/algorithms/ransac.hpp>
 #include <datamunge/algorithms/random_restart_hill_climbing.hpp>
@@ -225,7 +229,9 @@
 #include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
 #include <datamunge/algorithms/tricubic_interpolation.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
+#include <datamunge/algorithms/truncated_binary.hpp>
 #include <datamunge/algorithms/upgma.hpp>
+#include <datamunge/algorithms/unary_coding.hpp>
 #include <datamunge/algorithms/token_bucket.hpp>
 #include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>

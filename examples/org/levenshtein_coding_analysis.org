@@ -1,0 +1,156 @@
+#+title: Levenshtein Coding: A Recursive Universal Code
+#+subtitle: A literate C++ study of Levenshtein codes, using =datamunge='s =algorithms::levenshtein_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Levenshtein coding (Vladimir Levenshtein, 1968) is a *universal* code for non-negative integers
+whose length grows like the *iterated* logarithm of the value -- asymptotically shorter than
+Elias gamma and even Elias delta for large numbers. It encodes a value by repeatedly stripping
+the leading 1 of its binary form and recording, in a unary count, how many times it did so.
+Decoding replays that recursion, rebuilding the value one binary block at a time. This report
+runs it with =datamunge='s =algorithms::levenshtein_encode= as a literate program: every number
+and figure comes from one compiled binary.
+#+end_abstract
+
+* Encode the length, and the length of the length
+
+Elias gamma prefixes a value with its bit-length in unary; Elias delta encodes that length more
+compactly with gamma; Levenshtein takes the idea to its recursive limit -- it encodes the length,
+and the length of the length, and so on, spending a single unary *count* to say how deep the
+recursion went. Concretely: strip the leading 1 of \(n\)'s binary form (leaving \(m=\lfloor\log_2
+n\rfloor\) bits), then recurse on \(m\), and finally write the recursion depth \(C\) in unary.
+The codeword length is \(C+1\) plus the sum of the block lengths, which is
+\(\log_2 n+\log_2\log_2 n+\cdots\) -- the iterated logarithm. Zero is the special case
+\(\texttt{0}\).
+
+#+name: lv-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/levenshtein_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline int lev_len(std::uint64_t n) { std::vector<bool> b; levenshtein_encode_value(n, b); return (int)b.size(); }
+inline int eg_len(std::uint64_t n)  { std::vector<bool> b; exp_golomb0_encode_value(n, b); return (int)b.size(); }
+inline std::string lev_code(std::uint64_t n) { std::vector<bool> b; levenshtein_encode_value(n, b); std::string s; for (bool x : b) s += x ? '1' : '0'; return s; }
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Levenshtein(n):
+    if n == 0: emit "0"; done
+    C = 1;  blocks = []
+    repeat: strip the leading 1 of n's binary -> m bits (a block); if m == 0 stop; C++; n = m
+    emit C ones, then a 0, then the blocks (outermost first)
+decode: read the unary count C; if C == 0 -> 0; else rebuild N=1, C-1 times reading N bits
+#+end_example
+
+* A worked example
+
+We show a few codewords, verify a round trip up to 10000, and compare Levenshtein codeword length
+against order-0 Exp-Golomb, whose length grows faster.
+
+#+name: lv-run
+#+begin_src c++ :eval no
+    std::cout << "=== Levenshtein codewords ===\n";
+    for (std::uint64_t n : {0ull, 1ull, 2ull, 4ull, 7ull, 16ull, 100ull})
+        std::cout << "  " << n << " -> " << lev_code(n) << "\n";
+
+    std::vector<std::uint64_t> vals;
+    for (std::uint64_t n = 0; n <= 10000; ++n) vals.push_back(n);
+    auto bits = levenshtein_encode(vals);
+    std::cout << "\nround trip 0..10000: " << (levenshtein_decode(bits, (int)vals.size()) == vals ? "ok" : "FAIL") << "\n";
+
+    std::cout << "\nvalue : Levenshtein bits : Exp-Golomb0 bits\n";
+    std::vector<double> xs, lv, eg;
+    for (std::uint64_t n : {1ull, 4ull, 16ull, 64ull, 256ull, 1024ull, 16384ull, 1000000ull, 1000000000ull}) {
+        std::cout << "  " << n << "  :   " << lev_len(n) << "   :   " << eg_len(n) << "\n";
+        xs.push_back((double)n); lv.push_back(lev_len(n)); eg.push_back(eg_len(n));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(xs, lv, "Levenshtein", {37, 99, 235}, 2.0);
+    p.points(xs, lv, "", {37, 99, 235}, 4.0);
+    p.line(xs, eg, "Exp-Golomb0", {220, 38, 38}, 2.0);
+    p.legend({"Levenshtein", "Exp-Golomb0"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/levenshtein_coding.svg");
+    std::cout << "\nwrote build/org/levenshtein_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/levenshtein_coding_analysis.cpp <<'CPP'
+<<lv-includes>>
+
+int main() {
+<<lv-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/levenshtein_coding_analysis.cpp -o build/org/levenshtein_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/levenshtein_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Levenshtein codewords ===
+  0 -> 0
+  1 -> 10
+  2 -> 1100
+  4 -> 1110000
+  7 -> 1110011
+  16 -> 111100000000
+  100 -> 11110010100100
+
+round trip 0..10000: ok
+
+value : Levenshtein bits : Exp-Golomb0 bits
+  1  :   2   :   3
+  4  :   7   :   5
+  16  :   12   :   9
+  64  :   14   :   13
+  256  :   17   :   17
+  1024  :   19   :   21
+  16384  :   23   :   29
+  1000000  :   32   :   39
+  1000000000  :   42   :   59
+#+end_example
+
+The round trip over ten thousand values confirms the recursion inverts cleanly. The length
+comparison has a clear crossover: for small values Levenshtein is actually a little *longer* than
+order-0 Exp-Golomb (its fixed unary-count prefix is overhead when there is little to recurse on),
+but the two meet around 256 and thereafter Levenshtein pulls steadily ahead -- 42 bits versus 59
+for a billion -- because it encodes the *iterated* logarithm while Exp-Golomb (and Elias gamma)
+pay a full \(2\log_2 n\). The recursion only earns its keep once the value is large enough that
+"the length of the length" is worth encoding compactly.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/levenshtein_coding.svg]]
+
+* Character and relatives
+
+Levenshtein coding sits at the efficient end of the *universal code* family, alongside *Elias
+omega* coding (which uses a very similar recursive length encoding). It is asymptotically optimal
+in the sense that its length is \(\log_2 n + o(\log_2 n)\), beating the flat \(2\log_2 n\) of
+gamma and Exp-Golomb (companion reports). The trade-off is a slightly more involved encoder and
+decoder and no advantage -- sometimes a small penalty -- on the small values that dominate many
+real sources, where the simpler codes suffice.
+
+* Complexity
+
+\(O(\log^* n)\) recursion levels, each processing \(O(\log)\) bits, so \(O(\log n)\) time and
+bits per value overall -- dominated by the first (largest) binary block.
