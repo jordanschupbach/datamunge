@@ -1,0 +1,149 @@
+#+title: Maximum Parsimony: Scoring Trees with Fitch's Algorithm
+#+subtitle: A literate C++ study of small-parsimony scoring, using =datamunge='s =algorithms::fitch_small_parsimony=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Maximum parsimony* prefers the phylogenetic tree that explains the observed character data
+(e.g. aligned DNA columns) with the *fewest* evolutionary changes -- Occam's razor for
+phylogenetics. The core subproblem, *small parsimony* (scoring a *given* tree), is solved
+exactly by Fitch's algorithm in one post-order pass: each internal node's candidate-state set is
+the *intersection* of its children's sets, or their *union* (counting one change) when the
+intersection is empty. This report runs it with =datamunge='s =algorithms::fitch_small_parsimony=
+as a literate program: every number and figure comes from one compiled binary. We score the
+three possible four-taxon topologies and pick the most parsimonious.
+#+end_abstract
+
+* Intersect if you can, union if you must
+
+Fitch processes the tree bottom-up. A leaf's state set is the singleton of its observed state.
+At an internal node with children carrying sets \(A\) and \(B\): if \(A\cap B\neq\varnothing\),
+the ancestor can share a state with both children at *no cost*, so its set is \(A\cap B\); if
+\(A\cap B=\varnothing\), a change is unavoidable on one branch, so we count *one* change and set
+the ancestor's set to \(A\cup B\). The total number of unions over the tree is the minimum number
+of changes for that character -- the *parsimony score*. Summed over all characters, it scores the
+whole tree; the most parsimonious *topology* is the one minimizing that sum.
+
+#+name: mp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/maximum_parsimony.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Build a rooted 4-taxon tree ((a,b),(c,d)) with leaves 0..3, internals 4,5, root 6.
+inline ParsimonyTree topology(int a, int b, int c, int d) {
+    ParsimonyTree t; t.root = 6; t.children.assign(7, {-1, -1});
+    t.children[4] = {a, b}; t.children[5] = {c, d}; t.children[6] = {4, 5};
+    return t;
+}
+// Turn a per-taxon state row into the node-indexed vector Fitch expects.
+inline std::vector<int> column(int s0, int s1, int s2, int s3) {
+    std::vector<int> col(7, -1); col[0] = s0; col[1] = s1; col[2] = s2; col[3] = s3; return col;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Fitch(node):                        # returns the node's state set; counts changes
+    if leaf: return { observed state }
+    A = Fitch(left);  B = Fitch(right)
+    if A and B intersect: return A intersect B          # no change
+    else: changes += 1; return A union B                # one change
+parsimony score = total changes;  best topology = argmin over topologies
+#+end_example
+
+* A worked example
+
+Four taxa A, B, C, D with a five-character matrix in which A,B tend to agree and C,D tend to
+agree. We score all three possible rooted topologies and see which the data favor.
+
+#+name: mp-run
+#+begin_src c++ :eval no
+    // Character matrix (5 columns), states per taxon A,B,C,D.
+    std::vector<std::vector<int>> cols = {
+        column(0, 0, 1, 1), column(0, 0, 1, 1), column(1, 1, 0, 0),
+        column(0, 1, 0, 0), column(0, 0, 0, 1),   // two "noisy" columns
+    };
+
+    struct Topo { const char* name; ParsimonyTree tree; };
+    std::vector<Topo> topos = {
+        {"((A,B),(C,D))", topology(0, 1, 2, 3)},
+        {"((A,C),(B,D))", topology(0, 2, 1, 3)},
+        {"((A,D),(B,C))", topology(0, 3, 1, 2)},
+    };
+
+    std::cout << "=== Maximum parsimony: 4 taxa, 5 characters ===\n";
+    std::vector<double>      scores;
+    std::vector<std::string> labels;
+    int best = 0;
+    for (std::size_t i = 0; i < topos.size(); ++i) {
+        int s = parsimony_score(topos[i].tree, cols);
+        std::cout << "  " << topos[i].name << ": parsimony score " << s << "\n";
+        scores.push_back(s); labels.push_back(topos[i].name);
+        if (s < scores[best]) best = (int)i;
+    }
+    std::cout << "most parsimonious: " << topos[best].name << " (score " << (int)scores[best] << ")\n";
+
+    RPlot p = RPlot::barplot(scores, labels, "parsimony score (fewer = better)", {37, 99, 235});
+    p.save_svg("build/org/maximum_parsimony.svg");
+    std::cout << "\nwrote build/org/maximum_parsimony.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/maximum_parsimony_analysis.cpp <<'CPP'
+<<mp-includes>>
+
+int main() {
+<<mp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/maximum_parsimony_analysis.cpp -o build/org/maximum_parsimony_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/maximum_parsimony_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Maximum parsimony: 4 taxa, 5 characters ===
+  ((A,B),(C,D)): parsimony score 5
+  ((A,C),(B,D)): parsimony score 8
+  ((A,D),(B,C)): parsimony score 8
+most parsimonious: ((A,B),(C,D)) (score 5)
+#+end_example
+
+The topology \(((A,B),(C,D))\) scores lowest: because A and B share states in most characters,
+and C and D likewise, grouping them lets each shared state be inherited from a common ancestor
+with no change, while the alternative topologies force extra changes. Fitch's algorithm gives
+each topology's score exactly in one pass, and the barplot ranks them -- the shortest tree is the
+maximum-parsimony estimate of the phylogeny for this data.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/maximum_parsimony.svg]]
+
+* Character and relatives
+
+Fitch's algorithm solves *small* parsimony (scoring a fixed tree) in linear time; the *large*
+parsimony problem -- searching over all topologies for the minimum -- is NP-hard, so real analyses
+use heuristic tree search (nearest-neighbor interchange, subtree pruning-regrafting) with Fitch
+scoring at each step. *Sankoff's algorithm* generalizes Fitch to weighted state transitions (a
+cost matrix). Parsimony is fast and assumption-light but can be misled by *long-branch
+attraction*; *maximum likelihood* and *Bayesian* methods model the substitution process
+explicitly, at greater cost. UPGMA (companion report) instead works from summarized distances.
+
+* Complexity
+
+\(O(n\,m)\) to score a tree of \(n\) taxa over \(m\) characters (one post-order pass per
+character); the topology search around it is the hard, exponential part.

@@ -1,0 +1,160 @@
+#+title: The Bloom Filter: A Probabilistic Set
+#+subtitle: A literate C++ study of approximate membership, using =datamunge='s =algorithms::BloomFilter=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *Bloom filter* answers "is this element in the set?" using a bit array and \(k\) hash
+functions, in a tiny, fixed number of bits per element regardless of element size. Adding an
+element sets the \(k\) bits its hashes address; a query checks whether all \(k\) are set. The
+filter never gives a *false negative* -- a stored element always tests positive -- but it admits
+*false positives*, at a rate tunable by the array size \(m\) and hash count \(k\). It is the
+workhorse behind k-mer membership tests in bioinformatics, and behind cache/database lookups
+that want to avoid touching disk. This report runs it with =datamunge='s =algorithms::BloomFilter=
+as a literate program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Bits, hashes, and the false-positive rate
+
+With \(m\) bits, \(k\) hashes, and \(n\) inserted elements, the probability a given bit is still
+0 is \((1-1/m)^{kn}\approx e^{-kn/m}\), so the false-positive rate -- all \(k\) probed bits being
+1 by chance -- is
+\[
+  \varepsilon \approx \left(1 - e^{-kn/m}\right)^k .
+\]
+This is minimized by \(k=(m/n)\ln 2\), giving \(\varepsilon\approx 0.6185^{\,m/n}\): each extra
+bit per element cuts the error rate by about a third. Because a query only *reads* bits and a
+stored element set all of its own, a false negative is impossible -- the defining guarantee.
+This implementation uses Kirsch-Mitzenmacher double hashing, deriving all \(k\) probes from two
+64-bit hashes.
+
+#+name: bf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bloom_filter.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+add(x):        for i in 0..k-1: bits[(h1(x) + i*h2(x)) mod m] = 1
+contains(x):   for i in 0..k-1: if bits[(h1(x) + i*h2(x)) mod m] == 0: return DEFINITELY_NOT
+               return PROBABLY_YES
+optimal k = round((m/n) * ln 2)
+#+end_example
+
+* A worked example
+
+An 8000-bit filter sized for 1000 elements (optimal \(k\)). We insert 1000 keys, confirm *zero*
+false negatives, and measure the false-positive rate as the filter fills, comparing it to the
+theoretical curve.
+
+#+name: bf-run
+#+begin_src c++ :eval no
+    const int m = 8000, n_target = 1000;
+    int       k = BloomFilter::optimal_num_hashes(m, n_target);
+    BloomFilter bf(m, k);
+    std::cout << "=== Bloom filter: m=" << m << " bits, k=" << k << " hashes, target n="
+              << n_target << " ===\n";
+
+    std::vector<double> ns, measured, predicted;
+    int fp_probe = 5000;
+    for (int batch = 0; batch < 10; ++batch) {
+        for (int i = 0; i < 100; ++i) bf.add(bloom_hash64("key" + std::to_string(batch * 100 + i)));
+        int inserted = (batch + 1) * 100;
+        // Measure false positives on keys never inserted.
+        int fp = 0;
+        for (int i = 0; i < fp_probe; ++i)
+            if (bf.maybe_contains(bloom_hash64("absent" + std::to_string(i)))) ++fp;
+        double rate = (double)fp / fp_probe;
+        ns.push_back(inserted); measured.push_back(rate);
+        predicted.push_back(bf.expected_false_positive_rate(inserted));
+    }
+
+    // No false negatives, ever.
+    int fn = 0;
+    for (int i = 0; i < 1000; ++i)
+        if (!bf.maybe_contains(bloom_hash64("key" + std::to_string(i)))) ++fn;
+    std::cout << "false negatives among 1000 inserted keys: " << fn << " (guaranteed 0)\n";
+    std::cout << "fill ratio after 1000 inserts: " << bf.fill_ratio() << "\n";
+    std::cout << "\ninserted : measured FP : predicted FP\n";
+    for (std::size_t i = 0; i < ns.size(); ++i)
+        std::cout << "  " << (int)ns[i] << "   :   " << measured[i] << "   :   " << predicted[i] << "\n";
+
+    RPlot p = RPlot::create();
+    p.line(ns, measured, "measured", {37, 99, 235}, 2.0);
+    p.points(ns, measured, "", {37, 99, 235}, 4.0);
+    p.line(ns, predicted, "predicted", {220, 38, 38}, 1.5);
+    p.legend({"measured", "predicted"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/bloom_filter.svg");
+    std::cout << "\nwrote build/org/bloom_filter.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bloom_filter_analysis.cpp <<'CPP'
+<<bf-includes>>
+
+int main() {
+<<bf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bloom_filter_analysis.cpp -o build/org/bloom_filter_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bloom_filter_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bloom filter: m=8000 bits, k=6 hashes, target n=1000 ===
+false negatives among 1000 inserted keys: 0 (guaranteed 0)
+fill ratio after 1000 inserts: 0.535875
+
+inserted : measured FP : predicted FP
+  100   :   0   :   1.42319e-07
+  200   :   0   :   7.30394e-06
+  300   :   0.0002   :   6.69022e-05
+  400   :   0.0006   :   0.000303129
+  500   :   0.0018   :   0.000935097
+  600   :   0.0034   :   0.00226426
+  700   :   0.0068   :   0.00464301
+  800   :   0.0112   :   0.00843621
+  900   :   0.0184   :   0.0139849
+  1000   :   0.0278   :   0.0215771
+#+end_example
+
+Not one of the 1000 inserted keys tests negative -- the no-false-negative guarantee holds
+absolutely. The measured false-positive rate climbs as the filter fills and tracks the
+theoretical \((1-e^{-kn/m})^k\) curve closely, reaching a few percent near the design load of
+1000 elements (fill ratio about one half, which is exactly where the optimal-\(k\) filter is
+meant to operate). Sizing the filter is therefore a direct trade of bits for accuracy: the curve
+tells you precisely how many bits per element buy a given error rate.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/bloom_filter.svg]]
+
+* Character and relatives
+
+The Bloom filter's fixed, element-size-independent footprint and no-false-negative guarantee
+make it ubiquitous: k-mer presence in genome assemblers, "definitely not on disk" checks in
+LSM-tree databases (Cassandra, RocksDB), URL blocklists, and cache filters. Its limitations spawn
+variants: *counting* Bloom filters support deletion, *scalable* ones grow with the data, and
+*cuckoo* and *quotient* filters offer deletion and better locality at similar space. What no
+variant escapes is the fundamental space-accuracy trade the formula above quantifies.
+
+* Complexity
+
+\(O(k)\) per insert and per query -- a handful of hash probes -- and \(m\) bits of space,
+independent of the elements' size.

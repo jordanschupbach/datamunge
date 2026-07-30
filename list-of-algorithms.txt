@@ -589,13 +589,13 @@ Bioinformatics
 Further information: Bioinformatics
 See also: Sequence alignment algorithms
 
-    Basic Local Alignment Search Tool also known as BLAST: an algorithm for comparing primary biological sequence information
-    Bloom Filter: probabilistic data structure used to test for the existence of an element within a set. Primarily used in bioinformatics to test for the existence of a k-mer in a sequence or sequences.
+    [x] Basic Local Alignment Search Tool also known as BLAST: an algorithm for comparing primary biological sequence information  -> datamunge::algorithms::blast_search (blast.hpp); report examples/org/blast_analysis.org
+    [x] Bloom Filter: probabilistic data structure used to test for the existence of an element within a set. Primarily used in bioinformatics to test for the existence of a k-mer in a sequence or sequences.  -> datamunge::algorithms::BloomFilter (bloom_filter.hpp); report examples/org/bloom_filter_analysis.org
     [x] Kabsch algorithm: calculate the optimal alignment of two sets of points in order to compute the root mean squared deviation between two protein structures.  -> datamunge::algorithms::kabsch (kabsch.hpp); report examples/org/kabsch_analysis.org
-    Maximum parsimony (phylogenetics): an algorithm for finding the simplest phylogenetic tree to explain a given character matrix.
-    Sorting by signed reversals: an algorithm for understanding genomic evolution.
-    UPGMA: a distance-based phylogenetic tree construction algorithm.
-    Velvet: a set of algorithms manipulating de Bruijn graphs for genomic sequence assembly
+    [x] Maximum parsimony (phylogenetics): an algorithm for finding the simplest phylogenetic tree to explain a given character matrix.  -> datamunge::algorithms::fitch_small_parsimony (maximum_parsimony.hpp); report examples/org/maximum_parsimony_analysis.org
+    [x] Sorting by signed reversals: an algorithm for understanding genomic evolution.  -> datamunge::algorithms::sort_by_reversals (signed_reversals.hpp); report examples/org/signed_reversals_analysis.org
+    [x] UPGMA: a distance-based phylogenetic tree construction algorithm.  -> datamunge::algorithms::upgma (upgma.hpp); report examples/org/upgma_analysis.org
+    [x] Velvet: a set of algorithms manipulating de Bruijn graphs for genomic sequence assembly  -> datamunge::algorithms::velvet_assemble (velvet.hpp); report examples/org/velvet_analysis.org
 
 Geoscience
 Further information: Geoscience

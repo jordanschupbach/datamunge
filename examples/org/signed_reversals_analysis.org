@@ -1,0 +1,145 @@
+#+title: Sorting by Signed Reversals: Genome Rearrangement Distance
+#+subtitle: A literate C++ study of reversal distance, using =datamunge='s =algorithms::sort_by_reversals=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Related genomes often differ by *reversals*: a chromosomal segment is cut out, flipped, and
+reinserted, reversing both the order and the strand (sign) of the genes it contains. The
+*reversal distance* -- the fewest such operations transforming one genome into another -- measures
+evolutionary divergence. Modeling genes as a *signed permutation*, this report computes the exact
+distance and an optimal reversal sequence with =datamunge='s =algorithms::sort_by_reversals= (a
+breadth-first search over permutations) as a literate program: every number and figure comes from
+one compiled binary. We also track *breakpoints*, the classic lower bound, as the sort proceeds.
+#+end_abstract
+
+* Reversals, breakpoints, and distance
+
+A signed reversal of positions \([i,j]\) reverses that segment and negates each element, e.g.
+\((1,\,\underline{2,-4,3},\,5)\to(1,\,-3,4,-2,\,5)\). Sorting a signed permutation to the
+identity \((+1,+2,\dots,+n)\) by the fewest reversals is the reversal-distance problem. A useful
+lower bound counts *breakpoints*: framing the permutation with \(0\) and \(n+1\), a breakpoint is
+any adjacent pair \((a,b)\) with \(b\neq a+1\). Each reversal can remove at most a bounded number
+of breakpoints, so the distance is at least a fraction of the breakpoint count. For small \(n\)
+we can find the *exact* distance by breadth-first search; the celebrated Hannenhalli-Pevzner
+theory computes it in polynomial time for any \(n\).
+
+#+name: sr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/signed_reversals.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline std::string show(const std::vector<int>& p) {
+    std::string s = "[";
+    for (std::size_t i = 0; i < p.size(); ++i) { if (i) s += ","; if (p[i] > 0) s += "+"; s += std::to_string(p[i]); }
+    return s + "]";
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+reversal(p, i, j):   reverse p[i..j] and negate each element
+distance(start):     BFS over permutations from `start`, each state's neighbors are all
+                     reversals, until the identity (+1..+n) is reached; depth = distance
+breakpoints(p):      frame with 0 and n+1; count adjacent pairs (a,b) with b != a+1
+#+end_example
+
+* A worked example
+
+A five-gene signed permutation. We find the minimum reversal sequence and watch the breakpoint
+count fall as each reversal is applied.
+
+#+name: sr-run
+#+begin_src c++ :eval no
+    std::vector<int> start = {3, 1, 2, -5, 4};
+    auto r = sort_by_reversals(start);
+
+    std::cout << "=== Sorting " << show(start) << " by signed reversals ===\n";
+    std::cout << "reversal distance: " << r.distance << "\n";
+    std::cout << "initial breakpoints: " << signed_breakpoints(start) << "\n\n";
+
+    std::vector<double> steps, bps;
+    std::vector<int>    cur = start;
+    steps.push_back(0); bps.push_back(signed_breakpoints(cur));
+    std::cout << "step 0: " << show(cur) << "  breakpoints=" << signed_breakpoints(cur) << "\n";
+    int step = 1;
+    for (auto [i, j] : r.reversals) {
+        cur = detail::apply_reversal(cur, i, j);
+        std::cout << "step " << step << ": reverse [" << i << "," << j << "] -> " << show(cur)
+                  << "  breakpoints=" << signed_breakpoints(cur) << "\n";
+        steps.push_back(step); bps.push_back(signed_breakpoints(cur));
+        ++step;
+    }
+
+    RPlot p = RPlot::create();
+    p.line(steps, bps, "breakpoints", {37, 99, 235}, 2.0);
+    p.points(steps, bps, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/signed_reversals.svg");
+    std::cout << "\nwrote build/org/signed_reversals.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/signed_reversals_analysis.cpp <<'CPP'
+<<sr-includes>>
+
+int main() {
+<<sr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/signed_reversals_analysis.cpp -o build/org/signed_reversals_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/signed_reversals_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sorting [+3,+1,+2,-5,+4] by signed reversals ===
+reversal distance: 4
+initial breakpoints: 5
+
+step 0: [+3,+1,+2,-5,+4]  breakpoints=5
+step 1: reverse [0,4] -> [-4,+5,-2,-1,-3]  breakpoints=5
+step 2: reverse [0,0] -> [+4,+5,-2,-1,-3]  breakpoints=4
+step 3: reverse [0,3] -> [+1,+2,-5,-4,-3]  breakpoints=2
+step 4: reverse [2,4] -> [+1,+2,+3,+4,+5]  breakpoints=0
+#+end_example
+
+The search finds the shortest possible sequence of reversals sorting the permutation to the
+identity in four steps, ending with zero breakpoints -- a sorted permutation has no breakpoints.
+The count falls toward zero as the sort proceeds, though not on every single step: the optimal
+sequence sometimes makes a reversal that *sets up* a later big reduction rather than greedily
+removing a breakpoint immediately (step 1 leaves the count unchanged before steps 3-4 collapse
+it). This is exactly why greedy breakpoint-removal is not optimal and the exact search -- here BFS,
+in general the Hannenhalli-Pevzner theory -- is needed.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/signed_reversals.svg]]
+
+* Character and relatives
+
+Reversal distance is a foundational measure in *comparative genomics*: it dates divergences and
+reconstructs ancestral gene orders. The exact *signed* reversal distance is computable in
+polynomial time by the Hannenhalli-Pevzner theorem (via a breakpoint graph and its cycles and
+"hurdles"); the *unsigned* version is NP-hard. Generalizations handle *transpositions* and
+*translocations* (the double-cut-and-join, or DCJ, model unifies them). The brute-force BFS used
+here is exact but exponential, suited to illustrating small instances.
+
+* Complexity
+
+The BFS is exponential in \(n\) (it can explore up to \(n!\,2^n\) signed permutations), fine for
+small genomes; the Hannenhalli-Pevzner algorithm computes the signed reversal distance in
+\(O(n^2)\) (and the distance alone in linear time).

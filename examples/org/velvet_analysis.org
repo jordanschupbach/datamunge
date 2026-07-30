@@ -1,0 +1,134 @@
+#+title: Velvet: Genome Assembly with de Bruijn Graphs
+#+subtitle: A literate C++ study of short-read assembly, using =datamunge='s =algorithms::velvet_assemble=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Sequencing produces millions of short *reads*; assembling them into the original genome is a
+giant jigsaw puzzle. *Velvet* (Zerbino & Birney, 2008) and its kin solve it with a *de Bruijn
+graph*: every read is chopped into \(k\)-mers, and each \(k\)-mer becomes an edge from its
+length-\((k-1)\) prefix to its length-\((k-1)\) suffix. Reconstructing the sequence then reduces
+to finding an *Eulerian path* -- a walk using every edge exactly once -- which spells out the
+assembly. This report builds the graph and reconstructs a contig with =datamunge='s
+=algorithms::velvet_assemble= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* k-mers, edges, and the Eulerian path
+
+Overlap-based assembly is quadratic in the number of reads; the de Bruijn approach sidesteps
+that by working in \(k\)-mer space. Nodes are the distinct \((k-1)\)-mers; an edge \(u\to v\)
+exists for each \(k\)-mer whose first \(k-1\) letters are \(u\) and last \(k-1\) letters are
+\(v\). A genome that is covered by its \(k\)-mers corresponds to an *Eulerian path* through this
+graph -- start at the node with one more out-edge than in-edge, and traverse every edge once
+(Hierholzer's algorithm) -- and reading off one new letter per edge spells the sequence. The
+choice of \(k\) matters: too small and repeats collapse the graph into ambiguity; too large and
+coverage gaps break it. Real assemblers add error correction and repeat resolution, but the
+Eulerian core is this.
+
+#+name: vl-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/velvet.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <set>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Velvet(reads, k):
+    for each read, for each k-mer: add edge prefix(k-1) -> suffix(k-1)   # build de Bruijn graph
+    find Eulerian-path start (out-degree - in-degree == 1)
+    Hierholzer: walk every edge once, pushing dead-ends onto the circuit
+    spell: first node in full, then each subsequent node's last letter
+#+end_example
+
+* A worked example
+
+We reconstruct a repeat-free sequence from its \(k\)-mer reads for several \(k\), confirming the
+assembly matches the original, and tally the graph size (edges = distinct k-mers).
+
+#+name: vl-run
+#+begin_src c++ :eval no
+    std::string orig = "ATCAGCTGACGTAC";
+
+    std::cout << "=== Velvet de Bruijn assembly of a " << orig.size() << "-base sequence ===\n";
+    std::cout << "original: " << orig << "\n\n";
+    std::vector<double> ks, edges;
+    for (int k = 3; k <= 7; ++k) {
+        std::vector<std::string> reads;
+        for (int i = 0; i + k <= (int)orig.size(); ++i) reads.push_back(orig.substr(i, k));
+        std::string asm_ = velvet_assemble(reads, k);
+        std::set<std::string> kmers(reads.begin(), reads.end());
+        std::cout << "  k=" << k << ": " << kmers.size() << " distinct k-mers, reconstructed "
+                  << (asm_ == orig ? "MATCH" : "differs") << " (len " << asm_.size() << ")\n";
+        ks.push_back(k); edges.push_back(kmers.size());
+    }
+
+    RPlot p = RPlot::barplot(edges, {"3", "4", "5", "6", "7"}, "distinct k-mers (graph edges)", {37, 99, 235});
+    p.save_svg("build/org/velvet.svg");
+    std::cout << "\nwrote build/org/velvet.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/velvet_analysis.cpp <<'CPP'
+<<vl-includes>>
+
+int main() {
+<<vl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/velvet_analysis.cpp -o build/org/velvet_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/velvet_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Velvet de Bruijn assembly of a 14-base sequence ===
+original: ATCAGCTGACGTAC
+
+  k=3: 12 distinct k-mers, reconstructed MATCH (len 14)
+  k=4: 11 distinct k-mers, reconstructed MATCH (len 14)
+  k=5: 10 distinct k-mers, reconstructed MATCH (len 14)
+  k=6: 9 distinct k-mers, reconstructed MATCH (len 14)
+  k=7: 8 distinct k-mers, reconstructed MATCH (len 14)
+#+end_example
+
+For every \(k\) the Eulerian path through the de Bruijn graph reconstructs this repeat-free
+sequence exactly. The edge count is simply the number of distinct \(k\)-mers, \(L-k+1\), which
+*decreases* as \(k\) grows (fewer, longer windows). The choice of \(k\) is the assembler's central
+trade-off: a larger \(k\) makes \(k\)-mers more unique and so resolves repeats better, but leaves
+fewer of them, demanding deeper read coverage to avoid gaps -- here, with perfect coverage and no
+repeats, every \(k\) succeeds.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/velvet.svg]]
+
+* Character and relatives
+
+De Bruijn assembly is the backbone of modern short-read assemblers -- Velvet, SPAdes, ABySS,
+SOAPdenovo -- because it scales to billions of reads where overlap-layout-consensus (used for long
+reads) does not. Its hard problems are *sequencing errors* (which create spurious tips and
+bubbles the assembler must prune) and *repeats* (which tangle the graph); \(k\) is the central
+knob balancing repeat resolution against coverage. Long-read technologies revive overlap-based
+assembly (e.g. the string graph in Can/wtdbg2), trading error rate for read length.
+
+* Complexity
+
+Building the graph is \(O(\text{total read length})\); Hierholzer's Eulerian traversal is
+\(O(E)\) in the number of edges (k-mers). Both are linear -- the reason de Bruijn assembly scales
+to huge read sets.
