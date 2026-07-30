@@ -33,6 +33,7 @@
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/cyk_parser.hpp>
 #include <datamunge/algorithms/cohen_sutherland.hpp>
+#include <datamunge/algorithms/connected_components.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/decision_tree_induction.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
@@ -41,6 +42,7 @@
 #include <datamunge/algorithms/division.hpp>
 #include <datamunge/algorithms/double_dabble.hpp>
 #include <datamunge/algorithms/dda_line.hpp>
+#include <datamunge/algorithms/dithering.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
@@ -58,6 +60,7 @@
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/fuzzy_c_means.hpp>
 #include <datamunge/algorithms/hopfield_network.hpp>
+#include <datamunge/algorithms/histogram_equalization.hpp>
 #include <datamunge/algorithms/huffman_coding.hpp>
 #include <datamunge/algorithms/gabow_scc.hpp>
 #include <datamunge/algorithms/game_search.hpp>
@@ -103,6 +106,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/median_filter.hpp>
 #include <datamunge/algorithms/move_to_front.hpp>
 #include <datamunge/algorithms/midpoint_circle.hpp>
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
@@ -121,6 +125,7 @@
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
+#include <datamunge/algorithms/sobel.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>

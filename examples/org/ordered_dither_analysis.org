@@ -1,0 +1,128 @@
+#+title: Ordered (Bayer) Dithering
+#+subtitle: A literate C++ study of threshold-matrix halftoning, using =datamunge='s =algorithms::ordered_dither=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Ordered dithering* renders a grayscale image in few levels by comparing each pixel to a
+threshold read from a small, tiled *Bayer matrix*. Unlike error diffusion it is
+*stateless* -- each pixel is decided independently -- so it is fast, parallel, and
+deterministic, at the cost of a characteristic regular cross-hatch texture. This report
+implements it in =datamunge='s C++ =algorithms::ordered_dither= as a literate program:
+every number and figure comes from one compiled binary. We dither a gradient with a 4x4
+Bayer matrix and show the tone reproduced by the ordered threshold pattern.
+#+end_abstract
+
+* A tiled threshold matrix
+
+The 4x4 Bayer matrix holds the integers \(0\ldots15\) arranged so that, as a threshold
+grows, the "on" pixels fill in a maximally spread, recursively-defined pattern. To dither,
+tile the matrix over the image and compare each pixel to its matrix entry (scaled to
+\(0\ldots255\)): pixel brighter than the local threshold turns on, else off. A uniform gray
+turns on the fraction of matrix cells below it -- so brighter regions light more cells --
+reproducing tone without any inter-pixel communication.
+
+#+name: od-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dithering.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+OrderedDither(image, Bayer M (n x n)):
+    for each pixel (i,j):
+        threshold = (M[i mod n][j mod n] + 0.5) / n^2 * 255
+        out[i][j] = image[i][j] > threshold ? white : black
+#+end_example
+
+* A worked example
+
+We dither the same left-to-right gradient as the Floyd-Steinberg report and verify the
+on-pixel density tracks brightness.
+
+#+name: od-run
+#+begin_src c++ :eval no
+    const int rows = 40, cols = 64;
+    std::vector<std::vector<double>> img(rows, std::vector<double>(cols));
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j) img[i][j] = 255.0 * j / (cols - 1);
+
+    auto d = ordered_dither(img);
+    std::cout << "=== Ordered (Bayer 4x4) dithering of a gradient ===\n";
+    auto frac = [&](int c0, int c1) {
+        int w = 0, n = 0;
+        for (int i = 0; i < rows; ++i) for (int j = c0; j < c1; ++j) { ++n; w += (d[i][j] == 255); }
+        return static_cast<double>(w) / n;
+    };
+    std::cout << "white fraction  left third:   " << frac(0, cols / 3) << " (dark)\n";
+    std::cout << "white fraction  middle third: " << frac(cols / 3, 2 * cols / 3) << "\n";
+    std::cout << "white fraction  right third:  " << frac(2 * cols / 3, cols) << " (bright)\n";
+
+    std::vector<double> bx, by;
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            if (d[i][j] == 0) { bx.push_back(j); by.push_back(-i); }
+    RPlot p = RPlot::create();
+    p.points(bx, by, "black pixels", {17, 24, 39}, 2.5);
+    p.save_svg("build/org/ordered_dither.svg");
+    std::cout << "\nwrote build/org/ordered_dither.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ordered_dither_analysis.cpp <<'CPP'
+<<od-includes>>
+
+int main() {
+<<od-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ordered_dither_analysis.cpp -o build/org/ordered_dither_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ordered_dither_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ordered (Bayer 4x4) dithering of a gradient ===
+white fraction  left third:   0.166667 (dark)
+white fraction  middle third: 0.488095
+white fraction  right third:  0.829545 (bright)
+#+end_example
+
+As with error diffusion, the on-pixel density rises from the dark left to the bright right,
+reproducing the gradient -- but the pattern here is the *regular* Bayer cross-hatch rather
+than the organic scatter of Floyd-Steinberg, visible as ordered rows of dots in the figure.
+That regularity is the trade-off: ordered dithering is stateless and fast but shows a
+periodic texture.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/ordered_dither.svg]]
+
+* Ordered versus error-diffusion dithering
+
+Ordered dithering wins on *speed and parallelism* -- every pixel is independent, ideal for
+GPUs and hardware -- and its determinism is useful for animation (no flicker). Its loss is
+visual: the fixed matrix imprints a repeating pattern the eye can notice, where
+Floyd-Steinberg's diffused error looks more natural. Larger Bayer matrices (8x8, 16x16) give
+finer tone at the cost of a coarser tile. Both are halftoning methods; the choice is
+regular-and-fast versus organic-and-serial.
+
+* Complexity
+
+\(O(n)\) time for \(n\) pixels, each a single table lookup and comparison, and \(O(1)\)
+memory (the matrix is constant).

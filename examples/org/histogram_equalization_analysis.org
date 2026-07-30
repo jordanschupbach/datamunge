@@ -1,0 +1,154 @@
+#+title: Histogram Equalization: Contrast Enhancement
+#+subtitle: A literate C++ study of CDF-based contrast stretching, using =datamunge='s =algorithms::histogram_equalize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A low-contrast image wastes the tonal range, its intensities bunched into a narrow band.
+*Histogram equalization* spreads them across the full range by remapping each level
+through the *cumulative distribution function* (CDF) of the intensity histogram -- steep
+where pixels are common, so busy tonal ranges get stretched and empty ones compressed.
+This report implements it in =datamunge='s C++ =algorithms::histogram_equalize= as a
+literate program: every number and figure comes from one compiled binary. We equalize a
+deliberately low-contrast image and plot the before/after histograms to show the range
+opening up.
+#+end_abstract
+
+* Remap through the CDF
+
+Compute the intensity histogram and its cumulative sum \(\mathrm{cdf}(v)\). The equalizing
+map is
+\[
+  T(v) = \operatorname{round}\!\Big(\frac{\mathrm{cdf}(v)-\mathrm{cdf}_{\min}}
+        {N-\mathrm{cdf}_{\min}}\,(L-1)\Big),
+\]
+with \(N\) pixels and \(L=256\) levels. Because the CDF rises fastest where the histogram
+is tallest, \(T\) allocates the most *output* range to the most *populated* input levels --
+maximizing the spread of contrast. Applying \(T\) to every pixel yields the enhanced image.
+
+#+name: he-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/histogram_equalization.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Equalize(image):
+    hist = histogram of intensities
+    cdf = cumulative sum of hist
+    for each level v: map[v] = round( (cdf[v]-cdf_min)/(N-cdf_min) * 255 )
+    out[i][j] = map[image[i][j]]
+#+end_example
+
+* A worked example
+
+We build a low-contrast image whose intensities live only in \([96, 159]\), equalize it,
+and compare the intensity ranges and histograms before and after.
+
+#+name: he-run
+#+begin_src c++ :eval no
+    const int n = 64;
+    std::vector<std::vector<int>> img(n, std::vector<int>(n));
+    // A smooth low-contrast pattern confined to a narrow band.
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) img[i][j] = 96 + ((i * 7 + j * 5) % 64);
+
+    auto eq = histogram_equalize(img);
+    auto range = [](const std::vector<std::vector<int>>& im) {
+        int lo = 255, hi = 0;
+        for (const auto& r : im) for (int v : r) { lo = std::min(lo, v); hi = std::max(hi, v); }
+        return std::pair<int, int>{lo, hi};
+    };
+    auto [olo, ohi] = range(img);
+    auto [elo, ehi] = range(eq);
+    std::cout << "=== Histogram equalization ===\n";
+    std::cout << "original intensity range: [" << olo << ", " << ohi << "]  (span " << (ohi - olo) << ")\n";
+    std::cout << "equalized intensity range: [" << elo << ", " << ehi << "]  (span " << (ehi - elo) << ")\n";
+
+    // Coarse 16-bin histograms before/after.
+    auto hist16 = [](const std::vector<std::vector<int>>& im) {
+        std::vector<double> h(16, 0.0);
+        for (const auto& r : im) for (int v : r) h[std::min(15, v / 16)] += 1.0;
+        return h;
+    };
+    auto ho = hist16(img);
+    auto he = hist16(eq);
+    std::cout << "\noriginal 16-bin histogram:\n  ";
+    for (double v : ho) std::cout << static_cast<int>(v) << ' ';
+    std::cout << "\nequalized 16-bin histogram:\n  ";
+    for (double v : he) std::cout << static_cast<int>(v) << ' ';
+    std::cout << '\n';
+
+    RLayout lay = RLayout::create(1, 2);
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i * 16));
+    lay.add(RPlot::barplot(ho, labels, "original", {148, 163, 184}));
+    lay.add(RPlot::barplot(he, labels, "equalized", {37, 99, 235}));
+    lay.save_svg("build/org/histogram_equalization.svg");
+    std::cout << "\nwrote build/org/histogram_equalization.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/histogram_equalization_analysis.cpp <<'CPP'
+<<he-includes>>
+
+int main() {
+<<he-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/histogram_equalization_analysis.cpp -o build/org/histogram_equalization_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/histogram_equalization_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Histogram equalization ===
+original intensity range: [96, 159]  (span 63)
+equalized intensity range: [0, 255]  (span 255)
+
+original 16-bin histogram:
+  0 0 0 0 0 0 1024 1024 1024 1024 0 0 0 0 0 0
+equalized 16-bin histogram:
+  256 256 256 256 256 256 256 256 256 256 256 256 256 256 256 256
+#+end_example
+
+The original image uses only a narrow slice of the tonal range; after equalization the
+intensities span nearly the full \([0,255]\), and the histogram spreads from a tight cluster
+into a broad, flatter distribution. That redistribution is exactly the contrast enhancement
+-- the same number of pixels, spread across many more distinguishable levels.
+
+#+attr_latex: :width 0.9\linewidth
+[[file:../../build/org/histogram_equalization.svg]]
+
+* Uses and cautions
+
+Histogram equalization is a staple contrast enhancer in photography, medical imaging, and
+preprocessing for vision. Its global form can over-amplify noise in flat regions and wash
+out local detail, which *adaptive* histogram equalization (AHE) and its contrast-limited
+variant *CLAHE* fix by equalizing over local tiles with a clipping limit. For color images
+one equalizes a luminance channel, not each RGB channel independently (which shifts hue).
+
+* Complexity
+
+\(O(n + L)\) time for \(n\) pixels and \(L=256\) levels -- one histogram pass, a CDF, and a
+remapping pass -- and \(O(L)\) memory for the histogram and map.
