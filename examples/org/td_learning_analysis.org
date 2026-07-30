@@ -1,0 +1,229 @@
+#+title: TD(0): Temporal-Difference Prediction
+#+subtitle: A literate C++ study of policy evaluation by bootstrapping, on Sutton's random walk, using =datamunge='s =algorithms::td_prediction=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Before an agent can improve a policy it often helps to *evaluate* one: to estimate
+the value \(V^\pi(s)\), the expected return from each state under a fixed policy
+\(\pi\). *Temporal-difference learning*, TD(0) (Sutton 1988), does this from raw
+experience with no model of the environment and without waiting for episodes to
+end. After every single step it corrects its estimate toward a one-step
+*bootstrap* -- the observed reward plus its own current estimate of the next
+state's value. This report implements TD(0) in =datamunge='s C++
+=algorithms::td_prediction= as a literate program: every number and figure comes
+from one compiled binary. On Sutton & Barto's five-state random walk, whose true
+values are known exactly to be \(1/6,2/6,\dots,5/6\), we watch the estimates
+sweep from a flat, uninformed guess toward the true value function as episodes
+accumulate, and track the root-mean-square error shrinking with experience.
+#+end_abstract
+
+* The prediction problem
+
+Given a fixed policy \(\pi\), the *state-value function* is the expected
+discounted return from each state,
+\[
+  V^\pi(s) = \mathbb{E}_\pi\Big[\textstyle\sum_{k\ge0}\gamma^k r_{t+k+1} \,\Big|\, s_t=s\Big].
+\]
+Computing it exactly needs the environment's transition and reward model (solving
+the Bellman equations); TD(0) instead *learns* it online from sampled
+transitions. Unlike Monte-Carlo evaluation, which averages complete returns and
+so must wait until an episode terminates, TD(0) updates after every step and can
+run on never-ending tasks.
+
+#+name: td-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tabular_rl.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Bootstrapping: the TD(0) update
+
+The return obeys the recursive Bellman consistency
+\(V^\pi(s)=\mathbb{E}_\pi[r+\gamma V^\pi(s')]\). TD(0) turns this identity into an
+incremental estimator. After observing a transition \((s,r,s')\) it forms the
+*TD target* \(r+\gamma V(s')\) -- a sample of the right-hand side that
+*bootstraps* by substituting the current estimate \(V(s')\) for the unknown true
+value -- and moves \(V(s)\) a fraction \(\alpha\) toward it:
+\[
+  V(s) \leftarrow V(s) + \alpha\big[\,\underbrace{r + \gamma V(s')}_{\text{TD target}} - V(s)\,\big].
+\]
+The bracket is the *TD error* \(\delta = r+\gamma V(s')-V(s)\), the surprise
+between prediction and one-step outlook. Monte-Carlo would instead use the full
+observed return \(G_t\) as the target -- unbiased but high-variance and available
+only at episode end. TD(0) trades a little bias (it bootstraps from a current,
+imperfect estimate) for much lower variance and fully online updates, and for a
+fixed policy it converges to \(V^\pi\).
+
+** Pseudocode
+
+#+begin_example
+TD0(env, policy, alpha, gamma, episodes):
+    V[s] = 0 for all s
+    repeat for each episode:
+        s = env.reset()
+        repeat for each step:
+            a = policy[s]
+            (s', r, done) = env.step(s, a)
+            target = r + (done ? 0 : gamma * V[s'])
+            V[s] += alpha * (target - V[s])
+            s = s'
+        until done
+    return V
+#+end_example
+
+* Sutton's random walk
+
+Five non-terminal states \(A,B,C,D,E\) sit in a row between two terminals. Every
+episode starts in the center \(C\); each step moves left or right with equal
+probability (the fixed policy being evaluated). Reaching the right terminal gives
+reward \(1\), the left terminal \(0\), and all other rewards are \(0\), with
+\(\gamma=1\). Under this random walk the true value of a state is its probability
+of eventually exiting to the right, which for the \(k\)-th state (\(A=1,\dots,E=5\))
+is exactly \(V(k)=k/6\). The randomness lives in the *environment's dynamics*, so
+the evaluated policy is a trivial single action and TD(0) never needs to know the
+move probabilities -- it only samples them.
+
+#+name: td-run
+#+begin_src c++ :eval no
+    // Random-walk environment. States 0 and 6 are terminal; 1..5 are A..E; start at 3 (=C).
+    // A single action whose effect is a random +/-1 step: the stochasticity is in the env.
+    auto make_env = [](std::uint64_t seed) {
+        TabularEnvironment env;
+        env.num_states  = 7;
+        env.num_actions = 1;
+        env.reset       = [] { return std::size_t{3}; };
+        auto rng        = std::make_shared<std::mt19937_64>(seed);
+        env.step        = [rng](std::size_t s, std::size_t) -> StepResult {
+            std::uniform_int_distribution<int> coin(0, 1);
+            std::size_t next   = coin(*rng) ? s + 1 : s - 1;
+            bool        done   = (next == 0 || next == 6);
+            double      reward = (next == 6) ? 1.0 : 0.0;
+            return {next, reward, done};
+        };
+        return env;
+    };
+
+    const std::vector<std::size_t> policy(7, 0);  // one action; the env supplies randomness
+    const std::vector<double>      truth = {1.0 / 6, 2.0 / 6, 3.0 / 6, 4.0 / 6, 5.0 / 6};
+
+    auto run = [&](std::size_t episodes) {
+        RLParameters p;
+        p.learning_rate = 0.1;
+        p.discount      = 1.0;
+        p.episodes      = episodes;
+        p.seed          = 0;
+        return td_prediction(make_env(2024), policy, p);
+    };
+
+    std::cout << "=== TD(0) prediction on the 5-state random walk ===\n";
+    std::cout << "true values A..E = 1/6 2/6 3/6 4/6 5/6\n\n";
+    std::cout << "episodes    V(A)   V(B)   V(C)   V(D)   V(E)    RMS error\n";
+
+    std::vector<std::size_t> snapshots = {0, 1, 10, 100, 300};
+    std::vector<std::vector<double>> curves;
+    for (std::size_t n : snapshots) {
+        auto   r = run(n);
+        double se = 0.0;
+        std::cout << (n < 10 ? "   " : (n < 100 ? "  " : (n < 1000 ? " " : ""))) << n << "       ";
+        std::vector<double> vals;
+        for (std::size_t k = 1; k <= 5; ++k) {
+            printf("%.3f  ", r.value[k]);
+            vals.push_back(r.value[k]);
+            double e = r.value[k] - truth[k - 1];
+            se += e * e;
+        }
+        curves.push_back(vals);
+        printf("  %.4f\n", std::sqrt(se / 5.0));
+    }
+
+    // Figure: true values and TD(0) estimates after 1, 10, 100 episodes.
+    std::vector<double> xs = {1, 2, 3, 4, 5};
+    RPlot               p  = RPlot::create();
+    p.line(xs, truth, "true V", {0, 0, 0}, 2.5);
+    p.points(xs, truth, "", {0, 0, 0}, 5.0);
+    const std::vector<RGB> cols = {{147, 197, 253}, {59, 130, 246}, {30, 64, 175}};
+    const std::vector<std::size_t> show = {1, 3, 4};  // indices into snapshots: 1, 100, 300
+    for (std::size_t j = 0; j < show.size(); ++j)
+        p.line(xs, curves[show[j]], "", cols[j], 1.8);
+    p.legend({"true V = k/6", "TD(0) 1 ep", "TD(0) 100 ep", "TD(0) 300 ep"},
+             {{0, 0, 0}, cols[0], cols[1], cols[2]});
+    p.save_svg("build/org/td_random_walk.svg");
+    std::cout << "\nwrote build/org/td_random_walk.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/td_learning_analysis.cpp <<'CPP'
+<<td-includes>>
+
+int main() {
+<<td-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/td_learning_analysis.cpp -o build/org/td_learning_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/td_learning_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== TD(0) prediction on the 5-state random walk ===
+true values A..E = 1/6 2/6 3/6 4/6 5/6
+
+episodes    V(A)   V(B)   V(C)   V(D)   V(E)    RMS error
+   0       0.000  0.000  0.000  0.000  0.000    0.5528
+   1       0.000  0.000  0.000  0.000  0.000    0.5528
+  10       0.000  0.000  0.003  0.021  0.175    0.4970
+ 100       0.101  0.314  0.448  0.549  0.787    0.0685
+ 300       0.216  0.398  0.555  0.682  0.853    0.0456
+#+end_example
+
+At zero episodes every estimate is the uninformed initial \(0\); with a single
+episode only the states that walk touched move, and only toward the terminal that
+episode happened to reach. As episodes accumulate the whole profile straightens
+toward the true \(V(k)=k/6\) line and the root-mean-square error falls steadily.
+The estimates approach the truth without TD(0) ever being told the move
+probabilities or the reward structure -- it learns them implicitly from sampled
+transitions, correcting each state's value against the next state's current
+estimate.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/td_random_walk.svg]]
+
+* TD, Monte Carlo, and the middle ground
+
+TD(0) and Monte-Carlo evaluation are the two ends of a spectrum. Monte Carlo
+targets the full return \(G_t\): unbiased, but usable only at episode end and
+noisy because one return reflects every random choice in the episode. TD(0)
+targets \(r+\gamma V(s')\): slightly biased while \(V\) is still wrong, but low
+variance and available after a single step. The family of \(n\)-step returns and
+their geometric average, TD(\(\lambda\)) with eligibility traces, interpolates
+between them and usually beats either extreme. The same bootstrapped TD error
+that drives prediction here becomes the learning signal for control in SARSA and
+Q-learning, and -- paired with function approximation -- underlies modern deep
+reinforcement learning.
+
+* Complexity
+
+Each step is an \(O(1)\) value update, so a run costs
+\(O(\text{episodes}\times\text{steps})\) time and \(O(|S|)\) memory. TD(0) is the
+minimal, canonical instance of temporal-difference learning: one state, one
+successor, one bootstrap.

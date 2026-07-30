@@ -1,0 +1,245 @@
+#+title: Q-Learning: Off-Policy Temporal-Difference Control
+#+subtitle: A literate C++ study of model-free reinforcement learning with =datamunge='s =algorithms::q_learning=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+An agent is dropped into an unknown world. It can act, observe where it lands,
+and collect rewards, but it is given no map -- no transition probabilities, no
+reward function. Can it still learn to act optimally? *Q-learning* (Watkins 1989)
+says yes: maintain a table of action-values \(Q(s,a)\) and, after each sampled
+transition, nudge the value toward the observed reward plus the discounted value
+of the best next action. Remarkably, this converges to the optimal
+action-value function \(Q^\star\) regardless of how the agent explores, because
+the update always bootstraps from the /greedy/ action -- it is *off-policy*. This
+report implements it in =datamunge='s C++ =algorithms::q_learning= as a literate
+program: every number and figure comes from one compiled binary. We drop the
+agent in a 4x4 grid world with a single goal and a cost per step, and watch its
+episode returns climb from random wandering to the shortest path, then read off
+the greedy policy it distilled into the \(Q\) table.
+#+end_abstract
+
+* Markov decision processes and the control problem
+
+The agent interacts with a *Markov decision process*: at each step it is in a
+state \(s\), picks an action \(a\), and the environment returns a reward \(r\) and
+a next state \(s'\). The goal is a *policy* \(\pi(s)\) maximizing the expected
+*discounted return* \(G_t=\sum_{k\ge0}\gamma^k r_{t+k+1}\), where
+\(\gamma\in[0,1)\) trades off immediate against future reward. The *optimal
+action-value function*
+\[
+  Q^\star(s,a) = \max_\pi \mathbb{E}\big[G_t \mid s_t=s, a_t=a, \pi\big]
+\]
+is the best achievable return after taking \(a\) in \(s\); it satisfies the
+*Bellman optimality equation*
+\[
+  Q^\star(s,a) = \mathbb{E}\Big[r + \gamma \max_{a'} Q^\star(s',a') \,\Big|\, s,a\Big],
+\]
+and the optimal policy is greedy in it, \(\pi^\star(s)=\arg\max_a Q^\star(s,a)\).
+Q-learning estimates \(Q^\star\) from sampled transitions without ever knowing
+the expectation's transition/reward model.
+
+=datamunge= describes the environment with a =TabularEnvironment= (a =reset=
+callback returning a start state and a =step= callback mapping
+\((s,a)\mapsto(s',r,\text{done})\)) and returns a =QLearningResult= with the
+learned \(Q\) table, the greedy policy, and the return of every training episode.
+
+#+name: ql-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tabular_rl.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The temporal-difference update
+
+Q-learning does not wait for an episode to finish to learn. After a single
+transition \((s,a,r,s')\) it forms the *TD target* \(r+\gamma\max_{a'}Q(s',a')\)
+-- a one-step sample of the Bellman right-hand side that *bootstraps* from the
+current estimate at \(s'\) -- and moves \(Q(s,a)\) a fraction \(\alpha\) toward it:
+\[
+  Q(s,a) \leftarrow Q(s,a) + \alpha\Big[\,\underbrace{r + \gamma \max_{a'} Q(s',a')}_{\text{TD target}} - Q(s,a)\Big].
+\]
+The bracket is the *TD error*. Because the target uses \(\max_{a'}\) -- the greedy
+action -- rather than the action actually taken next, the learned values describe
+the optimal policy even while the agent explores with a different, exploratory
+policy. This is what "off-policy" means. Exploration here is
+\(\varepsilon\)-greedy: with probability \(\varepsilon\) act randomly, else act
+greedily. For a terminal transition the bootstrap term is dropped
+(\(\max_{a'}Q(s',\cdot)\equiv0\) for an absorbing state).
+
+Under standard conditions -- every state-action pair visited infinitely often and
+a suitably decaying step size -- \(Q\) converges to \(Q^\star\) with probability 1.
+
+** Pseudocode
+
+#+begin_example
+QLearning(env, alpha, gamma, epsilon, episodes):
+    Q[s][a] = 0 for all s, a
+    repeat for each episode:
+        s = env.reset()
+        repeat for each step:
+            a = epsilon-greedy(Q[s], epsilon)
+            (s', r, done) = env.step(s, a)
+            target = r + (done ? 0 : gamma * max_a' Q[s'][a'])
+            Q[s][a] += alpha * (target - Q[s][a])
+            s = s'
+        until done
+    return Q, greedy_policy = argmax_a Q[s][a]
+#+end_example
+
+* A grid world
+
+The world is a 4x4 grid of 16 cells. The agent starts in the top-left corner and
+must reach the bottom-right *goal*; the four actions move up/right/down/left
+(blocked moves keep it in place). Every step costs \(-1\), so maximizing return
+means reaching the goal in as few steps as possible -- the shortest path is the
+Manhattan distance of 6 steps, an optimal return of \(-6\). Starting all \(Q\) at
+zero is *optimistic* against the negative rewards, which itself encourages the
+agent to try unexplored actions early.
+
+#+name: ql-run
+#+begin_src c++ :eval no
+    const int kSide = 4;
+    const std::size_t kStates = static_cast<std::size_t>(kSide * kSide);
+    const std::size_t kGoal   = kStates - 1;  // bottom-right
+
+    TabularEnvironment env;
+    env.num_states  = kStates;
+    env.num_actions = 4;  // 0=up, 1=right, 2=down, 3=left
+    env.reset       = [] { return std::size_t{0}; };
+    env.step        = [=](std::size_t s, std::size_t a) -> StepResult {
+        int row = static_cast<int>(s) / kSide, col = static_cast<int>(s) % kSide;
+        if (a == 0 && row > 0) --row;
+        else if (a == 1 && col < kSide - 1) ++col;
+        else if (a == 2 && row < kSide - 1) ++row;
+        else if (a == 3 && col > 0) --col;
+        std::size_t next = static_cast<std::size_t>(row * kSide + col);
+        return {next, -1.0, next == kGoal};
+    };
+
+    RLParameters params;
+    params.learning_rate = 0.5;
+    params.discount      = 0.95;
+    params.epsilon       = 0.1;
+    params.episodes      = 500;
+    params.seed          = 42;
+
+    QLearningResult result = q_learning(env, params);
+
+    std::cout << "=== Q-learning on a 4x4 grid world ===\n";
+    std::cout << "episodes: " << params.episodes << "\n\n";
+
+    // Greedy policy as an arrow map (G marks the goal).
+    const std::string arrows = "^>v<";
+    std::cout << "learned greedy policy:\n";
+    for (int row = 0; row < kSide; ++row) {
+        std::cout << "  ";
+        for (int col = 0; col < kSide; ++col) {
+            std::size_t s = static_cast<std::size_t>(row * kSide + col);
+            std::cout << (s == kGoal ? 'G' : arrows[result.greedy_policy[s]]) << ' ';
+        }
+        std::cout << '\n';
+    }
+    std::cout << "\nQ(start): up=" << result.q[0][0] << " right=" << result.q[0][1]
+              << " down=" << result.q[0][2] << " left=" << result.q[0][3] << '\n';
+    std::cout << "best start value = " << result.q[0][result.greedy_policy[0]]
+              << "  (optimal discounted return for a 6-step path)\n";
+
+    double first50 = 0.0, last50 = 0.0;
+    for (std::size_t i = 0; i < 50; ++i) first50 += result.episode_returns[i];
+    for (std::size_t i = params.episodes - 50; i < params.episodes; ++i) last50 += result.episode_returns[i];
+    std::cout << "mean return  first 50 episodes = " << first50 / 50.0
+              << "   last 50 = " << last50 / 50.0 << '\n';
+
+    // Figure: learning curve (per-episode return, smoothed with a moving average).
+    std::vector<double> ex, ey;
+    const int           w = 20;
+    for (std::size_t e = 0; e < result.episode_returns.size(); ++e) {
+        int    lo  = static_cast<int>(e) - w + 1;
+        if (lo < 0) lo = 0;
+        double sum = 0.0;
+        for (int k = lo; k <= static_cast<int>(e); ++k) sum += result.episode_returns[k];
+        ex.push_back(static_cast<double>(e + 1));
+        ey.push_back(sum / static_cast<double>(static_cast<int>(e) - lo + 1));
+    }
+    RPlot p = RPlot::create();
+    p.line(ex, ey, "return (20-episode moving average)", {37, 99, 235}, 2.0);
+    p.abline_h(-6.0, {22, 163, 74}, 1.5);
+    p.legend({"smoothed return", "optimal return (-6)"}, {{37, 99, 235}, {22, 163, 74}});
+    p.save_svg("build/org/q_learning_curve.svg");
+    std::cout << "\nwrote build/org/q_learning_curve.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/q_learning_analysis.cpp <<'CPP'
+<<ql-includes>>
+
+int main() {
+<<ql-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/q_learning_analysis.cpp -o build/org/q_learning_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/q_learning_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Q-learning on a 4x4 grid world ===
+episodes: 500
+
+learned greedy policy:
+  > > > v
+  > > > v
+  > > > v
+  > > > G
+
+Q(start): up=-6.03319 right=-5.29816 down=-5.29816 left=-6.03319
+best start value = -5.29816  (optimal discounted return for a 6-step path)
+mean return  first 50 episodes = -12.78   last 50 = -6.54
+#+end_example
+
+Every arrow points toward the goal: the greedy policy read off the \(Q\) table is
+a shortest route down and to the right. The start-state value settles near the
+optimal discounted return of a six-step path, and the learning curve climbs from
+the deeply negative returns of early random wandering to hover at the optimum of
+\(-6\), with residual dips caused by the \(10\%\) exploration that is deliberately
+kept on throughout training.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/q_learning_curve.svg]]
+
+* Off-policy learning and its limits
+
+Q-learning's defining feature is that it learns \(Q^\star\) while behaving
+non-optimally. That decoupling of *behavior* (exploratory) from *target* (greedy)
+is powerful -- it can learn the optimal policy from data generated by any
+sufficiently exploratory source, even a fixed log of past experience. The flip
+side appears when exploration is risky: because the target ignores the chance
+that exploration lands the agent somewhere costly, Q-learning can prefer a route
+that is optimal on paper but dangerous under an \(\varepsilon\)-greedy hand. The
+companion SARSA report makes this concrete on a cliff-walking task, where the
+on-policy SARSA update learns a visibly safer route than Q-learning.
+
+* Complexity
+
+Each step is an \(O(|A|)\) update (the \(\max\) over actions), so training costs
+\(O(\text{episodes}\times\text{steps}\times|A|)\) time and \(O(|S|\,|A|)\) memory
+for the table. Tabular Q-learning is exact for small discrete problems; scaling
+to large or continuous state spaces replaces the table with a function
+approximator (tile codings, or a neural network as in deep Q-networks), keeping
+the very same TD-error update at its core.

@@ -1,0 +1,231 @@
+#+title: The Baum-Welch Algorithm: Learning an HMM from Observations
+#+subtitle: A literate C++ study of EM training for hidden Markov models with =datamunge='s =algorithms::baum_welch=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The forward-backward and Viterbi algorithms assume the model \(\lambda=(\pi,A,B)\)
+is known. But where does the model come from? The *Baum-Welch algorithm* learns
+it from observation sequences alone -- no hidden states are ever labeled. It is
+an *expectation-maximization* (EM) procedure: given a current model, run
+forward-backward to compute how responsibility for each observation is
+distributed over hidden states (the E-step), then re-estimate the parameters as
+the expected fraction of times each transition and emission was used (the
+M-step). Each iteration provably never decreases the data likelihood. This
+report implements it in =datamunge='s C++ =algorithms::baum_welch= as a literate
+program: every number and figure comes from one compiled binary. We simulate an
+"occasionally dishonest casino" that secretly switches between a fair and a
+loaded die, hand the raw roll sequence to Baum-Welch with a deliberately wrong
+starting model, and watch the log-likelihood climb monotonically while the
+recovered emission and transition parameters move toward the truth.
+#+end_abstract
+
+* Learning problem
+
+We are given one or more observation sequences \(O^{(1)},\dots,O^{(S)}\) but /not/
+the hidden states that produced them, and we want the model
+\(\lambda=(\pi,A,B)\) that maximizes their likelihood
+\(\prod_s P(O^{(s)}\mid\lambda)\). There is no closed form -- the states are
+latent -- but EM gives a hill-climb that converges to a local optimum.
+
+The *occasionally dishonest casino* is the standard illustration. A dealer holds
+two dice: a *fair* die (each face \(1\!-\!6\) with probability \(1/6\)) and a
+*loaded* die (face 6 with probability \(1/2\), the rest \(1/10\) each). Between
+rolls the dealer usually keeps the same die but occasionally switches. We see
+only the face values; the die in use is hidden. Baum-Welch must recover both the
+emission bias of the loaded die and the switching dynamics from the rolls alone.
+
+#+name: bw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hmm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The EM recursion
+
+Fix a current model \(\lambda\). The E-step runs forward-backward on each sequence
+to obtain the smoothed state posteriors \(\gamma_t(i)=P(q_t=i\mid O,\lambda)\) and
+the *pair posteriors*
+\[
+  \xi_t(i,j) = P(q_t=i, q_{t+1}=j \mid O,\lambda)
+             \propto \alpha_t(i)\,A_{ij}\,B_{j,o_{t+1}}\,\beta_{t+1}(j).
+\]
+Reading these as *expected counts* -- \(\gamma_t(i)\) is the expected number of
+visits to state \(i\) at time \(t\), \(\xi_t(i,j)\) the expected number of
+\(i\!\to\!j\) transitions -- the M-step re-estimates each parameter as a ratio of
+expected counts (a maximum-likelihood estimate for the "completed" data):
+\[
+  \hat\pi_i = \overline{\gamma_1(i)},\qquad
+  \hat A_{ij} = \frac{\sum_t \xi_t(i,j)}{\sum_t \gamma_t(i)},\qquad
+  \hat B_{ik} = \frac{\sum_{t:\,o_t=k}\gamma_t(i)}{\sum_t \gamma_t(i)},
+\]
+summed over all sequences. Baum's theorem guarantees
+\(P(O\mid\hat\lambda)\ge P(O\mid\lambda)\): every iteration climbs (or holds) the
+likelihood. We iterate until the gain falls below a tolerance.
+
+** Pseudocode
+
+#+begin_example
+BaumWelch(sequences, lambda_0, tol):
+    lambda = lambda_0
+    repeat:
+        zero all expected-count accumulators
+        for each sequence O:
+            (alpha, beta, gamma, c) = ScaledForwardBackward(lambda, O)
+            logL += -sum_t log c[t]
+            accumulate gamma into pi- and emission-counts
+            accumulate xi = normalize( alpha_t(i) A_ij B_{j,o_{t+1}} beta_{t+1}(j) )
+                       into transition-counts
+        # M-step: ratios of expected counts
+        pi[i]   = mean over sequences of gamma_1(i)
+        A[i][j] = xi_count[i][j] / gamma_count[i]
+        B[i][k] = gamma_count_emitting_k[i] / gamma_count[i]
+    until logL increases by less than tol
+    return lambda, logL history
+#+end_example
+
+Because EM only finds a *local* optimum, the result depends on the starting
+model; in practice one restarts from several random initializations and keeps the
+highest-likelihood fit.
+
+* Training on simulated casino rolls
+
+We simulate 4000 rolls from the true casino model, then fit from a wrong start:
+symmetric transitions and near-uniform emissions with only a mild hint that
+state 1 favors face 6 (to align the learned labels with "loaded"). We record the
+total log-likelihood after each EM iteration and the recovered parameters.
+
+#+name: bw-run
+#+begin_src c++ :eval no
+    // --- Ground-truth casino: state 0 = Fair, state 1 = Loaded; symbols 0..5 = faces 1..6.
+    HiddenMarkovModel truth;
+    truth.initial    = {0.5, 0.5};
+    truth.transition = {{0.95, 0.05}, {0.10, 0.90}};
+    truth.emission   = {{1.0 / 6, 1.0 / 6, 1.0 / 6, 1.0 / 6, 1.0 / 6, 1.0 / 6},
+                        {0.10, 0.10, 0.10, 0.10, 0.10, 0.50}};
+
+    // --- Simulate one long roll sequence from the truth (fixed seed => reproducible).
+    std::mt19937_64                        rng(20240729);
+    std::uniform_real_distribution<double> unit(0.0, 1.0);
+    auto                                   sample = [&](const std::vector<double>& dist) {
+        double r = unit(rng), c = 0.0;
+        for (std::size_t k = 0; k < dist.size(); ++k) {
+            c += dist[k];
+            if (r <= c) return k;
+        }
+        return dist.size() - 1;
+    };
+    const std::size_t        T = 4000;
+    std::vector<std::size_t> rolls(T);
+    std::size_t              state = (unit(rng) < truth.initial[0]) ? 0 : 1;
+    std::size_t             true_loaded_rolls = 0;
+    for (std::size_t t = 0; t < T; ++t) {
+        rolls[t] = sample(truth.emission[state]);
+        if (state == 1) ++true_loaded_rolls;
+        state = (unit(rng) < truth.transition[state][0]) ? 0 : 1;
+    }
+
+    // --- Deliberately wrong starting model.
+    HiddenMarkovModel init;
+    init.initial    = {0.5, 0.5};
+    init.transition = {{0.8, 0.2}, {0.2, 0.8}};
+    init.emission   = {{0.17, 0.17, 0.17, 0.17, 0.17, 0.15},   // ~uniform
+                       {0.15, 0.15, 0.15, 0.15, 0.15, 0.25}};  // mild hint: state 1 likes face 6
+
+    BaumWelchResult fit = baum_welch({rolls}, init, 100, 1e-6);
+
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "=== Baum-Welch on 4000 casino rolls (" << true_loaded_rolls << " truly loaded) ===\n";
+    std::cout << "iterations to converge: " << fit.iterations << "\n\n";
+
+    std::cout << "log-likelihood: first=" << fit.log_likelihood_history.front()
+              << "  last=" << fit.log_likelihood_history.back() << '\n';
+    bool monotone = true;
+    for (std::size_t i = 1; i < fit.log_likelihood_history.size(); ++i)
+        if (fit.log_likelihood_history[i] + 1e-6 < fit.log_likelihood_history[i - 1]) monotone = false;
+    std::cout << "monotone non-decreasing: " << (monotone ? "yes" : "no") << "\n\n";
+
+    std::cout << "                       truth      learned\n";
+    std::cout << "P(stay Fair)          " << truth.transition[0][0] << "     " << fit.model.transition[0][0] << '\n';
+    std::cout << "P(stay Loaded)        " << truth.transition[1][1] << "     " << fit.model.transition[1][1] << '\n';
+    std::cout << "P(face 6 | Fair)      " << truth.emission[0][5] << "     " << fit.model.emission[0][5] << '\n';
+    std::cout << "P(face 6 | Loaded)    " << truth.emission[1][5] << "     " << fit.model.emission[1][5] << '\n';
+
+    // Figure: the log-likelihood convergence curve.
+    std::vector<double> iters, lls;
+    for (std::size_t i = 0; i < fit.log_likelihood_history.size(); ++i) {
+        iters.push_back(static_cast<double>(i + 1));
+        lls.push_back(fit.log_likelihood_history[i]);
+    }
+    RPlot p = RPlot::create();
+    p.line(iters, lls, "log-likelihood", {37, 99, 235}, 2.5);
+    p.points(iters, lls, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/baum_welch_convergence.svg");
+    std::cout << "\nwrote build/org/baum_welch_convergence.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/baum_welch_analysis.cpp <<'CPP'
+<<bw-includes>>
+
+int main() {
+<<bw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/baum_welch_analysis.cpp -o build/org/baum_welch_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/baum_welch_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Baum-Welch on 4000 casino rolls (1480 truly loaded) ===
+iterations to converge: 100
+
+log-likelihood: first=-7032.9914  last=-6828.8074
+monotone non-decreasing: yes
+
+                       truth      learned
+P(stay Fair)          0.9500     0.9660
+P(stay Loaded)        0.9000     0.9326
+P(face 6 | Fair)      0.1667     0.1924
+P(face 6 | Loaded)    0.5000     0.5482
+#+end_example
+
+The log-likelihood rises monotonically and flattens as EM reaches a local
+optimum. From nothing but the raw roll sequence and a near-uniform start, the
+fit recovers the essential structure of the casino: the loaded state's inflated
+probability of rolling a 6, the fair state's near-uniform face distribution, and
+the strong self-persistence of both dice (the dealer rarely switches). The
+recovered numbers are not exact -- 4000 rolls is finite data and EM only finds a
+local optimum -- but they clearly separate the two regimes the simulation used.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/baum_welch_convergence.svg]]
+
+* Practical notes
+
+Three cautions matter in practice. *Local optima*: EM climbs to the nearest peak,
+so several random restarts and keeping the best-likelihood fit is standard.
+*Label switching*: the states are exchangeable, so a fit may swap "fair" and
+"loaded"; we nudged the start to keep the labels aligned, but any downstream use
+must handle the permutation symmetry. *Zero counts*: a symbol never observed from
+a state drives its emission estimate to zero and it can never recover, so
+add-one/Dirichlet smoothing of the counts is common on sparse data. The cost per
+iteration is one forward-backward pass per sequence, \(O(T N^2)\), times the
+number of iterations to convergence.

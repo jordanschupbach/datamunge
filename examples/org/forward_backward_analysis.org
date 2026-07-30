@@ -1,0 +1,244 @@
+#+title: The Forward-Backward Algorithm: Smoothing Hidden-State Posteriors
+#+subtitle: A literate C++ study of HMM evaluation and state smoothing with =datamunge='s =algorithms::forward_backward=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given a hidden Markov model and a sequence of observations, two quantities are
+fundamental: the *likelihood* \(P(O\mid\lambda)\) of the data under the model, and
+the *smoothed posterior* \(P(q_t=i\mid O,\lambda)\) that the process was in each
+hidden state at each time, using the /whole/ sequence -- past and future -- as
+evidence. The *forward-backward algorithm* computes both in \(O(T N^2)\) time by
+propagating one distribution forward through the observations and another
+backward, then multiplying them pointwise. This report implements it in
+=datamunge='s C++ =algorithms::forward_backward= as a literate program: every
+number and figure comes from one compiled binary. We verify the likelihood
+against exact brute-force enumeration of all state paths, then plot the smoothed
+probability of "fever" across a symptom stream and contrast it with the hard
+Viterbi decode. To keep a product of many small probabilities from underflowing,
+the implementation uses Rabiner's per-time-step scaling, which also delivers the
+log-likelihood for free as \(-\sum_t\log c_t\).
+#+end_abstract
+
+* Evaluation and smoothing
+
+A discrete HMM \(\lambda=(\pi,A,B)\) has initial distribution \(\pi_i=P(q_1=i)\),
+transitions \(A_{ij}=P(q_{t+1}=j\mid q_t=i)\), and emissions
+\(B_{ik}=P(o_t=k\mid q_t=i)\). Given observations \(O=o_1\dots o_T\) we want:
+
+- the *evidence* \(P(O\mid\lambda)=\sum_Q P(Q,O\mid\lambda)\), a sum over all
+  \(N^T\) hidden paths -- the quantity Baum-Welch maximizes and that model
+  selection compares; and
+- the *smoothed posteriors* \(\gamma_t(i)=P(q_t=i\mid O,\lambda)\), the marginal
+  probability of each hidden state at each time, conditioned on the entire
+  observation sequence.
+
+Unlike Viterbi's single best path, \(\gamma_t\) is a genuine distribution over
+states at each \(t\); it answers "how sure are we the patient had a fever on
+day \(t\), given all fourteen days of symptoms?"
+
+#+name: fb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hmm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Forward and backward variables
+
+Define the *forward variable*
+\[
+  \alpha_t(i) = P(o_1\dots o_t,\, q_t=i \mid \lambda),
+\]
+the joint probability of the observations up to \(t\) and being in state \(i\)
+then. It obeys \(\alpha_1(i)=\pi_i B_{i,o_1}\) and the recursion
+\[
+  \alpha_{t+1}(j) = \Big(\sum_i \alpha_t(i)\,A_{ij}\Big) B_{j,o_{t+1}}.
+\]
+Summing the last column gives the evidence, \(P(O\mid\lambda)=\sum_i\alpha_T(i)\).
+
+Define the *backward variable*
+\[
+  \beta_t(i) = P(o_{t+1}\dots o_T \mid q_t=i,\lambda),
+\]
+the probability of the remaining observations given state \(i\) at \(t\). It obeys
+\(\beta_T(i)=1\) and the backward recursion
+\[
+  \beta_t(i) = \sum_j A_{ij}\,B_{j,o_{t+1}}\,\beta_{t+1}(j).
+\]
+The two combine at every time step: since \(\alpha_t(i)\beta_t(i) =
+P(o_1\dots o_T, q_t=i\mid\lambda)\),
+\[
+  \gamma_t(i) = \frac{\alpha_t(i)\beta_t(i)}{\sum_j \alpha_t(j)\beta_t(j)}
+             = \frac{\alpha_t(i)\beta_t(i)}{P(O\mid\lambda)}.
+\]
+
+** Scaling for numerical stability
+
+Each \(\alpha_t\) is a joint probability over a growing prefix, so it decays
+geometrically and underflows for long sequences. The fix is to normalize each
+forward column to sum to one, storing the reciprocal \(c_t=1/\sum_j\bar\alpha_t(j)\),
+and to scale the backward pass by the same \(c_t\). The scale factors telescope
+into the log-likelihood,
+\[
+  \log P(O\mid\lambda) = -\sum_{t=1}^{T}\log c_t,
+\]
+and cancel exactly when forming \(\gamma_t\), so the posteriors are unaffected.
+
+** Pseudocode
+
+#+begin_example
+ForwardBackward(pi, A, B, o[1..T]):
+    # scaled forward
+    a[1][i] = pi[i]*B[i][o[1]];  c[1] = 1/sum_i a[1][i];  a[1] *= c[1]
+    for t = 2..T:
+        a[t][j] = ( sum_i a[t-1][i]*A[i][j] ) * B[j][o[t]]
+        c[t] = 1/sum_j a[t][j];  a[t] *= c[t]
+    # scaled backward
+    b[T][i] = c[T]
+    for t = T-1..1:
+        b[t][i] = ( sum_j A[i][j]*B[j][o[t+1]]*b[t+1][j] ) * c[t]
+    # posteriors and evidence
+    gamma[t][i] = normalize_i( a[t][i]*b[t][i] )
+    logP = -sum_t log c[t]
+    return gamma, logP
+#+end_example
+
+* Verifying the likelihood, and smoothing the symptom stream
+
+We reuse the two-state health model (=Healthy=/=Fever=) emitting
+=normal/cold/dizzy=. First we check the scaled log-likelihood against a direct
+sum over all \(2^{T}\) paths on a short sequence. Then we smooth a fourteen-day
+stream, printing and plotting \(\gamma_t(\text{Fever})\) and overlaying the hard
+Viterbi decode for comparison.
+
+#+name: fb-run
+#+begin_src c++ :eval no
+    HiddenMarkovModel hmm;
+    hmm.initial    = {0.6, 0.4};
+    hmm.transition = {{0.7, 0.3}, {0.4, 0.6}};
+    hmm.emission   = {{0.5, 0.4, 0.1}, {0.1, 0.3, 0.6}};
+
+    // 1) Likelihood check against exact enumeration on a short sequence.
+    std::vector<std::size_t> shortObs = {0, 1, 2, 2};
+    auto                     fbShort  = forward_backward(hmm, shortObs);
+    // Brute force: sum P(Q,O) over all 2^4 = 16 hidden paths.
+    double brute = 0.0;
+    for (std::size_t code = 0; code < 16u; ++code) {
+        std::size_t q[4];
+        for (int i = 0; i < 4; ++i) q[i] = (code >> i) & 1u;
+        double p = hmm.initial[q[0]] * hmm.emission[q[0]][shortObs[0]];
+        for (int i = 1; i < 4; ++i) p *= hmm.transition[q[i - 1]][q[i]] * hmm.emission[q[i]][shortObs[i]];
+        brute += p;
+    }
+    std::cout << "=== Likelihood check on {normal,cold,dizzy,dizzy} ===\n";
+    std::cout << "forward-backward P(O) = " << std::exp(fbShort.log_likelihood) << '\n';
+    std::cout << "brute-force     P(O) = " << brute << '\n';
+    std::cout << "log P(O)             = " << fbShort.log_likelihood << "\n\n";
+
+    // 2) Smooth a 14-day stream.
+    std::vector<std::size_t> obs = {0, 0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 1, 0, 0};
+    auto                     fb  = forward_backward(hmm, obs);
+    auto                     vit = viterbi(hmm, obs);
+    std::cout << "=== Smoothed P(Fever) over 14 days ===\nday  P(Fever)  Viterbi\n";
+    std::vector<double> days, pfever, hard;
+    for (std::size_t t = 0; t < obs.size(); ++t) {
+        std::cout << ' ' << (t < 9 ? " " : "") << (t + 1) << "   " << fb.gamma[t][1]
+                  << (fb.gamma[t][1] < 0.1 ? "  " : " ") << "   " << (vit.states[t] == 1 ? "Fever" : "Healthy") << '\n';
+        days.push_back(static_cast<double>(t + 1));
+        pfever.push_back(fb.gamma[t][1]);
+        hard.push_back(static_cast<double>(vit.states[t]));
+    }
+    std::cout << "\nlog P(O) for the 14-day stream = " << fb.log_likelihood << '\n';
+
+    RPlot p = RPlot::create();
+    p.line(days, pfever, "P(Fever | all obs)", {220, 38, 38}, 2.5);
+    p.points(days, pfever, "", {220, 38, 38}, 5.0);
+    p.line(days, hard, "Viterbi state (0/1)", {37, 99, 235}, 1.5);
+    p.abline_h(0.5, {120, 120, 120}, 1.0);
+    p.legend({"P(Fever | all obs)", "Viterbi hard decode"}, {{220, 38, 38}, {37, 99, 235}});
+    p.save_svg("build/org/forward_backward_posterior.svg");
+    std::cout << "wrote build/org/forward_backward_posterior.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/forward_backward_analysis.cpp <<'CPP'
+<<fb-includes>>
+
+int main() {
+<<fb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/forward_backward_analysis.cpp -o build/org/forward_backward_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/forward_backward_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Likelihood check on {normal,cold,dizzy,dizzy} ===
+forward-backward P(O) = 0.0133576
+brute-force     P(O) = 0.0133576
+log P(O)             = -4.31567
+
+=== Smoothed P(Fever) over 14 days ===
+day  P(Fever)  Viterbi
+  1   0.0845595     Healthy
+  2   0.0984974     Healthy
+  3   0.38797    Healthy
+  4   0.86311    Fever
+  5   0.914553    Fever
+  6   0.864963    Fever
+  7   0.403296    Healthy
+  8   0.149082    Healthy
+  9   0.400166    Healthy
+ 10   0.852126    Fever
+ 11   0.850521    Fever
+ 12   0.385278    Healthy
+ 13   0.0996693     Healthy
+ 14   0.0940793     Healthy
+
+log P(O) for the 14-day stream = -14.9452
+#+end_example
+
+The scaled forward-backward likelihood matches the brute-force sum over all
+paths to machine precision, confirming the scaling bookkeeping. The smoothed
+posterior \(\gamma_t(\text{Fever})\) rises smoothly into the =dizzy= runs and
+falls over =normal= stretches; where it crosses the dashed \(0.5\) line it agrees
+with the hard Viterbi decode, but it additionally quantifies *confidence* --
+short symptom transitions produce intermediate probabilities rather than the
+abrupt 0/1 flips of the single best path.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/forward_backward_posterior.svg]]
+
+* Smoothing versus decoding
+
+Forward-backward and Viterbi answer different questions. Viterbi returns the one
+path of maximum joint probability; \(\gamma_t\) returns the marginal state
+distribution at each time. Taking \(\arg\max_i\gamma_t(i)\) independently at each
+\(t\) gives the *posterior-decoding* path, which maximizes the expected number of
+correctly labeled states but can be globally inconsistent -- it may even select a
+transition of probability zero, something Viterbi can never do. Use \(\gamma_t\)
+when you need calibrated per-step confidence (or as the E-step of Baum-Welch
+training); use Viterbi when you need one coherent, admissible sequence.
+
+* Complexity
+
+Both passes fill a \(T\times N\) table, each cell costing \(O(N)\) work, for
+\(O(T N^2)\) time and \(O(T N)\) space. Scaling adds only an \(O(N)\)
+normalization per column and turns the likelihood into a numerically safe sum of
+logarithms, so the algorithm runs unchanged on sequences of any length.
