@@ -1,0 +1,136 @@
+#+title: Run-Length Encoding: Compression by Counting Runs
+#+subtitle: A literate C++ study of RLE, using =datamunge='s =algorithms::rle_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Run-length encoding is the simplest lossless compression there is: replace each
+*run* of a repeated symbol with a single (symbol, count) pair. On data with long
+uniform stretches -- scanned documents, simple graphics, fax pages, the output of a
+Burrows-Wheeler transform -- it compresses dramatically; on data with no runs it
+harmlessly (but instructively) *expands*. This report implements it in =datamunge='s
+C++ =algorithms::rle_encode= as a literate program: every number and figure comes
+from one compiled binary. We encode a run-heavy bitmap scanline and a run-free
+string, confirm exact round-trips, and see when RLE helps and when it hurts.
+#+end_abstract
+
+* The idea
+
+Scan the input; each maximal run \(c\,c\,\dots\,c\) of length \(\ell\) becomes the
+pair \((c, \ell)\). Decoding emits each symbol \(\ell\) times. The compressed size is
+proportional to the *number of runs*: few long runs compress well, many singleton
+runs (a run-free input) produce two cells per symbol and expand the data. RLE is
+therefore ideal precisely when the data is *locally constant*.
+
+#+name: rle-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/run_length_encoding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+RLE-encode(s):
+    runs = []
+    i = 0
+    while i < len(s):
+        j = i
+        while j < len(s) and s[j] == s[i]: j += 1
+        runs.append( (s[i], j - i) )
+        i = j
+    return runs
+RLE-decode(runs): emit each symbol its count times
+#+end_example
+
+* A worked example
+
+We encode a bitmap scanline of black/white pixels with long runs, and -- for contrast
+-- a run-free string where every neighbor differs.
+
+#+name: rle-run
+#+begin_src c++ :eval no
+    std::string scan = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW";
+    std::string noisy = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    auto runs  = rle_encode(scan);
+    auto back  = rle_decode(runs);
+    std::cout << "=== RLE of a bitmap scanline (" << scan.size() << " chars) ===\n";
+    std::cout << "runs (" << runs.size() << "):";
+    for (const auto& r : runs) std::cout << ' ' << r.symbol << 'x' << r.count;
+    std::cout << "\nround-trip ok: " << (back == scan ? "yes" : "NO") << '\n';
+    std::cout << "encoded cells: " << runs.size() << " (x2 = " << runs.size() * 2 << " symbol+count) vs "
+              << scan.size() << " original chars\n\n";
+
+    auto rn = rle_encode(noisy);
+    std::cout << "=== RLE of a run-free string (" << noisy.size() << " chars) ===\n";
+    std::cout << "runs: " << rn.size() << " (every char its own run -> RLE would EXPAND the data)\n";
+
+    // Figure: run lengths of the scanline.
+    std::vector<double> idx, len;
+    for (std::size_t i = 0; i < runs.size(); ++i) { idx.push_back(static_cast<double>(i)); len.push_back(static_cast<double>(runs[i].count)); }
+    RPlot p = RPlot::barplot(len, {}, "run length", {22, 163, 74});
+    p.save_svg("build/org/rle_runs.svg");
+    std::cout << "wrote build/org/rle_runs.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/run_length_encoding_analysis.cpp <<'CPP'
+<<rle-includes>>
+
+int main() {
+<<rle-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/run_length_encoding_analysis.cpp -o build/org/run_length_encoding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/run_length_encoding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RLE of a bitmap scanline (67 chars) ===
+runs (7): Wx12 Bx1 Wx12 Bx3 Wx24 Bx1 Wx14
+round-trip ok: yes
+encoded cells: 7 (x2 = 14 symbol+count) vs 67 original chars
+
+=== RLE of a run-free string (26 chars) ===
+runs: 26 (every char its own run -> RLE would EXPAND the data)
+#+end_example
+
+The 67-character scanline collapses to just seven runs -- a large compression --
+because it is almost all long stretches of "W". The run-free alphabet string, by
+contrast, produces one run per character, so RLE would *double* its size: the
+algorithm only helps when runs exist. The bar chart of run lengths shows the few long
+white stretches that make this input so compressible.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rle_runs.svg]]
+
+* Where RLE lives
+
+By itself RLE is rarely a general-purpose compressor, but it is a crucial *stage* in
+many: fax Group 3/4, the PackBits format, BMP/TGA/PCX image files, and -- most
+importantly -- the final step of Burrows-Wheeler compressors (bzip2), where the BWT
+deliberately creates long runs for RLE and entropy coding to exploit. It is the
+canonical illustration that compression is the art of turning structure (here,
+repetition) into fewer bits.
+
+* Complexity
+
+One linear pass to encode and one to decode: \(O(n)\) time, \(O(\text{runs})\) space
+for the encoded form.

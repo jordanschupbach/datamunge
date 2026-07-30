@@ -1,0 +1,164 @@
+#+title: Huffman Coding: Optimal Prefix-Free Compression
+#+subtitle: A literate C++ study of Huffman's greedy code construction, using =datamunge='s =algorithms::huffman_build=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To compress a stream of symbols losslessly we assign each a binary codeword; to
+decode without ambiguity the code must be *prefix-free*. Among all prefix codes,
+*Huffman's* (1952) minimizes the expected code length -- it is provably optimal -- and
+it is built by an elegant greedy rule: repeatedly merge the two least-frequent items
+under a new parent until one tree remains. Frequent symbols end up near the root with
+short codes; the average length lands within one bit of the source entropy. This
+report implements it in =datamunge='s C++ =algorithms::huffman_build= as a literate
+program: every number and figure comes from one compiled binary. We compress a text,
+inspect the code it assigns, and compare its average length against the entropy lower
+bound and the flat 8-bits-per-character baseline.
+#+end_abstract
+
+* Optimal prefix codes
+
+A *prefix code* is one where no codeword is a prefix of another, so a bitstream
+decodes uniquely left to right. Huffman builds the optimal one bottom-up: put every
+symbol in a min-priority queue keyed by frequency; repeatedly remove the two smallest,
+merge them under a parent whose frequency is their sum, and reinsert; the last
+remaining node is the tree root. Reading root-to-leaf paths (left = 0, right = 1)
+gives each symbol's codeword. The greedy merge is optimal because the two rarest
+symbols can always be made deepest siblings without loss. The resulting average length
+\(\bar\ell=\sum_s p_s\ell_s\) satisfies \(H \le \bar\ell < H+1\), where
+\(H=-\sum_s p_s\log_2 p_s\) is the entropy.
+
+#+name: huffman-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/huffman_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Huffman(frequencies):
+    heap = min-priority-queue of leaves keyed by frequency
+    while heap has > 1 node:
+        a = pop-min; b = pop-min
+        push new internal node with freq = a.freq + b.freq, children (a, b)
+    root = the remaining node
+    codeword(symbol) = path from root to its leaf   (left=0, right=1)
+#+end_example
+
+* A worked example
+
+We compress a short repetitive text, print the code assigned to each character, and
+compare the average code length with the entropy and the 8-bit baseline.
+
+#+name: huffman-run
+#+begin_src c++ :eval no
+    std::string text = "the quick brown fox jumps over the lazy dog. "
+                       "the quick brown fox jumps over the lazy dog.";
+
+    HuffmanCode hc  = huffman_build(text);
+    std::string enc = huffman_encode(hc, text);
+    std::string dec = huffman_decode(hc, enc);
+
+    std::cout << "=== Huffman coding of a " << text.size() << "-character text ===\n";
+    std::cout << "round-trip decode matches original: " << (dec == text ? "yes" : "NO") << "\n\n";
+
+    // Frequencies and code lengths for a few characters.
+    std::map<char, std::size_t> freq;
+    for (char c : text) ++freq[c];
+    std::cout << "char  freq  code\n";
+    for (char c : {'e', 't', 'o', 'x', 'z', '.'})
+        std::cout << "  '" << c << "'   " << freq[c] << "   " << hc.codes.at(c) << '\n';
+
+    double avg = huffman_average_bits(hc, text);
+    double H   = 0.0;
+    for (const auto& [c, f] : freq) { double p = double(f) / text.size(); H -= p * std::log2(p); }
+    std::cout << "\nentropy H              = " << H << " bits/char\n";
+    std::cout << "Huffman average length = " << avg << " bits/char  (H <= avg < H+1)\n";
+    std::cout << "fixed 8-bit baseline   = 8 bits/char\n";
+    std::cout << "compressed size: " << enc.size() << " bits vs " << text.size() * 8 << " bits ("
+              << (100.0 * enc.size() / (text.size() * 8)) << "% of original)\n";
+
+    // Figure: code length vs frequency (inverse relationship).
+    std::vector<double> fx, ly;
+    for (const auto& [c, f] : freq) { fx.push_back(static_cast<double>(f)); ly.push_back(static_cast<double>(hc.codes.at(c).size())); }
+    RPlot p = RPlot::create();
+    p.points(fx, ly, "symbols", {37, 99, 235}, 5.0);
+    p.save_svg("build/org/huffman_lengths.svg");
+    std::cout << "\nwrote build/org/huffman_lengths.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/huffman_analysis.cpp <<'CPP'
+<<huffman-includes>>
+
+int main() {
+<<huffman-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/huffman_analysis.cpp -o build/org/huffman_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/huffman_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Huffman coding of a 89-character text ===
+round-trip decode matches original: yes
+
+char  freq  code
+  'e'   6   1001
+  't'   4   11010
+  'o'   8   1011
+  'x'   2   00010
+  'z'   2   111010
+  '.'   2   110110
+
+entropy H              = 4.41959 bits/char
+Huffman average length = 4.49438 bits/char  (H <= avg < H+1)
+fixed 8-bit baseline   = 8 bits/char
+compressed size: 400 bits vs 712 bits (56.1798% of original)
+#+end_example
+
+The code round-trips exactly, and the length assignments follow the frequencies: the
+common characters (space, "e", "o") get the shortest codes and the rare ones ("x",
+"z", ".") the longest -- the scatter of code length against frequency slopes clearly
+downward. The average code length sits just above the entropy and well below the flat
+8-bit baseline, compressing the text to roughly half its size. That "within one bit of
+entropy" gap is Huffman's optimality guarantee in action.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/huffman_lengths.svg]]
+
+* Optimality, limits, and relatives
+
+Huffman is optimal *among symbol codes that use an integer number of bits per
+symbol*. Its gap from entropy comes precisely from that integer constraint: when one
+symbol is very probable (entropy well below 1 bit/symbol) Huffman still spends a whole
+bit on it. *Arithmetic* and *range* coding remove the integer-bit restriction and can
+beat Huffman toward the entropy limit; *adaptive* Huffman updates the tree as
+statistics change; and the *package-merge* algorithm builds length-limited Huffman
+codes. Huffman remains ubiquitous as the entropy-coding back end of DEFLATE (zip,
+gzip, PNG) and JPEG.
+
+* Complexity
+
+Building the tree with a heap is \(O(S\log S)\) for \(S\) distinct symbols; encoding
+and decoding are linear in the output/input length. Memory is \(O(S)\) for the tree
+and code table.

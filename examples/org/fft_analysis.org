@@ -1,0 +1,164 @@
+#+title: The Cooley-Tukey Fast Fourier Transform
+#+subtitle: A literate C++ study of the radix-2 FFT, using =datamunge='s =algorithms::fft=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The discrete Fourier transform turns a signal into its frequency content, but the
+direct sum costs \(O(N^2)\). The *Cooley-Tukey* fast Fourier transform (1965) does it
+in \(O(N\log N)\) by recursively splitting the transform into even- and odd-indexed
+halves -- the single most consequential numerical algorithm of the digital age. This
+report implements the iterative radix-2 FFT in =datamunge='s C++ =algorithms::fft= as
+a literate program: every number and figure comes from one compiled binary. We
+transform a two-tone signal buried in noise, watch the spectrum pick out the exact
+frequencies, and confirm the inverse FFT reconstructs the signal to machine
+precision.
+#+end_abstract
+
+* The transform and its fast factorization
+
+The DFT is \(X_k=\sum_{n=0}^{N-1} x_n\,e^{-2\pi i kn/N}\). Splitting the sum into even
+and odd \(n\) gives
+\[
+  X_k = E_k + e^{-2\pi i k/N} O_k,\qquad X_{k+N/2} = E_k - e^{-2\pi i k/N} O_k,
+\]
+where \(E\) and \(O\) are the DFTs of the even- and odd-indexed samples. Each length-\(N\)
+transform becomes two length-\(N/2\) transforms plus \(N/2\) *butterfly* combinations;
+recursing \(\log_2 N\) times (for \(N\) a power of two) yields \(O(N\log N)\). The
+iterative form does a *bit-reversal permutation* of the input, then \(\log_2 N\)
+passes of butterflies. The inverse transform is the same computation with conjugated
+twiddle factors and a \(1/N\) scale.
+
+#+name: fft-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/fft.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <complex>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+FFT(x):                                   # N a power of two
+    bit-reverse permute x
+    for len = 2, 4, ..., N:
+        w_len = exp(-2*pi*i / len)
+        for each block of length len:
+            w = 1
+            for k in 0 .. len/2 - 1:
+                u = x[block+k];  v = x[block+k+len/2]*w
+                x[block+k]         = u + v            # butterfly
+                x[block+k+len/2]   = u - v
+                w *= w_len
+    return x
+#+end_example
+
+* A worked example: two tones in noise
+
+We build a length-256 signal of two cosines (at 8 and 20 cycles) plus noise, take its
+FFT, and plot the magnitude spectrum. Then we invert the transform and measure the
+reconstruction error.
+
+#+name: fft-run
+#+begin_src c++ :eval no
+    const std::size_t   N = 256;
+    std::vector<double> sig(N);
+    // Deterministic pseudo-noise (no RNG needed for reproducibility).
+    for (std::size_t t = 0; t < N; ++t) {
+        double noise = 0.3 * std::sin(0.7 * t + 1.0) * std::cos(0.13 * t);
+        sig[t] = std::cos(2.0 * M_PI * 8.0 * t / N) + 0.6 * std::cos(2.0 * M_PI * 20.0 * t / N) + noise;
+    }
+
+    auto X = fft_real(sig);
+    std::cout << "=== FFT of a 256-sample two-tone signal ===\n";
+    std::cout << "largest magnitude bins (0..N/2):\n";
+    // Report the top three bins by repeatedly taking (and suppressing) the current max.
+    for (int rank = 0; rank < 3; ++rank) {
+        std::size_t best = 1;
+        double      bm   = -1.0;
+        for (std::size_t k = 1; k < N / 2; ++k) {
+            const double m = std::abs(X[k]);
+            if (m > bm) { bm = m; best = k; }
+        }
+        std::cout << "  bin " << best << " magnitude " << bm << '\n';
+        X[best] = std::complex<double>(0.0, 0.0);  // suppress so the next-largest shows
+    }
+
+    // Recompute a clean spectrum for the figure and the inverse check.
+    auto Xc = fft_real(sig);
+    std::vector<double> freq, mag;
+    for (std::size_t k = 0; k < N / 2; ++k) { freq.push_back(k); mag.push_back(std::abs(Xc[k])); }
+
+    auto   rt      = fft(Xc, true);  // inverse
+    double max_err = 0.0;
+    for (std::size_t t = 0; t < N; ++t) max_err = std::max(max_err, std::fabs(rt[t].real() - sig[t]));
+    std::cout << "\ninverse FFT reconstruction max error: " << max_err << '\n';
+
+    RPlot p = RPlot::create();
+    p.line(freq, mag, "|X_k|", {37, 99, 235}, 1.5);
+    p.save_svg("build/org/fft_spectrum.svg");
+    std::cout << "\nwrote build/org/fft_spectrum.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fft_analysis.cpp <<'CPP'
+<<fft-includes>>
+
+int main() {
+<<fft-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fft_analysis.cpp -o build/org/fft_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fft_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== FFT of a 256-sample two-tone signal ===
+largest magnitude bins (0..N/2):
+  bin 8 magnitude 128.38
+  bin 20 magnitude 78.0644
+  bin 34 magnitude 18.1494
+
+inverse FFT reconstruction max error: 4.88498e-15
+#+end_example
+
+The magnitude spectrum has sharp peaks exactly at bins 8 and 20 -- the two tones --
+standing well above the noise floor, and the second tone's peak is smaller in
+proportion to its amplitude. The inverse FFT reconstructs the original samples to
+machine precision, confirming the transform is exact (not merely approximate). All of
+this used \(O(N\log N)\) work rather than the \(O(N^2)\) of a direct DFT.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fft_spectrum.svg]]
+
+* Reach and relatives
+
+The FFT is the backbone of digital signal processing (spectra, filtering,
+spectrograms), of *fast convolution* and polynomial/integer multiplication (multiply
+in the frequency domain), and of spectral PDE solvers. Radix-2 needs a power-of-two
+length; mixed-radix and split-radix variants handle composite lengths, and
+*Bluestein's* and *Rader's* algorithms handle arbitrary (including prime) lengths by
+turning the DFT into a convolution. The real-input case has its own two-for-one and
+packing optimizations. When only a few bins are needed, the Goertzel algorithm
+(companion report) is cheaper than a full FFT.
+
+* Complexity
+
+\(O(N\log N)\) time -- \(\log_2 N\) passes of \(N/2\) butterflies -- and \(O(N)\) space,
+done in place after the bit-reversal permutation.

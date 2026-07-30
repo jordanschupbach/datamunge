@@ -1,0 +1,134 @@
+#+title: Bresenham's Line Algorithm: Integer-Only Line Rasterization
+#+subtitle: A literate C++ study of Bresenham's algorithm, using =datamunge='s =algorithms::bresenham_line=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Drawing a line on a pixel grid means choosing, for each step along the line, the grid
+cell nearest the ideal path. *Bresenham's algorithm* (1965) does this using *integer
+arithmetic only* -- no floating-point slope, no rounding -- by tracking an integer
+error term that accumulates the slope and correcting it with an add whenever the line
+crosses a half-pixel boundary. Every inner-loop operation is an add, subtract, or
+compare, which made it the standard line-drawing routine for decades of graphics
+hardware. This report implements it in =datamunge='s C++ =algorithms::bresenham_line=
+as a literate program: every number and figure comes from one compiled binary. We
+rasterize a line and plot the chosen cells against the exact geometric line.
+#+end_abstract
+
+* The integer error term
+
+For a line with \(dx = |x_1-x_0|\) and \(dy = |y_1-y_0|\), the all-octant "midpoint"
+formulation keeps an error \(e = dx - dy\) (written \(dx + (-dy)\) below). At each step
+it looks at \(2e\): if \(2e \ge -dy\) it steps in \(x\) and subtracts \(dy\) from the
+error; if \(2e \le dx\) it steps in \(y\) and adds \(dx\). Both tests can fire on a
+perfect diagonal. Because the error is an integer combination of \(dx\) and \(dy\),
+the algorithm never rounds and never multiplies inside the loop; the signs \(sx, sy\)
+handle all eight octants uniformly.
+
+#+name: bresenham-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bresenham.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Bresenham(x0,y0, x1,y1):
+    dx = |x1-x0|;  dy = -|y1-y0|
+    sx = sign(x1-x0);  sy = sign(y1-y0)
+    err = dx + dy
+    loop:
+        plot(x0, y0)
+        if (x0,y0) == (x1,y1): stop
+        e2 = 2*err
+        if e2 >= dy: err += dy;  x0 += sx      # step in x
+        if e2 <= dx: err += dx;  y0 += sy      # step in y
+#+end_example
+
+* A worked example
+
+We rasterize the line from \((0,0)\) to \((14,6)\) and plot the integer cells the
+algorithm selects, overlaid on the exact geometric line so their agreement is visible.
+
+#+name: bresenham-run
+#+begin_src c++ :eval no
+    auto pts = bresenham_line(0, 0, 14, 6);
+
+    std::cout << "=== Bresenham line (0,0) -> (14,6) ===\n";
+    std::cout << "cells (" << pts.size() << "):";
+    for (const auto& [x, y] : pts) std::cout << " (" << x << "," << y << ")";
+    std::cout << '\n';
+
+    // A steep line and a diagonal, to show octant handling.
+    std::cout << "steep (0,0)->(3,10): " << bresenham_line(0, 0, 3, 10).size() << " cells\n";
+    std::cout << "diagonal (0,0)->(7,7): " << bresenham_line(0, 0, 7, 7).size() << " cells\n";
+
+    // Figure: rasterized cells (points) vs the exact line.
+    std::vector<double> px, py;
+    for (const auto& [x, y] : pts) { px.push_back(x); py.push_back(y); }
+    RPlot p = RPlot::create();
+    p.line({0, 14}, {0, 6}, "exact line", {148, 163, 184}, 2.0);
+    p.points(px, py, "rasterized cells", {37, 99, 235}, 7.0);
+    p.legend({"exact line", "rasterized cells"}, {{148, 163, 184}, {37, 99, 235}});
+    p.save_svg("build/org/bresenham_line.svg");
+    std::cout << "\nwrote build/org/bresenham_line.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bresenham_analysis.cpp <<'CPP'
+<<bresenham-includes>>
+
+int main() {
+<<bresenham-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bresenham_analysis.cpp -o build/org/bresenham_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bresenham_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bresenham line (0,0) -> (14,6) ===
+cells (15): (0,0) (1,0) (2,1) (3,1) (4,2) (5,2) (6,3) (7,3) (8,3) (9,4) (10,4) (11,5) (12,5) (13,6) (14,6)
+steep (0,0)->(3,10): 11 cells
+diagonal (0,0)->(7,7): 8 cells
+#+end_example
+
+The selected cells hug the exact line, stepping up in \(y\) exactly where the line
+crosses each half-pixel boundary -- one cell per \(x\)-column for this shallow slope,
+and correspondingly one per row for the steep case. The overlay shows the rasterized
+points sitting right on the geometric line, the whole computation done with integer
+adds and comparisons only.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/bresenham_line.svg]]
+
+* Extensions and relatives
+
+The same integer-error idea generalizes: the *midpoint circle* algorithm rasterizes
+circles, and the DDA is a simpler (floating-point) cousin. When *anti-aliasing* is
+wanted -- smooth edges rather than a single hard cell per step -- *Xiaolin Wu's*
+algorithm distributes intensity between the two nearest cells. Bresenham's exact,
+multiplication-free line remains the baseline every rasterizer is measured against and
+the method taught first in computer graphics.
+
+* Complexity
+
+\(O(\max(dx, dy))\) time -- one iteration per cell along the major axis -- with a
+constant number of integer operations per step and \(O(1)\) working state.
