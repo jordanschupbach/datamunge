@@ -1,0 +1,214 @@
+#+title: The Eclat Algorithm: Frequent Itemsets by Tidset Intersection
+#+subtitle: A literate C++ study of depth-first vertical mining, using =datamunge='s =algorithms::eclat_frequent_itemsets=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Apriori scans the transaction database once per level to count candidate
+supports. *Eclat* (Zaki 2000) eliminates those repeated scans by turning the
+database on its side. Instead of storing, per transaction, the set of items it
+contains (the *horizontal* layout), Eclat stores, per item, the set of
+transaction ids that contain it -- its *tidset* (the *vertical* layout). Then the
+support of any itemset is simply the *size of the intersection* of its members'
+tidsets, and mining becomes a depth-first walk that extends a prefix by
+intersecting tidsets, never touching the raw database again. This report
+implements it in =datamunge='s C++ =algorithms::eclat_frequent_itemsets= as a
+literate program: every number below comes from one compiled binary. We mine the
+same grocery database as the Apriori report, show the tidsets explicitly, and
+confirm Eclat returns the identical frequent itemsets.
+#+end_abstract
+
+* The vertical layout
+
+Number the transactions \(0,1,\dots,N-1\). The *tidset* of an item \(i\) is
+\[
+  t(i) = \{\, j : \text{transaction } j \text{ contains } i \,\},
+\]
+and more generally the tidset of an itemset is the intersection of its items'
+tidsets. The key identity is
+\[
+  \operatorname{supp}(I) = |t(I)|,\qquad t(I\cup\{x\}) = t(I)\cap t(x).
+\]
+So once the singleton tidsets are built (one pass over the data), *every*
+subsequent support is an intersection of already-known tidsets -- no rescans. As
+itemsets grow, their tidsets shrink, so deep intersections are cheap.
+
+#+name: eclat-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/association_rules.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstddef>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::string name_set(const std::vector<std::size_t>& items) {
+    static const char* names[] = {"bread", "milk", "butter", "beer", "diapers"};
+    std::string        s = "{";
+    for (std::size_t i = 0; i < items.size(); ++i) s += (i ? ", " : "") + std::string(names[items[i]]);
+    return s + "}";
+}
+#+end_src
+
+* Depth-first mining by intersection
+
+Eclat processes items in a fixed order and grows a prefix depth-first. Holding a
+frequent prefix \(P\) with tidset \(t(P)\), it tries to extend \(P\) by each item
+\(x\) that comes later in the order: it forms \(t(P\cup\{x\}) = t(P)\cap t(x)\),
+and if \(|t(P\cup\{x\})|\ge\text{minsup}\) it emits \(P\cup\{x\}\) as frequent and
+recurses with that as the new prefix. Because it only ever combines an itemset
+with later items, each frequent set is generated exactly once. Unlike Apriori it
+does no explicit candidate-generation-then-count phase; the intersection *is* the
+support computation.
+
+** Pseudocode
+
+#+begin_example
+Eclat(transactions, minsup):
+    build t(i) = tidset of each item i                 # one pass, vertical layout
+    frequent1 = [ (i, t(i)) : |t(i)| >= minsup ]       # sorted by item
+    extend(prefix = {}, items = frequent1)
+
+extend(prefix, items):
+    for a in 0..len(items)-1:
+        emit prefix + items[a].item  with support |items[a].tidset|
+        ext = []
+        for b in a+1..len(items)-1:
+            inter = items[a].tidset  intersect  items[b].tidset
+            if |inter| >= minsup: ext.append( (items[b].item, inter) )
+        if ext not empty: extend(prefix + items[a].item, ext)
+#+end_example
+
+* A worked example
+
+We mine the eight-basket grocery database (bread, milk, butter, beer, diapers) at
+\(\text{minsup}=2\). First we print the singleton tidsets that Eclat builds, then
+the frequent itemsets it discovers, and finally we cross-check that its output
+matches Apriori's exactly.
+
+#+name: eclat-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<std::size_t>> txns = {
+        {0, 1, 2}, {0, 1}, {1, 2}, {0, 1, 2}, {3, 4}, {0, 3, 4}, {3, 4}, {0, 1, 2, 3}};
+
+    // Show the vertical layout: each item's tidset.
+    std::map<std::size_t, std::vector<std::size_t>> tid;
+    for (std::size_t t = 0; t < txns.size(); ++t)
+        for (std::size_t it : txns[t]) tid[it].push_back(t);
+    std::cout << "=== Vertical layout (tidsets) ===\n";
+    for (const auto& [it, tids] : tid) {
+        std::cout << "  " << name_set({it}) << " -> {";
+        for (std::size_t k = 0; k < tids.size(); ++k) std::cout << (k ? "," : "") << tids[k];
+        std::cout << "}  support " << tids.size() << '\n';
+    }
+
+    // One intersection by hand: beer(3) ∩ diapers(4).
+    std::vector<std::size_t> inter;
+    std::set_intersection(tid[3].begin(), tid[3].end(), tid[4].begin(), tid[4].end(),
+                          std::back_inserter(inter));
+    std::cout << "\n|t(beer) intersect t(diapers)| = " << inter.size() << " => support of {beer,diapers}\n";
+
+    auto freq  = eclat_frequent_itemsets(txns, 2);
+    auto aprio = apriori_frequent_itemsets(txns, 2);
+    std::cout << "\n=== Eclat frequent itemsets (minsup = 2) ===\n" << freq.size() << " itemsets:\n";
+    for (const auto& fs : freq) std::cout << "  " << name_set(fs.items) << "  support " << fs.support << '\n';
+
+    bool same = freq.size() == aprio.size();
+    for (std::size_t i = 0; same && i < freq.size(); ++i)
+        same = (freq[i].items == aprio[i].items) && (freq[i].support == aprio[i].support);
+    std::cout << "\nidentical to Apriori's output: " << (same ? "yes" : "no") << '\n';
+
+    // Figure: support of each frequent singleton (the tidset sizes Eclat starts from).
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    for (const auto& fs : freq)
+        if (fs.items.size() == 1) {
+            heights.push_back(static_cast<double>(fs.support));
+            labels.push_back(name_set(fs.items).substr(1, name_set(fs.items).size() - 2));
+        }
+    RPlot p = RPlot::barplot(heights, labels, "tidset size (support)", {37, 99, 235});
+    p.save_svg("build/org/eclat_tidsets.svg");
+    std::cout << "\nwrote build/org/eclat_tidsets.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/eclat_analysis.cpp <<'CPP'
+<<eclat-includes>>
+
+int main() {
+<<eclat-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/eclat_analysis.cpp -o build/org/eclat_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/eclat_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Vertical layout (tidsets) ===
+  {bread} -> {0,1,3,5,7}  support 5
+  {milk} -> {0,1,2,3,7}  support 5
+  {butter} -> {0,2,3,7}  support 4
+  {beer} -> {4,5,6,7}  support 4
+  {diapers} -> {4,5,6}  support 3
+
+|t(beer) intersect t(diapers)| = 3 => support of {beer,diapers}
+
+=== Eclat frequent itemsets (minsup = 2) ===
+11 itemsets:
+  {bread}  support 5
+  {milk}  support 5
+  {butter}  support 4
+  {beer}  support 4
+  {diapers}  support 3
+  {bread, milk}  support 4
+  {bread, butter}  support 3
+  {bread, beer}  support 2
+  {milk, butter}  support 4
+  {beer, diapers}  support 3
+  {bread, milk, butter}  support 3
+
+identical to Apriori's output: yes
+#+end_example
+
+The tidsets make the support computation transparent: =beer= appears in
+transactions \(\{4,5,6,7\}\) and =diapers= in \(\{4,5,6\}\), so their intersection
+\(\{4,5,6\}\cap\{4,5,6,7\}=\{4,5,6\}\) has size 3 -- exactly the support of the
+pair, computed without rescanning the database. Eclat returns the identical eleven frequent itemsets as
+Apriori, as it must: the two algorithms differ only in *how* they compute
+supports, not in *what* is frequent.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/eclat_tidsets.svg]]
+
+* When to prefer Eclat
+
+Eclat's vertical layout shines when tidsets are short (sparse data) and when the
+cost of Apriori's repeated database scans dominates: intersecting two sorted
+tidsets is linear in their combined length, and tidsets only shrink as itemsets
+grow. Its cost is memory -- tidsets of very frequent items can be large -- which
+the *diffset* optimization (storing only the differences between a set and its
+parent's tidset) addresses. On dense databases with long patterns, FP-growth's
+compressed tree (companion report) is often faster still. All three, by
+construction, agree on the frequent-itemset collection.
+
+* Complexity
+
+Building the vertical layout is one \(O(\sum_i |t(i)|)\) pass. Each candidate
+support is one tidset intersection, linear in the tidset sizes; total work is
+output-sensitive in the number of frequent itemsets, with no factor for repeated
+database scans. Memory is \(O(\sum_i |t(i)|)\) for the tidsets held along the
+current depth-first path.

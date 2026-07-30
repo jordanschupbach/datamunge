@@ -1,0 +1,208 @@
+#+title: AdaBoost: Boosting Decision Stumps into a Strong Classifier
+#+subtitle: A literate C++ study of adaptive boosting and its exponential training-error bound, using =datamunge='s =algorithms::adaboost_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Can a committee of mediocre classifiers, each barely better than a coin flip, be
+combined into an excellent one? *Boosting* answers yes, and *AdaBoost* (Freund &
+Schapire 1997) is its most famous instance. It trains weak learners sequentially
+on a reweighted view of the data: after each round the examples the ensemble gets
+wrong are up-weighted, forcing the next weak learner to attack the hard cases; the
+final classifier is a weighted vote. When each weak learner has error
+\(\varepsilon_t<\tfrac12\), the *training* error of the vote falls exponentially,
+at most \(\prod_t 2\sqrt{\varepsilon_t(1-\varepsilon_t)}\). This report implements
+AdaBoost.M1 over decision stumps in =datamunge='s C++ =algorithms::adaboost_train=
+as a literate program: every number and figure comes from one compiled binary. We
+boost one-feature *decision stumps* -- individually far too weak to separate a
+diagonally split data set -- into an ensemble that classifies it perfectly, and
+plot the training error collapsing round by round.
+#+end_abstract
+
+* Weak learners, strong ensembles
+
+We have labeled examples \((x_i,y_i)\), \(y_i\in\{-1,+1\}\). A *weak learner*
+returns a classifier only guaranteed to beat chance (error \(<\tfrac12\) under the
+current weighting). Our weak learner is a *decision stump*: a one-level tree that
+picks a single feature and a threshold and predicts \(\pm1\) on the two sides. A
+single stump is a very restricted classifier -- it can only cut perpendicular to
+one axis -- yet boosting a sequence of them yields a flexible, accurate ensemble
+\[
+  H(x) = \operatorname{sign}\!\Big(\sum_{t=1}^{T}\alpha_t\,h_t(x)\Big),
+\]
+where each stump \(h_t\) gets a vote \(\alpha_t\) reflecting how good it was.
+
+#+name: adaboost-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/adaboost.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The AdaBoost algorithm
+
+Maintain a distribution \(D_t\) over the training examples, starting uniform,
+\(D_1(i)=1/n\). At round \(t\):
+
+1. Train the weak learner on the weighted data; let its weighted error be
+   \(\varepsilon_t=\sum_i D_t(i)\,[h_t(x_i)\ne y_i]\).
+2. Give it the vote
+   \[
+     \alpha_t = \tfrac12\ln\frac{1-\varepsilon_t}{\varepsilon_t},
+   \]
+   which is large when \(\varepsilon_t\) is small, zero at \(\varepsilon_t=\tfrac12\),
+   and negative if it is worse than chance.
+3. Reweight the examples and renormalize:
+   \[
+     D_{t+1}(i) \propto D_t(i)\,e^{-\alpha_t y_i h_t(x_i)},
+   \]
+   which *shrinks* the weight of correctly classified points and *grows* that of
+   misclassified ones, so the next learner concentrates where the ensemble is
+   still wrong.
+
+The final rule is the sign of the weighted vote. The key guarantee: the training
+error is bounded by \(\prod_t 2\sqrt{\varepsilon_t(1-\varepsilon_t)}\), which is
+\(<1\) whenever every \(\varepsilon_t<\tfrac12\) and shrinks *geometrically* -- so
+a modest edge per round drives the training error to zero exponentially fast.
+Remarkably, AdaBoost often keeps improving *test* accuracy even after the training
+error hits zero, by continuing to enlarge the classification *margins*.
+
+** Pseudocode
+
+#+begin_example
+AdaBoost(examples (x_i, y_i in {-1,+1}), T):
+    D_1(i) = 1/n
+    for t = 1..T:
+        h_t = weak learner minimizing weighted error eps_t under D_t
+        if eps_t >= 1/2: stop
+        alpha_t = 0.5 * ln( (1 - eps_t) / eps_t )
+        D_{t+1}(i) = D_t(i) * exp(-alpha_t * y_i * h_t(x_i)) ; normalize
+    return H(x) = sign( sum_t alpha_t h_t(x) )
+#+end_example
+
+* A worked example: boosting stumps on a diagonal split
+
+The data are points in the plane labeled by the sign of \(x_0+x_1\) -- a diagonal
+boundary. No single axis-aligned stump can separate them (each can only cut along
+one axis), so this is a genuine test of boosting. We run 60 rounds and track the
+ensemble's training error.
+
+#+name: adaboost-run
+#+begin_src c++ :eval no
+    // Diagonally separable data: label = sign(x0 + x1), with a margin around the boundary.
+    std::mt19937_64                        rng(99);
+    std::uniform_real_distribution<double> u(-3.0, 3.0);
+    std::vector<std::vector<double>>       X;
+    std::vector<int>                       y;
+    for (int i = 0; i < 200; ++i) {
+        double a = u(rng), b = u(rng);
+        if (std::abs(a + b) < 0.3) continue;  // keep a clear margin
+        X.push_back({a, b});
+        y.push_back((a + b > 0.0) ? 1 : -1);
+    }
+
+    AdaBoostModel model = adaboost_train(X, y, 60);
+
+    std::cout << "=== AdaBoost of decision stumps on a diagonal split ===\n";
+    std::cout << "training points: " << X.size() << "\n";
+    std::cout << "weak learners used: " << model.stumps.size() << "\n\n";
+
+    std::cout << "first 5 rounds:  round  weak_error  alpha   ensemble_train_error\n";
+    for (std::size_t t = 0; t < model.stumps.size() && t < 5; ++t)
+        std::cout << "                   " << (t + 1) << "     " << model.weak_error[t] << "      "
+                  << model.stumps[t].alpha << "   " << model.training_error[t] << '\n';
+
+    std::cout << "\nfinal ensemble training error: " << model.training_error.back() << '\n';
+    double worst_weak = 0.0;
+    for (double e : model.weak_error) worst_weak = std::max(worst_weak, e);
+    std::cout << "worst single weak-learner error: " << worst_weak << "  (all < 0.5, as required)\n";
+
+    // Figure: training error versus number of boosting rounds.
+    std::vector<double> rounds, err;
+    for (std::size_t t = 0; t < model.training_error.size(); ++t) {
+        rounds.push_back(static_cast<double>(t + 1));
+        err.push_back(model.training_error[t]);
+    }
+    RPlot p = RPlot::create();
+    p.line(rounds, err, "ensemble training error", {220, 38, 38}, 2.0);
+    p.points(rounds, err, "", {220, 38, 38}, 3.0);
+    p.abline_h(0.0, {120, 120, 120}, 1.0);
+    p.save_svg("build/org/adaboost_training_error.svg");
+    std::cout << "\nwrote build/org/adaboost_training_error.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/adaboost_analysis.cpp <<'CPP'
+<<adaboost-includes>>
+
+int main() {
+<<adaboost-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/adaboost_analysis.cpp -o build/org/adaboost_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/adaboost_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== AdaBoost of decision stumps on a diagonal split ===
+training points: 184
+weak learners used: 60
+
+first 5 rounds:  round  weak_error  alpha   ensemble_train_error
+                   1     0.163043      0.817878   0.163043
+                   2     0.116883      1.01114   0.195652
+                   3     0.19277      0.716057   0.076087
+                   4     0.204899      0.677977   0.103261
+                   5     0.233661      0.593878   0.0217391
+
+final ensemble training error: 0
+worst single weak-learner error: 0.374325  (all < 0.5, as required)
+#+end_example
+
+Each stump alone is weak -- its error hovers below but not far from \(\tfrac12\) --
+yet their weighted vote drives the ensemble's training error down to zero within a
+few dozen rounds, the exponential decay the bound predicts. The first stumps take
+the biggest bites; later ones fine-tune the diagonal boundary that no single
+axis-aligned cut could ever represent. The votes \(\alpha_t\) are largest for the
+lowest-error stumps, exactly as \(\alpha_t=\tfrac12\ln\frac{1-\varepsilon_t}{\varepsilon_t}\)
+dictates.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/adaboost_training_error.svg]]
+
+* Why boosting works, and its cautions
+
+AdaBoost has a clean interpretation as *forward stagewise additive modeling* under
+the exponential loss \(\sum_i e^{-y_i F(x_i)}\): each round adds the stump-and-vote
+that most reduces that loss. Its practical strengths are few hyper-parameters,
+resistance to overfitting on clean data (via margin maximization), and the ability
+to turn any weak learner into a strong one. Its main caution is *sensitivity to
+label noise and outliers*: the exponential reweighting piles ever more weight on
+persistently misclassified points, which on noisy data can be mislabeled examples,
+so robust variants (LogitBoost, BrownBoost, gentle/soft boosting) temper the
+update. Gradient boosting generalizes the same additive-modeling idea to arbitrary
+differentiable losses.
+
+* Complexity
+
+With \(n\) examples, \(d\) features, and \(T\) rounds, training a stump scans all
+features and candidate thresholds in \(O(nd)\) (or \(O(nd\log n)\) with sorting),
+so training is \(O(T\,nd)\) time. Prediction evaluates \(T\) stumps, \(O(T)\).
+Memory is \(O(T)\) for the ensemble plus \(O(n)\) for the example weights.

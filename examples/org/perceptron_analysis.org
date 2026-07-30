@@ -1,0 +1,210 @@
+#+title: The Perceptron: Mistake-Driven Linear Classification
+#+subtitle: A literate C++ study of Rosenblatt's algorithm and its convergence theorem, using =datamunge='s =algorithms::perceptron_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Perceptron (Rosenblatt 1958) is the seed of nearly all of machine learning:
+a linear classifier that learns online, one example at a time, adjusting its
+weights only when it makes a mistake. Its guarantee is remarkable and
+dimension-free -- if the data can be separated by a hyperplane with margin
+\(\gamma\) and the points lie within radius \(R\), the Perceptron makes at most
+\((R/\gamma)^2\) mistakes before it separates the data perfectly, no matter how
+many features there are. This report implements it in =datamunge='s C++
+=algorithms::perceptron_train= as a literate program: every number and figure
+comes from one compiled binary. We train it on a small two-dimensional data set,
+watch it converge in a handful of mistakes, and plot the points with the learned
+decision boundary it settles on.
+#+end_abstract
+
+* Linear classification
+
+We are given labeled examples \((x_i, y_i)\) with feature vectors
+\(x_i\in\mathbb{R}^d\) and labels \(y_i\in\{-1,+1\}\). A *linear classifier* is a
+weight vector \(w\) and bias \(b\) whose prediction is
+\[
+  \hat y(x) = \operatorname{sign}(w\cdot x + b).
+\]
+The data is *linearly separable* if some \((w^\star,b^\star)\) classifies every
+example correctly, i.e. \(y_i(w^\star\cdot x_i + b^\star) > 0\) for all \(i\). The
+Perceptron searches for such a separator by a simple mistake-driven rule.
+
+=datamunge= trains the model with =algorithms::perceptron_train=, returning a
+=PerceptronModel= with the learned =weights=, =bias=, whether it =converged=, and
+the =total_mistakes= made; =perceptron_predict= applies it to new points.
+
+#+name: perceptron-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/online_linear_classifiers.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The update rule and why it works
+
+The algorithm sweeps through the examples. For each one it checks the current
+prediction; if \(y_i(w\cdot x_i + b)\le 0\) (a mistake, or a point exactly on the
+boundary) it nudges the separator *toward* that example:
+\[
+  w \leftarrow w + \eta\,y_i\,x_i,\qquad b \leftarrow b + \eta\,y_i.
+\]
+Geometrically, adding \(\eta\,y_i\,x_i\) rotates \(w\) so that
+\(w\cdot x_i\) moves in the direction of the correct label. A full pass with no
+mistakes certifies that the current \((w,b)\) separates the data, and training
+stops. Correct examples are never used to change the weights -- the algorithm only
+learns from its errors.
+
+*Convergence theorem (Novikoff 1962).* Suppose there is a unit-norm separator
+\(u\) with margin \(\gamma=\min_i y_i(u\cdot x_i) > 0\) and all \(\|x_i\|\le R\).
+Then the Perceptron makes at most \((R/\gamma)^2\) mistakes, independent of the
+dimension \(d\). The proof tracks the running weight against \(u\): each mistake
+increases \(w\cdot u\) by at least \(\gamma\) (progress toward the good direction)
+while increasing \(\|w\|^2\) by at most \(R^2\); combining the two bounds forces
+the mistake count below \((R/\gamma)^2\).
+
+** Pseudocode
+
+#+begin_example
+Perceptron(examples (x_i, y_i in {-1,+1}), eta, max_epochs):
+    w = 0; b = 0
+    repeat up to max_epochs:
+        mistake = false
+        for each (x, y) in order:
+            if y * (w . x + b) <= 0:          # misclassified
+                w = w + eta * y * x
+                b = b + eta * y
+                mistake = true
+        if not mistake: return w, b           # separated -> done
+    return w, b
+#+end_example
+
+* A worked example
+
+We separate two small clouds of points in the plane. The class \(+1\) points sit
+in the upper-right, the class \(-1\) points in the lower-left; the true boundary
+is roughly the anti-diagonal \(x_0 + x_1 = 0\). We train, report the mistakes and
+learned separator, and draw it.
+
+#+name: perceptron-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<double>> X = {{2, 2}, {3, 1}, {2, 3}, {1, 2}, {3, 3},
+                                          {-2, -1}, {-1, -2}, {-3, -1}, {-1, -3}, {-2, -2}};
+    std::vector<int>                 y = {1, 1, 1, 1, 1, -1, -1, -1, -1, -1};
+
+    PerceptronModel model = perceptron_train(X, y, 100, 1.0);
+
+    std::cout << "=== Perceptron on a 2D separable set ===\n";
+    std::cout << "converged: " << (model.converged ? "yes" : "no") << " after " << model.epochs_run
+              << " epochs\n";
+    std::cout << "total mistakes (updates): " << model.total_mistakes << '\n';
+    std::cout << "learned w = (" << model.weights[0] << ", " << model.weights[1] << "), b = " << model.bias
+              << "\n\n";
+
+    std::cout << "predictions vs labels:\n";
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) {
+        int p = perceptron_predict(model, X[i]);
+        correct += (p == y[i]);
+        std::cout << "  (" << X[i][0] << ", " << X[i][1] << ")  pred " << (p > 0 ? "+1" : "-1") << "  true "
+                  << (y[i] > 0 ? "+1" : "-1") << '\n';
+    }
+    std::cout << "training accuracy: " << correct << "/" << X.size() << '\n';
+
+    // Figure: points colored by class + the learned decision boundary w0*x + w1*y + b = 0.
+    std::vector<double> px_pos, py_pos, px_neg, py_neg;
+    for (std::size_t i = 0; i < X.size(); ++i) {
+        (y[i] > 0 ? px_pos : px_neg).push_back(X[i][0]);
+        (y[i] > 0 ? py_pos : py_neg).push_back(X[i][1]);
+    }
+    RPlot p = RPlot::create();
+    p.points(px_pos, py_pos, "class +1", {220, 38, 38}, 7.0);
+    p.points(px_neg, py_neg, "class -1", {37, 99, 235}, 7.0);
+    // Boundary line across the plotted x-range.
+    std::vector<double> bx, by;
+    for (double xv = -4.0; xv <= 4.0; xv += 0.5) {
+        bx.push_back(xv);
+        by.push_back(-(model.weights[0] * xv + model.bias) / model.weights[1]);
+    }
+    p.line(bx, by, "decision boundary", {0, 0, 0}, 2.0);
+    p.legend({"class +1", "class -1", "decision boundary"}, {{220, 38, 38}, {37, 99, 235}, {0, 0, 0}});
+    p.save_svg("build/org/perceptron_boundary.svg");
+    std::cout << "\nwrote build/org/perceptron_boundary.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/perceptron_analysis.cpp <<'CPP'
+<<perceptron-includes>>
+
+int main() {
+<<perceptron-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/perceptron_analysis.cpp -o build/org/perceptron_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/perceptron_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Perceptron on a 2D separable set ===
+converged: yes after 2 epochs
+total mistakes (updates): 1
+learned w = (2, 2), b = 1
+
+predictions vs labels:
+  (2, 2)  pred +1  true +1
+  (3, 1)  pred +1  true +1
+  (2, 3)  pred +1  true +1
+  (1, 2)  pred +1  true +1
+  (3, 3)  pred +1  true +1
+  (-2, -1)  pred -1  true -1
+  (-1, -2)  pred -1  true -1
+  (-3, -1)  pred -1  true -1
+  (-1, -3)  pred -1  true -1
+  (-2, -2)  pred -1  true -1
+training accuracy: 10/10
+#+end_example
+
+The Perceptron converges almost immediately: the very first example forces one
+update (the zero-initialized weights put it exactly on the boundary), and the
+next full pass makes no mistake at all -- a single update suffices for this
+comfortably separated data, well within the \((R/\gamma)^2\) bound. It classifies
+every training point correctly. The learned line cleanly divides the two clouds; note
+that the Perceptron returns *a* separator, not the maximum-margin one that a
+support vector machine would find, so the exact placement depends on the order in
+which mistakes were made.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/perceptron_boundary.svg]]
+
+* Limits and legacy
+
+The Perceptron's Achilles heel, highlighted by Minsky and Papert (1969), is that
+it cannot represent functions that are not linearly separable -- XOR being the
+canonical two-bit example -- and on non-separable data the basic algorithm never
+converges, cycling forever. The fixes that followed define much of machine
+learning: the *pocket* and *voted/averaged* Perceptrons stabilize it on noisy
+data; the *kernel* trick lifts it into a nonlinear feature space; margin
+maximization yields the *support vector machine*; and stacking many perceptron
+units with differentiable activations, trained by backpropagation, gives the
+*multilayer neural network*. The mistake-driven update here is the common
+ancestor of all of them.
+
+* Complexity
+
+Each example costs \(O(d)\) to score and, on a mistake, \(O(d)\) to update, so a
+pass is \(O(nd)\); the number of passes needed to separate is governed by the
+\((R/\gamma)^2\) mistake bound rather than by \(n\) or \(d\) directly. Memory is
+\(O(d)\) for the single weight vector.

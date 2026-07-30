@@ -117,6 +117,38 @@ We fit a k-nearest-neighbors classifier to Fisher's (1936) iris data using =data
 
 We fit a naive Bayes classifier to the Palmer Archipelago penguins data using =datamunge='s C++ =stats::NaiveBayesClassifier=, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./perceptron_analysis.html][The Perceptron: Mistake-Driven Linear Classification]] ([[./perceptron_analysis.pdf][PDF]])
+/A literate C++ study of Rosenblatt's algorithm and its convergence theorem using datamunge/
+
+We train Rosenblatt's Perceptron with =datamunge='s C++ =algorithms::perceptron_train=, and report it as a literate program: the mistake-driven additive update separates a 2D data set in a single update, and the compiled binary draws the learned decision boundary and states the dimension-free Novikoff mistake bound.
+
+** [[./winnow_analysis.html][Winnow: Multiplicative-Update Online Learning]] ([[./winnow_analysis.pdf][PDF]])
+/A literate C++ study of Littlestone's algorithm and its logarithmic mistake bound using datamunge/
+
+We learn a disjunction hidden among mostly-irrelevant boolean features with =datamunge='s C++ =algorithms::winnow_train=, and report it as a literate program: Winnow's multiplicative updates promote the two relevant features past the threshold and leave the eight distractors near their initial weight, illustrating the O(k log n) mistake bound the compiled binary reproduces.
+
+** [[./adaboost_analysis.html][AdaBoost: Boosting Decision Stumps into a Strong Classifier]] ([[./adaboost_analysis.pdf][PDF]])
+/A literate C++ study of adaptive boosting and its exponential training-error bound using datamunge/
+
+We boost one-feature decision stumps into a strong classifier with =datamunge='s C++ =algorithms::adaboost_train=, and report it as a literate program: on a diagonally split data set that no single axis-aligned stump can separate, the AdaBoost.M1 reweighting drives the ensemble training error to zero within a few dozen rounds, plotted by the compiled binary.
+
+* Association Rule Mining
+
+** [[./apriori_analysis.html][The Apriori Algorithm: Mining Frequent Itemsets and Association Rules]] ([[./apriori_analysis.pdf][PDF]])
+/A literate C++ study of level-wise mining with downward-closure pruning using datamunge/
+
+We mine frequent itemsets and association rules from a grocery database with =datamunge='s C++ =algorithms::apriori_frequent_itemsets=, and report it as a literate program: level-wise candidate generation with downward-closure pruning recovers the shopping patterns and their confidence/lift, all computed by the compiled binary.
+
+** [[./eclat_analysis.html][The Eclat Algorithm: Frequent Itemsets by Tidset Intersection]] ([[./eclat_analysis.pdf][PDF]])
+/A literate C++ study of depth-first vertical mining using datamunge/
+
+We mine the same grocery database via the vertical tidset layout with =datamunge='s C++ =algorithms::eclat_frequent_itemsets=, and report it as a literate program: supports are computed by tidset intersection with no repeated database scans, and the compiled binary confirms the output is identical to Apriori's.
+
+** [[./fp_growth_analysis.html][FP-Growth: Frequent Itemsets Without Candidate Generation]] ([[./fp_growth_analysis.pdf][PDF]])
+/A literate C++ study of the FP-tree and conditional pattern bases using datamunge/
+
+We mine the same grocery database by compressing it into a frequent-pattern tree with =datamunge='s C++ =algorithms::fp_growth_frequent_itemsets=, and report it as a literate program: conditional pattern bases yield every frequent itemset without generating a single candidate, matching Apriori and Eclat exactly as the compiled binary verifies.
+
 * Regression
 
 ** [[./lm_penguins_analysis.html][Ordinary Least Squares Regression of Penguin Body Mass]] ([[./lm_penguins_analysis.pdf][PDF]])
