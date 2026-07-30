@@ -1,0 +1,143 @@
+#+title: Unary Coding: The Simplest Variable-Length Code
+#+subtitle: A literate C++ study of unary codes, using =datamunge='s =algorithms::unary_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Unary coding writes a non-negative integer \(n\) as \(n\) ones followed by a terminating zero.
+It is trivially self-delimiting, needs \(n+1\) bits, and is hopelessly inefficient for large
+values -- yet it is *optimal* for a source in which \(P(n)=2^{-(n+1)}\), and it is the quotient
+component of the Golomb, Rice, and Elias codes. This report runs it with =datamunge='s
+=algorithms::unary_encode= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* When one bit per unit is exactly right
+
+The unary codeword for \(n\) has length \(n+1\). By Shannon's theorem the ideal length for a
+symbol of probability \(p\) is \(-\log_2 p\) bits, so unary coding is optimal precisely when
+\(-\log_2 P(n)=n+1\), i.e. \(P(n)=2^{-(n+1)}\): a geometric distribution that halves with each
+step. For such a source -- common in run lengths of highly biased data -- unary coding wastes
+nothing. For heavier-tailed sources it is disastrous (value 1000 costs 1001 bits), which is why
+practical codes use unary only for the small quotient of a value after dividing out the bulk
+with a binary remainder (Golomb/Rice).
+
+#+name: un-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/unary_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+unary_encode(n):   emit n ones, then a zero
+unary_decode:      count ones until a zero -> that count is n
+#+end_example
+
+* A worked example
+
+We show a few codewords, verify a round trip, and confirm the codeword length equals the ideal
+\(-\log_2 P(n)\) for the geometric source \(P(n)=2^{-(n+1)}\).
+
+#+name: un-run
+#+begin_src c++ :eval no
+    std::vector<std::uint64_t> vals = {0, 1, 2, 3, 5, 8};
+    auto bits = unary_encode(vals);
+    std::cout << "=== Unary coding ===\n";
+    for (std::uint64_t n : vals) {
+        std::vector<bool> b; unary_encode_value(n, b);
+        std::cout << "  " << n << " -> ";
+        for (bool x : b) std::cout << (x ? '1' : '0');
+        std::cout << " (" << b.size() << " bits)\n";
+    }
+    std::cout << "round trip: " << (unary_decode(bits, (int)vals.size()) == vals ? "ok" : "FAIL") << "\n";
+
+    std::cout << "\nvalue : code length : ideal -log2 P(n) with P(n)=2^-(n+1)\n";
+    std::vector<double> xs, len, ideal;
+    for (int n = 0; n <= 8; ++n) {
+        double id = -(std::log2(std::pow(0.5, n + 1)));   // = n+1
+        std::cout << "  " << n << "    :     " << (n + 1) << "     :   " << id << "\n";
+        xs.push_back(n); len.push_back(n + 1); ideal.push_back(id);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(xs, len, "unary length", {37, 99, 235}, 2.0);
+    p.points(xs, len, "", {37, 99, 235}, 4.0);
+    p.line(xs, ideal, "ideal -log2 P", {220, 38, 38}, 1.5);
+    p.legend({"unary length", "ideal -log2 P"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/unary_coding.svg");
+    std::cout << "\nwrote build/org/unary_coding.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/unary_coding_analysis.cpp <<'CPP'
+<<un-includes>>
+
+int main() {
+<<un-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/unary_coding_analysis.cpp -o build/org/unary_coding_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/unary_coding_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Unary coding ===
+  0 -> 0 (1 bits)
+  1 -> 10 (2 bits)
+  2 -> 110 (3 bits)
+  3 -> 1110 (4 bits)
+  5 -> 111110 (6 bits)
+  8 -> 111111110 (9 bits)
+round trip: ok
+
+value : code length : ideal -log2 P(n) with P(n)=2^-(n+1)
+  0    :     1     :   1
+  1    :     2     :   2
+  2    :     3     :   3
+  3    :     4     :   4
+  4    :     5     :   5
+  5    :     6     :   6
+  6    :     7     :   7
+  7    :     8     :   8
+  8    :     9     :   9
+#+end_example
+
+The codeword length \(n+1\) coincides exactly with the ideal \(-\log_2 P(n)\) for the geometric
+source \(P(n)=2^{-(n+1)}\) -- the two lines lie on top of each other -- which is the precise sense
+in which unary coding is optimal. Away from that distribution it is wasteful, so unary appears in
+practice only where values are guaranteed tiny, or as the quotient stage of a compound code.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/unary_coding.svg]]
+
+* Character and relatives
+
+Unary coding is the atom of variable-length coding: *Golomb* and *Rice* codes are a unary
+quotient plus a binary remainder, *Elias gamma* is a unary length prefix plus binary mantissa,
+and *Exp-Golomb* generalizes the same idea. On its own it suits only the exponentially decaying
+source; combined with a binary part it becomes the basis of the whole family of practical
+integer codes (companion reports on Golomb, Rice, Exp-Golomb, Fibonacci).
+
+* Complexity
+
+\(O(n)\) bits and time to encode or decode the value \(n\) -- proportional to the value itself,
+the reason it is used only for small quantities.

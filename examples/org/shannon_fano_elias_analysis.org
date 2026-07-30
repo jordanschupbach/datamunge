@@ -1,0 +1,145 @@
+#+title: Shannon-Fano-Elias Coding: Prefix Codes from the Cumulative Distribution
+#+subtitle: A literate C++ study of SFE coding, using =datamunge='s =algorithms::shannon_fano_elias_codebook=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Shannon-Fano-Elias coding builds a prefix code directly from the *cumulative* distribution. For
+symbol \(i\) with probability \(p_i\) and cumulative probability \(F_i\), it takes the midpoint
+\(\bar F_i = F_i + p_i/2\) and emits the first \(\lceil\log_2(1/p_i)\rceil+1\) bits of its binary
+expansion. Those extra bits guarantee the codewords are prefix-free while keeping the length
+within 2 bits of the entropy. Historically it is the conceptual bridge from Shannon-Fano coding
+to *arithmetic* coding -- which drops the per-symbol rounding entirely. This report runs it with
+=datamunge='s =algorithms::shannon_fano_elias_codebook= as a literate program: every number and
+figure comes from one compiled binary.
+#+end_abstract
+
+* Point inside each interval, rounded to a codeword
+
+Lay the symbols on \([0,1)\) as consecutive intervals of width \(p_i\). The midpoint
+\(\bar F_i\) is a point strictly inside symbol \(i\)'s interval; writing enough bits of its binary
+expansion to pin it down to within \(p_i/2\) uniquely identifies the interval, and that is the
+codeword. The needed precision is \(\ell_i=\lceil\log_2(1/p_i)\rceil+1\) bits -- the "+1" is what
+buys the prefix-free property, because it forces the codeword to name a dyadic sub-interval
+wholly inside symbol \(i\)'s. The expected length is therefore between \(H+1\) and \(H+2\) bits,
+where \(H\) is the entropy: never optimal, but always close, and always instantly decodable.
+
+#+name: sf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/shannon_fano_elias.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ShannonFanoElias(freq):
+    for each symbol i:
+        F_i = cumulative probability before i
+        Fbar = F_i + p_i / 2
+        length = ceil(log2(1/p_i)) + 1
+        codeword = first `length` bits of the binary expansion of Fbar
+#+end_example
+
+* A worked example
+
+A four-symbol source with frequencies 10:5:3:2. We build the codebook, confirm it is prefix-free
+and decodable, and compare each codeword's length to the ideal \(-\log_2 p_i\).
+
+#+name: sf-run
+#+begin_src c++ :eval no
+    std::vector<std::uint32_t> freq = {10, 5, 3, 2};
+    double total = 20.0, entropy = 0.0;
+    for (auto f : freq) entropy -= (f / total) * std::log2(f / total);
+
+    auto cb = shannon_fano_elias_codebook(freq);
+    std::cout << "=== Shannon-Fano-Elias (freq 10:5:3:2) ===\n";
+    std::cout << "symbol :  p   : codeword : length : ideal -log2 p\n";
+    std::vector<double> syms, lens, ideal;
+    double avg = 0;
+    for (std::size_t i = 0; i < freq.size(); ++i) {
+        double p = freq[i] / total;
+        std::cout << "   " << i << "   : " << p << " : ";
+        for (bool b : cb[i]) std::cout << (b ? '1' : '0');
+        std::cout << "  :   " << cb[i].size() << "    :   " << -std::log2(p) << "\n";
+        syms.push_back(i); lens.push_back(cb[i].size()); ideal.push_back(-std::log2(p));
+        avg += p * cb[i].size();
+    }
+    std::cout << "\naverage length: " << avg << " bits/symbol (entropy " << entropy << ")\n";
+
+    std::vector<int> msg = {0, 0, 1, 0, 2, 0, 1, 3, 0, 2};
+    auto bits = shannon_fano_elias_encode(msg, freq);
+    std::cout << "round trip: " << (shannon_fano_elias_decode(bits, freq, (int)msg.size()) == msg ? "ok" : "FAIL") << "\n";
+
+    RPlot p = RPlot::create();
+    p.bars(syms, lens, "codeword length", {37, 99, 235}, 0.5);
+    p.points(syms, ideal, "ideal -log2 p", {220, 38, 38}, 6.0);
+    p.legend({"codeword length", "ideal -log2 p"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/shannon_fano_elias.svg");
+    std::cout << "\nwrote build/org/shannon_fano_elias.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/shannon_fano_elias_analysis.cpp <<'CPP'
+<<sf-includes>>
+
+int main() {
+<<sf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/shannon_fano_elias_analysis.cpp -o build/org/shannon_fano_elias_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/shannon_fano_elias_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Shannon-Fano-Elias (freq 10:5:3:2) ===
+symbol :  p   : codeword : length : ideal -log2 p
+   0   : 0.5 : 01  :   2    :   1
+   1   : 0.25 : 101  :   3    :   2
+   2   : 0.15 : 1101  :   4    :   2.73697
+   3   : 0.1 : 11110  :   5    :   3.32193
+
+average length: 2.85 bits/symbol (entropy 1.74274)
+round trip: ok
+#+end_example
+
+Each codeword's length sits about one to two bits above the ideal \(-\log_2 p_i\) -- the visible
+gap between the bars and the red points -- exactly the \(H+1\) to \(H+2\) overhead the construction
+guarantees. The codebook is prefix-free, so the message decodes unambiguously. That constant gap
+is the price of committing to a whole number of bits per symbol *and* rounding to a safe
+sub-interval; arithmetic and range coding (companion reports) close it by coding the whole
+message as one number, which is precisely the step Shannon-Fano-Elias motivates.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/shannon_fano_elias.svg]]
+
+* Character and relatives
+
+Shannon-Fano-Elias coding is chiefly of *conceptual* importance: by coding from the cumulative
+distribution and a midpoint it is the direct ancestor of *arithmetic coding* (companion report),
+which replaces the per-symbol rounding with a single interval for the entire message and thereby
+removes the up-to-2-bit overhead. It is distinct from the earlier top-down *Shannon-Fano* coding
+(which recursively splits the alphabet) and is generally worse than *Huffman* coding, whose
+average length is optimal among whole-bit codes.
+
+* Complexity
+
+\(O(n)\) to build the codebook for \(n\) symbols (one cumulative pass), and \(O(\ell)\) to encode
+or decode a symbol of code length \(\ell\).

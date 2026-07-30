@@ -1017,6 +1017,38 @@ We encode integers with =datamunge='s C++ =algorithms::fibonacci_encode=, and re
 
 We find shortest LFSRs with =datamunge='s C++ =algorithms::berlekamp_massey=, and report it as a literate program: scanning a sequence and correcting on each discrepancy recovers the minimal connection polynomial (the linear complexity), the decoder core of BCH/Reed-Solomon and a keystream randomness test, as the compiled binary's complexity profile shows.
 
+* Compression & Coding II
+
+** [[./unary_coding_analysis.html][Unary Coding: The Simplest Variable-Length Code]] ([[./unary_coding_analysis.pdf][PDF]])
+/A literate C++ study of unary codes using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::unary_encode=, and report it as a literate program: n ones then a zero is optimal exactly when P(n)=2^-(n+1) and is the quotient stage of Golomb/Rice/Elias codes, as the compiled binary confirms.
+
+** [[./truncated_binary_analysis.html][Truncated Binary Encoding: Optimal Fixed Codes for a Finite Alphabet]] ([[./truncated_binary_analysis.pdf][PDF]])
+/A literate C++ study of truncated binary codes using datamunge/
+
+We encode bounded indices with =datamunge='s C++ =algorithms::truncated_binary_encode=, and report it as a literate program: giving the first symbols k-bit and the rest (k+1)-bit codewords keeps every code within one bit of log2(n), beating fixed-width on non-power-of-two alphabets, as the compiled binary measures.
+
+** [[./levenshtein_coding_analysis.html][Levenshtein Coding: A Recursive Universal Code]] ([[./levenshtein_coding_analysis.pdf][PDF]])
+/A literate C++ study of Levenshtein codes using datamunge/
+
+We encode integers with =datamunge='s C++ =algorithms::levenshtein_encode=, and report it as a literate program: recursively encoding the length, and the length of the length, gives an iterated-logarithm code that overtakes Exp-Golomb for large values, as the compiled binary shows.
+
+** [[./shannon_fano_elias_analysis.html][Shannon-Fano-Elias Coding: Prefix Codes from the Cumulative Distribution]] ([[./shannon_fano_elias_analysis.pdf][PDF]])
+/A literate C++ study of SFE coding using datamunge/
+
+We build prefix codes with =datamunge='s C++ =algorithms::shannon_fano_elias_codebook=, and report it as a literate program: emitting the leading bits of each symbol's cumulative midpoint gives a decodable code within 2 bits of entropy -- the conceptual ancestor of arithmetic coding -- as the compiled binary shows.
+
+** [[./range_coding_analysis.html][Range Coding: Byte-Oriented Arithmetic Coding]] ([[./range_coding_analysis.pdf][PDF]])
+/A literate C++ study of the carry-free range coder using datamunge/
+
+We compress with =datamunge='s C++ =algorithms::range_encode=, and report it as a literate program: narrowing an integer range and renormalizing byte-by-byte (Subbotin's carry-free variant, the LZMA backend) reaches near-entropy compression like arithmetic coding, as the compiled binary measures.
+
+** [[./package_merge_analysis.html][The Package-Merge Algorithm: Length-Limited Huffman Codes]] ([[./package_merge_analysis.pdf][PDF]])
+/A literate C++ study of optimal bounded-length prefix codes using datamunge/
+
+We build length-limited codes with =datamunge='s C++ =algorithms::package_merge=, and report it as a literate program: the coin-collector reduction gives the optimal prefix code with no codeword exceeding L (required by DEFLATE and JPEG), converging to the Huffman optimum as L relaxes, as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

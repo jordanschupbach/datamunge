@@ -968,22 +968,22 @@ Main pages: Lossless compression algorithms and List of compression algorithms
             LZX
     Entropy encoding: coding scheme that assigns codes to symbols so as to match code lengths with the probabilities of the symbols
     [x] Arithmetic coding: advanced entropy coding  -> datamunge::algorithms::arithmetic_encode (arithmetic_coding.hpp, 32-bit integer coder); report examples/org/arithmetic_coding_analysis.org
-            Range encoding: same as arithmetic coding, but looked at in a slightly different way
+    [x] Range encoding: same as arithmetic coding, but looked at in a slightly different way  -> datamunge::algorithms::range_encode (range_coding.hpp, carry-free Subbotin coder); report examples/org/range_coding_analysis.org
         [x] Huffman coding: simple lossless compression taking advantage of relative character frequencies -- datamunge::algorithms::huffman_build (+ encode/decode; optimal prefix code); report examples/org/huffman_analysis.org
             Adaptive Huffman coding: adaptive coding technique based on Huffman coding
-            Package-merge algorithm: Optimizes Huffman coding subject to a length restriction on code strings
+    [x] Package-merge algorithm: Optimizes Huffman coding subject to a length restriction on code strings  -> datamunge::algorithms::package_merge (package_merge.hpp); report examples/org/package_merge_analysis.org
         [x] Shannon–Fano coding -- datamunge::algorithms::shannon_fano_build (+ encode); report examples/org/shannon_fano_analysis.org
-        Shannon–Fano–Elias coding: precursor to arithmetic encoding[10]
+    [x] Shannon–Fano–Elias coding: precursor to arithmetic encoding[10]  -> datamunge::algorithms::shannon_fano_elias_codebook (shannon_fano_elias.hpp); report examples/org/shannon_fano_elias_analysis.org
     Entropy coding with known entropy characteristics
     [x] Golomb coding: form of entropy coding that is optimal for alphabets following geometric distributions  -> datamunge::algorithms::golomb_encode (golomb_coding.hpp); report examples/org/golomb_coding_analysis.org
     [x] Rice coding: form of entropy coding that is optimal for alphabets following geometric distributions  -> datamunge::algorithms::rice_encode (golomb_coding.hpp); report examples/org/rice_coding_analysis.org
-        Truncated binary encoding
-        Unary coding: code that represents a number n with n ones followed by a zero
+    [x] Truncated binary encoding  -> datamunge::algorithms::truncated_binary_encode (truncated_binary.hpp); report examples/org/truncated_binary_analysis.org
+    [x] Unary coding: code that represents a number n with n ones followed by a zero  -> datamunge::algorithms::unary_encode (unary_coding.hpp); report examples/org/unary_coding_analysis.org
         Universal codes: encodes positive integers into binary code words
             [x] Elias delta, gamma, and omega coding -- datamunge::algorithms::elias_gamma_encode / decode (gamma); report examples/org/elias_gamma_analysis.org
     [x] Exponential-Golomb coding  -> datamunge::algorithms::exp_golomb_encode (exp_golomb.hpp); report examples/org/exp_golomb_analysis.org
     [x] Fibonacci coding  -> datamunge::algorithms::fibonacci_encode (fibonacci_coding.hpp); report examples/org/fibonacci_coding_analysis.org
-            Levenshtein coding
+    [x] Levenshtein coding  -> datamunge::algorithms::levenshtein_encode (levenshtein_coding.hpp); report examples/org/levenshtein_coding_analysis.org
     Fast Efficient & Lossless Image Compression System (FELICS): a lossless image compression algorithm
     Incremental encoding: delta encoding applied to sequences of strings
     Prediction by partial matching (PPM): an adaptive statistical data compression technique based on context modeling and prediction

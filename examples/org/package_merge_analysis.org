@@ -1,0 +1,152 @@
+#+title: The Package-Merge Algorithm: Length-Limited Huffman Codes
+#+subtitle: A literate C++ study of optimal bounded-length prefix codes, using =datamunge='s =algorithms::package_merge=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A plain Huffman code minimizes expected codeword length, but its longest codeword can be very
+long -- a problem for hardware decoders and for formats (JPEG, DEFLATE, PNG) that cap code length
+to bound table size and decode latency. The *package-merge* algorithm (Larmore & Hirschberg,
+1990) finds the *optimal* prefix code subject to a maximum length \(L\). It recasts the problem
+as the *coin collector's problem*: each symbol offers a coin at every width \(2^{-1},\dots,2^{-L}\)
+with numismatic value equal to its frequency, and we buy total width \(n-1\) as cheaply as
+possible. This report runs it with =datamunge='s =algorithms::package_merge= as a literate
+program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Buying code lengths with coins
+
+Give each symbol \(i\) (weight \(w_i\)) one *coin* of each width \(2^{-\ell}\) for
+\(\ell=1..L\), all with value \(w_i\). A set of coins whose widths total exactly \(n-1\) and
+whose per-symbol counts are "monotone" corresponds to a valid length-limited prefix code, where
+symbol \(i\)'s codeword length is how many of its coins were bought. Minimizing the total value
+minimizes \(\sum_i w_i\ell_i\). The algorithm builds the cheapest such set from the finest width
+up: at each width it *packages* consecutive pairs of the current cheapest coins (a package is a
+coin of the next-coarser width, valued at the sum) and *merges* those packages with the fresh
+singleton coins. Taking the \(2n-2\) cheapest coins at the coarsest width yields the optimal
+lengths, which always satisfy the Kraft equality \(\sum_i 2^{-\ell_i}=1\).
+
+#+name: pm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/package_merge.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+inline long weighted_cost(const std::vector<std::uint64_t>& w, const std::vector<int>& len) {
+    long c = 0; for (std::size_t i = 0; i < w.size(); ++i) c += (long)w[i] * len[i]; return c;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+package_merge(weights, L):
+    coins = singleton coin per symbol (value = weight), sorted
+    current = coins                          # width 2^-L
+    repeat L-1 times:
+        packages = merge consecutive pairs of current (value = sum), drop odd tail
+        current  = merge(coins, packages) sorted     # next coarser width
+    take the 2n-2 cheapest coins; len[i] = how many contain symbol i
+#+end_example
+
+* A worked example
+
+Nine symbols with skewed weights. We compute the optimal code lengths for several maximum lengths
+\(L\), check the Kraft equality, and watch the weighted cost approach the unconstrained Huffman
+optimum as \(L\) is relaxed.
+
+#+name: pm-run
+#+begin_src c++ :eval no
+    std::vector<std::uint64_t> w = {20, 17, 6, 3, 2, 2, 2, 1, 1};
+    int n = (int)w.size();
+    long huffman = weighted_cost(w, package_merge(w, n));   // large L -> unconstrained optimum
+
+    std::cout << "=== Package-merge length-limited codes (9 symbols) ===\n";
+    std::cout << "unconstrained (Huffman) cost: " << huffman << "\n\n";
+    std::cout << "L : max codeword : Kraft sum : weighted cost : lengths\n";
+    std::vector<double> Ls, costs;
+    for (int L = 4; L <= 8; ++L) {
+        auto   len = package_merge(w, L);
+        double kraft = 0; int maxl = 0;
+        for (int l : len) { kraft += std::pow(2.0, -l); maxl = std::max(maxl, l); }
+        long cost = weighted_cost(w, len);
+        std::cout << L << " :     " << maxl << "       :   " << kraft << "    :     " << cost << "       : ";
+        for (int l : len) std::cout << l;
+        std::cout << "\n";
+        Ls.push_back(L); costs.push_back(cost);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(Ls, costs, "length-limited cost", {37, 99, 235}, 2.0);
+    p.points(Ls, costs, "", {37, 99, 235}, 5.0);
+    p.abline_h((double)huffman, {22, 163, 74}, 1.5);   // Huffman optimum
+    p.legend({"length-limited cost", "Huffman optimum"}, {{37, 99, 235}, {22, 163, 74}});
+    p.save_svg("build/org/package_merge.svg");
+    std::cout << "\nwrote build/org/package_merge.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/package_merge_analysis.cpp <<'CPP'
+<<pm-includes>>
+
+int main() {
+<<pm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/package_merge_analysis.cpp -o build/org/package_merge_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/package_merge_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Package-merge length-limited codes (9 symbols) ===
+unconstrained (Huffman) cost: 132
+
+L : max codeword : Kraft sum : weighted cost : lengths
+4 :     4       :   1    :     136       : 223444444
+5 :     5       :   1    :     133       : 124555555
+6 :     6       :   1    :     132       : 124455566
+7 :     6       :   1    :     132       : 124455566
+8 :     6       :   1    :     132       : 124455566
+#+end_example
+
+Every length limit yields a *complete* prefix code -- the Kraft sum is exactly 1 -- with no
+codeword exceeding \(L\), and the weighted cost decreases monotonically as \(L\) is relaxed,
+converging to the unconstrained Huffman optimum once \(L\) is large enough that the limit no
+longer binds. The gap between a tight limit and the Huffman line is the price of bounding the
+code length; package-merge pays exactly that minimum price and no more, which is what "optimal
+length-limited" means.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/package_merge.svg]]
+
+* Character and relatives
+
+Package-merge is the standard method for *length-limited* prefix codes, required by DEFLATE (max
+15 bits), JPEG (16), and many hardware codecs where a bounded code length caps the decode table
+size. Plain *Huffman* coding gives the unconstrained optimum but no length guarantee; heuristics
+(the Kraft-adjustment "Huffman with a limit") are fast but can be sub-optimal, whereas
+package-merge is provably optimal in \(O(nL)\) time. The same coin-collector reduction solves
+other constrained-code problems, and *length-limited* codes also appear in balancing decode speed
+against compression.
+
+* Complexity
+
+\(O(nL)\) time and space for \(n\) symbols and length limit \(L\) in the classic formulation
+(this implementation tracks symbol sets, so it is a constant factor heavier but the same
+asymptotic class for modest \(n\)).
