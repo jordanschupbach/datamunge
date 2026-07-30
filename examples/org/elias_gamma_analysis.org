@@ -1,0 +1,142 @@
+#+title: Elias Gamma Coding: Universal Codes for Integers
+#+subtitle: A literate C++ study of self-delimiting integer codes, using =datamunge='s =algorithms::elias_gamma_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Encoding a stream of positive integers of unknown size with a fixed field width wastes
+bits on the small ones and overflows on the big ones. *Universal codes* spend bits in
+proportion to a number's magnitude while remaining *self-delimiting* -- no separators.
+*Elias gamma* (1975) codes \(n\ge 1\) as \(\lfloor\log_2 n\rfloor\) zeros followed by the
+binary of \(n\), using \(2\lfloor\log_2 n\rfloor+1\) bits. This report implements it in
+=datamunge='s C++ =algorithms::elias_gamma_encode= as a literate program: every number
+and figure comes from one compiled binary. We list the codewords for small integers,
+confirm a round-trip on a mixed sequence, and show the code length growing logarithmically
+with the value.
+#+end_abstract
+
+* Unary length prefix, then binary
+
+To code \(n\ge 1\): let \(k=\lfloor\log_2 n\rfloor\) (so \(2^k\le n<2^{k+1}\)). Write \(k\)
+zeros (the *unary length prefix*), then the \((k+1)\)-bit binary of \(n\) -- which always
+starts with a 1. The decoder counts leading zeros to learn \(k\), then reads \(k+1\) more
+bits, making the code *prefix-free* and self-delimiting. Length is \(2k+1\) bits, so it is
+efficient when small numbers dominate (its implied distribution is \(\approx 1/(2n^2)\)).
+
+#+name: eg-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/elias_gamma.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+EliasGamma-encode(n):        # n >= 1
+    k = floor(log2 n)
+    write k zeros
+    write the (k+1)-bit binary of n     # begins with 1
+
+EliasGamma-decode(bits):
+    count leading zeros -> k
+    read the '1' and k more bits as the binary of n
+#+end_example
+
+* A worked example
+
+#+name: eg-run
+#+begin_src c++ :eval no
+    std::cout << "=== Elias gamma codes ===\n n   codeword\n";
+    std::vector<double> nx, blen;
+    for (std::uint64_t n = 1; n <= 12; ++n) {
+        std::string code = elias_gamma_encode_one(n);
+        std::cout << (n < 10 ? " " : "") << n << "   " << code << '\n';
+        nx.push_back(static_cast<double>(n));
+        blen.push_back(static_cast<double>(code.size()));
+    }
+
+    std::vector<std::uint64_t> seq = {1, 2, 5, 3, 100, 7, 42, 1000, 8, 9};
+    std::string                bits = elias_gamma_encode(seq);
+    auto                       back = elias_gamma_decode(bits);
+    std::cout << "\nsequence of " << seq.size() << " integers -> " << bits.size() << " bits, round-trip "
+              << (back == seq ? "ok" : "FAIL") << '\n';
+    std::cout << "(a fixed 16-bit encoding would use " << seq.size() * 16 << " bits)\n";
+
+    RPlot p = RPlot::create();
+    p.line(nx, blen, "code length", {37, 99, 235}, 2.0);
+    p.points(nx, blen, "", {37, 99, 235}, 5.0);
+    p.save_svg("build/org/elias_gamma_length.svg");
+    std::cout << "\nwrote build/org/elias_gamma_length.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/elias_gamma_analysis.cpp <<'CPP'
+<<eg-includes>>
+
+int main() {
+<<eg-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/elias_gamma_analysis.cpp -o build/org/elias_gamma_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/elias_gamma_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Elias gamma codes ===
+ n   codeword
+ 1   1
+ 2   010
+ 3   011
+ 4   00100
+ 5   00101
+ 6   00110
+ 7   00111
+ 8   0001000
+ 9   0001001
+10   0001010
+11   0001011
+12   0001100
+
+sequence of 10 integers -> 74 bits, round-trip ok
+(a fixed 16-bit encoding would use 160 bits)
+#+end_example
+
+The codewords grow by two bits each time the value doubles -- \(2\lfloor\log_2
+n\rfloor+1\) -- so 1 costs one bit, 2-3 cost three, 4-7 cost five, and so on, a clean
+staircase in the length plot. The mixed sequence round-trips exactly and, being dominated
+by small values, packs into far fewer bits than a fixed 16-bit field would use. The
+leading zero-run makes each codeword self-delimiting, so no separators are stored.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/elias_gamma_length.svg]]
+
+* Relatives
+
+Elias gamma is one of a family of universal integer codes: *Elias delta* codes the length
+prefix itself with gamma (better for larger numbers), *Elias omega* recurses further, and
+*Golomb/Rice* codes are optimal for geometrically distributed integers (used for
+run-lengths and audio residuals). *Fibonacci coding* is another self-delimiting scheme.
+These codes are the standard way to store the small integers that dominate inverted-index
+gap lists, sparse data, and the residuals of predictive coders.
+
+* Complexity
+
+Encoding and decoding are \(O(\text{bits})\) -- \(O(\log n)\) per integer -- with \(O(1)\)
+state.

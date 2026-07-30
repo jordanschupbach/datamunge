@@ -633,6 +633,38 @@ We validate identification numbers with =datamunge='s C++ =algorithms::luhn_vali
 
 We validate numbers with =datamunge='s C++ =algorithms::verhoeff_validate=, and report it as a literate program: the non-commutative dihedral-group product catches 100% of single-digit errors and 100% of adjacent transpositions -- including the 09<->90 swaps Luhn misses on the very same number -- as the compiled binary shows.
 
+* Data Compression
+
+** [[./lz77_analysis.html][LZ77: Sliding-Window Dictionary Compression]] ([[./lz77_analysis.pdf][PDF]])
+/A literate C++ study of Lempel-Ziv 1977 using datamunge/
+
+We compress text with =datamunge='s C++ =algorithms::lz77_encode=, and report it as a literate program: back-references into a sliding window collapse repeated phrases into tokens (89 chars -> 33 tokens), round-trip exactly, and form the engine behind DEFLATE -- as the compiled binary shows.
+
+** [[./lzw_analysis.html][LZW: Dictionary Compression Without Transmitting the Dictionary]] ([[./lzw_analysis.pdf][PDF]])
+/A literate C++ study of Lempel-Ziv-Welch using datamunge/
+
+We compress with =datamunge='s C++ =algorithms::lzw_encode=, and report it as a literate program: a dictionary built on the fly emits only integer codes and round-trips (including the tricky "code not yet defined" case on TOBEORNOT...), the compression behind GIF/TIFF -- as the compiled binary verifies.
+
+** [[./burrows_wheeler_analysis.html][The Burrows-Wheeler Transform]] ([[./burrows_wheeler_analysis.pdf][PDF]])
+/A literate C++ study of the reversible block-sorting transform using datamunge/
+
+We transform strings with =datamunge='s C++ =algorithms::bwt_transform=, and report it as a literate program: sorting cyclic rotations reversibly clusters like characters (BWT("banana")="nnbaaa"), the inverse recovers the original from one column plus an index, and run structure increases for the stages that follow -- as the compiled binary shows.
+
+** [[./move_to_front_analysis.html][The Move-to-Front Transform]] ([[./move_to_front_analysis.pdf][PDF]])
+/A literate C++ study of MTF coding using datamunge/
+
+We recode BWT output with =datamunge='s C++ =algorithms::mtf_encode=, and report it as a literate program: emitting each byte's list position and promoting it to the front turns clustered data into a stream dominated by zeros (59 of 79 indices), reshaping the distribution for entropy coding -- as the compiled binary shows.
+
+** [[./shannon_fano_analysis.html][Shannon-Fano Coding]] ([[./shannon_fano_analysis.pdf][PDF]])
+/A literate C++ study of top-down prefix coding using datamunge/
+
+We build prefix codes with =datamunge='s C++ =algorithms::shannon_fano_build=, and report it as a literate program: top-down equal-probability splitting lands just above the entropy and at or slightly above optimal Huffman on the same text -- the small gap that motivated Huffman -- as the compiled binary measures.
+
+** [[./elias_gamma_analysis.html][Elias Gamma Coding: Universal Codes for Integers]] ([[./elias_gamma_analysis.pdf][PDF]])
+/A literate C++ study of self-delimiting integer codes using datamunge/
+
+We code integers with =datamunge='s C++ =algorithms::elias_gamma_encode=, and report it as a literate program: a unary length prefix plus binary gives a self-delimiting code of 2*floor(log2 n)+1 bits that round-trips a mixed sequence into far fewer bits than a fixed field -- as the compiled binary shows.
+
 * Parsing, Hashing & Bit Manipulation
 
 ** [[./shunting_yard_analysis.html][The Shunting-Yard Algorithm: Infix to Postfix]] ([[./shunting_yard_analysis.pdf][PDF]])

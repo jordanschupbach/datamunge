@@ -1,0 +1,140 @@
+#+title: Shannon-Fano Coding
+#+subtitle: A literate C++ study of top-down prefix coding, using =datamunge='s =algorithms::shannon_fano_build=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Shannon-Fano coding -- Huffman's predecessor -- builds a prefix code by *top-down
+splitting*: sort symbols by frequency, divide them into two groups of nearly equal
+probability, prefix one with 0 and the other with 1, and recurse. It gets close to the
+entropy but, unlike Huffman's bottom-up merge, is *not always optimal*. This report
+implements it in =datamunge='s C++ =algorithms::shannon_fano_build= as a literate program:
+every number and figure comes from one compiled binary. We build a Shannon-Fano code,
+compare its average length against the entropy and against optimal Huffman on the same
+text, and confirm it beats the fixed 8-bit baseline.
+#+end_abstract
+
+* Top-down equal-probability splitting
+
+Sort the symbols by descending frequency. Find the split point that divides the list into
+two contiguous groups of as-nearly-equal total frequency as possible; append 0 to every
+symbol in the first group and 1 to every symbol in the second; recurse in each group until
+groups are singletons. The resulting code is prefix-free. Because the split is chosen
+greedily *before* seeing the sub-structure, the code can be slightly longer than
+Huffman's -- which was precisely Huffman's improvement -- but it stays within a bit or so of
+the entropy \(H=-\sum_s p_s\log_2 p_s\).
+
+#+name: sf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/shannon_fano.hpp>
+#include <datamunge/algorithms/huffman_coding.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ShannonFano(symbols sorted by frequency):
+    Split(group):
+        if group has one symbol: return
+        find split minimizing |sum(left) - sum(right)|
+        append '0' to each symbol in left, '1' to each in right
+        Split(left);  Split(right)
+    Split(all symbols)
+#+end_example
+
+* A worked example
+
+We build a Shannon-Fano code for a text, then compare its average code length to the
+entropy lower bound, to optimal Huffman, and to the 8-bit baseline.
+
+#+name: sf-run
+#+begin_src c++ :eval no
+    std::string text =
+        "the quick brown fox jumps over the lazy dog. pack my box with five dozen liquor jugs.";
+
+    auto   sf  = shannon_fano_build(text);
+    auto   hf  = huffman_build(text);
+    double sfa = shannon_fano_average_bits(sf, text);
+    double hfa = huffman_average_bits(hf, text);
+
+    std::map<char, std::size_t> freq;
+    for (char c : text) ++freq[c];
+    double H = 0.0;
+    for (const auto& [c, f] : freq) { double p = double(f) / text.size(); H -= p * std::log2(p); }
+
+    std::cout << "=== Shannon-Fano vs entropy vs Huffman (" << text.size() << " chars) ===\n";
+    std::cout << "entropy H              = " << H << " bits/char\n";
+    std::cout << "Huffman  (optimal)     = " << hfa << " bits/char\n";
+    std::cout << "Shannon-Fano           = " << sfa << " bits/char\n";
+    std::cout << "fixed 8-bit baseline   = 8 bits/char\n";
+    std::cout << "Shannon-Fano >= Huffman (never better than optimal): "
+              << (sfa >= hfa - 1e-9 ? "yes" : "no") << '\n';
+
+    RPlot p = RPlot::barplot({H, hfa, sfa, 8.0}, {"entropy", "Huffman", "Shannon-Fano", "8-bit"},
+                             "bits per char", {37, 99, 235});
+    p.save_svg("build/org/shannon_fano_bits.svg");
+    std::cout << "\nwrote build/org/shannon_fano_bits.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/shannon_fano_analysis.cpp <<'CPP'
+<<sf-includes>>
+
+int main() {
+<<sf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/shannon_fano_analysis.cpp -o build/org/shannon_fano_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/shannon_fano_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Shannon-Fano vs entropy vs Huffman (85 chars) ===
+entropy H              = 4.46203 bits/char
+Huffman  (optimal)     = 4.52941 bits/char
+Shannon-Fano           = 4.54118 bits/char
+fixed 8-bit baseline   = 8 bits/char
+Shannon-Fano >= Huffman (never better than optimal): yes
+#+end_example
+
+Shannon-Fano lands just above the entropy and at or slightly above optimal Huffman on the
+same text, and well below the 8-bit baseline. The small gap to Huffman is the whole story
+of why Huffman replaced it: the top-down greedy split occasionally makes a locally-even
+but globally-suboptimal cut, whereas Huffman's bottom-up merge is provably optimal. Both
+are prefix codes decoded the same way.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/shannon_fano_bits.svg]]
+
+* History and relatives
+
+Shannon-Fano coding (Shannon 1948 / Fano 1949) predates Huffman (1952) by a few years and
+motivated it directly. It remains a clean illustration of prefix coding and of the
+entropy bound, and a *variant* (Shannon-Fano-Elias coding) is a stepping stone to
+arithmetic coding. In practice Huffman (optimal integer-length codes) or arithmetic/range
+coding (which beat the integer-bit limit) are used instead; Shannon-Fano is of historical
+and pedagogical value.
+
+* Complexity
+
+Building the code is \(O(S\log S)\) for \(S\) distinct symbols (sort) plus \(O(S\log S)\)
+for the recursive splits; encoding/decoding are linear in the message length.

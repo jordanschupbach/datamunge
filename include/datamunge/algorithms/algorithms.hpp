@@ -22,6 +22,7 @@
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
+#include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
 #include <datamunge/algorithms/check_digits.hpp>
@@ -45,6 +46,7 @@
 #include <datamunge/algorithms/elementary.hpp>
 #include <datamunge/algorithms/elementary_more.hpp>
 #include <datamunge/algorithms/ellipsoid.hpp>
+#include <datamunge/algorithms/elias_gamma.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
 #include <datamunge/algorithms/fft.hpp>
@@ -88,6 +90,8 @@
 #include <datamunge/algorithms/logitboost.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/lsh.hpp>
+#include <datamunge/algorithms/lz77.hpp>
+#include <datamunge/algorithms/lzw.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
@@ -99,6 +103,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/move_to_front.hpp>
 #include <datamunge/algorithms/midpoint_circle.hpp>
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
 #include <datamunge/algorithms/nested_sampling.hpp>
@@ -115,6 +120,7 @@
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
+#include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>

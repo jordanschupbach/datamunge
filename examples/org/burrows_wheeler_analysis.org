@@ -1,0 +1,141 @@
+#+title: The Burrows-Wheeler Transform
+#+subtitle: A literate C++ study of the reversible block-sorting transform, using =datamunge='s =algorithms::bwt_transform=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Burrows-Wheeler transform (1994) is the reversible reordering at the heart of bzip2.
+It does not compress by itself; it *permutes* a string so that characters sharing similar
+following context become adjacent, producing long runs that move-to-front and entropy
+coding then squeeze. The forward transform sorts all cyclic rotations and outputs the
+last column plus the original's row index; astonishingly, those two pieces suffice to
+invert it exactly. This report implements it in =datamunge='s C++ =algorithms::bwt_transform=
+/ =bwt_inverse= as a literate program: every number and figure comes from one compiled
+binary. We transform the classic "banana", confirm the round-trip, and show the transform
+increasing run structure that downstream stages exploit.
+#+end_abstract
+
+* Sort the rotations, keep the last column
+
+Form all \(n\) cyclic rotations of the length-\(n\) string, sort them lexicographically,
+and read off the *last character* of each -- that column is the BWT. Also record which
+row the *original* string occupies after sorting. To invert, note that the first column
+is just the sorted last column, and the *LF-mapping* pairs each occurrence of a character
+in the last column with the same occurrence in the first column; walking that mapping
+from the recorded row reconstructs the original exactly. The reason it helps compression:
+characters that precede the same context (e.g. every "an" before an "a" in "banana") get
+gathered together.
+
+#+name: bwt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/burrows_wheeler.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+BWT(s):
+    rows = all cyclic rotations of s, sorted
+    last = last character of each row
+    index = row containing the original s
+    return (last, index)
+
+BWT-inverse(last, index):
+    build LF-mapping from last column to sorted first column
+    walk it from 'index', prepending characters
+#+end_example
+
+* A worked example
+
+#+name: bwt-run
+#+begin_src c++ :eval no
+    auto count_runs = [](const std::string& s) {
+        if (s.empty()) return std::size_t{0};
+        std::size_t r = 1;
+        for (std::size_t i = 1; i < s.size(); ++i) if (s[i] != s[i - 1]) ++r;
+        return r;
+    };
+
+    std::cout << "=== Burrows-Wheeler transform ===\n";
+    auto bw = bwt_transform("banana");
+    std::cout << "BWT(\"banana\") = \"" << bw.transformed << "\", index " << bw.index << '\n';
+    std::cout << "inverse: \"" << bwt_inverse(bw) << "\"\n\n";
+
+    // On repetitive text the BWT raises the number of same-character runs.
+    std::string text = "the quick brown fox the quick brown fox the quick brown fox";
+    auto        b2   = bwt_transform(text);
+    std::cout << "text (" << text.size() << " chars): round-trip "
+              << (bwt_inverse(b2) == text ? "ok" : "FAIL") << '\n';
+    std::cout << "same-character runs -- original: " << count_runs(text) << ", after BWT: "
+              << count_runs(b2.transformed) << '\n';
+    std::cout << "(more runs => better for the move-to-front + RLE stages that follow)\n";
+
+    RPlot p = RPlot::barplot(
+        {static_cast<double>(count_runs(text)), static_cast<double>(count_runs(b2.transformed))},
+        {"original runs", "BWT runs"}, "number of runs", {147, 51, 234});
+    p.save_svg("build/org/bwt_runs.svg");
+    std::cout << "\nwrote build/org/bwt_runs.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/burrows_wheeler_analysis.cpp <<'CPP'
+<<bwt-includes>>
+
+int main() {
+<<bwt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/burrows_wheeler_analysis.cpp -o build/org/burrows_wheeler_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/burrows_wheeler_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Burrows-Wheeler transform ===
+BWT("banana") = "nnbaaa", index 3
+inverse: "banana"
+
+text (59 chars): round-trip ok
+same-character runs -- original: 59, after BWT: 20
+(more runs => better for the move-to-front + RLE stages that follow)
+#+end_example
+
+The transform of "banana" is "nnbaaa" with index 3, and the inverse recovers "banana"
+exactly from just those two pieces. On the repetitive sentence the BWT *reduces* the
+number of same-character runs (equivalently, lengthens the runs) relative to the original
+-- gathering like characters together -- which is precisely the structure the following
+move-to-front and run-length stages turn into compression.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/bwt_runs.svg]]
+
+* Role in bzip2
+
+The BWT is stage one of the bzip2 pipeline: *BWT -> move-to-front -> run-length -> Huffman*.
+Each stage feeds the next -- BWT clusters like characters, MTF turns those clusters into
+runs of small numbers (mostly zeros), RLE collapses the zero runs, and Huffman entropy-
+codes the result. The transform's magic is that a global *sort* is exactly invertible
+from one column and an index, letting compression exploit long-range repetition that a
+local method like LZ77 would miss.
+
+* Complexity
+
+This implementation sorts rotations in \(O(n^2\log n)\) (comparing rotations costs
+\(O(n)\)); with a suffix array the forward transform is \(O(n)\)-to-\(O(n\log n)\). The
+inverse is \(O(n)\) via the LF-mapping. Memory is \(O(n)\).

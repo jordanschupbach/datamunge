@@ -1,0 +1,128 @@
+#+title: LZW: Dictionary Compression Without Transmitting the Dictionary
+#+subtitle: A literate C++ study of Lempel-Ziv-Welch, using =datamunge='s =algorithms::lzw_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+LZW (Welch 1984) builds its dictionary *on the fly*, so it transmits only integer codes
+-- never offsets, lengths, or the dictionary itself, because the decoder reconstructs the
+identical dictionary as it reads. It is the compression behind GIF, TIFF, and classic
+Unix =compress=. This report implements it in =datamunge='s C++ =algorithms::lzw_encode=
+/ =lzw_decode= as a literate program: every number and figure comes from one compiled
+binary. We compress the textbook example, confirm an exact round-trip (including the
+tricky "code not yet in the dictionary" case), and show the code stream shorter than the
+input.
+#+end_abstract
+
+* Building the dictionary as you go
+
+Seed the dictionary with the 256 single bytes. The encoder holds the longest current
+string \c w that is in the dictionary; reading the next byte \c c, if \c w+c is also in
+the dictionary it extends \c w, otherwise it *emits the code for \c w*, adds \c w+c as a
+new entry, and restarts from \c c. The decoder mirrors this exactly, learning the same
+new entry one step later -- which creates one special case (a code referring to an entry
+the decoder is *about to* create), resolved by \(w + w[0]\).
+
+#+name: lzw-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lzw.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+LZW-encode(data):
+    dict = { every single byte }
+    w = ""
+    for each byte c:
+        if w+c in dict: w = w+c
+        else: emit code(w); dict.add(w+c); w = c
+    emit code(w)
+#+end_example
+
+* A worked example
+
+We compress the classic string =TOBEORNOTTOBEORTOBEORNOT=, which specifically exercises
+the decoder's special case, and also a longer repetitive text.
+
+#+name: lzw-run
+#+begin_src c++ :eval no
+    std::string classic = "TOBEORNOTTOBEORTOBEORNOT";
+    auto        codes    = lzw_encode(classic);
+    std::cout << "=== LZW on \"" << classic << "\" ===\n";
+    std::cout << "codes (" << codes.size() << "):";
+    for (int c : codes) std::cout << ' ' << c;
+    std::cout << "\nround-trip ok: " << (lzw_decode(codes) == classic ? "yes" : "NO") << '\n';
+    std::cout << "(codes > 255 are newly-learned dictionary strings)\n\n";
+
+    std::string text =
+        "the quick brown fox jumps over the lazy dog. the quick brown fox jumps over the lazy dog.";
+    auto tc = lzw_encode(text);
+    std::cout << "longer text: " << tc.size() << " codes vs " << text.size() << " chars, round-trip "
+              << (lzw_decode(tc) == text ? "ok" : "FAIL") << '\n';
+
+    RPlot p = RPlot::barplot({static_cast<double>(text.size()), static_cast<double>(tc.size())},
+                             {"chars", "LZW codes"}, "count", {37, 99, 235});
+    p.save_svg("build/org/lzw_codes.svg");
+    std::cout << "\nwrote build/org/lzw_codes.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lzw_analysis.cpp <<'CPP'
+<<lzw-includes>>
+
+int main() {
+<<lzw-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lzw_analysis.cpp -o build/org/lzw_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lzw_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LZW on "TOBEORNOTTOBEORTOBEORNOT" ===
+codes (16): 84 79 66 69 79 82 78 79 84 256 258 260 265 259 261 263
+round-trip ok: yes
+(codes > 255 are newly-learned dictionary strings)
+
+longer text: 65 codes vs 89 chars, round-trip ok
+#+end_example
+
+Both strings round-trip exactly -- including the =TOBEOR...= case that triggers the
+decoder's "code not yet defined" special handling -- and the code streams are shorter
+than the inputs. Codes above 255 are dictionary strings LZW learned as it went; the more
+the text repeats, the longer those learned strings grow and the fewer codes it takes.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/lzw_codes.svg]]
+
+* Character and relatives
+
+LZW's charm is that the dictionary is never transmitted -- the decoder rebuilds it -- so
+the output is a pure code stream (packed into growing bit widths in real formats). It
+adapts to the data and needs one pass and a hash map. It is an LZ78-family method
+(explicit dictionary) as opposed to LZ77's sliding window; DEFLATE ultimately won for
+general use by combining LZ77 with Huffman coding, but LZW remains in GIF/TIFF and is the
+cleanest illustration of self-synchronizing dictionary coding.
+
+* Complexity
+
+\(O(n)\) time for both encode and decode with a hash-map dictionary, and \(O(D)\) memory
+for the \(D\) learned entries.
