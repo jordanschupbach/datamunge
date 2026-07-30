@@ -1,0 +1,268 @@
+#+title: SARSA: On-Policy Temporal-Difference Control
+#+subtitle: A literate C++ study of on-policy reinforcement learning and the cliff-walking contrast with Q-learning, using =datamunge='s =algorithms::sarsa=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Q-learning learns the optimal policy while behaving with a different, exploratory
+one -- it bootstraps from the /greedy/ next action. *SARSA* (Rummery & Niranjan
+1994) instead bootstraps from the action the agent *actually takes next* under
+its own exploratory policy, making it *on-policy*: it evaluates and improves the
+very policy it follows, exploration included. The practical consequence is
+famous. On Sutton & Barto's *cliff-walking* task, Q-learning learns to walk right
+along the cliff edge -- optimal if you never slip -- while SARSA, feeling the
+occasional exploratory fall into the cliff, learns a safer path one row back.
+This report implements SARSA in =datamunge='s C++ =algorithms::sarsa= as a
+literate program: every number and figure comes from one compiled binary. We run
+SARSA and Q-learning side by side on the same cliff, plot their learning curves,
+and print the two greedy routes to show the on-policy/off-policy difference
+directly.
+#+end_abstract
+
+* On-policy control
+
+As in Q-learning, the agent interacts with a Markov decision process and seeks a
+policy maximizing the expected discounted return \(G_t=\sum_{k\ge0}\gamma^k
+r_{t+k+1}\). SARSA takes its name from the transition tuple it consumes,
+\((s_t, a_t, r_{t+1}, s_{t+1}, a_{t+1})\): state, action, reward, next state, next
+action. The crucial word is *next action* -- SARSA commits to \(a_{t+1}\) before
+updating, drawing it from the same \(\varepsilon\)-greedy policy it is learning,
+and bootstraps from \(Q(s_{t+1}, a_{t+1})\). It therefore learns the action-value
+function \(Q^\pi\) of the *behavior policy* \(\pi\) it is running, and because that
+policy is made greedier as \(Q\) improves, it performs *generalized policy
+iteration* toward the optimal \(\varepsilon\)-greedy policy.
+
+#+name: sarsa-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tabular_rl.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The SARSA update versus Q-learning
+
+Both methods apply a temporal-difference correction to \(Q(s,a)\); they differ
+only in the bootstrap term of the TD target:
+\[
+  \text{SARSA:}\quad Q(s,a)\leftarrow Q(s,a)+\alpha\big[r+\gamma\,Q(s',a')-Q(s,a)\big],\qquad a'\sim\pi_\varepsilon(s'),
+\]
+\[
+  \text{Q-learning:}\quad Q(s,a)\leftarrow Q(s,a)+\alpha\big[r+\gamma\,\max_{a'}Q(s',a')-Q(s,a)\big].
+\]
+SARSA uses the value of the action its exploratory policy will really take;
+Q-learning uses the best action available. When exploration is harmless the two
+converge to the same greedy policy. When exploration is *dangerous*, SARSA's
+target is pulled down by the low value of the occasional bad exploratory move, so
+it learns to keep a margin of safety -- exactly the cliff-walking behavior below.
+On a terminal transition the bootstrap term is dropped.
+
+** Pseudocode
+
+#+begin_example
+SARSA(env, alpha, gamma, epsilon, episodes):
+    Q[s][a] = 0 for all s, a
+    repeat for each episode:
+        s = env.reset()
+        a = epsilon-greedy(Q[s], epsilon)
+        repeat for each step:
+            (s', r, done) = env.step(s, a)
+            a' = epsilon-greedy(Q[s'], epsilon)          # choose next action FIRST
+            target = r + (done ? 0 : gamma * Q[s'][a'])   # bootstrap from a', not max
+            Q[s][a] += alpha * (target - Q[s][a])
+            s, a = s', a'
+        until done
+    return Q, greedy_policy = argmax_a Q[s][a]
+#+end_example
+
+* The cliff-walking task
+
+The grid is 4 rows by 12 columns. The agent starts at the bottom-left corner and
+must reach the bottom-right *goal*. The entire bottom edge between them is *The
+Cliff*: stepping onto it incurs a reward of \(-100\) and teleports the agent back
+to the start (the episode continues). Every other step costs \(-1\); rewards are
+undiscounted (\(\gamma=1\)). The *optimal* path hugs the cliff along the second
+row from the bottom, for a return of \(-13\). But under \(\varepsilon\)-greedy
+behavior, walking the edge risks an exploratory step off the cliff. We train both
+algorithms on this identical environment.
+
+#+name: sarsa-run
+#+begin_src c++ :eval no
+    const int         kRows = 4, kCols = 12;
+    const std::size_t kStates = static_cast<std::size_t>(kRows * kCols);
+    auto              rc      = [=](int r, int c) { return static_cast<std::size_t>(r * kCols + c); };
+    const std::size_t kStart  = rc(3, 0);
+    const std::size_t kGoal   = rc(3, kCols - 1);
+
+    TabularEnvironment env;
+    env.num_states  = kStates;
+    env.num_actions = 4;  // 0=up, 1=right, 2=down, 3=left
+    env.reset       = [=] { return kStart; };
+    env.step        = [=](std::size_t s, std::size_t a) -> StepResult {
+        int row = static_cast<int>(s) / kCols, col = static_cast<int>(s) % kCols;
+        if (a == 0 && row > 0) --row;
+        else if (a == 1 && col < kCols - 1) ++col;
+        else if (a == 2 && row < kRows - 1) ++row;
+        else if (a == 3 && col > 0) --col;
+        // The cliff: bottom row, columns 1..kCols-2.
+        if (row == 3 && col >= 1 && col <= kCols - 2) return {kStart, -100.0, false};
+        std::size_t next = static_cast<std::size_t>(row * kCols + col);
+        return {next, -1.0, next == kGoal};
+    };
+
+    RLParameters params;
+    params.learning_rate = 0.5;
+    params.discount      = 1.0;
+    params.epsilon       = 0.1;
+    params.episodes      = 500;
+    params.max_steps     = 2000;
+    params.seed          = 7;
+
+    QLearningResult sar = sarsa(env, params);
+    QLearningResult qln = q_learning(env, params);
+
+    // Trace each learned greedy policy from start to goal (cap the walk length).
+    auto trace = [&](const std::vector<std::size_t>& policy) {
+        std::vector<char> grid(kStates, '.');
+        std::size_t       s = kStart;
+        for (int step = 0; step < 100 && s != kGoal; ++step) {
+            grid[s] = '#';
+            int         row = static_cast<int>(s) / kCols, col = static_cast<int>(s) % kCols;
+            std::size_t a   = policy[s];
+            if (a == 0 && row > 0) --row;
+            else if (a == 1 && col < kCols - 1) ++col;
+            else if (a == 2 && row < kRows - 1) ++row;
+            else if (a == 3 && col > 0) --col;
+            std::size_t nxt = static_cast<std::size_t>(row * kCols + col);
+            if (nxt == s) break;  // stuck
+            s = nxt;
+        }
+        grid[kStart] = 'S';
+        grid[kGoal]  = 'G';
+        for (int c = 1; c <= kCols - 2; ++c)
+            if (grid[rc(3, c)] == '.') grid[rc(3, c)] = 'C';  // cliff cells not on the path
+        std::string out;
+        for (int r = 0; r < kRows; ++r) {
+            out += "  ";
+            for (int c = 0; c < kCols; ++c) out += grid[rc(r, c)];
+            out += '\n';
+        }
+        return out;
+    };
+
+    std::cout << "=== Cliff walking: SARSA vs Q-learning ===\n";
+    std::cout << "(S=start, G=goal, C=cliff, #=greedy path)\n\n";
+    std::cout << "SARSA greedy path (safe, one row back):\n" << trace(sar.greedy_policy);
+    std::cout << "\nQ-learning greedy path (optimal, along the edge):\n" << trace(qln.greedy_policy);
+
+    auto mean_last = [](const std::vector<double>& v, std::size_t k) {
+        double s = 0.0;
+        for (std::size_t i = v.size() - k; i < v.size(); ++i) s += v[i];
+        return s / static_cast<double>(k);
+    };
+    std::cout << "\nmean return over last 50 episodes:\n";
+    std::cout << "  SARSA      = " << mean_last(sar.episode_returns, 50) << '\n';
+    std::cout << "  Q-learning = " << mean_last(qln.episode_returns, 50) << '\n';
+
+    // Figure: smoothed learning curves for both algorithms.
+    auto smooth = [](const std::vector<double>& r, int w) {
+        std::vector<double> y;
+        for (std::size_t e = 0; e < r.size(); ++e) {
+            int    lo = static_cast<int>(e) - w + 1;
+            if (lo < 0) lo = 0;
+            double sum = 0.0;
+            for (int k = lo; k <= static_cast<int>(e); ++k) sum += r[k];
+            y.push_back(sum / static_cast<double>(static_cast<int>(e) - lo + 1));
+        }
+        return y;
+    };
+    std::vector<double> ex;
+    for (std::size_t e = 0; e < params.episodes; ++e) ex.push_back(static_cast<double>(e + 1));
+    std::vector<double> ys = smooth(sar.episode_returns, 10), yq = smooth(qln.episode_returns, 10);
+    RPlot               p = RPlot::create();
+    p.line(ex, ys, "SARSA", {22, 163, 74}, 2.0);
+    p.line(ex, yq, "Q-learning", {220, 38, 38}, 2.0);
+    p.legend({"SARSA (on-policy)", "Q-learning (off-policy)"}, {{22, 163, 74}, {220, 38, 38}});
+    p.save_svg("build/org/sarsa_cliff.svg");
+    std::cout << "\nwrote build/org/sarsa_cliff.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sarsa_analysis.cpp <<'CPP'
+<<sarsa-includes>>
+
+int main() {
+<<sarsa-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sarsa_analysis.cpp -o build/org/sarsa_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sarsa_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cliff walking: SARSA vs Q-learning ===
+(S=start, G=goal, C=cliff, #=greedy path)
+
+SARSA greedy path (safe, one row back):
+  .##########.
+  ##........##
+  #..........#
+  SCCCCCCCCCCG
+
+Q-learning greedy path (optimal, along the edge):
+  ............
+  ............
+  ############
+  SCCCCCCCCCCG
+
+mean return over last 50 episodes:
+  SARSA      = -23.16
+  Q-learning = -48.16
+#+end_example
+
+The two greedy routes differ exactly as theory predicts. Q-learning's path runs
+straight along the row directly above the cliff -- the shortest safe corridor,
+optimal for an agent that will act greedily at test time. SARSA's path keeps an
+extra row of clearance before descending to the goal: because its on-policy
+target feels the \(-100\) penalty of the occasional exploratory step off the
+edge, it values edge cells lower and routes around them. On the learning curves
+this inverts the usual ranking: *during training*, with exploration on, SARSA
+earns the higher average return (it rarely falls), while Q-learning's edge-hugging
+policy suffers periodic \(-100\) plunges.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/sarsa_cliff.svg]]
+
+* Which should you use?
+
+If the policy will ultimately be executed *greedily* (no exploration at
+deployment), Q-learning's optimal path is what you want, and its off-policy nature
+lets it learn from logged or replayed experience. If the agent must *keep
+exploring while it acts* -- a robot that cannot afford a catastrophic move even
+during learning -- SARSA's on-policy caution is safer. As \(\varepsilon\to0\) the
+two coincide: with no exploration the on-policy and off-policy targets are the
+same, and both recover the optimal greedy policy. SARSA also generalizes
+smoothly to *Expected SARSA* (average over next actions instead of a sample) and
+to eligibility traces (SARSA(\(\lambda\))).
+
+* Complexity
+
+Like Q-learning, SARSA costs \(O(|A|)\) per step for the \(\varepsilon\)-greedy
+choice and the update, \(O(|S|\,|A|)\) memory for the table, and a total of
+\(O(\text{episodes}\times\text{steps}\times|A|)\). The only structural difference
+is one extra action sampled per step -- the "next action" that makes it
+on-policy.

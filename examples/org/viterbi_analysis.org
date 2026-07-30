@@ -1,0 +1,236 @@
+#+title: The Viterbi Algorithm: Decoding the Hidden State Path
+#+subtitle: A literate C++ study of maximum-likelihood decoding in hidden Markov models with =datamunge='s =algorithms::viterbi=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A hidden Markov model watches a process it cannot see directly: a hidden state
+evolves as a Markov chain, and at each step emits one observable symbol. Given
+only the symbols, what was the single most likely sequence of hidden states?
+Enumerating all \(N^T\) paths is hopeless, but the answer factorizes: the best
+path ending in a given state at time \(t\) extends exactly one best path ending
+at time \(t-1\). The *Viterbi algorithm* (Viterbi 1967) exploits this with
+dynamic programming, computing the optimal path in \(O(T N^2)\) time by carrying
+one running maximum per state and a table of back-pointers. This report
+implements it in =datamunge='s C++ =algorithms::viterbi= and presents it as a
+literate program: every number and figure below is produced by a single compiled
+binary. We work the canonical "healthy/fever from symptoms" model by hand and
+reproduce it exactly, then decode a longer symptom stream and draw the recovered
+state path against the observations. All arithmetic is carried in log space, so
+a product of hundreds of small probabilities never underflows.
+#+end_abstract
+
+* Hidden Markov models
+
+A discrete hidden Markov model \(\lambda=(\pi,A,B)\) has \(N\) hidden states and
+\(M\) observation symbols, specified by
+
+- an *initial distribution* \(\pi_i = P(q_1=i)\),
+- a *transition matrix* \(A_{ij} = P(q_{t+1}=j \mid q_t=i)\), and
+- an *emission matrix* \(B_{ik} = P(o_t=k \mid q_t=i)\).
+
+The hidden state path \(Q=q_1\dots q_T\) is a Markov chain; each state emits one
+symbol independently given the state. We observe only \(O=o_1\dots o_T\). The
+*decoding problem* asks for the single most probable path,
+\[
+  Q^\star = \arg\max_{Q} P(Q, O \mid \lambda).
+\]
+Note this is the most likely *whole path*, which is not in general the sequence
+of individually most likely states (that is what forward-backward smoothing
+gives); Viterbi optimizes the joint, respecting the transition structure.
+
+=datamunge= represents the model as a =HiddenMarkovModel= holding =initial=,
+=transition=, and =emission=, and returns a =ViterbiResult= with the decoded
+=states= and the joint =log_probability= of the optimal path.
+
+#+name: viterbi-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hmm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* The dynamic-programming recursion
+
+Define the *Viterbi variable*
+\[
+  \delta_t(i) = \max_{q_1\dots q_{t-1}} \log P(q_1\dots q_{t-1},\, q_t=i,\, o_1\dots o_t \mid \lambda),
+\]
+the log-probability of the best path that ends in state \(i\) having emitted the
+first \(t\) symbols. Because a Markov chain forgets everything but its current
+state, the best way to be in state \(j\) at time \(t\) is to take the best way to
+be in some state \(i\) at time \(t-1\) and step to \(j\):
+\[
+  \delta_t(j) = \Big(\max_i\, \delta_{t-1}(i) + \log A_{ij}\Big) + \log B_{j,o_t},
+  \qquad
+  \delta_1(i) = \log\pi_i + \log B_{i,o_1}.
+\]
+A back-pointer \(\psi_t(j) = \arg\max_i \big(\delta_{t-1}(i)+\log A_{ij}\big)\)
+records which predecessor achieved the maximum. After the forward sweep the best
+final state is \(q_T^\star=\arg\max_i \delta_T(i)\), and the path is recovered by
+following the back-pointers, \(q_{t-1}^\star = \psi_t(q_t^\star)\).
+
+Working with \(\log\)-probabilities turns products into sums (no underflow) and
+turns "maximize a product" into "maximize a sum". Probability zero maps to
+\(-\infty\), which correctly forbids impossible transitions.
+
+** Pseudocode
+
+#+begin_example
+Viterbi(pi, A, B, o[1..T]):
+    for i in states:                       # initialization
+        delta[1][i] = log pi[i] + log B[i][o[1]]
+        psi[1][i]   = 0
+    for t = 2..T:                          # recursion
+        for j in states:
+            (best, arg) = max over i of ( delta[t-1][i] + log A[i][j] )
+            delta[t][j] = best + log B[j][o[t]]
+            psi[t][j]   = arg
+    q*[T] = argmax over i of delta[T][i]    # termination
+    for t = T..2:                          # backtrack
+        q*[t-1] = psi[t][ q*[t] ]
+    return q*, delta[T][ q*[T] ]
+#+end_example
+
+The two nested loops over states inside the loop over time give \(O(T N^2)\)
+time and \(O(T N)\) space for the trellis of \(\delta\) and \(\psi\).
+
+* A worked example: health from symptoms
+
+The textbook model has two hidden states -- =Healthy= (0) and =Fever= (1) -- and
+three observable symptoms -- =normal= (0), =cold= (1), =dizzy= (2):
+\[
+  \pi=\begin{pmatrix}0.6\\0.4\end{pmatrix},\quad
+  A=\begin{pmatrix}0.7&0.3\\0.4&0.6\end{pmatrix},\quad
+  B=\begin{pmatrix}0.5&0.4&0.1\\0.1&0.3&0.6\end{pmatrix}.
+\]
+For the three-day observation =normal, cold, dizzy= the hand computation gives
+the optimal path =Healthy, Healthy, Fever=: the patient probably started well,
+and the =dizzy= symptom (far more likely under =Fever=) finally tips the last day
+over despite the cost of the =Healthy->Fever= transition. We reproduce that,
+then decode a longer stream and plot the recovered path.
+
+#+name: viterbi-run
+#+begin_src c++ :eval no
+    HiddenMarkovModel hmm;
+    hmm.initial    = {0.6, 0.4};
+    hmm.transition = {{0.7, 0.3}, {0.4, 0.6}};
+    hmm.emission   = {{0.5, 0.4, 0.1}, {0.1, 0.3, 0.6}};
+
+    const std::vector<std::string> state_name  = {"Healthy", "Fever"};
+    const std::vector<std::string> symbol_name = {"normal", "cold", "dizzy"};
+
+    // The canonical three-day decode.
+    std::vector<std::size_t> obs3 = {0, 1, 2};
+    ViterbiResult            r3   = viterbi(hmm, obs3);
+    std::cout << "=== Viterbi decode of {normal, cold, dizzy} ===\n";
+    std::cout << "most likely path:";
+    for (std::size_t s : r3.states) std::cout << ' ' << state_name[s];
+    std::cout << "\nlog P(path, obs) = " << r3.log_probability << '\n';
+
+    // A longer symptom stream to decode and plot.
+    std::vector<std::size_t> obs = {0, 0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 1, 0, 0};
+    ViterbiResult            r   = viterbi(hmm, obs);
+    std::cout << "\n=== Decoding a 14-day stream ===\nday  symptom   state\n";
+    for (std::size_t t = 0; t < obs.size(); ++t)
+        std::cout << ' ' << (t < 9 ? " " : "") << (t + 1) << "  " << symbol_name[obs[t]]
+                  << std::string(8 - symbol_name[obs[t]].size(), ' ') << state_name[r.states[t]] << '\n';
+    std::cout << "log P(path, obs) = " << r.log_probability << '\n';
+
+    // Figure: observations (0..2) and the decoded hidden state (0/1) over time.
+    std::vector<double> days, obs_y, state_y;
+    for (std::size_t t = 0; t < obs.size(); ++t) {
+        days.push_back(static_cast<double>(t + 1));
+        obs_y.push_back(static_cast<double>(obs[t]));
+        state_y.push_back(static_cast<double>(r.states[t]));
+    }
+    RPlot p = RPlot::create();
+    p.line(days, obs_y, "symptom (0=normal,1=cold,2=dizzy)", {37, 99, 235}, 2.0);
+    p.points(days, obs_y, "", {37, 99, 235}, 5.0);
+    p.line(days, state_y, "decoded state (0=Healthy,1=Fever)", {220, 38, 38}, 2.5);
+    p.points(days, state_y, "", {220, 38, 38}, 5.0);
+    p.legend({"symptom", "decoded state (0=Healthy,1=Fever)"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/viterbi_path.svg");
+    std::cout << "\nwrote build/org/viterbi_path.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/viterbi_analysis.cpp <<'CPP'
+<<viterbi-includes>>
+
+int main() {
+<<viterbi-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/viterbi_analysis.cpp -o build/org/viterbi_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/viterbi_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Viterbi decode of {normal, cold, dizzy} ===
+most likely path: Healthy Healthy Fever
+log P(path, obs) = -4.19174
+
+=== Decoding a 14-day stream ===
+day  symptom   state
+  1  normal  Healthy
+  2  normal  Healthy
+  3  cold    Healthy
+  4  dizzy   Fever
+  5  dizzy   Fever
+  6  dizzy   Fever
+  7  cold    Healthy
+  8  normal  Healthy
+  9  cold    Healthy
+ 10  dizzy   Fever
+ 11  dizzy   Fever
+ 12  cold    Healthy
+ 13  normal  Healthy
+ 14  normal  Healthy
+log P(path, obs) = -18.1089
+#+end_example
+
+The decoded path tracks the symptoms exactly as intuition suggests: runs of
+=dizzy= (which is six times likelier under =Fever=) pull the hidden state to
+=Fever=, while the model's preference to stay put (\(A_{00}=0.7\), \(A_{11}=0.6\))
+smooths isolated symptoms so a single =cold= among =normal= days does not flip
+the state. The figure shows the observation stream and the recovered state path
+locked together.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/viterbi_path.svg]]
+
+* Why the greedy path is wrong
+
+A tempting shortcut is to pick, at each step, the state that best explains that
+step's symbol alone. That ignores transition costs and can produce a path the
+chain would almost never take -- e.g. flipping =Healthy<->Fever= on every
+alternating symptom. Viterbi instead maximizes the *joint* probability of the
+whole path, so each local choice is made only in the context of the best global
+continuation. This is the same distinction as maximum-a-posteriori sequence
+decoding versus per-symbol marginal decoding; the latter is the job of the
+forward-backward algorithm, whose per-time posteriors can even assign highest
+probability to a path of zero total probability when a transition is forbidden.
+
+* Complexity and applications
+
+The trellis has \(T\) columns of \(N\) cells; filling each cell scans \(N\)
+predecessors, for \(O(T N^2)\) time and \(O(T N)\) memory. Viterbi decoding is
+the workhorse behind convolutional-code and Wi-Fi/cellular channel decoding,
+part-of-speech tagging, gene finding, and speech recognition -- anywhere a clean
+hidden sequence must be recovered from noisy, indirect observations.

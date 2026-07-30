@@ -190,6 +190,38 @@ We fit seasonal ARIMA and exponential smoothing models to simulated time series 
 
 We track a simulated constant-velocity target using every member of =datamunge='s C++ =filter= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
 
+** [[./viterbi_analysis.html][The Viterbi Algorithm: Decoding the Hidden State Path]] ([[./viterbi_analysis.pdf][PDF]])
+/A literate C++ study of maximum-likelihood decoding in hidden Markov models using datamunge/
+
+We decode the most likely hidden-state sequence of a hidden Markov model with =datamunge='s C++ =algorithms::viterbi=, and report it as a literate program: a log-space max-product dynamic program over the trellis recovers the =Healthy/Fever= path behind a symptom stream, reproduced exactly by the compiled binary.
+
+** [[./forward_backward_analysis.html][The Forward-Backward Algorithm: Smoothing Hidden-State Posteriors]] ([[./forward_backward_analysis.pdf][PDF]])
+/A literate C++ study of HMM evaluation and state smoothing using datamunge/
+
+We compute the sequence likelihood and smoothed per-time state posteriors of a hidden Markov model with =datamunge='s C++ =algorithms::forward_backward=, and report it as a literate program: the scaled alpha/beta recursions reproduce the exact brute-force likelihood and give calibrated P(Fever) posteriors that the compiled binary plots against the hard Viterbi decode.
+
+** [[./baum_welch_analysis.html][The Baum-Welch Algorithm: Learning an HMM from Observations]] ([[./baum_welch_analysis.pdf][PDF]])
+/A literate C++ study of EM training for hidden Markov models using datamunge/
+
+We learn a hidden Markov model from unlabeled observation sequences with =datamunge='s C++ =algorithms::baum_welch=, and report it as a literate program: expectation-maximization recovers the switching dynamics and loaded-die bias of an "occasionally dishonest casino" from raw rolls, with a monotonically climbing log-likelihood plotted by the compiled binary.
+
+* Reinforcement Learning
+
+** [[./q_learning_analysis.html][Q-Learning: Off-Policy Temporal-Difference Control]] ([[./q_learning_analysis.pdf][PDF]])
+/A literate C++ study of model-free reinforcement learning using datamunge/
+
+We learn an optimal grid-world policy from sampled experience alone with =datamunge='s C++ =algorithms::q_learning=, and report it as a literate program: the off-policy TD update distills the optimal action-value function into a greedy shortest-path policy, with the learning curve climbing to the optimum plotted by the compiled binary.
+
+** [[./sarsa_analysis.html][SARSA: On-Policy Temporal-Difference Control]] ([[./sarsa_analysis.pdf][PDF]])
+/A literate C++ study of on-policy reinforcement learning and the cliff-walking contrast with Q-learning using datamunge/
+
+We compare on-policy SARSA against off-policy Q-learning on the cliff-walking task with =datamunge='s C++ =algorithms::sarsa=, and report it as a literate program: SARSA learns a visibly safer route than Q-learning because its on-policy target feels the cost of exploration, reproduced exactly by the compiled binary.
+
+** [[./td_learning_analysis.html][TD(0): Temporal-Difference Prediction]] ([[./td_learning_analysis.pdf][PDF]])
+/A literate C++ study of policy evaluation by bootstrapping using datamunge/
+
+We evaluate a fixed policy from experience with =datamunge='s C++ =algorithms::td_prediction=, and report it as a literate program: on Sutton's five-state random walk the bootstrapped TD(0) estimates sweep toward the known true values V(k)=k/6 as episodes accumulate, with the root-mean-square error shrinking as plotted by the compiled binary.
+
 * Bayesian Inference & Sampling
 
 ** [[./bayesian_modeling_analysis.html][Bayesian Modeling: MAP, Hamiltonian Monte Carlo, and the No-U-Turn Sampler]] ([[./bayesian_modeling_analysis.pdf][PDF]])

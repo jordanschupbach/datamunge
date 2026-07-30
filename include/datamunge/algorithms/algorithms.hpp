@@ -46,6 +46,7 @@
 #include <datamunge/algorithms/graph_connectivity.hpp>
 #include <datamunge/algorithms/graph_hard.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
+#include <datamunge/algorithms/hmm.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>
 #include <datamunge/algorithms/index_calculus.hpp>
@@ -120,6 +121,7 @@
 #include <datamunge/algorithms/subsequences.hpp>
 #include <datamunge/algorithms/subset_sum.hpp>
 #include <datamunge/algorithms/substrings.hpp>
+#include <datamunge/algorithms/tabular_rl.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/todd_coxeter.hpp>

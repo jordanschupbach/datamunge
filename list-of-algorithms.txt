@@ -575,3 +575,598 @@ Hybrid Algorithms
     Simulated annealing
     Stochastic tunneling
     [x] Subset sum algorithm  -- datamunge::algorithms::subset_sum (meet-in-the-middle, O(2^(n/2))); report examples/org/subset_sum_analysis.org
+
+
+Computational science
+Further information: Computational science
+Astronomy
+
+    Doomsday algorithm: day of the week
+    various Easter algorithms are used to calculate the day of Easter
+    Zeller's congruence is an algorithm to calculate the day of the week for any Julian or Gregorian calendar date
+
+Bioinformatics
+Further information: Bioinformatics
+See also: Sequence alignment algorithms
+
+    Basic Local Alignment Search Tool also known as BLAST: an algorithm for comparing primary biological sequence information
+    Bloom Filter: probabilistic data structure used to test for the existence of an element within a set. Primarily used in bioinformatics to test for the existence of a k-mer in a sequence or sequences.
+    Kabsch algorithm: calculate the optimal alignment of two sets of points in order to compute the root mean squared deviation between two protein structures.
+    Maximum parsimony (phylogenetics): an algorithm for finding the simplest phylogenetic tree to explain a given character matrix.
+    Sorting by signed reversals: an algorithm for understanding genomic evolution.
+    UPGMA: a distance-based phylogenetic tree construction algorithm.
+    Velvet: a set of algorithms manipulating de Bruijn graphs for genomic sequence assembly
+
+Geoscience
+Further information: Geoscience
+
+    Geohash: a public domain algorithm that encodes a decimal latitude/longitude pair as a hash string
+    Vincenty's formulae: a fast algorithm to calculate the distance between two latitude/longitude points on an ellipsoid
+
+Linguistics
+Further information: Computational linguistics and Natural language processing
+
+    Lesk algorithm: word sense disambiguation
+    Stemming algorithm: a method of reducing words to their stem, base, or root form
+    Sukhotin's algorithm: a statistical classification algorithm for classifying characters in a text as vowels or consonants
+
+Medicine
+Further information: Medical algorithms
+
+    ESC algorithm for the diagnosis of heart failure
+    Manning Criteria for irritable bowel syndrome
+    Pulmonary embolism diagnostic algorithms
+    Texas Medication Algorithm Project
+
+Physics
+Further information: Computational physics
+
+    Constraint algorithm: a class of algorithms for satisfying constraints for bodies that obey Newton's equations of motion
+    Demon algorithm: a Monte Carlo method for efficiently sampling members of a microcanonical ensemble with a given energy
+    Featherstone's algorithm: computes the effects of forces applied to a structure of joints and links
+    Glauber dynamics: a method for simulating the Ising Model on a computer
+    Ground state approximation
+        Variational method
+            Ritz method
+    n-body problems
+        Barnes–Hut simulation: Solves the n-body problem in an approximate way that has the order O(n log n) instead of O(n2) as in a direct-sum simulation.
+        Fast multipole method (FMM): speeds up the calculation of long-ranged forces
+    Rainflow-counting algorithm: Reduces a complex stress history to a count of elementary stress-reversals for use in fatigue analysis
+    Sweep and prune: a broad phase algorithm used during collision detection to limit the number of pairs of solids that need to be checked for collision
+    VEGAS algorithm: a method for reducing error in Monte Carlo simulations
+
+Statistics
+Further information: Computational statistics
+
+    Algorithms for calculating variance: avoiding instability and numerical overflow
+    Approximate counting algorithm: allows counting large number of events in a small register
+    Bayesian statistics
+        Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics
+    Clustering algorithms
+        Average-linkage clustering: a simple agglomerative clustering algorithm
+        Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm
+        Chinese whispers
+        Complete-linkage clustering: a simple agglomerative clustering algorithm
+        DBSCAN: a density based clustering algorithm
+        Expectation-maximization algorithm
+        Fuzzy clustering: a class of clustering algorithms where each point has a degree of belonging to clusters
+            FLAME clustering (Fuzzy clustering by Local Approximation of MEmberships): define clusters in the dense parts of a dataset and perform cluster assignment solely based on the neighborhood relationships among objects
+            Fuzzy c-means
+        k-means clustering: cluster objects based on attributes into partitions
+        k-means++: a variation of this, using modified random seeds
+        k-medoids: similar to k-means, but chooses datapoints or medoids as centers
+        KHOPCA clustering algorithm: a local clustering algorithm, which produces hierarchical multi-hop clusters in static and mobile environments.
+        Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook
+        Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering
+        OPTICS: a density based clustering algorithm with a visual evaluation method
+        Single-linkage clustering: a simple agglomerative clustering algorithm
+        SUBCLU: a subspace clustering algorithm
+        WACA clustering algorithm: a local clustering algorithm with potentially multi-hop structures; for dynamic networks
+        Ward's method: an agglomerative clustering algorithm, extended to more general Lance–Williams algorithms
+    Estimation Theory
+        Expectation-maximization algorithm A class of related algorithms for finding maximum likelihood estimates of parameters in probabilistic models
+            Ordered subset expectation maximization (OSEM): used in medical imaging for positron emission tomography, single-photon emission computed tomography and X-ray computed tomography.
+        Kalman filter: estimate the state of a linear dynamic system from a series of noisy measurements
+        Odds algorithm (Bruss algorithm) Optimal online search for distinguished value in sequential random input
+    False nearest neighbor algorithm (FNN) estimates fractal dimension
+    Hidden Markov model
+        [x] Baum–Welch algorithm: computes maximum likelihood estimates and posterior mode estimates for the parameters of a hidden Markov model  -- datamunge::algorithms::baum_welch (EM re-estimation, scaled forward-backward E-step); report examples/org/baum_welch_analysis.org
+        [x] Forward–backward algorithm: a dynamic programming algorithm for computing the probability of a particular observation sequence  -- datamunge::algorithms::forward_backward (scaled alpha/beta, smoothed posteriors + log-likelihood); report examples/org/forward_backward_analysis.org
+        [x] Viterbi algorithm: find the most likely sequence of hidden states in a hidden Markov model  -- datamunge::algorithms::viterbi (log-space max-product trellis + backtrack); report examples/org/viterbi_analysis.org
+    Partial least squares regression: finds a linear model describing some predicted variables in terms of other observable variables
+    Queuing theory
+        Buzen's algorithm: an algorithm for calculating the normalization constant G(K) in the Gordon–Newell theorem
+    RANSAC (an abbreviation for "RANdom SAmple Consensus"): an iterative method to estimate parameters of a mathematical model from a set of observed data which contains outliers
+    Scoring algorithm: is a form of Newton's method used to solve maximum likelihood equations numerically
+    Yamartino method: calculate an approximation to the standard deviation σθ of wind direction θ during a single pass through the incoming data
+    Ziggurat algorithm: generates random numbers from a non-uniform distribution
+
+Computer science
+Further information: Computer science
+Computer architecture
+Further information: Computer architecture
+
+    Tomasulo algorithm: allows sequential instructions that would normally be stalled due to certain dependencies to execute non-sequentially
+
+Computer graphics
+Further information: Computer graphics
+
+    Binary space partitioning
+    Clipping
+        Line clipping
+            Cohen–Sutherland
+            Cyrus–Beck
+            Fast-clipping
+            Liang–Barsky
+            Nicholl–Lee–Nicholl
+        Polygon clipping
+            Sutherland–Hodgman
+            Vatti
+            Weiler–Atherton
+    Contour lines and Isosurfaces
+        Marching cubes: extract a polygonal mesh of an isosurface from a three-dimensional scalar field (sometimes called voxels)
+        Marching squares: generates contour lines for a two-dimensional scalar field
+        Marching tetrahedrons: an alternative to Marching cubes
+    Discrete Green's theorem: an algorithm for computing double integral over a generalized rectangular domain in constant time. It is a natural extension to the summed area table algorithm
+    Flood fill: fills a connected region of a multi-dimensional array with a specified symbol
+    Global illumination algorithms: Considers direct illumination and reflection from other objects.
+        Ambient occlusion
+        Beam tracing
+        Cone tracing
+        Image-based lighting
+        Metropolis light transport
+        Path tracing
+        Photon mapping
+        Radiosity
+        Ray tracing
+    Hidden-surface removal or visual surface determination
+        Newell's algorithm: eliminate polygon cycles in the depth sorting required in hidden-surface removal
+        Painter's algorithm: detects visible parts of a 3-dimensional scenery
+        Scanline rendering: constructs an image by moving an imaginary line over the image
+        Warnock algorithm
+    Line drawing: graphical algorithm for approximating a line segment on discrete graphical media.
+        Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables)
+        DDA line algorithm: plots points of a 2-dimensional array to form a straight line between specified points
+        Xiaolin Wu's line algorithm: algorithm for line antialiasing.
+    Midpoint circle algorithm: an algorithm used to determine the points needed for drawing a circle
+    Ramer–Douglas–Peucker algorithm: Given a 'curve' composed of line segments to find a curve not too dissimilar but that has fewer points
+    Shading
+        Gouraud shading: an algorithm to simulate the differing effects of light and colour across the surface of an object in 3D computer graphics
+        Phong shading: an algorithm to interpolate surface normal-vectors for surface shading in 3D computer graphics
+    Slerp (spherical linear interpolation): quaternion interpolation for the purpose of animating 3D rotation
+    Summed area table (also known as an integral image): an algorithm for computing the sum of values in a rectangular subset of a grid in constant time
+
+Cryptography
+Further information: Cryptography, Topics in cryptography, and List of cryptographic algorithms
+
+    Asymmetric (public key) encryption:
+        ElGamal
+        Elliptic curve cryptography
+        MAE1
+        NTRUEncrypt
+        RSA
+    Digital signatures (asymmetric authentication):
+        DSA, and its variants:
+            ECDSA and Deterministic ECDSA
+            EdDSA (Ed25519)
+        RSA
+    Cryptographic hash functions (see also the section on message authentication codes):
+        BLAKE
+        MD5 – Note that there is now a method of generating collisions for MD5
+        RIPEMD-160
+        SHA-1 – Note that there is now a method of generating collisions for SHA-1
+        SHA-2 (SHA-224, SHA-256, SHA-384, SHA-512)
+        SHA-3 (SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256)
+        Tiger (TTH), usually used in Tiger tree hashes
+        WHIRLPOOL
+    Cryptographically secure pseudo-random number generators
+        Blum Blum Shub – based on the hardness of factorization
+        Fortuna, intended as an improvement on Yarrow algorithm
+        Linear-feedback shift register (note: many LFSR-based algorithms are weak or have been broken)
+        Yarrow algorithm
+    Key exchange
+        Diffie–Hellman key exchange
+        Elliptic-curve Diffie–Hellman (ECDH)
+    Key derivation functions, often used for password hashing and key stretching
+        Argon2
+        bcrypt
+        PBKDF2
+        scrypt
+    Message authentication codes (symmetric authentication algorithms, which take a key as a parameter):
+        HMAC: keyed-hash message authentication
+        Poly1305
+        SipHash
+    Secret sharing, secret splitting, key splitting, M of N algorithms
+        Blakey's scheme
+        Shamir's secret sharing
+    Symmetric (secret key) encryption:
+        Advanced Encryption Standard (AES), winner of NIST competition, also known as Rijndael
+        Blowfish
+        ChaCha20 updated variant of Salsa20
+        Data Encryption Standard (DES), sometimes DE Algorithm, winner of NBS selection competition, replaced by AES for most purposes
+        IDEA
+        RC4 (cipher)
+        Salsa20
+        Threefish
+        Tiny Encryption Algorithm (TEA)
+        Twofish
+    Post-quantum cryptography
+    Proof-of-work algorithms
+
+Digital logic
+
+    Boolean minimization
+        Espresso heuristic logic minimizer: a fast algorithm for Boolean function minimization
+        Petrick's method: another algorithm for Boolean simplification
+        Quine–McCluskey algorithm: also called as Q-M algorithm, programmable method for simplifying the Boolean equations
+
+Machine learning and statistical classification
+Main article: List of machine learning algorithms
+Further information: Machine learning and Statistical classification
+
+    Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs
+    ALOPEX: a correlation-based machine-learning algorithm
+    Association rule learning: discover interesting relations between variables, used in data mining
+        Apriori algorithm
+        Eclat algorithm
+        FP-growth algorithm
+        One-attribute rule
+        Zero-attribute rule
+    Boosting (meta-algorithm): Use many weak learners to boost effectiveness
+        AdaBoost: adaptive boosting
+        BrownBoost: a boosting algorithm that may be robust to noisy datasets
+        LogitBoost: logistic regression boosting
+        LPBoost: linear programming boosting
+    Bootstrap aggregating (bagging): technique to improve stability and classification accuracy
+    Clustering: a class of unsupervised learning algorithms for grouping and bucketing related input vector
+    Computer Vision
+        Grabcut based on Graph cuts
+    Decision Trees
+        C4.5 algorithm: an extension to ID3
+        ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees
+    k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space
+    Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook
+    Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data
+    Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem
+    Neural Network
+        Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input
+        Hopfield net: a Recurrent neural network in which all connections are symmetric
+        Perceptron: the simplest kind of feedforward neural network: a linear classifier.
+        Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing.
+        Radial basis function network: an artificial neural network that uses radial basis functions as activation functions
+        Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples
+    Random forest: classify using many decision trees
+    Reinforcement learning:
+        [x] Q-learning: learns an action-value function that gives the expected utility of taking a given action in a given state and following a fixed policy thereafter  -- datamunge::algorithms::q_learning (off-policy TD control, epsilon-greedy); report examples/org/q_learning_analysis.org
+        [x] State–Action–Reward–State–Action (SARSA): learn a Markov decision process policy  -- datamunge::algorithms::sarsa (on-policy TD control); report examples/org/sarsa_analysis.org
+        [x] Temporal difference learning  -- datamunge::algorithms::td_prediction (TD(0) policy evaluation by bootstrapping); report examples/org/td_learning_analysis.org
+    Relevance-Vector Machine (RVM): similar to SVM, but provides probabilistic classification
+    Supervised learning: Learning by examples (labelled data-set split into training-set and test-set)
+    Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets
+        Structured SVM: allows training of a classifier for general structured output labels.
+    Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme
+
+Programming language theory
+Further information: Programming language theory
+
+    C3 linearization: an algorithm used primarily to obtain a consistent linearization of a multiple inheritance hierarchy in object-oriented programming
+    Chaitin's algorithm: a bottom-up, graph coloring register allocation algorithm that uses cost/degree as its spill metric
+    Hindley–Milner type inference algorithm
+    Rete algorithm: an efficient pattern matching algorithm for implementing production rule systems
+    Sethi-Ullman algorithm: generates optimal code for arithmetic expressions
+
+Parsing
+Further information: Parsing
+
+    CYK algorithm: an O(n3) algorithm for parsing context-free grammars in Chomsky normal form
+    Earley parser: another O(n3) algorithm for parsing any context-free grammar
+    GLR parser: an algorithm for parsing any context-free grammar by Masaru Tomita. It is tuned for deterministic grammars, on which it performs almost linear time and O(n3) in worst case.[clarification needed]
+    Inside-outside algorithm: an O(n3) algorithm for re-estimating production probabilities in probabilistic context-free grammars
+    Lexical analysis
+    LL parser: a relatively simple linear time parsing algorithm for a limited class of context-free grammars
+    LR parser: A more complex linear time parsing algorithm for a larger class of context-free grammars. Variants:
+        Canonical LR parser
+        LALR (look-ahead LR) parser
+        Operator-precedence parser
+        Simple LR parser
+        Simple precedence parser
+    Packrat parser: a linear time parsing algorithm supporting some context-free grammars and parsing expression grammars
+    Pratt parser
+    Recursive descent parser: a top-down parser suitable for LL(k) grammars
+    Shunting-yard algorithm: converts an infix-notation math expression to postfix
+
+Quantum algorithms
+Further information: Quantum algorithm
+See also: List of quantum algorithms
+
+    Aharonov–Jones–Landau algorithm: quantum algorithm related to approximating the Jones polynomial
+    Amplitude amplification: generalization of Grover's algorithm used to amplify the probability of desired outcomes
+    Bernstein–Vazirani algorithm: determines a hidden bit string encoded in a black-box function
+    BHT algorithm: quantum algorithm for the Collision problem
+    Boson sampling: sampling problem using noninteracting bosons, often discussed in relation to quantum advantage
+    Deutsch–Jozsa algorithm: determines whether a black-box Boolean function is constant or balanced
+    Grover's algorithm: provides a quadratic speedup for unstructured search problems
+    Hadamard test: circuit technique for estimating real or imaginary parts of expectation values
+    Hadamard transform: transform used in many quantum circuits and query algorithms
+    Hamiltonian simulation: simulates the time evolution of quantum systems governed by a Hamiltonian
+    HHL algorithm: quantum algorithm for solving certain systems of linear equations
+    Hidden linear function problem: oracle problem involving a hidden linear function
+    Hidden shift problem: problem of finding a shift relating two functions
+    Hidden subgroup problem: framework for quantum algorithms based on hidden algebraic structure
+    Non-local quantum computation: quantum-information task involving separated parties and nonlocal operations
+    Quantum annealing: optimization approach based on adiabatic evolution or annealing-like quantum dynamics
+    Quantum artificial life: quantum-computing model inspired by artificial life and biological systems
+    Quantum counting algorithm: estimates the number of marked items in a search space
+    Quantum Fourier transform: quantum analogue of the discrete Fourier transform, used in several quantum algorithms
+    Quantum optimization algorithms: family of quantum algorithms for optimization problems
+    Quantum phase estimation algorithm: estimates the phase of an eigenvalue of a unitary operator
+    Quantum singular value transformation: framework for transforming singular values of encoded matrices
+    Quantum sort: quantum algorithmic approach to sorting
+    Quantum walk: quantum analogue of a classical random walk
+    Quantum walk search: search algorithms based on quantum walks
+    Shor's algorithm: provides exponential speedup, relative to currently known non-quantum algorithms, for integer factorization and discrete logarithms
+    Simon's problem: black-box problem with a quantum algorithm that provides a provable exponential speedup over classical randomized algorithms
+    Swap test: estimates the overlap or similarity between quantum states
+    Variational quantum eigensolver: hybrid quantum-classical algorithm for estimating ground-state energies[8][9]
+
+Theory of computation and automata
+Further information: Theory of computation
+
+    Hopcroft's algorithm, Moore's algorithm, and Brzozowski's algorithm: algorithms for minimizing the number of states in a deterministic finite automaton
+    Powerset construction: algorithm to convert nondeterministic automaton to deterministic automaton.
+    Tarski–Kuratowski algorithm: a non-deterministic algorithm which provides an upper bound for the complexity of formulas in the arithmetical hierarchy and analytical hierarchy
+
+Information theory and signal processing
+Main articles: Information theory and Signal processing
+Coding theory
+Further information: Coding theory
+Error detection and correction
+Further information: Error detection and correction
+
+    BCH Codes
+        Berlekamp–Massey algorithm
+        Peterson–Gorenstein–Zierler algorithm
+        Reed–Solomon error correction
+    BCJR algorithm: decoding of error correcting codes defined on trellises (principally convolutional codes)
+    Forward error correction
+    Gray code
+    Hamming codes
+        Hamming(7,4): a Hamming code that encodes 4 bits of data into 7 bits by adding 3 parity bits
+        Hamming distance: sum number of positions which are different
+        Hamming weight (population count): find the number of 1 bits in a binary word
+    Redundancy checks
+        Adler-32
+        Cyclic redundancy check
+        Damm algorithm
+        Fletcher's checksum
+        Longitudinal redundancy check (LRC)
+        Luhn algorithm: a method of validating identification numbers
+        Luhn mod N algorithm: extension of Luhn to non-numeric characters
+        Parity: simple/fast error detection technique
+        Verhoeff algorithm
+
+Lossless compression algorithms
+Main pages: Lossless compression algorithms and List of compression algorithms
+
+    Burrows–Wheeler transform: preprocessing useful for improving lossless compression
+    Context tree weighting
+    Delta encoding: aid to compression of data in which sequential data occurs frequently
+    Dynamic Markov compression: Compression using predictive arithmetic coding
+    Dictionary coders
+        Byte pair encoding (BPE)
+        Deflate
+        Lempel–Ziv
+            LZ77 and LZ78
+            Lempel–Ziv Jeff Bonwick (LZJB)
+            Lempel–Ziv–Markov chain algorithm (LZMA)
+            Lempel–Ziv–Oberhumer (LZO): speed oriented
+            Lempel–Ziv Ross Williams (LZRW)
+            Lempel–Ziv–Stac (LZS)
+            Lempel–Ziv–Storer–Szymanski (LZSS)
+            Lempel–Ziv–Welch (LZW)
+            LZWL: syllable-based variant
+            LZX
+    Entropy encoding: coding scheme that assigns codes to symbols so as to match code lengths with the probabilities of the symbols
+        Arithmetic coding: advanced entropy coding
+            Range encoding: same as arithmetic coding, but looked at in a slightly different way
+        Huffman coding: simple lossless compression taking advantage of relative character frequencies
+            Adaptive Huffman coding: adaptive coding technique based on Huffman coding
+            Package-merge algorithm: Optimizes Huffman coding subject to a length restriction on code strings
+        Shannon–Fano coding
+        Shannon–Fano–Elias coding: precursor to arithmetic encoding[10]
+    Entropy coding with known entropy characteristics
+        Golomb coding: form of entropy coding that is optimal for alphabets following geometric distributions
+        Rice coding: form of entropy coding that is optimal for alphabets following geometric distributions
+        Truncated binary encoding
+        Unary coding: code that represents a number n with n ones followed by a zero
+        Universal codes: encodes positive integers into binary code words
+            Elias delta, gamma, and omega coding
+            Exponential-Golomb coding
+            Fibonacci coding
+            Levenshtein coding
+    Fast Efficient & Lossless Image Compression System (FELICS): a lossless image compression algorithm
+    Incremental encoding: delta encoding applied to sequences of strings
+    Prediction by partial matching (PPM): an adaptive statistical data compression technique based on context modeling and prediction
+    Run-length encoding: lossless data compression taking advantage of strings of repeated characters
+    SEQUITUR algorithm: lossless compression by incremental grammar inference on a string
+
+Lossy compression algorithms
+Main page: Lossy compression algorithms
+
+    3Dc: a lossy data compression algorithm for normal maps
+    Audio and Speech compression
+        A-law algorithm: standard companding algorithm
+        Code-excited linear prediction (CELP): low bit-rate speech compression
+        Linear predictive coding (LPC): lossy compression by representing the spectral envelope of a digital signal of speech in compressed form
+        Mu-law algorithm: standard analog signal compression or companding algorithm
+        Warped Linear Predictive Coding (WLPC)
+    Image compression
+        Block Truncation Coding (BTC): a type of lossy image compression technique for greyscale images
+        Embedded Zerotree Wavelet (EZW)
+        Fast Cosine Transform algorithms (FCT algorithms): computes Discrete Cosine Transform (DCT) efficiently
+        Fractal compression: method used to compress images using fractals
+        Set Partitioning in Hierarchical Trees (SPIHT)
+        Wavelet compression: form of data compression well suited for image compression (sometimes also video compression and audio compression)
+    Transform coding: type of data compression for "natural" data like audio signals or photographic images
+    Vector quantization: technique often used in lossy data compression
+        TurboQuant: online vector quantization algorithm for lossy compression of high-dimensional vectors for LLMs
+    Video compression
+
+Digital signal processing
+Further information: Digital signal processing
+
+    Adaptive-additive algorithm (AA algorithm): find the spatial frequency phase of an observed wave source
+    Discrete Fourier transform: determines the frequencies contained in a (segment of a) signal
+        Bluestein's FFT algorithm
+        Bruun's FFT algorithm
+        Cooley–Tukey FFT algorithm
+        Fast Fourier transform
+        Prime-factor FFT algorithm
+        Rader's FFT algorithm
+    Fast folding algorithm: an efficient algorithm for the detection of approximately periodic events within time series data
+    Gerchberg–Saxton algorithm: Phase retrieval algorithm for optical planes
+    Goertzel algorithm: identify a particular frequency component in a signal. Can be used for DTMF digit decoding.
+    Karplus-Strong string synthesis: physical modelling synthesis to simulate the sound of a hammered or plucked string or some types of percussion
+
+Image processing
+Further information: Digital image processing
+
+    Adaptive histogram equalization: histogram equalization which adapts to local changes in contrast - Contrast Enhancement
+    Blind deconvolution: image de-blurring algorithm when point spread function is unknown.
+    Connected-component labeling: find and label disjoint regions
+    Dithering and half-toning
+        Error diffusion
+        Floyd–Steinberg dithering
+        Ordered dithering
+        Riemersma dithering
+    Elser difference-map algorithm: a search algorithm for general constraint satisfaction problems. Originally used for X-Ray diffraction microscopy
+    Feature detection
+        Canny edge detector: detect a wide range of edges in images
+        Generalised Hough transform
+        Hough transform
+        Marr–Hildreth algorithm: an early edge detection algorithm
+        SIFT (Scale-invariant feature transform): is an algorithm to detect and describe local features in images.
+        SURF (Speeded Up Robust Features): is a robust local feature detector, first presented by Herbert Bay et al. in 2006, that can be used in computer vision tasks like object recognition or 3D reconstruction. It is partly inspired by the SIFT descriptor. The standard version of SURF is several times faster than SIFT and claimed by its authors to be more robust against different image transformations than SIFT.[11][12]
+    Histogram equalization: use histogram to improve image contrast - Contrast Enhancement
+    Richardson–Lucy deconvolution: image de-blurring algorithm
+    Median filtering
+    Seam carving: content-aware image resizing algorithm
+    Segmentation: partition a digital image into two or more regions
+        GrowCut algorithm: an interactive segmentation algorithm
+        Random walker algorithm
+        Region growing
+        Watershed transformation: a class of algorithms based on the watershed analogy
+
+Software engineering
+Further information: Software engineering
+
+    Cache algorithms
+    CHS conversion: converting between disk addressing systems
+    Double dabble: convert binary numbers to BCD
+    Hash function: convert a large, possibly variable-sized amount of data into a small datum, usually a single integer that may serve as an index into an array
+        Fowler–Noll–Vo hash function: fast with low collision rate
+        Pearson hashing: computes 8-bit value only, optimized for 8-bit computers
+        Zobrist hashing: used in the implementation of transposition tables
+    Unicode collation algorithm
+    Xor swap algorithm: swaps the values of two variables without using a buffer
+
+Database algorithms
+Further information: Database
+
+    Algorithms for Recovery and Isolation Exploiting Semantics (ARIES): transaction recovery
+    Join algorithms
+        Block nested loop
+        Hash join
+        Nested loop join
+        Sort-Merge Join
+    The Chase
+
+Distributed systems algorithms
+Further information: Distributed algorithm and Distributed systems
+
+    Clock synchronization
+        Berkeley algorithm
+        Cristian's algorithm
+        Intersection algorithm
+        Marzullo's algorithm
+    Consensus (computer science): agreeing on a single value or history among unreliable processors
+        Chandra–Toueg consensus algorithm
+        Paxos algorithm
+        Raft (computer science)
+    Detection of Process Termination
+        Dijkstra-Scholten algorithm
+        Huang's algorithm
+    Lamport ordering: a partial ordering of events based on the happened-before relation
+    Leader election: a method for dynamically selecting a coordinator
+        Bully algorithm
+    Mutual exclusion
+        Lamport's Distributed Mutual Exclusion Algorithm
+        Naimi-Trehel's log(n) Algorithm
+        Maekawa's Algorithm
+        Raymond's Algorithm
+        Ricart–Agrawala Algorithm
+    Snapshot algorithm: record a consistent global state for an asynchronous system
+        Chandy–Lamport algorithm
+    Vector clocks: generate a partial ordering of events in a distributed system and detect causality violations
+
+Memory allocation and deallocation algorithms
+
+    Buddy memory allocation: an algorithm to allocate memory such with less fragmentation
+    Garbage collectors
+        Cheney's algorithm: an improvement on the Semi-space collector
+        Generational garbage collector: Fast garbage collectors that segregate memory by age
+        Mark-compact algorithm: a combination of the mark-sweep algorithm and Cheney's copying algorithm
+        Mark and sweep
+        Semi-space collector: an early copying collector
+    Reference counting
+
+Networking
+Further information: Network scheduler
+
+    Karn's algorithm: addresses the problem of getting accurate estimates of the round-trip time for messages when using TCP
+    Luleå algorithm: a technique for storing and searching internet routing tables efficiently
+    Network congestion
+        Exponential backoff
+        Nagle's algorithm: improve the efficiency of TCP/IP networks by coalescing packets
+        Truncated binary exponential backoff
+
+Operating systems algorithms
+Further information: Operating systems
+
+    Banker's algorithm: algorithm used for deadlock avoidance
+    Page replacement algorithms: for selecting the victim page under low memory conditions
+        Adaptive replacement cache: better performance than LRU
+        Clock with Adaptive Replacement (CAR): a page replacement algorithm with performance comparable to adaptive replacement cache
+
+Process synchronization
+Further information: Process scheduler and Process synchronization
+
+    Dekker's algorithm
+    Lamport's Bakery algorithm
+    Peterson's algorithm
+
+Scheduling
+Further information: Scheduling (computing)
+
+    Earliest deadline first scheduling
+    Fair-share scheduling
+    Least slack time scheduling
+    List scheduling
+    Multi level feedback queue
+    Rate-monotonic scheduling
+    Round-robin scheduling
+    Shortest job next
+    Shortest remaining time
+    Top-nodes algorithm: resource calendar management
+
+I/O scheduling
+Further information: I/O scheduling
+[icon]	
+This section needs expansion. You can help by adding missing information. (July 2017)
+Disk scheduling
+
+    Elevator algorithm: Disk scheduling algorithm that works like an elevator.
+    Shortest seek first: Disk scheduling algorithm to reduce seek time.
+
+
+
