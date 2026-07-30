@@ -1111,14 +1111,14 @@ Further information: Distributed algorithm and Distributed systems
 
 Memory allocation and deallocation algorithms
 
-    Buddy memory allocation: an algorithm to allocate memory such with less fragmentation
+    [x] Buddy memory allocation: an algorithm to allocate memory such with less fragmentation  -> datamunge::algorithms::BuddyAllocator (buddy_allocator.hpp); report examples/org/buddy_allocator_analysis.org
     Garbage collectors
-        Cheney's algorithm: an improvement on the Semi-space collector
-        Generational garbage collector: Fast garbage collectors that segregate memory by age
-        Mark-compact algorithm: a combination of the mark-sweep algorithm and Cheney's copying algorithm
-        Mark and sweep
+    [x] Cheney's algorithm: an improvement on the Semi-space collector  -> datamunge::algorithms::cheney_copy (cheney.hpp); report examples/org/cheney_analysis.org
+    [x] Generational garbage collector: Fast garbage collectors that segregate memory by age  -> datamunge::algorithms::minor_gc (generational.hpp); report examples/org/generational_analysis.org
+    [x] Mark-compact algorithm: a combination of the mark-sweep algorithm and Cheney's copying algorithm  -> datamunge::algorithms::mark_compact (mark_compact.hpp); report examples/org/mark_compact_analysis.org
+    [x] Mark and sweep  -> datamunge::algorithms::mark_sweep (mark_sweep.hpp); report examples/org/mark_sweep_analysis.org
         Semi-space collector: an early copying collector
-    Reference counting
+    [x] Reference counting  -> datamunge::algorithms::reference_counting_collect (reference_counting.hpp); report examples/org/reference_counting_analysis.org
 
 Networking
 Further information: Network scheduler

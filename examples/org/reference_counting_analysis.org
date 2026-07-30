@@ -1,0 +1,152 @@
+#+title: Reference-Counting Garbage Collection
+#+subtitle: A literate C++ study of incremental reclamation (and its cyclic blind spot), using =datamunge='s =algorithms::reference_counting_collect=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Reference counting stores, with every object, a count of the references pointing at it. The
+count rises when a reference is created and falls when one is dropped; when it hits zero the
+object is freed *immediately*, and its own references are dropped in turn, cascading. This
+gives prompt, incremental reclamation with no stop-the-world pause -- the collection strategy
+of Python (as a backstop to its cycle collector), Swift, and C++ =shared_ptr=. Its famous flaw:
+it *cannot collect cycles*, because mutually-referencing objects keep each other's counts above
+zero even when the whole group is unreachable. This report runs it with =datamunge='s
+=algorithms::reference_counting_collect= as a literate program: every number and figure comes
+from one compiled binary.
+#+end_abstract
+
+* Counts, cascades, and cycles
+
+Each object's count is the number of references to it from roots and from other objects.
+Dropping the last reference (count \(\to 0\)) frees the object and decrements the counts of
+everything it pointed to, which may cascade to free a whole acyclic subgraph at once. But
+consider two objects \(a\) and \(b\) with \(a\to b\) and \(b\to a\): even if no root reaches
+them, each holds a reference to the other, so both counts stay at 1 forever. Reference counting
+leaks such cycles; a *tracing* collector (mark-sweep) reclaims them because it defines liveness
+by *reachability*, not by counts.
+
+#+name: rc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/reference_counting.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+On creating a reference to o:   count[o] += 1
+On dropping a reference to o:   count[o] -= 1
+                                if count[o] == 0:
+                                    for each reference o -> c: drop it (recurse)
+                                    free(o)
+# unreachable cycles never reach count 0 -> leaked
+#+end_example
+
+* A worked example
+
+The same eight-object heap as the mark-sweep report: root chain \(0\to1\to2\); an unreachable
+cycle \(3\leftrightarrow4\); isolated garbage 5; and an unreachable chain \(6\to7\).
+
+#+name: rc-run
+#+begin_src c++ :eval no
+    ObjectGraph g;
+    g.num_objects = 8;
+    g.refs  = {{1}, {2}, {}, {4}, {3}, {}, {7}, {}};
+    g.roots = {0};
+
+    auto r = reference_counting_collect(g);
+    std::cout << "=== Reference counting an 8-object heap ===\n";
+    std::cout << "object : refcount : status\n";
+    std::vector<double> cx, cy, fx, fy, lx, ly;
+    for (int i = 0; i < g.num_objects; ++i) {
+        bool leaked = false; for (int l : r.leaked) if (l == i) leaked = true;
+        const char* status = r.freed[i] ? "freed (count->0)" : (leaked ? "LEAKED (cycle)" : "live");
+        std::cout << "  " << i << "    :    " << r.refcount[i] << "    : " << status << "\n";
+        if (r.freed[i]) { fx.push_back(i); fy.push_back(r.refcount[i]); }
+        else if (leaked) { lx.push_back(i); ly.push_back(r.refcount[i]); }
+        else { cx.push_back(i); cy.push_back(r.refcount[i]); }
+    }
+    std::cout << "\nreclaimed by reference counting: ";
+    for (int i = 0; i < g.num_objects; ++i) if (r.freed[i]) std::cout << i << " ";
+    std::cout << "\nleaked (unreachable cycle): ";
+    for (int l : r.leaked) std::cout << l << " ";
+    std::cout << "\n  (a tracing collector would additionally reclaim the leaked cycle)\n";
+
+    RPlot p = RPlot::create();
+    p.points(cx, cy, "live", {22, 163, 74}, 7.0);
+    p.points(fx, fy, "freed", {37, 99, 235}, 7.0);
+    p.points(lx, ly, "leaked cycle", {220, 38, 38}, 7.0);
+    p.legend({"live", "freed", "leaked cycle"}, {{22, 163, 74}, {37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/reference_counting.svg");
+    std::cout << "\nwrote build/org/reference_counting.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/reference_counting_analysis.cpp <<'CPP'
+<<rc-includes>>
+
+int main() {
+<<rc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/reference_counting_analysis.cpp -o build/org/reference_counting_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/reference_counting_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Reference counting an 8-object heap ===
+object : refcount : status
+  0    :    1    : live
+  1    :    1    : live
+  2    :    1    : live
+  3    :    1    : LEAKED (cycle)
+  4    :    1    : LEAKED (cycle)
+  5    :    0    : freed (count->0)
+  6    :    0    : freed (count->0)
+  7    :    1    : freed (count->0)
+
+reclaimed by reference counting: 5 6 7
+leaked (unreachable cycle): 3 4
+  (a tracing collector would additionally reclaim the leaked cycle)
+#+end_example
+
+Reference counting promptly reclaims the acyclic garbage -- object 5 (count 0), then the chain
+\(6\to7\) as the cascade drops 7's count -- but the cycle \(3\leftrightarrow4\) *leaks*: each
+object's count stays at 1, held up by the other, so neither is ever freed even though no root
+reaches them. The live chain \(0,1,2\) is correctly retained. This is the defining trade-off:
+incremental, pause-free reclamation, but blind to cycles -- which is why real reference-counted
+runtimes pair it with an occasional tracing pass to sweep up cyclic garbage.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/reference_counting.svg]]
+
+* Character and relatives
+
+Reference counting's strengths are *promptness* (objects die the instant they become
+unreachable) and *locality* (no global heap scan), making it attractive for real-time and
+memory-constrained systems. Its costs are the per-reference count updates (expensive under
+concurrency, needing atomics) and the cycle leak. Python's =gc= module and PHP add a cycle
+collector on top; C++ breaks cycles manually with =weak_ptr=. Tracing collectors (mark-sweep,
+copying, generational -- companion reports) make the opposite trade: batched pauses, but
+complete collection including cycles.
+
+* Complexity
+
+Each reference update is \(O(1)\); a collection cascade is \(O(\text{objects freed})\). No
+whole-heap scan is needed -- except the separate cycle-detection pass that a complete
+implementation must add.

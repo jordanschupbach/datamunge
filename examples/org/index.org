@@ -889,6 +889,38 @@ We minimize DFAs with =datamunge='s C++ =algorithms::hopcroft_minimize=, and rep
 
 We minimize DFAs with =datamunge='s C++ =algorithms::brzozowski_minimize=, and report it as a literate program: reverse-determinize-reverse-determinize reaches the unique minimal DFA with no equivalence computation, tracking the state count through each stage, as the compiled binary shows.
 
+* Memory Management & Garbage Collection
+
+** [[./buddy_allocator_analysis.html][Buddy Memory Allocation]] ([[./buddy_allocator_analysis.pdf][PDF]])
+/A literate C++ study of power-of-two allocation using datamunge/
+
+We allocate memory with =datamunge='s C++ =algorithms::BuddyAllocator=, and report it as a literate program: rounding requests to power-of-two blocks with O(log n) split and buddy-coalesce keeps external fragmentation low at the cost of internal waste, as the compiled binary measures.
+
+** [[./reference_counting_analysis.html][Reference-Counting Garbage Collection]] ([[./reference_counting_analysis.pdf][PDF]])
+/A literate C++ study of incremental reclamation using datamunge/
+
+We collect garbage with =datamunge='s C++ =algorithms::reference_counting_collect=, and report it as a literate program: freeing objects the instant their count cascades to zero is prompt and pause-free but leaks unreachable cycles, as the compiled binary demonstrates against a tracing collector.
+
+** [[./mark_sweep_analysis.html][Mark-and-Sweep Garbage Collection]] ([[./mark_sweep_analysis.pdf][PDF]])
+/A literate C++ study of the original tracing collector using datamunge/
+
+We collect garbage with =datamunge='s C++ =algorithms::mark_sweep=, and report it as a literate program: marking everything reachable from the roots then sweeping the rest reclaims all garbage including cycles, as the compiled binary shows.
+
+** [[./mark_compact_analysis.html][Mark-Compact Garbage Collection]] ([[./mark_compact_analysis.pdf][PDF]])
+/A literate C++ study of compacting collection using datamunge/
+
+We collect and defragment with =datamunge='s C++ =algorithms::mark_compact=, and report it as a literate program: sliding survivors together and rewriting references removes fragmentation with no extra semispace, as the compiled binary's relocation map shows.
+
+** [[./cheney_analysis.html][Cheney's Algorithm: Copying Garbage Collection]] ([[./cheney_analysis.pdf][PDF]])
+/A literate C++ study of stackless semi-space copying using datamunge/
+
+We collect garbage with =datamunge='s C++ =algorithms::cheney_copy=, and report it as a literate program: a scan pointer chasing an allocation pointer copies live objects breadth-first with no auxiliary stack, touching only live data, as the compiled binary shows.
+
+** [[./generational_analysis.html][Generational Garbage Collection]] ([[./generational_analysis.pdf][PDF]])
+/A literate C++ study of collecting the young using datamunge/
+
+We run a minor collection with =datamunge='s C++ =algorithms::minor_gc=, and report it as a literate program: tracing only the young generation (with a remembered set for old-to-young pointers) scans far fewer objects than a full-heap trace, as the compiled binary quantifies.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

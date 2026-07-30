@@ -1,0 +1,141 @@
+#+title: Generational Garbage Collection
+#+subtitle: A literate C++ study of collecting the young, using =datamunge='s =algorithms::minor_gc=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *generational hypothesis* -- "most objects die young" -- is the empirical bedrock of modern
+garbage collectors. Objects are segregated by age: newly allocated objects live in a *young*
+generation collected often, and the few that survive are *promoted* to an *old* generation
+collected rarely. A *minor* collection traces only the young generation, so it scans a fraction
+of the heap. The one wrinkle is *old-to-young* references, which keep young objects alive
+without a root path; these are tracked in a *remembered set* and used as extra roots. This
+report runs a minor collection with =datamunge='s =algorithms::minor_gc= as a literate program:
+every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Young, old, and the remembered set
+
+Because young objects die quickly, collecting only them reclaims most garbage for a fraction of
+the work of a full-heap trace. A minor collection treats the old generation as live boundaries:
+it starts from the roots *and* from the *remembered set* -- the old objects known to hold
+references into the young generation -- and traces only within the young generation, promoting
+survivors to old and freeing the rest. The remembered set is maintained by a *write barrier*
+that records whenever a program stores a young pointer into an old object. Without it, a young
+object reachable only through an old one would be wrongly collected.
+
+#+name: gn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MinorGC(heap, generation):
+    roots' = young objects reachable from roots
+           + young objects referenced by old objects (the remembered set)
+    trace within the young generation from roots' (stop at old objects)
+    promote reached young objects to the old generation
+    free the unreached young objects
+    # old generation is not scanned -> far less work than a full collection
+#+end_example
+
+* A worked example
+
+A long-lived old chain \(0\to1\to2\to3\) (all old) and a small nursery: the program roots hold
+the old object 0 and the young object 4. The old object 3 references the young object 5 -- an
+old-to-young pointer that the *remembered set* must capture -- while young object 6 is garbage. A
+minor collection should scan only the young objects.
+
+#+name: gn-run
+#+begin_src c++ :eval no
+    ObjectGraph g;
+    g.num_objects = 7;
+    g.refs  = {{1}, {2}, {3}, {5}, {}, {}, {}};   // old chain 0->1->2->3, old 3 -> young 5; root young 4; young 6 garbage
+    g.roots = {0, 4};
+    std::vector<int> gen = {1, 1, 1, 1, 0, 0, 0};  // 0..3 old, 4..6 young
+
+    auto r = minor_gc(g, gen);
+    std::cout << "=== Minor (young-generation) collection ===\n";
+    std::cout << "objects scanned by minor GC: " << r.minor_scanned
+              << "   (a full-heap trace would scan " << r.full_scanned << ")\n";
+    std::cout << "young survivors promoted to old: ";
+    for (int i = 0; i < g.num_objects; ++i) if (r.promoted[i]) std::cout << i << " ";
+    std::cout << "\nyoung objects freed: ";
+    for (int f : r.young_freed) std::cout << f << " ";
+    std::cout << "\nremembered set (old objects pointing into young): ";
+    for (int rs : r.remembered_set) std::cout << rs << " ";
+    if (r.remembered_set.empty()) std::cout << "(none in this heap)";
+    std::cout << "\n";
+
+    std::vector<double>      heights = {(double)r.minor_scanned, (double)r.full_scanned};
+    std::vector<std::string> labels  = {"minor GC", "full GC"};
+    RPlot p = RPlot::barplot(heights, labels, "objects scanned", {37, 99, 235});
+    p.save_svg("build/org/generational.svg");
+    std::cout << "\nwrote build/org/generational.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/generational_analysis.cpp <<'CPP'
+<<gn-includes>>
+
+int main() {
+<<gn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/generational_analysis.cpp -o build/org/generational_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/generational_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Minor (young-generation) collection ===
+objects scanned by minor GC: 2   (a full-heap trace would scan 6)
+young survivors promoted to old: 4 5
+young objects freed: 6
+remembered set (old objects pointing into young): 3
+#+end_example
+
+The minor collection scans only the two young objects it can reach, where a full-heap trace
+would visit six -- the old chain plus the young survivors. Young object 4 is kept by a direct
+root; young object 5 is kept only through the *remembered set* (old object 3 points at it), which
+is exactly why the write barrier records old-to-young pointers -- without it, 5 would be wrongly
+freed. Both survivors are promoted to the old generation and the young garbage (6) is reclaimed,
+all without tracing the old generation. This is the generational payoff: minor collections are
+cheap and frequent because the young generation is small and mostly dead, while the expensive
+full collection runs only occasionally.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/generational.svg]]
+
+* Character and relatives
+
+Generational collection is the dominant design in production runtimes (the HotSpot JVM, .NET,
+V8, modern Ruby), almost always pairing a *copying* collector for the young generation (few
+survivors, so copying is cheap -- Cheney, companion report) with a *mark-sweep* or *mark-compact*
+collector for the old one (companion reports). Its correctness hinges on the write barrier and
+remembered set; its effectiveness on how well the workload obeys the generational hypothesis.
+*Region-based* and *pause-time-targeted* collectors (G1, ZGC, Shenandoah) generalize the age
+partition into many regions collected by predicted payoff.
+
+* Complexity
+
+A minor collection is \(O(Y)\) in the size of the *young* generation (plus the remembered-set
+roots), independent of the old generation's size -- the source of its speed. A full collection
+remains \(O(H)\) over the whole heap.

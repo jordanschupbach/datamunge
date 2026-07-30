@@ -1,0 +1,152 @@
+#+title: Buddy Memory Allocation
+#+subtitle: A literate C++ study of power-of-two allocation, using =datamunge='s =algorithms::BuddyAllocator=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *buddy system* manages a power-of-two memory arena as blocks whose sizes are also powers of
+two. A request is rounded up to the nearest block size; if no free block of that size exists, a
+larger one is split in half repeatedly, each half the *buddy* of the other. On free, a block is
+merged with its buddy whenever the buddy is also free -- and recursively -- so external
+fragmentation is kept low and both operations run in \(O(\log n)\). The catch is *internal*
+fragmentation: rounding each request up to a power of two can waste nearly half the block. This
+report drives =datamunge='s =algorithms::BuddyAllocator= as a literate program: every number
+and figure comes from one compiled binary.
+#+end_abstract
+
+* Split, allocate, coalesce
+
+Blocks of order \(k\) have size \(\texttt{min\_block}\cdot 2^k\). To satisfy a request, the
+allocator picks the smallest order that fits and, if no free block of that order exists, takes a
+larger free block and splits it, adding the two halves (buddies) to the next-smaller free list,
+repeating until it reaches the wanted order. On free, the key trick is that a block's buddy
+address is simply its own address with the size bit *flipped* (\(\text{buddy}=\text{addr}\oplus
+\text{size}\)); if that buddy is free, the two coalesce into one block of the next order, and the
+merge cascades upward. This keeps free memory consolidated so large requests can still be met.
+
+#+name: ba-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/buddy_allocator.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+allocate(size):
+    ord = smallest order with block_size >= size
+    find the smallest free block of order >= ord
+    while its order > ord: split it; keep one half, free the buddy
+    return that block
+
+free(block, size):
+    ord = order_for_size(size)
+    while buddy(block, ord) is free:      # buddy = block XOR block_size
+        remove buddy from the free list; block = min(block, buddy); ord += 1
+    add block to the free list of order ord
+#+end_example
+
+* A worked example
+
+A 1024-byte arena with 32-byte minimum blocks (orders 0..5). We make three allocations, inspect
+the internal fragmentation, then free them and watch the buddies coalesce back to one full block.
+
+#+name: ba-run
+#+begin_src c++ :eval no
+    BuddyAllocator ba(1024, 32);
+    std::cout << "=== Buddy allocator: 1024-byte arena, 32-byte min block (orders 0..5) ===\n";
+
+    struct Req { const char* name; int size; };
+    std::vector<Req> reqs = {{"A", 30}, {"B", 100}, {"C", 50}};
+    std::vector<int> offs;
+    for (auto& q : reqs) {
+        int off = ba.allocate(q.size);
+        offs.push_back(off);
+        std::cout << "  allocate " << q.name << " (" << q.size << " B) -> offset " << off
+                  << ", block " << ba.block_size(ba.order_for_size(q.size)) << " B\n";
+    }
+    std::cout << "allocated " << ba.allocated_bytes() << " B for " << ba.requested_bytes()
+              << " B requested -> internal fragmentation " << ba.internal_fragmentation() << " B\n";
+
+    auto before = ba.free_blocks_per_order();
+    std::cout << "free blocks per order (after allocations): ";
+    for (int c : before) std::cout << c << " ";
+    std::cout << "\n";
+
+    for (std::size_t i = 0; i < offs.size(); ++i) ba.free(offs[i]);
+    auto after = ba.free_blocks_per_order();
+    std::cout << "free blocks per order (after freeing all): ";
+    for (int c : after) std::cout << c << " ";
+    std::cout << "  -> one block at order " << ba.max_order() << " (fully coalesced)\n";
+
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    for (std::size_t o = 0; o < before.size(); ++o) {
+        heights.push_back(before[o]);
+        labels.push_back(std::to_string(ba.block_size((int)o)) + "B");
+    }
+    RPlot p = RPlot::barplot(heights, labels, "free blocks per order (mid-run)", {37, 99, 235});
+    p.save_svg("build/org/buddy_allocator.svg");
+    std::cout << "\nwrote build/org/buddy_allocator.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/buddy_allocator_analysis.cpp <<'CPP'
+<<ba-includes>>
+
+int main() {
+<<ba-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/buddy_allocator_analysis.cpp -o build/org/buddy_allocator_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/buddy_allocator_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Buddy allocator: 1024-byte arena, 32-byte min block (orders 0..5) ===
+  allocate A (30 B) -> offset 0, block 32 B
+  allocate B (100 B) -> offset 128, block 128 B
+  allocate C (50 B) -> offset 64, block 64 B
+allocated 224 B for 180 B requested -> internal fragmentation 44 B
+free blocks per order (after allocations): 1 0 0 1 1 0
+free blocks per order (after freeing all): 0 0 0 0 0 1   -> one block at order 5 (fully coalesced)
+#+end_example
+
+Each request rounds up to a power of two -- 30 to 32, 100 to 128, 50 to 64 -- so the allocator
+hands out 224 bytes for 180 requested, an internal fragmentation of 44 bytes (about 20%). The
+mid-run free-list histogram shows the leftover blocks the splits produced at several orders.
+After all three are freed, the buddies coalesce all the way back to a single order-5 block
+spanning the whole arena, ready for the next large request -- the self-healing property that
+keeps external fragmentation in check.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/buddy_allocator.svg]]
+
+* Character and relatives
+
+The buddy system is prized for \(O(\log n)\) allocation and free with cheap, bit-twiddling
+coalescing, which is why the *Linux kernel* uses it for physical page allocation. Its weakness is
+internal fragmentation from power-of-two rounding, mitigated in practice by *slab*/*slub*
+allocators that carve buddy-provided pages into fixed-size object caches. Alternatives trade off
+differently: *segregated free lists* reduce rounding waste, and general-purpose allocators
+(dlmalloc, jemalloc, tcmalloc) combine several strategies by size class.
+
+* Complexity
+
+Allocation and free are each \(O(\log n)\) in the number of orders (arena size over minimum
+block) -- a bounded number of splits or merges -- with \(O(1)\) buddy computation per step.

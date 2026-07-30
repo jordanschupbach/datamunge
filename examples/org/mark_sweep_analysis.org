@@ -1,0 +1,131 @@
+#+title: Mark-and-Sweep Garbage Collection
+#+subtitle: A literate C++ study of the original tracing collector, using =datamunge='s =algorithms::mark_sweep=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Mark-and-sweep (McCarthy, 1960) is the original *tracing* garbage collector. In the *mark*
+phase it walks the object graph from the *roots* -- the pointers the program holds directly --
+marking every reachable object live. In the *sweep* phase it scans the whole heap and reclaims
+everything unmarked. Because liveness is defined by reachability, mark-and-sweep collects
+*cyclic* garbage that reference counting cannot, at the price of a stop-the-world pass over the
+heap. This report runs it with =datamunge='s =algorithms::mark_sweep= as a literate program:
+every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Reachability is liveness
+
+An object is *live* iff a chain of references reaches it from some root; anything else is
+unreachable and therefore garbage, whatever its internal pointers say. The mark phase is just a
+graph traversal (depth- or breadth-first) from the roots, setting a mark bit on each object it
+reaches. The sweep phase then linearly scans the heap: marked objects survive (and are
+unmarked for next time), unmarked objects are returned to the free list. Crucially, a cycle of
+mutually-referencing objects that no root reaches is never marked, so mark-and-sweep reclaims
+it -- the decisive advantage over reference counting.
+
+#+name: ms-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/mark_sweep.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MarkSweep(heap, roots):
+    # mark
+    for each root r: if not marked(r): mark(r); traverse its references
+    # sweep
+    for each object o in the heap:
+        if marked(o): unmark(o)          # survives, reset for next cycle
+        else: reclaim(o)                 # garbage
+#+end_example
+
+* A worked example
+
+A heap of eight objects: the root reaches a chain \(0\to1\to2\); objects \(3\leftrightarrow4\)
+form an unreachable cycle; object 5 is isolated garbage; and \(6\to7\) is an unreachable chain.
+
+#+name: ms-run
+#+begin_src c++ :eval no
+    ObjectGraph g;
+    g.num_objects = 8;
+    g.refs  = {{1}, {2}, {}, {4}, {3}, {}, {7}, {}};  // 0->1->2 live; 3<->4 cycle; 6->7 chain
+    g.roots = {0};
+
+    auto r = mark_sweep(g);
+    std::cout << "=== Mark-and-sweep of an 8-object heap ===\n";
+    std::cout << "live objects (" << r.live.size() << "): ";
+    for (int i : r.live) std::cout << i << " ";
+    std::cout << "\nreclaimed (" << r.freed.size() << "): ";
+    for (int i : r.freed) std::cout << i << " ";
+    std::cout << "\n  (the unreachable cycle 3<->4 is collected -- reference counting could not)\n";
+
+    // Figure: mark bit per object (1 = live, 0 = garbage).
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    for (int i = 0; i < g.num_objects; ++i) {
+        heights.push_back(r.marked[i] ? 1.0 : 0.0);
+        labels.push_back("obj " + std::to_string(i));
+    }
+    RPlot p = RPlot::barplot(heights, labels, "marked live (1) / garbage (0)", {37, 99, 235});
+    p.save_svg("build/org/mark_sweep.svg");
+    std::cout << "\nwrote build/org/mark_sweep.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/mark_sweep_analysis.cpp <<'CPP'
+<<ms-includes>>
+
+int main() {
+<<ms-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/mark_sweep_analysis.cpp -o build/org/mark_sweep_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/mark_sweep_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Mark-and-sweep of an 8-object heap ===
+live objects (3): 0 1 2
+reclaimed (5): 3 4 5 6 7
+  (the unreachable cycle 3<->4 is collected -- reference counting could not)
+#+end_example
+
+Only the three objects reachable from the root survive; everything else is reclaimed --
+including the \(3\leftrightarrow4\) cycle, which has nonzero reference counts yet is unreachable.
+The mark bitmap in the figure is exactly the sweep's decision: bars at 1 are retained, bars at 0
+are freed. This reachability-based definition of liveness is what lets tracing collectors handle
+arbitrary object topologies that defeat reference counting.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/mark_sweep.svg]]
+
+* Character and relatives
+
+Mark-and-sweep is simple and complete but *non-moving*: survivors stay put, so the heap
+fragments over time and allocation must search a free list. *Mark-compact* (companion report)
+adds a compaction phase to remove fragmentation; *copying* collectors like Cheney's (companion
+report) evacuate live objects to a fresh space instead. Its stop-the-world pause motivated
+*incremental* and *concurrent* tri-color variants, and *generational* collection (companion
+report) reduces how often the full sweep must run.
+
+* Complexity
+
+Mark is \(O(L)\) in the number of live objects (a graph traversal); sweep is \(O(H)\) over the
+whole heap. Total \(O(H)\), with a pause proportional to heap size.
