@@ -1,0 +1,148 @@
+#+title: BLAST: Seed-and-Extend Local Sequence Alignment
+#+subtitle: A literate C++ study of heuristic local alignment, using =datamunge='s =algorithms::blast_search=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Searching a query sequence against a huge database with full Smith-Waterman alignment is far too
+slow, so *BLAST* (Basic Local Alignment Search Tool; Altschul et al., 1990) uses a *seed-and-
+extend* heuristic. It finds short exact matches -- *words*, or *seeds* -- shared by the query and
+the database, then *extends* each outward without gaps, accumulating a match/mismatch score and
+keeping the highest-scoring segment (stopping when the score falls too far below its peak, the
+*X-drop* rule). The surviving *high-scoring segment pairs* (HSPs) are the reported local
+alignments. This report runs it with =datamunge='s =algorithms::blast_search= as a literate
+program: every number and figure comes from one compiled binary.
+#+end_abstract
+
+* Seed, extend, drop
+
+BLAST trades guaranteed optimality for speed by only aligning where a short exact match already
+hints at similarity. It builds a lookup table of the database's length-\(w\) words; for each
+query word it retrieves the database positions sharing it -- these *seeds* lie on a *diagonal*
+(constant \(\text{db} - \text{query}\) offset). Each seed is then *extended* in both directions,
+scoring \(+\)match / \(-\)mismatch, and the algorithm remembers the best cumulative score seen;
+when the running score drops more than \(X\) below that best, extension stops (the *X-drop*
+heuristic), and the maximal segment is emitted as an HSP. Because it never gaps and never
+revisits low-similarity regions, BLAST is orders of magnitude faster than exhaustive alignment
+while finding almost all biologically meaningful matches.
+
+#+name: bl-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/blast.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+BLAST(query, db, word_size w):
+    index db: word -> positions
+    for each query word at position qi:
+        for each db position di sharing that word (a seed on diagonal di-qi):
+            extend left and right, scoring +match/-mismatch, tracking the best score
+            stop a direction when score < best - Xdrop           # X-drop
+            emit the maximal segment as an HSP
+    report HSPs sorted by score
+#+end_example
+
+* A worked example
+
+A query shares an 11-base run with a database sequence. With a word size of 4 we seed on that
+run and extend it into one dominant HSP.
+
+#+name: bl-run
+#+begin_src c++ :eval no
+    std::string db    = "ACGTACGTGGATCCAATTGGCCAAGGTT";
+    std::string query = "TTGGATCCAATT";           // shares "TGGATCCAATT" with db
+    const int   w     = 4;
+
+    auto hsps = blast_search(query, db, w);
+    std::cout << "=== BLAST seed-and-extend (word size " << w << ") ===\n";
+    std::cout << "query: " << query << "\ndb:    " << db << "\n\n";
+    std::cout << "high-scoring segment pairs:\n";
+    for (const auto& h : hsps)
+        std::cout << "  score " << h.score << ": query[" << h.query_start << ".."
+                  << (h.query_start + h.length) << ") aligns db[" << h.db_start << ".."
+                  << (h.db_start + h.length) << ")  (" << query.substr(h.query_start, h.length) << ")\n";
+
+    // Dot plot: every shared w-mer as a point (db position, query position).
+    std::vector<double> dx, dy;
+    for (int qi = 0; qi + w <= (int)query.size(); ++qi)
+        for (int di = 0; di + w <= (int)db.size(); ++di)
+            if (query.substr(qi, w) == db.substr(di, w)) { dx.push_back(di); dy.push_back(qi); }
+
+    RPlot p = RPlot::create();
+    p.points(dx, dy, "shared word", {150, 150, 150}, 4.0);
+    if (!hsps.empty()) {   // highlight the top HSP's diagonal span
+        const auto& h = hsps[0];
+        p.segments({(double)h.db_start}, {(double)h.query_start},
+                   {(double)(h.db_start + h.length)}, {(double)(h.query_start + h.length)},
+                   {220, 38, 38}, 2.5);
+    }
+    p.legend({"shared word", "top HSP"}, {{150, 150, 150}, {220, 38, 38}});
+    p.save_svg("build/org/blast.svg");
+    std::cout << "\nwrote build/org/blast.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/blast_analysis.cpp <<'CPP'
+<<bl-includes>>
+
+int main() {
+<<bl-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/blast_analysis.cpp -o build/org/blast_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/blast_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== BLAST seed-and-extend (word size 4) ===
+query: TTGGATCCAATT
+db:    ACGTACGTGGATCCAATTGGCCAAGGTT
+
+high-scoring segment pairs:
+  score 22: query[1..12) aligns db[7..18)  (TGGATCCAATT)
+  score 8: query[0..4) aligns db[16..20)  (TTGG)
+  score 8: query[6..10) aligns db[20..24)  (CCAA)
+#+end_example
+
+The dominant match falls along one diagonal -- the tell-tale signature of a contiguous
+alignment -- and extending the seeds along it recovers the full 11-base match as the top HSP,
+scoring 22 (all matches at \(+2\)). The dot plot shows exactly this: a straight diagonal run of
+shared-word points, with the top HSP drawn over it, standing out against the scattered incidental
+word matches elsewhere. Seed-and-extend found the alignment without ever running a full dynamic
+program.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/blast.svg]]
+
+* Character and relatives
+
+BLAST revolutionized bioinformatics by making database-scale search practical, and its
+descendants (PSI-BLAST for iterative profile search, BLAT and megablast for speed, DIAMOND for
+protein search over billions of reads) dominate sequence analysis. The trade-off is heuristic: a
+too-long word or too-aggressive X-drop can miss weak-but-real homologies that Smith-Waterman
+would find. The word size tunes sensitivity against speed, and the statistical theory of HSP
+scores (the Karlin-Altschul E-value) turns raw scores into significance estimates.
+
+* Complexity
+
+Roughly \(O(|\text{query}| + |\text{db}| + \text{hits}\cdot L)\): linear indexing and scanning,
+plus extension work proportional to the number of seeds and the length \(L\) they extend --
+far below the \(O(|\text{query}|\cdot|\text{db}|)\) of exhaustive alignment.

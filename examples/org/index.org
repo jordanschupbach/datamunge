@@ -953,6 +953,38 @@ We limit request rates with =datamunge='s C++ =algorithms::TokenBucket=, and rep
 
 We smooth traffic with =datamunge='s C++ =algorithms::LeakyBucket=, and report it as a literate program: a level that fills on arrival and drains at a constant rate paces output to a steady rate with no burst reward, the dual of the token bucket, as the compiled binary shows.
 
+* Bioinformatics
+
+** [[./bloom_filter_analysis.html][The Bloom Filter: A Probabilistic Set]] ([[./bloom_filter_analysis.pdf][PDF]])
+/A literate C++ study of approximate membership using datamunge/
+
+We test set membership with =datamunge='s C++ =algorithms::BloomFilter=, and report it as a literate program: a bit array with k hashes gives no false negatives and a tunable false-positive rate that tracks the (1-e^{-kn/m})^k theory, as the compiled binary measures.
+
+** [[./blast_analysis.html][BLAST: Seed-and-Extend Local Sequence Alignment]] ([[./blast_analysis.pdf][PDF]])
+/A literate C++ study of heuristic local alignment using datamunge/
+
+We align sequences with =datamunge='s C++ =algorithms::blast_search=, and report it as a literate program: finding short exact word seeds and extending them with an X-drop rule recovers the shared region without a full dynamic program, as the compiled binary's dot plot shows.
+
+** [[./upgma_analysis.html][UPGMA: Building a Phylogenetic Tree from Distances]] ([[./upgma_analysis.pdf][PDF]])
+/A literate C++ study of agglomerative clustering using datamunge/
+
+We build a phylogenetic tree with =datamunge='s C++ =algorithms::upgma=, and report it as a literate program: repeatedly joining the closest clusters at half their distance yields an ultrametric dendrogram (a molecular clock), as the compiled binary renders.
+
+** [[./maximum_parsimony_analysis.html][Maximum Parsimony: Scoring Trees with Fitch's Algorithm]] ([[./maximum_parsimony_analysis.pdf][PDF]])
+/A literate C++ study of small-parsimony scoring using datamunge/
+
+We score phylogenetic trees with =datamunge='s C++ =algorithms::fitch_small_parsimony=, and report it as a literate program: intersecting or unioning children's state sets counts the minimum evolutionary changes, picking the most parsimonious of the possible topologies, as the compiled binary shows.
+
+** [[./signed_reversals_analysis.html][Sorting by Signed Reversals: Genome Rearrangement Distance]] ([[./signed_reversals_analysis.pdf][PDF]])
+/A literate C++ study of reversal distance using datamunge/
+
+We compute genome rearrangement distance with =datamunge='s C++ =algorithms::sort_by_reversals=, and report it as a literate program: a BFS over signed permutations finds the exact minimum reversal sequence sorting one gene order into another, with breakpoints falling to zero, as the compiled binary traces.
+
+** [[./velvet_analysis.html][Velvet: Genome Assembly with de Bruijn Graphs]] ([[./velvet_analysis.pdf][PDF]])
+/A literate C++ study of short-read assembly using datamunge/
+
+We assemble sequences with =datamunge='s C++ =algorithms::velvet_assemble=, and report it as a literate program: chopping reads into k-mers and finding an Eulerian path through the de Bruijn graph reconstructs the original sequence, as the compiled binary confirms across k.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

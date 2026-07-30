@@ -1,0 +1,161 @@
+#+title: UPGMA: Building a Phylogenetic Tree from Distances
+#+subtitle: A literate C++ study of agglomerative clustering, using =datamunge='s =algorithms::upgma=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+UPGMA (Unweighted Pair Group Method with Arithmetic mean) builds a rooted evolutionary tree
+from a matrix of pairwise distances by *agglomerative clustering*: repeatedly join the two
+closest clusters, place their common ancestor at half their distance, and update distances to
+the merged cluster as a size-weighted average. The result is an *ultrametric* tree -- every leaf
+is the same distance from the root -- corresponding to a constant-rate molecular clock. This
+report runs it with =datamunge='s =algorithms::upgma= as a literate program: every number and
+figure comes from one compiled binary. We cluster five taxa and draw the dendrogram.
+#+end_abstract
+
+* Join the closest, average the rest
+
+Start with each taxon as its own cluster. At each step find the pair \((i,j)\) of clusters with
+the smallest distance \(d_{ij}\), create a new internal node at *height* \(d_{ij}/2\), and
+replace \(i\) and \(j\) by the merged cluster, whose distance to any other cluster \(k\) is the
+size-weighted average
+\[
+  d_{(ij),k} = \frac{|i|\,d_{ik} + |j|\,d_{jk}}{|i|+|j|} .
+\]
+Repeating \(n-1\) times yields a rooted binary tree. Placing each node at half the join distance
+makes the tree *ultrametric*, which is exactly correct when evolutionary distance accumulates at
+a constant rate; where rates vary, neighbor-joining (which does not assume a clock) is preferred.
+
+#+name: up-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/upgma.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <functional>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+UPGMA(distance matrix):
+    clusters = one per taxon
+    while more than one cluster:
+        (i, j) = closest pair
+        new node at height d(i,j) / 2
+        d(new, k) = (|i| d(i,k) + |j| d(j,k)) / (|i| + |j|)  for all other k
+        replace i, j by the new cluster
+#+end_example
+
+* A worked example
+
+Five taxa A..E with the classic distance matrix. We build the tree, list the merges with their
+heights, and render the dendrogram.
+
+#+name: up-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<double>> d = {{0, 17, 21, 31, 23},
+                                          {17, 0, 30, 34, 21},
+                                          {21, 30, 0, 28, 39},
+                                          {31, 34, 28, 0, 43},
+                                          {23, 21, 39, 43, 0}};
+    const char* names = "ABCDE";
+    auto u = upgma(d);
+
+    std::cout << "=== UPGMA on 5 taxa (A..E) ===\n";
+    std::cout << "merges (child + child -> node, at height):\n";
+    auto label = [&](int id) { return id < 5 ? std::string(1, names[id]) : "N" + std::to_string(id); };
+    for (const auto& m : u.merges)
+        std::cout << "  " << label(m.left) << " + " << label(m.right) << " -> N" << m.id
+                  << " at height " << m.height << "\n";
+
+    // Dendrogram layout: leaf x-positions by in-order traversal; internal x = midpoint.
+    std::map<int, std::pair<int, int>> ch;
+    std::map<int, double>              height;
+    for (const auto& m : u.merges) { ch[m.id] = {m.left, m.right}; height[m.id] = m.height; }
+    int root = u.merges.back().id;
+    std::map<int, double> xpos;
+    int                   leaf_counter = 0;
+    std::function<double(int)> layout = [&](int node) -> double {
+        if (!ch.count(node)) { double x = leaf_counter++; xpos[node] = x; return x; }
+        double xl = layout(ch[node].first), xr = layout(ch[node].second);
+        double x  = (xl + xr) / 2.0; xpos[node] = x; return x;
+    };
+    layout(root);
+
+    RPlot p = RPlot::create();
+    std::function<void(int)> draw = [&](int node) {
+        if (!ch.count(node)) return;
+        int cl = ch[node].first, cr = ch[node].second;
+        double H = height[node];
+        double hl = ch.count(cl) ? height[cl] : 0.0, hr = ch.count(cr) ? height[cr] : 0.0;
+        p.segments({xpos[cl]}, {hl}, {xpos[cl]}, {H}, {37, 99, 235}, 2.0);   // vertical to left child
+        p.segments({xpos[cr]}, {hr}, {xpos[cr]}, {H}, {37, 99, 235}, 2.0);   // vertical to right child
+        p.segments({xpos[cl]}, {H}, {xpos[cr]}, {H}, {37, 99, 235}, 2.0);    // horizontal join
+        draw(cl); draw(cr);
+    };
+    draw(root);
+    // Label leaves along the baseline.
+    for (int i = 0; i < 5; ++i) p.text(xpos[i], -1.0, std::string(1, names[i]), {17, 24, 39}, 14.0);
+    p.save_svg("build/org/upgma.svg");
+    std::cout << "\nwrote build/org/upgma.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/upgma_analysis.cpp <<'CPP'
+<<up-includes>>
+
+int main() {
+<<up-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/upgma_analysis.cpp -o build/org/upgma_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/upgma_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== UPGMA on 5 taxa (A..E) ===
+merges (child + child -> node, at height):
+  A + B -> N5 at height 8.5
+  E + N5 -> N6 at height 11
+  C + D -> N7 at height 14
+  N6 + N7 -> N8 at height 16.5
+#+end_example
+
+The closest taxa A and B (distance 17) join first at height 8.5, then the algorithm folds in the
+remaining taxa by the size-weighted average rule, ending at the root. The dendrogram makes the
+inferred relationships and divergence times visible: branch heights are evolutionary distances,
+and because every leaf reaches the same top height, the tree is ultrametric -- the molecular-clock
+assumption baked into UPGMA. Taxa that cluster low share a recent common ancestor; those joined
+only near the root are the most diverged.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/upgma.svg]]
+
+* Character and relatives
+
+UPGMA is simple and fast and gives a rooted, dated tree directly, which is why it still appears
+in quick clustering and in hierarchical clustering outside biology. Its Achilles' heel is the
+*constant-rate assumption*: if lineages evolve at different speeds, the ultrametric tree can be
+wrong (the "long-branch" problem). *Neighbor-joining* relaxes this by minimizing total branch
+length without assuming a clock, and *maximum parsimony* (companion report) and maximum
+likelihood score trees on the character data directly rather than on summarized distances.
+
+* Complexity
+
+\(O(n^3)\) in the naive form (an \(O(n^2)\) closest-pair search over \(n-1\) merges); optimized
+implementations with priority queues reach \(O(n^2\log n)\), and \(O(n^2)\) is achievable.

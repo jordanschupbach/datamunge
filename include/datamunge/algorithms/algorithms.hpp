@@ -23,7 +23,9 @@
 #include <datamunge/algorithms/branch_and_bound.hpp>
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
+#include <datamunge/algorithms/bloom_filter.hpp>
 #include <datamunge/algorithms/bakery.hpp>
+#include <datamunge/algorithms/blast.hpp>
 #include <datamunge/algorithms/banker.hpp>
 #include <datamunge/algorithms/bernstein_vazirani.hpp>
 #include <datamunge/algorithms/bully_election.hpp>
@@ -121,6 +123,7 @@
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/mark_compact.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
+#include <datamunge/algorithms/maximum_parsimony.hpp>
 #include <datamunge/algorithms/mark_sweep.hpp>
 #include <datamunge/algorithms/memetic.hpp>
 #include <datamunge/algorithms/merge.hpp>
@@ -152,6 +155,7 @@
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/sobel.hpp>
+#include <datamunge/algorithms/signed_reversals.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
@@ -216,6 +220,7 @@
 #include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
 #include <datamunge/algorithms/tricubic_interpolation.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
+#include <datamunge/algorithms/upgma.hpp>
 #include <datamunge/algorithms/token_bucket.hpp>
 #include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
@@ -225,6 +230,7 @@
 #include <datamunge/algorithms/z_algorithm.hpp>
 #include <datamunge/algorithms/ziggurat.hpp>
 #include <datamunge/algorithms/vector_clock.hpp>
+#include <datamunge/algorithms/velvet.hpp>
 #include <datamunge/algorithms/vincenty.hpp>
 #include <datamunge/algorithms/zeller.hpp>
 #include <datamunge/algorithms/zobrist_hashing.hpp>
