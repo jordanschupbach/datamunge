@@ -1,0 +1,153 @@
+#+title: Adler-32: A Fast Running-Sum Checksum
+#+subtitle: A literate C++ study of the zlib Adler-32 checksum, using =datamunge='s =algorithms::adler32=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Adler-32 (Mark Adler, 1995; the checksum of zlib and the PNG/zlib stream) trades a
+little of a CRC's error-detection strength for speed: it maintains two running sums
+modulo the prime 65521 and packs them into 32 bits. The first sum is just the byte
+total; the second accumulates the running first sum, making the checksum *position
+sensitive* -- unlike a plain additive checksum, it notices when bytes are reordered.
+This report implements it in =datamunge='s C++ =algorithms::adler32= as a literate
+program: every number and figure comes from one compiled binary. We verify the
+reference value for "Wikipedia", confirm it detects single-byte corruptions, and show
+it catching a transposition that a naive byte-sum misses.
+#+end_abstract
+
+* Two running sums modulo a prime
+
+Initialize \(A=1, B=0\). For each byte \(x\): \(A \leftarrow (A + x)\bmod 65521\) and
+\(B \leftarrow (B + A)\bmod 65521\). The checksum is \((B \ll 16)\mid A\). Because \(A\)
+is the running byte total and \(B\) is the running total *of* \(A\), \(B\) weights each
+byte by how many bytes follow it -- so swapping two different bytes changes \(B\).
+The modulus 65521 is the largest prime below \(2^{16}\), chosen to spread the sums and
+avoid the systematic weaknesses of a power-of-two modulus.
+
+#+name: adler-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/checksums.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// A naive position-insensitive additive checksum, for contrast.
+static std::uint32_t byte_sum(const std::string& s) {
+    std::uint32_t t = 0;
+    for (unsigned char c : s) t += c;
+    return t;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Adler32(bytes):
+    A = 1;  B = 0
+    for each byte x:
+        A = (A + x) mod 65521
+        B = (B + A) mod 65521
+    return (B << 16) | A
+#+end_example
+
+* A worked example
+
+We verify the reference value, count detection of single-byte corruptions, and
+compare Adler-32 with a plain byte-sum on a transposition (reordering two bytes).
+
+#+name: adler-run
+#+begin_src c++ :eval no
+    std::cout << std::hex << std::uppercase;
+    std::cout << "=== Adler-32 ===\nadler32(\"Wikipedia\") = 0x" << adler32("Wikipedia")
+              << "  (reference 0x11E60398)\n"
+              << std::dec << std::nouppercase;
+
+    std::string msg = "abracadabra";
+    std::uint32_t a0 = adler32(msg);
+    std::size_t   detected = 0;
+    for (std::size_t i = 0; i < msg.size(); ++i)
+        for (int b = 0; b < 8; ++b) {
+            std::string m = msg;
+            m[i] ^= static_cast<char>(1u << b);
+            if (adler32(m) != a0) ++detected;
+        }
+    std::cout << "single-bit corruptions of \"" << msg << "\" detected: " << detected << " / " << msg.size() * 8
+              << '\n';
+
+    // Transposition: swap two distinct adjacent bytes.
+    std::string orig = "ABCD", swapped = "ABDC";  // swap C and D
+    std::cout << "\ntransposition test (\"ABCD\" vs \"ABDC\"):\n";
+    std::cout << "  plain byte-sum: " << byte_sum(orig) << " vs " << byte_sum(swapped)
+              << (byte_sum(orig) == byte_sum(swapped) ? "  (MISSED)\n" : "  (caught)\n");
+    std::cout << "  Adler-32:       " << adler32(orig) << " vs " << adler32(swapped)
+              << (adler32(orig) == adler32(swapped) ? "  (MISSED)\n" : "  (caught)\n");
+
+    RPlot p = RPlot::barplot(
+        {static_cast<double>(byte_sum(orig)), static_cast<double>(byte_sum(swapped)),
+         static_cast<double>(adler32(orig) & 0xffff), static_cast<double>(adler32(swapped) & 0xffff)},
+        {"sum ABCD", "sum ABDC", "Adler ABCD", "Adler ABDC"}, "checksum (low 16 bits)", {37, 99, 235});
+    p.save_svg("build/org/adler32_transposition.svg");
+    std::cout << "\nwrote build/org/adler32_transposition.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/adler32_analysis.cpp <<'CPP'
+<<adler-includes>>
+
+int main() {
+<<adler-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/adler32_analysis.cpp -o build/org/adler32_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/adler32_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Adler-32 ===
+adler32("Wikipedia") = 0x11E60398  (reference 0x11E60398)
+single-bit corruptions of "abracadabra" detected: 88 / 88
+
+transposition test ("ABCD" vs "ABDC"):
+  plain byte-sum: 266 vs 266  (MISSED)
+  Adler-32:       43516171 vs 43581707  (caught)
+#+end_example
+
+Adler-32 reproduces the reference value, detects every single-bit corruption of the
+test message, and -- crucially -- *catches the transposition* "ABCD"->"ABDC" that a
+plain byte-sum cannot see: the two strings have identical byte totals but different
+Adler checksums, because the second running sum \(B\) weights bytes by position. The
+bar chart makes the contrast visible: the plain-sum bars are equal, the Adler bars are
+not.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/adler32_transposition.svg]]
+
+* Trade-offs
+
+Adler-32 is faster than CRC-32 (adds and a periodic modulo, no per-bit loop) and is
+position-sensitive, but it is *weaker*, especially on *short* messages, where the sums
+do not have room to spread and many corruptions can collide; this is a documented
+limitation for inputs of a few hundred bytes. It is best as a fast integrity check on
+substantial data streams (its role in zlib), with CRC-32 preferred where stronger
+guarantees are needed and a cryptographic MAC where an adversary is in the picture.
+
+* Complexity
+
+\(O(n)\) time with a couple of additions per byte and only two 32-bit accumulators;
+the modulo can be deferred and applied every 5552 bytes (the NMAX optimization) to
+avoid overflow while amortizing the division.

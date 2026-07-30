@@ -1,0 +1,146 @@
+#+title: Fletcher's Checksum
+#+subtitle: A literate C++ study of the Fletcher-16 checksum, using =datamunge='s =algorithms::fletcher16=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Fletcher's checksum (Fletcher 1982) sits between a weak plain sum and an expensive
+CRC: it keeps two running sums -- one of the data, one of that running sum -- so it is
+*position sensitive* like Adler-32 but uses a smaller modulus (255 for Fletcher-16)
+and no division-heavy prime. It catches all single-byte errors and most reorderings
+at a cost of a couple of additions per byte. This report implements Fletcher-16 in
+=datamunge='s C++ =algorithms::fletcher16= as a literate program: every number and
+figure comes from one compiled binary. We verify the reference value for "abcde",
+confirm single-bit detection, and show it catching a transposition a plain sum misses.
+#+end_abstract
+
+* Two sums, small modulus
+
+Initialize \(s_1=0, s_2=0\). For each byte \(x\): \(s_1\leftarrow(s_1+x)\bmod 255\),
+\(s_2\leftarrow(s_2+s_1)\bmod 255\). The 16-bit checksum is \((s_2\ll 8)\mid s_1\).
+As in Adler-32, \(s_2\) accumulates the running \(s_1\), so each byte is weighted by its
+position and a reordering changes the result. Fletcher uses modulus 255 (or 65535 for
+Fletcher-32), which keeps the arithmetic in one-byte lanes and avoids Adler's prime
+modulo, trading a little error-detection uniformity for speed and simplicity.
+
+#+name: fletcher-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/checksums.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::uint32_t byte_sum(const std::string& s) {
+    std::uint32_t t = 0;
+    for (unsigned char c : s) t += c;
+    return t;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Fletcher16(bytes):
+    s1 = 0;  s2 = 0
+    for each byte x:
+        s1 = (s1 + x) mod 255
+        s2 = (s2 + s1) mod 255
+    return (s2 << 8) | s1
+#+end_example
+
+* A worked example
+
+#+name: fletcher-run
+#+begin_src c++ :eval no
+    std::cout << std::hex << std::uppercase;
+    std::cout << "=== Fletcher-16 ===\nfletcher16(\"abcde\") = 0x" << fletcher16("abcde")
+              << "  (reference 0xC8F0)\n"
+              << std::dec << std::nouppercase;
+
+    std::string msg = "abracadabra";
+    std::uint16_t f0 = fletcher16(msg);
+    std::size_t   detected = 0;
+    for (std::size_t i = 0; i < msg.size(); ++i)
+        for (int b = 0; b < 8; ++b) {
+            std::string m = msg;
+            m[i] ^= static_cast<char>(1u << b);
+            if (fletcher16(m) != f0) ++detected;
+        }
+    std::cout << "single-bit corruptions of \"" << msg << "\" detected: " << detected << " / " << msg.size() * 8
+              << '\n';
+
+    std::string orig = "ABCD", swapped = "ABDC";
+    std::cout << "\ntransposition test (\"ABCD\" vs \"ABDC\"):\n";
+    std::cout << "  plain byte-sum: " << byte_sum(orig) << " vs " << byte_sum(swapped)
+              << (byte_sum(orig) == byte_sum(swapped) ? "  (MISSED)\n" : "  (caught)\n");
+    std::cout << "  Fletcher-16:    " << fletcher16(orig) << " vs " << fletcher16(swapped)
+              << (fletcher16(orig) == fletcher16(swapped) ? "  (MISSED)\n" : "  (caught)\n");
+
+    RPlot p = RPlot::barplot(
+        {static_cast<double>(byte_sum(orig)), static_cast<double>(byte_sum(swapped)),
+         static_cast<double>(fletcher16(orig)), static_cast<double>(fletcher16(swapped))},
+        {"sum ABCD", "sum ABDC", "Fletcher ABCD", "Fletcher ABDC"}, "checksum", {22, 163, 74});
+    p.save_svg("build/org/fletcher_transposition.svg");
+    std::cout << "\nwrote build/org/fletcher_transposition.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fletcher_analysis.cpp <<'CPP'
+<<fletcher-includes>>
+
+int main() {
+<<fletcher-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fletcher_analysis.cpp -o build/org/fletcher_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fletcher_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fletcher-16 ===
+fletcher16("abcde") = 0xC8F0  (reference 0xC8F0)
+single-bit corruptions of "abracadabra" detected: 88 / 88
+
+transposition test ("ABCD" vs "ABDC"):
+  plain byte-sum: 266 vs 266  (MISSED)
+  Fletcher-16:    38411 vs 38667  (caught)
+#+end_example
+
+Fletcher-16 reproduces its reference value, detects every single-bit corruption of the
+test message, and catches the "ABCD"->"ABDC" transposition that leaves a plain
+byte-sum unchanged -- the position sensitivity that its second running sum provides.
+Like Adler-32 it is a fast, position-aware checksum; the bar chart shows the plain-sum
+bars equal while the Fletcher bars differ.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fletcher_transposition.svg]]
+
+* Fletcher versus Adler versus CRC
+
+The three form a ladder. A *plain sum* is fastest and weakest (blind to reordering).
+*Fletcher* adds a second running sum for position sensitivity with byte-lane
+arithmetic (modulus 255). *Adler-32* is similar but uses the prime modulus 65521 for
+better spreading. *CRC* is strongest -- guaranteed burst detection -- but costs more.
+Fletcher's known quirk is that the value 255 is congruent to 0 modulo 255, so bytes
+that are 0 versus 255 can alias; production code handles the ones'-complement details.
+None of the three is cryptographic.
+
+* Complexity
+
+\(O(n)\) time, two byte-wide accumulators, and (with periodic reduction) very few
+divisions -- the reason Fletcher is popular in low-overhead protocols.

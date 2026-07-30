@@ -931,19 +931,19 @@ Further information: Error detection and correction
     Forward error correction
     Gray code
     Hamming codes
-        Hamming(7,4): a Hamming code that encodes 4 bits of data into 7 bits by adding 3 parity bits
+        [x] Hamming(7,4): a Hamming code that encodes 4 bits of data into 7 bits by adding 3 parity bits -- datamunge::algorithms::hamming74_encode / hamming74_decode (SEC via syndrome); report examples/org/hamming_code_analysis.org
         Hamming distance: sum number of positions which are different
         Hamming weight (population count): find the number of 1 bits in a binary word
     Redundancy checks
-        Adler-32
-        Cyclic redundancy check
+        [x] Adler-32 -- datamunge::algorithms::adler32; report examples/org/adler32_analysis.org
+        [x] Cyclic redundancy check -- datamunge::algorithms::crc32 (reflected IEEE 802.3); report examples/org/crc32_analysis.org
         Damm algorithm
-        Fletcher's checksum
+        [x] Fletcher's checksum -- datamunge::algorithms::fletcher16; report examples/org/fletcher_analysis.org
         Longitudinal redundancy check (LRC)
-        Luhn algorithm: a method of validating identification numbers
+        [x] Luhn algorithm: a method of validating identification numbers -- datamunge::algorithms::luhn_validate / luhn_check_digit; report examples/org/luhn_analysis.org
         Luhn mod N algorithm: extension of Luhn to non-numeric characters
         Parity: simple/fast error detection technique
-        Verhoeff algorithm
+        [x] Verhoeff algorithm -- datamunge::algorithms::verhoeff_validate / verhoeff_check_digit (dihedral D5); report examples/org/verhoeff_analysis.org
 
 Lossless compression algorithms
 Main pages: Lossless compression algorithms and List of compression algorithms

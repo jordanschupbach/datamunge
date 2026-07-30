@@ -571,6 +571,38 @@ We rasterize a line with =datamunge='s C++ =algorithms::bresenham_line=, and rep
 
 We recolor a connected region with =datamunge='s C++ =algorithms::flood_fill=, and report it as a literate program: an iterative DFS over same-valued neighbors fills exactly the connected component of the seed and leaves a disconnected same-colored region untouched -- as the compiled binary shows.
 
+* Error Detection & Correction
+
+** [[./hamming_code_analysis.html][The Hamming(7,4) Code: Single-Error Correction]] ([[./hamming_code_analysis.pdf][PDF]])
+/A literate C++ study of Hamming's error-correcting code using datamunge/
+
+We correct single-bit errors with =datamunge='s C++ =algorithms::hamming74_encode= / =hamming74_decode=, and report it as a literate program: three parity bits placed at power-of-two positions make the decode syndrome equal the flipped bit's position, so every one of the seven single-bit corruptions is located and corrected -- as the compiled binary shows.
+
+** [[./crc32_analysis.html][CRC-32: Cyclic Redundancy Check]] ([[./crc32_analysis.pdf][PDF]])
+/A literate C++ study of polynomial checksums using datamunge/
+
+We compute polynomial-remainder checksums with =datamunge='s C++ =algorithms::crc32=, and report it as a literate program: it reproduces the standard 0xCBF43926 check value, detects every single-bit corruption, and one flipped input bit avalanches into ~16 of 32 output bits -- as the compiled binary measures.
+
+** [[./adler32_analysis.html][Adler-32: A Fast Running-Sum Checksum]] ([[./adler32_analysis.pdf][PDF]])
+/A literate C++ study of the zlib Adler-32 checksum using datamunge/
+
+We compute the zlib Adler-32 with =datamunge='s C++ =algorithms::adler32=, and report it as a literate program: two running sums modulo 65521 make it position-sensitive, catching a byte transposition that a plain sum misses, while reproducing the reference 0x11E60398 -- as the compiled binary shows.
+
+** [[./fletcher_analysis.html][Fletcher's Checksum]] ([[./fletcher_analysis.pdf][PDF]])
+/A literate C++ study of the Fletcher-16 checksum using datamunge/
+
+We compute Fletcher-16 with =datamunge='s C++ =algorithms::fletcher16=, and report it as a literate program: a two-running-sum checksum (modulus 255) that is position-sensitive like Adler but cheaper, catching a transposition a plain sum misses and matching the reference 0xC8F0 -- as the compiled binary shows.
+
+** [[./luhn_analysis.html][The Luhn Algorithm: Check Digits for Identification Numbers]] ([[./luhn_analysis.pdf][PDF]])
+/A literate C++ study of the Luhn (mod 10) check using datamunge/
+
+We validate identification numbers with =datamunge='s C++ =algorithms::luhn_validate=, and report it as a literate program: the mod-10 doubling rule catches every single-digit error and most adjacent transpositions, with exactly the 09<->90 blind spot -- 9 of 13 transpositions caught on a number containing 0-9 adjacencies, as the compiled binary shows.
+
+** [[./verhoeff_analysis.html][The Verhoeff Algorithm: A Check Digit That Catches All Transpositions]] ([[./verhoeff_analysis.pdf][PDF]])
+/A literate C++ study of the dihedral-group check digit using datamunge/
+
+We validate numbers with =datamunge='s C++ =algorithms::verhoeff_validate=, and report it as a literate program: the non-commutative dihedral-group product catches 100% of single-digit errors and 100% of adjacent transpositions -- including the 09<->90 swaps Luhn misses on the very same number -- as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

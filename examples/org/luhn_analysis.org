@@ -1,0 +1,150 @@
+#+title: The Luhn Algorithm: Check Digits for Identification Numbers
+#+subtitle: A literate C++ study of the Luhn (mod 10) check, using =datamunge='s =algorithms::luhn_validate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Luhn algorithm (1954) is the check-digit scheme behind credit-card, IMEI, and
+many account numbers. It doubles every second digit (subtracting 9 when the result
+exceeds 9), sums everything, and declares the number valid when the total is a
+multiple of 10. It is trivial to compute yet catches *all* single-digit errors and
+*almost* all adjacent transpositions -- the two commonest human mistakes -- with one
+famous blind spot. This report implements it in =datamunge='s C++
+=algorithms::luhn_validate= / =luhn_check_digit= as a literate program: every number
+and figure comes from one compiled binary. We validate a known number, compute a check
+digit, and measure exactly which single-digit errors and transpositions Luhn catches.
+#+end_abstract
+
+* The mod-10 rule
+
+Number the digits from the right. Double the digits in even positions (2nd, 4th, ...
+from the right); if a doubled value exceeds 9, subtract 9 (equivalently, add its
+digits). Sum all the (possibly transformed) digits. The number is valid iff the sum is
+\(\equiv 0 \pmod{10}\). To *append* a check digit to a payload, compute the sum as if
+the check digit were a 0 in the rightmost slot, then choose the check digit that makes
+the total a multiple of 10.
+
+#+name: luhn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/check_digits.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Luhn-valid(digits):                 # rightmost digit is the check digit
+    sum = 0;  double = false        # the check digit itself is not doubled
+    for d from rightmost to leftmost:
+        if double: d *= 2; if d > 9: d -= 9
+        sum += d;  double = !double
+    return sum mod 10 == 0
+#+end_example
+
+* A worked example: validation and error coverage
+
+We validate the standard test number, compute a check digit, then take a valid card
+number and enumerate *every* single-digit substitution and *every* adjacent
+transposition, counting how many Luhn detects.
+
+#+name: luhn-run
+#+begin_src c++ :eval no
+    std::cout << "=== Luhn algorithm ===\n";
+    std::cout << "luhn_validate(\"79927398713\") = " << (luhn_validate("79927398713") ? "valid" : "invalid")
+              << '\n';
+    std::cout << "luhn_check_digit(\"7992739871\") = " << luhn_check_digit("7992739871") << " (so ...713)\n\n";
+
+    // A valid number chosen to contain 0<->9 adjacencies (Luhn's blind spot).
+    std::string base = "1230904560907";
+    std::string card = base + std::to_string(luhn_check_digit(base));
+    std::cout << "test card " << card << " valid: " << (luhn_validate(card) ? "yes" : "no") << "\n\n";
+
+    // Single-digit substitution errors.
+    std::size_t sub_total = 0, sub_caught = 0;
+    for (std::size_t i = 0; i < card.size(); ++i)
+        for (char c = '0'; c <= '9'; ++c) {
+            if (c == card[i]) continue;
+            std::string e = card; e[i] = c;
+            ++sub_total;
+            if (!luhn_validate(e)) ++sub_caught;
+        }
+    // Adjacent transpositions.
+    std::size_t tr_total = 0, tr_caught = 0;
+    for (std::size_t i = 0; i + 1 < card.size(); ++i) {
+        if (card[i] == card[i + 1]) continue;
+        std::string e = card; std::swap(e[i], e[i + 1]);
+        ++tr_total;
+        if (!luhn_validate(e)) ++tr_caught;
+    }
+    std::cout << "single-digit errors caught:     " << sub_caught << " / " << sub_total << '\n';
+    std::cout << "adjacent transpositions caught: " << tr_caught << " / " << tr_total
+              << "  (Luhn misses 09<->90)\n";
+
+    RPlot p = RPlot::barplot(
+        {100.0 * sub_caught / sub_total, 100.0 * tr_caught / tr_total},
+        {"single-digit", "transposition"}, "% errors detected", {37, 99, 235});
+    p.save_svg("build/org/luhn_detection.svg");
+    std::cout << "\nwrote build/org/luhn_detection.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/luhn_analysis.cpp <<'CPP'
+<<luhn-includes>>
+
+int main() {
+<<luhn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/luhn_analysis.cpp -o build/org/luhn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/luhn_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Luhn algorithm ===
+luhn_validate("79927398713") = valid
+luhn_check_digit("7992739871") = 3 (so ...713)
+
+test card 12309045609071 valid: yes
+
+single-digit errors caught:     126 / 126
+adjacent transpositions caught: 9 / 13  (Luhn misses 09<->90)
+#+end_example
+
+Luhn catches *every* single-digit substitution -- one wrong digit always breaks the
+mod-10 total -- and *almost* every adjacent transposition. The transpositions it misses
+are exactly the "09"<->"90" swaps: doubling turns 0->0 and 9->18->9, so their
+contributions are unchanged when swapped. That single blind spot is the price of
+Luhn's simplicity, and it is precisely what the Verhoeff algorithm (companion report)
+was designed to eliminate.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/luhn_detection.svg]]
+
+* Where it is used
+
+Luhn (ISO/IEC 7812) validates payment-card numbers, IMEI device identifiers, some
+national IDs, and more -- as a *typo* check, not a security measure (anyone can compute
+a valid check digit). Its enduring popularity comes from being computable by hand and
+catching the overwhelming majority of real data-entry mistakes. The Luhn mod-N variant
+extends the same idea to alphanumeric strings.
+
+* Complexity
+
+\(O(n)\) over the \(n\) digits, \(O(1)\) memory -- a single pass with a running sum.

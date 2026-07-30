@@ -24,6 +24,8 @@
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
+#include <datamunge/algorithms/check_digits.hpp>
+#include <datamunge/algorithms/checksums.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
@@ -60,6 +62,7 @@
 #include <datamunge/algorithms/graph_connectivity.hpp>
 #include <datamunge/algorithms/graph_hard.hpp>
 #include <datamunge/algorithms/graph_layout.hpp>
+#include <datamunge/algorithms/hamming_code.hpp>
 #include <datamunge/algorithms/hmm.hpp>
 #include <datamunge/algorithms/hopcroft_karp.hpp>
 #include <datamunge/algorithms/hungarian.hpp>
