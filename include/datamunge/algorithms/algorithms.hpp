@@ -5,6 +5,7 @@
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/adaboost.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
+#include <datamunge/algorithms/approximate_counting.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
 #include <datamunge/algorithms/association_rules.hpp>
 #include <datamunge/algorithms/arnoldi_iteration.hpp>
@@ -66,7 +67,9 @@
 #include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/library_sort.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
+#include <datamunge/algorithms/linde_buzo_gray.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
+#include <datamunge/algorithms/lsh.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
@@ -87,6 +90,7 @@
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/odds_algorithm.hpp>
 #include <datamunge/algorithms/online_linear_classifiers.hpp>
+#include <datamunge/algorithms/online_statistics.hpp>
 #include <datamunge/algorithms/optics.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
@@ -104,6 +108,7 @@
 #include <datamunge/algorithms/quadratic_sieve.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/ransac.hpp>
 #include <datamunge/algorithms/random_restart_hill_climbing.hpp>
 #include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
@@ -142,3 +147,4 @@
 #include <datamunge/algorithms/uniform_cost_search.hpp>
 #include <datamunge/algorithms/wang_landau.hpp>
 #include <datamunge/algorithms/z_algorithm.hpp>
+#include <datamunge/algorithms/ziggurat.hpp>

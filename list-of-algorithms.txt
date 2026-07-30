@@ -638,8 +638,8 @@ Further information: Computational physics
 Statistics
 Further information: Computational statistics
 
-    Algorithms for calculating variance: avoiding instability and numerical overflow
-    Approximate counting algorithm: allows counting large number of events in a small register
+    [x] Algorithms for calculating variance: avoiding instability and numerical overflow  -- datamunge::algorithms::OnlineVariance / OnlineCovariance (Welford single-pass, stable, mergeable); report examples/org/online_variance_analysis.org
+    [x] Approximate counting algorithm: allows counting large number of events in a small register  -- datamunge::algorithms::MorrisCounter (probabilistic loglog-space counting, tunable base); report examples/org/approximate_counting_analysis.org
     Bayesian statistics
         Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics
     Clustering algorithms
@@ -656,7 +656,7 @@ Further information: Computational statistics
         k-means++: a variation of this, using modified random seeds
         [x] k-medoids: similar to k-means, but chooses datapoints or medoids as centers  -- datamunge::algorithms::k_medoids (PAM: build + swap, robust to outliers); report examples/org/k_medoids_analysis.org
         KHOPCA clustering algorithm: a local clustering algorithm, which produces hierarchical multi-hop clusters in static and mobile environments.
-        Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook
+        [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray (codebook design by splitting + Lloyd); report examples/org/linde_buzo_gray_analysis.org
         Lloyd's algorithm (Voronoi iteration or relaxation): group data points into a given number of categories, a popular algorithm for k-means clustering
         [x] OPTICS: a density based clustering algorithm with a visual evaluation method  -- datamunge::algorithms::optics (+ optics_extract_dbscan; reachability ordering across varying densities); report examples/org/optics_analysis.org
         Single-linkage clustering: a simple agglomerative clustering algorithm
@@ -676,10 +676,10 @@ Further information: Computational statistics
     Partial least squares regression: finds a linear model describing some predicted variables in terms of other observable variables
     Queuing theory
         Buzen's algorithm: an algorithm for calculating the normalization constant G(K) in the Gordon–Newell theorem
-    RANSAC (an abbreviation for "RANdom SAmple Consensus"): an iterative method to estimate parameters of a mathematical model from a set of observed data which contains outliers
+    [x] RANSAC (an abbreviation for "RANdom SAmple Consensus"): an iterative method to estimate parameters of a mathematical model from a set of observed data which contains outliers  -- datamunge::algorithms::ransac_line (+ ransac_required_iterations); report examples/org/ransac_analysis.org
     Scoring algorithm: is a form of Newton's method used to solve maximum likelihood equations numerically
     Yamartino method: calculate an approximation to the standard deviation σθ of wind direction θ during a single pass through the incoming data
-    Ziggurat algorithm: generates random numbers from a non-uniform distribution
+    [x] Ziggurat algorithm: generates random numbers from a non-uniform distribution  -- datamunge::algorithms::ZigguratNormal (fast normal sampling via equal-area strips); report examples/org/ziggurat_analysis.org
 
 Computer science
 Further information: Computer science
@@ -825,8 +825,8 @@ Further information: Machine learning and Statistical classification
         C4.5 algorithm: an extension to ID3
         ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees
     k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space
-    Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook
-    Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data
+    [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray; report examples/org/linde_buzo_gray_analysis.org
+    [x] Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data  -- datamunge::algorithms::CosineLSH (random-hyperplane multi-table cosine ANN); report examples/org/lsh_analysis.org
     Naive Bayes classifier: a family of probabilistic classifiers based on Bayes' theorem
     Neural Network
         Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input

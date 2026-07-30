@@ -1,0 +1,176 @@
+#+title: The Ziggurat Algorithm: Fast Sampling from the Normal Distribution
+#+subtitle: A literate C++ study of rejection sampling under equal-area strips, using =datamunge='s =algorithms::ZigguratNormal=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Generating Gaussian random numbers is one of the most common inner-loop operations
+in simulation, and the *Ziggurat* algorithm (Marsaglia & Tsang 2000) is among the
+fastest ways to do it. It covers the normal density with a stack of equal-area
+horizontal strips -- rectangles plus a tail -- and samples by choosing a strip and a
+point in it; almost always the point falls in the strip's inner rectangle and is
+accepted with a single compare, so the common path is just a multiply and a
+comparison. This report implements it in =datamunge='s C++
+=algorithms::ZigguratNormal= as a literate program: every number and figure comes
+from one compiled binary. We draw a large sample, confirm its mean, variance, and
+tail probability match the standard normal, and plot the histogram against the
+exact density.
+#+end_abstract
+
+* Sampling under equal-area strips
+
+Cover the region under the (folded) normal density \(f(x)\propto e^{-x^2/2}\) with
+\(N\) horizontal strips of *equal area*: \(N-1\) rectangles stacked from the top,
+plus a bottom strip that runs out into the tail. Because the strips have equal
+area, a uniform draw picks a strip uniformly. Within strip \(i\) (bounded by
+\(x_i>x_{i+1}\)) draw a horizontal coordinate; if it lands within \(x_{i+1}\) -- the
+part of the strip guaranteed to be *under* the curve -- accept it immediately. Only
+if it lands in the sliver between \(x_{i+1}\) and \(x_i\), near the curved boundary,
+do we do the more expensive test \(y < f(x)\); and only the bottom strip requires
+sampling the tail. The precomputed boundaries \(x_i\) make the fast path a single
+comparison \(|u| < x_{i+1}/x_i\).
+
+#+name: ziggurat-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ziggurat.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Ziggurat-Normal():                       # tables x[0..N], ratio[i] = x[i+1]/x[i]
+    loop:
+        u = uniform(-1, 1);  i = uniform integer in [0, N-1]
+        if |u| < ratio[i]: return u * x[i]           # fast accept (inner rectangle)
+        if i == 0: return sample_tail()              # bottom strip -> tail
+        xr = u * x[i]
+        if f(x[i+1]) + uniform*(f(x[i]) - f(x[i+1])) < f(xr):  # wedge test
+            return xr
+#+end_example
+
+The precompute solves \(x_{i-1} = \sqrt{-2\ln(v/x_i + f(x_i))}\) downward from the
+tail boundary \(x_1=r\), where \(v\) is the common strip area; with \(N=256\) strips
+the fast path is taken well over 98% of the time.
+
+* A worked example: moments and the density
+
+We draw \(200{,}000\) standard-normal variates and check the sample mean
+(\(\approx 0\)), variance (\(\approx 1\)), and tail probability
+\(P(|Z|>2)\approx 0.0455\), then histogram the sample against the exact density
+\(\varphi(x)=e^{-x^2/2}/\sqrt{2\pi}\).
+
+#+name: ziggurat-run
+#+begin_src c++ :eval no
+    ZigguratNormal  zig(256);
+    std::mt19937_64 rng(2024);
+
+    const int           N = 200000;
+    std::vector<double> samples;
+    samples.reserve(N);
+    double sum = 0.0, sumsq = 0.0;
+    int    beyond2 = 0;
+    for (int i = 0; i < N; ++i) {
+        double z = zig.sample(rng);
+        samples.push_back(z);
+        sum += z;
+        sumsq += z * z;
+        if (std::abs(z) > 2.0) ++beyond2;
+    }
+    double mean = sum / N, var = sumsq / N - mean * mean;
+    std::cout << "=== Ziggurat standard-normal sample (N = " << N << ") ===\n";
+    std::cout << "sample mean:      " << mean << "   (target 0)\n";
+    std::cout << "sample variance:  " << var << "   (target 1)\n";
+    std::cout << "P(|Z| > 2):       " << (static_cast<double>(beyond2) / N) << "   (target 0.0455)\n";
+
+    // Histogram (density) vs exact pdf.
+    const int    bins = 48;
+    const double lo = -4.0, hi = 4.0, w = (hi - lo) / bins;
+    std::vector<double> count(bins, 0.0);
+    for (double z : samples) {
+        int b = static_cast<int>((z - lo) / w);
+        if (b >= 0 && b < bins) count[b] += 1.0;
+    }
+    std::vector<double> bx, density, pdf;
+    for (int b = 0; b < bins; ++b) {
+        double center = lo + (b + 0.5) * w;
+        bx.push_back(center);
+        density.push_back(count[b] / (N * w));
+        pdf.push_back(std::exp(-0.5 * center * center) / std::sqrt(2.0 * M_PI));
+    }
+    double max_dev = 0.0;
+    for (int b = 0; b < bins; ++b) max_dev = std::max(max_dev, std::abs(density[b] - pdf[b]));
+    std::cout << "max |histogram density - pdf|: " << max_dev << '\n';
+
+    RPlot p = RPlot::create();
+    p.bars(bx, density, "sample density", {147, 197, 253}, w * 0.9);
+    p.line(bx, pdf, "N(0,1) pdf", {220, 38, 38}, 2.5);
+    p.legend({"sample density", "N(0,1) pdf"}, {{147, 197, 253}, {220, 38, 38}});
+    p.save_svg("build/org/ziggurat_histogram.svg");
+    std::cout << "\nwrote build/org/ziggurat_histogram.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ziggurat_analysis.cpp <<'CPP'
+<<ziggurat-includes>>
+
+int main() {
+<<ziggurat-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ziggurat_analysis.cpp -o build/org/ziggurat_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ziggurat_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ziggurat standard-normal sample (N = 200000) ===
+sample mean:      0.00230219   (target 0)
+sample variance:  1.00351   (target 1)
+P(|Z| > 2):       0.045725   (target 0.0455)
+max |histogram density - pdf|: 0.00433237
+#+end_example
+
+The sample moments and tail probability match the standard normal to within
+sampling error, and the histogram tracks the exact density \(\varphi(x)\) across
+the whole range including the tails, with a small maximum deviation. The ziggurat
+produced all of these variates using, on the vast majority of draws, only a random
+integer, a random uniform, a multiply, and a single comparison -- the reason it is a
+default normal generator in high-performance numerical libraries.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/ziggurat_histogram.svg]]
+
+* Why it is fast, and cautions
+
+The ziggurat's speed comes from making the expensive operations rare: the wedge
+test (two exponentials) and the tail routine (two logarithms) are hit only a few
+percent of the time, so the amortized cost per variate is tiny. The trade-offs are
+a precomputation step and larger tables, and -- as with any method that leans on the
+underlying uniform generator -- sensitivity to a poor-quality bit source: the
+classic Marsaglia-Tsang implementation paired the ziggurat with a weak RNG, which
+was later criticized, so a good uniform generator (here Mersenne Twister) matters.
+The same strip construction adapts to other monotone densities, such as the
+exponential.
+
+* Complexity
+
+Precompute builds the \(N+1\) boundaries once in \(O(N)\). Each variate is \(O(1)\)
+amortized -- a constant-work fast path plus a rare fallback. Memory is \(O(N)\) for
+the boundary and ratio tables.

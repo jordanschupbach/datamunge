@@ -337,6 +337,38 @@ We implement V-statistics (=stats::VStatistic=) and report it as a literate prog
 
 We implement the two-sample permutation test (=stats::permutation_test_two_sample=) and report it as a literate program. We derive exchangeability, the permutation null distribution, and the Monte Carlo p-value, then test setosa vs versicolor Sepal.Length: the observed mean difference falls entirely outside the null distribution (p = 0.0001, matching Welch's t-test), and the identical routine handles the difference in medians for which no analytic null exists.
 
+* Streaming, Sampling & Robust Estimation
+
+** [[./online_variance_analysis.html][Algorithms for Calculating Variance: Welford's Stable Online Method]] ([[./online_variance_analysis.pdf][PDF]])
+/A literate C++ study of numerically stable streaming statistics using datamunge/
+
+We compute mean, variance, and covariance in a single stable pass with =datamunge='s C++ =algorithms::OnlineVariance=, and report it as a literate program: as a growing offset is added to the data the naive "mean of squares minus square of mean" formula loses all precision (even going negative) while Welford's recurrence stays exact, as the compiled binary charts.
+
+** [[./approximate_counting_analysis.html][Approximate Counting: Morris's Algorithm]] ([[./approximate_counting_analysis.pdf][PDF]])
+/A literate C++ study of probabilistic counting in loglog space using datamunge/
+
+We count tens of thousands of events in a handful of bits with =datamunge='s C++ =algorithms::MorrisCounter=, and report it as a literate program: a probabilistic exponent tracks log2(n), the estimator is unbiased when averaged over replicas, and a base close to 1 shrinks the variance -- all reproduced by the compiled binary.
+
+** [[./ransac_analysis.html][RANSAC: Robust Model Fitting Against Gross Outliers]] ([[./ransac_analysis.pdf][PDF]])
+/A literate C++ study of RANdom SAmple Consensus for line fitting using datamunge/
+
+We fit a line to data that is one-third gross outliers with =datamunge='s C++ =algorithms::ransac_line=, and report it as a literate program: ordinary least squares is dragged badly off while RANSAC recovers the true line from its inlier consensus set, as the compiled binary plots.
+
+** [[./lsh_analysis.html][Locality-Sensitive Hashing: Approximate Nearest Neighbors by Random Hyperplanes]] ([[./lsh_analysis.pdf][PDF]])
+/A literate C++ study of cosine LSH using datamunge/
+
+We answer approximate nearest-neighbor queries with =datamunge='s C++ =algorithms::CosineLSH=, and report it as a literate program: random-hyperplane bit-agreement matches the 1 - theta/pi collision law, and a multi-table index recovers the true nearest neighbor at 95%+ recall while examining under 1% of the data -- all measured by the compiled binary.
+
+** [[./linde_buzo_gray_analysis.html][The Linde-Buzo-Gray Algorithm: Vector-Quantization Codebook Design]] ([[./linde_buzo_gray_analysis.pdf][PDF]])
+/A literate C++ study of codebook design by splitting using datamunge/
+
+We design a vector-quantization codebook with =datamunge='s C++ =algorithms::linde_buzo_gray=, and report it as a literate program: doubling the codebook by splitting and re-running Lloyd's relaxation drives the distortion down from 1 to 16 codewords, with the final codebook drawn over the data by the compiled binary.
+
+** [[./ziggurat_analysis.html][The Ziggurat Algorithm: Fast Sampling from the Normal Distribution]] ([[./ziggurat_analysis.pdf][PDF]])
+/A literate C++ study of rejection sampling under equal-area strips using datamunge/
+
+We draw standard-normal variates with =datamunge='s C++ =algorithms::ZigguratNormal=, and report it as a literate program: covering the density with equal-area strips makes the common path a single comparison, and the sample's moments, tail probability, and histogram match the exact normal, as the compiled binary shows.
+
 * Random Number Generation
 
 ** [[./random_generation.html][Reproducible Random Variate Generation]] ([[./random_generation.pdf][PDF]])
