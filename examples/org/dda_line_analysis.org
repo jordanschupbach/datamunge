@@ -1,0 +1,114 @@
+#+title: The DDA Line Algorithm
+#+subtitle: A literate C++ study of the digital differential analyzer, using =datamunge='s =algorithms::dda_line=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Digital Differential Analyzer (DDA) is the most direct way to rasterize a line:
+step along the longer axis in unit increments and advance the other coordinate by the
+slope each step, rounding to the nearest cell. It uses floating-point arithmetic (one
+add and a round per step) rather than Bresenham's pure integers, which makes it simple
+to derive and easy to generalize to interpolating colors or depth along a line. This
+report implements it in =datamunge='s C++ =algorithms::dda_line= as a literate program:
+every number and figure comes from one compiled binary. We rasterize a line and plot
+the chosen cells against the exact geometric line.
+#+end_abstract
+
+* Stepping the major axis
+
+Let \(dx=x_1-x_0\), \(dy=y_1-y_0\), and \(\text{steps}=\max(|dx|,|dy|)\). The increments
+are \(x_{\text{inc}}=dx/\text{steps}\) and \(y_{\text{inc}}=dy/\text{steps}\); one of them
+is \(\pm 1\) (the driving axis) and the other is the slope. Starting at \((x_0,y_0)\), the
+algorithm takes \(\text{steps}+1\) samples, rounding each to the nearest integer cell.
+The rounding is what turns the ideal real-valued line into pixels.
+
+#+name: dda-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dda_line.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+DDA(x0,y0, x1,y1):
+    steps = max(|x1-x0|, |y1-y0|)
+    xinc = (x1-x0)/steps;  yinc = (y1-y0)/steps
+    x = x0;  y = y0
+    for i in 0..steps:
+        plot(round(x), round(y))
+        x += xinc;  y += yinc
+#+end_example
+
+* A worked example
+
+#+name: dda-run
+#+begin_src c++ :eval no
+    auto pts = dda_line(0, 0, 14, 6);
+    std::cout << "=== DDA line (0,0) -> (14,6) ===\ncells (" << pts.size() << "):";
+    for (const auto& [x, y] : pts) std::cout << " (" << x << "," << y << ")";
+    std::cout << "\nsteep (0,0)->(3,10): " << dda_line(0, 0, 3, 10).size() << " cells\n";
+
+    std::vector<double> px, py;
+    for (const auto& [x, y] : pts) { px.push_back(x); py.push_back(y); }
+    RPlot p = RPlot::create();
+    p.line({0, 14}, {0, 6}, "exact line", {148, 163, 184}, 2.0);
+    p.points(px, py, "DDA cells", {37, 99, 235}, 7.0);
+    p.legend({"exact line", "DDA cells"}, {{148, 163, 184}, {37, 99, 235}});
+    p.save_svg("build/org/dda_line.svg");
+    std::cout << "\nwrote build/org/dda_line.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/dda_line_analysis.cpp <<'CPP'
+<<dda-includes>>
+
+int main() {
+<<dda-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/dda_line_analysis.cpp -o build/org/dda_line_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/dda_line_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== DDA line (0,0) -> (14,6) ===
+cells (15): (0,0) (1,0) (2,1) (3,1) (4,2) (5,2) (6,3) (7,3) (8,3) (9,4) (10,4) (11,5) (12,5) (13,6) (14,6)
+steep (0,0)->(3,10): 11 cells
+#+end_example
+
+The DDA cells track the exact line, one per column for this shallow slope, with the
+rounded samples sitting on the geometric line. It produces the same kind of raster as
+Bresenham; the difference is internal -- DDA carries a floating-point accumulator and
+rounds, where Bresenham keeps an integer error term.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/dda_line.svg]]
+
+* DDA versus Bresenham
+
+DDA is simpler to state and naturally extends to *interpolating* extra quantities
+(color, depth, texture coordinates) along the line -- which is why "DDA interpolation"
+lives on inside triangle rasterizers -- but its per-step floating-point add and round are
+slower and can accumulate rounding error over long lines. Bresenham replaces them with
+exact integer arithmetic. Both are \(O(\text{length})\); the choice is speed/precision
+(Bresenham) versus simplicity/generality (DDA).
+
+* Complexity
+
+\(O(\max(|dx|,|dy|))\) time, one add and one round per step, \(O(1)\) state.

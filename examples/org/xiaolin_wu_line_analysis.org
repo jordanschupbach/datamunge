@@ -1,0 +1,130 @@
+#+title: Xiaolin Wu's Line Algorithm: Antialiased Lines
+#+subtitle: A literate C++ study of coverage-based line antialiasing, using =datamunge='s =algorithms::xiaolin_wu_line=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Bresenham and DDA pick one pixel per step, so their lines have jagged staircase edges.
+*Xiaolin Wu's algorithm* (1991) antialiases the line by coloring the *two* pixels
+straddling the ideal path at each step, splitting the ink between them in proportion to
+how close the line passes to each -- the two brightnesses always summing to one, so the
+line has constant intensity and smooth edges. This report implements it in =datamunge='s
+C++ =algorithms::xiaolin_wu_line= as a literate program: every number and figure comes
+from one compiled binary. We rasterize a line and plot each pixel shaded by its coverage.
+#+end_abstract
+
+* Splitting ink between two pixels
+
+Walk the major axis in unit steps, tracking the ideal line's position \(y\) on the minor
+axis. At each step the line lies between two integer rows, \(\lfloor y\rfloor\) and
+\(\lfloor y\rfloor+1\); give the nearer pixel brightness \(1-\text{frac}(y)\) and the
+farther one \(\text{frac}(y)\). Because the pair sums to 1, the line's total energy per
+step is constant, and the fractional shading dissolves the staircase into a smooth edge.
+(Steep lines swap the roles of the axes so the major axis always has the larger extent.)
+
+#+name: wu-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/xiaolin_wu_line.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+XiaolinWu(x0,y0, x1,y1):
+    if steep (|dy| > |dx|): swap x/y roles
+    gradient = dy / dx
+    y = y0
+    for x from x0 to x1:
+        yint = floor(y)
+        plot(x, yint,   with brightness 1 - frac(y))    # nearer pixel
+        plot(x, yint+1, with brightness frac(y))        # farther pixel
+        y += gradient
+#+end_example
+
+* A worked example
+
+#+name: wu-run
+#+begin_src c++ :eval no
+    auto px = xiaolin_wu_line(0, 0, 12, 5);
+    std::cout << "=== Xiaolin Wu antialiased line (0,0) -> (12,5) ===\n";
+    std::cout << "pixels: " << px.size() << " (two per x-step, brightnesses sum to 1)\n";
+    std::cout << "first few (x, y, brightness):\n";
+    for (std::size_t i = 0; i < 8 && i < px.size(); ++i)
+        std::cout << "  (" << px[i].x << ", " << px[i].y << ", " << px[i].brightness << ")\n";
+
+    // Figure: each pixel shaded by coverage (darker = more ink) on a light grid.
+    RPlot p = RPlot::create();
+    for (const auto& q : px) {
+        int g = static_cast<int>(255.0 * (1.0 - q.brightness));  // full coverage -> black
+        p.points({static_cast<double>(q.x)}, {static_cast<double>(q.y)}, "",
+                 RGB{static_cast<unsigned char>(g), static_cast<unsigned char>(g), static_cast<unsigned char>(g)},
+                 9.0);
+    }
+    p.save_svg("build/org/xiaolin_wu_line.svg");
+    std::cout << "\nwrote build/org/xiaolin_wu_line.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/xiaolin_wu_line_analysis.cpp <<'CPP'
+<<wu-includes>>
+
+int main() {
+<<wu-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/xiaolin_wu_line_analysis.cpp -o build/org/xiaolin_wu_line_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/xiaolin_wu_line_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Xiaolin Wu antialiased line (0,0) -> (12,5) ===
+pixels: 26 (two per x-step, brightnesses sum to 1)
+first few (x, y, brightness):
+  (0, 0, 1)
+  (0, 1, 0)
+  (1, 0, 0.583333)
+  (1, 1, 0.416667)
+  (2, 0, 0.166667)
+  (2, 1, 0.833333)
+  (3, 1, 0.75)
+  (3, 2, 0.25)
+#+end_example
+
+At each x-step two pixels are lit, and their brightnesses sum to one: where the ideal
+line runs close to a row that pixel is nearly black and its neighbor nearly white, and
+where the line passes between rows the ink is split evenly. Plotted as grayscale, the
+two-pixel shading turns what Bresenham would draw as a hard staircase into a smooth,
+antialiased edge.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/xiaolin_wu_line.svg]]
+
+* Character and relatives
+
+Xiaolin Wu's method is the classic *fast* antialiased line: roughly twice the work of
+Bresenham (two pixels per step) for a dramatically smoother result, and still far
+cheaper than a general coverage-sampling rasterizer. It extends to antialiased circles
+and to thick lines. Modern GPUs antialias with multisampling or analytic coverage, but
+Wu's two-pixel split remains the go-to when a full AA pipeline is unavailable and the
+staircase must go.
+
+* Complexity
+
+\(O(\max(|dx|,|dy|))\) time -- two pixels and a fractional split per step -- and \(O(1)\)
+state.

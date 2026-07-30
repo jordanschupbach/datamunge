@@ -1,0 +1,135 @@
+#+title: Sutherland-Hodgman Polygon Clipping
+#+subtitle: A literate C++ study of polygon clipping, using =datamunge='s =algorithms::sutherland_hodgman_clip=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Clipping a *filled* polygon to a viewport cannot be done by clipping its edges
+independently -- the result must remain a closed polygon. The *Sutherland-Hodgman*
+algorithm (1974) clips the whole polygon against each edge of a convex clip region in
+turn, so its output stays a valid polygon. This report implements it in =datamunge='s
+C++ =algorithms::sutherland_hodgman_clip= as a literate program: every number and figure
+comes from one compiled binary. We clip a triangle that overhangs a rectangle on all
+sides and plot the resulting clipped polygon.
+#+end_abstract
+
+* Clip against one edge at a time
+
+Process the polygon against each clip edge (here the four sides of a rectangle) in
+sequence, feeding one edge's output as the next edge's input. For a single edge, walk the
+polygon's vertices; for each edge \(\text{prev}\to\text{cur}\) emit output by four cases:
+both inside (emit cur), leaving inside->outside (emit the intersection), entering
+outside->inside (emit intersection then cur), both outside (emit nothing). After all four
+clip edges, the accumulated vertices form the clipped polygon.
+
+#+name: sh-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sutherland_hodgman.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+SutherlandHodgman(polygon, clip edges):
+    output = polygon
+    for each clip edge E:
+        input = output;  output = []
+        for each vertex cur (with prev = previous vertex):
+            if cur inside E:
+                if prev outside E: output.append(intersect(prev, cur, E))
+                output.append(cur)
+            else if prev inside E:
+                output.append(intersect(prev, cur, E))
+    return output
+#+end_example
+
+* A worked example
+
+We clip a large triangle to the rectangle \([0,10]\times[0,10]\); the triangle pokes
+outside on multiple sides, so the clipped result gains new vertices where it meets the
+rectangle.
+
+#+name: sh-run
+#+begin_src c++ :eval no
+    const double xmin = 0, ymin = 0, xmax = 10, ymax = 10;
+    std::vector<Point2> tri = {{-4, 2}, {14, 4}, {5, 16}};
+
+    auto clipped = sutherland_hodgman_clip(tri, xmin, ymin, xmax, ymax);
+    std::cout << "=== Sutherland-Hodgman: triangle clipped to [0,10]x[0,10] ===\n";
+    std::cout << "original triangle: 3 vertices\nclipped polygon: " << clipped.size() << " vertices\n";
+    for (const auto& [x, y] : clipped) std::cout << "  (" << x << ", " << y << ")\n";
+
+    RPlot p = RPlot::create();
+    p.polygon({xmin, xmax, xmax, xmin}, {ymin, ymin, ymax, ymax}, {226, 232, 240}, true);  // viewport
+    p.polygon({tri[0].first, tri[1].first, tri[2].first}, {tri[0].second, tri[1].second, tri[2].second},
+              {203, 213, 225}, false);  // original outline
+    std::vector<double> cx, cy;
+    for (const auto& [x, y] : clipped) { cx.push_back(x); cy.push_back(y); }
+    p.polygon(cx, cy, {220, 38, 38}, false);  // clipped polygon (red outline)
+    p.points(cx, cy, "clipped vertices", {220, 38, 38}, 6.0);
+    p.save_svg("build/org/sutherland_hodgman.svg");
+    std::cout << "\nwrote build/org/sutherland_hodgman.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sutherland_hodgman_analysis.cpp <<'CPP'
+<<sh-includes>>
+
+int main() {
+<<sh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sutherland_hodgman_analysis.cpp -o build/org/sutherland_hodgman_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sutherland_hodgman_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sutherland-Hodgman: triangle clipped to [0,10]x[0,10] ===
+original triangle: 3 vertices
+clipped polygon: 6 vertices
+  (1.14286, 10)
+  (0, 8.22222)
+  (0, 2.44444)
+  (10, 3.55556)
+  (10, 9.33333)
+  (9.5, 10)
+#+end_example
+
+The three-vertex triangle becomes a many-sided polygon after clipping: each place it
+crossed a rectangle edge contributes a new vertex, and every output vertex lies inside
+the viewport. In the figure the light triangle is the original and the red polygon is the
+clipped result, filling exactly the intersection of triangle and rectangle.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/sutherland_hodgman.svg]]
+
+* Character and relatives
+
+Sutherland-Hodgman clips against any *convex* clip polygon (a rectangle is the common
+case) and is the standard polygon-to-viewport clipper in graphics pipelines. Its known
+quirk: clipping a *concave* subject polygon against a convex region can leave spurious
+connecting edges along the boundary (a cosmetic artifact, easily cleaned up). For
+clipping against a *concave* clip region, or robust polygon-polygon boolean operations,
+the Weiler-Atherton and Vatti algorithms are used. Segment (not polygon) clipping is
+Cohen-Sutherland's job (companion report).
+
+* Complexity
+
+\(O(n\,k)\) for an \(n\)-vertex polygon and \(k\) clip edges -- one linear pass per edge.
+Memory is \(O(n)\) for the working vertex lists.

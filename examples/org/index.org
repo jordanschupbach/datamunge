@@ -571,6 +571,36 @@ We rasterize a line with =datamunge='s C++ =algorithms::bresenham_line=, and rep
 
 We recolor a connected region with =datamunge='s C++ =algorithms::flood_fill=, and report it as a literate program: an iterative DFS over same-valued neighbors fills exactly the connected component of the seed and leaves a disconnected same-colored region untouched -- as the compiled binary shows.
 
+** [[./dda_line_analysis.html][The DDA Line Algorithm]] ([[./dda_line_analysis.pdf][PDF]])
+/A literate C++ study of the digital differential analyzer using datamunge/
+
+We rasterize a line with =datamunge='s C++ =algorithms::dda_line=, and report it as a literate program: stepping the major axis and accumulating the slope (with a round per step) produces cells that track the exact geometric line, the floating-point cousin of Bresenham that generalizes to interpolating color and depth -- as the compiled binary plots.
+
+** [[./midpoint_circle_analysis.html][The Midpoint Circle Algorithm]] ([[./midpoint_circle_analysis.pdf][PDF]])
+/A literate C++ study of integer circle rasterization using datamunge/
+
+We rasterize a circle with =datamunge='s C++ =algorithms::midpoint_circle=, and report it as a literate program: an integer decision variable walks one octant and 8-way symmetry mirrors it, placing every cell within a pixel of the true radius using only additions -- as the compiled binary verifies.
+
+** [[./cohen_sutherland_analysis.html][Cohen-Sutherland Line Clipping]] ([[./cohen_sutherland_analysis.pdf][PDF]])
+/A literate C++ study of outcode line clipping using datamunge/
+
+We clip segments to a viewport with =datamunge='s C++ =algorithms::cohen_sutherland_clip=, and report it as a literate program: 4-bit region outcodes trivially accept/reject most segments and clip the rest to the rectangle edges -- accept, reject, and partial cases all shown by the compiled binary.
+
+** [[./sutherland_hodgman_analysis.html][Sutherland-Hodgman Polygon Clipping]] ([[./sutherland_hodgman_analysis.pdf][PDF]])
+/A literate C++ study of polygon clipping using datamunge/
+
+We clip a polygon to a viewport with =datamunge='s C++ =algorithms::sutherland_hodgman_clip=, and report it as a literate program: clipping the whole polygon against each clip edge in turn keeps the result a closed polygon, turning an overhanging triangle into a six-vertex polygon inside the rectangle -- as the compiled binary shows.
+
+** [[./ramer_douglas_peucker_analysis.html][The Ramer-Douglas-Peucker Algorithm: Polyline Simplification]] ([[./ramer_douglas_peucker_analysis.pdf][PDF]])
+/A literate C++ study of curve generalization using datamunge/
+
+We simplify a dense polyline with =datamunge='s C++ =algorithms::ramer_douglas_peucker=, and report it as a literate program: recursively keeping the farthest point from each chord reduces a 201-point curve to 23 vertices at a small tolerance while staying within it everywhere -- concentrating vertices at the bends, as the compiled binary plots.
+
+** [[./xiaolin_wu_line_analysis.html][Xiaolin Wu's Line Algorithm: Antialiased Lines]] ([[./xiaolin_wu_line_analysis.pdf][PDF]])
+/A literate C++ study of coverage-based line antialiasing using datamunge/
+
+We draw an antialiased line with =datamunge='s C++ =algorithms::xiaolin_wu_line=, and report it as a literate program: lighting the two pixels straddling the ideal path with brightnesses that sum to one dissolves Bresenham's staircase into a smooth edge -- the grayscale shading rendered by the compiled binary.
+
 * Error Detection & Correction
 
 ** [[./hamming_code_analysis.html][The Hamming(7,4) Code: Single-Error Correction]] ([[./hamming_code_analysis.pdf][PDF]])

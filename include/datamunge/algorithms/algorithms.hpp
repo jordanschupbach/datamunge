@@ -31,6 +31,7 @@
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/cyk_parser.hpp>
+#include <datamunge/algorithms/cohen_sutherland.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/decision_tree_induction.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
@@ -38,6 +39,7 @@
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
 #include <datamunge/algorithms/double_dabble.hpp>
+#include <datamunge/algorithms/dda_line.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
 #include <datamunge/algorithms/elementary.hpp>
@@ -97,6 +99,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/midpoint_circle.hpp>
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
 #include <datamunge/algorithms/nested_sampling.hpp>
 #include <datamunge/algorithms/nesting.hpp>
@@ -128,6 +131,7 @@
 #include <datamunge/algorithms/quadratic_sieve.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
+#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
 #include <datamunge/algorithms/ransac.hpp>
 #include <datamunge/algorithms/random_restart_hill_climbing.hpp>
 #include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
@@ -137,6 +141,7 @@
 #include <datamunge/algorithms/run_length_encoding.hpp>
 #include <datamunge/algorithms/rule_learners.hpp>
 #include <datamunge/algorithms/structured_svm.hpp>
+#include <datamunge/algorithms/sutherland_hodgman.hpp>
 #include <datamunge/algorithms/rvm.hpp>
 #include <datamunge/algorithms/selection_operators.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
@@ -173,3 +178,4 @@
 #include <datamunge/algorithms/z_algorithm.hpp>
 #include <datamunge/algorithms/ziggurat.hpp>
 #include <datamunge/algorithms/zobrist_hashing.hpp>
+#include <datamunge/algorithms/xiaolin_wu_line.hpp>

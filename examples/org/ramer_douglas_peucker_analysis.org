@@ -1,0 +1,147 @@
+#+title: The Ramer-Douglas-Peucker Algorithm: Polyline Simplification
+#+subtitle: A literate C++ study of curve generalization, using =datamunge='s =algorithms::ramer_douglas_peucker=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A curve stored as many points -- a GPS track, a coastline, a hand-drawn stroke -- usually
+has far more vertices than its shape requires. The *Ramer-Douglas-Peucker* algorithm
+simplifies it to a subset of its own vertices while guaranteeing the simplified polyline
+stays within a tolerance \(\varepsilon\) of the original. It keeps the two endpoints,
+finds the farthest intermediate point from the segment between them, and recurses only
+where that distance exceeds \(\varepsilon\). This report implements it in =datamunge='s
+C++ =algorithms::ramer_douglas_peucker= as a literate program: every number and figure
+comes from one compiled binary. We simplify a densely sampled curve at several
+tolerances and plot the original against the retained vertices.
+#+end_abstract
+
+* Recursive farthest-point splitting
+
+Given a polyline, draw the chord from its first to last point. Find the intermediate
+vertex with the greatest perpendicular distance to that chord. If the distance exceeds
+\(\varepsilon\), that vertex is *essential*: keep it and recurse on the two
+sub-polylines it defines. If not, no intermediate vertex matters at this tolerance --
+discard them all, keeping only the endpoints. The union of kept vertices is the
+simplified polyline, and by construction it never deviates from the original by more than
+\(\varepsilon\).
+
+#+name: rdp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ramer_douglas_peucker.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+RDP(points, eps):
+    keep endpoints
+    Split(lo, hi):
+        find index m in (lo, hi) with max perpendicular distance to segment (lo, hi)
+        if dist[m] > eps:
+            keep m
+            Split(lo, m);  Split(m, hi)
+    Split(first, last)
+    return kept points in order
+#+end_example
+
+* A worked example
+
+We sample a smooth-but-wiggly curve at 200 points and simplify it at several tolerances,
+reporting how many vertices survive and plotting the original curve with the retained
+vertices at one tolerance.
+
+#+name: rdp-run
+#+begin_src c++ :eval no
+    std::vector<RDPPoint> curve;
+    for (int i = 0; i <= 200; ++i) {
+        double x = i * 0.05;
+        double y = std::sin(x) + 0.3 * std::sin(3.1 * x);
+        curve.push_back({x, y});
+    }
+
+    std::cout << "=== Ramer-Douglas-Peucker on a 201-point curve ===\n";
+    std::cout << "epsilon   vertices kept\n";
+    for (double eps : {0.001, 0.01, 0.05, 0.2, 0.5}) {
+        auto s = ramer_douglas_peucker(curve, eps);
+        std::cout << "  " << eps << "      " << s.size() << '\n';
+    }
+
+    auto simp = ramer_douglas_peucker(curve, 0.05);
+    std::vector<double> ox, oy, sx, sy;
+    for (const auto& [x, y] : curve) { ox.push_back(x); oy.push_back(y); }
+    for (const auto& [x, y] : simp)  { sx.push_back(x); sy.push_back(y); }
+    RPlot p = RPlot::create();
+    p.line(ox, oy, "original (201 pts)", {148, 163, 184}, 1.5);
+    p.line(sx, sy, "simplified", {220, 38, 38}, 2.0);
+    p.points(sx, sy, "kept vertices", {220, 38, 38}, 5.0);
+    p.legend({"original (201 pts)", "simplified (eps=0.05)"}, {{148, 163, 184}, {220, 38, 38}});
+    p.save_svg("build/org/rdp_simplify.svg");
+    std::cout << "\nsimplified at eps=0.05: " << simp.size() << " of " << curve.size() << " vertices\n";
+    std::cout << "wrote build/org/rdp_simplify.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ramer_douglas_peucker_analysis.cpp <<'CPP'
+<<rdp-includes>>
+
+int main() {
+<<rdp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ramer_douglas_peucker_analysis.cpp -o build/org/ramer_douglas_peucker_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ramer_douglas_peucker_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Ramer-Douglas-Peucker on a 201-point curve ===
+epsilon   vertices kept
+  0.001      169
+  0.01      54
+  0.05      23
+  0.2      11
+  0.5      8
+
+simplified at eps=0.05: 23 of 201 vertices
+#+end_example
+
+Tightening the tolerance keeps more vertices and loosening it keeps fewer, from nearly
+all 201 points at \(\varepsilon=0.001\) down to a handful at \(\varepsilon=0.5\). At the
+plotted \(\varepsilon=0.05\) the simplified polyline (red) tracks the original curve
+closely with only a fraction of the vertices -- concentrating them where the curve bends
+and dropping them along the straight stretches, exactly the adaptive behavior the
+farthest-point rule produces.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rdp_simplify.svg]]
+
+* Uses and relatives
+
+RDP is the standard *line generalization* algorithm in cartography (drawing the same
+coastline at different zoom levels), in vector-graphics editors (simplifying traced
+paths), and in trajectory compression (GPS logs). Its guarantee is a bound on the
+*perpendicular* deviation; the Visvalingam-Whyatt algorithm instead drops the vertices
+that remove the least *area*, often giving more natural-looking results. Both trade
+fidelity for vertex count via a single tolerance.
+
+* Complexity
+
+\(O(n\log n)\) on average and \(O(n^2)\) worst case (a degenerate curve that splits one
+vertex off at a time); \(O(n)\) space. Variants with a convex-hull acceleration achieve
+\(O(n\log n)\) worst case.
