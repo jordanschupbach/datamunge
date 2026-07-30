@@ -1,0 +1,172 @@
+#+title: The Kabsch Algorithm: Optimal Rigid Alignment of Point Sets
+#+subtitle: A literate C++ study of RMSD minimization, using =datamunge='s =algorithms::kabsch=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Given two ordered sets of corresponding points, the *Kabsch algorithm* (Wolfgang Kabsch,
+1976) finds the rotation and translation that overlay one onto the other with the smallest
+possible *root-mean-square deviation* -- the standard way to superimpose protein structures or
+register point clouds. We use Horn's quaternion formulation: after centering both sets, the
+optimal rotation is the eigenvector of the largest eigenvalue of a 4x4 symmetric matrix built
+from the cross-covariance, which also sidesteps the reflection ambiguity a naive SVD solution
+must patch. This report implements it in =datamunge='s C++ =algorithms::kabsch= as a literate
+program: every number and figure comes from one compiled binary. We recover a known rigid
+transform from noisy data and visualize the superposition.
+#+end_abstract
+
+* Center, correlate, diagonalize
+
+Translation is removed by centering both sets on their centroids; what remains is a pure
+rotation problem. Kabsch minimizes \(\sum_i\lVert R\,s_i - q_i\rVert^2\) over rotations \(R\).
+Horn's method forms the \(3\times3\) cross-covariance \(H=\sum_i (s_i-\bar s)(q_i-\bar q)^\top\),
+packs its nine entries into a \(4\times4\) symmetric matrix \(N\), and takes the eigenvector of
+\(N\)'s *largest* eigenvalue. That eigenvector *is* the optimal rotation as a unit quaternion
+\((w,x,y,z)\), converted to a matrix by
+\[
+  R=\begin{pmatrix}
+    1-2(y^2+z^2) & 2(xy-wz) & 2(xz+wy)\\
+    2(xy+wz) & 1-2(x^2+z^2) & 2(yz-wx)\\
+    2(xz-wy) & 2(yz+wx) & 1-2(x^2+y^2)
+  \end{pmatrix}.
+\]
+Because a quaternion always encodes a proper rotation, this never returns a reflection -- the
+degenerate case an SVD solution detects and corrects by hand.
+
+#+name: kb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/kabsch.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Kabsch(source, target):
+    center both on their centroids
+    H = sum (s_i - s_bar)(q_i - q_bar)^T          # 3x3 cross-covariance
+    build Horn's 4x4 symmetric N from the entries of H
+    q = eigenvector of the largest eigenvalue of N   # unit quaternion (w,x,y,z)
+    R = rotation matrix of q
+    t = q_bar - R s_bar
+    rmsd = sqrt( mean_i || R s_i + t - q_i ||^2 )
+    return R, t, rmsd
+#+end_example
+
+* A worked example
+
+We take a small 3-D "molecule", apply a known rotation (40 deg about the axis \((1,1,1)\)) and
+translation \((5,-2,1)\), add a little noise, and ask Kabsch to recover the transform.
+
+#+name: kb-run
+#+begin_src c++ :eval no
+    std::vector<Point3> src = {{0,0,0},{2,0,0},{2,1,0},{1,2,0},{0,1,1},{1,1,2}};
+
+    // Known rotation: 40 degrees about the normalized axis (1,1,1).
+    double ang = 40.0 * M_PI / 180.0, s = std::sin(ang), c = std::cos(ang);
+    double ax = 1/std::sqrt(3.0), ay = ax, az = ax;
+    auto rot = [&](const Point3& p) -> Point3 {   // Rodrigues' rotation
+        double dot = ax*p[0]+ay*p[1]+az*p[2];
+        return {
+            p[0]*c + (ay*p[2]-az*p[1])*s + ax*dot*(1-c),
+            p[1]*c + (az*p[0]-ax*p[2])*s + ay*dot*(1-c),
+            p[2]*c + (ax*p[1]-ay*p[0])*s + az*dot*(1-c)};
+    };
+    std::array<double,3> t = {5.0, -2.0, 1.0};
+    std::vector<Point3> tgt;
+    for (std::size_t i = 0; i < src.size(); ++i) {
+        Point3 r = rot(src[i]);
+        double n = 0.02 * ((i % 2) ? 1.0 : -1.0);   // small deterministic noise
+        tgt.push_back({r[0]+t[0]+n, r[1]+t[1]-n, r[2]+t[2]+n});
+    }
+
+    auto k = kabsch(src, tgt);
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "=== Kabsch alignment ===\n";
+    std::cout << "recovered rotation matrix:\n";
+    for (int a = 0; a < 3; ++a)
+        std::cout << "  [ " << k.rotation[a][0] << "  " << k.rotation[a][1] << "  " << k.rotation[a][2] << " ]\n";
+    std::cout << "recovered translation: ( " << k.translation[0] << ", "
+              << k.translation[1] << ", " << k.translation[2] << " )  (true 5, -2, 1)\n";
+    std::cout << "RMSD after alignment: " << k.rmsd << "  (near the 0.02 noise level)\n";
+
+    // Figure: xy projection of source, target, and aligned-source.
+    std::vector<double> sx, sy, tx, ty, ax_, ay_;
+    for (std::size_t i = 0; i < src.size(); ++i) {
+        sx.push_back(src[i][0]); sy.push_back(src[i][1]);
+        tx.push_back(tgt[i][0]); ty.push_back(tgt[i][1]);
+        double vx = k.translation[0], vy = k.translation[1];
+        for (int b = 0; b < 3; ++b) { vx += k.rotation[0][b]*src[i][b]; vy += k.rotation[1][b]*src[i][b]; }
+        ax_.push_back(vx); ay_.push_back(vy);
+    }
+    RPlot p = RPlot::create();
+    p.points(sx, sy, "source",        {120, 120, 120}, 5.0);
+    p.points(tx, ty, "target",        {220, 38, 38},   6.0);
+    p.points(ax_, ay_, "aligned src", {22, 163, 74},   3.0);
+    p.legend({"source", "target", "aligned src"}, {{120,120,120},{220,38,38},{22,163,74}});
+    p.save_svg("build/org/kabsch.svg");
+    std::cout << "\nwrote build/org/kabsch.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/kabsch_analysis.cpp <<'CPP'
+<<kb-includes>>
+
+int main() {
+<<kb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/kabsch_analysis.cpp -o build/org/kabsch_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kabsch_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Kabsch alignment ===
+recovered rotation matrix:
+  [ 0.8496  -0.2843  0.4442 ]
+  [ 0.4414  0.8443  -0.3038 ]
+  [ -0.2887  0.4542  0.8429 ]
+recovered translation: ( 4.9895, -1.9872, 0.9919 )  (true 5, -2, 1)
+RMSD after alignment: 0.0319  (near the 0.02 noise level)
+#+end_example
+
+Kabsch recovers the translation \((5,-2,1)\) and a rotation matrix matching the applied
+40-degree turn, leaving an RMSD at the noise floor -- the best any rigid transform can do given
+the perturbation. In the projection the grey source cloud maps onto the red target, and the
+green aligned points land essentially on top of the targets, confirming the superposition. The
+quaternion route means the answer is always a proper rotation, never an accidental reflection.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/kabsch.svg]]
+
+* Character and relatives
+
+Kabsch/Horn superposition is the standard RMSD tool in structural biology (aligning protein
+conformations), robotics, and 3-D registration. It assumes *known correspondences* -- point
+\(i\) matches point \(i\); when correspondences are unknown, *Iterative Closest Point* (ICP)
+alternates a nearest-neighbour matching step with a Kabsch alignment step until convergence.
+The *Umeyama* extension adds an optimal scale factor for similarity (not just rigid) transforms.
+Horn's quaternion form and the equivalent SVD form (Kabsch's original) give identical rotations;
+the quaternion form is prized for never producing a reflection.
+
+* Complexity
+
+\(O(n)\) to accumulate the cross-covariance over \(n\) points, plus a fixed-cost \(4\times4\)
+symmetric eigendecomposition -- effectively linear in the number of points.

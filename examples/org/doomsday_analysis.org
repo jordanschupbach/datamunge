@@ -1,0 +1,167 @@
+#+title: Conway's Doomsday Rule: Weekdays by Mental Arithmetic
+#+subtitle: A literate C++ study of the Doomsday algorithm, using =datamunge='s =algorithms::doomsday_weekday=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+John Conway's *Doomsday rule* (1973) computes the weekday of any date fast enough to do in
+your head. Every year has a *doomsday* -- the weekday shared by a family of easy-to-remember
+dates (4/4, 6/6, 8/8, 10/10, 12/12, the last of February, "pi day" 3/14, and "9-to-5 at
+7-11": 9/5, 5/9, 7/11, 11/7). Find the year's doomsday, count from the nearest anchor, and
+you have the answer. This report implements the arithmetic exactly in =datamunge='s C++
+=algorithms::doomsday_weekday= as a literate program: every number and figure comes from one
+compiled binary. We date events, show the anchor dates all share a weekday, and cross-check
+against Zeller's congruence.
+#+end_abstract
+
+* Anchors, century anchors, and the year's doomsday
+
+The rule factors the computation. Each *century* has an anchor day; for the century starting
+in year \(100c\),
+\[
+  \text{anchor}(c) = \bigl(5\,(c\bmod 4) + 2\bigr)\bmod 7 .
+\]
+Within the century, the year \(yy=\text{year}\bmod 100\) shifts the doomsday by
+\(yy+\lfloor yy/4\rfloor\):
+\[
+  \text{doomsday}(\text{year}) = \bigl(\text{anchor}(c) + yy + \lfloor yy/4\rfloor\bigr)\bmod 7 .
+\]
+Because the anchor dates (4/4, 6/6, ...) all land on this same weekday, any date's weekday is
+the doomsday plus the signed distance to its month's anchor.
+
+#+name: dd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/doomsday.hpp>
+#include <datamunge/algorithms/zeller.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+doomsday_of_year(year):
+    c = year/100;  anchor = (5*(c mod 4) + 2) mod 7
+    yy = year mod 100
+    return (anchor + yy + yy/4) mod 7            # 0=Sunday..6=Saturday
+
+weekday(year, month, day):
+    ref = doomsday reference date of the month (4/4, 6/6, ...; leap-adjust Jan/Feb)
+    return (doomsday_of_year(year) + (day - ref)) mod 7
+#+end_example
+
+* A worked example
+
+We date some events, verify all the anchor dates of 2025 share its doomsday, and confirm the
+Doomsday rule agrees with Zeller's congruence on every 1st-of-month in 2025.
+
+#+name: dd-run
+#+begin_src c++ :eval no
+    struct Ev { const char* what; int y, m, d; };
+    std::vector<Ev> events = {
+        {"Apollo 11 Moon landing", 1969, 7, 20},
+        {"US Declaration of Independence", 1776, 7, 4},
+        {"Christmas Day 2025", 2025, 12, 25},
+    };
+    std::cout << "=== Famous dates (Doomsday rule) ===\n";
+    for (const auto& e : events)
+        std::cout << "  " << e.what << ": " << doomsday_day_name(doomsday_weekday(e.y, e.m, e.d)) << "\n";
+
+    std::cout << "\n=== 2025 doomsday and its anchor dates ===\n";
+    std::cout << "doomsday of 2025 = " << doomsday_day_name(doomsday_of_year(2025)) << "\n";
+    int anchors[][2] = {{4,4},{6,6},{8,8},{10,10},{12,12},{3,14},{7,11},{11,7}};
+    bool all_same = true;
+    for (auto& a : anchors) {
+        int w = doomsday_weekday(2025, a[0], a[1]);
+        std::cout << "  " << a[0] << "/" << a[1] << ": " << doomsday_day_name(w) << "\n";
+        if (w != doomsday_of_year(2025)) all_same = false;
+    }
+    std::cout << "all anchors share the doomsday: " << (all_same ? "yes" : "no") << "\n";
+
+    // Cross-check Doomsday vs Zeller on the 1st of every month in 2025.
+    int agree = 0;
+    for (int m = 1; m <= 12; ++m) {
+        int dd = doomsday_weekday(2025, m, 1);
+        int zz = (zeller_gregorian(2025, m, 1) + 6) % 7;  // Zeller h -> 0=Sunday
+        if (dd == zz) ++agree;
+    }
+    std::cout << "\nDoomsday == Zeller on 1st of month, 2025: " << agree << "/12\n";
+
+    // Figure: doomsday weekday of each year 2000-2039 (note the every-year drift).
+    std::vector<double> years, dooms;
+    for (int y = 2000; y <= 2039; ++y) { years.push_back(y); dooms.push_back(doomsday_of_year(y)); }
+    RPlot p = RPlot::create();
+    p.points(years, dooms, "doomsday (0=Sun..6=Sat)", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/doomsday.svg");
+    std::cout << "\nwrote build/org/doomsday.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/doomsday_analysis.cpp <<'CPP'
+<<dd-includes>>
+
+int main() {
+<<dd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/doomsday_analysis.cpp -o build/org/doomsday_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/doomsday_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Famous dates (Doomsday rule) ===
+  Apollo 11 Moon landing: Sunday
+  US Declaration of Independence: Thursday
+  Christmas Day 2025: Thursday
+
+=== 2025 doomsday and its anchor dates ===
+doomsday of 2025 = Friday
+  4/4: Friday
+  6/6: Friday
+  8/8: Friday
+  10/10: Friday
+  12/12: Friday
+  3/14: Friday
+  7/11: Friday
+  11/7: Friday
+all anchors share the doomsday: yes
+
+Doomsday == Zeller on 1st of month, 2025: 12/12
+#+end_example
+
+All eight anchor dates of 2025 land on the same weekday -- its doomsday -- which is exactly what
+makes the rule memorable: learn one weekday per year and the anchors give you the rest of the
+calendar for free. The Doomsday rule agrees with Zeller's congruence on all twelve first-of-month
+dates, as two independently derived algorithms must. The scatter of doomsdays across 2000--2039
+shows the weekday advancing about one or two steps per year (more across leap years), the drift
+the \(yy+\lfloor yy/4\rfloor\) term encodes.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/doomsday.svg]]
+
+* Character and relatives
+
+The Doomsday rule trades Zeller's single formula for a factored procedure tuned to human
+memory: century anchors, a per-year offset, and a dozen anchor dates. For a computer the two
+are equivalent \(O(1)\) calculations, but the rule's structure makes the *why* transparent --
+the anchors expose the calendar's modulo-7 skeleton. Both are special cases of converting a
+date to a day-count and reducing modulo 7, the approach general-purpose date libraries take.
+
+* Complexity
+
+\(O(1)\) per date: a handful of integer operations for the year's doomsday plus one offset.

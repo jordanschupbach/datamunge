@@ -33,6 +33,7 @@
 #include <datamunge/algorithms/checksums.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
+#include <datamunge/algorithms/computus.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cpu_scheduling.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
@@ -45,6 +46,7 @@
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
+#include <datamunge/algorithms/doomsday.hpp>
 #include <datamunge/algorithms/double_dabble.hpp>
 #include <datamunge/algorithms/dda_line.hpp>
 #include <datamunge/algorithms/dithering.hpp>
@@ -70,6 +72,7 @@
 #include <datamunge/algorithms/gabow_scc.hpp>
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/gauss_newton.hpp>
+#include <datamunge/algorithms/geohash.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/goertzel.hpp>
 #include <datamunge/algorithms/grasp.hpp>
@@ -87,6 +90,7 @@
 #include <datamunge/algorithms/joke_sorts.hpp>
 #include <datamunge/algorithms/k_medoids.hpp>
 #include <datamunge/algorithms/kmp.hpp>
+#include <datamunge/algorithms/kabsch.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/lanczos_iteration.hpp>
@@ -196,5 +200,7 @@
 #include <datamunge/algorithms/z_algorithm.hpp>
 #include <datamunge/algorithms/ziggurat.hpp>
 #include <datamunge/algorithms/vector_clock.hpp>
+#include <datamunge/algorithms/vincenty.hpp>
+#include <datamunge/algorithms/zeller.hpp>
 #include <datamunge/algorithms/zobrist_hashing.hpp>
 #include <datamunge/algorithms/xiaolin_wu_line.hpp>

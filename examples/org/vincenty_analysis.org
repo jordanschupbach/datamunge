@@ -1,0 +1,156 @@
+#+title: Vincenty's Formulae: Geodesic Distance on an Ellipsoid
+#+subtitle: A literate C++ study of ellipsoidal geodesics, using =datamunge='s =algorithms::vincenty_inverse=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Earth is not a sphere but an oblate *ellipsoid*, ~0.3% wider at the equator than pole to
+pole. Vincenty's inverse formula (Thaddeus Vincenty, 1975) computes the distance between two
+latitude/longitude points on that ellipsoid to sub-millimetre accuracy by iterating on an
+auxiliary sphere and correcting for flattening -- far more accurate than the spherical
+*haversine* formula GPS-grade work demands. This report implements it in =datamunge='s C++
+=algorithms::vincenty_inverse= as a literate program: every number and figure comes from one
+compiled binary. We reproduce Vincenty's own test line and measure how much the ellipsoid
+correction matters across a range of city pairs.
+#+end_abstract
+
+* Iterating on the auxiliary sphere
+
+Vincenty maps each point's *geographic* latitude to a *reduced* latitude on an auxiliary
+sphere via \(\tan U = (1-f)\tan\phi\), where \(f\) is the flattening. It then solves for the
+angular separation \(\sigma\) and the longitude difference \(\lambda\) on the sphere by fixed-
+point iteration: each pass updates \(\lambda\) from the current \(\sigma\) using series in
+\(f\), until \(\lambda\) converges (usually a handful of iterations, except near antipodal
+points). Finally the ellipsoidal arc length follows from series in
+\(u^2=\cos^2\alpha\,(a^2-b^2)/b^2\):
+\[
+  s = b\,A\,(\sigma - \Delta\sigma),
+\]
+with \(a,b\) the semi-major/minor axes (WGS-84) and \(A,\Delta\sigma\) the flattening
+corrections.
+
+#+name: vc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/vincenty.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Vincenty_inverse(p1, p2):        # WGS-84: a, f, b=(1-f)a
+    U1 = atan((1-f) tan(lat1));  U2 = atan((1-f) tan(lat2));  L = lon2-lon1
+    lambda = L
+    repeat until |dlambda| < 1e-12:
+        sigma, cos2alpha, cos2sigma_m from (U1,U2,lambda)      # spherical step
+        C = f/16 cos2alpha (4 + f(4 - 3 cos2alpha))
+        lambda = L + (1-C) f sinAlpha (sigma + C sinSigma(...))
+    u2 = cos2alpha (a^2-b^2)/b^2;  A, B, deltaSigma from series in u2
+    return b A (sigma - deltaSigma)
+#+end_example
+
+* A worked example
+
+We first reproduce Vincenty's published test line (Flinders Peak to Buninyong, Australia),
+then compare Vincenty against the spherical haversine distance for several long city pairs to
+see the ellipsoid correction.
+
+#+name: vc-run
+#+begin_src c++ :eval no
+    auto fb = vincenty_inverse(-37.95103341666667, 144.42486788888889,
+                               -37.65282113888889, 143.92649552777778);
+    std::cout << "=== Vincenty's own test line (Flinders Peak -> Buninyong) ===\n";
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << "  distance = " << fb.distance_m << " m  (published 54972.271 m), "
+              << fb.iterations << " iterations\n";
+    std::cout << std::defaultfloat;
+
+    struct Pair { const char* name; double lat1, lon1, lat2, lon2; };
+    std::vector<Pair> pairs = {
+        {"London-New York",   51.5074, -0.1278,  40.7128, -74.0060},
+        {"Tokyo-Sydney",      35.6762, 139.6503, -33.8688, 151.2093},
+        {"Cairo-Cape Town",   30.0444, 31.2357,  -33.9249, 18.4241},
+        {"Quito-Singapore",   -0.1807, -78.4678,  1.3521, 103.8198},  // both near equator
+    };
+    std::cout << "\n=== Vincenty (ellipsoid) vs haversine (sphere) ===\n";
+    std::cout << std::fixed << std::setprecision(1);
+    std::vector<double>      diffs;
+    std::vector<std::string> labels;
+    for (const auto& p : pairs) {
+        double v = vincenty_inverse(p.lat1, p.lon1, p.lat2, p.lon2).distance_m;
+        double h = haversine_distance(p.lat1, p.lon1, p.lat2, p.lon2);
+        std::cout << "  " << p.name << ": Vincenty " << v / 1000.0 << " km, haversine "
+                  << h / 1000.0 << " km, diff " << (v - h) / 1000.0 << " km\n";
+        diffs.push_back((v - h) / 1000.0);
+        labels.push_back(p.name);
+    }
+
+    RPlot p = RPlot::barplot(diffs, labels, "Vincenty - haversine (km)", {37, 99, 235});
+    p.abline_h(0.0, {120, 120, 120}, 1.0);
+    p.save_svg("build/org/vincenty.svg");
+    std::cout << "\nwrote build/org/vincenty.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/vincenty_analysis.cpp <<'CPP'
+<<vc-includes>>
+
+int main() {
+<<vc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/vincenty_analysis.cpp -o build/org/vincenty_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/vincenty_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Vincenty's own test line (Flinders Peak -> Buninyong) ===
+  distance = 54972.271 m  (published 54972.271 m), 4 iterations
+
+=== Vincenty (ellipsoid) vs haversine (sphere) ===
+  London-New York: Vincenty 5585.2 km, haversine 5570.2 km, diff 15.0 km
+  Tokyo-Sydney: Vincenty 7792.2 km, haversine 7825.8 km, diff -33.6 km
+  Cairo-Cape Town: Vincenty 7207.5 km, haversine 7239.2 km, diff -31.8 km
+  Quito-Singapore: Vincenty 19743.4 km, haversine 19729.3 km, diff 14.1 km
+#+end_example
+
+Vincenty reproduces its published test distance to the millimetre in only a few iterations. The
+comparison bars show the ellipsoid correction is real but modest -- tens of kilometres on
+intercontinental routes, a few tenths of a percent -- and it can be *positive or negative*
+depending on the latitudes the path traverses, because the ellipsoid's radius of curvature
+varies with latitude. For navigation, surveying, or GPS post-processing that difference
+matters; for a rough "how far is it" the simpler haversine is fine.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/vincenty.svg]]
+
+* Character and relatives
+
+Vincenty's inverse method is accurate and fast but has a known flaw: it *fails to converge*
+for nearly antipodal points, where the fixed-point iteration oscillates (our implementation
+caps the iterations and reports non-convergence). *Karney's algorithm* (2013) fixes this,
+achieving full accuracy everywhere via a different formulation, and is now the reference in
+GeographicLib and PostGIS. The spherical *haversine* remains the go-to for speed when ~0.5%
+error is acceptable; the *great-circle* law of cosines is a third, numerically weaker option.
+
+* Complexity
+
+\(O(k)\) for \(k\) iterations to convergence (typically <10 for well-separated points), each a
+constant amount of trigonometric work; effectively \(O(1)\) per distance in practice.
