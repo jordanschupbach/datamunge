@@ -1,0 +1,167 @@
+#+title: Moore's Algorithm: DFA Minimization by Partition Refinement
+#+subtitle: A literate C++ study of iterative refinement, using =datamunge='s =algorithms::moore_minimize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Every regular language has a *unique* minimal DFA. Moore's algorithm finds it by *partition
+refinement*: begin with two blocks -- accepting and non-accepting states -- and repeatedly split
+any block whose members disagree on which block a symbol leads to, until no block splits. The
+final blocks are the states of the minimal automaton. This report runs it with =datamunge='s
+=algorithms::moore_minimize= as a literate program: every number and figure comes from one
+compiled binary. We minimize a six-state DFA to three states and trace the refinement round by
+round.
+#+end_abstract
+
+* Split until stable
+
+Two states are *equivalent* if no input string tells them apart -- from either, exactly the same
+strings are accepted. Moore's algorithm computes this equivalence bottom-up. The initial
+partition \(\{F, Q\setminus F\}\) separates accepting from non-accepting states (they differ on
+the empty string). Then, in each round, two states in the same block are separated if some
+symbol sends them to *different* blocks -- because that symbol plus a distinguishing suffix tells
+them apart. Refinement only ever splits blocks, so it monotonically increases the block count
+and must terminate; the fixed point is the coarsest stable partition, whose blocks are the
+minimal DFA's states.
+
+#+name: mo-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dfa_minimization.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
+inline DFA example_dfa() {
+    DFA d; d.num_symbols = 2; d.num_states = 6; d.start = 0;
+    d.delta  = {{1, 2}, {0, 3}, {4, 5}, {4, 5}, {4, 5}, {5, 5}};
+    d.accept = {0, 0, 1, 1, 1, 0};
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Moore(DFA):
+    partition = { accepting states, non-accepting states }
+    repeat:
+        for each state, signature = (its block, block of delta(state, a) for each symbol a)
+        new partition = group states by identical signature
+    until the number of blocks stops growing
+    build the quotient automaton over the final blocks
+#+end_example
+
+* A worked example
+
+We minimize the six-state DFA, tracing the block count each refinement round, and confirm the
+minimized machine accepts the same language.
+
+#+name: mo-run
+#+begin_src c++ :eval no
+    DFA d = example_dfa();
+
+    // Trace Moore refinement explicitly to record the block count per round.
+    int n = d.num_states;
+    std::vector<int> block(n);
+    for (int i = 0; i < n; ++i) block[i] = d.accept[i] ? 1 : 0;
+    auto count_blocks = [](const std::vector<int>& b) {
+        std::vector<int> u = b; std::sort(u.begin(), u.end());
+        u.erase(std::unique(u.begin(), u.end()), u.end()); return (int)u.size();
+    };
+    std::vector<double> rounds, blocks;
+    rounds.push_back(0); blocks.push_back(count_blocks(block));
+    std::cout << "=== Moore refinement of a 6-state DFA ===\n";
+    std::cout << "round 0: " << count_blocks(block) << " blocks (accepting vs non-accepting)\n";
+    for (int r = 1; r <= 5; ++r) {
+        std::map<std::vector<int>, int> sig; std::vector<int> nb(n);
+        for (int s = 0; s < n; ++s) {
+            std::vector<int> key{block[s]};
+            for (int c = 0; c < d.num_symbols; ++c) key.push_back(block[d.delta[s][c]]);
+            auto it = sig.find(key);
+            if (it == sig.end()) { int id = (int)sig.size(); sig[key] = id; nb[s] = id; }
+            else nb[s] = it->second;
+        }
+        int before = count_blocks(block); block = nb; int after = count_blocks(block);
+        std::cout << "round " << r << ": " << after << " blocks\n";
+        rounds.push_back(r); blocks.push_back(after);
+        if (after == before) break;
+    }
+
+    DFA m = moore_minimize(d);
+    std::cout << "\nminimized: " << d.num_states << " states -> " << m.num_states << " states\n";
+    std::cout << "same language? checking strings up to length 5... ";
+    bool ok = true;
+    for (int len = 0; len <= 5 && ok; ++len)
+        for (int mask = 0; mask < (1 << len); ++mask) {
+            std::vector<int> w; for (int i = len - 1; i >= 0; --i) w.push_back((mask >> i) & 1);
+            if (dfa_accepts(d, w) != dfa_accepts(m, w)) ok = false;
+        }
+    std::cout << (ok ? "yes" : "NO") << "\n";
+
+    RPlot p = RPlot::create();
+    p.line(rounds, blocks, "blocks", {37, 99, 235}, 2.0);
+    p.points(rounds, blocks, "", {37, 99, 235}, 5.0);
+    p.save_svg("build/org/moore.svg");
+    std::cout << "\nwrote build/org/moore.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/moore_analysis.cpp <<'CPP'
+<<mo-includes>>
+
+int main() {
+<<mo-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/moore_analysis.cpp -o build/org/moore_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/moore_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Moore refinement of a 6-state DFA ===
+round 0: 2 blocks (accepting vs non-accepting)
+round 1: 3 blocks
+round 2: 3 blocks
+
+minimized: 6 states -> 3 states
+same language? checking strings up to length 5... yes
+#+end_example
+
+Refinement starts with the two blocks (accepting vs not), splits the non-accepting block once
+when its members are found to behave differently, and then stabilizes at three blocks -- the
+states of the minimal DFA. The minimized machine accepts exactly the same language. The trace
+shows the monotone growth in block count that is the signature of partition refinement: blocks
+only ever split, never merge, so the process converges quickly.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/moore.svg]]
+
+* Character and relatives
+
+Moore's algorithm is the most transparent DFA minimizer -- each round is a simple regrouping by
+behavior -- but recomputing every state's signature each round makes it \(O(kn^2)\). *Hopcroft's
+algorithm* (companion report) computes the identical partition in \(O(kn\log n)\) by only
+processing the smaller side of each split, and *Brzozowski's algorithm* reaches the minimal DFA
+by a completely different route (double reversal and determinization). All three yield the same
+unique minimal automaton guaranteed by the Myhill-Nerode theorem.
+
+* Complexity
+
+\(O(kn^2)\) for \(n\) states and \(k\) symbols: up to \(n\) refinement rounds, each recomputing
+\(n\) signatures of length \(k\).

@@ -797,8 +797,8 @@ Digital logic
 
     Boolean minimization
         Espresso heuristic logic minimizer: a fast algorithm for Boolean function minimization
-        Petrick's method: another algorithm for Boolean simplification
-        Quine–McCluskey algorithm: also called as Q-M algorithm, programmable method for simplifying the Boolean equations
+    [x] Petrick's method: another algorithm for Boolean simplification  -> datamunge::algorithms::petrick (petrick.hpp); report examples/org/petrick_analysis.org
+    [x] Quine–McCluskey algorithm: also called as Q-M algorithm, programmable method for simplifying the Boolean equations  -> datamunge::algorithms::quine_mccluskey (quine_mccluskey.hpp); report examples/org/quine_mccluskey_analysis.org
 
 Machine learning and statistical classification
 Main article: List of machine learning algorithms
@@ -912,8 +912,8 @@ See also: List of quantum algorithms
 Theory of computation and automata
 Further information: Theory of computation
 
-    Hopcroft's algorithm, Moore's algorithm, and Brzozowski's algorithm: algorithms for minimizing the number of states in a deterministic finite automaton
-    Powerset construction: algorithm to convert nondeterministic automaton to deterministic automaton.
+    [x] Hopcroft's algorithm, Moore's algorithm, and Brzozowski's algorithm: algorithms for minimizing the number of states in a deterministic finite automaton  -> datamunge::algorithms::{hopcroft,moore,brzozowski}_minimize (dfa_minimization.hpp); reports examples/org/{hopcroft,moore,brzozowski}_analysis.org
+    [x] Powerset construction: algorithm to convert nondeterministic automaton to deterministic automaton.  -> datamunge::algorithms::powerset_construction (powerset_construction.hpp); report examples/org/powerset_construction_analysis.org
     Tarski–Kuratowski algorithm: a non-deterministic algorithm which provides an upper bound for the complexity of formulas in the arithmetical hierarchy and analytical hierarchy
 
 Information theory and signal processing

@@ -1,0 +1,168 @@
+#+title: Hopcroft's Algorithm: Near-Optimal DFA Minimization
+#+subtitle: A literate C++ study of worklist refinement, using =datamunge='s =algorithms::hopcroft_minimize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Hopcroft's algorithm (1971) minimizes a DFA in \(O(kn\log n)\) time -- the fastest known, and
+believed optimal. Like Moore's method it computes the coarsest partition of states into
+equivalence classes, but it drives the refinement with a *worklist* of "splitter" sets and,
+crucially, only ever processes the *smaller* half of each split, which is what buys the
+logarithmic factor. This report runs it with =datamunge='s =algorithms::hopcroft_minimize= as a
+literate program: every number and figure comes from one compiled binary. We minimize a
+six-state DFA to three states and chart the asymptotic advantage over Moore's algorithm.
+#+end_abstract
+
+* Splitters and the smaller half
+
+The state set starts partitioned into accepting and non-accepting blocks, both placed on a
+worklist. Repeatedly, a splitter set \(A\) is removed from the worklist; for each symbol
+\(c\), the algorithm finds \(X\), the states whose \(c\)-transition lands in \(A\), and splits
+every block \(Y\) that \(X\) cuts into \(Y\cap X\) and \(Y\setminus X\). When a block splits,
+the algorithm adds the *smaller* of the two halves back to the worklist (or both, if the block
+was already pending). Processing only the smaller half guarantees each state is involved in at
+most \(\log n\) splits, giving the \(O(kn\log n)\) bound. The final blocks are the states of
+the minimal DFA -- the same partition Moore's algorithm finds, computed faster.
+
+#+name: hp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dfa_minimization.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// The six-state example DFA (alphabet {0,1}), accepting states {2,3,4}.
+inline DFA example_dfa() {
+    DFA d; d.num_symbols = 2; d.num_states = 6; d.start = 0;
+    d.delta  = {{1, 2}, {0, 3}, {4, 5}, {4, 5}, {4, 5}, {5, 5}};
+    d.accept = {0, 0, 1, 1, 1, 0};
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Hopcroft(DFA):
+    P = { F, Q\F };  W = { F, Q\F }               # partition and worklist
+    while W not empty:
+        A = remove a set from W
+        for each symbol c:
+            X = { s : delta(s, c) in A }          # predecessors of A under c
+            for each block Y in P split by X:
+                replace Y with (Y and X), (Y minus X)
+                if Y in W: replace it by both halves
+                else: add the smaller half to W
+    build the quotient automaton over P
+#+end_example
+
+* A worked example
+
+We minimize the six-state DFA, confirm the language is preserved, and then compare the growth
+of Hopcroft's \(O(n\log n)\) work against Moore's \(O(n^2)\).
+
+#+name: hp-run
+#+begin_src c++ :eval no
+    DFA d = example_dfa();
+    DFA m = hopcroft_minimize(d);
+    std::cout << "=== Hopcroft minimization of a 6-state DFA ===\n";
+    std::cout << "minimized: " << d.num_states << " states -> " << m.num_states << " states\n";
+
+    bool ok = true;
+    for (int len = 0; len <= 6 && ok; ++len)
+        for (int mask = 0; mask < (1 << len); ++mask) {
+            std::vector<int> w; for (int i = len - 1; i >= 0; --i) w.push_back((mask >> i) & 1);
+            if (dfa_accepts(d, w) != dfa_accepts(m, w)) ok = false;
+        }
+    std::cout << "same language as original (strings up to length 6)? " << (ok ? "yes" : "NO") << "\n";
+
+    // Asymptotic comparison: Moore ~ n^2 vs Hopcroft ~ n log2 n (work units).
+    std::cout << "\nwork-unit growth (relative), n = states:\n";
+    std::vector<double> ns, moore_log, hop_log;
+    for (int n = 2; n <= 4096; n *= 2) {
+        double moore = double(n) * n;
+        double hop   = double(n) * std::log2(double(n));
+        std::cout << "  n=" << n << ": Moore ~ " << moore << ", Hopcroft ~ " << hop
+                  << " (ratio " << moore / hop << "x)\n";
+        ns.push_back(std::log2(double(n)));
+        moore_log.push_back(std::log10(moore));
+        hop_log.push_back(std::log10(hop));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(ns, moore_log, "Moore ~ n^2", {220, 38, 38}, 2.0);
+    p.line(ns, hop_log, "Hopcroft ~ n log n", {37, 99, 235}, 2.0);
+    p.legend({"Moore ~ n^2", "Hopcroft ~ n log n"}, {{220, 38, 38}, {37, 99, 235}});
+    p.save_svg("build/org/hopcroft.svg");
+    std::cout << "\nwrote build/org/hopcroft.svg  (x = log2 n, y = log10 work)\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hopcroft_analysis.cpp <<'CPP'
+<<hp-includes>>
+
+int main() {
+<<hp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hopcroft_analysis.cpp -o build/org/hopcroft_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hopcroft_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Hopcroft minimization of a 6-state DFA ===
+minimized: 6 states -> 3 states
+same language as original (strings up to length 6)? yes
+
+work-unit growth (relative), n = states:
+  n=2: Moore ~ 4, Hopcroft ~ 2 (ratio 2x)
+  n=4: Moore ~ 16, Hopcroft ~ 8 (ratio 2x)
+  n=8: Moore ~ 64, Hopcroft ~ 24 (ratio 2.66667x)
+  n=16: Moore ~ 256, Hopcroft ~ 64 (ratio 4x)
+  n=32: Moore ~ 1024, Hopcroft ~ 160 (ratio 6.4x)
+  n=64: Moore ~ 4096, Hopcroft ~ 384 (ratio 10.6667x)
+  n=128: Moore ~ 16384, Hopcroft ~ 896 (ratio 18.2857x)
+  n=256: Moore ~ 65536, Hopcroft ~ 2048 (ratio 32x)
+  n=512: Moore ~ 262144, Hopcroft ~ 4608 (ratio 56.8889x)
+  n=1024: Moore ~ 1.04858e+06, Hopcroft ~ 10240 (ratio 102.4x)
+  n=2048: Moore ~ 4.1943e+06, Hopcroft ~ 22528 (ratio 186.182x)
+  n=4096: Moore ~ 1.67772e+07, Hopcroft ~ 49152 (ratio 341.333x)
+#+end_example
+
+Hopcroft's algorithm minimizes the six-state DFA to the same three states as Moore's, preserving
+the language exactly -- both compute the unique minimal automaton. The work-unit comparison shows
+why Hopcroft's is preferred at scale: its \(n\log n\) growth pulls away from Moore's \(n^2\)
+steadily, so the ratio widens with \(n\) (hundreds of times at a few thousand states). The
+"smaller half" rule is the whole trick -- it bounds each state's participation in splits to
+\(\log n\).
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/hopcroft.svg]]
+
+* Character and relatives
+
+Hopcroft's is the asymptotically fastest general DFA minimizer, though its constant factors and
+the subtle "smaller half" bookkeeping make *Moore's* simpler algorithm (companion report)
+competitive on small automata. *Brzozowski's algorithm* trades guaranteed polynomial time for
+striking simplicity (reverse-determinize twice). For *incremental* or *online* settings,
+specialized minimizers maintain the partition as the automaton changes. All produce the unique
+minimal DFA of the Myhill-Nerode theorem.
+
+* Complexity
+
+\(O(kn\log n)\) for \(n\) states over a \(k\)-symbol alphabet -- optimal among known algorithms;
+the \(\log n\) comes from adding only the smaller half of each split to the worklist.

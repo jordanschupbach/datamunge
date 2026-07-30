@@ -1,0 +1,161 @@
+#+title: The Powerset Construction: From NFA to DFA
+#+subtitle: A literate C++ study of subset construction, using =datamunge='s =algorithms::powerset_construction=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A nondeterministic finite automaton (NFA) can be in a *set* of states at once; a deterministic
+one (DFA) tracks a single state. The *powerset construction* makes an NFA deterministic by
+letting each DFA state *be* a subset of NFA states -- the set the NFA could currently occupy.
+The two models recognize exactly the same languages, but determinizing can cost an exponential
+blow-up in state count. This report runs the construction with =datamunge='s
+=algorithms::powerset_construction= as a literate program: every number and figure comes from
+one compiled binary. We determinize a small NFA and then exhibit a family that provably
+explodes to \(2^n\) DFA states.
+#+end_abstract
+
+* Subsets as states
+
+The DFA's start state is the set of NFA start states. From a subset \(S\), the transition on a
+symbol \(a\) is the union of the NFA moves \(\delta(q,a)\) over all \(q\in S\) -- the set of
+states the NFA could reach. A subset is *accepting* iff it contains any NFA accepting state.
+Only subsets reachable from the start need to be built, which is usually far fewer than all
+\(2^n\); but some languages force nearly all subsets to appear, and then determinization is
+exponential. Missing transitions lead to the empty subset, the *dead* state.
+
+#+name: ps-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/powerset_construction.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// NFA over {0,1} that accepts strings whose n-th symbol from the end is 1.
+// It nondeterministically "guesses" which 1 is the n-th from the end.
+inline NFA nth_from_end(int n) {
+    NFA a; a.num_states = n + 1; a.num_symbols = 2;
+    a.delta.assign(n + 1, std::vector<std::vector<int>>(2));
+    a.delta[0][0] = {0};      // stay in state 0 on 0
+    a.delta[0][1] = {0, 1};   // on 1, either stay or guess "this is the n-th from end"
+    for (int i = 1; i < n; ++i) { a.delta[i][0] = {i + 1}; a.delta[i][1] = {i + 1}; }
+    a.start_states = {0};
+    a.accept.assign(n + 1, 0);
+    a.accept[n] = 1;
+    return a;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Powerset(NFA):
+    start_subset = set of NFA start states
+    worklist = { start_subset }
+    while a new subset S is dequeued:
+        for each symbol a:
+            T = union of NFA delta(q, a) for q in S
+            add edge S -a-> T;  enqueue T if unseen
+    a subset is accepting iff it contains an NFA accepting state
+#+end_example
+
+* A worked example
+
+First a tiny case, \(n=2\) (the 2nd symbol from the end is 1), determinized and tested. Then we
+determinize \(n=1..6\) and watch the DFA state count.
+
+#+name: ps-run
+#+begin_src c++ :eval no
+    DFA d2 = powerset_construction(nth_from_end(2));
+    std::cout << "=== NFA 'the 2nd symbol from the end is 1' -> DFA ===\n";
+    std::cout << "NFA states: 3, DFA states: " << d2.num_states << "\n";
+    std::cout << "accepts '01'? " << (dfa_accepts(d2, {0, 1}) ? "yes" : "no")
+              << "  (2nd from end = '0') -> should be no\n";
+    std::cout << "accepts '10'? " << (dfa_accepts(d2, {1, 0}) ? "yes" : "no")
+              << "  (2nd from end = '1') -> should be yes\n";
+    std::cout << "accepts '110'? " << (dfa_accepts(d2, {1, 1, 0}) ? "yes" : "no") << "\n";
+
+    std::cout << "\n=== State blow-up: NFA (n+1 states) vs DFA (subsets) ===\n";
+    std::vector<double> ns, dfa_states, expo;
+    for (int n = 1; n <= 6; ++n) {
+        DFA d = powerset_construction(nth_from_end(n));
+        std::cout << "  n=" << n << ": NFA " << (n + 1) << " states, DFA " << d.num_states
+                  << " states (2^" << n << " = " << (1 << n) << ")\n";
+        ns.push_back(n);
+        dfa_states.push_back(d.num_states);
+        expo.push_back(1 << n);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(ns, dfa_states, "DFA states", {37, 99, 235}, 2.0);
+    p.points(ns, dfa_states, "", {37, 99, 235}, 4.0);
+    p.line(ns, expo, "2^n", {220, 38, 38}, 1.5);
+    p.legend({"DFA states", "2^n"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/powerset_construction.svg");
+    std::cout << "\nwrote build/org/powerset_construction.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/powerset_construction_analysis.cpp <<'CPP'
+<<ps-includes>>
+
+int main() {
+<<ps-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/powerset_construction_analysis.cpp -o build/org/powerset_construction_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/powerset_construction_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== NFA 'the 2nd symbol from the end is 1' -> DFA ===
+NFA states: 3, DFA states: 4
+accepts '01'? no  (2nd from end = '0') -> should be no
+accepts '10'? yes  (2nd from end = '1') -> should be yes
+accepts '110'? yes
+
+=== State blow-up: NFA (n+1 states) vs DFA (subsets) ===
+  n=1: NFA 2 states, DFA 2 states (2^1 = 2)
+  n=2: NFA 3 states, DFA 4 states (2^2 = 4)
+  n=3: NFA 4 states, DFA 8 states (2^3 = 8)
+  n=4: NFA 5 states, DFA 16 states (2^4 = 16)
+  n=5: NFA 6 states, DFA 32 states (2^5 = 32)
+  n=6: NFA 7 states, DFA 64 states (2^6 = 64)
+#+end_example
+
+The tiny automaton determinizes correctly -- it accepts exactly the strings whose second-from-last
+symbol is 1. The blow-up family then demonstrates the worst case: "the \(n\)-th symbol from the
+end is 1" is recognized by an NFA with \(n+1\) states but requires a DFA with \(2^n\) states,
+because the DFA must remember the last \(n\) symbols, and the reachable subsets track exactly
+that. The DFA-state curve sits right on \(2^n\), confirming the exponential separation between
+nondeterministic and deterministic size.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/powerset_construction.svg]]
+
+* Character and relatives
+
+The powerset construction proves NFAs and DFAs are equally expressive, the cornerstone of
+regular-language theory. In practice regex engines determinize *lazily* (building subsets on
+demand as input is scanned) to dodge the worst-case blow-up, and *Thompson's construction* first
+turns a regular expression into an NFA that this construction then determinizes. The resulting
+DFA is usually then *minimized* (companion reports on Hopcroft, Moore, and Brzozowski) to the
+unique smallest equivalent automaton.
+
+* Complexity
+
+\(O(2^n \cdot k)\) worst case for \(n\) NFA states and \(k\) symbols -- one DFA state per
+reachable subset -- though typically far fewer subsets are reachable.

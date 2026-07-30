@@ -1,0 +1,145 @@
+#+title: The Quine-McCluskey Algorithm: Boolean Minimization by Table
+#+subtitle: A literate C++ study of prime-implicant minimization, using =datamunge='s =algorithms::quine_mccluskey=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Quine-McCluskey algorithm minimizes a Boolean function -- the tabular, mechanizable cousin
+of the Karnaugh map that works for any number of variables. Given the *minterms* (and optional
+*don't-cares*), it finds all *prime implicants* by repeatedly merging terms that differ in a
+single bit, then selects a minimum subset of them covering every minterm (the essential prime
+implicants, plus a minimum cover of the rest by Petrick's method). The result is a minimum
+sum-of-products expression. This report runs it with =datamunge='s
+=algorithms::quine_mccluskey= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* Merge, then cover
+
+An *implicant* is a product term written as a bit pattern with dashes for don't-care positions
+(e.g. =10-= means \(A\bar B\)). Two implicants that agree on their dashes and differ in exactly
+one bit merge into one with that bit dashed: \(AB\bar C + ABC = AB\). Quine-McCluskey applies
+this exhaustively, round by round, until nothing merges; the terms that never merged are the
+*prime implicants*. It then builds a chart of which prime implicant covers which minterm. A
+prime implicant that is the *only* cover of some minterm is *essential* and must be chosen;
+the remaining minterms are covered minimally by Petrick's method. The union is a minimum
+sum-of-products form.
+
+#+name: qm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/quine_mccluskey.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+QuineMcCluskey(minterms, dontcares):
+    terms = minterms + dontcares                       # each a bit pattern, no dashes
+    repeat:
+        merge every pair differing in one bit -> dash that bit; mark both used
+        unused terms are prime implicants
+        terms = the merged terms (deduped)
+    until nothing merges
+    build chart: which prime implicant covers which minterm
+    essentials = prime implicants that solely cover some minterm
+    cover remaining minterms minimally (Petrick's method)
+    return essentials + that cover
+#+end_example
+
+* A worked example
+
+The classic four-variable function \(f(A,B,C,D)=\sum m(4,8,10,11,12,15)\) with don't-cares
+\(d(9,14)\).
+
+#+name: qm-run
+#+begin_src c++ :eval no
+    std::vector<std::uint32_t> minterms = {4, 8, 10, 11, 12, 15};
+    std::vector<std::uint32_t> dontcares = {9, 14};
+    auto qm = quine_mccluskey(4, minterms, dontcares);
+
+    std::cout << "=== Quine-McCluskey: f(A,B,C,D) = sum m(4,8,10,11,12,15) + d(9,14) ===\n";
+    std::cout << "prime implicants (" << qm.prime_implicants.size() << "):\n";
+    for (const auto& p : qm.prime_implicants) std::cout << "  " << implicant_to_string(p, 4) << "\n";
+    std::cout << "essential prime implicants (" << qm.essential.size() << "):\n";
+    for (const auto& p : qm.essential) std::cout << "  " << implicant_to_string(p, 4) << "\n";
+    std::cout << "minimum cover (" << qm.minimal_cover.size() << " terms):\n";
+    for (const auto& p : qm.minimal_cover) std::cout << "  " << implicant_to_string(p, 4) << "\n";
+
+    // Reduction: minterms -> prime implicants -> minimum cover.
+    std::vector<double> heights = {(double)minterms.size(),
+                                   (double)qm.prime_implicants.size(),
+                                   (double)qm.minimal_cover.size()};
+    std::vector<std::string> labels = {"minterms", "prime impl.", "min cover"};
+    RPlot p = RPlot::barplot(heights, labels, "number of product terms", {37, 99, 235});
+    p.save_svg("build/org/quine_mccluskey.svg");
+    std::cout << "\nwrote build/org/quine_mccluskey.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/quine_mccluskey_analysis.cpp <<'CPP'
+<<qm-includes>>
+
+int main() {
+<<qm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/quine_mccluskey_analysis.cpp -o build/org/quine_mccluskey_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/quine_mccluskey_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Quine-McCluskey: f(A,B,C,D) = sum m(4,8,10,11,12,15) + d(9,14) ===
+prime implicants (4):
+  -100
+  10--
+  1--0
+  1-1-
+essential prime implicants (2):
+  -100
+  1-1-
+minimum cover (3 terms):
+  -100
+  10--
+  1-1-
+#+end_example
+
+The algorithm compresses six minterms into a handful of prime implicants and then a minimum
+cover of three product terms, using the two don't-cares wherever they help a merge. Reading the
+cover back as an expression gives the minimum sum-of-products form -- the smallest two-level
+AND-OR circuit for \(f\). Each dash in a term is a variable that dropped out, so fewer terms and
+more dashes mean fewer gates and fewer inputs.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/quine_mccluskey.svg]]
+
+* Character and relatives
+
+Quine-McCluskey is *exact* -- it always finds a true minimum -- but the number of prime
+implicants can grow exponentially, and the covering step is NP-hard in general, so it is
+practical only up to a modest number of variables. The *Espresso* heuristic minimizer trades
+guaranteed minimality for speed and handles the large functions found in real logic synthesis.
+Petrick's method (companion report) is the exact covering step used here; Karnaugh maps are the
+same idea done visually for up to four or five variables.
+
+* Complexity
+
+Prime-implicant generation is \(O(3^n)\) in the number of variables \(n\) (worst case); the
+covering step is NP-hard, solved here exactly by Petrick's method, which is exponential in the
+number of prime implicants but fast for typical charts.

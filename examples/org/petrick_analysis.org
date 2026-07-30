@@ -1,0 +1,158 @@
+#+title: Petrick's Method: Minimum Prime-Implicant Covers
+#+subtitle: A literate C++ study of exact Boolean covering, using =datamunge='s =algorithms::petrick=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+After Quine-McCluskey lists a Boolean function's prime implicants, one must still pick the
+*fewest* that cover every minterm. When some minterm has a unique cover the choice is forced
+(an essential prime implicant), but *cyclic* charts have no essentials and require a genuine
+search. Petrick's method solves this exactly: write, for each minterm, the *sum* of the prime
+implicants covering it; the *product* of those sums is a product-of-sums that is true exactly
+when the chosen set covers everything. Multiplying it out into a sum-of-products (with
+absorption) enumerates the irredundant covers, and the smallest is a minimum. This report runs
+it with =datamunge='s =algorithms::petrick= as a literate program: every number and figure
+comes from one compiled binary.
+#+end_abstract
+
+* Product of sums, expanded
+
+Label the prime implicants \(p_1,p_2,\dots\). For each minterm \(m_i\), let \(S_i\) be the
+logical *sum* (OR) of the prime implicants covering it -- "at least one of these must be
+chosen". A selection covers all minterms iff the product
+\[
+  P = \prod_i S_i
+\]
+is true. Expanding \(P\) into a sum-of-products by the distributive law, and applying
+absorption (\(X + XY = X\)) to drop redundant terms, yields exactly the *irredundant* covers;
+each product term is a set of prime implicants that together cover everything with none to
+spare. The term(s) with the fewest prime implicants are the minimum covers.
+
+#+name: pk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/petrick.hpp>
+#include <datamunge/algorithms/quine_mccluskey.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Petrick(chart: for each minterm, the PIs covering it):
+    P = [ {} ]                              # product terms (sets of PIs); start with "1"
+    for each minterm's sum S:
+        P = { term U {pi} : term in P, pi in S }   # distribute
+        remove any term that is a superset of another (absorption)
+    return the terms of minimum size            # minimum covers
+#+end_example
+
+* A worked example
+
+The classic *cyclic* function \(f(A,B,C)=\sum m(0,1,2,5,6,7)\). Its six prime implicants each
+cover two minterms in a ring, so there are no essential implicants -- exactly the case that
+needs Petrick's method.
+
+#+name: pk-run
+#+begin_src c++ :eval no
+    std::vector<std::uint32_t> minterms = {0, 1, 2, 5, 6, 7};
+    auto qm = quine_mccluskey(3, minterms);
+
+    std::cout << "=== Cyclic chart: f(A,B,C) = sum m(0,1,2,5,6,7) ===\n";
+    std::cout << "prime implicants (" << qm.prime_implicants.size() << "): ";
+    for (const auto& p : qm.prime_implicants) std::cout << implicant_to_string(p, 3) << " ";
+    std::cout << "\nessential prime implicants: " << qm.essential.size() << " (cyclic -> none)\n";
+
+    // Build the coverage chart and run Petrick directly.
+    std::vector<std::vector<int>> chart(minterms.size());
+    for (std::size_t mi = 0; mi < minterms.size(); ++mi)
+        for (std::size_t pi = 0; pi < qm.prime_implicants.size(); ++pi)
+            if (qm.prime_implicants[pi].covers(minterms[mi])) chart[mi].push_back((int)pi);
+
+    auto pr = petrick(chart);
+    std::cout << "\nminimum covers found by Petrick (" << pr.minimal_covers.size()
+              << ", each " << pr.minimal_covers.front().size() << " implicants):\n";
+    for (const auto& cover : pr.minimal_covers) {
+        std::cout << "  { ";
+        for (int pi : cover) std::cout << implicant_to_string(qm.prime_implicants[pi], 3) << " ";
+        std::cout << "}\n";
+    }
+
+    // Figure: the coverage chart as a grid, with the first minimum cover highlighted.
+    RPlot p = RPlot::create();
+    std::vector<double> cx, cy, hx, hy;
+    const auto& chosen = pr.minimal_covers.front();
+    for (std::size_t mi = 0; mi < minterms.size(); ++mi)
+        for (int pi : chart[mi]) {
+            bool in = false; for (int c : chosen) if (c == pi) in = true;
+            if (in) { hx.push_back((double)minterms[mi]); hy.push_back((double)pi); }
+            else    { cx.push_back((double)minterms[mi]); cy.push_back((double)pi); }
+        }
+    p.points(cx, cy, "covers", {150, 150, 150}, 5.0);
+    p.points(hx, hy, "chosen cover", {220, 38, 38}, 7.0);
+    p.legend({"covers", "chosen cover"}, {{150, 150, 150}, {220, 38, 38}});
+    p.save_svg("build/org/petrick.svg");
+    std::cout << "\nwrote build/org/petrick.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/petrick_analysis.cpp <<'CPP'
+<<pk-includes>>
+
+int main() {
+<<pk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/petrick_analysis.cpp -o build/org/petrick_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/petrick_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cyclic chart: f(A,B,C) = sum m(0,1,2,5,6,7) ===
+prime implicants (6): 00- 0-0 -01 -10 1-1 11-
+essential prime implicants: 0 (cyclic -> none)
+
+minimum covers found by Petrick (2, each 3 implicants):
+  { 0-0 -01 11- }
+  { 00- -10 1-1 }
+#+end_example
+
+With no essential prime implicants, greedy heuristics can miss the optimum here, but Petrick's
+expansion enumerates the irredundant covers exactly and finds the minimum-size ones. The cyclic
+chart admits *two* distinct minimum covers of three implicants each -- picking alternate
+implicants around the ring -- and Petrick returns both, leaving the final choice (e.g. by fewest
+literals or layout convenience) to the designer. The chart grid shows each minterm's covering
+implicants, with one chosen minimum cover highlighted.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/petrick.svg]]
+
+* Character and relatives
+
+Petrick's method is *exact* but its expansion is worst-case exponential in the number of prime
+implicants -- the covering problem is NP-hard (it is a minimum set cover). For large charts,
+branch-and-bound covering or heuristic set-cover approximations replace it, and *Espresso* skips
+exact covering entirely. Petrick pairs with *Quine-McCluskey* (companion report), which supplies
+the prime implicants; together they are the classical exact two-level logic minimizer, the
+benchmark against which heuristic minimizers are judged.
+
+* Complexity
+
+Multiplying out the product-of-sums is \(O\big(\prod_i |S_i|\big)\) before absorption -- exponential
+in the worst (cyclic) case -- though absorption keeps the intermediate product small on typical
+charts.
