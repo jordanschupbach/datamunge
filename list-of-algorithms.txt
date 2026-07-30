@@ -881,11 +881,11 @@ See also: List of quantum algorithms
 
     Aharonov–Jones–Landau algorithm: quantum algorithm related to approximating the Jones polynomial
     Amplitude amplification: generalization of Grover's algorithm used to amplify the probability of desired outcomes
-    Bernstein–Vazirani algorithm: determines a hidden bit string encoded in a black-box function
+    [x] Bernstein–Vazirani algorithm: determines a hidden bit string encoded in a black-box function  -> datamunge::algorithms::bernstein_vazirani (bernstein_vazirani.hpp); report examples/org/bernstein_vazirani_analysis.org
     BHT algorithm: quantum algorithm for the Collision problem
     Boson sampling: sampling problem using noninteracting bosons, often discussed in relation to quantum advantage
-    Deutsch–Jozsa algorithm: determines whether a black-box Boolean function is constant or balanced
-    Grover's algorithm: provides a quadratic speedup for unstructured search problems
+    [x] Deutsch–Jozsa algorithm: determines whether a black-box Boolean function is constant or balanced  -> datamunge::algorithms::deutsch_jozsa (deutsch_jozsa.hpp); report examples/org/deutsch_jozsa_analysis.org
+    [x] Grover's algorithm: provides a quadratic speedup for unstructured search problems  -> datamunge::algorithms::grover (grover.hpp); report examples/org/grover_analysis.org
     Hadamard test: circuit technique for estimating real or imaginary parts of expectation values
     Hadamard transform: transform used in many quantum circuits and query algorithms
     Hamiltonian simulation: simulates the time evolution of quantum systems governed by a Hamiltonian
@@ -897,15 +897,15 @@ See also: List of quantum algorithms
     Quantum annealing: optimization approach based on adiabatic evolution or annealing-like quantum dynamics
     Quantum artificial life: quantum-computing model inspired by artificial life and biological systems
     Quantum counting algorithm: estimates the number of marked items in a search space
-    Quantum Fourier transform: quantum analogue of the discrete Fourier transform, used in several quantum algorithms
+    [x] Quantum Fourier transform: quantum analogue of the discrete Fourier transform, used in several quantum algorithms  -> datamunge::algorithms::qft (qft.hpp); report examples/org/qft_analysis.org
     Quantum optimization algorithms: family of quantum algorithms for optimization problems
-    Quantum phase estimation algorithm: estimates the phase of an eigenvalue of a unitary operator
+    [x] Quantum phase estimation algorithm: estimates the phase of an eigenvalue of a unitary operator  -> datamunge::algorithms::phase_estimation (phase_estimation.hpp); report examples/org/phase_estimation_analysis.org
     Quantum singular value transformation: framework for transforming singular values of encoded matrices
     Quantum sort: quantum algorithmic approach to sorting
     Quantum walk: quantum analogue of a classical random walk
     Quantum walk search: search algorithms based on quantum walks
     Shor's algorithm: provides exponential speedup, relative to currently known non-quantum algorithms, for integer factorization and discrete logarithms
-    Simon's problem: black-box problem with a quantum algorithm that provides a provable exponential speedup over classical randomized algorithms
+    [x] Simon's problem: black-box problem with a quantum algorithm that provides a provable exponential speedup over classical randomized algorithms  -> datamunge::algorithms::simon (simon.hpp); report examples/org/simon_analysis.org
     Swap test: estimates the overlap or similarity between quantum states
     Variational quantum eigensolver: hybrid quantum-classical algorithm for estimating ground-state energies[8][9]
 

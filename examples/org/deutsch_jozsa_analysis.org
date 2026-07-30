@@ -1,0 +1,144 @@
+#+title: The Deutsch-Jozsa Algorithm: Constant vs Balanced in One Query
+#+subtitle: A literate C++ study of the first quantum speedup, using =datamunge='s =algorithms::deutsch_jozsa=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Deutsch-Jozsa algorithm (1992) was the first to show an exponential separation between
+quantum and *deterministic* classical computation. Given a black-box Boolean function
+\(f:\{0,1\}^n\to\{0,1\}\) promised to be either *constant* or *balanced*, it decides which
+with a *single* query, where a classical deterministic algorithm may need \(2^{n-1}+1\). The
+mechanism is quantum *interference*: \(f\) is applied as a phase, and a layer of Hadamards
+makes the amplitudes reinforce on \(|0\cdots0\rangle\) for constant \(f\) and cancel it for
+balanced \(f\). This report runs the exact circuit on =datamunge='s state-vector simulator
+(=algorithms::deutsch_jozsa=) as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* Phase kickback and interference
+
+Prepare \(n\) qubits in \(|0\rangle\) and apply Hadamards to get the uniform superposition
+\(\frac{1}{\sqrt{2^n}}\sum_x|x\rangle\). A phase oracle maps \(|x\rangle\mapsto
+(-1)^{f(x)}|x\rangle\). Applying Hadamards again, the amplitude of \(|0\cdots0\rangle\) becomes
+\[
+  \frac{1}{2^n}\sum_x (-1)^{f(x)} .
+\]
+If \(f\) is constant this sum is \(\pm1\) (probability 1 of measuring all zeros); if \(f\) is
+balanced the \(+1\) and \(-1\) terms cancel exactly (probability 0). So a *single* measurement
+distinguishes the two cases with certainty.
+
+#+name: dj-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/deutsch_jozsa.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Deutsch-Jozsa(f, n):
+    state = |0..0>;  apply H to every qubit          # uniform superposition
+    for each basis state x: amplitude[x] *= (-1)^f(x)  # phase oracle
+    apply H to every qubit                            # interference
+    p0 = |amplitude of |0..0> |^2
+    return constant if p0 ~ 1 else balanced
+#+end_example
+
+* A worked example
+
+We test five oracles on \(n=4\) qubits: two constant (always 0, always 1) and three balanced
+(parity of \(x\); the top bit of \(x\); and \(x\bmod 2\)). We report the probability of
+measuring \(|0000\rangle\), the discriminator.
+
+#+name: dj-run
+#+begin_src c++ :eval no
+    const int n = 4;
+    struct Oracle { const char* name; std::function<int(std::size_t)> f; };
+    std::vector<Oracle> oracles = {
+        {"constant 0", [](std::size_t)   { return 0; }},
+        {"constant 1", [](std::size_t)   { return 1; }},
+        {"balanced: parity(x)", [](std::size_t x){ int p=0; while(x){p^=1;x&=x-1;} return p; }},
+        {"balanced: top bit",   [](std::size_t x){ return (int)((x>>3)&1); }},
+        {"balanced: x mod 2",   [](std::size_t x){ return (int)(x&1); }},
+    };
+
+    std::cout << "=== Deutsch-Jozsa (n=" << n << ", one query each) ===\n";
+    std::vector<double>      p0s;
+    std::vector<std::string> labels;
+    for (const auto& o : oracles) {
+        auto r = deutsch_jozsa(n, o.f);
+        std::cout << "  " << o.name << ": P(|0000>) = " << r.prob_all_zero
+                  << " -> " << (r.constant ? "CONSTANT" : "BALANCED") << "\n";
+        p0s.push_back(r.prob_all_zero);
+        labels.push_back(o.name);
+    }
+
+    RPlot p = RPlot::barplot(p0s, labels, "P(measure |0000>)", {37, 99, 235});
+    p.abline_h(0.5, {120, 120, 120}, 1.0);
+    p.save_svg("build/org/deutsch_jozsa.svg");
+    std::cout << "\nwrote build/org/deutsch_jozsa.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/deutsch_jozsa_analysis.cpp <<'CPP'
+<<dj-includes>>
+
+int main() {
+<<dj-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/deutsch_jozsa_analysis.cpp -o build/org/deutsch_jozsa_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/deutsch_jozsa_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Deutsch-Jozsa (n=4, one query each) ===
+  constant 0: P(|0000>) = 1 -> CONSTANT
+  constant 1: P(|0000>) = 1 -> CONSTANT
+  balanced: parity(x): P(|0000>) = 0 -> BALANCED
+  balanced: top bit: P(|0000>) = 0 -> BALANCED
+  balanced: x mod 2: P(|0000>) = 0 -> BALANCED
+#+end_example
+
+The separation is perfect and binary: both constant oracles refocus *all* the probability onto
+\(|0000\rangle\) (P = 1), while every balanced oracle cancels it exactly (P = 0). The dashed
+line at 0.5 marks the decision boundary -- but the algorithm never lands near it, because the
+promise (constant *or* balanced) guarantees the interference is total. One query settles a
+question that could cost a classical deterministic algorithm nine queries at \(n=4\), and
+exponentially many as \(n\) grows.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/deutsch_jozsa.svg]]
+
+* Character and relatives
+
+Deutsch-Jozsa's speedup is over *deterministic* classical algorithms; a *randomized* classical
+algorithm can also decide constant-vs-balanced with high confidence in a few queries, so the
+separation is less dramatic than it first appears -- but it was the proof of concept that
+quantum interference computes. Its direct descendant *Bernstein-Vazirani* (companion report)
+uses the same circuit with a linear oracle to extract a hidden string, and *Simon's algorithm*
+extends the idea to a period-finding problem with a genuine exponential separation even over
+randomized classical algorithms -- the lineage that leads to Shor's factoring.
+
+* Complexity
+
+One oracle query and \(2n\) Hadamard gates; the state-vector *simulation* here is
+\(O(n\,2^n)\) (Hadamards over \(2^n\) amplitudes), the price of classically emulating the
+quantum parallelism.

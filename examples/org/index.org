@@ -825,6 +825,38 @@ We measure distances with =datamunge='s C++ =algorithms::vincenty_inverse=, and 
 
 We superimpose point sets with =datamunge='s C++ =algorithms::kabsch=, and report it as a literate program: Horn's quaternion form recovers the optimal rotation and translation (minimizing RMSD) from the largest eigenvector of a 4x4 matrix, recovering a known transform from noisy data, as the compiled binary confirms.
 
+* Quantum Computing
+
+** [[./deutsch_jozsa_analysis.html][The Deutsch-Jozsa Algorithm: Constant vs Balanced in One Query]] ([[./deutsch_jozsa_analysis.pdf][PDF]])
+/A literate C++ study of the first quantum speedup using datamunge/
+
+We decide constant vs balanced with =datamunge='s C++ =algorithms::deutsch_jozsa= on a state-vector simulator, and report it as a literate program: a phase oracle plus Hadamard interference refocuses all amplitude onto |0..0> for constant f and cancels it for balanced f, deciding in one query, as the compiled binary shows.
+
+** [[./bernstein_vazirani_analysis.html][The Bernstein-Vazirani Algorithm: Reading a Hidden String in One Query]] ([[./bernstein_vazirani_analysis.pdf][PDF]])
+/A literate C++ study of hidden-string recovery using datamunge/
+
+We recover a hidden bit string with =datamunge='s C++ =algorithms::bernstein_vazirani=, and report it as a literate program: the Deutsch-Jozsa circuit with a linear oracle collapses the register exactly onto |s>, reading all n bits in a single query, as the compiled binary confirms.
+
+** [[./grover_analysis.html][Grover's Algorithm: Quadratic-Speedup Unstructured Search]] ([[./grover_analysis.pdf][PDF]])
+/A literate C++ study of amplitude amplification using datamunge/
+
+We search an unstructured space with =datamunge='s C++ =algorithms::grover=, and report it as a literate program: oracle-plus-diffusion iterations rotate the state toward the marked item, peaking near probability 1 at ~(pi/4)sqrt(N) steps and over-rotating past it, as the compiled binary's success-probability trace shows.
+
+** [[./simon_analysis.html][Simon's Algorithm: Finding a Hidden XOR Period]] ([[./simon_analysis.pdf][PDF]])
+/A literate C++ study of exponential quantum speedup using datamunge/
+
+We find a hidden XOR period with =datamunge='s C++ =algorithms::simon=, and report it as a literate program: entangling with a 2-to-1 function yields measurements orthogonal to the period, and a GF(2) solve recovers it in O(n) queries versus 2^(n/2) classically, as the compiled binary demonstrates.
+
+** [[./qft_analysis.html][The Quantum Fourier Transform: Frequency Analysis in O(n^2) Gates]] ([[./qft_analysis.pdf][PDF]])
+/A literate C++ study of the QFT using datamunge/
+
+We transform quantum states with =datamunge='s C++ =algorithms::qft=, and report it as a literate program: a Hadamard-and-controlled-phase network realizes the DFT in O(n^2) gates and detects the period of a comb state (the heart of Shor's algorithm), matching a direct DFT to machine precision, as the compiled binary shows.
+
+** [[./phase_estimation_analysis.html][Quantum Phase Estimation: Reading an Eigenphase]] ([[./phase_estimation_analysis.pdf][PDF]])
+/A literate C++ study of QPE using datamunge/
+
+We estimate a unitary's eigenphase with =datamunge='s C++ =algorithms::phase_estimation=, and report it as a literate program: phase kickback onto a counting register followed by an inverse QFT reads out the phase to t bits -- exactly for dyadic phases, with a sharp peak otherwise -- the subroutine behind Shor's algorithm, as the compiled binary shows.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

@@ -24,6 +24,7 @@
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/bakery.hpp>
 #include <datamunge/algorithms/banker.hpp>
+#include <datamunge/algorithms/bernstein_vazirani.hpp>
 #include <datamunge/algorithms/bully_election.hpp>
 #include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
@@ -46,6 +47,7 @@
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
+#include <datamunge/algorithms/deutsch_jozsa.hpp>
 #include <datamunge/algorithms/doomsday.hpp>
 #include <datamunge/algorithms/double_dabble.hpp>
 #include <datamunge/algorithms/dda_line.hpp>
@@ -73,6 +75,7 @@
 #include <datamunge/algorithms/game_search.hpp>
 #include <datamunge/algorithms/gauss_newton.hpp>
 #include <datamunge/algorithms/geohash.hpp>
+#include <datamunge/algorithms/grover.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/goertzel.hpp>
 #include <datamunge/algorithms/grasp.hpp>
@@ -140,6 +143,7 @@
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
+#include <datamunge/algorithms/phase_estimation.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
@@ -149,7 +153,9 @@
 #include <datamunge/algorithms/primality.hpp>
 #include <datamunge/algorithms/prim.hpp>
 #include <datamunge/algorithms/prufer.hpp>
+#include <datamunge/algorithms/qft.hpp>
 #include <datamunge/algorithms/quadratic_sieve.hpp>
+#include <datamunge/algorithms/quantum_sim.hpp>
 #include <datamunge/algorithms/qr_algorithm.hpp>
 #include <datamunge/algorithms/rabin_karp.hpp>
 #include <datamunge/algorithms/ramer_douglas_peucker.hpp>
@@ -167,6 +173,7 @@
 #include <datamunge/algorithms/rvm.hpp>
 #include <datamunge/algorithms/selection_operators.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
+#include <datamunge/algorithms/simon.hpp>
 #include <datamunge/algorithms/simplex.hpp>
 #include <datamunge/algorithms/sss_star.hpp>
 #include <datamunge/algorithms/stone_sip.hpp>
