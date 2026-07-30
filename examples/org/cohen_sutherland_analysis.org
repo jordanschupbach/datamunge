@@ -1,0 +1,128 @@
+#+title: Cohen-Sutherland Line Clipping
+#+subtitle: A literate C++ study of outcode line clipping, using =datamunge='s =algorithms::cohen_sutherland_clip=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Before drawing a line, a renderer must clip it to the viewport. The *Cohen-Sutherland*
+algorithm does this efficiently with 4-bit *outcodes* that record which sides of the
+clip rectangle each endpoint is outside. Two bitwise tests then dispatch the common
+cases with no arithmetic -- both inside (accept), both outside the same edge (reject) --
+and only the rest compute an intersection. This report implements it in =datamunge='s
+C++ =algorithms::cohen_sutherland_clip= as a literate program: every number and figure
+comes from one compiled binary. We clip several segments to a rectangle and plot the
+visible parts.
+#+end_abstract
+
+* Outcodes and trivial tests
+
+Each endpoint gets a 4-bit code with bits for left/right/below/above the clip rectangle.
+If the *OR* of the two codes is 0, both endpoints are inside -- *trivially accept*. If
+the *AND* is nonzero, both share an outside half-plane, so the whole segment is out --
+*trivially reject*. Otherwise pick an endpoint that is outside, intersect the segment
+with the corresponding clip edge, replace that endpoint, recompute its code, and repeat.
+Each iteration removes at least one outside bit, so it terminates quickly.
+
+#+name: cs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/cohen_sutherland.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Clip(p0, p1, rect):
+    c0 = outcode(p0);  c1 = outcode(p1)
+    loop:
+        if (c0 | c1) == 0: return accept(p0, p1)     # both inside
+        if (c0 & c1) != 0: return reject             # both outside one edge
+        out = the nonzero code
+        p = intersection of segment with the edge named by 'out'
+        replace the outside endpoint with p; recompute its outcode
+#+end_example
+
+* A worked example
+
+We clip several segments to the rectangle \([0,10]\times[0,10]\): one crossing straight
+through, one partly in, one fully inside, and one fully outside.
+
+#+name: cs-run
+#+begin_src c++ :eval no
+    const double xmin = 0, ymin = 0, xmax = 10, ymax = 10;
+    struct Seg { double x0, y0, x1, y1; const char* name; };
+    std::vector<Seg> segs = {{-5, 5, 15, 5, "through"}, {2, -3, 8, 13, "partly in"},
+                             {3, 3, 7, 6, "inside"}, {-5, 20, 15, 20, "outside"}};
+
+    std::cout << "=== Cohen-Sutherland clip to [0,10]x[0,10] ===\n";
+    RPlot p = RPlot::create();
+    p.polygon({xmin, xmax, xmax, xmin}, {ymin, ymin, ymax, ymax}, {226, 232, 240}, true);
+    for (const auto& s : segs) {
+        auto c = cohen_sutherland_clip(s.x0, s.y0, s.x1, s.y1, xmin, ymin, xmax, ymax);
+        std::cout << "  " << s.name << ": ";
+        if (c.visible)
+            std::cout << "(" << c.x0 << "," << c.y0 << ")-(" << c.x1 << "," << c.y1 << ")\n";
+        else
+            std::cout << "rejected\n";
+        p.line({s.x0, s.x1}, {s.y0, s.y1}, "", {203, 213, 225}, 1.0);  // original (light)
+        if (c.visible) p.line({c.x0, c.x1}, {c.y0, c.y1}, "", {220, 38, 38}, 2.5);  // clipped (red)
+    }
+    p.save_svg("build/org/cohen_sutherland.svg");
+    std::cout << "\nwrote build/org/cohen_sutherland.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cohen_sutherland_analysis.cpp <<'CPP'
+<<cs-includes>>
+
+int main() {
+<<cs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cohen_sutherland_analysis.cpp -o build/org/cohen_sutherland_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cohen_sutherland_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cohen-Sutherland clip to [0,10]x[0,10] ===
+  through: (0,5)-(10,5)
+  partly in: (3.125,0)-(6.875,10)
+  inside: (3,3)-(7,6)
+  outside: rejected
+#+end_example
+
+The through-segment is clipped to exactly the rectangle's width, the partly-in segment
+to its crossing points, the inside segment is returned unchanged, and the fully-outside
+segment is rejected. In the figure the light lines are the originals and the red lines
+the clipped, visible portions lying entirely within the shaded viewport.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/cohen_sutherland.svg]]
+
+* Relatives
+
+Cohen-Sutherland is fastest when most segments are trivially in or out (the outcode
+tests are nearly free). When many segments straddle the boundary, the *Liang-Barsky* and
+*Cyrus-Beck* parametric clippers do less work per segment. For clipping *polygons*
+(filled shapes) rather than segments, Sutherland-Hodgman (companion report) is used. All
+are staples of the 2-D graphics pipeline.
+
+* Complexity
+
+\(O(1)\) amortized per segment -- at most a few edge intersections, since each removes an
+outside bit -- and \(O(1)\) state.

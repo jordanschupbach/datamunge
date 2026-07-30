@@ -694,13 +694,13 @@ Further information: Computer graphics
     Binary space partitioning
     Clipping
         Line clipping
-            Cohen–Sutherland
+            [x] Cohen–Sutherland -- datamunge::algorithms::cohen_sutherland_clip (outcode line clipping); report examples/org/cohen_sutherland_analysis.org
             Cyrus–Beck
             Fast-clipping
             Liang–Barsky
             Nicholl–Lee–Nicholl
         Polygon clipping
-            Sutherland–Hodgman
+            [x] Sutherland–Hodgman -- datamunge::algorithms::sutherland_hodgman_clip (polygon clipping); report examples/org/sutherland_hodgman_analysis.org
             Vatti
             Weiler–Atherton
     Contour lines and Isosurfaces
@@ -726,10 +726,10 @@ Further information: Computer graphics
         Warnock algorithm
     Line drawing: graphical algorithm for approximating a line segment on discrete graphical media.
         [x] Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables) -- datamunge::algorithms::bresenham_line (integer all-octant midpoint); report examples/org/bresenham_analysis.org
-        DDA line algorithm: plots points of a 2-dimensional array to form a straight line between specified points
-        Xiaolin Wu's line algorithm: algorithm for line antialiasing.
-    Midpoint circle algorithm: an algorithm used to determine the points needed for drawing a circle
-    Ramer–Douglas–Peucker algorithm: Given a 'curve' composed of line segments to find a curve not too dissimilar but that has fewer points
+        [x] DDA line algorithm: plots points of a 2-dimensional array to form a straight line between specified points -- datamunge::algorithms::dda_line (digital differential analyzer); report examples/org/dda_line_analysis.org
+        [x] Xiaolin Wu's line algorithm: algorithm for line antialiasing. -- datamunge::algorithms::xiaolin_wu_line (two-pixel antialiasing); report examples/org/xiaolin_wu_line_analysis.org
+    [x] Midpoint circle algorithm: an algorithm used to determine the points needed for drawing a circle -- datamunge::algorithms::midpoint_circle (integer 8-way symmetry); report examples/org/midpoint_circle_analysis.org
+    [x] Ramer–Douglas–Peucker algorithm: Given a 'curve' composed of line segments to find a curve not too dissimilar but that has fewer points -- datamunge::algorithms::ramer_douglas_peucker (polyline simplification); report examples/org/ramer_douglas_peucker_analysis.org
     Shading
         Gouraud shading: an algorithm to simulate the differing effects of light and colour across the surface of an object in 3D computer graphics
         Phong shading: an algorithm to interpolate surface normal-vectors for surface shading in 3D computer graphics
