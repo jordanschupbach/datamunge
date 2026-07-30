@@ -1,0 +1,164 @@
+#+title: The Relevance Vector Machine: Sparse Bayesian Kernel Regression
+#+subtitle: A literate C++ study of Tipping's RVM, using =datamunge='s =algorithms::rvm_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Relevance Vector Machine (Tipping 2001) is a Bayesian answer to the support
+vector machine. It fits a kernel expansion but puts a separate precision
+hyperparameter on each weight and maximizes the marginal likelihood; most
+precisions run off to infinity, pruning their weights to *exactly zero*. The few
+surviving kernels are the *relevance vectors* -- typically far fewer than the SVM's
+support vectors -- and the model returns probabilistic predictions with no margin
+parameter to cross-validate. This report implements RVM regression in =datamunge='s
+C++ =algorithms::rvm_train= as a literate program: every number and figure comes
+from one compiled binary. We fit a sinusoid with a Gaussian-kernel RVM, recover it
+accurately, and see how few relevance vectors it keeps.
+#+end_abstract
+
+* Sparse Bayesian learning
+
+The model is \(y(x) = w_0 + \sum_j w_j\,k(x, x_j)\) with a Gaussian kernel
+\(k(x,x')=e^{-\gamma\|x-x'\|^2}\). Each weight gets an independent Gaussian prior
+\(w_j \sim \mathcal{N}(0, \alpha_j^{-1})\). The key move is to *learn* the precisions
+\(\alpha_j\) by maximizing the evidence \(p(t\mid\alpha,\beta)\). For an irrelevant
+basis the evidence is maximized by \(\alpha_j\to\infty\), which forces \(w_j\to 0\):
+*automatic relevance determination* prunes the model. With
+\(\Sigma=(A+\beta\Phi^\top\Phi)^{-1}\), \(\mu=\beta\Sigma\Phi^\top t\),
+\(A=\mathrm{diag}(\alpha)\), the fixed-point re-estimation is
+\[
+  \gamma_j = 1-\alpha_j\Sigma_{jj},\qquad
+  \alpha_j \leftarrow \frac{\gamma_j}{\mu_j^2},\qquad
+  \beta \leftarrow \frac{N-\sum_j\gamma_j}{\lVert t-\Phi\mu\rVert^2},
+\]
+iterated to convergence; kernels whose \(\alpha_j\) blow up are dropped.
+
+#+name: rvm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/rvm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+RVM-regression(X, t, gamma):
+    Phi = [1, k(x_i, x_j)]                          # design matrix (bias + kernels)
+    alpha = 1;  beta = 1/noise-var
+    repeat:
+        Sigma = (diag(alpha) + beta Phi^T Phi)^{-1}
+        mu    = beta Sigma Phi^T t
+        gamma_j = 1 - alpha_j Sigma_jj
+        alpha_j = gamma_j / mu_j^2                  # -> infinity prunes basis j
+        beta    = (N - sum_j gamma_j) / ||t - Phi mu||^2
+    until alpha converges
+    relevance vectors = basis with finite alpha
+#+end_example
+
+* A worked example
+
+We sample \(\sin(x)\) on \([0, 2\pi]\), fit a Gaussian-kernel RVM, and report the
+fit error and the number of relevance vectors kept.
+
+#+name: rvm-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<double>> X;
+    std::vector<double>              t;
+    for (int i = 0; i <= 40; ++i) {
+        double x = 2.0 * M_PI * i / 40.0;
+        X.push_back({x});
+        t.push_back(std::sin(x));
+    }
+
+    RVMModel model = rvm_train(X, t, 0.5, 300, 1e9, 1e-4);
+
+    double se = 0.0;
+    for (std::size_t i = 0; i < X.size(); ++i) { double e = rvm_predict(model, X[i]) - t[i]; se += e * e; }
+    std::cout << "=== RVM regression on sin(x) ===\n";
+    std::cout << "training points: " << X.size() << ",  iterations: " << model.iterations << '\n';
+    std::cout << "relevance vectors kept: " << model.num_relevance_vectors << " of " << X.size() << '\n';
+    std::cout << "training RMSE: " << std::sqrt(se / X.size()) << '\n';
+    std::cout << "learned noise precision beta: " << model.beta << '\n';
+
+    // Figure: data, RVM fit, and the relevance vectors.
+    std::vector<double> dx, dy;
+    for (std::size_t i = 0; i < X.size(); ++i) { dx.push_back(X[i][0]); dy.push_back(t[i]); }
+    std::vector<double> gx, gfit;
+    for (int i = 0; i <= 200; ++i) { double x = 2.0 * M_PI * i / 200.0; gx.push_back(x); gfit.push_back(rvm_predict(model, {x})); }
+    std::vector<double> rvx, rvy;
+    for (std::size_t j = 0; j < model.centers.size(); ++j)
+        if (model.relevant[j]) { rvx.push_back(model.centers[j][0]); rvy.push_back(std::sin(model.centers[j][0])); }
+    RPlot p = RPlot::create();
+    p.points(dx, dy, "data", {148, 163, 184}, 3.5);
+    p.line(gx, gfit, "RVM fit", {220, 38, 38}, 2.0);
+    p.points(rvx, rvy, "relevance vectors", {17, 24, 39}, 8.0);
+    p.legend({"data", "RVM fit", "relevance vectors"}, {{148, 163, 184}, {220, 38, 38}, {17, 24, 39}});
+    p.save_svg("build/org/rvm_fit.svg");
+    std::cout << "\nwrote build/org/rvm_fit.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rvm_analysis.cpp <<'CPP'
+<<rvm-includes>>
+
+int main() {
+<<rvm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rvm_analysis.cpp -o build/org/rvm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rvm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RVM regression on sin(x) ===
+training points: 41,  iterations: 300
+relevance vectors kept: 6 of 41
+training RMSE: 0.00391418
+learned noise precision beta: 55719.3
+#+end_example
+
+The RVM reconstructs the sinusoid accurately while keeping only a handful of
+relevance vectors -- a small fraction of the training points -- because automatic
+relevance determination pruned every other kernel to zero weight. The surviving
+relevance vectors (dark points) are spread across the curve where they are needed to
+shape it; the fit (red) tracks the data with low RMSE. This sparsity, achieved
+without a margin parameter and with probabilistic predictions, is the RVM's headline
+advantage over the SVM.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rvm_fit.svg]]
+
+* RVM versus SVM, and cautions
+
+Relative to the SVM the RVM usually yields *sparser* models (relevance vectors tend
+to be fewer than support vectors), gives a full *predictive distribution* (mean and
+variance), and needs no box/margin hyperparameter -- only the kernel width. The costs
+are a *non-convex* evidence optimization (local optima; sensitive to
+initialization), an \(O(N^3)\) matrix inversion per iteration that limits scale, and
+relevance vectors that sit in the *interior* of the data rather than on decision
+boundaries (sometimes making them less interpretable than support vectors). Fast
+marginal-likelihood variants (Tipping & Faul) add basis functions incrementally to
+cut the cost.
+
+* Complexity
+
+Each iteration inverts an \(M\times M\) matrix (\(M\approx\) number of active basis
+functions), \(O(M^3)\), plus \(O(N M^2)\) to form \(\Phi^\top\Phi\); over the
+iterations to convergence. Prediction sums over the relevance vectors, \(O(R\,d)\)
+for \(R\) relevance vectors.

@@ -644,7 +644,7 @@ Further information: Computational statistics
         [x] Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics -- datamunge::algorithms::nested_sampling (Skilling; evidence + posterior over a box prior); report examples/org/nested_sampling_analysis.org
     Clustering algorithms
         [x] Average-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (average linkage); report examples/org/clustering_iris_analysis.org
-        Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm
+        [x] Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm -- datamunge::algorithms::canopy_clustering (two-threshold overlapping pre-clustering); report examples/org/canopy_analysis.org
         Chinese whispers
         [x] Complete-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (complete linkage); report examples/org/clustering_iris_analysis.org
         [x] DBSCAN: a density based clustering algorithm -- datamunge::stats::DBSCAN; report examples/org/clustering_iris_analysis.org
@@ -804,8 +804,8 @@ Machine learning and statistical classification
 Main article: List of machine learning algorithms
 Further information: Machine learning and Statistical classification
 
-    Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs
-    ALOPEX: a correlation-based machine-learning algorithm
+    [x] Almeida–Pineda recurrent backpropagation: Adjust a matrix of synaptic weights to generate desired outputs given its inputs -- datamunge::algorithms::almeida_pineda_train (recurrent BP via adjoint fixed-point relaxation); report examples/org/almeida_pineda_analysis.org
+    [x] ALOPEX: a correlation-based machine-learning algorithm -- datamunge::algorithms::alopex_minimize (gradient-free correlation-based optimizer); report examples/org/alopex_analysis.org
     Association rule learning: discover interesting relations between variables, used in data mining
         [x] Apriori algorithm  -- datamunge::algorithms::apriori_frequent_itemsets (+ association_rules); level-wise downward-closure pruning; report examples/org/apriori_analysis.org
         [x] Eclat algorithm  -- datamunge::algorithms::eclat_frequent_itemsets (depth-first vertical tidset intersection); report examples/org/eclat_analysis.org
@@ -832,7 +832,7 @@ Further information: Machine learning and Statistical classification
         [x] Backpropagation: a supervised learning method which requires a teacher that knows, or can calculate, the desired output for any given input -- datamunge::stats::MLPClassifier (feed-forward net trained by backpropagation); report examples/org/neural_network_analysis.org
         [x] Hopfield net: a Recurrent neural network in which all connections are symmetric  -- datamunge::algorithms::hopfield_train (Hebbian associative memory, energy-descent recall); report examples/org/hopfield_network_analysis.org
         [x] Perceptron: the simplest kind of feedforward neural network: a linear classifier.  -- datamunge::algorithms::perceptron_train (mistake-driven additive updates, Novikoff bound); report examples/org/perceptron_analysis.org
-        Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing.
+        [x] Pulse-coupled neural networks (PCNN): Neural models proposed by modeling a cat's visual cortex and developed for high-performance biomimetic image processing. -- datamunge::algorithms::pcnn_run (spiking cortical model for image segmentation); report examples/org/pcnn_analysis.org
         [x] Radial basis function network: an artificial neural network that uses radial basis functions as activation functions  -- datamunge::algorithms::rbf_train (k-means centers + linear least-squares readout); report examples/org/rbf_network_analysis.org
         [x] Self-organizing map: an unsupervised network that produces a low-dimensional representation of the input space of the training samples  -- datamunge::algorithms::som_train (Kohonen competitive learning, topology-preserving); report examples/org/self_organizing_map_analysis.org
     [x] Random forest: classify using many decision trees -- datamunge::stats::RandomForestClassifier; report examples/org/rf_iris_analysis.org
@@ -840,10 +840,10 @@ Further information: Machine learning and Statistical classification
         [x] Q-learning: learns an action-value function that gives the expected utility of taking a given action in a given state and following a fixed policy thereafter  -- datamunge::algorithms::q_learning (off-policy TD control, epsilon-greedy); report examples/org/q_learning_analysis.org
         [x] State–Action–Reward–State–Action (SARSA): learn a Markov decision process policy  -- datamunge::algorithms::sarsa (on-policy TD control); report examples/org/sarsa_analysis.org
         [x] Temporal difference learning  -- datamunge::algorithms::td_prediction (TD(0) policy evaluation by bootstrapping); report examples/org/td_learning_analysis.org
-    Relevance-Vector Machine (RVM): similar to SVM, but provides probabilistic classification
+    [x] Relevance-Vector Machine (RVM): similar to SVM, but provides probabilistic classification -- datamunge::algorithms::rvm_train (sparse Bayesian kernel regression, ARD); report examples/org/rvm_analysis.org
     Supervised learning: Learning by examples (labelled data-set split into training-set and test-set)
     [x] Support Vector Machine (SVM): a set of methods which divide multidimensional data by finding a dividing hyperplane with the maximum margin between the two sets -- datamunge::stats::SVM; report examples/org/svm_iris_analysis.org
-        Structured SVM: allows training of a classifier for general structured output labels.
+        [x] Structured SVM: allows training of a classifier for general structured output labels. -- datamunge::algorithms::structured_svm_train (Crammer-Singer multiclass, Pegasos); report examples/org/structured_svm_analysis.org
     [x] Winnow algorithm: related to the perceptron, but uses a multiplicative weight-update scheme  -- datamunge::algorithms::winnow_train (Winnow2, O(k log n) mistake bound); report examples/org/winnow_analysis.org
 
 Programming language theory

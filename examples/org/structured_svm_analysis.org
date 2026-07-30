@@ -1,0 +1,174 @@
+#+title: Structured SVM: Max-Margin Multiclass Classification
+#+subtitle: A literate C++ study of the Crammer-Singer multiclass SVM, using =datamunge='s =algorithms::structured_svm_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *structured* SVM generalizes the binary max-margin classifier to outputs with
+internal structure -- sequences, trees, rankings -- by scoring input-output pairs
+with a joint feature map and requiring the true output to outscore every alternative
+by a task-defined margin. Its foundational special case is *multiclass*
+classification (Crammer & Singer 2001): one weight vector per class, a unit margin,
+and the multiclass hinge loss. This report implements that case in =datamunge='s C++
+=algorithms::structured_svm_train=, trained by Pegasos-style stochastic subgradient
+descent, as a literate program: every number and figure comes from one compiled
+binary. We separate three classes in the plane, read off the decision regions, and
+report the accuracy.
+#+end_abstract
+
+* From binary to structured margins
+
+A structured SVM scores a pair \((x, y)\) as \(w^\top\Phi(x, y)\) and demands
+\[
+  w^\top\Phi(x_i, y_i) \ge w^\top\Phi(x_i, y) + \Delta(y_i, y) - \xi_i \quad\forall y,
+\]
+i.e. the correct output beats every alternative by the task loss \(\Delta\) up to a
+slack \(\xi_i\). For *multiclass* classification the joint feature map places a copy
+of \(x\) in the block for its class, which reduces the score to \(w_c^\top x\) with a
+per-class weight vector \(w_c\), and \(\Delta(y, c) = [y \ne c]\). The training
+objective minimizes \(\tfrac{\lambda}{2}\sum_c\lVert w_c\rVert^2\) plus the average
+*multiclass hinge loss*
+\[
+  \ell(x_i, y_i) = \max_c\big(w_c^\top x_i + [c\ne y_i]\big) - w_{y_i}^\top x_i.
+\]
+
+#+name: ssvm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/structured_svm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Pegasos multiclass SVM(examples, K, lambda):
+    w_c = 0 for all classes c
+    for t = 1, 2, ...:
+        pick a random example (x, y);  eta = 1 / (lambda * t)
+        r = argmax_c ( w_c . x + [c != y] )      # loss-augmented inference
+        w_c *= (1 - eta*lambda) for all c        # L2 shrink
+        if r != y:
+            w_y += eta * x                        # push true class up
+            w_r -= eta * x                        # push violator down
+    predict(x) = argmax_c w_c . x
+#+end_example
+
+The "loss-augmented inference" -- finding the most violating output -- is the only
+part that changes for genuinely structured outputs; there it becomes a combinatorial
+search (Viterbi for sequences, CKY for parses), but the max-margin update is
+identical.
+
+* A worked example: three classes in the plane
+
+We draw three Gaussian classes, train the multiclass SVM, and map its decision
+regions by classifying a grid.
+
+#+name: ssvm-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(3);
+    std::normal_distribution<double> j(0.0, 0.5);
+    std::vector<std::vector<double>> X;
+    std::vector<int>                 y;
+    const std::vector<std::vector<double>> centers = {{0, 0}, {6, 0}, {3, 6}};
+    for (int c = 0; c < 3; ++c)
+        for (int i = 0; i < 60; ++i) { X.push_back({centers[c][0] + j(rng), centers[c][1] + j(rng)}); y.push_back(c); }
+
+    StructuredSVMParameters params;
+    params.lambda = 0.01;
+    params.epochs = 100;
+    params.seed   = 1;
+    StructuredSVMModel model = structured_svm_train(X, y, 3, params);
+
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) correct += (static_cast<int>(structured_svm_predict(model, X[i])) == y[i]);
+    std::cout << "=== Crammer-Singer multiclass SVM: 3 classes ===\n";
+    std::cout << "training points: " << X.size() << ",  epochs: " << params.epochs << '\n';
+    std::cout << "training accuracy: " << double(correct) / X.size() << "\n";
+    for (auto pt : std::vector<std::vector<double>>{{0, 0}, {6, 0}, {3, 6}})
+        std::cout << "  predict (" << pt[0] << ", " << pt[1] << ") -> class " << structured_svm_predict(model, pt)
+                  << '\n';
+
+    // Figure: decision regions (grid colored by predicted class) + data points.
+    const std::vector<RGB> region = {{254, 226, 226}, {219, 234, 254}, {220, 252, 231}};
+    const std::vector<RGB> pointc = {{239, 68, 68}, {37, 99, 235}, {22, 163, 74}};
+    RPlot                  p = RPlot::create();
+    for (int gx = -3; gx <= 10; ++gx)
+        for (int gy = -3; gy <= 10; ++gy) {
+            std::vector<double> q = {static_cast<double>(gx) * 0.7, static_cast<double>(gy) * 0.7};
+            std::size_t         c = structured_svm_predict(model, q);
+            p.points({q[0]}, {q[1]}, "", region[c], 6.0);
+        }
+    for (int c = 0; c < 3; ++c) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < X.size(); ++i)
+            if (y[i] == c) { xs.push_back(X[i][0]); ys.push_back(X[i][1]); }
+        p.points(xs, ys, "", pointc[c], 3.0);
+    }
+    p.save_svg("build/org/structured_svm_regions.svg");
+    std::cout << "\nwrote build/org/structured_svm_regions.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/structured_svm_analysis.cpp <<'CPP'
+<<ssvm-includes>>
+
+int main() {
+<<ssvm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/structured_svm_analysis.cpp -o build/org/structured_svm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/structured_svm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Crammer-Singer multiclass SVM: 3 classes ===
+training points: 180,  epochs: 100
+training accuracy: 1
+  predict (0, 0) -> class 0
+  predict (6, 0) -> class 1
+  predict (3, 6) -> class 2
+#+end_example
+
+The multiclass SVM separates the three classes at high accuracy, and the decision
+regions (shaded grid) meet in the piecewise-linear boundaries characteristic of a
+linear multiclass classifier: each region is where that class's linear score
+\(w_c^\top x\) is largest. Training used only stochastic subgradient steps with the
+Pegasos \(1/(\lambda t)\) learning rate -- no quadratic program -- yet recovered clean
+max-margin boundaries.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/structured_svm_regions.svg]]
+
+* Structured outputs and relatives
+
+The multiclass case shown here is the gateway to true structured prediction: keep
+the max-margin update and swap the \(\arg\max\) "loss-augmented inference" for a
+problem-specific search -- Viterbi decoding for sequence labeling, CKY for parsing,
+matching for alignment. That is the structured SVM of Tsochantaridis et al. (2005)
+and the max-margin Markov networks of Taskar et al. (2003), trained by cutting-plane
+or (as here) subgradient methods. It is the discriminative, margin-based counterpart
+to conditional random fields, which optimize a probabilistic (log-loss) objective
+over the same structured outputs.
+
+* Complexity
+
+Each Pegasos step is \(O(K\,d)\): the loss-augmented \(\arg\max\) over \(K\) classes
+and the weight shrink/update. Training is \(O(\text{epochs}\cdot n\cdot K\,d)\);
+prediction is \(O(K\,d)\). For structured outputs the \(K\)-way \(\arg\max\) is
+replaced by the cost of the inference oracle.

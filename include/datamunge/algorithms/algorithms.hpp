@@ -4,6 +4,8 @@
 
 #include <datamunge/algorithms/aho_corasick.hpp>
 #include <datamunge/algorithms/adaboost.hpp>
+#include <datamunge/algorithms/almeida_pineda.hpp>
+#include <datamunge/algorithms/alopex.hpp>
 #include <datamunge/algorithms/advanced_graph.hpp>
 #include <datamunge/algorithms/approximate_counting.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
@@ -21,6 +23,7 @@
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
+#include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
@@ -99,6 +102,7 @@
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
+#include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
@@ -118,6 +122,8 @@
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
 #include <datamunge/algorithms/rule_learners.hpp>
+#include <datamunge/algorithms/structured_svm.hpp>
+#include <datamunge/algorithms/rvm.hpp>
 #include <datamunge/algorithms/selection_operators.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/simplex.hpp>
