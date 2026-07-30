@@ -1,0 +1,146 @@
+#+title: Mark-Compact Garbage Collection
+#+subtitle: A literate C++ study of compacting collection, using =datamunge='s =algorithms::mark_compact=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Mark-compact collection marks the live objects like mark-sweep, but then *slides* the survivors
+together to one end of the heap, closing the gaps left by dead objects and rewriting every
+reference to the new addresses. The payoff is a *defragmented* heap that allocates with a
+trivial bump pointer, using *no extra semispace* (unlike a copying collector) -- at the cost of
+extra passes to compute and apply the relocation. This report runs it with =datamunge='s
+=algorithms::mark_compact= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* Mark, then slide
+
+After the usual mark phase, a *sliding* compactor walks the heap in address order and assigns
+each live object the next free slot, preserving their relative order. This yields a relocation
+map -- old address to new address -- which a final pass uses to update every reference (roots and
+inter-object pointers) so the graph stays consistent after objects move. Because survivors keep
+their order and are packed contiguously, the free space becomes one block at the top of the
+heap, and allocation is just "bump the pointer". The compaction removes the fragmentation that
+plain mark-sweep leaves behind.
+
+#+name: mc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/mark_compact.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MarkCompact(heap, roots):
+    mark live objects from the roots
+    slot = 0
+    for each object o in address order:
+        if marked(o): new_address[o] = slot; slot += 1     # compute relocation
+    update every reference (roots and objects) via new_address
+    move each live object to new_address[o]                # slide down
+#+end_example
+
+* A worked example
+
+Ten objects with live and dead ones interleaved: the root chains through the even objects
+\(0\to2\to4\to6\to8\), while the odd objects are garbage. Compaction slides the five survivors
+into slots \(0..4\).
+
+#+name: mc-run
+#+begin_src c++ :eval no
+    ObjectGraph g;
+    g.num_objects = 10;
+    g.refs = {{2}, {}, {4}, {}, {6}, {}, {8}, {}, {}, {}};  // 0->2->4->6->8 live; odds garbage
+    g.roots = {0};
+
+    auto r = mark_compact(g);
+    std::cout << "=== Mark-compact of a 10-object heap (evens live, odds garbage) ===\n";
+    std::cout << "object : old addr : new addr\n";
+    std::vector<double> ox, ny;
+    for (int i = 0; i < g.num_objects; ++i) {
+        std::cout << "  " << i << "    :    " << i << "    :   "
+                  << (r.new_address[i] < 0 ? std::string("- (freed)") : std::to_string(r.new_address[i])) << "\n";
+        if (r.new_address[i] >= 0) { ox.push_back(i); ny.push_back(r.new_address[i]); }
+    }
+    std::cout << "\nsurvivors packed into slots 0.." << (r.order.size() - 1)
+              << " (heap compacted, no gaps)\n";
+    std::cout << "object 0's updated references (new addresses): ";
+    for (int a : r.updated_refs[0]) std::cout << a << " ";
+    std::cout << "\n";
+
+    RPlot p = RPlot::create();
+    p.points(ox, ny, "survivor", {37, 99, 235}, 6.0);
+    p.abline(0.0, 1.0, {200, 200, 200}, 1.0);  // y = x reference (no movement) for contrast
+    p.save_svg("build/org/mark_compact.svg");
+    std::cout << "\nwrote build/org/mark_compact.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/mark_compact_analysis.cpp <<'CPP'
+<<mc-includes>>
+
+int main() {
+<<mc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/mark_compact_analysis.cpp -o build/org/mark_compact_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/mark_compact_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Mark-compact of a 10-object heap (evens live, odds garbage) ===
+object : old addr : new addr
+  0    :    0    :   0
+  1    :    1    :   - (freed)
+  2    :    2    :   1
+  3    :    3    :   - (freed)
+  4    :    4    :   2
+  5    :    5    :   - (freed)
+  6    :    6    :   3
+  7    :    7    :   - (freed)
+  8    :    8    :   4
+  9    :    9    :   - (freed)
+
+survivors packed into slots 0..4 (heap compacted, no gaps)
+object 0's updated references (new addresses): 1
+#+end_example
+
+The five live objects, originally at addresses 0, 2, 4, 6, 8 with garbage between them, slide
+down to the contiguous slots 0, 1, 2, 3, 4. The figure plots each survivor's old address against
+its new one: the points sit *below* the dashed no-movement line by a growing gap, exactly the
+amount of dead space squeezed out ahead of them. Object 0's reference to object 2 is rewritten
+to the new address 1, keeping the graph valid after the move -- the reference-update pass that
+makes a moving collector correct.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/mark_compact.svg]]
+
+* Character and relatives
+
+Mark-compact eliminates fragmentation without a second semispace, so it uses the whole heap --
+attractive when memory is tight (it is the old-generation collector in several JVMs). Its cost
+is multiple heap passes (mark, compute addresses, update references, move), making it slower per
+cycle than *copying* collection (Cheney, companion report), which does it in one pass but needs
+double the space. Against plain *mark-sweep* (companion report) it trades extra work for a
+compact, fragmentation-free heap and bump-pointer allocation.
+
+* Complexity
+
+\(O(H)\) over the heap with a small constant number of passes (mark, address computation,
+reference update, and the move); no auxiliary space beyond the mark bits and relocation map.

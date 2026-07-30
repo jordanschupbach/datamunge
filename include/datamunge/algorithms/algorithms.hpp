@@ -29,10 +29,12 @@
 #include <datamunge/algorithms/bully_election.hpp>
 #include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
+#include <datamunge/algorithms/buddy_allocator.hpp>
 #include <datamunge/algorithms/chinese_remainder.hpp>
 #include <datamunge/algorithms/clock_synchronization.hpp>
 #include <datamunge/algorithms/check_digits.hpp>
 #include <datamunge/algorithms/checksums.hpp>
+#include <datamunge/algorithms/cheney.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/computus.hpp>
@@ -80,6 +82,7 @@
 #include <datamunge/algorithms/grover.hpp>
 #include <datamunge/algorithms/golden_section_search.hpp>
 #include <datamunge/algorithms/goertzel.hpp>
+#include <datamunge/algorithms/generational.hpp>
 #include <datamunge/algorithms/grasp.hpp>
 #include <datamunge/algorithms/graph_coloring.hpp>
 #include <datamunge/algorithms/graph_connectivity.hpp>
@@ -113,7 +116,9 @@
 #include <datamunge/algorithms/linear_solvers.hpp>
 #include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
+#include <datamunge/algorithms/mark_compact.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
+#include <datamunge/algorithms/mark_sweep.hpp>
 #include <datamunge/algorithms/memetic.hpp>
 #include <datamunge/algorithms/merge.hpp>
 #include <datamunge/algorithms/miser.hpp>
@@ -133,11 +138,13 @@
 #include <datamunge/algorithms/number_theory_advanced.hpp>
 #include <datamunge/algorithms/number_theory_more.hpp>
 #include <datamunge/algorithms/odds_algorithm.hpp>
+#include <datamunge/algorithms/object_graph.hpp>
 #include <datamunge/algorithms/online_linear_classifiers.hpp>
 #include <datamunge/algorithms/online_statistics.hpp>
 #include <datamunge/algorithms/optics.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
+#include <datamunge/algorithms/reference_counting.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/sobel.hpp>

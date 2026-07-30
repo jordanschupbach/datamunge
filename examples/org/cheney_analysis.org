@@ -1,0 +1,148 @@
+#+title: Cheney's Algorithm: Copying Garbage Collection
+#+subtitle: A literate C++ study of stackless semi-space copying, using =datamunge='s =algorithms::cheney_copy=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *copying* collector splits the heap into two equal semispaces. Programs allocate in
+*from-space*; when it fills, the collector copies every live object to *to-space* and swaps
+their roles, reclaiming all garbage at once by simply abandoning from-space. Cheney's algorithm
+(1970) does the copy *breadth-first with no auxiliary stack*: a *scan* pointer chases an
+*allocation* pointer through to-space, and the region between them is exactly the queue of
+copied-but-not-yet-scanned objects. Work is proportional to the *live* data only, and the
+result is compacted with zero fragmentation. This report runs it with =datamunge='s
+=algorithms::cheney_copy= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* Two pointers, no stack
+
+To-space starts empty. Cheney first copies the root objects to the front of to-space, leaving a
+*forwarding address* in each original. Then the *scan* pointer advances through to-space,
+object by object: for each object it scans, any child not yet copied is appended at the
+*allocation* pointer (the end of to-space) and given a forwarding address. The gap between scan
+and allocation is a FIFO queue, so the copy proceeds breadth-first -- and it needs no explicit
+stack or queue structure, because to-space itself *is* the queue. When scan catches allocation,
+every live object has been evacuated and from-space (all the garbage) is discarded wholesale.
+
+#+name: cy-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/cheney.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Cheney(roots):
+    for each root: copy it to to-space; leave a forwarding address
+    scan = 0
+    while scan < allocation_pointer:
+        obj = to_space[scan]
+        for each child of obj:
+            if child not yet copied: copy it to the allocation pointer; forward it
+        scan += 1
+    # from-space (all garbage) is discarded; scan..alloc gap was the BFS queue
+#+end_example
+
+* A worked example
+
+A binary tree rooted at 0 -- \(0\to\{1,2\}\), \(1\to\{3,4\}\), \(2\to\{5,6\}\) -- plus two
+unreachable garbage objects 7 and 8. Cheney copies the seven live objects breadth-first.
+
+#+name: cy-run
+#+begin_src c++ :eval no
+    ObjectGraph g;
+    g.num_objects = 9;
+    g.refs  = {{1, 2}, {3, 4}, {5, 6}, {}, {}, {}, {}, {8}, {}};  // 0..6 live tree; 7->8 garbage
+    g.roots = {0};
+
+    auto r = cheney_copy(g);
+    std::cout << "=== Cheney copy of a 7-node tree (+2 garbage) ===\n";
+    std::cout << "to-space order (breadth-first): ";
+    for (int o : r.to_space_order) std::cout << o << " ";
+    std::cout << "\nforwarding addresses (old -> new):\n";
+    std::vector<double> ox, ny;
+    for (int i = 0; i < g.num_objects; ++i) {
+        std::cout << "  obj " << i << " -> "
+                  << (r.forwarding[i] < 0 ? std::string("garbage (not copied)")
+                                          : std::to_string(r.forwarding[i])) << "\n";
+        if (r.forwarding[i] >= 0) { ox.push_back(i); ny.push_back(r.forwarding[i]); }
+    }
+    std::cout << "copied " << r.to_space_order.size() << " live objects; "
+              << "garbage 7,8 abandoned with from-space\n";
+
+    RPlot p = RPlot::create();
+    p.points(ox, ny, "live object", {37, 99, 235}, 6.0);
+    p.line(ox, ny, "copy order", {37, 99, 235}, 1.0);
+    p.save_svg("build/org/cheney.svg");
+    std::cout << "\nwrote build/org/cheney.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/cheney_analysis.cpp <<'CPP'
+<<cy-includes>>
+
+int main() {
+<<cy-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/cheney_analysis.cpp -o build/org/cheney_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/cheney_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Cheney copy of a 7-node tree (+2 garbage) ===
+to-space order (breadth-first): 0 1 2 3 4 5 6
+forwarding addresses (old -> new):
+  obj 0 -> 0
+  obj 1 -> 1
+  obj 2 -> 2
+  obj 3 -> 3
+  obj 4 -> 4
+  obj 5 -> 5
+  obj 6 -> 6
+  obj 7 -> garbage (not copied)
+  obj 8 -> garbage (not copied)
+copied 7 live objects; garbage 7,8 abandoned with from-space
+#+end_example
+
+The seven live objects are copied in breadth-first order -- root, then its children 1 and 2,
+then the grandchildren 3,4,5,6 -- landing in consecutive to-space addresses, while the garbage
+7 and 8 are simply left behind in from-space and reclaimed for free. The forwarding map shows
+each live object's new home; the figure plots old object id against to-space address, tracing
+the level-order evacuation. No stack was used: to-space between the scan and allocation pointers
+served as the queue.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/cheney.svg]]
+
+* Character and relatives
+
+Copying collection is *fast* -- one pass, touching only live data, producing a compact
+bump-pointer heap and even improving locality (parents and children end up near each other).
+Its price is *half the heap*: to-space must be large enough to hold all survivors, so it is
+memory-hungry. That makes it ideal for a *young generation*, where survivors are few, which is
+why generational collectors (companion report) use Cheney-style copying for the nursery and a
+non-copying collector for the old generation. Cheney's stackless trick is the standard way to
+implement it.
+
+* Complexity
+
+\(O(L)\) time in the number of live objects -- garbage is never touched -- and \(O(1)\) auxiliary
+space beyond the two semispaces, since to-space itself serves as the traversal queue.
