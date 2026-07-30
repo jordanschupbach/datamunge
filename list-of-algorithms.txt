@@ -581,9 +581,9 @@ Computational science
 Further information: Computational science
 Astronomy
 
-    Doomsday algorithm: day of the week
-    various Easter algorithms are used to calculate the day of Easter
-    Zeller's congruence is an algorithm to calculate the day of the week for any Julian or Gregorian calendar date
+    [x] Doomsday algorithm: day of the week  -> datamunge::algorithms::doomsday_weekday (doomsday.hpp); report examples/org/doomsday_analysis.org
+    [x] various Easter algorithms are used to calculate the day of Easter  -> datamunge::algorithms::computus_gregorian (computus.hpp); report examples/org/computus_analysis.org
+    [x] Zeller's congruence is an algorithm to calculate the day of the week for any Julian or Gregorian calendar date  -> datamunge::algorithms::zeller_gregorian (zeller.hpp); report examples/org/zeller_analysis.org
 
 Bioinformatics
 Further information: Bioinformatics
@@ -591,7 +591,7 @@ See also: Sequence alignment algorithms
 
     Basic Local Alignment Search Tool also known as BLAST: an algorithm for comparing primary biological sequence information
     Bloom Filter: probabilistic data structure used to test for the existence of an element within a set. Primarily used in bioinformatics to test for the existence of a k-mer in a sequence or sequences.
-    Kabsch algorithm: calculate the optimal alignment of two sets of points in order to compute the root mean squared deviation between two protein structures.
+    [x] Kabsch algorithm: calculate the optimal alignment of two sets of points in order to compute the root mean squared deviation between two protein structures.  -> datamunge::algorithms::kabsch (kabsch.hpp); report examples/org/kabsch_analysis.org
     Maximum parsimony (phylogenetics): an algorithm for finding the simplest phylogenetic tree to explain a given character matrix.
     Sorting by signed reversals: an algorithm for understanding genomic evolution.
     UPGMA: a distance-based phylogenetic tree construction algorithm.
@@ -600,8 +600,8 @@ See also: Sequence alignment algorithms
 Geoscience
 Further information: Geoscience
 
-    Geohash: a public domain algorithm that encodes a decimal latitude/longitude pair as a hash string
-    Vincenty's formulae: a fast algorithm to calculate the distance between two latitude/longitude points on an ellipsoid
+    [x] Geohash: a public domain algorithm that encodes a decimal latitude/longitude pair as a hash string  -> datamunge::algorithms::geohash_encode (geohash.hpp); report examples/org/geohash_analysis.org
+    [x] Vincenty's formulae: a fast algorithm to calculate the distance between two latitude/longitude points on an ellipsoid  -> datamunge::algorithms::vincenty_inverse (vincenty.hpp); report examples/org/vincenty_analysis.org
 
 Linguistics
 Further information: Computational linguistics and Natural language processing

@@ -1,0 +1,167 @@
+#+title: Geohash: Encoding Coordinates as Prefix-Comparable Strings
+#+subtitle: A literate C++ study of the geohash encoding, using =datamunge='s =algorithms::geohash_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *geohash* (Gustavo Niemeyer, 2008) turns a latitude/longitude pair into a short base-32
+string by recursively bisecting the coordinate ranges -- each bit answering "which half?",
+alternating longitude and latitude. The encoding has the *prefix property*: two nearby points
+share a long common prefix, so ordinary string-prefix comparison becomes a proximity filter
+and geohashes index directly in B-trees. This report implements it in =datamunge='s C++
+=algorithms::geohash_encode= as a literate program: every number and figure comes from one
+compiled binary. We reproduce the canonical example, show nearby cities sharing prefixes, and
+chart how a cell shrinks with each added character.
+#+end_abstract
+
+* Bisect, interleave, base-32
+
+Starting from the full ranges \([-180,180]\) for longitude and \([-90,90]\) for latitude,
+each step halves one range: the bit is 1 if the coordinate lies in the upper half (and that
+half becomes the new range), else 0. Bits alternate longitude, latitude, longitude, ..., and
+are grouped into 5-bit symbols written in the alphabet =0123456789bcdefghjkmnpqrstuvwxyz=
+(the vowels and a few confusable letters are omitted). Because early bits pin down the most
+significant halving, points that agree to a fine resolution share a long prefix -- the property
+that makes geohashes useful as spatial keys. Each extra character adds 5 bits (~2.5 per axis),
+shrinking the cell by roughly \(2^{2.5}\approx 5.7\times\) per side.
+
+#+name: gh-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/geohash.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+geohash(lat, lon, precision):
+    lon_range = [-180,180];  lat_range = [-90,90];  even = true;  bits = 0;  ch = 0
+    while length < precision:
+        r = even ? lon_range : lat_range;  v = even ? lon : lat
+        mid = midpoint(r)
+        if v >= mid: ch = (ch<<1)|1; r.lo = mid   else: ch = ch<<1; r.hi = mid
+        even = not even
+        if ++bits == 5: append base32[ch]; bits = 0; ch = 0
+    return string
+#+end_example
+
+* A worked example
+
+We verify the canonical geohash, encode three cities to show the prefix property, and tabulate
+the cell size against precision.
+
+#+name: gh-run
+#+begin_src c++ :eval no
+    std::cout << "=== Canonical example ===\n";
+    std::cout << "  (42.6, -5.6) -> " << geohash_encode(42.6, -5.6, 5) << "  (expected ezs42)\n";
+
+    struct City { const char* name; double lat, lon; };
+    std::vector<City> cities = {
+        {"London",      51.5074, -0.1278},
+        {"Greenwich",   51.4779, -0.0015},   // ~15 km from London
+        {"Sydney",     -33.8688, 151.2093},  // far away
+    };
+    std::cout << "\n=== City geohashes (precision 7) ===\n";
+    for (const auto& c : cities)
+        std::cout << "  " << c.name << ": " << geohash_encode(c.lat, c.lon, 7) << "\n";
+    std::string gl = geohash_encode(cities[0].lat, cities[0].lon, 7);
+    std::string gg = geohash_encode(cities[1].lat, cities[1].lon, 7);
+    int shared = 0;
+    while (shared < (int)gl.size() && gl[shared] == gg[shared]) ++shared;
+    std::cout << "London & Greenwich share a " << shared << "-char prefix; Sydney shares 0\n";
+
+    // Cell width (km, longitude at equator) vs precision.
+    std::vector<double> prec, logkm;
+    std::cout << "\n=== Cell longitude width vs precision ===\n";
+    for (int p = 1; p <= 8; ++p) {
+        int    lon_bits = (5 * p + 1) / 2;                 // ceil(5p/2)
+        double width_km = (360.0 / std::pow(2.0, lon_bits)) * 111.32;
+        std::cout << "  " << p << " chars: " << width_km << " km\n";
+        prec.push_back(p);
+        logkm.push_back(std::log10(width_km));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(prec, logkm, "log10(cell width km)", {37, 99, 235}, 2.0);
+    p.points(prec, logkm, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/geohash.svg");
+    std::cout << "\nwrote build/org/geohash.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/geohash_analysis.cpp <<'CPP'
+<<gh-includes>>
+
+int main() {
+<<gh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/geohash_analysis.cpp -o build/org/geohash_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/geohash_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Canonical example ===
+  (42.6, -5.6) -> ezs42  (expected ezs42)
+
+=== City geohashes (precision 7) ===
+  London: gcpvj0d
+  Greenwich: gcpuzgq
+  Sydney: r3gx2f7
+London & Greenwich share a 3-char prefix; Sydney shares 0
+
+=== Cell longitude width vs precision ===
+  1 chars: 5009.4 km
+  2 chars: 1252.35 km
+  3 chars: 156.544 km
+  4 chars: 39.1359 km
+  5 chars: 4.89199 km
+  6 chars: 1.223 km
+  7 chars: 0.152875 km
+  8 chars: 0.0382187 km
+#+end_example
+
+The encoder reproduces the canonical =ezs42=, and the prefix property is visible: London and
+nearby Greenwich share a multi-character prefix while distant Sydney shares nothing, so a range
+scan over a geohash-sorted index retrieves spatial neighbours. The cell-width chart is nearly a
+straight line on the log scale -- each added character cuts the cell side by a fixed ~5.7x -- so
+precision maps predictably to resolution, from continent-scale at one character down to
+metre-scale at eight.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/geohash.svg]]
+
+* Character and relatives
+
+The geohash's strength -- prefix-encoded proximity -- is also its weakness: two points can be
+physically adjacent yet straddle a cell boundary and share *no* prefix (the "edge" problem), so
+neighbour queries must also check adjacent cells. Alternatives trade off differently: *Hilbert*
+and *Z-order (Morton)* curves give better locality, Google's *S2* uses a spherical Hilbert
+curve to avoid the pole and boundary distortions of the lat/lon grid, and Uber's *H3* uses a
+hexagonal hierarchy for uniform neighbour distances. Geohash endures for its simplicity and
+human-readable, URL-friendly strings.
+
+* Complexity
+
+\(O(\text{precision})\) time -- five bisections per output character -- and \(O(1)\) extra space.
+
+* Notes on precision
+
+The =ezs42= example is deliberately low precision (5 characters, ~2.4 km cells); production
+systems typically use 8--12 characters for metre-scale keys.

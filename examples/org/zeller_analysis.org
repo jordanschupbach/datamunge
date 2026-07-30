@@ -1,0 +1,152 @@
+#+title: Zeller's Congruence: The Day of the Week for Any Date
+#+subtitle: A literate C++ study of calendar weekday arithmetic, using =datamunge='s =algorithms::zeller_gregorian=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Zeller's congruence (Christian Zeller, 1882) gives the weekday of any Gregorian date with a
+single modular formula. The trick is to count January and February as months 13 and 14 of
+the *previous* year, which puts the leap day at the year's end and makes the month-length
+pattern regular enough to encode as \(\lfloor 13(m+1)/5\rfloor\). This report implements it
+in =datamunge='s C++ =algorithms::zeller_gregorian= as a literate program: every number and
+figure comes from one compiled binary. We date some famous events and then use the congruence
+to settle a classic question -- is the 13th of the month really more often a Friday?
+#+end_abstract
+
+* The congruence
+
+For a Gregorian date with day \(q\), month \(m\), and year split into century \(J=\lfloor
+\text{year}/100\rfloor\) and year-of-century \(K=\text{year}\bmod 100\) (with January and
+February treated as months 13, 14 of the prior year), the weekday is
+\[
+  h = \left(q + \left\lfloor\frac{13(m+1)}{5}\right\rfloor + K + \left\lfloor\frac{K}{4}\right\rfloor
+      + \left\lfloor\frac{J}{4}\right\rfloor + 5J\right)\bmod 7,
+\]
+where \(h=0\) is Saturday, \(1\) Sunday, ..., \(6\) Friday. The \(\lfloor 13(m+1)/5\rfloor\)
+term reproduces the cumulative month lengths modulo 7, and the \(K/4\), \(J/4\), \(5J\) terms
+account for leap years and the Gregorian century rule.
+
+#+name: ze-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/zeller.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Zeller(year, month, day):
+    if month < 3: month += 12; year -= 1     # Jan, Feb -> 13, 14 of previous year
+    K = year mod 100;  J = year / 100
+    h = (day + floor(13(month+1)/5) + K + floor(K/4) + floor(J/4) + 5J) mod 7
+    return h    # 0=Saturday, 1=Sunday, ..., 6=Friday
+#+end_example
+
+* A worked example
+
+First we date a few historical events, then we count the weekday of the 13th of every month
+across a full 400-year Gregorian cycle (2001--2400, which repeats exactly thereafter).
+
+#+name: ze-run
+#+begin_src c++ :eval no
+    struct Ev { const char* what; int y, m, d; };
+    std::vector<Ev> events = {
+        {"Apollo 11 Moon landing", 1969, 7, 20},
+        {"Fall of the Berlin Wall", 1989, 11, 9},
+        {"Storming of the Bastille", 1789, 7, 14},
+        {"Y2K (Jan 1, 2000)", 2000, 1, 1},
+    };
+    std::cout << "=== Famous dates ===\n";
+    for (const auto& e : events)
+        std::cout << "  " << e.what << ": " << zeller_day_name(zeller_gregorian(e.y, e.m, e.d)) << "\n";
+
+    // Weekday of the 13th of every month over the 400-year Gregorian cycle.
+    std::array<int, 7> counts{};  // index by Zeller h (0=Sat..6=Fri)
+    for (int y = 2001; y <= 2400; ++y)
+        for (int m = 1; m <= 12; ++m)
+            counts[zeller_gregorian(y, m, 13)]++;
+
+    std::cout << "\n=== Weekday of the 13th, 2001-2400 (4800 months) ===\n";
+    std::vector<double>      heights;
+    std::vector<std::string> labels;
+    int best = 0;
+    for (int h = 0; h < 7; ++h) {
+        std::cout << "  " << zeller_day_name(h) << ": " << counts[h] << "\n";
+        heights.push_back(counts[h]);
+        labels.push_back(zeller_day_name(h).substr(0, 3));
+        if (counts[h] > counts[best]) best = h;
+    }
+    std::cout << "most common: " << zeller_day_name(best) << " (" << counts[best] << ")\n";
+
+    RPlot p = RPlot::barplot(heights, labels, "count of the 13th over 4800 months", {37, 99, 235});
+    p.save_svg("build/org/zeller.svg");
+    std::cout << "\nwrote build/org/zeller.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/zeller_analysis.cpp <<'CPP'
+<<ze-includes>>
+
+int main() {
+<<ze-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/zeller_analysis.cpp -o build/org/zeller_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/zeller_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Famous dates ===
+  Apollo 11 Moon landing: Sunday
+  Fall of the Berlin Wall: Thursday
+  Storming of the Bastille: Tuesday
+  Y2K (Jan 1, 2000): Saturday
+
+=== Weekday of the 13th, 2001-2400 (4800 months) ===
+  Saturday: 684
+  Sunday: 687
+  Monday: 685
+  Tuesday: 685
+  Wednesday: 687
+  Thursday: 684
+  Friday: 688
+most common: Friday (688)
+#+end_example
+
+The congruence dates the events instantly, and the 400-year tally settles the folklore: over
+the exact Gregorian cycle the 13th of the month falls on a *Friday* more often than on any
+other weekday. The effect is small but real -- an artifact of the 400-year leap-year pattern
+having a period not divisible by 7 -- and it drops straight out of the modular arithmetic with
+no calendar table.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/zeller.svg]]
+
+* Character and relatives
+
+Zeller's congruence is exact, branch-free (bar the Jan/Feb shift), and needs no lookup table,
+which made it popular in early computing. Conway's *Doomsday rule* (companion report) computes
+the same weekday but is optimized for *mental* arithmetic via memorable anchor dates; the two
+must always agree, a handy cross-check. Modern software usually defers to library date types
+built on a day-count epoch (e.g. days since 1970), of which Zeller's formula is essentially a
+closed-form special case.
+
+* Complexity
+
+\(O(1)\): a fixed number of integer additions, multiplications, and one modulo per date.

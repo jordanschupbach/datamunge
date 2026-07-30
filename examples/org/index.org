@@ -793,6 +793,38 @@ We schedule periodic real-time tasks with =datamunge='s C++ =algorithms::edf_sim
 
 We schedule periodic tasks with =datamunge='s C++ =algorithms::rate_monotonic_schedulable=, and report it as a literate program: assigning shorter-period tasks higher fixed priority is optimal among static schemes and schedulable when U <= n(2^(1/n)-1), the Liu-Layland bound, as the compiled binary demonstrates and contrasts with EDF.
 
+* Calendar, Geography & Bioinformatics
+
+** [[./zeller_analysis.html][Zeller's Congruence: The Day of the Week for Any Date]] ([[./zeller_analysis.pdf][PDF]])
+/A literate C++ study of calendar weekday arithmetic using datamunge/
+
+We find the weekday of any date with =datamunge='s C++ =algorithms::zeller_gregorian=, and report it as a literate program: a single modular formula dates historical events and settles the Friday-the-13th question over the 400-year Gregorian cycle, as the compiled binary shows.
+
+** [[./doomsday_analysis.html][Conway's Doomsday Rule: Weekdays by Mental Arithmetic]] ([[./doomsday_analysis.pdf][PDF]])
+/A literate C++ study of the Doomsday algorithm using datamunge/
+
+We compute weekdays with =datamunge='s C++ =algorithms::doomsday_weekday=, and report it as a literate program: memorable anchor dates sharing each year's "doomsday" give the weekday of any date, agreeing exactly with Zeller's congruence, as the compiled binary confirms.
+
+** [[./computus_analysis.html][Computus: Calculating the Date of Easter]] ([[./computus_analysis.pdf][PDF]])
+/A literate C++ study of the Anonymous Gregorian algorithm using datamunge/
+
+We compute Easter Sunday with =datamunge='s C++ =algorithms::computus_gregorian=, and report it as a literate program: pure integer arithmetic threads the 19-year Metonic lunar cycle through the Gregorian solar corrections to place Easter within its 35-day window, as the compiled binary shows.
+
+** [[./geohash_analysis.html][Geohash: Encoding Coordinates as Prefix-Comparable Strings]] ([[./geohash_analysis.pdf][PDF]])
+/A literate C++ study of the geohash encoding using datamunge/
+
+We encode locations with =datamunge='s C++ =algorithms::geohash_encode=, and report it as a literate program: recursive range bisection into base-32 gives the prefix property -- nearby points share leading characters -- so string comparison becomes a proximity filter, as the compiled binary demonstrates.
+
+** [[./vincenty_analysis.html][Vincenty's Formulae: Geodesic Distance on an Ellipsoid]] ([[./vincenty_analysis.pdf][PDF]])
+/A literate C++ study of ellipsoidal geodesics using datamunge/
+
+We measure distances with =datamunge='s C++ =algorithms::vincenty_inverse=, and report it as a literate program: iterating on an auxiliary sphere with flattening corrections gives sub-millimetre geodesic distances on the WGS-84 ellipsoid, reproducing Vincenty's test line and improving on the spherical haversine, as the compiled binary shows.
+
+** [[./kabsch_analysis.html][The Kabsch Algorithm: Optimal Rigid Alignment of Point Sets]] ([[./kabsch_analysis.pdf][PDF]])
+/A literate C++ study of RMSD minimization using datamunge/
+
+We superimpose point sets with =datamunge='s C++ =algorithms::kabsch=, and report it as a literate program: Horn's quaternion form recovers the optimal rotation and translation (minimizing RMSD) from the largest eigenvector of a 4x4 matrix, recovering a known transform from noisy data, as the compiled binary confirms.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

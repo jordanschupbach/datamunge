@@ -1,0 +1,149 @@
+#+title: Computus: Calculating the Date of Easter
+#+subtitle: A literate C++ study of the Anonymous Gregorian algorithm, using =datamunge='s =algorithms::computus_gregorian=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Computus* -- the calculation of Easter -- is the oldest recurring problem in computational
+calendars. Easter is the first Sunday after the first ecclesiastical full moon on or after
+21 March, a definition entangling the 19-year Metonic lunar cycle with the Gregorian solar
+calendar. The "Anonymous Gregorian" (Meeus/Jones/Butcher) algorithm resolves it with pure
+integer arithmetic and no tables. This report implements it in =datamunge='s C++
+=algorithms::computus_gregorian= as a literate program: every number and figure comes from
+one compiled binary. We compute Easter for a span of years and visualize its 35-day wander.
+#+end_abstract
+
+* Metonic cycle meets the Gregorian corrections
+
+The algorithm threads several cycles together. The *golden number* \(a=\text{year}\bmod 19\)
+locates the year in the 19-year Metonic cycle, over which the moon's phases nearly repeat on
+the same solar dates. The century terms correct for the Gregorian rules that keep the
+*ecclesiastical* moon aligned with the real one over centuries: a *solar* correction (dropped
+leap days at century years) and a *lunar* correction (the Metonic cycle's slow drift). From
+these it derives \(h\), the days from 21 March to the paschal full moon, and \(l\), the
+offset to the following Sunday; a final correction \(m\) handles two edge cases, yielding the
+month and day directly.
+
+#+name: cp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/computus.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Computus(year):                      # Anonymous Gregorian (Meeus/Jones/Butcher)
+    a = year mod 19                  # golden number (Metonic position)
+    b = year / 100;  c = year mod 100
+    d = b/4;  e = b mod 4;  f = (b+8)/25;  g = (b-f+1)/3
+    h = (19a + b - d - g + 15) mod 30           # days to paschal full moon
+    i = c/4;  k = c mod 4
+    l = (32 + 2e + 2i - h - k) mod 7            # offset to the next Sunday
+    m = (a + 11h + 22l) / 451                   # correction for two edge cases
+    month = (h + l - 7m + 114) / 31
+    day   = ((h + l - 7m + 114) mod 31) + 1
+    return (month, day)
+#+end_example
+
+* A worked example
+
+We compute Easter for several notable years and then for a run of years to chart how the date
+moves (it can fall anywhere from 22 March to 25 April).
+
+#+name: cp-run
+#+begin_src c++ :eval no
+    std::vector<int> notable = {2000, 2024, 2025, 2026, 2038};
+    std::cout << "=== Easter Sunday (Gregorian) ===\n";
+    for (int y : notable) {
+        auto e = computus_gregorian(y);
+        std::cout << "  " << y << ": " << (e.month == 3 ? "March " : "April ") << e.day << "\n";
+    }
+
+    // Day-of-year (March=31 days offset) for years 2000-2040, to visualize the wander.
+    std::vector<double> years, doy;
+    int earliest_y = 2000, latest_y = 2000, earliest = 999, latest = 0;
+    for (int y = 2000; y <= 2040; ++y) {
+        auto e = computus_gregorian(y);
+        int  d = (e.month == 3 ? e.day : 31 + e.day);  // days since 1 March, 1-indexed
+        years.push_back(y);
+        doy.push_back(d);
+        if (d < earliest) { earliest = d; earliest_y = y; }
+        if (d > latest)   { latest = d;   latest_y = y; }
+    }
+    auto ey = computus_gregorian(earliest_y);
+    auto ly = computus_gregorian(latest_y);
+    std::cout << "\nover 2000-2040:\n";
+    std::cout << "  earliest: " << earliest_y << " -> March " << ey.day << "\n";
+    std::cout << "  latest:   " << latest_y << " -> April " << ly.day << "\n";
+    std::cout << "  spread: " << (latest - earliest) << " days\n";
+
+    RPlot p = RPlot::create();
+    p.line(years, doy, "days since 1 March", {37, 99, 235}, 1.5);
+    p.points(years, doy, "Easter", {220, 38, 38}, 3.5);
+    p.save_svg("build/org/computus.svg");
+    std::cout << "\nwrote build/org/computus.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/computus_analysis.cpp <<'CPP'
+<<cp-includes>>
+
+int main() {
+<<cp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/computus_analysis.cpp -o build/org/computus_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/computus_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Easter Sunday (Gregorian) ===
+  2000: April 23
+  2024: March 31
+  2025: April 20
+  2026: April 5
+  2038: April 25
+
+over 2000-2040:
+  earliest: 2008 -> March 23
+  latest:   2038 -> April 25
+  spread: 33 days
+#+end_example
+
+The algorithm reproduces the known dates exactly, and the chart shows Easter's characteristic
+sawtooth: the date jumps and drifts within a five-week window because it chases a lunar event
+(the paschal full moon) across a solar calendar, the two cycles beating against each other
+with the Metonic 19-year quasi-period. No lookup table appears anywhere -- the century
+corrections do all the work of keeping the ecclesiastical moon in step over centuries.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/computus.svg]]
+
+* Character and relatives
+
+Computus has been computed by hand for over a millennium; Gauss gave an early closed form, and
+the Anonymous Gregorian algorithm used here (published in /Nature/, 1876, and refined by Meeus)
+is its most compact modern descendant. A parallel *Julian* computus gives the Eastern Orthodox
+Easter, which differs because it still uses the Julian calendar and a fixed Metonic table. The
+same interplay of lunar and solar cycles drives other lunisolar calendars (Hebrew, Chinese),
+where analogous arithmetic fixes movable dates.
+
+* Complexity
+
+\(O(1)\): roughly two dozen integer operations per year, independent of the year's magnitude.
