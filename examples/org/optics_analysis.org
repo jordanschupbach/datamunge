@@ -1,0 +1,191 @@
+#+title: OPTICS: Ordering Points To Identify the Clustering Structure
+#+subtitle: A literate C++ study of density-based clustering across varying densities, using =datamunge='s =algorithms::optics=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+DBSCAN finds density-based clusters of arbitrary shape, but it needs a single
+global density threshold \(\varepsilon\) -- and a dataset with clusters of *different*
+densities has no single good value. *OPTICS* (Ankerst, Breunig, Kriegel & Sander
+1999) fixes this. Rather than a flat labeling it produces an *ordering* of the
+points and a *reachability distance* for each, arranged so that clusters appear as
+*valleys* in the reachability plot. From that one ordering you can extract
+DBSCAN-style clusterings at any threshold, or read off clusters of different
+densities directly. This report implements it in =datamunge='s C++
+=algorithms::optics= as a literate program: every number and figure comes from one
+compiled binary. We build a dataset of clusters with different densities plus
+noise, draw its reachability plot, and extract the clusters from it.
+#+end_abstract
+
+* Core and reachability distances
+
+Fix a radius \(\varepsilon\) (an upper bound on the densities we can recover) and a
+count =min_pts=. For a point \(p\):
+
+- its *core distance* is the smallest radius that makes \(p\) a core point -- the
+  distance to its =min_pts=-th nearest neighbor -- or undefined if \(p\) has fewer
+  than =min_pts= neighbors within \(\varepsilon\);
+- the *reachability distance* of a point \(o\) *from* \(p\) is
+  \(\max\big(\text{core-dist}(p),\, d(p,o)\big)\): you cannot reach \(o\) more
+  cheaply than \(p\)'s own core radius, which smooths away single-link chaining.
+
+OPTICS visits points in a density-driven order, always expanding toward the point
+with the smallest reachability, and records that reachability. Dense regions
+produce long runs of small reachability (a *valley*); the jump between clusters
+produces a spike. The resulting *reachability plot* is a density profile of the
+data from which clusters -- at any scale -- are read as valleys.
+
+#+name: optics-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/optics.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <cstddef>
+#include <iostream>
+#include <limits>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+OPTICS(points, eps, min_pts):
+    reachability[*] = UNDEFINED; ordering = []
+    for each unprocessed p (in index order):
+        N = neighbors(p, eps); mark p processed; append p to ordering
+        core[p] = min_pts-th smallest distance in N (or UNDEFINED)
+        if core[p] defined:
+            seeds = priority queue by reachability
+            update(N, p, seeds)                # set reachability of neighbors
+            while seeds not empty:
+                q = extract-min(seeds); Nq = neighbors(q, eps)
+                mark q processed; append q; core[q] = ...
+                if core[q] defined: update(Nq, q, seeds)
+    return ordering, reachability, core
+
+update(N, p, seeds):
+    for o in N not processed:
+        r = max(core[p], dist(p, o))
+        if reachability[o] UNDEFINED: reachability[o] = r; add o to seeds
+        else if r < reachability[o]: reachability[o] = r   # decrease-key
+#+end_example
+
+* A worked example: clusters of different densities
+
+We build three clusters of *different* densities -- a tight one, a loose one, and a
+medium one -- plus scattered noise, exactly the case where a single DBSCAN
+\(\varepsilon\) struggles. We run OPTICS with a generous \(\varepsilon\), plot the
+reachability profile, and extract a flat clustering by cutting the profile.
+
+#+name: optics-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(30);
+    std::vector<std::vector<double>> data;
+    auto blob = [&](double cx, double cy, double sd, int n) {
+        std::normal_distribution<double> g(0.0, sd);
+        for (int i = 0; i < n; ++i) data.push_back({cx + g(rng), cy + g(rng)});
+    };
+    blob(0.0, 0.0, 0.20, 40);   // tight cluster
+    blob(8.0, 0.0, 0.70, 40);   // loose cluster
+    blob(4.0, 7.0, 0.35, 40);   // medium cluster
+    std::uniform_real_distribution<double> u(-2.0, 10.0);
+    for (int i = 0; i < 12; ++i) data.push_back({u(rng), u(rng)});  // noise
+
+    OpticsResult r = optics(data, 5.0, 5);
+
+    std::cout << "=== OPTICS on 3 clusters of different densities + noise ===\n";
+    std::cout << "points: " << data.size() << ",  ordered: " << r.ordering.size() << "\n";
+
+    auto labels = optics_extract_dbscan(r, 1.2);
+    int  max_label = -1, noise = 0;
+    for (int l : labels) {
+        if (l > max_label) max_label = l;
+        if (l < 0) ++noise;
+    }
+    std::cout << "clusters extracted at eps'=1.2: " << (max_label + 1) << ",  noise points: " << noise << "\n";
+    std::vector<int> sizes(max_label + 1, 0);
+    for (int l : labels)
+        if (l >= 0) ++sizes[l];
+    std::cout << "cluster sizes:";
+    for (int s : sizes) std::cout << ' ' << s;
+    std::cout << '\n';
+
+    // Figure: the reachability plot -- bars in processing order (valleys = clusters).
+    double maxfin = 0.0;
+    for (double v : r.reachability)
+        if (v != std::numeric_limits<double>::infinity()) maxfin = std::max(maxfin, v);
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < r.ordering.size(); ++i) {
+        double v = r.reachability[r.ordering[i]];
+        if (v == std::numeric_limits<double>::infinity()) v = maxfin * 1.15;  // cap undefined for display
+        xs.push_back(static_cast<double>(i));
+        ys.push_back(v);
+    }
+    RPlot p = RPlot::create();
+    p.bars(xs, ys, "reachability", {37, 99, 235}, 0.9);
+    p.abline_h(1.2, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/optics_reachability.svg");
+    std::cout << "\nwrote build/org/optics_reachability.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/optics_analysis.cpp <<'CPP'
+<<optics-includes>>
+
+int main() {
+<<optics-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/optics_analysis.cpp -o build/org/optics_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/optics_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== OPTICS on 3 clusters of different densities + noise ===
+points: 132,  ordered: 132
+clusters extracted at eps'=1.2: 3,  noise points: 11
+cluster sizes: 41 40 40
+#+end_example
+
+The reachability plot shows three clear valleys -- one per cluster -- separated by
+spikes where the traversal jumps from one dense region to the next; the noise
+points appear as isolated high bars. Cutting the profile at \(\varepsilon'=1.2\)
+(the dashed line) recovers the three clusters and labels the scattered points as
+noise. Crucially, the three clusters have *different densities*, so no single
+DBSCAN threshold would cleanly separate all three at once -- yet they all show up as
+valleys in the one OPTICS ordering, at their own scales.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/optics_reachability.svg]]
+
+* Reading the reachability plot
+
+The reachability plot is OPTICS's real output. A *valley* (a run of low
+reachability) is a cluster; the *depth* of the valley reflects the cluster's
+density (denser clusters sink lower); the *walls* between valleys are the sparse
+gaps. A horizontal cut at height \(\varepsilon'\) reproduces exactly DBSCAN's
+clustering for that \(\varepsilon'\) and the same =min_pts= -- but because the whole
+profile is available, one can instead extract clusters at *different* heights in
+different places, which is what the \(\xi\)-method does to pull out a hierarchy of
+nested, variable-density clusters that no single DBSCAN run can.
+
+* Complexity
+
+Each point triggers a neighborhood query; with a linear scan that is \(O(n)\), so
+this implementation is \(O(n^2)\), and the seed priority operations add lower-order
+cost. With a spatial index (k-d tree, R-tree) the neighborhood queries drop to
+\(O(\log n)\) on average, giving the textbook \(O(n\log n)\). Memory is \(O(n)\) for
+the ordering and the reachability/core arrays.

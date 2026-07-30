@@ -1,0 +1,182 @@
+#+title: k-medoids Clustering (PAM): Robust Prototypes That Are Real Points
+#+subtitle: A literate C++ study of Partitioning Around Medoids, using =datamunge='s =algorithms::k_medoids=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+k-means represents each cluster by the *mean* of its points -- a synthetic
+coordinate that no data point need occupy, and one a single outlier can drag far
+off. *k-medoids* instead represents each cluster by one of its own members, its
+*medoid*, chosen to minimize the total distance from cluster points to that
+representative. Because a medoid is an actual point and the objective sums
+distances (not squared distances), k-medoids is markedly more *robust to outliers*
+and works with *any* dissimilarity measure -- it never averages coordinates. This
+report implements the classic PAM algorithm in =datamunge='s C++
+=algorithms::k_medoids= as a literate program: every number and figure comes from
+one compiled binary. We cluster three blobs contaminated with outliers and show
+the medoids stay anchored inside the blobs where the means would have been pulled
+away.
+#+end_abstract
+
+* The k-medoids objective
+
+Given points \(x_1,\dots,x_n\), a dissimilarity \(d\), and a target \(k\),
+k-medoids selects \(k\) *medoids* \(m_1,\dots,m_k\) (each an actual data point) and
+assigns every point to its nearest medoid, minimizing the total cost
+\[
+  \text{cost} = \sum_{i=1}^{n} \min_{1\le j\le k} d\big(x_i, m_j\big).
+\]
+Two features distinguish it from k-means: the representative is a real point (so it
+is interpretable and needs no coordinate averaging), and the cost is a sum of
+distances rather than squared distances, so a far-off outlier contributes linearly
+rather than quadratically -- it cannot dominate the objective and yank a
+representative toward itself.
+
+#+name: kmedoids-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/k_medoids.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Partitioning Around Medoids (PAM)
+
+PAM finds a good medoid set by local search. After initializing \(k\) medoids, it
+repeatedly considers *swapping* a current medoid with a non-medoid point and
+performs the single swap that most reduces the total cost, stopping when no swap
+helps -- a local optimum of the cost above.
+
+** Pseudocode
+
+#+begin_example
+PAM(points, k):
+    medoids = k initial points
+    assign each point to its nearest medoid; compute total cost
+    repeat:
+        best_swap = none
+        for each medoid m, each non-medoid o:
+            cost' = total cost if m were replaced by o
+            if cost' < current cost: remember (m, o) as best_swap
+        if best_swap is none: stop            # local optimum
+        apply best_swap; recompute cost
+    return medoids, assignment, cost
+#+end_example
+
+The swap phase is what gives PAM its robustness and generality: it evaluates
+candidate representatives by the *actual* clustering cost, using only pairwise
+dissimilarities, so it never forms a mean and never leaves the data.
+
+* A worked example: three blobs with outliers
+
+We generate three well-separated blobs and add two far-away outliers. We cluster
+with \(k=3\), report the chosen medoids and total cost, and confirm the medoids sit
+inside the blobs -- not pulled toward the outliers.
+
+#+name: kmedoids-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(4);
+    std::normal_distribution<double> j(0.0, 0.3);
+    std::vector<std::vector<double>> data;
+    const std::vector<std::vector<double>> centers = {{0, 0}, {10, 0}, {5, 8}};
+    for (const auto& c : centers)
+        for (int i = 0; i < 30; ++i) data.push_back({c[0] + j(rng), c[1] + j(rng)});
+    // Two outliers far from every blob.
+    data.push_back({20, 20});
+    data.push_back({-15, 12});
+
+    KMedoidsResult res = k_medoids(data, 3, 100, 2);
+
+    std::cout << "=== k-medoids (PAM) on 3 blobs + 2 outliers ===\n";
+    std::cout << "points: " << data.size() << ",  swap iterations: " << res.iterations << "\n";
+    std::cout << "total cost (sum of distances to medoid): " << res.total_cost << "\n\n";
+    std::cout << "chosen medoids (actual data points):\n";
+    for (std::size_t m : res.medoids)
+        std::cout << "  index " << m << " at (" << data[m][0] << ", " << data[m][1] << ")\n";
+
+    // Cluster sizes.
+    std::vector<std::size_t> sizes(res.medoids.size(), 0);
+    for (std::size_t a : res.assignment) ++sizes[a];
+    std::cout << "\ncluster sizes:";
+    for (std::size_t s : sizes) std::cout << ' ' << s;
+    std::cout << "  (outliers are absorbed but do not move the medoids)\n";
+
+    // Figure: points colored by cluster, medoids marked large.
+    const std::vector<RGB> cols = {{239, 68, 68}, {59, 130, 246}, {22, 163, 74}};
+    RPlot                  p    = RPlot::create();
+    for (std::size_t c = 0; c < res.medoids.size(); ++c) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < data.size(); ++i)
+            if (res.assignment[i] == c) { xs.push_back(data[i][0]); ys.push_back(data[i][1]); }
+        p.points(xs, ys, "", cols[c], 3.5);
+    }
+    std::vector<double> mx, my;
+    for (std::size_t m : res.medoids) { mx.push_back(data[m][0]); my.push_back(data[m][1]); }
+    p.points(mx, my, "medoids", {17, 24, 39}, 9.0);
+    p.save_svg("build/org/k_medoids_clusters.svg");
+    std::cout << "\nwrote build/org/k_medoids_clusters.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/k_medoids_analysis.cpp <<'CPP'
+<<kmedoids-includes>>
+
+int main() {
+<<kmedoids-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/k_medoids_analysis.cpp -o build/org/k_medoids_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/k_medoids_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== k-medoids (PAM) on 3 blobs + 2 outliers ===
+points: 92,  swap iterations: 3
+total cost (sum of distances to medoid): 71.6426
+
+chosen medoids (actual data points):
+  index 80 at (5.06088, 8.13751)
+  index 15 at (0.0774592, -0.0542777)
+  index 54 at (9.87211, -0.0420129)
+
+cluster sizes: 31 31 30  (outliers are absorbed but do not move the medoids)
+#+end_example
+
+Each medoid is a genuine data point sitting near the center of its blob, and the
+two far outliers are simply absorbed into their nearest cluster without displacing
+any medoid -- the robustness that motivates k-medoids. A k-means center, minimizing
+*squared* distance, would have been tugged measurably toward an outlier; the
+medoid, minimizing plain distance and constrained to be a real point, cannot be.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/k_medoids_clusters.svg]]
+
+* Trade-offs and relatives
+
+k-medoids buys robustness and generality at a computational price: naive PAM
+evaluates \(O(k(n-k))\) swaps per iteration, each an \(O(n)\) reassignment, so it is
+heavier than k-means. Scalable variants -- CLARA (sampling) and CLARANS
+(randomized neighbor search), and the modern FastPAM -- cut this cost. Its
+distinguishing strength remains: because it needs only a dissimilarity matrix, it
+clusters data for which no meaningful mean exists (categorical records, strings,
+graphs), where k-means simply does not apply.
+
+* Complexity
+
+With a precomputed distance matrix, each swap trial costs \(O(n)\) to reassign and
+there are \(O(k(n-k))\) trials per iteration, giving \(O(k(n-k)n)\) per iteration
+times the number of iterations; memory is \(O(n^2)\) for the distance matrix.

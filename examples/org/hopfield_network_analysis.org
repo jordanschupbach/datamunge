@@ -1,0 +1,213 @@
+#+title: The Hopfield Network: An Associative Memory
+#+subtitle: A literate C++ study of content-addressable memory and energy descent, using =datamunge='s =algorithms::hopfield_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A Hopfield network (Hopfield 1982) is a recurrent neural network that behaves as a
+*content-addressable memory*: store a set of binary patterns as the stable states
+of a dynamical system, then present a corrupted or partial version and let the
+network relax back to the nearest stored memory. It works because the symmetric,
+Hebbian-trained weights define an *energy* that each asynchronous neuron update can
+only lower, so the dynamics slide downhill into an energy minimum -- ideally a
+stored pattern. This report implements it in =datamunge='s C++
+=algorithms::hopfield_train= as a literate program: every number and figure comes
+from one compiled binary. We store several random patterns, recover one from a
+noisy probe, confirm the stored patterns are energy minima, and chart how
+recovery accuracy degrades as the probe gets noisier.
+#+end_abstract
+
+* Associative memory and energy
+
+The network has \(N\) bipolar neurons \(s_i\in\{-1,+1\}\), fully connected by a
+symmetric weight matrix \(W\) with zero diagonal. Patterns \(\xi^{(p)}\in\{-1,+1\}^N\)
+are stored by the *Hebbian outer-product rule*
+\[
+  W_{ij} = \frac{1}{N}\sum_{p} \xi^{(p)}_i \xi^{(p)}_j \quad(i\ne j),\qquad W_{ii}=0,
+\]
+"neurons that fire together wire together". Recall repeatedly applies the update
+\[
+  s_i \leftarrow \operatorname{sign}\Big(\textstyle\sum_j W_{ij} s_j\Big),
+\]
+one neuron at a time (*asynchronous* update). The central fact is that the
+quadratic *energy*
+\[
+  E(s) = -\tfrac12 \sum_{i\ne j} W_{ij}\, s_i s_j
+\]
+never increases under an asynchronous flip: flipping \(s_i\) to match the sign of
+its local field \(\sum_j W_{ij}s_j\) changes \(E\) by a non-positive amount. Since
+\(E\) is bounded below and takes finitely many values, the dynamics must reach a
+fixed point -- a local minimum. The Hebbian rule arranges for the stored patterns
+to sit at such minima, so relaxation from a nearby probe lands on the memory.
+
+#+name: hopfield-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hopfield_network.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Train(patterns):                         # Hebbian storage
+    W = 0
+    for each pattern xi:
+        for i != j: W[i][j] += xi[i]*xi[j] / N
+
+Recall(W, s):                            # asynchronous energy descent
+    repeat until a full sweep makes no change:
+        for i in random order:
+            s[i] = sign( sum_j W[i][j] * s[j] )
+    return s
+#+end_example
+
+* Capacity, and a caution
+
+A Hopfield net of \(N\) neurons can reliably store only about \(0.138\,N\) random
+patterns; beyond that, *crosstalk* between memories creates *spurious* minima
+(mixtures and reversals of stored patterns) and recall degrades. We stay well
+under capacity: three patterns in \(N=100\) neurons.
+
+* A worked example: recall from noise
+
+We store three random \(\pm1\) patterns of length 100, verify each is a fixed
+point and an energy minimum, recover one from a probe with 10 flipped bits, then
+sweep the noise level and measure recovery.
+
+#+name: hopfield-run
+#+begin_src c++ :eval no
+    const std::size_t N = 100;
+    std::mt19937_64   rng(20240730);
+    auto              random_pattern = [&](std::size_t n) {
+        std::bernoulli_distribution bit(0.5);
+        std::vector<int>            p(n);
+        for (auto& v : p) v = bit(rng) ? 1 : -1;
+        return p;
+    };
+
+    std::vector<std::vector<int>> patterns;
+    for (int i = 0; i < 3; ++i) patterns.push_back(random_pattern(N));
+    HopfieldNetwork net = hopfield_train(patterns);
+
+    std::cout << "=== Hopfield network: 3 patterns in " << N << " neurons ===\n";
+    std::cout << "energy of stored patterns:";
+    for (const auto& p : patterns) std::cout << ' ' << hopfield_energy(net, p);
+    std::cout << "\nenergy of 3 random states:";
+    for (int i = 0; i < 3; ++i) std::cout << ' ' << hopfield_energy(net, random_pattern(N));
+    std::cout << '\n';
+
+    // Recover pattern 0 from a probe with 10 flipped bits.
+    auto                                       probe = patterns[0];
+    std::uniform_int_distribution<std::size_t> pos(0, N - 1);
+    for (int f = 0; f < 10; ++f) probe[pos(rng)] *= -1;
+    std::size_t before = hopfield_hamming(probe, patterns[0]);
+    auto        out    = hopfield_recall(net, probe, 100, 1);
+    std::size_t after  = hopfield_hamming(out, patterns[0]);
+    std::cout << "\nprobe differs from stored pattern in " << before << " bits\n";
+    std::cout << "after recall, differs in " << after << " bits  ("
+              << (after == 0 ? "perfect recovery" : "imperfect") << ")\n";
+
+    // Sweep noise level: fraction of bits correctly recovered, averaged over trials.
+    std::vector<double> noise_x, acc_y;
+    for (int pct = 0; pct <= 50; pct += 5) {
+        double total_correct = 0.0;
+        const int trials = 30;
+        for (int t = 0; t < trials; ++t) {
+            std::vector<int> q = patterns[0];
+            for (std::size_t i = 0; i < N; ++i)
+                if (static_cast<int>(pos(rng) % 100) < pct) q[i] *= -1;
+            auto        r = hopfield_recall(net, q, 100, static_cast<std::uint64_t>(t + 1));
+            std::size_t d = hopfield_hamming(r, patterns[0]);
+            total_correct += static_cast<double>(N - d) / static_cast<double>(N);
+        }
+        noise_x.push_back(pct);
+        acc_y.push_back(total_correct / trials);
+    }
+    std::cout << "\nnoise%  recovery-accuracy\n";
+    for (std::size_t i = 0; i < noise_x.size(); ++i)
+        std::cout << "  " << (noise_x[i] < 10 ? " " : "") << noise_x[i] << "     " << acc_y[i] << '\n';
+
+    RPlot p = RPlot::create();
+    p.line(noise_x, acc_y, "recovery accuracy", {37, 99, 235}, 2.5);
+    p.points(noise_x, acc_y, "", {37, 99, 235}, 4.0);
+    p.abline_h(1.0, {22, 163, 74}, 1.0);
+    p.save_svg("build/org/hopfield_recovery.svg");
+    std::cout << "\nwrote build/org/hopfield_recovery.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hopfield_network_analysis.cpp <<'CPP'
+<<hopfield-includes>>
+
+int main() {
+<<hopfield-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hopfield_network_analysis.cpp -o build/org/hopfield_network_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hopfield_network_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Hopfield network: 3 patterns in 100 neurons ===
+energy of stored patterns: -49.32 -49 -49.18
+energy of 3 random states: 1.06 1.4 0.84
+
+probe differs from stored pattern in 10 bits
+after recall, differs in 0 bits  (perfect recovery)
+
+noise%  recovery-accuracy
+   0     1
+   5     1
+  10     1
+  15     1
+  20     1
+  25     1
+  30     1
+  35     0.959
+  40     0.908
+  45     0.679333
+  50     0.535
+#+end_example
+
+The stored patterns sit at markedly lower energy than random states -- they are
+the valleys the dynamics fall into. A probe corrupted in ten bits relaxes back to
+the exact stored pattern, the defining behavior of an associative memory. The
+recovery curve stays near perfect for modest noise and degrades as the probe
+approaches the halfway point, where it no longer lies within the basin of
+attraction of the intended memory (and near 50% noise the probe is essentially
+uninformative).
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hopfield_recovery.svg]]
+
+* Legacy
+
+The Hopfield network tied neural computation to the physics of spin glasses and
+energy landscapes, seeding the *Boltzmann machine* (its stochastic generalization)
+and, through the energy-minimization view, much of modern associative-memory and
+energy-based modeling -- including the "modern Hopfield networks" whose update rule
+is mathematically the attention mechanism of transformers. Its limitations -- low
+capacity, spurious minima, and symmetric-weight assumption -- are exactly what
+those successors set out to relax.
+
+* Complexity
+
+Training is \(O(P N^2)\) for \(P\) patterns. Each recall sweep updates \(N\)
+neurons, each costing \(O(N)\), so a sweep is \(O(N^2)\); the number of sweeps to
+converge is small in practice. Memory is \(O(N^2)\) for the weight matrix.

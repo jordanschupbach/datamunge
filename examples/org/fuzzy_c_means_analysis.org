@@ -1,0 +1,183 @@
+#+title: Fuzzy c-means: Soft Clustering with Graded Memberships
+#+subtitle: A literate C++ study of the fuzzy generalization of k-means, using =datamunge='s =algorithms::fuzzy_c_means=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Hard clustering forces every point into exactly one cluster, which is awkward when
+the clusters overlap and a point genuinely sits between them. *Fuzzy c-means* (Dunn
+1973; Bezdek 1981) relaxes this: each point receives a *membership* in every
+cluster -- numbers in \([0,1]\) that sum to one -- so a point in a boundary region can
+be, say, 60% in one cluster and 40% in another. It is the fuzzy analogue of
+Lloyd's k-means, alternating between updating cluster centers as
+membership-weighted averages and updating memberships from distances. This report
+implements it in =datamunge='s C++ =algorithms::fuzzy_c_means= as a literate
+program: every number and figure comes from one compiled binary. We fit two
+overlapping blobs and plot the membership crossing smoothly from one cluster to the
+other through the ambiguous middle.
+#+end_abstract
+
+* The fuzzy objective
+
+With \(n\) points, \(c\) clusters, centers \(v_j\), and memberships
+\(u_{ij}\in[0,1]\) satisfying \(\sum_j u_{ij}=1\), fuzzy c-means minimizes
+\[
+  J_m = \sum_{i=1}^{n}\sum_{j=1}^{c} u_{ij}^{\,m}\,\|x_i - v_j\|^2,
+\]
+where the *fuzzifier* \(m>1\) controls the softness. As \(m\to 1^+\) the memberships
+harden toward 0/1 and \(J_m\) becomes the k-means objective; as \(m\) grows the
+assignments blur toward uniform. The standard choice is \(m=2\).
+
+#+name: fcm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/fuzzy_c_means.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+* Alternating optimization
+
+Setting the derivatives of \(J_m\) (with the sum-to-one constraint via a Lagrange
+multiplier) to zero gives closed-form updates that are iterated in alternation:
+\[
+  v_j = \frac{\sum_i u_{ij}^m\,x_i}{\sum_i u_{ij}^m},\qquad
+  u_{ij} = \frac{1}{\sum_{l=1}^{c}\big(\|x_i-v_j\| / \|x_i-v_l\|\big)^{2/(m-1)}}.
+\]
+The center update is a *membership-weighted mean* -- points that belong strongly to
+cluster \(j\) count more toward its center. The membership update makes
+\(u_{ij}\) large when \(x_i\) is close to \(v_j\) relative to the other centers.
+Like Lloyd's algorithm this monotonically decreases \(J_m\) to a local optimum; we
+iterate until the memberships stop changing.
+
+** Pseudocode
+
+#+begin_example
+FuzzyCMeans(points, c, m):
+    initialize memberships u (random, rows normalized to sum 1)
+    repeat until memberships stop changing:
+        for each cluster j:
+            v[j] = ( sum_i u[i][j]^m * x[i] ) / ( sum_i u[i][j]^m )
+        for each point i, cluster j:
+            u[i][j] = 1 / sum_l ( dist(x_i, v_j) / dist(x_i, v_l) )^(2/(m-1))
+    return centers v, memberships u
+#+end_example
+
+* A worked example: two overlapping blobs
+
+We draw two Gaussian blobs along a line, centered at \(x=0\) and \(x=10\) with
+enough spread to overlap in the middle. We fit \(c=2\) clusters and plot each
+point's membership in the left cluster against its position -- a smooth S-shaped
+transition, in contrast to the hard 0/1 step a crisp method would impose.
+
+#+name: fcm-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(21);
+    std::normal_distribution<double> g0(0.0, 2.2), g1(10.0, 2.2);
+    std::vector<std::vector<double>> data;
+    for (int i = 0; i < 80; ++i) data.push_back({g0(rng)});
+    for (int i = 0; i < 80; ++i) data.push_back({g1(rng)});
+
+    FuzzyCMeansResult res = fuzzy_c_means(data, 2, 2.0, 200, 1e-6, 1);
+    std::size_t       left = (res.centers[0][0] < res.centers[1][0]) ? 0 : 1;
+
+    std::cout << "=== Fuzzy c-means (m = 2) on two overlapping blobs ===\n";
+    std::cout << "iterations: " << res.iterations << ",  objective J_m = " << res.objective << "\n";
+    std::cout << "centers: " << res.centers[0][0] << " and " << res.centers[1][0] << "\n\n";
+
+    // Membership in the left cluster for a few representative positions.
+    auto membership_left_at = [&](double x) {
+        // Recompute from centers directly (m=2 -> exponent 2/(m-1)=2).
+        double d0 = std::abs(x - res.centers[left][0]);
+        double d1 = std::abs(x - res.centers[1 - left][0]);
+        if (d0 < 1e-12) return 1.0;
+        if (d1 < 1e-12) return 0.0;
+        double s = 1.0 + (d0 / d1) * (d0 / d1);
+        return 1.0 / s;
+    };
+    std::cout << "membership in LEFT cluster:\n";
+    for (double x : {0.0, 2.5, 5.0, 7.5, 10.0})
+        std::cout << "  x = " << x << "  ->  u_left = " << membership_left_at(x) << '\n';
+
+    // Figure: membership-to-left versus position (the soft transition curve).
+    std::vector<double> xs, us;
+    for (std::size_t i = 0; i < data.size(); ++i) {
+        xs.push_back(data[i][0]);
+        us.push_back(res.membership[i][left]);
+    }
+    RPlot p = RPlot::create();
+    p.points(xs, us, "membership in left cluster", {37, 99, 235}, 3.5);
+    p.abline_h(0.5, {120, 120, 120}, 1.0);
+    p.abline_v(res.centers[left][0], {22, 163, 74}, 1.0);
+    p.abline_v(res.centers[1 - left][0], {220, 38, 38}, 1.0);
+    p.save_svg("build/org/fuzzy_c_means_membership.svg");
+    std::cout << "\nwrote build/org/fuzzy_c_means_membership.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/fuzzy_c_means_analysis.cpp <<'CPP'
+<<fcm-includes>>
+
+int main() {
+<<fcm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/fuzzy_c_means_analysis.cpp -o build/org/fuzzy_c_means_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/fuzzy_c_means_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fuzzy c-means (m = 2) on two overlapping blobs ===
+iterations: 11,  objective J_m = 623.804
+centers: -0.0614927 and 10.4761
+
+membership in LEFT cluster:
+  x = 0  ->  u_left = 0.999966
+  x = 2.5  ->  u_left = 0.906507
+  x = 5  ->  u_left = 0.539282
+  x = 7.5  ->  u_left = 0.134129
+  x = 10  ->  u_left = 0.00223376
+#+end_example
+
+The recovered centers land near the true blob means, and the membership in the left
+cluster falls smoothly from near 1 at \(x=0\), through roughly \(0.5\) near the
+midpoint (the crossover sits at the point equidistant from the two recovered
+centers), to near 0 at \(x=10\). This graded
+transition is the whole point of fuzzy clustering: points in the overlapping region
+are honestly reported as ambiguous rather than being forced into one side, which is
+valuable when the "clusters" are really the ends of a continuum.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/fuzzy_c_means_membership.svg]]
+
+* Notes and relatives
+
+Fuzzy c-means shares k-means's sensitivities: it finds a local optimum (so
+initialization matters), needs the cluster count \(c\) chosen in advance, and -- using
+Euclidean distance -- prefers roughly spherical clusters. The fuzzifier \(m\) is an
+extra dial: too close to 1 and it hardens into k-means; too large and every point
+tends toward uniform membership. Related methods include Gustafson-Kessel (per-cluster
+covariance for elliptical clusters), possibilistic c-means (drops the sum-to-one
+constraint to resist noise), and the Gaussian-mixture EM algorithm, whose posterior
+"responsibilities" are a probabilistic cousin of these memberships.
+
+* Complexity
+
+Each iteration updates \(c\) centers in \(O(nc\,d)\) and \(nc\) memberships in
+\(O(nc^2)\) (the inner sum over clusters), so a run is
+\(O(\text{iters}\cdot nc(d+c))\). Memory is \(O(nc)\) for the membership matrix.
