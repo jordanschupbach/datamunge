@@ -1,0 +1,172 @@
+#+title: The Banker's Algorithm: Deadlock Avoidance
+#+subtitle: A literate C++ study of safe-state resource allocation, using =datamunge='s =algorithms::banker_safety=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Dijkstra's *banker's algorithm* (1965) grants resources only when doing so keeps the system
+in a *safe state* -- one in which some ordering of the processes (a *safe sequence*) lets
+each obtain its maximum remaining need from the free resources plus those released by
+earlier finishers. Because a safe state can never deadlock, refusing any request that would
+make the state unsafe avoids deadlock entirely. This report implements the safety algorithm
+and the request test in =datamunge='s C++ =algorithms::banker_safety= /
+=banker_request_grantable= as a literate program: every number and figure comes from one
+compiled binary. We analyze the classic five-process instance, find its safe sequence, and
+decide two resource requests.
+#+end_abstract
+
+* Safe states and safe sequences
+
+With \(n\) processes and \(m\) resource types, the state is the allocation matrix
+\(\mathit{Alloc}\), the maximum-claim matrix \(\mathit{Max}\), and the free vector
+\(\mathit{Available}\). Each process's remaining *need* is \(\mathit{Need}=\mathit{Max}-\mathit{Alloc}\).
+A state is *safe* if there is an order \(p_1,p_2,\dots,p_n\) such that for each \(k\),
+\[
+  \mathit{Need}[p_k] \le \mathit{Available} + \sum_{j<k}\mathit{Alloc}[p_j],
+\]
+i.e. by the time it is \(p_k\)'s turn, enough resources have been freed by the earlier
+processes for it to finish. The safety algorithm greedily builds such a sequence; a request
+is granted only if the state that would result is still safe.
+
+#+name: bk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/banker.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Safety(Alloc, Max, Available):
+    Need = Max - Alloc
+    Work = Available;  Finish[i] = false for all i
+    repeat until no change:
+        find i with Finish[i]==false and Need[i] <= Work
+        Work += Alloc[i];  Finish[i] = true;  append i to sequence
+    safe  <=>  all Finish[i] true
+
+Request(i, req):
+    if req <= Need[i] and req <= Available:
+        tentatively: Alloc[i]+=req; Available-=req
+        grant  <=>  Safety(...) is safe
+    else deny
+#+end_example
+
+* A worked example
+
+We use Silberschatz's canonical instance: five processes, three resource types, with
+\(\mathit{Available}=(3,3,2)\). We find the safe sequence, watch the free-resource pool grow
+as each process in that sequence completes, and test two requests.
+
+#+name: bk-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<int>> alloc = {{0,1,0},{2,0,0},{3,0,2},{2,1,1},{0,0,2}};
+    std::vector<std::vector<int>> maxd  = {{7,5,3},{3,2,2},{9,0,2},{2,2,2},{4,3,3}};
+    std::vector<int>              avail = {3, 3, 2};
+
+    auto s = banker_safety(alloc, maxd, avail);
+    std::cout << "=== Banker's algorithm: 5 processes, 3 resource types ===\n";
+    std::cout << "state is " << (s.safe ? "SAFE" : "UNSAFE") << "\n";
+    std::cout << "safe sequence: ";
+    for (std::size_t p : s.sequence) std::cout << "P" << p << " ";
+    std::cout << "\n";
+
+    // Free-resource pool (summed over types) as each process in the sequence finishes.
+    std::vector<double> freed;
+    std::vector<std::string> labels;
+    std::vector<int> work = avail;
+    freed.push_back(std::accumulate(work.begin(), work.end(), 0));
+    labels.push_back("start");
+    std::cout << "\nfree units after each finisher (safety check):\n  start: "
+              << freed.back() << "\n";
+    for (std::size_t p : s.sequence) {
+        for (std::size_t j = 0; j < work.size(); ++j) work[j] += alloc[p][j];
+        freed.push_back(std::accumulate(work.begin(), work.end(), 0));
+        labels.push_back("P" + std::to_string(p));
+        std::cout << "  after P" << p << ": " << freed.back() << "\n";
+    }
+
+    // Two resource requests.
+    std::cout << "\nrequests:\n";
+    std::cout << "  P1 requests (1,0,2): "
+              << (banker_request_grantable(1, {1,0,2}, alloc, maxd, avail) ? "GRANT" : "DENY") << "\n";
+    std::cout << "  P4 requests (3,3,0): "
+              << (banker_request_grantable(4, {3,3,0}, alloc, maxd, avail) ? "GRANT" : "DENY")
+              << "  (would leave no safe sequence)\n";
+
+    RPlot p = RPlot::barplot(freed, labels, "free resource units", {37, 99, 235});
+    p.save_svg("build/org/banker.svg");
+    std::cout << "\nwrote build/org/banker.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/banker_analysis.cpp <<'CPP'
+<<bk-includes>>
+
+int main() {
+<<bk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/banker_analysis.cpp -o build/org/banker_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/banker_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Banker's algorithm: 5 processes, 3 resource types ===
+state is SAFE
+safe sequence: P1 P3 P4 P0 P2
+
+free units after each finisher (safety check):
+  start: 8
+  after P1: 10
+  after P3: 14
+  after P4: 16
+  after P0: 17
+  after P2: 22
+
+requests:
+  P1 requests (1,0,2): GRANT
+  P4 requests (3,3,0): DENY  (would leave no safe sequence)
+#+end_example
+
+The greedy safety check finds the sequence P1 P3 P4 P0 P2: the free pool starts at 8 units
+and grows monotonically as each process finishes and releases its resources, which is exactly
+what makes the state safe. Granting P1's request for (1,0,2) leaves a still-safe state, so it
+is allowed; P4's request for (3,3,0), though within its declared need and the available pool,
+would strand the remaining processes with no completable order, so the banker denies it even
+though the resources are physically on hand.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/banker.svg]]
+
+* Character and relatives
+
+The banker's algorithm *avoids* deadlock rather than detecting or recovering from it, at the
+price of requiring each process to declare its maximum claim in advance and running an
+\(O(n^2 m)\) safety check per request -- often too conservative and too costly for general
+operating systems, which mostly use deadlock *detection* plus recovery, or simply prevent one
+of the Coffman conditions (e.g. ordering resource acquisition). The algorithm remains the
+textbook illustration of the safe/unsafe-state distinction and underlies resource managers
+where maximum demands genuinely are known ahead of time.
+
+* Complexity
+
+The safety check is \(O(n^2 m)\) (up to \(n\) passes, each scanning \(n\) processes over
+\(m\) resources); a request test runs one safety check, so also \(O(n^2 m)\).
