@@ -1,0 +1,156 @@
+#+title: Simon's Algorithm: Finding a Hidden XOR Period
+#+subtitle: A literate C++ study of exponential quantum speedup, using =datamunge='s =algorithms::simon=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Simon's algorithm (1994) was the first to show an *exponential* speedup over *randomized*
+classical computation, and directly inspired Shor's factoring algorithm. The problem: a black
+box \(f\) is 2-to-1 with a hidden period \(s\neq0\) so that \(f(x)=f(y)\iff y=x\oplus s\); find
+\(s\). Classically this needs \(\Theta(2^{n/2})\) queries (a birthday-collision search);
+Simon's quantum algorithm needs only \(O(n)\). Each run measures a random string \(y\)
+guaranteed *orthogonal* to \(s\); collecting \(n-1\) independent \(y\) and solving over
+\(\mathrm{GF}(2)\) pins down \(s\). This report simulates the full two-register circuit with
+=datamunge='s =algorithms::simon= as a literate program: every number and figure comes from
+one compiled binary.
+#+end_abstract
+
+* Interference reveals orthogonality
+
+Put the \(n\)-qubit input register in a uniform superposition and evaluate \(f\) into a second
+register, giving \(\frac{1}{\sqrt{2^n}}\sum_x|x\rangle|f(x)\rangle\). Since \(f\) is 2-to-1,
+each output value is shared by a pair \(\{x, x\oplus s\}\). Applying Hadamards to the input
+register and measuring it, the only strings \(y\) with nonzero amplitude are those satisfying
+\[
+  y\cdot s \equiv 0 \pmod 2 ,
+\]
+because the two members of each pair interfere constructively exactly when \(y\cdot s=0\). Each
+measurement thus yields a random linear constraint on \(s\); \(n-1\) independent constraints
+determine \(s\) uniquely (up to the trivial solution) by Gaussian elimination over
+\(\mathrm{GF}(2)\).
+
+#+name: si-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/simon.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <bitset>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Simon(f with hidden period s, n):
+    prepare |0>_in |0>_out;  H on the input register
+    apply oracle: |x>|0> -> |x>|f(x)>          # entangle input with f
+    H on the input register;  measure it -> y  # y satisfies y . s = 0
+    repeat to collect n-1 independent y
+    solve the linear system {y_i . s = 0} over GF(2)  ->  s
+#+end_example
+
+* A worked example
+
+We hide the period \(s=1011\) in a 4-bit function \(f(x)=\min(x, x\oplus s)\), simulate the
+circuit, list the measurable strings \(y\) (all orthogonal to \(s\)), and recover \(s\).
+
+#+name: si-run
+#+begin_src c++ :eval no
+    const int   n      = 4;
+    std::size_t period = 0b1011;  // = 11
+
+    auto r = simon(n, period);
+    std::cout << "=== Simon's algorithm (n=" << n << ") ===\n";
+    std::cout << "hidden period s = " << std::bitset<4>(period) << " (" << period << ")\n";
+    std::cout << "recovered       = " << std::bitset<4>(r.recovered_period)
+              << " (" << r.recovered_period << ")\n";
+    std::cout << "match: " << (r.recovered_period == period ? "yes" : "no") << "\n";
+
+    std::cout << "\nmeasurable strings y (each satisfies y . s = 0):\n";
+    for (std::size_t y : r.observed_y) {
+        std::size_t m = y & period; int par = 0; while (m) { par ^= 1; m &= m - 1; }
+        std::cout << "  y = " << std::bitset<4>(y) << "  (y . s = " << par << ")\n";
+    }
+    std::cout << "count: " << r.observed_y.size() << " nonzero y (out of 2^(n-1)-1 expected "
+              << ((1 << (n - 1)) - 1) << ")\n";
+
+    // Figure: the input-register measurement distribution -- uniform over the y with y.s=0.
+    std::size_t Nin = std::size_t{1} << n;
+    std::vector<double> heights(Nin, 0.0);
+    heights[0] = 1.0;  // y=0 also has weight; mark the whole allowed set
+    for (std::size_t y : r.observed_y) heights[y] = 1.0;
+    std::vector<std::string> labels(Nin, "");
+    for (std::size_t y = 0; y < Nin; ++y) if (heights[y] > 0) labels[y] = std::bitset<4>(y).to_string();
+    RPlot p = RPlot::barplot(heights, labels, "measurable? (1 = y.s=0)", {37, 99, 235});
+    p.save_svg("build/org/simon.svg");
+    std::cout << "\nwrote build/org/simon.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/simon_analysis.cpp <<'CPP'
+<<si-includes>>
+
+int main() {
+<<si-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/simon_analysis.cpp -o build/org/simon_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/simon_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Simon's algorithm (n=4) ===
+hidden period s = 1011 (11)
+recovered       = 1011 (11)
+match: yes
+
+measurable strings y (each satisfies y . s = 0):
+  y = 0011  (y . s = 0)
+  y = 0100  (y . s = 0)
+  y = 0111  (y . s = 0)
+  y = 1001  (y . s = 0)
+  y = 1010  (y . s = 0)
+  y = 1101  (y . s = 0)
+  y = 1110  (y . s = 0)
+count: 7 nonzero y (out of 2^(n-1)-1 expected 7)
+#+end_example
+
+Every string the circuit can produce is orthogonal to the hidden period (\(y\cdot s=0\) for all
+of them), exactly as the interference predicts, and there are \(2^{n-1}\) of them -- half of all
+strings, the solution set of a single linear equation. Feeding these constraints to a
+\(\mathrm{GF}(2)\) solver recovers \(s=1011\). Classically, distinguishing this 2-to-1 function
+from a random one requires finding a collision, which needs on the order of \(2^{n/2}\) queries;
+Simon needs only about \(n\). This is the first genuine exponential separation, and Shor's
+algorithm is essentially Simon's idea with the Fourier transform over \(\mathbb{Z}_N\) instead
+of \(\mathrm{GF}(2)^n\).
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/simon.svg]]
+
+* Character and relatives
+
+Simon's problem is the archetypal *hidden subgroup problem* over \((\mathbb{Z}_2)^n\): the
+period \(s\) generates a hidden subgroup, and the algorithm samples its orthogonal complement.
+Recasting period-finding over \(\mathbb{Z}_N\) with the quantum Fourier transform gives *Shor's
+algorithm* for factoring and discrete logs; the same framework covers a broad family of
+problems where an unknown symmetry can be found exponentially faster on a quantum computer.
+
+* Complexity
+
+\(O(n)\) oracle queries plus an \(O(n^3)\) GF(2) solve. The state-vector simulation here uses
+\(2n\) qubits (\(4^n\) amplitudes), so it is \(O(n\,4^n)\) -- feasible for small \(n\), and a
+reminder of why the quantum version is exponentially cheaper than any classical emulation.

@@ -1,0 +1,144 @@
+#+title: The Bernstein-Vazirani Algorithm: Reading a Hidden String in One Query
+#+subtitle: A literate C++ study of hidden-string recovery, using =datamunge='s =algorithms::bernstein_vazirani=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The Bernstein-Vazirani algorithm (1993) extracts a hidden \(n\)-bit string \(s\) from a black
+box that computes \(f(x)=s\cdot x\bmod 2\) -- the parity of \(x\) masked by \(s\). Classically
+you must query \(n\) times (one bit of \(s\) per query, e.g. \(f(2^i)=s_i\)); the quantum
+algorithm needs a *single* query. It is the Deutsch-Jozsa circuit with a linear oracle: the
+phase kickback writes \(s\) into the relative phases, and the closing Hadamards land the
+register *exactly* on \(|s\rangle\). This report runs the exact circuit on =datamunge='s
+state-vector simulator (=algorithms::bernstein_vazirani=) as a literate program: every number
+and figure comes from one compiled binary.
+#+end_abstract
+
+* One query for all n bits
+
+After the Hadamards and the oracle \((-1)^{s\cdot x}\), the register is in the state
+\(\frac{1}{\sqrt{2^n}}\sum_x(-1)^{s\cdot x}|x\rangle\). A final layer of Hadamards is exactly
+the transform that turns this phase pattern into the single basis state \(|s\rangle\):
+\[
+  H^{\otimes n}\,\frac{1}{\sqrt{2^n}}\sum_x(-1)^{s\cdot x}|x\rangle \;=\; |s\rangle .
+\]
+So one measurement returns all \(n\) bits of \(s\) with certainty. The magic is that the oracle
+was queried in superposition over every input at once, and the interference collates the bits.
+
+#+name: bv-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/bernstein_vazirani.hpp>
+#include <datamunge/algorithms/quantum_sim.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <algorithm>
+#include <bitset>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Bernstein-Vazirani(oracle f(x) = s.x mod 2, n):
+    state = |0..0>;  apply H to every qubit
+    for each x: if parity(x AND s) == 1: amplitude[x] *= -1     # phase oracle
+    apply H to every qubit
+    measure  ->  the basis state |s>  (all n bits of s at once)
+#+end_example
+
+* A worked example
+
+We hide a 6-bit string \(s=101101\) and recover it. To show the register really collapses to
+a single state, we also rebuild the pre-measurement probability distribution and confirm all
+the probability sits on \(|s\rangle\).
+
+#+name: bv-run
+#+begin_src c++ :eval no
+    const int   n      = 6;
+    std::size_t secret = 0b101101;  // = 45
+
+    std::size_t recovered = bernstein_vazirani(n, secret);
+    std::cout << "=== Bernstein-Vazirani (n=" << n << ", one query) ===\n";
+    std::cout << "hidden s   = " << std::bitset<6>(secret) << " (" << secret << ")\n";
+    std::cout << "recovered  = " << std::bitset<6>(recovered) << " (" << recovered << ")\n";
+    std::cout << "match: " << (recovered == secret ? "yes" : "no") << "\n";
+
+    // Rebuild the final state to show the measurement distribution is a single spike.
+    QuantumState s = qstate_zero(n);
+    for (int q = 0; q < n; ++q) h_gate(s, q);
+    for (std::size_t x = 0; x < s.size(); ++x) {
+        std::size_t m = x & secret; int par = 0; while (m) { par ^= 1; m &= m - 1; }
+        if (par) s[x] = -s[x];
+    }
+    for (int q = 0; q < n; ++q) h_gate(s, q);
+
+    auto probs = probabilities(s);
+    std::cout << "\nP(|s>) = " << probs[secret] << ";  max over all other states = ";
+    double other = 0; for (std::size_t i = 0; i < probs.size(); ++i) if (i != secret) other = std::max(other, probs[i]);
+    std::cout << other << "\n";
+
+    std::vector<double> heights(probs.begin(), probs.end());
+    std::vector<std::string> labels(heights.size(), "");
+    labels[secret] = std::bitset<6>(secret).to_string();
+    RPlot p = RPlot::barplot(heights, labels, "P(measure basis state)", {37, 99, 235});
+    p.save_svg("build/org/bernstein_vazirani.svg");
+    std::cout << "\nwrote build/org/bernstein_vazirani.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/bernstein_vazirani_analysis.cpp <<'CPP'
+<<bv-includes>>
+
+int main() {
+<<bv-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/bernstein_vazirani_analysis.cpp -o build/org/bernstein_vazirani_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bernstein_vazirani_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Bernstein-Vazirani (n=6, one query) ===
+hidden s   = 101101 (45)
+recovered  = 101101 (45)
+match: yes
+
+P(|s>) = 1;  max over all other states = 0
+#+end_example
+
+One query recovers all six bits: the register collapses to the single basis state
+\(|101101\rangle\) with probability 1, and every other state has probability 0 -- the lone spike
+in the distribution. A classical attacker restricted to the same oracle would need six separate
+queries, one per bit. The speedup is modest in absolute terms (linear to constant) but the
+mechanism -- encoding an answer in interference and reading it out in one shot -- is the template
+for the more dramatic quantum algorithms.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/bernstein_vazirani.svg]]
+
+* Character and relatives
+
+Bernstein-Vazirani sharpened Deutsch-Jozsa from a yes/no promise problem to *extracting
+information*, and was introduced to prove a stronger oracle separation (a recursive version
+gives a super-polynomial gap even against randomized classical algorithms). It shares its
+circuit with Deutsch-Jozsa (companion report); *Simon's algorithm* generalizes the hidden
+structure from a linear function to a hidden XOR period, and *Grover's* and *Shor's* algorithms
+build on the same superposition-and-interfere pattern for search and factoring.
+
+* Complexity
+
+One oracle query plus \(2n\) Hadamard gates; the state-vector simulation is \(O(n\,2^n)\).

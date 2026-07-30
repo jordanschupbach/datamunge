@@ -1,0 +1,142 @@
+#+title: Grover's Algorithm: Quadratic-Speedup Unstructured Search
+#+subtitle: A literate C++ study of amplitude amplification, using =datamunge='s =algorithms::grover=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Grover's algorithm (1996) finds a marked item among \(N\) unstructured possibilities in
+\(O(\sqrt N)\) queries, a provable quadratic speedup over the \(O(N)\) any classical search
+needs. Starting from a uniform superposition, each *Grover iteration* applies an *oracle*
+(flip the sign of the marked state) then a *diffusion* operator (invert every amplitude about
+their mean). Geometrically this rotates the state a fixed angle toward the marked basis state,
+so after about \(\frac{\pi}{4}\sqrt N\) iterations its measurement probability is near 1 --
+and iterating further *overshoots*. This report runs the exact state-vector iteration with
+=datamunge='s =algorithms::grover= as a literate program: every number and figure comes from
+one compiled binary.
+#+end_abstract
+
+* Rotate toward the answer
+
+The state lives in the 2-D plane spanned by the marked state \(|w\rangle\) and the uniform
+superposition of the rest. The oracle reflects the state about the "unmarked" axis; the
+diffusion operator reflects it about the initial uniform state. Two reflections compose to a
+*rotation* by \(2\theta\), where \(\sin\theta=1/\sqrt N\). Starting at angle \(\theta\) from
+the unmarked axis, after \(k\) iterations the state is at angle \((2k+1)\theta\), so the marked
+amplitude is \(\sin((2k+1)\theta)\). It reaches 1 when \((2k+1)\theta\approx\pi/2\), i.e.
+\(k\approx\frac{\pi}{4}\sqrt N\); beyond that the sine turns back down.
+
+#+name: gr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/grover.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Grover(n, target):
+    state = uniform superposition of all 2^n states (H on each qubit)
+    repeat round(pi/4 * sqrt(2^n)) times:
+        amplitude[target] *= -1                 # oracle: phase-flip the marked state
+        mean = average of all amplitudes        # diffusion:
+        amplitude[i] = 2*mean - amplitude[i]    #   invert about the mean
+    measure  ->  target with probability ~ 1
+#+end_example
+
+* A worked example
+
+We search for item \(42\) among \(N=2^8=256\) items, report the optimal iteration count and
+success probability, and trace how the success probability rises and then falls with the number
+of iterations.
+
+#+name: gr-run
+#+begin_src c++ :eval no
+    const int   n      = 8;             // N = 256
+    std::size_t target = 42;
+
+    auto r = grover(n, target);
+    std::cout << "=== Grover search (N=" << (1 << n) << ", target=" << target << ") ===\n";
+    std::cout << "optimal iterations: " << r.iterations << "  (~ pi/4 * sqrt(N))\n";
+    std::cout << "measured state: " << r.measured << "\n";
+    std::cout << "success probability: " << r.success_prob << "\n";
+    std::cout << "classical expected queries to find it: " << (1 << n) / 2 << "\n";
+
+    // Trace the success probability over more iterations to show the overshoot.
+    int  max_it = 40;
+    auto trace  = grover_success_trace(n, target, max_it);
+    int  peak   = 0;
+    for (int i = 1; i < (int)trace.size(); ++i) if (trace[i] > trace[peak]) peak = i;
+    std::cout << "\ntrace: peak success " << trace[peak] << " at iteration " << peak
+              << ", falls to " << trace[max_it] << " by iteration " << max_it << "\n";
+
+    std::vector<double> it, pr;
+    for (int i = 0; i <= max_it; ++i) { it.push_back(i); pr.push_back(trace[i]); }
+    RPlot p = RPlot::create();
+    p.line(it, pr, "success probability", {37, 99, 235}, 2.0);
+    p.points({(double)peak}, {trace[peak]}, "optimal", {220, 38, 38}, 5.0);
+    p.abline_h(1.0, {120, 120, 120}, 1.0);
+    p.save_svg("build/org/grover.svg");
+    std::cout << "\nwrote build/org/grover.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/grover_analysis.cpp <<'CPP'
+<<gr-includes>>
+
+int main() {
+<<gr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/grover_analysis.cpp -o build/org/grover_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/grover_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Grover search (N=256, target=42) ===
+optimal iterations: 13  (~ pi/4 * sqrt(N))
+measured state: 42
+success probability: 0.986186
+classical expected queries to find it: 128
+
+trace: peak success 0.999947 at iteration 12, falls to 0.880214 by iteration 40
+#+end_example
+
+The rounded formula \(\lceil\frac{\pi}{4}\sqrt{256}\rceil=13\) finds item 42 with success
+probability 0.986, versus the ~128 queries a classical search averages -- the quadratic speedup
+made concrete. The trace shows Grover's signature *sinusoid*: the success probability climbs to
+its true peak of 0.99995 at iteration 12, then *falls* as further iterations over-rotate the
+state past the marked axis (down to 0.88 by iteration 40). Knowing when to stop is therefore
+essential; running "more" makes it worse.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/grover.svg]]
+
+* Character and relatives
+
+Grover's quadratic speedup is provably optimal for a *black-box* unmarked search -- no quantum
+algorithm can do better without structure to exploit. *Amplitude amplification* generalizes it
+to boost any subroutine's success probability, and *quantum counting* combines Grover with
+phase estimation to estimate the *number* of marked items. Because the speedup is only
+quadratic (not exponential like Shor's), Grover mainly threatens symmetric cryptography by
+halving effective key lengths -- a 256-bit key offers ~128-bit security against it -- rather than
+breaking it outright.
+
+* Complexity
+
+\(O(\sqrt N)=O(2^{n/2})\) oracle queries and diffusion steps; the state-vector simulation is
+\(O(\sqrt N \cdot N)\) since each iteration touches all \(N=2^n\) amplitudes.
