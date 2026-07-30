@@ -1,0 +1,169 @@
+#+title: Pulse-Coupled Neural Networks: Biomimetic Image Processing
+#+subtitle: A literate C++ study of the PCNN, using =datamunge='s =algorithms::pcnn_run=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A Pulse-Coupled Neural Network (Eckhorn 1990) is a spiking model of the visual
+cortex that turns out to be a remarkably effective, parameter-light image processor.
+One neuron sits on each pixel; each fires when its activity (driven by the pixel's
+intensity and by its firing neighbors) exceeds a threshold that jumps up after
+firing and decays over time. Two emergent effects make it useful: brighter pixels
+fire *earlier*, so the *iteration of first firing* segments an image by intensity,
+and the neighbor coupling *synchronizes* connected regions of similar intensity.
+This report implements a PCNN in =datamunge='s C++ =algorithms::pcnn_run= as a
+literate program: every number and figure comes from one compiled binary. We run it
+on a synthetic image and show a bright object segmenting out ahead of its dim
+background, with the network's global "time signature".
+#+end_abstract
+
+* The neuron model
+
+Each neuron combines a *feeding* input (the pixel stimulus \(S\)) with a *linking*
+input \(L\) -- the sum of its neighbors' pulses -- into an internal activity, fires a
+binary pulse when the activity beats its threshold, then raises that threshold to go
+refractory; the threshold decays between firings. This report uses the common
+simplified (spiking-cortical-model) update, per iteration:
+\[
+  U = S\,(1+\beta L),\qquad \Theta \leftarrow \alpha_\Theta\,\Theta,\qquad
+  Y = [\,U > \Theta\,],\qquad \Theta \leftarrow \Theta + V_\Theta\,Y,
+\]
+where \(\beta\) is the linking strength, \(\alpha_\Theta<1\) the threshold decay, and
+\(V_\Theta\) the refractory jump. Starting the threshold above the maximum stimulus,
+a pixel fires only when the decaying \(\Theta\) drops below its activity \(U\) -- so
+*higher-intensity pixels fire in earlier iterations*, and the linking term nudges a
+firing pixel's neighbors over threshold too, capturing spatial connectivity.
+
+#+name: pcnn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pcnn.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+PCNN(image S, iterations):
+    Theta = initial (>= max S);   Y = 0
+    for n = 1..iterations:
+        for each pixel (i,j):
+            L = sum of Y over 8 neighbors (previous step)
+            U = S[i][j] * (1 + beta * L)
+            Theta[i][j] *= decay
+            Y[i][j] = (U > Theta[i][j]) ? 1 : 0
+            if fired: Theta[i][j] += gain;  record first-fire iteration
+        record pulse map and firing count
+#+end_example
+
+* A worked example: segmenting a bright disk
+
+The image is a 16x16 grid with a bright disk (intensity 0.9) on a dim background
+(0.3). We run the PCNN and compare the average first-firing iteration of disk pixels
+versus background pixels, and plot the global firing count per iteration (the "time
+signature").
+
+#+name: pcnn-run
+#+begin_src c++ :eval no
+    const std::size_t                R = 16, C = 16;
+    std::vector<std::vector<double>> img(R, std::vector<double>(C, 0.3));
+    const double                     cx = 7.5, cy = 7.5, rad = 4.0;
+    for (std::size_t i = 0; i < R; ++i)
+        for (std::size_t j = 0; j < C; ++j)
+            if (std::hypot(i - cy, j - cx) <= rad) img[i][j] = 0.9;  // bright disk
+
+    PCNNParameters params;
+    params.iterations      = 25;
+    params.beta            = 0.2;
+    params.threshold_decay = 0.8;
+    params.threshold_gain  = 20.0;
+    PCNNResult r = pcnn_run(img, params);
+
+    double disk = 0, bg = 0;
+    int    nd = 0, nb = 0;
+    for (std::size_t i = 0; i < R; ++i)
+        for (std::size_t j = 0; j < C; ++j) {
+            if (r.first_fire[i][j] == 0) continue;
+            if (std::hypot(i - cy, j - cx) <= rad) { disk += r.first_fire[i][j]; ++nd; }
+            else { bg += r.first_fire[i][j]; ++nb; }
+        }
+    std::cout << "=== PCNN on a 16x16 image (bright disk on dim background) ===\n";
+    std::cout << "disk pixels: mean first-fire iteration = " << disk / nd << " (" << nd << " pixels)\n";
+    std::cout << "background:  mean first-fire iteration = " << bg / nb << " (" << nb << " pixels)\n";
+    std::cout << "=> the brighter disk segments out earlier by ~" << (bg / nb - disk / nd) << " iterations\n\n";
+
+    std::cout << "time signature (neurons firing each iteration):\n  ";
+    for (int c : r.time_signature) std::cout << c << ' ';
+    std::cout << '\n';
+
+    std::vector<double> it_x, sig;
+    for (std::size_t i = 0; i < r.time_signature.size(); ++i) { it_x.push_back(i + 1); sig.push_back(r.time_signature[i]); }
+    RPlot p = RPlot::create();
+    p.bars(it_x, sig, "neurons firing", {37, 99, 235}, 0.8);
+    p.save_svg("build/org/pcnn_signature.svg");
+    std::cout << "\nwrote build/org/pcnn_signature.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pcnn_analysis.cpp <<'CPP'
+<<pcnn-includes>>
+
+int main() {
+<<pcnn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pcnn_analysis.cpp -o build/org/pcnn_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pcnn_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== PCNN on a 16x16 image (bright disk on dim background) ===
+disk pixels: mean first-fire iteration = 1 (52 pixels)
+background:  mean first-fire iteration = 6 (204 pixels)
+=> the brighter disk segments out earlier by ~5 iterations
+
+time signature (neurons firing each iteration):
+  52 0 0 0 0 204 0 0 0 0 0 0 0 0 0 52 0 0 0 0 0 0 0 0 204
+#+end_example
+
+The bright disk fires several iterations earlier than the dim background, so
+*thresholding the first-fire map at the right iteration segments the object* -- the
+PCNN has separated foreground from background using only its dynamics, no training.
+The time signature (firing count per iteration) shows distinct bursts as first the
+disk and then the background cross threshold; such signatures are used directly as
+rotation- and scale-tolerant *image features* for recognition.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pcnn_signature.svg]]
+
+* Uses and character
+
+PCNNs are used for segmentation, edge and feature extraction, image fusion, and
+denoising -- often with very few tuned parameters and no learning, since the useful
+behavior is emergent from the dynamics. The neighbor coupling gives them a built-in
+notion of connectivity that pixel-independent thresholding lacks, and the temporal
+"signature" is a compact global descriptor. Their main practical difficulty is
+exactly that parameter tuning (\(\beta\), the decay, and the gain) shapes the
+segmentation, so automatic-parameter and simplified variants (the spiking cortical
+model used here, and intersecting-cortical-model) are common.
+
+* Complexity
+
+Each iteration visits every pixel and its fixed 8-neighborhood, so a run is
+\(O(\text{iterations}\times\text{pixels})\) time and \(O(\text{pixels})\) working
+memory (plus the recorded pulse maps).

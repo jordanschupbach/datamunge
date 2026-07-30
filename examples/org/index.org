@@ -157,6 +157,11 @@ We induce a categorical decision tree with =datamunge='s C++ =algorithms::id3_tr
 
 We induce a tree over continuous attributes with =datamunge='s C++ =algorithms::c45_train=, and report it as a literate program: binary threshold splits chosen by gain ratio (which cancels ID3's many-values bias) separate three continuous classes at 100% accuracy by depth 2, as the compiled binary shows.
 
+** [[./structured_svm_analysis.html][Structured SVM: Max-Margin Multiclass Classification]] ([[./structured_svm_analysis.pdf][PDF]])
+/A literate C++ study of the Crammer-Singer multiclass SVM using datamunge/
+
+We train a max-margin multiclass classifier with =datamunge='s C++ =algorithms::structured_svm_train=, and report it as a literate program: Pegasos subgradient steps on the multiclass hinge loss separate three classes with piecewise-linear decision regions -- the gateway case of structured prediction whose loss-augmented inference generalizes to sequences and parses -- as the compiled binary shows.
+
 * Association Rule Mining
 
 ** [[./apriori_analysis.html][The Apriori Algorithm: Mining Frequent Itemsets and Association Rules]] ([[./apriori_analysis.pdf][PDF]])
@@ -250,6 +255,11 @@ We softly cluster two overlapping blobs using =datamunge='s C++ =algorithms::fuz
 
 We cluster three blobs of different densities plus noise using =datamunge='s C++ =algorithms::optics=, and report it as a literate program: the reachability plot shows one valley per cluster regardless of density -- something no single DBSCAN threshold achieves -- and a cut through it extracts the clusters, all computed by the compiled binary.
 
+** [[./canopy_analysis.html][Canopy Clustering: Cheap Overlapping Pre-Clustering]] ([[./canopy_analysis.pdf][PDF]])
+/A literate C++ study of the canopy pre-clustering method using datamunge/
+
+We pre-cluster points into overlapping canopies with =datamunge='s C++ =algorithms::canopy_clustering=, and report it as a literate program: two thresholds T1 > T2 form one canopy per blob (fixed by T2) and control overlap (grown by T1), so an expensive clustering afterward need only compare within-canopy pairs -- as the compiled binary shows.
+
 * Neural Networks & Associative Memory
 
 ** [[./hopfield_network_analysis.html][The Hopfield Network: An Associative Memory]] ([[./hopfield_network_analysis.pdf][PDF]])
@@ -266,6 +276,21 @@ We learn a 2-D topology-preserving map of clustered data using =datamunge='s C++
 /A literate C++ study of RBF regression using datamunge/
 
 We approximate a noisy nonlinear signal with a sum of Gaussian bumps using =datamunge='s C++ =algorithms::rbf_train=, and report it as a literate program: k-means places the centers and a linear least-squares readout solves for the weights in closed form, recovering the smooth curve at an RMSE well below the noise level -- plotted by the compiled binary.
+
+** [[./almeida_pineda_analysis.html][Almeida-Pineda Recurrent Backpropagation]] ([[./almeida_pineda_analysis.pdf][PDF]])
+/A literate C++ study of gradient learning for settling recurrent networks using datamunge/
+
+We train a recurrent network that relaxes to a fixed point with =datamunge='s C++ =algorithms::almeida_pineda_train=, and report it as a literate program: the forward pass settles the units to equilibrium and the backward pass settles a second (adjoint, transposed) system, giving the gradient without unrolling through time -- driving the output error to near zero, as the compiled binary shows.
+
+** [[./rvm_analysis.html][The Relevance Vector Machine: Sparse Bayesian Kernel Regression]] ([[./rvm_analysis.pdf][PDF]])
+/A literate C++ study of Tipping's RVM using datamunge/
+
+We fit a sparse Bayesian kernel regressor with =datamunge='s C++ =algorithms::rvm_train=, and report it as a literate program: maximizing the evidence drives most weight-precisions to infinity (automatic relevance determination), so a sinusoid is recovered by just a handful of relevance vectors at tiny RMSE -- the sparsity the compiled binary reports.
+
+** [[./pcnn_analysis.html][Pulse-Coupled Neural Networks: Biomimetic Image Processing]] ([[./pcnn_analysis.pdf][PDF]])
+/A literate C++ study of the PCNN using datamunge/
+
+We process an image with a spiking cortical-model network using =datamunge='s C++ =algorithms::pcnn_run=, and report it as a literate program: brighter pixels fire in earlier iterations and neighbor coupling synchronizes regions, so the first-fire map segments a bright object from its background with no training -- as the compiled binary's time signature shows.
 
 * Time Series & State Estimation
 
@@ -433,6 +458,11 @@ embedded in the report.
 /A literate C++ study of GD, Adam, LBFGS, SGD, simulated annealing, PSO, differential evolution, and genetic algorithms using datamunge/
 
 We optimize five deliberately different objective landscapes using every method in =datamunge='s C++ =optim= module, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./alopex_analysis.html][ALOPEX: Gradient-Free Optimization by Correlation]] ([[./alopex_analysis.pdf][PDF]])
+/A literate C++ study of the ALgorithm Of Pattern EXtraction using datamunge/
+
+We minimize a black-box objective with no gradient using =datamunge='s C++ =algorithms::alopex_minimize=, and report it as a literate program: each parameter moves according to the correlation between its last change and the resulting cost change, plus temperature-controlled noise, descending to the true optimum -- as the compiled binary's cost history shows.
 
 ** [[./optimization_adaptive_gradient_analysis.html][The AdaGrad Family: Per-Coordinate Adaptive Learning Rates]] ([[./optimization_adaptive_gradient_analysis.pdf][PDF]])
 /A literate C++ study of AdaGrad, RMSProp, AdaDelta, AMSGrad, and Nadam using datamunge/

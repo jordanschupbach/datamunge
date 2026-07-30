@@ -1,0 +1,160 @@
+#+title: Almeida-Pineda Recurrent Backpropagation
+#+subtitle: A literate C++ study of gradient learning for settling recurrent networks, using =datamunge='s =algorithms::almeida_pineda_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Ordinary backpropagation trains feed-forward networks; *Almeida-Pineda* recurrent
+backpropagation (Almeida 1987; Pineda 1987) trains *recurrent* networks whose units
+relax to a fixed point. The forward pass settles the network to equilibrium; the
+backward pass settles a *second* recurrent system -- the adjoint, run with the
+transposed weights -- to *its* fixed point, and the product of the two equilibria is
+the exact gradient. Because both passes are fixed points, no unrolling through time
+is needed (unlike backpropagation-through-time). This report implements it in
+=datamunge='s C++ =algorithms::almeida_pineda_train= as a literate program: every
+number and figure comes from one compiled binary. We train a small recurrent network
+to produce prescribed outputs at equilibrium and watch the error fall.
+#+end_abstract
+
+* Learning at a fixed point
+
+A recurrent network with weights \(W\) and clamped inputs settles until each free
+unit satisfies \(x_i = f\big(\sum_j W_{ij}x_j\big)\) (here \(f=\tanh\)). Designated
+*output* units are compared with targets, giving the error
+\(E=\tfrac12\sum_k (x_k-t_k)^2\). The gradient of \(E\) with respect to \(W\) is
+obtained by settling the *adjoint* system to its own equilibrium,
+\[
+  y_i = f'(a_i)\Big(\sum_j W_{ji}\,y_j + e_i\Big),\qquad
+  \frac{\partial E}{\partial W_{ij}} = y_i\,x_j,
+\]
+where \(a_i\) is unit \(i\)'s net input at equilibrium and \(e_i=(x_i-t_i)\) for
+output units, \(0\) otherwise. Note the *transposed* weights \(W_{ji}\): the error
+flows backward through the same connections, and relaxes to a fixed point just as the
+activations did. Descending this gradient trains the recurrent weights.
+
+#+name: ap-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/almeida_pineda.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Almeida-Pineda(inputs, targets):
+    initialize W
+    repeat (epochs):
+        for each pattern (input, target):
+            x = relax  x_i = f(sum_j W_ij x_j)  to equilibrium   (inputs clamped)
+            e_i = (x_i - t_i) at output units, else 0
+            y = relax  y_i = f'(a_i)(sum_j W_ji y_j + e_i)  to equilibrium
+            accumulate  grad_ij += y_i x_j
+        W -= learning_rate * grad
+    return W
+#+end_example
+
+* A worked example
+
+We train a five-unit network -- two clamped inputs, two hidden units, and one output
+unit (unit 4) -- to map three input patterns to three distinct target output values
+at equilibrium. The weights start random; training must shape the recurrent dynamics
+so each input relaxes to the right output.
+
+#+name: ap-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<double>> inputs  = {{1.0, 0.0}, {0.0, 1.0}, {1.0, 1.0}};
+    std::vector<std::vector<double>> targets = {{0.6}, {-0.6}, {0.3}};
+    std::vector<std::size_t>         outputs = {4};
+
+    AlmeidaPinedaResult res = almeida_pineda_train(inputs, targets, /*num_units=*/5, /*num_inputs=*/2,
+                                                   outputs, /*epochs=*/600, /*lr=*/0.2, /*seed=*/1,
+                                                   /*settle=*/80, /*relax=*/0.4);
+
+    std::cout << "=== Almeida-Pineda recurrent backprop (5-unit net) ===\n";
+    std::cout << "initial error: " << res.error_history.front() << '\n';
+    std::cout << "final error:   " << res.error_history.back() << "\n\n";
+    std::cout << "pattern  target   network output at equilibrium\n";
+    for (std::size_t p = 0; p < inputs.size(); ++p) {
+        auto out = almeida_pineda_predict(res.net, inputs[p], 80, 0.4);
+        std::cout << "  (" << inputs[p][0] << "," << inputs[p][1] << ")   " << targets[p][0] << "      "
+                  << out[0] << '\n';
+    }
+
+    // Figure: training error over epochs (log scale).
+    std::vector<double> ep, loge;
+    for (std::size_t i = 0; i < res.error_history.size(); ++i) {
+        ep.push_back(static_cast<double>(i));
+        loge.push_back(std::log10(res.error_history[i] + 1e-12));
+    }
+    RPlot p = RPlot::create();
+    p.line(ep, loge, "log10(mean squared error)", {37, 99, 235}, 2.0);
+    p.save_svg("build/org/almeida_pineda_error.svg");
+    std::cout << "\nwrote build/org/almeida_pineda_error.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/almeida_pineda_analysis.cpp <<'CPP'
+<<ap-includes>>
+
+int main() {
+<<ap-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/almeida_pineda_analysis.cpp -o build/org/almeida_pineda_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/almeida_pineda_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Almeida-Pineda recurrent backprop (5-unit net) ===
+initial error: 0.451147
+final error:   0.000757768
+
+pattern  target   network output at equilibrium
+  (1,0)   0.6      0.639113
+  (0,1)   -0.6      -0.577998
+  (1,1)   0.3      0.284706
+#+end_example
+
+Starting from random weights, the network learns to settle each input pattern to its
+prescribed output: the mean squared error falls by orders of magnitude and the
+equilibrium outputs track the targets closely. The log-scale error curve shows the
+steady descent that the fixed-point gradient provides -- computed, crucially, without
+ever unrolling the recurrence through time.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/almeida_pineda_error.svg]]
+
+* Fixed-point gradients versus BPTT
+
+Almeida-Pineda is the recurrent analogue of backpropagation for networks that
+*converge to an equilibrium*: it assumes the forward dynamics settle, and then the
+adjoint dynamics settle too, so one gradient costs two relaxations rather than a
+full unrolled trajectory. This is far cheaper in memory than backpropagation-through-
+time (which stores every timestep), but it applies only to *fixed-point* recurrences
+-- if the network does not converge (oscillates or diverges), the method breaks, so
+the weights must keep the dynamics contractive. It anticipates modern *deep
+equilibrium models* and *implicit-layer* networks, which likewise differentiate
+through a fixed point via the implicit function theorem rather than by unrolling.
+
+* Complexity
+
+Each pattern costs two relaxations, each \(O(\text{settle iters}\times N^2)\) for
+\(N\) units, plus \(O(N^2)\) for the outer-product gradient. Training is that times
+the number of patterns times the epochs; memory is \(O(N^2)\) for the weights -- no
+per-timestep storage.
