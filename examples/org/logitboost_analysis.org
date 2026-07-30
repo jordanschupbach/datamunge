@@ -1,0 +1,173 @@
+#+title: LogitBoost: Additive Logistic Regression by Boosting
+#+subtitle: A literate C++ study of boosting under the logistic loss, using =datamunge='s =algorithms::logitboost_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+AdaBoost can be read as fitting an additive model under an *exponential* loss.
+*LogitBoost* (Friedman, Hastie & Tibshirani 2000) swaps that for the *binomial
+log-likelihood* -- the loss of logistic regression -- and fits the model by Newton
+stepping, i.e. iteratively reweighted least squares. The result is a stagewise way
+to build a logistic regression whose linear predictor is a sum of weak regressors,
+and because the logistic loss grows only *linearly* in the margin (not
+exponentially), it is more robust to mislabeled points than AdaBoost. This report
+implements it in =datamunge='s C++ =algorithms::logitboost_train= as a literate
+program: every number and figure comes from one compiled binary. We boost
+regression stumps on a diagonally separable problem, watch the log-likelihood climb
+each round, and read off calibrated class probabilities.
+#+end_abstract
+
+* Boosting the logistic loss
+
+For labels \(y_i\in\{0,1\}\) LogitBoost maintains a linear predictor \(F(x)\) whose
+implied probability is \(p_i = 1/(1+e^{-2F(x_i)})\). It maximizes the binomial
+log-likelihood by *Newton steps*: at each round it forms the working response and
+weights that a Newton update of the logistic loss prescribes,
+\[
+  z_i = \frac{y_i - p_i}{p_i(1-p_i)},\qquad w_i = p_i(1-p_i),
+\]
+fits a regression stump \(f\) to \(z\) by *weighted least squares*, and updates
+\(F \leftarrow F + \tfrac12 f\). Points the model is unsure about (\(p_i\) near
+\(\tfrac12\)) get the largest weight; confidently-correct points get little -- and,
+unlike AdaBoost, a persistently misclassified outlier's weight is bounded, which is
+the robustness advantage of the logistic loss.
+
+#+name: lb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/logitboost.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+LogitBoost(examples (x_i, y_i in {0,1}), T):
+    F(x) = 0;  p_i = 1/2
+    for t = 1..T:
+        z_i = (y_i - p_i) / (p_i (1 - p_i))         # Newton working response
+        w_i = p_i (1 - p_i)                          # Newton weights
+        f = regression stump fit to z by WEIGHTED least squares
+        F <- F + 0.5 * f
+        p_i = 1 / (1 + exp(-2 F(x_i)))
+    return H(x) = sign(F(x)),  p(x) = 1/(1+exp(-2F(x)))
+#+end_example
+
+* A worked example
+
+The data are points labeled by \([x_0 + x_1 > 0]\) -- a diagonal boundary no single
+axis-aligned stump can capture. We run 40 rounds and track the log-likelihood and
+accuracy.
+
+#+name: lb-run
+#+begin_src c++ :eval no
+    std::mt19937_64                        rng(3);
+    std::uniform_real_distribution<double> u(-3.0, 3.0);
+    std::vector<std::vector<double>>       X;
+    std::vector<int>                       y;
+    for (int i = 0; i < 300; ++i) {
+        double a = u(rng), b = u(rng);
+        if (std::abs(a + b) < 0.3) continue;
+        X.push_back({a, b});
+        y.push_back((a + b > 0.0) ? 1 : 0);
+    }
+
+    LogitBoostModel model = logitboost_train(X, y, 40);
+
+    std::cout << "=== LogitBoost of regression stumps (diagonal split) ===\n";
+    std::cout << "training points: " << X.size() << ",  rounds: " << model.stumps.size() << "\n\n";
+    std::cout << "log-likelihood: first=" << model.log_likelihood.front()
+              << "  last=" << model.log_likelihood.back() << '\n';
+    bool monotone = true;
+    for (std::size_t i = 1; i < model.log_likelihood.size(); ++i)
+        if (model.log_likelihood[i] + 1e-6 < model.log_likelihood[i - 1]) monotone = false;
+    std::cout << "monotone non-decreasing: " << (monotone ? "yes" : "no") << '\n';
+
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) correct += (logitboost_predict(model, X[i]) == y[i]);
+    std::cout << "training accuracy: " << double(correct) / X.size() << "\n\n";
+
+    std::cout << "calibrated probabilities P(y=1):\n";
+    for (auto pt : std::vector<std::vector<double>>{{3, 3}, {1, 0.5}, {0, 0.1}, {-1, -0.5}, {-3, -3}})
+        std::cout << "  (" << pt[0] << ", " << pt[1] << ") -> " << logitboost_probability(model, pt) << '\n';
+
+    std::vector<double> rounds, ll;
+    for (std::size_t i = 0; i < model.log_likelihood.size(); ++i) { rounds.push_back(i + 1); ll.push_back(model.log_likelihood[i]); }
+    RPlot p = RPlot::create();
+    p.line(rounds, ll, "log-likelihood", {37, 99, 235}, 2.5);
+    p.points(rounds, ll, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/logitboost_loglik.svg");
+    std::cout << "\nwrote build/org/logitboost_loglik.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/logitboost_analysis.cpp <<'CPP'
+<<lb-includes>>
+
+int main() {
+<<lb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/logitboost_analysis.cpp -o build/org/logitboost_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/logitboost_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LogitBoost of regression stumps (diagonal split) ===
+training points: 271,  rounds: 40
+
+log-likelihood: first=-136.549  last=-1.49811
+monotone non-decreasing: yes
+training accuracy: 1
+
+calibrated probabilities P(y=1):
+  (3, 3) -> 1
+  (1, 0.5) -> 0.998765
+  (0, 0.1) -> 0.841859
+  (-1, -0.5) -> 0.000400389
+  (-3, -3) -> 3.04501e-12
+#+end_example
+
+The binomial log-likelihood rises monotonically as each Newton step adds a
+regression stump, and the ensemble classifies the diagonally-split data at high
+accuracy despite each weak learner being a single axis-aligned threshold. Unlike
+AdaBoost, LogitBoost outputs *calibrated probabilities*: points deep in each region
+get probabilities near 0 or 1, while points near the boundary sit near
+\(\tfrac12\) -- exactly what a logistic model should report.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/logitboost_loglik.svg]]
+
+* LogitBoost versus AdaBoost, and relatives
+
+The two differ only in their loss. AdaBoost's exponential loss \(e^{-yF}\) punishes
+misclassified points *exponentially*, so a few noisy labels can dominate training;
+LogitBoost's logistic loss \(\log(1+e^{-2yF})\) grows *linearly*, bounding any single
+point's influence and yielding probabilities directly. Both are instances of
+*forward stagewise additive modeling*; generalizing the Newton/gradient step to an
+arbitrary differentiable loss and to trees deeper than stumps gives *gradient
+boosting* (GBM, XGBoost). When labels are noisy, the logistic (or an even more
+robust) loss is usually the safer choice.
+
+* Complexity
+
+Each round fits a regression stump -- \(O(n\,d)\) (or \(O(n\,d\log n)\) with sorting)
+-- so training is \(O(T\,n\,d)\) for \(T\) rounds. Prediction sums \(T\) stump
+evaluations, \(O(T)\). Memory is \(O(T)\) for the ensemble plus \(O(n)\) working
+arrays.

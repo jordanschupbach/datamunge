@@ -1,0 +1,195 @@
+#+title: ID3: Decision-Tree Induction by Information Gain
+#+subtitle: A literate C++ study of Quinlan's ID3 algorithm, using =datamunge='s =algorithms::id3_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A decision tree classifies by asking a sequence of attribute questions. *ID3*
+(Quinlan 1986) grows one greedily and top-down: at each node it picks the attribute
+that most reduces class *entropy* -- the attribute of maximum *information gain* --
+splits the data into one branch per attribute value, and recurses until each leaf is
+pure. This report implements it in =datamunge='s C++ =algorithms::id3_train= as a
+literate program: every number and figure comes from one compiled binary. We induce
+a tree on the classic "play tennis" dataset, watch it choose *outlook* at the root
+by information gain, print the resulting tree, and confirm it classifies the
+training data perfectly.
+#+end_abstract
+
+* Entropy and information gain
+
+The *entropy* of a set \(S\) with class proportions \(p_c\) is
+\(H(S) = -\sum_c p_c \log_2 p_c\), the average bits needed to encode a label -- zero
+when \(S\) is pure, maximal when classes are balanced. Splitting \(S\) on attribute
+\(A\) into value-subsets \(S_v\) yields the *information gain*
+\[
+  \mathrm{Gain}(S, A) = H(S) - \sum_v \frac{|S_v|}{|S|}\, H(S_v),
+\]
+the expected entropy reduction. ID3 chooses the attribute of maximum gain at each
+node -- the one that most "purifies" the children.
+
+#+name: id3-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/decision_tree_induction.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ID3(rows, attributes):
+    if rows all one class: return leaf(that class)
+    if attributes empty:   return leaf(majority class)
+    A* = attribute maximizing Gain(rows, A)
+    node = split on A*
+    for each value v of A*:
+        node.child[v] = ID3(rows with A* = v, attributes \ {A*})
+    return node
+#+end_example
+
+* A worked example
+
+The 14-day "play tennis" dataset again, with outlook/temperature/humidity/windy.
+We compute the root information gains, induce the tree, print it, and score it.
+
+#+name: id3-run
+#+begin_src c++ :eval no
+    std::vector<std::vector<int>> X = {{0, 0, 0, 0}, {0, 0, 0, 1}, {1, 0, 0, 0}, {2, 1, 0, 0}, {2, 2, 1, 0},
+                                       {2, 2, 1, 1}, {1, 2, 1, 1}, {0, 1, 0, 0}, {0, 2, 1, 0}, {2, 1, 1, 0},
+                                       {0, 1, 1, 1}, {1, 1, 0, 1}, {1, 0, 1, 0}, {2, 1, 0, 1}};
+    std::vector<int>              y = {0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0};
+    const std::vector<std::string> attr    = {"outlook", "temperature", "humidity", "windy"};
+    const std::vector<std::vector<std::string>> vals = {
+        {"sunny", "overcast", "rain"}, {"hot", "mild", "cool"}, {"high", "normal"}, {"false", "true"}};
+
+    // Root information gains.
+    auto entropy = [&](const std::vector<std::size_t>& rows) {
+        std::map<int, int> c;
+        for (std::size_t i : rows) ++c[y[i]];
+        double h = 0.0;
+        for (auto& [k, v] : c) { double p = double(v) / rows.size(); h -= p * std::log2(p); }
+        return h;
+    };
+    std::vector<std::size_t> all(X.size());
+    for (std::size_t i = 0; i < X.size(); ++i) all[i] = i;
+    double base = entropy(all);
+    std::cout << "=== ID3 on the play-tennis dataset ===\n";
+    std::cout << "root entropy H(S) = " << base << " bits\n\ninformation gain per attribute:\n";
+    std::vector<double> gains;
+    for (std::size_t f = 0; f < attr.size(); ++f) {
+        std::map<int, std::vector<std::size_t>> part;
+        for (std::size_t i : all) part[X[i][f]].push_back(i);
+        double cond = 0.0;
+        for (auto& [v, sub] : part) cond += double(sub.size()) / all.size() * entropy(sub);
+        gains.push_back(base - cond);
+        std::cout << "  " << attr[f] << ": " << (base - cond) << '\n';
+    }
+
+    DecisionTree tree = id3_train(X, y);
+
+    // Print the induced tree.
+    std::cout << "\ninduced tree:\n";
+    std::function<void(int, int)> show = [&](int idx, int depth) {
+        const auto& nd = tree.nodes[idx];
+        std::string pad(static_cast<std::size_t>(depth) * 2, ' ');
+        if (nd.leaf) { std::cout << pad << "-> " << (nd.prediction ? "yes" : "no") << '\n'; return; }
+        for (const auto& [v, child] : nd.children) {
+            std::cout << pad << attr[nd.feature] << " = " << vals[nd.feature][v] << ":\n";
+            show(child, depth + 1);
+        }
+    };
+    show(0, 0);
+
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) correct += (id3_predict(tree, X[i]) == y[i]);
+    std::cout << "\ntraining accuracy: " << correct << "/" << X.size() << '\n';
+
+    RPlot p = RPlot::barplot(gains, {"outlook", "temp", "humidity", "windy"}, "information gain (bits)",
+                             {22, 163, 74});
+    p.save_svg("build/org/id3_gains.svg");
+    std::cout << "\nwrote build/org/id3_gains.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/id3_analysis.cpp <<'CPP'
+<<id3-includes>>
+
+int main() {
+<<id3-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/id3_analysis.cpp -o build/org/id3_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/id3_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== ID3 on the play-tennis dataset ===
+root entropy H(S) = 0.940286 bits
+
+information gain per attribute:
+  outlook: 0.24675
+  temperature: 0.0292226
+  humidity: 0.151836
+  windy: 0.048127
+
+induced tree:
+outlook = sunny:
+  humidity = high:
+    -> no
+  humidity = normal:
+    -> yes
+outlook = overcast:
+  -> yes
+outlook = rain:
+  windy = false:
+    -> yes
+  windy = true:
+    -> no
+
+training accuracy: 14/14
+#+end_example
+
+Outlook has the highest root information gain, so ID3 splits on it first -- and the
+overcast branch is immediately pure ("yes"), while the sunny and rainy branches
+split further on humidity and windiness. The induced tree classifies all fourteen
+training days correctly, because ID3 keeps splitting until every leaf is pure on
+this consistent dataset. The gain bar chart shows exactly why outlook, not
+temperature, sits at the root.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/id3_gains.svg]]
+
+* Strengths, biases, and successors
+
+ID3 is fast, produces human-readable trees, and needs no distance metric or
+scaling. Its weaknesses drove its successors: it *overfits* (growing to pure leaves
+memorizes noise, so pruning is needed); it is *biased toward many-valued
+attributes* (information gain favors attributes that shatter the data, even
+useless IDs); and it handles only *categorical* attributes with no missing values.
+C4.5 (companion report) fixes these with gain ratio, continuous thresholds, missing-
+value handling, and pruning; CART uses the Gini index and binary splits. All share
+ID3's greedy, entropy-guided, top-down skeleton.
+
+* Complexity
+
+At each node ID3 scans every remaining attribute over the node's rows to compute
+gains, giving roughly \(O(n\,d\,\text{depth})\) time; memory is the tree itself,
+\(O(\text{nodes})\). Prediction walks one root-to-leaf path, \(O(\text{depth})\).
