@@ -1,0 +1,137 @@
+#+title: LZ77: Sliding-Window Dictionary Compression
+#+subtitle: A literate C++ study of Lempel-Ziv 1977, using =datamunge='s =algorithms::lz77_encode=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+LZ77 (Ziv & Lempel 1977) is the ancestor of most modern general-purpose compressors --
+DEFLATE (zip, gzip, PNG), LZMA, and more. It compresses by replacing repeated
+substrings with *back-references* into a sliding window of recently seen text: a token
+"(go back offset, copy length, then append this literal)". This report implements it in
+=datamunge='s C++ =algorithms::lz77_encode= / =lz77_decode= as a literate program:
+every number and figure comes from one compiled binary. We compress a repetitive text,
+confirm an exact round-trip, and show the token count fall well below the character
+count.
+#+end_abstract
+
+* Back-references into a sliding window
+
+At each position, LZ77 searches the preceding *window* for the longest match to the text
+starting there, and emits a token \((\text{offset}, \text{length}, \text{next})\): copy
+\c length bytes from \c offset back, then append the literal \c next. A position with no
+useful match emits \((0, 0, c)\). Decoding replays the copies -- and because a
+back-reference may point into text the decoder is *currently* producing, runs and
+periodic patterns encode compactly (e.g. "aaaa" becomes one short copy).
+
+#+name: lz77-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/lz77.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+LZ77-encode(data, window):
+    i = 0
+    while i < len(data):
+        find longest match of data[i..] starting within data[i-window .. i-1]
+        (offset, length) = best match (0,0 if none)
+        next = data[i + length]                 # the following literal
+        emit (offset, length, next)
+        i += length + 1
+#+end_example
+
+* A worked example
+
+#+name: lz77-run
+#+begin_src c++ :eval no
+    std::string text =
+        "the quick brown fox jumps over the lazy dog. the quick brown fox jumps over the lazy dog.";
+    auto        toks = lz77_encode(text, 128, 64);
+    std::string back = lz77_decode(toks);
+
+    std::cout << "=== LZ77 on a " << text.size() << "-char text ===\n";
+    std::cout << "round-trip ok: " << (back == text ? "yes" : "NO") << '\n';
+    std::cout << "tokens: " << toks.size() << " vs " << text.size() << " chars\n";
+    std::size_t matches = 0, literals = 0;
+    for (const auto& t : toks) (t.length > 0 ? matches : literals)++;
+    std::cout << "match tokens: " << matches << ", literal-only tokens: " << literals << '\n';
+    std::cout << "first back-reference tokens:\n";
+    std::size_t shown = 0;
+    for (const auto& t : toks)
+        if (t.length > 0 && shown < 5) {
+            std::cout << "  (offset " << t.offset << ", length " << t.length << ", next '" << t.next << "')\n";
+            ++shown;
+        }
+
+    RPlot p = RPlot::barplot({static_cast<double>(text.size()), static_cast<double>(toks.size())},
+                             {"chars", "LZ77 tokens"}, "count", {22, 163, 74});
+    p.save_svg("build/org/lz77_tokens.svg");
+    std::cout << "\nwrote build/org/lz77_tokens.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/lz77_analysis.cpp <<'CPP'
+<<lz77-includes>>
+
+int main() {
+<<lz77-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/lz77_analysis.cpp -o build/org/lz77_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lz77_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== LZ77 on a 89-char text ===
+round-trip ok: yes
+tokens: 33 vs 89 chars
+match tokens: 13, literal-only tokens: 20
+first back-reference tokens:
+  (offset 6, length 1, next 'b')
+  (offset 12, length 1, next 'f')
+  (offset 5, length 1, next 'x')
+  (offset 16, length 1, next 'j')
+  (offset 16, length 1, next 'm')
+#+end_example
+
+The text round-trips exactly, and its two identical halves let LZ77 collapse 89
+characters into 33 tokens. The earliest back-references are short (single repeated
+letters within a word), but as the second sentence -- an exact copy of the first --
+comes into the window, whole repeated phrases fold into single long-length back-
+references, which is where most of the saving comes from.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/lz77_tokens.svg]]
+
+* From LZ77 to DEFLATE
+
+Raw LZ77 tokens are still bulky; real compressors *entropy-code* them: DEFLATE (zip,
+gzip, PNG) runs LZ77 with a 32 KB window and then Huffman-codes the literals, lengths,
+and offsets, which is what turns LZ77's redundancy removal into actual bytes saved.
+LZ78/LZW build an explicit dictionary instead of a window (companion LZW report), and
+LZMA/Brotli add range coding and larger windows. The sliding-window match is the common
+engine of them all.
+
+* Complexity
+
+Naive encoding is \(O(n\cdot w\cdot m)\) for window \(w\) and max match \(m\); production
+encoders use hash chains or suffix structures to find matches in near-linear time.
+Decoding is \(O(\text{output length})\).

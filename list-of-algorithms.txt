@@ -948,7 +948,7 @@ Further information: Error detection and correction
 Lossless compression algorithms
 Main pages: Lossless compression algorithms and List of compression algorithms
 
-    Burrows–Wheeler transform: preprocessing useful for improving lossless compression
+    [x] Burrows–Wheeler transform: preprocessing useful for improving lossless compression -- datamunge::algorithms::bwt_transform / bwt_inverse; report examples/org/burrows_wheeler_analysis.org (+ move-to-front: datamunge::algorithms::mtf_encode, report examples/org/move_to_front_analysis.org)
     Context tree weighting
     Delta encoding: aid to compression of data in which sequential data occurs frequently
     Dynamic Markov compression: Compression using predictive arithmetic coding
@@ -956,14 +956,14 @@ Main pages: Lossless compression algorithms and List of compression algorithms
         Byte pair encoding (BPE)
         Deflate
         Lempel–Ziv
-            LZ77 and LZ78
+            [x] LZ77 and LZ78 -- datamunge::algorithms::lz77_encode / lz77_decode (LZ77 sliding window); report examples/org/lz77_analysis.org
             Lempel–Ziv Jeff Bonwick (LZJB)
             Lempel–Ziv–Markov chain algorithm (LZMA)
             Lempel–Ziv–Oberhumer (LZO): speed oriented
             Lempel–Ziv Ross Williams (LZRW)
             Lempel–Ziv–Stac (LZS)
             Lempel–Ziv–Storer–Szymanski (LZSS)
-            Lempel–Ziv–Welch (LZW)
+            [x] Lempel–Ziv–Welch (LZW) -- datamunge::algorithms::lzw_encode / lzw_decode; report examples/org/lzw_analysis.org
             LZWL: syllable-based variant
             LZX
     Entropy encoding: coding scheme that assigns codes to symbols so as to match code lengths with the probabilities of the symbols
@@ -972,7 +972,7 @@ Main pages: Lossless compression algorithms and List of compression algorithms
         [x] Huffman coding: simple lossless compression taking advantage of relative character frequencies -- datamunge::algorithms::huffman_build (+ encode/decode; optimal prefix code); report examples/org/huffman_analysis.org
             Adaptive Huffman coding: adaptive coding technique based on Huffman coding
             Package-merge algorithm: Optimizes Huffman coding subject to a length restriction on code strings
-        Shannon–Fano coding
+        [x] Shannon–Fano coding -- datamunge::algorithms::shannon_fano_build (+ encode); report examples/org/shannon_fano_analysis.org
         Shannon–Fano–Elias coding: precursor to arithmetic encoding[10]
     Entropy coding with known entropy characteristics
         Golomb coding: form of entropy coding that is optimal for alphabets following geometric distributions
@@ -980,7 +980,7 @@ Main pages: Lossless compression algorithms and List of compression algorithms
         Truncated binary encoding
         Unary coding: code that represents a number n with n ones followed by a zero
         Universal codes: encodes positive integers into binary code words
-            Elias delta, gamma, and omega coding
+            [x] Elias delta, gamma, and omega coding -- datamunge::algorithms::elias_gamma_encode / decode (gamma); report examples/org/elias_gamma_analysis.org
             Exponential-Golomb coding
             Fibonacci coding
             Levenshtein coding
