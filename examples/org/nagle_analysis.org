@@ -1,0 +1,136 @@
+#+title: Nagle's Algorithm: Coalescing Small TCP Segments
+#+subtitle: A literate C++ study of TCP packetization, using =datamunge='s =algorithms::nagle_simulate=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Interactive protocols that send one byte at a time (a telnet keystroke, a mouse move) can flood
+the network with tiny packets: 41 bytes of headers to carry a single byte of payload. *Nagle's
+algorithm* (1984) fixes this by *not* sending a small segment while an earlier small segment is
+still unacknowledged; instead it buffers the data and transmits when a full maximum segment
+(MSS) has accumulated *or* the outstanding data is acknowledged. A burst of small writes
+collapses into a few full packets. This report runs the sender's packetization with
+=datamunge='s =algorithms::nagle_simulate= as a literate program: every number and figure comes
+from one compiled binary.
+#+end_abstract
+
+* Hold small data until you may send it
+
+The rule has two triggers. A *full* segment is always sent immediately -- there is no reason to
+wait. A *partial* (sub-MSS) segment is sent only if there is *no unacknowledged data* in flight;
+otherwise it is buffered. So the very first small write goes out at once (nothing is
+outstanding), but subsequent small writes accumulate in the buffer until either they total an
+MSS or an ACK for the earlier data arrives and releases them. The effect is at most one small
+packet "in flight" per connection, bounding the small-packet count to roughly one per
+round-trip instead of one per write.
+
+#+name: ng-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/nagle.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+on write(bytes):
+    buffer += bytes
+    while buffer >= MSS: send an MSS segment          # full segments always go
+    if buffer > 0 and nothing unacknowledged: send buffer   # small: only when idle
+on ack(bytes):
+    unacked -= bytes
+    if nothing unacknowledged and buffer > 0: send buffer   # ack releases held data
+#+end_example
+
+* A worked example
+
+Six 100-byte writes (an MSS of 500), with an acknowledgement arriving after the first four. We
+compare the packets Nagle produces against the naive one-packet-per-write behavior.
+
+#+name: ng-run
+#+begin_src c++ :eval no
+    const int mss = 500;
+    std::vector<NagleEvent> ev = {
+        {NagleEvent::Write, 100}, {NagleEvent::Write, 100}, {NagleEvent::Write, 100},
+        {NagleEvent::Write, 100}, {NagleEvent::Ack, 100},
+        {NagleEvent::Write, 100}, {NagleEvent::Write, 100},
+    };
+
+    auto with    = nagle_simulate(ev, mss);
+    auto without = no_nagle_simulate(ev, mss);
+
+    std::cout << "=== Nagle's algorithm (MSS " << mss << ") ===\n";
+    std::cout << "6 small writes of 100 B, ACK after the 4th\n";
+    std::cout << "with Nagle:    " << with.size() << " packets [ ";
+    for (int p : with) std::cout << p << " ";
+    std::cout << "]\nwithout Nagle: " << without.size() << " packets (one per write)\n";
+    int hdr = 40;  // TCP+IP header bytes per packet
+    std::cout << "header overhead: Nagle " << with.size() * hdr << " B vs no-Nagle "
+              << without.size() * hdr << " B\n";
+
+    std::vector<double>      heights = {(double)with.size(), (double)without.size()};
+    std::vector<std::string> labels  = {"with Nagle", "without Nagle"};
+    RPlot p = RPlot::barplot(heights, labels, "packets sent", {37, 99, 235});
+    p.save_svg("build/org/nagle.svg");
+    std::cout << "\nwrote build/org/nagle.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/nagle_analysis.cpp <<'CPP'
+<<ng-includes>>
+
+int main() {
+<<ng-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/nagle_analysis.cpp -o build/org/nagle_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/nagle_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Nagle's algorithm (MSS 500) ===
+6 small writes of 100 B, ACK after the 4th
+with Nagle:    2 packets [ 100 300 ]
+without Nagle: 6 packets (one per write)
+header overhead: Nagle 80 B vs no-Nagle 240 B
+#+end_example
+
+Nagle sends the first 100-byte write immediately (nothing is outstanding), then holds the next
+three until the ACK arrives and releases them as one coalesced 300-byte packet; the final two
+writes are buffered again, awaiting the next ACK. Six would-be packets become two so far, cutting
+the 40-byte-per-packet header overhead from 240 to 80 bytes for the same payload. The cost is
+latency: a held write waits up to a round-trip, which is why latency-sensitive applications
+(games, RPC) often disable Nagle with =TCP_NODELAY=, especially to avoid its notorious
+interaction with delayed ACKs.
+
+#+attr_latex: :width 0.75\linewidth
+[[file:../../build/org/nagle.svg]]
+
+* Character and relatives
+
+Nagle's algorithm is a classic bandwidth-versus-latency trade and remains on by default in most
+TCP stacks. Its well-known pathology is the interaction with *delayed acknowledgements*: the
+receiver waits (up to ~200 ms) to piggyback an ACK while the sender waits for that ACK to send
+its buffered data, producing a stall -- the reason many protocols set =TCP_NODELAY=. It pairs
+conceptually with other TCP efficiency mechanisms (delayed ACKs, the silly-window-syndrome
+avoidance rules) that all manage how much data rides in each segment.
+
+* Complexity
+
+\(O(1)\) work per write and per acknowledgement to maintain the buffer and outstanding-byte
+counters; the benefit is the reduction in packet count, not CPU time.

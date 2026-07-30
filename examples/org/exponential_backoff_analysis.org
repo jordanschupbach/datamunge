@@ -1,0 +1,132 @@
+#+title: Exponential Backoff: Spreading Out Retries
+#+subtitle: A literate C++ study of capped backoff with jitter, using =datamunge='s =algorithms::exponential_backoff_sequence=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+When many clients retry a failed operation at once, retrying on a fixed schedule makes them
+collide repeatedly -- a self-inflicted "thundering herd". *Exponential backoff* spreads them
+out by doubling the wait after each failure: attempt \(k\) waits \(\min(\text{base}\cdot 2^k,
+\text{cap})\). Doubling alone still synchronizes clients that failed together, so practical
+systems add *jitter* -- randomizing within the window -- to decorrelate them. This report runs it
+with =datamunge='s =algorithms::exponential_backoff_sequence= as a literate program: every
+number and figure comes from one compiled binary.
+#+end_abstract
+
+* Double, cap, jitter
+
+The backoff after \(k\) failures is \(\min(\text{base}\cdot 2^k,\text{cap})\): geometric growth
+that quickly relieves a struggling server, capped so waits never grow unbounded. But if a
+thousand clients all fail at \(t=0\), pure doubling has them all retry at \(t=\text{base}\),
+then all at \(t=3\,\text{base}\), and so on -- still synchronized. *Full jitter* replaces the
+fixed delay with a uniform sample in \([0,\min(\text{base}\cdot 2^k,\text{cap})]\), scattering
+the retries across the whole window so the load smooths out. This is the backoff used by AWS
+SDKs, database clients, and distributed locks.
+
+#+name: eb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/exponential_backoff.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+delay(attempt k):        return min(base * 2^k, cap)
+jittered(attempt k, u):  return u * min(base * 2^k, cap)   # u uniform in [0,1)
+#+end_example
+
+* A worked example
+
+Base delay 1, cap 30, over eight attempts -- shown both as the raw capped schedule and as one
+jittered realization (using a fixed pseudo-random stream so the figure is reproducible).
+
+#+name: eb-run
+#+begin_src c++ :eval no
+    const double base = 1.0, cap = 30.0;
+    auto seq = exponential_backoff_sequence(8, base, cap);
+
+    std::cout << "=== Exponential backoff (base " << base << ", cap " << cap << ") ===\n";
+    std::cout << "attempt : delay : jittered\n";
+    // Deterministic pseudo-random stream (LCG) for reproducible jitter.
+    std::uint64_t state = 88172645463325252ull;
+    auto next_u = [&]() { state ^= state << 13; state ^= state >> 7; state ^= state << 17;
+                          return (state >> 11) * (1.0 / 9007199254740992.0); };
+    std::vector<double> attempts, delays, jittered;
+    for (int k = 0; k < 8; ++k) {
+        double j = exponential_backoff_jittered(k, base, cap, next_u());
+        std::cout << "   " << k << "    :  " << seq[k] << "  :  " << j << "\n";
+        attempts.push_back(k); delays.push_back(seq[k]); jittered.push_back(j);
+    }
+
+    RPlot p = RPlot::create();
+    p.line(attempts, delays, "capped delay", {37, 99, 235}, 2.0);
+    p.points(attempts, delays, "", {37, 99, 235}, 4.0);
+    p.points(attempts, jittered, "jittered", {220, 38, 38}, 5.0);
+    p.legend({"capped delay", "jittered"}, {{37, 99, 235}, {220, 38, 38}});
+    p.save_svg("build/org/exponential_backoff.svg");
+    std::cout << "\nwrote build/org/exponential_backoff.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/exponential_backoff_analysis.cpp <<'CPP'
+<<eb-includes>>
+
+int main() {
+<<eb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/exponential_backoff_analysis.cpp -o build/org/exponential_backoff_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/exponential_backoff_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Exponential backoff (base 1, cap 30) ===
+attempt : delay : jittered
+   0    :  1  :  0.474259
+   1    :  2  :  0.329695
+   2    :  4  :  0.748966
+   3    :  8  :  7.12613
+   4    :  16  :  7.11646
+   5    :  30  :  28.9502
+   6    :  30  :  11.4521
+   7    :  30  :  27.2191
+#+end_example
+
+The capped schedule doubles -- 1, 2, 4, 8, 16 -- then flattens at the cap of 30, so a failing
+client waits geometrically longer up to a bound. The jittered points scatter *below* each
+capped value: every client draws its own delay in \([0,\text{window}]\), so two clients that
+failed together almost never retry together. This decorrelation is the whole point -- capped
+doubling controls the *rate* of retries, jitter controls their *synchronization*.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/exponential_backoff.svg]]
+
+* Character and relatives
+
+Exponential backoff is ubiquitous: TCP uses it for retransmission timeouts (see Karn's
+algorithm, companion report), Ethernet for collisions (*truncated binary exponential backoff*,
+companion report), and virtually every cloud SDK for request retries. The jitter variants --
+full, equal, and decorrelated jitter -- trade a little extra latency for far better load
+smoothing under contention. Without a cap, backoff can grow to useless delays; without jitter,
+it merely reschedules the collision.
+
+* Complexity
+
+\(O(1)\) per retry to compute the delay; the value of the scheme is statistical -- it turns a
+correlated retry storm into a spread-out, self-limiting trickle.

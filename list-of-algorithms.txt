@@ -1123,12 +1123,12 @@ Memory allocation and deallocation algorithms
 Networking
 Further information: Network scheduler
 
-    Karn's algorithm: addresses the problem of getting accurate estimates of the round-trip time for messages when using TCP
+    [x] Karn's algorithm: addresses the problem of getting accurate estimates of the round-trip time for messages when using TCP  -> datamunge::algorithms::KarnEstimator (karn.hpp); report examples/org/karn_analysis.org
     Luleå algorithm: a technique for storing and searching internet routing tables efficiently
     Network congestion
-        Exponential backoff
-        Nagle's algorithm: improve the efficiency of TCP/IP networks by coalescing packets
-        Truncated binary exponential backoff
+    [x] Exponential backoff  -> datamunge::algorithms::exponential_backoff_sequence (exponential_backoff.hpp); report examples/org/exponential_backoff_analysis.org  [also: token_bucket.hpp / leaky_bucket.hpp rate limiters, reports token_bucket_analysis.org / leaky_bucket_analysis.org]
+    [x] Nagle's algorithm: improve the efficiency of TCP/IP networks by coalescing packets  -> datamunge::algorithms::nagle_simulate (nagle.hpp); report examples/org/nagle_analysis.org
+    [x] Truncated binary exponential backoff  -> datamunge::algorithms::contention_window (truncated_binary_exponential_backoff.hpp); report examples/org/truncated_backoff_analysis.org
 
 Operating systems algorithms
 Further information: Operating systems

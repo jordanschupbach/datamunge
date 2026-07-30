@@ -1,0 +1,138 @@
+#+title: Truncated Binary Exponential Backoff: Ethernet Collision Resolution
+#+subtitle: A literate C++ study of CSMA/CD backoff, using =datamunge='s =algorithms::contention_window=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Classic Ethernet (CSMA/CD) resolves collisions with *truncated binary exponential backoff*.
+After the \(c\)-th consecutive collision on a frame, a station waits a random number of *slot
+times* chosen uniformly from \(\{0,\dots,2^{\min(c,10)}-1\}\): the *contention window* doubles
+per collision, so the more stations are competing, the wider the interval they scatter across,
+reducing the chance of colliding again. The window is *truncated* at \(c=10\) (a window of
+1024), and after 16 collisions the frame is abandoned. This report runs it with =datamunge='s
+=algorithms::contention_window= as a literate program: every number and figure comes from one
+compiled binary.
+#+end_abstract
+
+* Widen the window until the collision clears
+
+A slot time is the worst-case round-trip signal propagation on the segment. After a collision,
+each involved station picks a random slot count in \([0, 2^{\min(c,10)}-1]\) and waits that many
+slots before retrying. Because the window *doubles* with each successive collision, two stations
+that keep colliding are, each round, drawn from twice as many choices, so the probability they
+pick the same slot halves -- the contention resolves probabilistically. The doubling is capped
+(*truncated*) at \(2^{10}=1024\) so waits stay bounded, and a frame that still collides after
+16 attempts is dropped and reported to higher layers.
+
+#+name: tb-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+after the c-th collision:
+    window = 2^min(c, 10)                 # doubles, truncated at 10
+    if c >= 16: abandon the frame
+    else: wait uniform-random slots in [0, window-1], then retransmit
+#+end_example
+
+* A worked example
+
+We tabulate the contention window for collisions 0..16 and chart its doubling-then-truncating
+growth (on a log scale, so the truncation is a clear plateau).
+
+#+name: tb-run
+#+begin_src c++ :eval no
+    std::cout << "=== Truncated binary exponential backoff (Ethernet) ===\n";
+    std::cout << "collision : window : max slots : status\n";
+    std::vector<double> cs, logw;
+    for (int c = 0; c <= 16; ++c) {
+        std::cout << "    " << c << "     :  " << contention_window(c) << "   :   "
+                  << max_backoff_slots(c) << "   : " << (backoff_give_up(c) ? "ABANDON frame" : "retry") << "\n";
+        if (!backoff_give_up(c)) { cs.push_back(c); logw.push_back(std::log2((double)contention_window(c))); }
+    }
+
+    RPlot p = RPlot::create();
+    p.line(cs, logw, "log2(window)", {37, 99, 235}, 2.0);
+    p.points(cs, logw, "", {37, 99, 235}, 4.0);
+    p.abline_h(10.0, {120, 120, 120}, 1.0);   // truncation ceiling at 2^10
+    p.save_svg("build/org/truncated_backoff.svg");
+    std::cout << "\nwrote build/org/truncated_backoff.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/truncated_backoff_analysis.cpp <<'CPP'
+<<tb-includes>>
+
+int main() {
+<<tb-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/truncated_backoff_analysis.cpp -o build/org/truncated_backoff_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/truncated_backoff_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Truncated binary exponential backoff (Ethernet) ===
+collision : window : max slots : status
+    0     :  1   :   0   : retry
+    1     :  2   :   1   : retry
+    2     :  4   :   3   : retry
+    3     :  8   :   7   : retry
+    4     :  16   :   15   : retry
+    5     :  32   :   31   : retry
+    6     :  64   :   63   : retry
+    7     :  128   :   127   : retry
+    8     :  256   :   255   : retry
+    9     :  512   :   511   : retry
+    10     :  1024   :   1023   : retry
+    11     :  1024   :   1023   : retry
+    12     :  1024   :   1023   : retry
+    13     :  1024   :   1023   : retry
+    14     :  1024   :   1023   : retry
+    15     :  1024   :   1023   : retry
+    16     :  1024   :   1023   : ABANDON frame
+#+end_example
+
+The window doubles cleanly -- 1, 2, 4, ..., 512 -- until the tenth collision, where it stops at
+1024 and stays there (the horizontal ceiling in the figure at \(\log_2=10\)), and the frame is
+abandoned at the sixteenth collision. The doubling is what makes CSMA/CD stable under load:
+each unresolved collision widens the field of retry slots, so heavily-contended stations
+automatically spread themselves thin, while the truncation keeps a badly congested network from
+imposing unbounded waits.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/truncated_backoff.svg]]
+
+* Character and relatives
+
+Truncated binary exponential backoff is the collision-resolution heart of shared-medium
+Ethernet and early Wi-Fi (which uses a similar contention window). It is the discrete,
+slot-based cousin of the continuous *exponential backoff* (companion report) used for retries.
+Its weakness is the *capture effect* -- a station that just succeeded has a smaller window than
+one that keeps losing, so it can unfairly dominate -- which switched, full-duplex Ethernet
+eliminates by removing collisions entirely.
+
+* Complexity
+
+\(O(1)\) per collision to compute the window and draw a slot; the scheme's value is the
+\(O(\log)\) growth of the contention window that resolves contention in a bounded number of
+rounds with high probability.

@@ -64,6 +64,7 @@
 #include <datamunge/algorithms/elias_gamma.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exchange_sorts.hpp>
+#include <datamunge/algorithms/exponential_backoff.hpp>
 #include <datamunge/algorithms/fft.hpp>
 #include <datamunge/algorithms/flood_fill.hpp>
 #include <datamunge/algorithms/extended_euclidean.hpp>
@@ -99,9 +100,11 @@
 #include <datamunge/algorithms/k_medoids.hpp>
 #include <datamunge/algorithms/kmp.hpp>
 #include <datamunge/algorithms/kabsch.hpp>
+#include <datamunge/algorithms/karn.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
 #include <datamunge/algorithms/lanczos_iteration.hpp>
+#include <datamunge/algorithms/leaky_bucket.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
 #include <datamunge/algorithms/lamport_clock.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
@@ -130,6 +133,7 @@
 #include <datamunge/algorithms/move_to_front.hpp>
 #include <datamunge/algorithms/midpoint_circle.hpp>
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
+#include <datamunge/algorithms/nagle.hpp>
 #include <datamunge/algorithms/nested_sampling.hpp>
 #include <datamunge/algorithms/nesting.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
@@ -209,8 +213,10 @@
 #include <datamunge/algorithms/tarjan_lca.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/todd_coxeter.hpp>
+#include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>
 #include <datamunge/algorithms/tricubic_interpolation.hpp>
 #include <datamunge/algorithms/topological_sort.hpp>
+#include <datamunge/algorithms/token_bucket.hpp>
 #include <datamunge/algorithms/trigram_search.hpp>
 #include <datamunge/algorithms/tour_search.hpp>
 #include <datamunge/algorithms/uniform_binary_search.hpp>

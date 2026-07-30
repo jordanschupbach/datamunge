@@ -1,0 +1,136 @@
+#+title: Leaky-Bucket Rate Limiting
+#+subtitle: A literate C++ study of traffic smoothing, using =datamunge='s =algorithms::LeakyBucket=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *leaky bucket* enforces a smooth, constant rate. Picture a bucket with a hole in the bottom:
+admitted units raise the water *level*, which drains ("leaks") at a fixed rate; a new unit is
+admitted only if it fits under the bucket's *capacity*, otherwise it overflows and is dropped.
+Where the token bucket *banks* idle capacity to permit later bursts, the leaky bucket paces
+traffic to a steady output, tolerating only the slack the current level leaves. This report
+drives =datamunge='s =algorithms::LeakyBucket= as a literate program: every number and figure
+comes from one compiled binary.
+#+end_abstract
+
+* Fill on arrival, drain at a constant rate
+
+The bucket has capacity \(C\) and leaks at rate \(r\). On each arrival the level is first
+*decreased* by \((\text{now}-\text{last})\cdot r\) (clamped at zero) to account for leaking, then
+the arriving amount is added *only if* it keeps the level within \(C\); otherwise it is dropped.
+Because the level can never exceed \(C\) and always drains at \(r\), the long-run admitted rate
+is bounded by \(r\) and the output is *paced* -- there is no reward for having been idle, unlike
+the token bucket. The capacity here measures how much *backlog* the limiter tolerates before
+shedding, not how big a burst it forgives.
+
+#+name: lk-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/leaky_bucket.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+add(now, amount):
+    level = max(0, level - (now - last) * leak_rate)   # lazy leaking
+    last = now
+    if level + amount <= capacity: level += amount; return ACCEPT
+    else: return DROP (overflow)
+#+end_example
+
+* A worked example
+
+A bucket of capacity 5 leaking at 1 unit/sec. A burst of 8 arrivals hits at \(t=0\); then one
+arrival at each of \(t=1,\dots,6\). We record acceptances and the fill level.
+
+#+name: lk-run
+#+begin_src c++ :eval no
+    LeakyBucket lb(5.0, 1.0);
+    std::cout << "=== Leaky bucket (capacity 5, leak 1 unit/sec) ===\n";
+
+    int burst_accepted = 0;
+    for (int i = 0; i < 8; ++i)
+        if (lb.add(0.0)) ++burst_accepted;
+    std::cout << "burst of 8 at t=0: " << burst_accepted << " accepted, "
+              << (8 - burst_accepted) << " dropped (overflow); level = " << lb.level(0.0) << "\n";
+
+    std::vector<double> ts, levels;
+    ts.push_back(0.0); levels.push_back(lb.level(0.0));
+    std::cout << "one arrival per second:\n";
+    for (int t = 1; t <= 6; ++t) {
+        bool ok = lb.add((double)t);
+        std::cout << "  t=" << t << ": " << (ok ? "accept" : "DROP")
+                  << " (level now " << lb.level((double)t) << ")\n";
+        ts.push_back((double)t); levels.push_back(lb.level((double)t));
+    }
+
+    RPlot p = RPlot::create();
+    p.line(ts, levels, "fill level", {37, 99, 235}, 2.0);
+    p.points(ts, levels, "", {37, 99, 235}, 4.0);
+    p.abline_h(5.0, {120, 120, 120}, 1.0);   // capacity
+    p.save_svg("build/org/leaky_bucket.svg");
+    std::cout << "\nwrote build/org/leaky_bucket.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/leaky_bucket_analysis.cpp <<'CPP'
+<<lk-includes>>
+
+int main() {
+<<lk-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/leaky_bucket_analysis.cpp -o build/org/leaky_bucket_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/leaky_bucket_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Leaky bucket (capacity 5, leak 1 unit/sec) ===
+burst of 8 at t=0: 5 accepted, 3 dropped (overflow); level = 5
+one arrival per second:
+  t=1: accept (level now 5)
+  t=2: accept (level now 5)
+  t=3: accept (level now 5)
+  t=4: accept (level now 5)
+  t=5: accept (level now 5)
+  t=6: accept (level now 5)
+#+end_example
+
+The burst fills the bucket to its capacity of 5 and the remaining three arrivals overflow and
+are dropped. Then, because the bucket leaks exactly one unit per second and one arrival comes per
+second, each new unit exactly replaces the leaked one: the level sits pinned at the top and every
+steady arrival is admitted at the paced rate. Compared with the token bucket -- which let the same
+burst through by spending banked tokens -- the leaky bucket admitted the burst only up to its
+standing headroom and otherwise held the output rate flat, the essential difference between the
+two limiters.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/leaky_bucket.svg]]
+
+* Character and relatives
+
+The leaky bucket is the limiter to choose when a *smooth, jitter-free* output is the goal --
+traffic policing on network egress, protecting a downstream service that cannot absorb bursts.
+Its counterpart the *token bucket* (companion report) is the dual: identical long-run rate, but
+burst-tolerant. The two are often combined (a token bucket feeding a leaky bucket) or generalized
+by the *generic cell rate algorithm* (GCRA) used in ATM and modern rate limiters, which is a
+leaky bucket expressed in terms of arrival-time conformance.
+
+* Complexity
+
+\(O(1)\) per arrival: a lazy leak update and a capacity comparison, with no background timer.
