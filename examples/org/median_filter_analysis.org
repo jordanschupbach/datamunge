@@ -1,0 +1,141 @@
+#+title: The Median Filter: Removing Salt-and-Pepper Noise
+#+subtitle: A literate C++ study of median filtering, using =datamunge='s =algorithms::median_filter=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A blur (mean) filter smears sharp outliers across their neighbors; the *median filter*
+instead replaces each pixel with the *median* of its neighborhood. Because the median is a
+rank statistic, a few extreme values -- salt (255) and pepper (0) -- fall to the ends of
+the sorted window and are discarded, so impulse noise vanishes *while edges stay sharp*.
+This report implements it in =datamunge='s C++ =algorithms::median_filter= as a literate
+program: every number and figure comes from one compiled binary. We corrupt an image with
+salt-and-pepper noise, filter it, and count the noise removed.
+#+end_abstract
+
+* Replace by the neighborhood median
+
+For each pixel, gather the values in a \((2r{+}1)\times(2r{+}1)\) window (clamped at
+borders), sort them, and take the middle value. A lone salt pixel (255) sits at the top of
+its window's sorted order and is not the median, so it is replaced by a typical
+neighborhood value; likewise pepper (0). A genuine edge, though, is *half* one level and
+*half* another in the window, so its median is still one of those levels -- the edge
+survives. This edge-preserving denoising is exactly what a linear blur cannot do.
+
+#+name: med-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/median_filter.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MedianFilter(image, radius r):
+    for each pixel (i,j):
+        window = image values in the (2r+1)x(2r+1) box around (i,j)  (clamped)
+        out[i][j] = median(window)
+#+end_example
+
+* A worked example
+
+We take an image with a sharp edge (dark left, bright right), sprinkle 15% salt-and-pepper
+noise, and median-filter it, counting the noise pixels before and after and checking the
+edge is preserved.
+
+#+name: med-run
+#+begin_src c++ :eval no
+    const int n = 40;
+    std::vector<std::vector<int>> clean(n, std::vector<int>(n));
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) clean[i][j] = (j < n / 2) ? 60 : 200;  // edge down the middle
+
+    std::mt19937_64                        rng(7);
+    std::uniform_real_distribution<double> u(0.0, 1.0);
+    std::vector<std::vector<int>>          noisy = clean;
+    int                                    added = 0;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            if (u(rng) < 0.15) { noisy[i][j] = (u(rng) < 0.5) ? 0 : 255; ++added; }
+
+    auto filt = median_filter(noisy, 1);
+
+    auto noise_count = [&](const std::vector<std::vector<int>>& im) {
+        int c = 0;
+        for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j) if (im[i][j] == 0 || im[i][j] == 255) ++c;
+        return c;
+    };
+    std::cout << "=== Median filter vs salt-and-pepper noise ===\n";
+    std::cout << "extreme (0/255) pixels -- noisy: " << noise_count(noisy) << ", filtered: "
+              << noise_count(filt) << '\n';
+    // Edge preserved: columns well left of center stay dark, well right stay bright.
+    std::cout << "far-left pixel after filter:  " << filt[20][5] << " (was 60)\n";
+    std::cout << "far-right pixel after filter: " << filt[20][35] << " (was 200)\n";
+
+    // Figure: extreme-pixel count before vs after filtering.
+    RPlot p = RPlot::barplot(
+        {static_cast<double>(noise_count(noisy)), static_cast<double>(noise_count(filt))},
+        {"noisy", "median-filtered"}, "salt/pepper pixels", {37, 99, 235});
+    p.save_svg("build/org/median_filter.svg");
+    std::cout << "\nwrote build/org/median_filter.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/median_filter_analysis.cpp <<'CPP'
+<<med-includes>>
+
+int main() {
+<<med-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/median_filter_analysis.cpp -o build/org/median_filter_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/median_filter_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Median filter vs salt-and-pepper noise ===
+extreme (0/255) pixels -- noisy: 247, filtered: 0
+far-left pixel after filter:  60 (was 60)
+far-right pixel after filter: 200 (was 200)
+#+end_example
+
+The median filter eliminates essentially all of the salt-and-pepper pixels while leaving
+the central edge intact: pixels far left stay at 60, far right at 200. The figure's two
+bars contrast the count of extreme (0/255) pixels before and after filtering -- a large
+count collapsing to zero. A linear blur of the same radius would instead have dimmed the
+salt and lightened the pepper into gray smudges *and* softened the edge -- the median does
+neither.
+
+#+attr_latex: :width 0.9\linewidth
+[[file:../../build/org/median_filter.svg]]
+
+* Character and relatives
+
+The median filter is the standard nonlinear denoiser for *impulse* noise, prized for
+preserving edges that mean filters blur. Its costs: it is slower (a sort per pixel, though
+histogram-based methods make it \(O(1)\) per pixel for 8-bit data), and heavy filtering can
+round corners and erase fine texture. Relatives include the *weighted* and *adaptive*
+median filters and the *bilateral* filter, which smooths within intensity-similar regions
+while respecting edges -- a continuous generalization of the median's edge-preserving idea.
+
+* Complexity
+
+Naive: \(O(n\,k^2\log k)\) for \(n\) pixels and window side \(k=2r+1\) (a sort per pixel);
+sliding-histogram implementations reach \(O(n)\) for fixed-depth images. Memory is
+\(O(k^2)\) for the window.

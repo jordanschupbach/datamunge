@@ -1033,11 +1033,11 @@ Further information: Digital image processing
 
     Adaptive histogram equalization: histogram equalization which adapts to local changes in contrast - Contrast Enhancement
     Blind deconvolution: image de-blurring algorithm when point spread function is unknown.
-    Connected-component labeling: find and label disjoint regions
+    [x] Connected-component labeling: find and label disjoint regions -- datamunge::algorithms::connected_components (union-find, 4/8-connectivity); report examples/org/connected_components_analysis.org
     Dithering and half-toning
         Error diffusion
-        Floyd–Steinberg dithering
-        Ordered dithering
+        [x] Floyd–Steinberg dithering -- datamunge::algorithms::floyd_steinberg_dither (error diffusion); report examples/org/floyd_steinberg_analysis.org
+        [x] Ordered dithering -- datamunge::algorithms::ordered_dither (Bayer matrix); report examples/org/ordered_dither_analysis.org
         Riemersma dithering
     Elser difference-map algorithm: a search algorithm for general constraint satisfaction problems. Originally used for X-Ray diffraction microscopy
     Feature detection
@@ -1047,9 +1047,9 @@ Further information: Digital image processing
         Marr–Hildreth algorithm: an early edge detection algorithm
         SIFT (Scale-invariant feature transform): is an algorithm to detect and describe local features in images.
         SURF (Speeded Up Robust Features): is a robust local feature detector, first presented by Herbert Bay et al. in 2006, that can be used in computer vision tasks like object recognition or 3D reconstruction. It is partly inspired by the SIFT descriptor. The standard version of SURF is several times faster than SIFT and claimed by its authors to be more robust against different image transformations than SIFT.[11][12]
-    Histogram equalization: use histogram to improve image contrast - Contrast Enhancement
+    [x] Histogram equalization: use histogram to improve image contrast - Contrast Enhancement -- datamunge::algorithms::histogram_equalize (CDF remapping); report examples/org/histogram_equalization_analysis.org (Sobel edge detector: datamunge::algorithms::sobel, report examples/org/sobel_analysis.org)
     Richardson–Lucy deconvolution: image de-blurring algorithm
-    Median filtering
+    [x] Median filtering -- datamunge::algorithms::median_filter; report examples/org/median_filter_analysis.org
     Seam carving: content-aware image resizing algorithm
     Segmentation: partition a digital image into two or more regions
         GrowCut algorithm: an interactive segmentation algorithm

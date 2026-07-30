@@ -1,0 +1,140 @@
+#+title: Connected-Component Labeling
+#+subtitle: A literate C++ study of blob labeling by union-find, using =datamunge='s =algorithms::connected_components=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Connected-component labeling turns a binary image into a set of *blobs*: it gives every
+foreground cell an integer label such that two cells share a label exactly when they are
+connected through foreground neighbors. It is the foundation of blob analysis -- counting
+objects, measuring their sizes, extracting shapes. This report implements the two-pass
+*union-find* scheme in =datamunge='s C++ =algorithms::connected_components= as a literate
+program: every number and figure comes from one compiled binary. We label a small image
+with several separate blobs, count them, and draw each blob in its own color.
+#+end_abstract
+
+* Two passes and a disjoint-set
+
+The first pass scans the image; each foreground cell takes the smallest label among its
+already-visited neighbors (up/left, plus the two upper diagonals for 8-connectivity), or a
+fresh label if it has none, and any differing neighbor labels are recorded as *equivalent*
+in a union-find (disjoint-set) structure. The second pass replaces every provisional label
+by the representative of its equivalence class and renumbers them \(1,2,\dots\). Union-find
+makes merging equivalences and querying representatives almost \(O(1)\) amortized, so the
+whole labeling is near-linear in the number of cells.
+
+#+name: cc-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/connected_components.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Label(image):
+    # pass 1
+    for each foreground cell (i,j):
+        N = labels of already-visited neighbors
+        if N empty: labels[i][j] = new label
+        else: labels[i][j] = min(N);  union all of N together
+    # pass 2
+    for each foreground cell: labels[i][j] = renumber(find(labels[i][j]))
+#+end_example
+
+* A worked example
+
+We build a 12x12 image with four separate shapes and label them.
+
+#+name: cc-run
+#+begin_src c++ :eval no
+    // 12x12 image: four disjoint blobs of foreground (1).
+    std::vector<std::vector<int>> img(12, std::vector<int>(12, 0));
+    auto rect = [&](int r0, int c0, int r1, int c1) {
+        for (int r = r0; r <= r1; ++r) for (int c = c0; c <= c1; ++c) img[r][c] = 1;
+    };
+    rect(1, 1, 3, 3);     // blob A
+    rect(1, 7, 2, 10);    // blob B
+    rect(6, 2, 9, 3);     // blob C
+    rect(7, 7, 10, 10);   // blob D
+
+    auto cc = connected_components(img, false);
+    std::cout << "=== Connected-component labeling (4-connectivity) ===\n";
+    std::cout << "components found: " << cc.count << "\n\n";
+    std::vector<int> sizes(cc.count + 1, 0);
+    for (const auto& row : cc.labels) for (int l : row) if (l) ++sizes[l];
+    for (int k = 1; k <= cc.count; ++k) std::cout << "  component " << k << ": " << sizes[k] << " cells\n";
+
+    // Figure: each component drawn in its own color (row index flipped for display).
+    const std::vector<RGB> cols = {{239, 68, 68}, {37, 99, 235}, {22, 163, 74}, {202, 138, 4}, {147, 51, 234}};
+    RPlot                  p = RPlot::create();
+    for (int k = 1; k <= cc.count; ++k) {
+        std::vector<double> xs, ys;
+        for (std::size_t i = 0; i < cc.labels.size(); ++i)
+            for (std::size_t j = 0; j < cc.labels[i].size(); ++j)
+                if (cc.labels[i][j] == k) { xs.push_back(static_cast<double>(j)); ys.push_back(-static_cast<double>(i)); }
+        p.points(xs, ys, "", cols[(k - 1) % cols.size()], 9.0);
+    }
+    p.save_svg("build/org/connected_components.svg");
+    std::cout << "\nwrote build/org/connected_components.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/connected_components_analysis.cpp <<'CPP'
+<<cc-includes>>
+
+int main() {
+<<cc-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/connected_components_analysis.cpp -o build/org/connected_components_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/connected_components_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Connected-component labeling (4-connectivity) ===
+components found: 4
+
+  component 1: 9 cells
+  component 2: 8 cells
+  component 3: 8 cells
+  component 4: 16 cells
+#+end_example
+
+The four disjoint shapes are found as four components with the correct cell counts, and
+the figure draws each in its own color -- every cell of a blob sharing one label, no two
+blobs sharing one. The union-find merged the provisional labels within each shape in a
+single equivalence pass.
+
+#+attr_latex: :width 0.6\linewidth
+[[file:../../build/org/connected_components.svg]]
+
+* Uses and relatives
+
+Connected-component labeling is the entry point to *object counting and measurement* in
+binary vision: after thresholding, label, then measure each blob's area, centroid, and
+bounding box. The 4- versus 8-connectivity choice decides whether diagonally touching
+regions are one object or two. Alternatives include a single-pass flood-fill from each
+unlabeled cell (simpler, same result) and specialized run-based two-pass algorithms; the
+union-find version shown here is the classic near-linear method.
+
+* Complexity
+
+Near-linear: \(O(n\,\alpha(n))\) for \(n\) cells with union-find's inverse-Ackermann
+factor, plus \(O(n)\) for the two scans; memory is \(O(n)\) for the label image and the
+disjoint-set.

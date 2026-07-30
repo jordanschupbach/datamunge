@@ -1,0 +1,131 @@
+#+title: The Sobel Operator: Gradient-Based Edge Detection
+#+subtitle: A literate C++ study of the Sobel edge detector, using =datamunge='s =algorithms::sobel=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Edges -- where image intensity changes sharply -- are where the *gradient* is large. The
+*Sobel operator* estimates the horizontal and vertical gradients with two 3x3 kernels that
+differentiate in one direction while lightly smoothing in the other, so it finds edges
+while suppressing noise. Its gradient magnitude is an edge map; its direction gives edge
+orientation. This report implements it in =datamunge='s C++ =algorithms::sobel= as a
+literate program: every number and figure comes from one compiled binary. We run Sobel on
+a shape and show the gradient magnitude lighting up exactly along its boundary.
+#+end_abstract
+
+* Two kernels, a magnitude
+
+Convolve the image with
+\[
+  G_x=\begin{bmatrix}-1&0&1\\-2&0&2\\-1&0&1\end{bmatrix},\qquad
+  G_y=\begin{bmatrix}-1&-2&-1\\0&0&0\\1&2&1\end{bmatrix}.
+\]
+\(G_x\) responds to vertical edges (a horizontal intensity change), \(G_y\) to horizontal
+edges; the center-weighting (the 2's) is a mild smoothing that damps noise. The gradient
+*magnitude* \(\sqrt{G_x^2+G_y^2}\) is large on edges and \(\approx 0\) in flat regions; the
+*direction* \(\operatorname{atan2}(G_y,G_x)\) points across the edge.
+
+#+name: sob-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sobel.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Sobel(image):
+    for each interior pixel (i,j):
+        gx = sum over 3x3 of Kx * image
+        gy = sum over 3x3 of Ky * image
+        magnitude[i][j] = sqrt(gx^2 + gy^2)
+#+end_example
+
+* A worked example
+
+We place a bright square on a dark background, run Sobel, and plot the pixels whose
+gradient magnitude exceeds a threshold -- which should trace the square's outline.
+
+#+name: sob-run
+#+begin_src c++ :eval no
+    const int n = 32;
+    std::vector<std::vector<double>> img(n, std::vector<double>(n, 0.0));
+    for (int i = 8; i < 24; ++i)
+        for (int j = 8; j < 24; ++j) img[i][j] = 255.0;  // bright square
+
+    auto r = sobel(img);
+    double maxmag = 0.0;
+    for (const auto& row : r.magnitude) for (double v : row) if (v > maxmag) maxmag = v;
+    std::cout << "=== Sobel edge detection on a bright square ===\n";
+    std::cout << "max gradient magnitude: " << maxmag << '\n';
+    std::cout << "interior of square (flat) magnitude at (16,16): " << r.magnitude[16][16] << '\n';
+
+    const double thresh = 0.5 * maxmag;
+    std::vector<double> ex, ey;
+    int edges = 0;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            if (r.magnitude[i][j] > thresh) { ex.push_back(j); ey.push_back(-i); ++edges; }
+    std::cout << "edge pixels (magnitude > 0.5*max): " << edges << " (the square's outline)\n";
+
+    RPlot p = RPlot::create();
+    p.points(ex, ey, "detected edges", {220, 38, 38}, 4.0);
+    p.save_svg("build/org/sobel_edges.svg");
+    std::cout << "\nwrote build/org/sobel_edges.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sobel_analysis.cpp <<'CPP'
+<<sob-includes>>
+
+int main() {
+<<sob-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sobel_analysis.cpp -o build/org/sobel_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sobel_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Sobel edge detection on a bright square ===
+max gradient magnitude: 1081.87
+interior of square (flat) magnitude at (16,16): 0
+edge pixels (magnitude > 0.5*max): 124 (the square's outline)
+#+end_example
+
+The gradient magnitude is large only at the square's four sides and zero in its flat
+interior, so thresholding it recovers the outline -- the edge pixels in the figure trace
+exactly the boundary between bright and dark. That is the essence of gradient-based edge
+detection: respond to change, ignore uniformity.
+
+#+attr_latex: :width 0.6\linewidth
+[[file:../../build/org/sobel_edges.svg]]
+
+* Relatives and the Canny pipeline
+
+Sobel is a first-derivative edge detector; the *Prewitt* and *Roberts* operators are
+close cousins with different kernels. On its own Sobel gives a thick, thresholded edge map;
+the *Canny* detector refines it into clean one-pixel edges by adding Gaussian smoothing,
+non-maximum suppression (thinning), and hysteresis thresholding on top of the Sobel
+gradient. Second-derivative detectors (Laplacian, Marr-Hildreth) instead find
+zero-crossings. The Sobel gradient is the shared front end of most of them.
+
+* Complexity
+
+\(O(n)\) time for \(n\) pixels -- a fixed 3x3 convolution per pixel -- and \(O(n)\) memory
+for the gradient images.

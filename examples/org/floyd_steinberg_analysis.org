@@ -1,0 +1,140 @@
+#+title: Floyd-Steinberg Dithering
+#+subtitle: A literate C++ study of error-diffusion halftoning, using =datamunge='s =algorithms::floyd_steinberg_dither=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Reducing a grayscale image to black and white by simple thresholding destroys all tonal
+detail. *Floyd-Steinberg dithering* (1976) keeps it by *error diffusion*: after
+quantizing a pixel to the nearest available level, it spreads the quantization error to
+neighboring pixels not yet processed, so the errors cancel over a region and the local
+average matches the original. This report implements it in =datamunge='s C++
+=algorithms::floyd_steinberg_dither= as a literate program: every number and figure comes
+from one compiled binary. We dither a smooth gradient to 1-bit and show the halftone that
+preserves the apparent tone.
+#+end_abstract
+
+* Diffusing the quantization error
+
+Process pixels in raster order. For each, round to the nearest level (0 or 255 here) and
+compute the error \(e=\text{old}-\text{new}\). Distribute \(e\) to the four
+not-yet-visited neighbors with the Floyd-Steinberg weights
+\[
+  \begin{array}{ccc} & * & \tfrac{7}{16}\\ \tfrac{3}{16} & \tfrac{5}{16} & \tfrac{1}{16}\end{array}
+\]
+(the \(*\) is the current pixel). Because every rounding error is pushed forward and
+eventually cancelled, a region of uniform mid-gray becomes a roughly 50/50 salt-and-pepper
+pattern whose average is the original gray -- and gradients become smoothly varying dot
+densities.
+
+#+name: fs-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/dithering.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+FloydSteinberg(image):
+    for each pixel (i,j) in raster order:
+        new = nearest level to image[i][j]
+        err = image[i][j] - new
+        image[i][j] = new
+        image[i][j+1]   += err * 7/16
+        image[i+1][j-1] += err * 3/16
+        image[i+1][j]   += err * 5/16
+        image[i+1][j+1] += err * 1/16
+#+end_example
+
+* A worked example
+
+We dither a smooth left-to-right gradient (0 to 255) to black and white and check that the
+white-pixel density increases with the intended brightness.
+
+#+name: fs-run
+#+begin_src c++ :eval no
+    const int rows = 40, cols = 64;
+    std::vector<std::vector<double>> img(rows, std::vector<double>(cols));
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j) img[i][j] = 255.0 * j / (cols - 1);  // horizontal gradient
+
+    auto d = floyd_steinberg_dither(img);
+    std::cout << "=== Floyd-Steinberg dithering of a gradient ===\n";
+    // White-pixel fraction in the left, middle, and right thirds tracks brightness.
+    auto frac = [&](int c0, int c1) {
+        int w = 0, n = 0;
+        for (int i = 0; i < rows; ++i) for (int j = c0; j < c1; ++j) { ++n; w += (d[i][j] == 255); }
+        return static_cast<double>(w) / n;
+    };
+    std::cout << "white fraction  left third:   " << frac(0, cols / 3) << " (dark region)\n";
+    std::cout << "white fraction  middle third: " << frac(cols / 3, 2 * cols / 3) << "\n";
+    std::cout << "white fraction  right third:  " << frac(2 * cols / 3, cols) << " (bright region)\n";
+
+    // Figure: the dithered image -- plot the black pixels.
+    std::vector<double> bx, by;
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            if (d[i][j] == 0) { bx.push_back(j); by.push_back(-i); }
+    RPlot p = RPlot::create();
+    p.points(bx, by, "black pixels", {17, 24, 39}, 2.5);
+    p.save_svg("build/org/floyd_steinberg.svg");
+    std::cout << "\nwrote build/org/floyd_steinberg.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/floyd_steinberg_analysis.cpp <<'CPP'
+<<fs-includes>>
+
+int main() {
+<<fs-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/floyd_steinberg_analysis.cpp -o build/org/floyd_steinberg_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/floyd_steinberg_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Floyd-Steinberg dithering of a gradient ===
+white fraction  left third:   0.157143 (dark region)
+white fraction  middle third: 0.494048
+white fraction  right third:  0.838636 (bright region)
+#+end_example
+
+The white-pixel density rises smoothly from the dark left third to the bright right third,
+so the 1-bit image reproduces the gradient's apparent tone even though every pixel is pure
+black or white. The figure's black dots thin out toward the right -- error diffusion turned
+a continuous ramp into a varying dot density, which is exactly what the eye integrates back
+into a gradient.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/floyd_steinberg.svg]]
+
+* Character and relatives
+
+Floyd-Steinberg is the default, best-looking general-purpose dither -- its diffused error
+gives an organic, low-artifact texture. Related error-diffusion kernels (Jarvis-Judice-
+Ninke, Stucki, Atkinson) spread the error more widely; *ordered/Bayer* dithering (companion
+report) is stateless and faster but has a visible cross-hatch. All are *halftoning* methods,
+the same idea newspapers use to print photographs with only black ink. Extended to color,
+error diffusion drives inkjet printers and low-bit-depth displays.
+
+* Complexity
+
+\(O(n)\) time for \(n\) pixels -- a constant amount of work per pixel -- and \(O(1)\) extra
+memory (the error is carried in the working image itself).

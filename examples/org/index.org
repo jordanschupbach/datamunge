@@ -633,6 +633,38 @@ We validate identification numbers with =datamunge='s C++ =algorithms::luhn_vali
 
 We validate numbers with =datamunge='s C++ =algorithms::verhoeff_validate=, and report it as a literate program: the non-commutative dihedral-group product catches 100% of single-digit errors and 100% of adjacent transpositions -- including the 09<->90 swaps Luhn misses on the very same number -- as the compiled binary shows.
 
+* Image Processing
+
+** [[./connected_components_analysis.html][Connected-Component Labeling]] ([[./connected_components_analysis.pdf][PDF]])
+/A literate C++ study of blob labeling by union-find using datamunge/
+
+We label the blobs of a binary image with =datamunge='s C++ =algorithms::connected_components=, and report it as a literate program: a two-pass union-find scheme finds four separate shapes with correct cell counts and draws each in its own color -- the foundation of blob analysis, as the compiled binary shows.
+
+** [[./floyd_steinberg_analysis.html][Floyd-Steinberg Dithering]] ([[./floyd_steinberg_analysis.pdf][PDF]])
+/A literate C++ study of error-diffusion halftoning using datamunge/
+
+We dither a gradient to 1-bit with =datamunge='s C++ =algorithms::floyd_steinberg_dither=, and report it as a literate program: diffusing each pixel's quantization error to its neighbors makes the black-and-white dot density track the gradient's tone (16% -> 49% -> 84% white across the ramp), as the compiled binary shows.
+
+** [[./ordered_dither_analysis.html][Ordered (Bayer) Dithering]] ([[./ordered_dither_analysis.pdf][PDF]])
+/A literate C++ study of threshold-matrix halftoning using datamunge/
+
+We dither with a Bayer matrix using =datamunge='s C++ =algorithms::ordered_dither=, and report it as a literate program: a stateless per-pixel threshold from a tiled 4x4 matrix reproduces tone as a fast, regular cross-hatch pattern (16% -> 49% -> 83% white), the parallel alternative to error diffusion, as the compiled binary shows.
+
+** [[./sobel_analysis.html][The Sobel Operator: Gradient-Based Edge Detection]] ([[./sobel_analysis.pdf][PDF]])
+/A literate C++ study of the Sobel edge detector using datamunge/
+
+We detect edges with =datamunge='s C++ =algorithms::sobel=, and report it as a literate program: two 3x3 gradient kernels give a magnitude that is large only along a shape's boundary and zero in flat interiors, so thresholding it traces the outline -- the gradient front end of Canny, as the compiled binary shows.
+
+** [[./histogram_equalization_analysis.html][Histogram Equalization: Contrast Enhancement]] ([[./histogram_equalization_analysis.pdf][PDF]])
+/A literate C++ study of CDF-based contrast stretching using datamunge/
+
+We enhance contrast with =datamunge='s C++ =algorithms::histogram_equalize=, and report it as a literate program: remapping intensities through the cumulative histogram stretches a narrow 63-level span to the full 0-255 range and flattens the histogram, as the compiled binary's before/after plots show.
+
+** [[./median_filter_analysis.html][The Median Filter: Removing Salt-and-Pepper Noise]] ([[./median_filter_analysis.pdf][PDF]])
+/A literate C++ study of median filtering using datamunge/
+
+We denoise with =datamunge='s C++ =algorithms::median_filter=, and report it as a literate program: replacing each pixel by its neighborhood median removes all 247 salt-and-pepper pixels while preserving a sharp edge (something a blur cannot do), as the compiled binary shows.
+
 * Data Compression
 
 ** [[./lz77_analysis.html][LZ77: Sliding-Window Dictionary Compression]] ([[./lz77_analysis.pdf][PDF]])
