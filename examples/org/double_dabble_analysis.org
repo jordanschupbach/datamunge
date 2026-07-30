@@ -1,0 +1,139 @@
+#+title: Double Dabble: Binary to BCD with Shifts and Adds
+#+subtitle: A literate C++ study of the shift-and-add-3 algorithm, using =datamunge='s =algorithms::double_dabble=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Showing a binary integer in decimal usually needs division and modulo by 10 --
+expensive in hardware. *Double dabble* (shift-and-add-3) avoids them entirely: it shifts
+the binary value bit by bit into a field of binary-coded-decimal (BCD) digits, adding 3
+to any digit that reaches 5 or more *before* each shift so the next shift carries
+correctly across decimal boundaries. This report implements it in =datamunge='s C++
+=algorithms::double_dabble= as a literate program: every number below comes from one
+compiled binary. We convert several values to their decimal digits using only shifts and
+adds, and confirm they match the true decimal representation.
+#+end_abstract
+
+* Shift, and add three
+
+Lay out a field of BCD nibbles (one per output decimal digit) to the left of the binary
+input. Repeat, once per input bit: *first*, add 3 to every BCD nibble currently holding
+5 or more; *then* shift the entire {BCD | binary} field left by one bit. The add-3 is the
+whole trick. A left shift doubles a nibble; a decimal digit \(d\) should become
+\(2d\bmod 10\) with a carry when \(d\ge 5\). Pre-adding 3 to a nibble \(\ge 5\) makes the
+subsequent shift produce exactly the right low digit and carry (because
+\(2(d+3)=2d+6\), and \(2d+6\bmod 16\) with the high bit as carry equals the decimal
+result). After all input bits are consumed, the BCD field holds the decimal digits.
+
+#+name: dd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/double_dabble.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+DoubleDabble(value, num_bits):
+    bcd = array of decimal digits, all 0
+    for bit from most-significant down to least-significant:
+        for each bcd digit d:                 # add-3 correction
+            if d >= 5: d += 3
+        shift (bcd | value) left by one bit    # bring in the next input bit
+    return bcd (as decimal digits)
+#+end_example
+
+* A worked example
+
+We convert several values and compare the double-dabble output against the true decimal
+string, then plot how the number of decimal digits grows with the value's magnitude.
+
+#+name: dd-run
+#+begin_src c++ :eval no
+    struct Case { std::uint64_t value; int bits; };
+    std::vector<Case> cases = {{243, 8}, {0, 8}, {255, 8}, {1000, 16}, {65535, 16}, {123456, 20},
+                               {1000000, 20}, {4294967295ULL, 32}};
+
+    std::cout << "=== Double dabble: binary -> BCD ===\n";
+    std::cout << "value        bits  double-dabble   std::to_string  match\n";
+    std::vector<double> logv, ndig;
+    for (const auto& c : cases) {
+        std::string dd  = double_dabble_string(c.value, c.bits);
+        std::string ref = std::to_string(c.value);
+        std::cout << "  " << c.value << std::string(11 - std::to_string(c.value).size(), ' ') << c.bits
+                  << "    " << dd << std::string(16 - dd.size(), ' ') << ref
+                  << std::string(16 - ref.size(), ' ') << (dd == ref ? "yes" : "NO") << '\n';
+        if (c.value > 0) { logv.push_back(static_cast<double>(c.bits)); ndig.push_back(static_cast<double>(dd.size())); }
+    }
+
+    RPlot p = RPlot::create();
+    p.points(logv, ndig, "decimal digits", {37, 99, 235}, 6.0);
+    p.line(logv, ndig, "", {148, 163, 184}, 1.5);
+    p.save_svg("build/org/double_dabble_digits.svg");
+    std::cout << "\nwrote build/org/double_dabble_digits.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/double_dabble_analysis.cpp <<'CPP'
+<<dd-includes>>
+
+int main() {
+<<dd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/double_dabble_analysis.cpp -o build/org/double_dabble_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/double_dabble_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Double dabble: binary -> BCD ===
+value        bits  double-dabble   std::to_string  match
+  243        8    243             243             yes
+  0          8    0               0               yes
+  255        8    255             255             yes
+  1000       16    1000            1000            yes
+  65535      16    65535           65535           yes
+  123456     20    123456          123456          yes
+  1000000    20    1000000         1000000         yes
+  4294967295 32    4294967295      4294967295      yes
+#+end_example
+
+Every conversion matches the true decimal string -- 243, 255, 65535, and even the full
+32-bit 4294967295 -- computed with nothing but shifts, comparisons, and adds of 3. The
+digit-count-versus-bit-width plot shows the decimal length growing linearly with the
+number of input bits (roughly \(\log_{10}2 \approx 0.301\) decimal digits per bit), the
+expected radix-conversion ratio.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/double_dabble_digits.svg]]
+
+* Where it is used
+
+Double dabble is the standard way *hardware* turns a binary counter into decimal for a
+seven-segment or LCD display -- a purely combinational/sequential shift-add circuit,
+avoiding a divider. It also appears in fixed-point-to-BCD conversion and anywhere decimal
+output is needed without division. The reverse (BCD to binary) is done by the analogous
+"shift and subtract 3". It is a small, elegant demonstration that decimal arithmetic can
+be realized with only binary shifts and constant adds.
+
+* Complexity
+
+\(O(b^2)\)-ish for a \(b\)-bit input in the naive form (\(b\) shifts over \(O(b)\) BCD
+nibbles), \(O(b)\) space -- cheap, and crucially free of any multiply or divide.

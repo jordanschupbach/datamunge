@@ -1,0 +1,184 @@
+#+title: Zobrist Hashing: Incremental Hashing of Board Positions
+#+subtitle: A literate C++ study of Zobrist hashing, using =datamunge='s =algorithms::zobrist_hash=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A game engine hashes board positions to index a *transposition table* of already
+analyzed positions -- and it changes the board one move at a time. *Zobrist hashing*
+(1970) makes the hash update \(O(1)\) per move: assign an independent random key to every
+(cell, piece) pair, and hash a position as the XOR of the keys of the pieces on it.
+Because XOR is its own inverse, a move is just "XOR out the old, XOR in the new" -- no
+rehash of the whole board. This report implements it in =datamunge='s C++
+=algorithms::zobrist_hash= / =zobrist_update= as a literate program: every number and
+figure comes from one compiled binary. We play a sequence of moves, confirm the
+incremental hash matches a full recompute at every step, and check for collisions.
+#+end_abstract
+
+* XOR of random keys
+
+Precompute a random 64-bit key \(K[c][p]\) for each cell \(c\) and piece type \(p\) (with
+the "empty" piece keyed to 0). A position's hash is
+\[
+  H = \bigoplus_{c} K[c][\text{piece at } c].
+\]
+Moving a piece changes exactly the cells it leaves and enters, so the new hash is
+\[
+  H' = H \oplus K[\text{from}][\text{piece}] \oplus K[\text{from}][\text{empty}]
+         \oplus K[\text{to}][\text{captured}] \oplus K[\text{to}][\text{piece}],
+\]
+computed in constant time thanks to XOR's self-inverse property. Two different positions
+collide only if their key-XORs happen to coincide -- as unlikely as two random 64-bit
+numbers matching.
+
+#+name: zobrist-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/zobrist_hashing.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <random>
+#include <set>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Init(cells, pieces):  K[c][p] = random 64-bit (K[c][empty] = 0)
+Hash(board):          H = XOR over cells of K[c][board[c]]
+Move(H, from, to, piece, captured):
+    H ^= K[from][piece]      # remove piece from source
+    H ^= K[to][captured]     # remove whatever was on target
+    H ^= K[to][piece]        # place piece on target
+    return H                 # source becomes empty (K[.][empty]=0, no-op)
+#+end_example
+
+* A worked example
+
+We build a 64-cell, 13-piece table (chess-sized), set up a few pieces, then play a
+sequence of random moves. After each move we update the hash incrementally and compare
+against a full recomputation. We also hash many random positions to check for
+collisions.
+
+#+name: zobrist-run
+#+begin_src c++ :eval no
+    ZobristTable      t = zobrist_init(64, 13, 2024);
+    std::vector<int>  board(64, 0);
+    board[0] = 1; board[8] = 6; board[16] = 3; board[63] = 12;  // a few pieces
+    std::uint64_t     h = zobrist_hash(t, board);
+
+    std::mt19937_64                            rng(7);
+    std::uniform_int_distribution<std::size_t> cell(0, 63);
+    std::cout << "=== Zobrist hashing: incremental vs full recompute ===\n";
+    std::cout << "move  incremental == full?\n";
+    std::vector<double> mv, hv;
+    bool all_match = true;
+    for (int m = 0; m < 12; ++m) {
+        // Move the piece currently on some occupied cell to a random empty cell.
+        std::size_t from = 0;
+        for (std::size_t c = 0; c < 64; ++c) if (board[c] != 0) { from = c; break; }
+        std::size_t to = cell(rng);
+        while (board[to] != 0) to = cell(rng);
+        int piece    = board[from];
+        int captured = board[to];  // 0 (empty)
+        h            = zobrist_update(t, h, from, piece, 0);
+        h            = zobrist_update(t, h, to, captured, piece);
+        board[from]  = 0;
+        board[to]    = piece;
+        std::uint64_t full = zobrist_hash(t, board);
+        bool          ok   = (h == full);
+        all_match          = all_match && ok;
+        std::cout << "  " << (m + 1) << (m + 1 < 10 ? "     " : "    ") << (ok ? "yes" : "NO") << '\n';
+        mv.push_back(m + 1);
+        hv.push_back(static_cast<double>(h >> 40));  // top bits, for a visible curve
+    }
+    std::cout << "\nall moves matched: " << (all_match ? "yes" : "NO") << '\n';
+
+    // Collision check: hash many random positions.
+    std::set<std::uint64_t> seen;
+    const int               trials = 20000;
+    for (int i = 0; i < trials; ++i) {
+        std::vector<int> b(64, 0);
+        for (int k = 0; k < 8; ++k) b[cell(rng)] = 1 + static_cast<int>(rng() % 12);
+        seen.insert(zobrist_hash(t, b));
+    }
+    std::cout << "distinct hashes over " << trials << " random positions: " << seen.size()
+              << " (collisions: " << (trials - static_cast<int>(seen.size())) << ")\n";
+
+    RPlot p = RPlot::create();
+    p.line(mv, hv, "hash (top bits)", {37, 99, 235}, 2.0);
+    p.points(mv, hv, "", {37, 99, 235}, 4.0);
+    p.save_svg("build/org/zobrist_moves.svg");
+    std::cout << "\nwrote build/org/zobrist_moves.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/zobrist_analysis.cpp <<'CPP'
+<<zobrist-includes>>
+
+int main() {
+<<zobrist-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/zobrist_analysis.cpp -o build/org/zobrist_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/zobrist_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Zobrist hashing: incremental vs full recompute ===
+move  incremental == full?
+  1     yes
+  2     yes
+  3     yes
+  4     yes
+  5     yes
+  6     yes
+  7     yes
+  8     yes
+  9     yes
+  10    yes
+  11    yes
+  12    yes
+
+all moves matched: yes
+distinct hashes over 20000 random positions: 20000 (collisions: 0)
+#+end_example
+
+The incrementally updated hash matches the full recomputation after every one of the
+twelve moves -- each move touched only two (cell, piece) keys, yet produced exactly the
+hash of the whole new board, because XOR lets contributions be removed as cheaply as
+they were added. Over twenty thousand random positions there are no collisions, as
+expected for 64-bit keys. The move-by-move hash curve jumps unpredictably, the
+signature of good mixing.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/zobrist_moves.svg]]
+
+* Uses and character
+
+Zobrist hashing is the standard scheme for transposition tables in chess, Go, and other
+game engines, where the same position is often reached by different move orders (a
+"transposition") and must hash identically -- which it does, since the hash depends only
+on the final configuration, not the path. The same incremental XOR trick hashes any set
+under element insertion/removal, and features in board-game solvers and repetition
+detection. Its only real risk is a hash collision causing a wrong table hit; 64 bits
+make that negligible, and engines often store a verification key as well.
+
+* Complexity
+
+Full hash is \(O(\text{cells})\); an incremental move update is \(O(1)\) (two XORs per
+changed cell). Memory is \(O(\text{cells}\times\text{pieces})\) for the key table.
