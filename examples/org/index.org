@@ -761,6 +761,38 @@ We synchronize a client to a time server with =datamunge='s C++ =algorithms::cri
 
 We synchronize a cluster with no authoritative server using =datamunge='s C++ =algorithms::berkeley_sync=, and report it as a literate program: averaging the nodes' clocks (with outlier rejection) and sending each the needed adjustment gives internal consistency robust to a faulty clock, as the compiled binary shows.
 
+* Operating Systems & Scheduling
+
+** [[./banker_analysis.html][The Banker's Algorithm: Deadlock Avoidance]] ([[./banker_analysis.pdf][PDF]])
+/A literate C++ study of safe-state resource allocation using datamunge/
+
+We decide resource requests with =datamunge='s C++ =algorithms::banker_safety=, and report it as a literate program: granting only requests that leave a safe sequence -- one letting every process finish from the freed resource pool -- avoids deadlock, as the compiled binary shows on the classic five-process instance.
+
+** [[./round_robin_analysis.html][Round-Robin Scheduling: Time-Sliced Fairness]] ([[./round_robin_analysis.pdf][PDF]])
+/A literate C++ study of preemptive round-robin using datamunge/
+
+We schedule processes with =datamunge='s C++ =algorithms::round_robin=, and report it as a literate program: a fixed time quantum rotated through a FIFO queue bounds every process's response time, with the execution timeline and waiting/turnaround times drawn from the compiled binary.
+
+** [[./shortest_job_next_analysis.html][Shortest-Job-Next Scheduling: Minimizing Average Wait]] ([[./shortest_job_next_analysis.pdf][PDF]])
+/A literate C++ study of non-preemptive SJF using datamunge/
+
+We schedule processes with =datamunge='s C++ =algorithms::shortest_job_next=, and report it as a literate program: always dispatching the shortest ready burst minimizes average waiting time among non-preemptive schedulers but exhibits the convoy effect, as the compiled binary's Gantt chart shows.
+
+** [[./shortest_remaining_time_analysis.html][Shortest-Remaining-Time Scheduling: Preemptive Shortest-Job-First]] ([[./shortest_remaining_time_analysis.pdf][PDF]])
+/A literate C++ study of preemptive SRTF using datamunge/
+
+We schedule processes with =datamunge='s C++ =algorithms::shortest_remaining_time=, and report it as a literate program: preempting whenever a shorter job arrives achieves the minimum average waiting time over all schedulers, as the compiled binary confirms on the classic four-process example.
+
+** [[./edf_analysis.html][Earliest-Deadline-First Scheduling: Optimal Dynamic Priorities]] ([[./edf_analysis.pdf][PDF]])
+/A literate C++ study of EDF for periodic tasks using datamunge/
+
+We schedule periodic real-time tasks with =datamunge='s C++ =algorithms::edf_simulate=, and report it as a literate program: running the nearest-deadline job meets every deadline exactly when utilization U <= 1, reaching full processor utilization, as the compiled binary shows over a hyperperiod.
+
+** [[./rate_monotonic_analysis.html][Rate-Monotonic Scheduling: Optimal Fixed Priorities]] ([[./rate_monotonic_analysis.pdf][PDF]])
+/A literate C++ study of RMS for periodic tasks using datamunge/
+
+We schedule periodic tasks with =datamunge='s C++ =algorithms::rate_monotonic_schedulable=, and report it as a literate program: assigning shorter-period tasks higher fixed priority is optimal among static schemes and schedulable when U <= n(2^(1/n)-1), the Liu-Layland bound, as the compiled binary demonstrates and contrasts with EDF.
+
 * General & Combinatorial Algorithms
 
 ** [[./brent_cycle_detection_analysis.html][Brent's Algorithm: Cycle Detection in Function Iteration]] ([[./brent_cycle_detection_analysis.pdf][PDF]])

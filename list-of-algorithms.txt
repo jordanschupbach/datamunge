@@ -1133,7 +1133,7 @@ Further information: Network scheduler
 Operating systems algorithms
 Further information: Operating systems
 
-    Banker's algorithm: algorithm used for deadlock avoidance
+    [x] Banker's algorithm: algorithm used for deadlock avoidance  -> datamunge::algorithms::banker_safety (banker.hpp); report examples/org/banker_analysis.org
     Page replacement algorithms: for selecting the victim page under low memory conditions
         Adaptive replacement cache: better performance than LRU
         Clock with Adaptive Replacement (CAR): a page replacement algorithm with performance comparable to adaptive replacement cache
@@ -1148,15 +1148,15 @@ Further information: Process scheduler and Process synchronization
 Scheduling
 Further information: Scheduling (computing)
 
-    Earliest deadline first scheduling
+    [x] Earliest deadline first scheduling  -> datamunge::algorithms::edf_simulate (realtime_scheduling.hpp); report examples/org/edf_analysis.org
     Fair-share scheduling
     Least slack time scheduling
     List scheduling
     Multi level feedback queue
-    Rate-monotonic scheduling
-    Round-robin scheduling
-    Shortest job next
-    Shortest remaining time
+    [x] Rate-monotonic scheduling  -> datamunge::algorithms::rate_monotonic_schedulable (realtime_scheduling.hpp); report examples/org/rate_monotonic_analysis.org
+    [x] Round-robin scheduling  -> datamunge::algorithms::round_robin (cpu_scheduling.hpp); report examples/org/round_robin_analysis.org
+    [x] Shortest job next  -> datamunge::algorithms::shortest_job_next (cpu_scheduling.hpp); report examples/org/shortest_job_next_analysis.org
+    [x] Shortest remaining time  -> datamunge::algorithms::shortest_remaining_time (cpu_scheduling.hpp); report examples/org/shortest_remaining_time_analysis.org
     Top-nodes algorithm: resource calendar management
 
 I/O scheduling

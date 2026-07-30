@@ -23,6 +23,7 @@
 #include <datamunge/algorithms/boyer_moore.hpp>
 #include <datamunge/algorithms/blossom.hpp>
 #include <datamunge/algorithms/bakery.hpp>
+#include <datamunge/algorithms/banker.hpp>
 #include <datamunge/algorithms/bully_election.hpp>
 #include <datamunge/algorithms/burrows_wheeler.hpp>
 #include <datamunge/algorithms/bresenham.hpp>
@@ -33,6 +34,7 @@
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
 #include <datamunge/algorithms/counting_sort.hpp>
+#include <datamunge/algorithms/cpu_scheduling.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/cyk_parser.hpp>
 #include <datamunge/algorithms/cohen_sutherland.hpp>
@@ -150,6 +152,7 @@
 #include <datamunge/algorithms/ransac.hpp>
 #include <datamunge/algorithms/random_restart_hill_climbing.hpp>
 #include <datamunge/algorithms/rayleigh_quotient_iteration.hpp>
+#include <datamunge/algorithms/realtime_scheduling.hpp>
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>

@@ -1,0 +1,189 @@
+#+title: Rate-Monotonic Scheduling: Optimal Fixed Priorities
+#+subtitle: A literate C++ study of RMS for periodic tasks, using =datamunge='s =algorithms::rate_monotonic_schedulable=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Rate-Monotonic Scheduling* (RMS) assigns each periodic task a *fixed* priority inversely
+proportional to its period -- shorter period, higher priority -- and is the optimal fixed-priority
+scheduler for periodic tasks with implicit deadlines. Liu & Layland's classic bound guarantees
+schedulability whenever utilization \(U\le n(2^{1/n}-1)\), which falls to \(\approx 0.693\) as
+the task count grows. This report implements the priority assignment, the utilization bound,
+and a preemptive timeline in =datamunge='s C++ =algorithms::rate_monotonic_schedulable= /
+=rate_monotonic_simulate= as a literate program: every number and figure comes from one
+compiled binary. We certify a task set, simulate it, and contrast it with a higher-utilization
+set that only EDF can handle.
+#+end_abstract
+
+* Shorter period, higher priority
+
+Each task \(\tau_i=(T_i,C_i)\) gets a static priority: the smaller \(T_i\), the higher the
+priority. At runtime the highest-priority ready job always preempts. RMS is *optimal among
+fixed-priority schemes* -- if any static assignment meets all deadlines, the rate-monotonic one
+does. Its sufficient schedulability test is the utilization bound
+\[
+  U=\sum_i \frac{C_i}{T_i}\ \le\ n\bigl(2^{1/n}-1\bigr),
+\]
+which decreases from \(1\) (one task) toward \(\ln 2\approx 0.693\) as \(n\to\infty\). The
+bound is sufficient but not necessary: a set above it may still be schedulable (checked by an
+exact response-time analysis or by simulation).
+
+#+name: rm-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/realtime_scheduling.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Draw a real-time timeline: one row per task, a colored box per executed unit (idle skipped).
+inline void draw_timeline(const RTScheduleResult& r, std::size_t ntask, const char* path) {
+    static const RGB palette[] = {{37,99,235},{220,38,38},{22,163,74},{202,138,4},{147,51,234}};
+    RPlot p = RPlot::create();
+    for (const auto& s : r.timeline) {
+        if (s.id == static_cast<std::size_t>(-1)) continue;  // idle
+        double y = static_cast<double>(s.id);
+        p.polygon({(double)s.start,(double)s.end,(double)s.end,(double)s.start},
+                  {y-0.4, y-0.4, y+0.4, y+0.4}, palette[s.id % 5], true);
+    }
+    std::vector<double> ax, ay;
+    for (std::size_t i = 0; i < ntask; ++i) { ax.push_back(0.0); ay.push_back((double)i); }
+    p.points(ax, ay, "", {0,0,0}, 0.1);
+    p.save_svg(path);
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+RMS setup:  priority(task) = 1 / period   (shorter period -> higher priority)
+Schedulable (sufficient):  sum C_i/T_i <= n * (2^(1/n) - 1)
+At each time unit t:
+    release jobs whose period divides t
+    run the ready job of the shortest-period task
+#+end_example
+
+* A worked example
+
+Three tasks \((T,C)=(4,1),(6,2),(8,1)\), utilization \(1/4+2/6+1/8\). We show the priority
+order, test the bound, and simulate over the hyperperiod 24. Then we run RMS on the
+higher-utilization set \((4,1),(6,2),(8,2)\) -- the one the EDF report schedules -- to see
+fixed priorities strain.
+
+#+name: rm-run
+#+begin_src c++ :eval no
+    std::vector<RTTask> tasks = {{0,4,1},{1,6,2},{2,8,1}};
+
+    std::cout << "=== Rate-monotonic: three periodic tasks ===\n";
+    std::cout << "task (period, wcet): T0(4,1) T1(6,2) T2(8,1)\n";
+    std::cout << "utilization U = " << rt_utilization(tasks) << "\n";
+    std::cout << "Liu-Layland bound n(2^(1/n)-1) = " << rate_monotonic_bound(tasks.size()) << "\n";
+    std::cout << "RMS schedulable (bound test): " << (rate_monotonic_schedulable(tasks) ? "yes" : "no") << "\n";
+    std::cout << "priority order (highest first): ";
+    for (std::size_t id : rate_monotonic_priorities(tasks)) std::cout << "T" << id << " ";
+    std::cout << "\n";
+
+    auto r = rate_monotonic_simulate(tasks, 24);
+    std::cout << "deadline missed over [0,24): " << (r.deadline_missed ? "YES" : "no") << "\n\n";
+    std::cout << "execution timeline:\n";
+    for (const auto& s : r.timeline) {
+        if (s.id == static_cast<std::size_t>(-1)) std::cout << "  [" << s.start << "," << s.end << ") idle\n";
+        else std::cout << "  [" << s.start << "," << s.end << ") T" << s.id << "\n";
+    }
+
+    std::vector<RTTask> heavy = {{0,4,1},{1,6,2},{2,8,2}};  // U = 0.833, above the RMS bound
+    std::cout << "\nheavier set T0(4,1) T1(6,2) T2(8,2): U = " << rt_utilization(heavy)
+              << ", bound = " << rate_monotonic_bound(3) << "\n";
+    std::cout << "  RMS bound test: " << (rate_monotonic_schedulable(heavy) ? "pass" : "FAIL") << "\n";
+    auto rh = rate_monotonic_simulate(heavy, 24);
+    std::cout << "  RMS simulation deadline missed: " << (rh.deadline_missed ? "YES" : "no")
+              << "   (EDF meets it; U <= 1)\n";
+
+    draw_timeline(r, tasks.size(), "build/org/rate_monotonic.svg");
+    std::cout << "\nwrote build/org/rate_monotonic.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rate_monotonic_analysis.cpp <<'CPP'
+<<rm-includes>>
+
+int main() {
+<<rm-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rate_monotonic_analysis.cpp -o build/org/rate_monotonic_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rate_monotonic_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Rate-monotonic: three periodic tasks ===
+task (period, wcet): T0(4,1) T1(6,2) T2(8,1)
+utilization U = 0.708333
+Liu-Layland bound n(2^(1/n)-1) = 0.779763
+RMS schedulable (bound test): yes
+priority order (highest first): T0 T1 T2
+deadline missed over [0,24): no
+
+execution timeline:
+  [0,1) T0
+  [1,3) T1
+  [3,4) T2
+  [4,5) T0
+  [5,6) idle
+  [6,8) T1
+  [8,9) T0
+  [9,10) T2
+  [10,12) idle
+  [12,13) T0
+  [13,15) T1
+  [15,16) idle
+  [16,17) T0
+  [17,18) T2
+  [18,20) T1
+  [20,21) T0
+  [21,24) idle
+
+heavier set T0(4,1) T1(6,2) T2(8,2): U = 0.833333, bound = 0.779763
+  RMS bound test: FAIL
+  RMS simulation deadline missed: no   (EDF meets it; U <= 1)
+#+end_example
+
+The first set has utilization below the Liu & Layland bound, so RMS certifies it, and the
+simulation confirms every deadline is met with the shortest-period task T0 always winning the
+CPU. The heavier set pushes utilization to \(0.83\), *above* the three-task bound of \(0.78\),
+so the sufficient test reports FAIL -- yet the simulation shows RMS actually meets every
+deadline anyway. That is the bound doing its job: it is *sufficient but not necessary*, so a
+set it rejects can still be schedulable, and confirming it requires the exact test or a
+simulation like this one. EDF certifies the same set immediately from \(U\le 1\), which is why
+dynamic priorities are preferred when utilization runs high.
+
+#+attr_latex: :width 0.85\linewidth
+[[file:../../build/org/rate_monotonic.svg]]
+
+* Character and relatives
+
+RMS is the workhorse of fixed-priority real-time systems: priorities are assigned once, the
+runtime overhead is minimal, and overload degrades gracefully (only the lowest-priority tasks
+miss). Its limits are the sub-100% utilization bound and the assumptions of independent tasks
+with implicit deadlines; *deadline-monotonic* scheduling generalizes it to deadlines shorter
+than periods, and *response-time analysis* replaces the conservative bound with an exact test.
+Where utilization must approach 1, *EDF* (companion report) is preferred despite its harder
+overload behavior.
+
+* Complexity
+
+Priority assignment is an \(O(n\log n)\) sort by period; the schedulability bound test is
+\(O(n)\); the unit-step simulation is \(O(H\cdot n)\) over hyperperiod \(H\).
