@@ -1,0 +1,184 @@
+#+title: Nested Sampling: Bayesian Evidence and Posteriors
+#+subtitle: A literate C++ study of Skilling's algorithm, using =datamunge='s =algorithms::nested_sampling=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Bayesian model comparison hinges on the *evidence* \(Z=\int \mathcal{L}(\theta)\,
+\pi(\theta)\,d\theta\) -- the likelihood averaged over the prior -- a hard
+high-dimensional integral that ordinary MCMC does not compute. *Nested sampling*
+(Skilling 2004) turns it into a *one-dimensional* integral over the enclosed prior
+mass and estimates it by maintaining a set of "live" points that steadily climb the
+likelihood while the prior volume they enclose shrinks geometrically. As a
+by-product it yields posterior samples for free. This report implements it in
+=datamunge='s C++ =algorithms::nested_sampling= as a literate program: every number
+and figure comes from one compiled binary. We run it on a Gaussian likelihood whose
+evidence is known in closed form, recover \(\log Z\) to within its stated
+uncertainty, and reconstruct the posterior mean.
+#+end_abstract
+
+* Evidence as a 1-D integral over prior mass
+
+Define the *prior mass above a likelihood level* \(\lambda\),
+\(X(\lambda) = \int_{\mathcal{L}(\theta)>\lambda}\pi(\theta)\,d\theta\), a decreasing
+function from \(X=1\) (all the prior) to \(X=0\). Substituting, the evidence
+collapses to
+\[
+  Z = \int_{\Theta}\mathcal{L}\,\pi\,d\theta = \int_0^1 \mathcal{L}(X)\,dX,
+\]
+where \(\mathcal{L}(X)\) is the likelihood at the point enclosing prior mass \(X\).
+Nested sampling estimates this integral with a quadrature whose abscissae are
+generated statistically.
+
+#+name: ns-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/nested_sampling.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** The algorithm
+
+Keep \(N\) *live points* drawn from the prior. Each iteration:
+
+1. Remove the live point of lowest likelihood \(\mathcal{L}_i\) (a "dead" point).
+2. Its enclosed mass is \(X_i \approx e^{-i/N}\), so it owns the shell
+   \(w_i \approx X_{i-1}-X_i\); accumulate \(Z \mathrel{+}= \mathcal{L}_i\,w_i\).
+3. Replace it with a *new* point drawn from the prior *subject to*
+   \(\mathcal{L} > \mathcal{L}_i\) (here by a short constrained random walk).
+
+The live set thus marches up the likelihood while the enclosed prior mass falls by
+a factor \(e^{-1/N}\) per step, sweeping out \(Z\). The dead points, weighted by
+\(w_i\mathcal{L}_i/Z\), are posterior samples, and the *information*
+\(H=\int \frac{d\!P}{d\!Z}\log\frac{d\!P}{d\!Z}\) gives the uncertainty
+\(\log Z \pm \sqrt{H/N}\).
+
+#+begin_example
+NestedSampling(logL, prior, N):
+    live = N points ~ prior;   logZ = -inf;   logwidth = log(1 - e^{-1/N})
+    repeat:
+        i = live point with the lowest logL
+        logZ = logaddexp(logZ, logwidth + logL_i)
+        record (point_i, weight = logwidth + logL_i)
+        replace point_i by a prior draw constrained to logL > logL_i
+        logwidth -= 1/N
+    until remaining evidence is negligible
+    add the final live points with the leftover mass
+    return logZ, posterior samples with weights
+#+end_example
+
+* A worked example: a Gaussian with known evidence
+
+The likelihood is \(\mathcal{L}(\theta)=\exp(-\tfrac12\|\theta-\mu\|^2)\) with
+\(\mu=(2,-1)\), under a uniform prior on the box \([-10,10]^2\). The evidence is
+analytic: \(Z = (2\pi\sigma^2)/V\) with \(\sigma=1\) and box volume \(V=400\), so
+\(\log Z = \log(2\pi) - \log 400 \approx -4.1536\). We check the estimate and
+reconstruct the posterior mean.
+
+#+name: ns-run
+#+begin_src c++ :eval no
+    const std::vector<double> mu = {2.0, -1.0};
+    auto log_like = [&](const std::vector<double>& t) {
+        double s = 0.0;
+        for (std::size_t k = 0; k < t.size(); ++k) s += (t[k] - mu[k]) * (t[k] - mu[k]);
+        return -0.5 * s;
+    };
+    const std::vector<double> lo = {-10.0, -10.0}, hi = {10.0, 10.0};
+
+    NestedSamplingResult r = nested_sampling(log_like, lo, hi, 300, 8000, 7, 40);
+
+    const double analytic = std::log(2.0 * M_PI) - std::log(400.0);
+    std::cout << "=== Nested sampling: 2D Gaussian evidence ===\n";
+    std::cout << "iterations: " << r.iterations << ",  dead points: " << r.posterior_samples.size() << "\n";
+    std::cout << "log Z estimate: " << r.log_evidence << " +/- " << r.log_evidence_error << '\n';
+    std::cout << "log Z analytic: " << analytic << '\n';
+    std::cout << "information H:  " << r.information << " nats\n";
+
+    // Posterior-weighted mean (should recover mu).
+    std::vector<double> pm(2, 0.0);
+    double              wsum = 0.0;
+    for (std::size_t i = 0; i < r.posterior_samples.size(); ++i) {
+        double w = std::exp(r.posterior_log_weights[i]);
+        wsum += w;
+        pm[0] += w * r.posterior_samples[i][0];
+        pm[1] += w * r.posterior_samples[i][1];
+    }
+    std::cout << "posterior weights sum to: " << wsum << '\n';
+    std::cout << "posterior mean: (" << pm[0] << ", " << pm[1] << ")   true mu = (2, -1)\n";
+
+    // Figure: posterior weight of each dead point vs iteration (the evidence "bulk").
+    std::vector<double> it_x, wt_y;
+    for (std::size_t i = 0; i < r.posterior_log_weights.size(); ++i) {
+        it_x.push_back(static_cast<double>(i));
+        wt_y.push_back(std::exp(r.posterior_log_weights[i]));
+    }
+    RPlot p = RPlot::create();
+    p.line(it_x, wt_y, "posterior weight", {37, 99, 235}, 1.8);
+    p.save_svg("build/org/nested_sampling_weights.svg");
+    std::cout << "\nwrote build/org/nested_sampling_weights.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/nested_sampling_analysis.cpp <<'CPP'
+<<ns-includes>>
+
+int main() {
+<<ns-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/nested_sampling_analysis.cpp -o build/org/nested_sampling_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/nested_sampling_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Nested sampling: 2D Gaussian evidence ===
+iterations: 2328,  dead points: 2628
+log Z estimate: -4.25197 +/- 0.103306
+log Z analytic: -4.15359
+information H:  3.20164 nats
+posterior weights sum to: 1
+posterior mean: (1.98378, -0.934506)   true mu = (2, -1)
+#+end_example
+
+The estimated \(\log Z\) agrees with the analytic value to within the stated
+\(\sqrt{H/N}\) uncertainty, and the posterior-weighted mean recovers \(\mu=(2,-1)\).
+The weight curve shows the characteristic nested-sampling profile: early dead
+points (low likelihood, large prior mass) and very late ones (high likelihood, tiny
+prior mass) contribute little, while a *bulk* of intermediate iterations -- where
+likelihood times prior-mass-shell peaks -- carries almost all of the evidence. That
+peak is the "typical set" the integral is dominated by.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/nested_sampling_weights.svg]]
+
+* Why nested sampling, and relatives
+
+Nested sampling's distinctive strength is computing the *evidence* -- the quantity
+Bayesian model selection needs and that Metropolis/HMC do not provide -- while also
+delivering posterior samples, and it copes with *multimodal* and *phase-transition*
+posteriors that trap standard MCMC. Its accuracy and cost hinge on the constrained-
+prior sampler (the hard part in high dimensions): region-based samplers (MultiNest),
+slice sampling (PolyChord), and diffusive variants make it practical at scale. The
+uncertainty \(\sqrt{H/N}\) is controlled directly by the number of live points.
+
+* Complexity
+
+With \(N\) live points, reaching likelihood level \(X\approx e^{-j/N}\) takes about
+\(N\cdot H\) iterations to converge, each requiring one constrained prior draw
+(here a short random walk of fixed length). Memory is \(O(N + \text{iterations})\)
+for the live set and the recorded dead points.

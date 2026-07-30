@@ -1,0 +1,190 @@
+#+title: C4.5: Decision Trees for Continuous Attributes by Gain Ratio
+#+subtitle: A literate C++ study of Quinlan's C4.5 improvements over ID3, using =datamunge='s =algorithms::c45_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+ID3 handles only categorical attributes and, using raw information gain, is biased
+toward attributes with many values. *C4.5* (Quinlan 1993) fixes both: it splits
+*continuous* attributes with binary threshold tests \(x_a \le t\), and it ranks
+splits by *gain ratio* -- information gain normalized by the split's own entropy --
+which cancels the many-values bias. This report implements those two core
+improvements in =datamunge='s C++ =algorithms::c45_train= as a literate program:
+every number and figure comes from one compiled binary. We induce a tree on
+continuous, multi-class data, print the threshold splits it discovers, and show
+training accuracy rising with tree depth.
+#+end_abstract
+
+* From information gain to gain ratio, and continuous splits
+
+*Continuous attributes.* For a numeric attribute, C4.5 considers binary splits at
+thresholds midway between adjacent sorted values, choosing the best threshold; a
+node tests \(x_a \le t\) and branches left/right.
+
+*Gain ratio.* Information gain alone favors splits into many small, pure pieces
+(an ID attribute achieves maximal gain but is useless). C4.5 divides the gain by
+the *split information* -- the entropy of the partition sizes themselves,
+\(\mathrm{SplitInfo}(S,A) = -\sum_v \frac{|S_v|}{|S|}\log_2\frac{|S_v|}{|S|}\) --
+giving
+\[
+  \mathrm{GainRatio}(S, A) = \frac{\mathrm{Gain}(S, A)}{\mathrm{SplitInfo}(S, A)},
+\]
+which penalizes splits that fragment the data and so prefers genuinely informative
+tests.
+
+#+name: c45-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/decision_tree_induction.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+C4.5(rows):
+    if rows pure or too small: return leaf(majority class)
+    best = none
+    for each continuous attribute A:
+        for each candidate threshold t (midpoints of sorted values of A):
+            split rows into { A <= t } and { A > t }
+            r = Gain / SplitInfo   (gain ratio)
+            if r > best.ratio: best = (A, t)
+    if no positive-ratio split: return leaf(majority class)
+    node = test (best.A <= best.t)
+    node.left  = C4.5(rows with A <= t)
+    node.right = C4.5(rows with A >  t)
+    return node
+#+end_example
+
+* A worked example: three continuous classes
+
+We draw three Gaussian blobs in the plane (three classes) and induce a C4.5 tree.
+We print the threshold splits, report training accuracy, and show how accuracy grows
+as the depth cap is relaxed.
+
+#+name: c45-run
+#+begin_src c++ :eval no
+    std::mt19937_64                  rng(5);
+    std::normal_distribution<double> j(0.0, 0.6);
+    std::vector<std::vector<double>> X;
+    std::vector<int>                 y;
+    const std::vector<std::vector<double>> centers = {{0, 0}, {6, 0}, {3, 6}};
+    for (int c = 0; c < 3; ++c)
+        for (int i = 0; i < 60; ++i) { X.push_back({centers[c][0] + j(rng), centers[c][1] + j(rng)}); y.push_back(c); }
+
+    std::cout << "=== C4.5 on three continuous 2D classes (" << X.size() << " points) ===\n";
+    std::cout << "training accuracy vs depth cap:\n";
+    std::vector<double> depth_x, acc_y;
+    for (std::size_t depth = 1; depth <= 6; ++depth) {
+        DecisionTree t = c45_train(X, y, depth, 2);
+        std::size_t  correct = 0;
+        for (std::size_t i = 0; i < X.size(); ++i) correct += (c45_predict(t, X[i]) == y[i]);
+        double acc = double(correct) / X.size();
+        std::cout << "  depth " << depth << ": " << acc << '\n';
+        depth_x.push_back(depth);
+        acc_y.push_back(acc);
+    }
+
+    // Full tree (unlimited depth): print the threshold splits.
+    DecisionTree tree = c45_train(X, y, 0, 2);
+    std::cout << "\ninduced tree (feature 0 = x, feature 1 = y):\n";
+    std::function<void(int, int)> show = [&](int idx, int depth) {
+        const auto& nd = tree.nodes[idx];
+        std::string pad(static_cast<std::size_t>(depth) * 2, ' ');
+        if (nd.leaf) { std::cout << pad << "-> class " << nd.prediction << '\n'; return; }
+        std::cout << pad << (nd.feature == 0 ? "x" : "y") << " <= " << nd.threshold << " ?\n";
+        show(nd.left, depth + 1);
+        show(nd.right, depth + 1);
+    };
+    show(0, 0);
+
+    std::size_t correct = 0;
+    for (std::size_t i = 0; i < X.size(); ++i) correct += (c45_predict(tree, X[i]) == y[i]);
+    std::cout << "\nfull-tree training accuracy: " << double(correct) / X.size() << '\n';
+
+    RPlot p = RPlot::create();
+    p.line(depth_x, acc_y, "training accuracy", {37, 99, 235}, 2.5);
+    p.points(depth_x, acc_y, "", {37, 99, 235}, 5.0);
+    p.abline_h(1.0, {22, 163, 74}, 1.0);
+    p.save_svg("build/org/c45_accuracy.svg");
+    std::cout << "\nwrote build/org/c45_accuracy.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/c45_analysis.cpp <<'CPP'
+<<c45-includes>>
+
+int main() {
+<<c45-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/c45_analysis.cpp -o build/org/c45_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/c45_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== C4.5 on three continuous 2D classes (180 points) ===
+training accuracy vs depth cap:
+  depth 1: 0.666667
+  depth 2: 1
+  depth 3: 1
+  depth 4: 1
+  depth 5: 1
+  depth 6: 1
+
+induced tree (feature 0 = x, feature 1 = y):
+x <= 1.49159 ?
+  -> class 0
+  y <= 2.94937 ?
+    -> class 1
+    -> class 2
+
+full-tree training accuracy: 1
+#+end_example
+
+C4.5 finds axis-aligned threshold splits that carve the plane into the three blobs:
+a first cut separates one class, and a second isolates the remaining two. Training
+accuracy climbs with the depth cap and saturates near perfect once the tree is deep
+enough to place one region per class -- the classic behavior of a decision tree given
+enough capacity. Gain ratio, not raw gain, chose each threshold, avoiding the
+fragmentation bias that would tempt plain information gain.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/c45_accuracy.svg]]
+
+* Beyond ID3, and cautions
+
+C4.5's full feature set also includes *pessimistic pruning* (trimming branches that
+do not improve estimated generalization), *missing-value handling* (fractional
+instances down multiple branches), and support for categorical attributes alongside
+continuous ones; this report focuses on its two defining ideas -- continuous
+thresholds and gain ratio. The standing caution for all such trees is *overfitting*:
+grown to purity they memorize noise, so depth limits, minimum-leaf sizes, or pruning
+are essential on real data. Its successors -- C5.0 (faster, boosting-enabled) and
+CART (Gini index, cost-complexity pruning) -- refine the same greedy recursive
+partitioning.
+
+* Complexity
+
+Each node sorts each continuous attribute over its rows to scan candidate
+thresholds, giving roughly \(O(n\,d\,\log n)\) per level and \(O(n\,d\,\log n\cdot
+\text{depth})\) overall; memory is the tree. Prediction walks one path,
+\(O(\text{depth})\).

@@ -1,0 +1,129 @@
+#+title: ZeroR: The Majority-Class Baseline
+#+subtitle: A literate C++ study of the zero-attribute rule, using =datamunge='s =algorithms::zero_r_train=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Before trusting any classifier you must know what a *trivial* rule already
+achieves. *ZeroR* -- the zero-attribute rule -- is that floor: it ignores every
+feature and always predicts the most common class. Its accuracy is simply the
+prior probability of the majority class, and no model that cannot beat ZeroR has
+learned anything. This short report implements it in =datamunge='s C++
+=algorithms::zero_r_train= as a literate program: every number and figure comes
+from one compiled binary. We compute the ZeroR baseline on the classic
+"play tennis" dataset and plot the class distribution that fixes it.
+#+end_abstract
+
+* The baseline
+
+Given labels \(y_1,\dots,y_n\), ZeroR predicts the *mode* -- the class with the
+highest count -- for every input, regardless of its features. Its training accuracy
+is
+\[
+  \text{acc} = \frac{\max_c \#\{i : y_i = c\}}{n},
+\]
+the majority-class frequency. This is the number every other classifier's accuracy
+must be compared against: an 80%-accurate model is unimpressive if 78% of the data
+is one class.
+
+#+name: zeror-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/rule_learners.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstddef>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ZeroR(labels):
+    counts = tally of each class in labels
+    prediction = class with the largest count
+    accuracy   = largest count / number of labels
+predict(x): return prediction        # x is ignored
+#+end_example
+
+* A worked example
+
+The "play tennis" dataset has 14 days labeled play = yes/no; 9 are "yes". ZeroR
+therefore predicts "yes" always, for a baseline accuracy of \(9/14\).
+
+#+name: zeror-run
+#+begin_src c++ :eval no
+    // Labels only (play: 1 = yes, 0 = no) for the 14-day tennis dataset.
+    std::vector<int> y = {0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0};
+
+    ZeroRModel m = zero_r_train(y);
+    std::map<int, std::size_t> counts;
+    for (int v : y) ++counts[v];
+
+    std::cout << "=== ZeroR on the play-tennis dataset ===\n";
+    std::cout << "class counts:  no=" << counts[0] << "  yes=" << counts[1] << "  (n=" << m.total << ")\n";
+    std::cout << "ZeroR always predicts: " << (m.prediction ? "yes" : "no") << '\n';
+    std::cout << "baseline accuracy: " << m.accuracy() << "  (= " << m.majority_count << "/" << m.total << ")\n";
+    std::cout << "prediction for any input, e.g. a rainy day: " << (zero_r_predict(m, {2, 2, 1, 1}) ? "yes" : "no")
+              << '\n';
+
+    RPlot p = RPlot::barplot({static_cast<double>(counts[0]), static_cast<double>(counts[1])}, {"no", "yes"},
+                             "count", {96, 165, 250});
+    p.save_svg("build/org/zero_r_distribution.svg");
+    std::cout << "\nwrote build/org/zero_r_distribution.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/zero_r_analysis.cpp <<'CPP'
+<<zeror-includes>>
+
+int main() {
+<<zeror-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/zero_r_analysis.cpp -o build/org/zero_r_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/zero_r_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== ZeroR on the play-tennis dataset ===
+class counts:  no=5  yes=9  (n=14)
+ZeroR always predicts: yes
+baseline accuracy: 0.642857  (= 9/14)
+prediction for any input, e.g. a rainy day: yes
+#+end_example
+
+Nine of fourteen days are "yes", so ZeroR predicts "yes" for everything and scores
+\(9/14\approx 64\%\) -- with no features used at all. Any real classifier on this
+data must clear that bar to justify its complexity; the companion OneR report shows
+a single-attribute rule already does.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/zero_r_distribution.svg]]
+
+* Why it matters
+
+ZeroR is trivial by design, and that is the point: it calibrates expectations. On
+*imbalanced* data its accuracy can be very high (99% if 99% of cases are negative),
+which is exactly why accuracy alone is a misleading metric there -- ZeroR "achieves"
+99% while detecting none of the positives. Reporting the ZeroR baseline (and
+preferring metrics like balanced accuracy, F1, or AUC when classes are skewed) is
+basic hygiene in any classification study.
+
+* Complexity
+
+One pass to tally class counts: \(O(n)\) time, \(O(k)\) memory for \(k\) classes.
+Prediction is \(O(1)\).

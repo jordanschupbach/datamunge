@@ -132,6 +132,31 @@ We learn a disjunction hidden among mostly-irrelevant boolean features with =dat
 
 We boost one-feature decision stumps into a strong classifier with =datamunge='s C++ =algorithms::adaboost_train=, and report it as a literate program: on a diagonally split data set that no single axis-aligned stump can separate, the AdaBoost.M1 reweighting drives the ensemble training error to zero within a few dozen rounds, plotted by the compiled binary.
 
+** [[./logitboost_analysis.html][LogitBoost: Additive Logistic Regression by Boosting]] ([[./logitboost_analysis.pdf][PDF]])
+/A literate C++ study of boosting under the logistic loss using datamunge/
+
+We boost regression stumps under the binomial log-likelihood with =datamunge='s C++ =algorithms::logitboost_train=, and report it as a literate program: Newton steps (iteratively reweighted least squares) drive the log-likelihood up monotonically and yield calibrated class probabilities, more robust to noise than AdaBoost's exponential loss, as the compiled binary shows.
+
+** [[./zero_r_analysis.html][ZeroR: The Majority-Class Baseline]] ([[./zero_r_analysis.pdf][PDF]])
+/A literate C++ study of the zero-attribute rule using datamunge/
+
+We compute the majority-class baseline with =datamunge='s C++ =algorithms::zero_r_train=, and report it as a literate program: ZeroR ignores all features and predicts the mode, fixing the accuracy floor (9/14 on play-tennis) every real classifier must beat, as the compiled binary shows.
+
+** [[./one_r_analysis.html][OneR: The One-Attribute Rule]] ([[./one_r_analysis.pdf][PDF]])
+/A literate C++ study of Holte's one-rule classifier using datamunge/
+
+We build the best single-attribute rule with =datamunge='s C++ =algorithms::one_r_train=, and report it as a literate program: OneR selects "outlook" on the play-tennis data and beats the ZeroR baseline with a one-line rule -- Holte's argument for trying the simplest model first -- as the compiled binary shows.
+
+** [[./id3_analysis.html][ID3: Decision-Tree Induction by Information Gain]] ([[./id3_analysis.pdf][PDF]])
+/A literate C++ study of Quinlan's ID3 algorithm using datamunge/
+
+We induce a categorical decision tree with =datamunge='s C++ =algorithms::id3_train=, and report it as a literate program: maximizing information gain reproduces the canonical play-tennis tree (outlook at the root, overcast pure) and classifies all 14 days correctly, as the compiled binary shows.
+
+** [[./c45_analysis.html][C4.5: Decision Trees for Continuous Attributes by Gain Ratio]] ([[./c45_analysis.pdf][PDF]])
+/A literate C++ study of Quinlan's C4.5 improvements over ID3 using datamunge/
+
+We induce a tree over continuous attributes with =datamunge='s C++ =algorithms::c45_train=, and report it as a literate program: binary threshold splits chosen by gain ratio (which cancels ID3's many-values bias) separate three continuous classes at 100% accuracy by depth 2, as the compiled binary shows.
+
 * Association Rule Mining
 
 ** [[./apriori_analysis.html][The Apriori Algorithm: Mining Frequent Itemsets and Association Rules]] ([[./apriori_analysis.pdf][PDF]])
@@ -297,6 +322,11 @@ We fit two Bayesian models with =datamunge='s C++ =bayes= module -- a Normal-Nor
 /A literate C++ study of black-box MCMC and importance sampling using datamunge/
 
 We fit a correlated bivariate Gaussian target -- deliberately unnormalized, with a known true mean $(2,-1)$ and a known true log-normalizing constant $\approx1.6941$ -- using three gradient-free =datamunge= C++ =bayes= methods, and report it as a literate program: every fragment below is a real, compiled, executed chunk of the single C++ binary that produced every number and figure in this document.
+
+** [[./nested_sampling_analysis.html][Nested Sampling: Bayesian Evidence and Posteriors]] ([[./nested_sampling_analysis.pdf][PDF]])
+/A literate C++ study of Skilling's algorithm using datamunge/
+
+We estimate the Bayesian evidence (marginal likelihood) and posterior with =datamunge='s C++ =algorithms::nested_sampling=, and report it as a literate program: live points climb the likelihood while the enclosed prior mass shrinks geometrically, recovering the analytic log Z of a Gaussian to within its stated uncertainty and reconstructing the posterior mean, as the compiled binary shows.
 
 * Classical Statistics
 

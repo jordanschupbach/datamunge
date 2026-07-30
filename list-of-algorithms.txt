@@ -641,7 +641,7 @@ Further information: Computational statistics
     [x] Algorithms for calculating variance: avoiding instability and numerical overflow  -- datamunge::algorithms::OnlineVariance / OnlineCovariance (Welford single-pass, stable, mergeable); report examples/org/online_variance_analysis.org
     [x] Approximate counting algorithm: allows counting large number of events in a small register  -- datamunge::algorithms::MorrisCounter (probabilistic loglog-space counting, tunable base); report examples/org/approximate_counting_analysis.org
     Bayesian statistics
-        Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics
+        [x] Nested sampling algorithm: a computational approach to the problem of comparing models in Bayesian statistics -- datamunge::algorithms::nested_sampling (Skilling; evidence + posterior over a box prior); report examples/org/nested_sampling_analysis.org
     Clustering algorithms
         [x] Average-linkage clustering: a simple agglomerative clustering algorithm -- datamunge::stats::AgglomerativeClustering (average linkage); report examples/org/clustering_iris_analysis.org
         Canopy clustering algorithm: an unsupervised pre-clustering algorithm related to the K-means algorithm
@@ -810,20 +810,20 @@ Further information: Machine learning and Statistical classification
         [x] Apriori algorithm  -- datamunge::algorithms::apriori_frequent_itemsets (+ association_rules); level-wise downward-closure pruning; report examples/org/apriori_analysis.org
         [x] Eclat algorithm  -- datamunge::algorithms::eclat_frequent_itemsets (depth-first vertical tidset intersection); report examples/org/eclat_analysis.org
         [x] FP-growth algorithm  -- datamunge::algorithms::fp_growth_frequent_itemsets (FP-tree + conditional pattern bases, no candidate generation); report examples/org/fp_growth_analysis.org
-        One-attribute rule
-        Zero-attribute rule
+        [x] One-attribute rule -- datamunge::algorithms::one_r_train (OneR, Holte's one-rule); report examples/org/one_r_analysis.org
+        [x] Zero-attribute rule -- datamunge::algorithms::zero_r_train (ZeroR majority-class baseline); report examples/org/zero_r_analysis.org
     Boosting (meta-algorithm): Use many weak learners to boost effectiveness
         [x] AdaBoost: adaptive boosting  -- datamunge::algorithms::adaboost_train (AdaBoost.M1 over decision stumps); report examples/org/adaboost_analysis.org
         BrownBoost: a boosting algorithm that may be robust to noisy datasets
-        LogitBoost: logistic regression boosting
+        [x] LogitBoost: logistic regression boosting -- datamunge::algorithms::logitboost_train (additive logistic regression, Newton steps on stumps); report examples/org/logitboost_analysis.org
         LPBoost: linear programming boosting
     [x] Bootstrap aggregating (bagging): technique to improve stability and classification accuracy -- datamunge::stats::RandomForestClassifier (bagging of trees); report examples/org/rf_iris_analysis.org
     Clustering: a class of unsupervised learning algorithms for grouping and bucketing related input vector
     Computer Vision
         Grabcut based on Graph cuts
     Decision Trees
-        C4.5 algorithm: an extension to ID3
-        ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees
+        [x] C4.5 algorithm: an extension to ID3 -- datamunge::algorithms::c45_train (continuous thresholds + gain ratio); report examples/org/c45_analysis.org
+        [x] ID3 algorithm (Iterative Dichotomiser 3): use heuristic to generate small decision trees -- datamunge::algorithms::id3_train (categorical, information gain); report examples/org/id3_analysis.org
     [x] k-nearest neighbors (k-NN): a non-parametric method for classifying objects based on closest training examples in the feature space -- datamunge::stats::KNNClassifier; report examples/org/knn_iris_analysis.org
     [x] Linde–Buzo–Gray algorithm: a vector quantization algorithm used to derive a good codebook  -- datamunge::algorithms::linde_buzo_gray; report examples/org/linde_buzo_gray_analysis.org
     [x] Locality-sensitive hashing (LSH): a method of performing probabilistic dimension reduction of high-dimensional data  -- datamunge::algorithms::CosineLSH (random-hyperplane multi-table cosine ANN); report examples/org/lsh_analysis.org

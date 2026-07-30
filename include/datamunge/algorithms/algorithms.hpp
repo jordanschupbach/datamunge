@@ -25,6 +25,7 @@
 #include <datamunge/algorithms/counting_sort.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
+#include <datamunge/algorithms/decision_tree_induction.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
@@ -68,6 +69,7 @@
 #include <datamunge/algorithms/library_sort.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linde_buzo_gray.hpp>
+#include <datamunge/algorithms/logitboost.hpp>
 #include <datamunge/algorithms/linear_algebra.hpp>
 #include <datamunge/algorithms/lsh.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
@@ -82,6 +84,7 @@
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
+#include <datamunge/algorithms/nested_sampling.hpp>
 #include <datamunge/algorithms/nesting.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
@@ -114,6 +117,7 @@
 #include <datamunge/algorithms/root_finding.hpp>
 #include <datamunge/algorithms/rounding_functions.hpp>
 #include <datamunge/algorithms/routing_batch.hpp>
+#include <datamunge/algorithms/rule_learners.hpp>
 #include <datamunge/algorithms/selection_operators.hpp>
 #include <datamunge/algorithms/sieve_of_eratosthenes.hpp>
 #include <datamunge/algorithms/simplex.hpp>
