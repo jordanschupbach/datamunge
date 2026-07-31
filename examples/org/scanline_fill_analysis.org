@@ -1,0 +1,136 @@
+#+title: Scanline Polygon Fill: The Even-Odd Rule
+#+subtitle: A literate C++ study of span-based rasterization, using =datamunge='s =algorithms::scanline_fill=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To fill a polygon with pixels, a rasterizer sweeps a horizontal *scanline* down the shape,
+and on each line fills the runs that lie inside. Inside-ness is decided by the *even-odd
+rule*: a point is inside iff a ray from it crosses the polygon boundary an odd number of
+times. This report implements it in =datamunge='s =algorithms::scanline_fill= as a literate
+program: we fill a square and a triangle, confirm the pixel counts match their areas, and
+plot the filled region.
+#+end_abstract
+
+* Crossings, sorted, filled in pairs
+
+For each scanline at height \(y\) (sampled at the pixel centre \(y+0.5\)), find every polygon
+edge that straddles it and compute the crossing \(x\) by linear interpolation:
+\[
+  x = x_0 + \frac{y - y_0}{y_1 - y_0}(x_1 - x_0).
+\]
+Sort the crossings; between the first and second, the third and fourth, and so on, the
+scanline is *inside* (an odd number of boundaries lie to the left). Fill those spans. The
+subtle part is counting each vertex once: using the *half-open* convention -- an edge covers
+\([\min y,\max y)\) -- means a shared vertex belongs to exactly one of its two edges, so
+spans neither double-fill nor leave gaps, and horizontal edges (which never straddle a
+scanline) are naturally ignored.
+
+#+name: sf-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/scanline_fill.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+scanline_fill(polygon):
+    for y from ceil(min_y) to floor(max_y):
+        ys = y + 0.5
+        xs = []
+        for each edge (a, b):
+            if (a.y <= ys < b.y) or (b.y <= ys < a.y):     # half-open straddle test
+                xs.append( a.x + (ys - a.y)/(b.y - a.y) * (b.x - a.x) )
+        sort xs
+        for k in 0,2,4,...:                                 # even-odd: fill pairs
+            fill pixels from xs[k] to xs[k+1] on row y
+#+end_example
+
+* A worked example
+
+We fill a 10x10 axis-aligned square (expect 100 pixels) and a right triangle with legs 20
+(area 200), and plot the triangle's filled pixels.
+
+#+name: sf-run
+#+begin_src c++ :eval no
+    std::vector<Point2D> square = {{0,0},{10,0},{10,10},{0,10}};
+    auto sq = scanline_fill(square);
+    std::cout << "=== Fill counts ===\n";
+    std::cout << "10x10 square: " << sq.size() << " pixels (expect 100)\n";
+
+    std::vector<Point2D> tri = {{0,0},{20,0},{0,20}};
+    auto tp = scanline_fill(tri);
+    std::cout << "right triangle legs 20 (area 200): " << tp.size() << " pixels\n";
+
+    // A non-convex arrow polygon to show the even-odd spans handle concavity.
+    std::vector<Point2D> arrow = {{2,0},{6,4},{2,8},{4,4}};
+    auto ap = scanline_fill(arrow);
+    std::cout << "concave arrow polygon: " << ap.size() << " pixels\n";
+
+    // Plot the filled triangle pixels.
+    std::vector<double> px, py;
+    for (const auto& p : tp) { px.push_back(p.x); py.push_back(p.y); }
+    RPlot pl = RPlot::create();
+    pl.points(px, py, "filled pixels", {16, 122, 87}, 4.0);
+    pl.save_svg("build/org/scanline_triangle.svg");
+    std::cout << "\nwrote build/org/scanline_triangle.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/scanline_fill_analysis.cpp <<'CPP'
+<<sf-includes>>
+
+int main() {
+<<sf-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/scanline_fill_analysis.cpp -o build/org/scanline_fill_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/scanline_fill_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Fill counts ===
+10x10 square: 100 pixels (expect 100)
+right triangle legs 20 (area 200): 208 pixels
+concave arrow polygon: 12 pixels
+
+wrote build/org/scanline_triangle.svg
+#+end_example
+
+The square fills to exactly 100 pixels, and the triangle's pixel count lands near its area of
+200 (the small difference is the boundary the discrete grid must round). The concave arrow
+fills correctly too -- the even-odd rule handles non-convex shapes without special cases,
+because it counts boundary crossings rather than assuming convexity. The plot shows the
+triangle's filled pixels forming a clean right-triangular block.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/scanline_triangle.svg]]
+
+* Uses and cautions
+
+Scanline filling is the basis of polygon rasterization in 2D graphics libraries, font
+renderers, and GPU triangle setup (generalised to edge functions). Points to watch: the
+*even-odd* rule differs from the *nonzero winding* rule on self-intersecting polygons (they
+fill different regions); exact vertex and horizontal-edge handling needs the half-open
+convention shown here to avoid seams or doubled pixels; and antialiasing requires coverage
+estimation beyond the binary inside/outside test.
+
+* Complexity
+
+\(O(H\cdot e + \text{filled pixels})\) for a polygon of height \(H\) and \(e\) edges -- each
+scanline scans the edges and fills its spans.

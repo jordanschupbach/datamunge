@@ -1,0 +1,145 @@
+#+title: The Painter's Algorithm: Depth-Sorted Overdraw
+#+subtitle: A literate C++ study of hidden-surface removal, using =datamunge='s =algorithms::painter_render=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To render a 3D scene, you must decide which surface is visible at each pixel. The *painter's
+algorithm* answers this the way a painter does: sort objects by depth and draw them *back to
+front*, letting nearer objects paint over farther ones. This report implements it in
+=datamunge='s =algorithms::painter_order= / =painter_render= as a literate program: we sort
+objects by depth and rasterise overlapping colored rectangles to show the nearer ones
+occluding the farther, then note where the algorithm breaks.
+#+end_abstract
+
+* Sort, then overdraw
+
+Give each object a depth (distance from the camera). Sort the objects so the *farthest* is
+first, then draw them in that order into the frame buffer. Because a later stroke overwrites
+an earlier one, whatever remains at a pixel is the object with the *smallest* depth that
+covers it -- the visible surface -- with no per-pixel depth test. It is the classic
+alternative to the z-buffer: no extra depth memory, just a sort. The cost is that the sort is
+by a single depth key per object, which is not always well defined: with *interpenetrating*
+polygons, or a *cyclic* overlap (A occludes B occludes C occludes A), no back-to-front order
+exists, and the objects must be split (or resolved with Newell's method) before painting.
+
+#+name: pa-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/painters_algorithm.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+painter_render(objects):
+    order = indices of objects sorted by depth, farthest first
+    clear frame buffer
+    for idx in order:
+        draw objects[idx]        # overwrites whatever was there
+    return frame buffer          # visible surface = nearest object per pixel
+#+end_example
+
+* A worked example
+
+Three overlapping rectangles at different depths: a large far red one, a medium green one,
+and a small near blue one. We print the back-to-front draw order and render into an 8x8
+raster; the near rectangle should sit on top.
+
+#+name: pa-run
+#+begin_src c++ :eval no
+    std::vector<DepthRect> rects = {
+        {0, 0, 7, 7, 10.0, 1},  // far  (color 1) full background
+        {1, 1, 5, 5,  5.0, 2},  // mid  (color 2)
+        {3, 3, 6, 6,  1.0, 3}}; // near (color 3)
+
+    std::vector<double> depths = {10.0, 5.0, 1.0};
+    auto order = painter_order(depths);
+    std::cout << "=== Draw order (farthest first) ===\n  ";
+    for (int i : order) std::cout << "obj" << i << "(depth " << depths[i] << ") ";
+    std::cout << "\n";
+
+    auto raster = painter_render(rects, 8, 8);
+    std::cout << "\n=== 8x8 raster (color id per pixel) ===\n";
+    for (const auto& row : raster) {
+        std::cout << "  ";
+        for (int v : row) std::cout << v << " ";
+        std::cout << "\n";
+    }
+
+    // Draw the three rectangles as filled polygons in back-to-front order.
+    RPlot p = RPlot::create();
+    RGB cols[4] = {{255,255,255},{220,38,38},{16,122,87},{37,99,235}};
+    for (int idx : order) {
+        const DepthRect& r = rects[idx];
+        p.polygon({(double)r.x0, (double)r.x1+1, (double)r.x1+1, (double)r.x0},
+                  {(double)r.y0, (double)r.y0, (double)r.y1+1, (double)r.y1+1}, cols[r.color], 1.0);
+    }
+    p.save_svg("build/org/painters_scene.svg");
+    std::cout << "\nwrote build/org/painters_scene.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/painters_algorithm_analysis.cpp <<'CPP'
+<<pa-includes>>
+
+int main() {
+<<pa-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/painters_algorithm_analysis.cpp -o build/org/painters_algorithm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/painters_algorithm_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Draw order (farthest first) ===
+  obj0(depth 10) obj1(depth 5) obj2(depth 1)
+
+=== 8x8 raster (color id per pixel) ===
+  1 1 1 1 1 1 1 1
+  1 2 2 2 2 2 1 1
+  1 2 2 2 2 2 1 1
+  1 2 2 3 3 3 3 1
+  1 2 2 3 3 3 3 1
+  1 2 2 3 3 3 3 1
+  1 1 1 3 3 3 3 1
+  1 1 1 1 1 1 1 1
+
+wrote build/org/painters_scene.svg
+#+end_example
+
+The draw order lists the farthest rectangle first and the nearest last, and the raster shows
+the result: color 3 (near) sits on top of color 2 (mid) on top of color 1 (far), exactly the
+occlusion a viewer expects. Each pixel ends up holding the nearest rectangle that covers it,
+without any per-pixel depth comparison -- just the sort and overdraw.
+
+#+attr_latex: :width 0.6\linewidth
+[[file:../../build/org/painters_scene.svg]]
+
+* Uses and cautions
+
+The painter's algorithm suits scenes that sort cleanly -- 2D sprite compositing, simple UI
+layering, and early 3D hardware. Its failure modes are the whole reason the z-buffer won for
+general 3D: interpenetrating and cyclically-overlapping polygons have no valid global order,
+so they must be split first, and overdrawing every covered pixel wastes fill rate on hidden
+surfaces (the z-buffer and occlusion culling avoid this). A depth sort per object is also
+only an approximation of true per-pixel visibility.
+
+* Complexity
+
+\(O(k\log k)\) to sort \(k\) objects, plus \(O(\text{drawn pixels})\) for the overdraw --
+which can exceed the frame size when objects overlap heavily.

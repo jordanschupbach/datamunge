@@ -136,6 +136,7 @@
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/mark_compact.hpp>
 #include <datamunge/algorithms/matrix_chain.hpp>
+#include <datamunge/algorithms/marching_squares.hpp>
 #include <datamunge/algorithms/maximum_parsimony.hpp>
 #include <datamunge/algorithms/mark_sweep.hpp>
 #include <datamunge/algorithms/memetic.hpp>
@@ -152,6 +153,7 @@
 #include <datamunge/algorithms/nearest_neighbor_interpolation.hpp>
 #include <datamunge/algorithms/nagle.hpp>
 #include <datamunge/algorithms/nested_sampling.hpp>
+#include <datamunge/algorithms/newell_normal.hpp>
 #include <datamunge/algorithms/nesting.hpp>
 #include <datamunge/algorithms/network_analysis.hpp>
 #include <datamunge/algorithms/number_theory.hpp>
@@ -176,13 +178,17 @@
 #include <datamunge/algorithms/siphash.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/shannon_fano_elias.hpp>
+#include <datamunge/algorithms/scanline_fill.hpp>
+#include <datamunge/algorithms/slerp.hpp>
 #include <datamunge/algorithms/sobel.hpp>
 #include <datamunge/algorithms/signed_reversals.hpp>
+#include <datamunge/algorithms/summed_area_table.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
 #include <datamunge/algorithms/slr_parser.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/packrat_parser.hpp>
+#include <datamunge/algorithms/painters_algorithm.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
 #include <datamunge/algorithms/pbkdf2.hpp>
 #include <datamunge/algorithms/pratt_parser.hpp>

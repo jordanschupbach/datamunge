@@ -1,0 +1,151 @@
+#+title: Slerp: Constant-Velocity Rotation Interpolation
+#+subtitle: A literate C++ study of quaternion Slerp, using =datamunge='s =algorithms::slerp=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+To animate a camera or a bone smoothly from one orientation to another, you interpolate
+between two rotations. Represent each as a unit quaternion -- a point on the unit sphere --
+and the natural path is the *great-circle arc* between them, traversed at *constant angular
+velocity*. *Slerp* (spherical linear interpolation; Shoemake 1985) is the closed form for
+that path. This report implements it in =datamunge='s =algorithms::slerp= as a literate
+program: we verify the endpoints, that the halfway point is the half-angle rotation, and that
+equal time steps sweep equal angles -- the constant-velocity property linear interpolation
+lacks.
+#+end_abstract
+
+* The great-circle formula
+
+Given unit quaternions \(q_0, q_1\) with \(\cos\Omega = q_0\cdot q_1\), Slerp blends them by
+angle-weighted sines:
+\[
+  \mathrm{slerp}(q_0,q_1;t) = \frac{\sin((1-t)\Omega)}{\sin\Omega}\,q_0
+    + \frac{\sin(t\Omega)}{\sin\Omega}\,q_1.
+\]
+The weights are chosen so the result stays on the unit sphere and the swept angle is exactly
+\(t\Omega\) -- linear in \(t\), i.e. constant angular velocity. Two guards make it robust:
+because \(q\) and \(-q\) are the same rotation, we negate \(q_1\) when \(q_0\cdot q_1<0\) so
+the interpolation takes the *shorter* arc; and when the quaternions are nearly parallel
+(\(\sin\Omega\to 0\)) we fall back to normalized linear interpolation to avoid the division
+blowing up. Contrast this with *nlerp* (normalize the straight-line blend), which follows the
+same path geometrically but with non-constant speed -- it lingers near the endpoints and
+rushes through the middle.
+
+#+name: slerp-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/slerp.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+slerp(q0, q1, t):
+    normalize q0, q1
+    dot = q0 . q1
+    if dot < 0: q1 = -q1; dot = -dot          # shorter arc
+    if dot > 0.9995: return normalize(lerp(q0, q1, t))   # nearly parallel
+    Omega = acos(dot)
+    a = sin((1-t)*Omega) / sin(Omega)
+    b = sin(t*Omega)     / sin(Omega)
+    return a*q0 + b*q1
+#+end_example
+
+* A worked example
+
+We interpolate from the identity to a 90-degree rotation about the z-axis. We check the
+endpoints, that \(t=0.5\) gives the 45-degree rotation, and that the angle from the start
+grows linearly in \(t\) -- constant angular velocity.
+
+#+name: slerp-run
+#+begin_src c++ :eval no
+    Quaternion q0 = {1, 0, 0, 0};                                        // identity
+    Quaternion q1 = {std::cos(M_PI/4), 0, 0, std::sin(M_PI/4)};          // 90 deg about z
+
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "=== Slerp identity -> 90deg about z ===\n";
+    for (double t : {0.0, 0.25, 0.5, 0.75, 1.0}) {
+        auto q = slerp(q0, q1, t);
+        std::cout << "  t=" << t << "  q=(" << q[0] << ", " << q[1] << ", " << q[2]
+                  << ", " << q[3] << ")  |q|=" << quat_norm(q)
+                  << "  angle=" << quat_angle_between(q0, q) * 180.0 / M_PI << " deg\n";
+    }
+
+    // Angle from start vs t: should be a straight line (constant angular velocity).
+    std::vector<double> ts, angles;
+    for (int i = 0; i <= 20; ++i) {
+        double t = i / 20.0;
+        ts.push_back(t);
+        angles.push_back(quat_angle_between(q0, slerp(q0, q1, t)) * 180.0 / M_PI);
+    }
+    std::cout << "\nangle at t=0.5 is " << angles[10] << " deg (expect 45)\n";
+
+    RPlot p = RPlot::create();
+    p.line(ts, angles, "swept angle (deg)", {37, 99, 235}, 2.0);
+    p.points({0,0.25,0.5,0.75,1.0}, {0,22.5,45,67.5,90}, "", {220, 38, 38}, 5.0);
+    p.save_svg("build/org/slerp_angle.svg");
+    std::cout << "wrote build/org/slerp_angle.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/slerp_analysis.cpp <<'CPP'
+<<slerp-includes>>
+
+int main() {
+<<slerp-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/slerp_analysis.cpp -o build/org/slerp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/slerp_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Slerp identity -> 90deg about z ===
+  t=0.0000  q=(1.0000, 0.0000, 0.0000, 0.0000)  |q|=1.0000  angle=0.0000 deg
+  t=0.2500  q=(0.9808, 0.0000, 0.0000, 0.1951)  |q|=1.0000  angle=22.5000 deg
+  t=0.5000  q=(0.9239, 0.0000, 0.0000, 0.3827)  |q|=1.0000  angle=45.0000 deg
+  t=0.7500  q=(0.8315, 0.0000, 0.0000, 0.5556)  |q|=1.0000  angle=67.5000 deg
+  t=1.0000  q=(0.7071, 0.0000, 0.0000, 0.7071)  |q|=1.0000  angle=90.0000 deg
+
+angle at t=0.5 is 45.0000 deg (expect 45)
+wrote build/org/slerp_angle.svg
+#+end_example
+
+Slerp returns the identity at \(t=0\) and the 90-degree rotation at \(t=1\), keeps every
+intermediate quaternion on the unit sphere (\(|q|=1\)), and passes through the 45-degree
+rotation exactly at \(t=0.5\). The angle-versus-\(t\) plot is a straight line -- equal time
+steps sweep equal angles -- which is the constant-velocity motion that makes Slerp look
+smooth where a naive blend would visibly ease in and out.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/slerp_angle.svg]]
+
+* Uses and cautions
+
+Slerp is the standard for keyframe *rotation* animation, camera orientation blends, IK, and
+skinning. Practical notes: it is more expensive than nlerp (two =sin= calls plus an =acos=),
+so performance-critical code often uses nlerp or a spline of quaternions when the constant-
+velocity guarantee is not essential; always operate on *unit* quaternions and handle the
+double-cover sign so you take the short way round; and for chaining many rotations smoothly
+(with continuous velocity across keyframes) use *squad*, the quaternion analogue of a cubic
+spline.
+
+* Complexity
+
+\(O(1)\) per interpolation: a dot product, one =acos=, and two =sin= evaluations.

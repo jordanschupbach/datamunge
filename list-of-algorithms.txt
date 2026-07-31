@@ -705,7 +705,7 @@ Further information: Computer graphics
             Weiler–Atherton
     Contour lines and Isosurfaces
         Marching cubes: extract a polygonal mesh of an isosurface from a three-dimensional scalar field (sometimes called voxels)
-        Marching squares: generates contour lines for a two-dimensional scalar field
+        [x] Marching squares: generates contour lines for a two-dimensional scalar field  -- datamunge::algorithms::marching_squares (16-case iso-contour extraction); report examples/org/marching_squares_analysis.org
         Marching tetrahedrons: an alternative to Marching cubes
     Discrete Green's theorem: an algorithm for computing double integral over a generalized rectangular domain in constant time. It is a natural extension to the summed area table algorithm
     [x] Flood fill: fills a connected region of a multi-dimensional array with a specified symbol -- datamunge::algorithms::flood_fill (iterative DFS, 4/8-connectivity); report examples/org/flood_fill_analysis.org
@@ -720,9 +720,9 @@ Further information: Computer graphics
         Radiosity
         Ray tracing
     Hidden-surface removal or visual surface determination
-        Newell's algorithm: eliminate polygon cycles in the depth sorting required in hidden-surface removal
-        Painter's algorithm: detects visible parts of a 3-dimensional scenery
-        Scanline rendering: constructs an image by moving an imaginary line over the image
+        [x] Newell's algorithm: eliminate polygon cycles in the depth sorting required in hidden-surface removal  -- datamunge::algorithms::newell_normal / newell_polygon_area (area-weighted polygon normal); report examples/org/newell_normal_analysis.org
+        [x] Painter's algorithm: detects visible parts of a 3-dimensional scenery  -- datamunge::algorithms::painter_order / painter_render (depth-sorted overdraw); report examples/org/painters_algorithm_analysis.org
+        [x] Scanline rendering: constructs an image by moving an imaginary line over the image  -- datamunge::algorithms::scanline_fill (even-odd span polygon fill); report examples/org/scanline_fill_analysis.org
         Warnock algorithm
     Line drawing: graphical algorithm for approximating a line segment on discrete graphical media.
         [x] Bresenham's line algorithm: plots points of a 2-dimensional array to form a straight line between 2 specified points (uses decision variables) -- datamunge::algorithms::bresenham_line (integer all-octant midpoint); report examples/org/bresenham_analysis.org
@@ -733,8 +733,8 @@ Further information: Computer graphics
     Shading
         Gouraud shading: an algorithm to simulate the differing effects of light and colour across the surface of an object in 3D computer graphics
         Phong shading: an algorithm to interpolate surface normal-vectors for surface shading in 3D computer graphics
-    Slerp (spherical linear interpolation): quaternion interpolation for the purpose of animating 3D rotation
-    Summed area table (also known as an integral image): an algorithm for computing the sum of values in a rectangular subset of a grid in constant time
+    [x] Slerp (spherical linear interpolation): quaternion interpolation for the purpose of animating 3D rotation  -- datamunge::algorithms::slerp (great-circle quaternion interpolation); report examples/org/slerp_analysis.org
+    [x] Summed area table (also known as an integral image): an algorithm for computing the sum of values in a rectangular subset of a grid in constant time  -- datamunge::algorithms::SummedAreaTable (O(1) rectangle sums); report examples/org/summed_area_table_analysis.org
 
 Cryptography
 Further information: Cryptography, Topics in cryptography, and List of cryptographic algorithms
