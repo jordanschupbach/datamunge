@@ -1,0 +1,168 @@
+#+title: SLR Parsing: Bottom-Up with an LR(0) Automaton
+#+subtitle: A literate C++ study of shift-reduce parsing, using =datamunge='s =algorithms::SLRParser=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Where LL parsers work top-down and choke on left recursion, *LR* parsers work *bottom-up*:
+they shift tokens onto a stack and *reduce* a completed right-hand side to its nonterminal,
+accepting a strictly larger class of grammars -- including the natural left-recursive ones.
+The engine is a DFA over *LR(0) items*. *SLR* (Simple LR) is the simplest way to decide when
+to reduce: reduce on lookahead \(a\) only if \(a\in\mathrm{FOLLOW}(A)\). This report
+implements it in =datamunge='s =algorithms::SLRParser= as a literate program: we build the
+LR(0) automaton and SLR table for a left-recursive expression grammar, recognise expressions,
+and trace how the parse stack grows and shrinks.
+#+end_abstract
+
+* Items, closure, goto, and the SLR table
+
+An *LR(0) item* is a production with a dot, \(A\to\alpha\bullet\beta\). *Closure* of a set:
+whenever a dot sits before a nonterminal \(B\), add \(B\to\bullet\gamma\) for every
+\(B\)-production. *Goto*\((I,X)\): advance the dot over symbol \(X\) in every item of \(I\),
+then close. Starting from the closure of the augmented start item
+\(S'\to\bullet S\), these two operations enumerate the *states* of the LR(0) automaton.
+
+From the automaton we fill an ACTION/GOTO table. In state \(i\):
+- a dot before terminal \(a\) with \(\text{goto}(i,a)=j\) gives *shift \(j\)*;
+- a completed item \(A\to\alpha\bullet\) gives *reduce* \(A\to\alpha\);
+- the augmented item \(S'\to S\bullet\) gives *accept*.
+*SLR* resolves reduce actions with FOLLOW: place the reduce only under lookaheads
+\(a\in\mathrm{FOLLOW}(A)\). A grammar is *SLR(1)* iff no cell gets two actions (no
+shift/reduce or reduce/reduce conflict). The parser then runs a stack of states: *shift*
+pushes, *reduce* pops the right-hand side and follows a GOTO edge -- rebuilding the parse
+tree from the leaves up.
+
+#+name: slr-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/slr_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+build automaton:
+    states = { closure({ S' -> . S }) }
+    repeat: for each state I, each symbol X: J = goto(I, X); add J if new; record edge
+build SLR table:
+    for item A -> a . x b in state i with goto j:
+        if x terminal: ACTION[i][x] = shift j   else GOTO[i][x] = j
+    for complete item A -> a . in state i:
+        if A is start: ACTION[i][$] = accept
+        else for a in FOLLOW(A): ACTION[i][a] = reduce (A -> a)
+    conflict if a cell gets two actions => not SLR(1)
+
+parse(tokens):
+    stack = [state 0]
+    loop by ACTION[top][lookahead]:
+        shift j : push j, advance
+        reduce A->a : pop |a| states, push GOTO[top][A]
+        accept  : done
+#+end_example
+
+* A worked example
+
+We build the parser for the *left-recursive* grammar =E -> E + T | T ; T -> T * F | F ;
+F -> ( E ) | id= (which no LL parser can handle), report the automaton size and SLR status,
+recognise expressions, and plot the parse stack depth step by step.
+
+#+name: slr-run
+#+begin_src c++ :eval no
+    ContextFreeGrammar g;
+    g.start = "E";
+    g.productions = {{"E",{"E","+","T"}},{"E",{"T"}},{"T",{"T","*","F"}},
+                     {"T",{"F"}},{"F",{"(","E",")"}},{"F",{"id"}}};
+    SLRParser parser(g);
+
+    std::cout << "=== Grammar is SLR(1)? " << (parser.is_slr() ? "yes" : "no")
+              << ";  LR(0) states: " << parser.state_count() << " ===\n";
+
+    std::cout << "\n=== Recognition (left-recursive grammar) ===\n";
+    for (auto toks : std::vector<std::vector<std::string>>{
+             {"id","+","id","*","id"}, {"(","id","+","id",")","*","id"}, {"id"},
+             {"id","+"}, {"id","id"}}) {
+        std::cout << "  ";
+        for (auto& t : toks) std::cout << t << " ";
+        std::cout << "-> " << (parser.recognize(toks) ? "accept" : "reject") << "\n";
+    }
+
+    // Trace the parse stack depth for id + id * id.
+    std::vector<std::string> ex = {"id","+","id","*","id"};
+    auto trace = parser.stack_depth_trace(ex);
+    std::cout << "\n=== Parse-stack depth over shift/reduce steps (id + id * id) ===\n  ";
+    for (int d : trace) std::cout << d << " ";
+    std::cout << "\n";
+    std::vector<double> xs, ys;
+    for (std::size_t i = 0; i < trace.size(); ++i) { xs.push_back(i); ys.push_back(trace[i]); }
+    RPlot p = RPlot::create();
+    p.line(xs, ys, "stack depth", {217,70,20}, 2.0);
+    p.points(xs, ys, "", {37,99,235}, 4.0);
+    p.save_svg("build/org/slr_stack.svg");
+    std::cout << "wrote build/org/slr_stack.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/slr_analysis.cpp <<'CPP'
+<<slr-includes>>
+
+int main() {
+<<slr-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/slr_analysis.cpp -o build/org/slr_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/slr_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Grammar is SLR(1)? yes;  LR(0) states: 12 ===
+
+=== Recognition (left-recursive grammar) ===
+  id + id * id -> accept
+  ( id + id ) * id -> accept
+  id -> accept
+  id + -> reject
+  id id -> reject
+
+=== Parse-stack depth over shift/reduce steps (id + id * id) ===
+  1 2 2 2 2 3 4 4 4 5 6 6 4 2
+wrote build/org/slr_stack.svg
+#+end_example
+
+The parser is SLR(1) and builds a compact LR(0) automaton for the *left-recursive* grammar
+-- the exact grammar that loops an LL parser -- and recognises expressions correctly while
+rejecting malformed input. The stack-depth trace shows bottom-up parsing in action: the
+stack grows as tokens shift on and dips each time a completed right-hand side is reduced,
+rebuilding the tree from the leaves up.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/slr_stack.svg]]
+
+* Uses and cautions
+
+LR-family parsers power most parser *generators* (yacc/bison are LALR, a refinement of SLR)
+because they accept the natural left-recursive grammars of real languages and run in linear
+time. SLR is the simplest LR variant: some grammars that are LALR(1) or canonical-LR(1) are
+*not* SLR(1) because FOLLOW is too coarse a reduce condition, producing conflicts that the
+stronger lookahead constructions resolve. For those, upgrade to LALR(1); for genuinely
+ambiguous or general grammars, use GLR or Earley.
+
+* Complexity
+
+Table construction is polynomial in the grammar size (number of LR(0) states can be
+exponential in pathological cases but is small in practice); parsing is \(O(n)\) over \(n\)
+tokens.

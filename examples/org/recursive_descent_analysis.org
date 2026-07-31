@@ -1,0 +1,156 @@
+#+title: Recursive-Descent Parsing: The Grammar as Code
+#+subtitle: A literate C++ study of top-down expression parsing, using =datamunge='s =algorithms::recursive_descent_eval=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Recursive descent* is the most transparent way to build a parser: write one function per
+grammar rule and let the *call stack* mirror the structure of the input. It parses the
+*LL(k)* grammars, produces excellent error messages, and is the technique behind most
+hand-written compilers. This report implements a recursive-descent evaluator for arithmetic
+in =datamunge='s =algorithms::recursive_descent_eval= as a literate program: we show how
+encoding precedence in the grammar makes =1 + 2 * 3= evaluate to 7, draw the parse tree the
+recursion implicitly walks, and see why the method cannot handle left recursion.
+#+end_abstract
+
+* One function per nonterminal
+
+We encode operator precedence directly in the grammar so that lower-precedence rules sit
+higher in the call tree:
+\[
+  \text{expr} \to \text{term}\;((+\mid-)\;\text{term})^\ast,\quad
+  \text{term} \to \text{factor}\;((\ast\mid/)\;\text{factor})^\ast,
+\]
+\[
+  \text{factor} \to \text{number}\mid(\;\text{expr}\;)\mid-\text{factor}.
+\]
+Each rule becomes a function: =expr= loops over =term=s joined by \(+\)/\(-\); =term= loops
+over =factor=s joined by \(\ast\)//\; =factor= reads a number, a parenthesised
+sub-expression (recursing back into =expr=), or a unary minus. Because \(\ast\) is resolved
+*below* \(+\) in the call tree, =1 + 2 * 3= parses as \(1 + (2\times 3)\) with no explicit
+precedence table. The one limitation: a *left-recursive* rule like
+\(\text{expr}\to\text{expr}+\text{term}\) would call itself at the same input position
+forever -- recursive descent needs the grammar written right-recursively or iteratively (as
+the \((\dots)^\ast\) loops above).
+
+#+name: rd-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+expr():   v = term();   while next in {+,-}: v = v (+/-) term();   return v
+term():   v = factor(); while next in {*,/}: v = v (*//) factor(); return v
+factor(): if next == '(':  consume '('; v = expr(); expect ')'; return v
+          if next == '-':  consume '-'; return -factor()
+          else:            return number()
+# the call stack expr -> term -> factor -> expr mirrors the parse tree
+#+end_example
+
+* A worked example
+
+We evaluate several expressions -- confirming precedence, left-associativity, unary minus,
+and nesting -- then draw the parse tree for =1 + 2 * 3= that the recursion walks.
+
+#+name: rd-run
+#+begin_src c++ :eval no
+    std::vector<std::string> exprs = {
+        "1 + 2 * 3", "(1 + 2) * 3", "2 * 3 + 4 * 5", "10 - 2 - 3", "-3 + 5", "2 * (3 + (4 - 1))"};
+    std::cout << "=== Recursive-descent evaluation ===\n";
+    for (const auto& e : exprs)
+        std::cout << "  " << e << "  =  " << recursive_descent_eval(e) << "\n";
+
+    // Draw the parse tree for 1 + 2 * 3:  expr(+) -> [1, term(*) -> [2, 3]]
+    RPlot p = RPlot::create();
+    auto node = [&](double x, double y, const std::string& s) { p.text(x, y, s, {17,24,39}, 16.0); };
+    std::vector<double> ex = {5}, ey = {5};
+    p.points(ex, ey, "", {255,255,255}, 0.1);      // anchor an empty canvas region
+    // edges
+    p.segments({5,5}, {5,5}, {3,7}, {4,4}, {37,99,235}, 1.5);   // + -> 1 and + -> *
+    p.segments({7,7}, {4,4}, {6,8}, {3,3}, {37,99,235}, 1.5);   // * -> 2 and * -> 3
+    node(4.85, 5.2, "+");
+    node(2.9, 4.2, "1");
+    node(6.9, 4.2, "*");
+    node(5.9, 3.2, "2");
+    node(7.9, 3.2, "3");
+    p.text(1.0, 6.0, "parse tree of 1 + 2 * 3  =  1 + (2*3) = 7", {107,114,128}, 13.0);
+    p.save_svg("build/org/recursive_descent_tree.svg");
+    std::cout << "\nwrote build/org/recursive_descent_tree.svg\n";
+
+    // Show a couple of rejects.
+    std::cout << "\n=== Rejects malformed input ===\n";
+    for (const std::string& bad : {"1 + ", "(1 + 2", "1 2"}) {
+        try { recursive_descent_eval(bad); std::cout << "  \"" << bad << "\": accepted?!\n"; }
+        catch (const std::exception&) { std::cout << "  \"" << bad << "\": rejected\n"; }
+    }
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/recursive_descent_analysis.cpp <<'CPP'
+<<rd-includes>>
+
+int main() {
+<<rd-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/recursive_descent_analysis.cpp -o build/org/recursive_descent_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/recursive_descent_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Recursive-descent evaluation ===
+  1 + 2 * 3  =  7
+  (1 + 2) * 3  =  9
+  2 * 3 + 4 * 5  =  26
+  10 - 2 - 3  =  5
+  -3 + 5  =  2
+  2 * (3 + (4 - 1))  =  12
+
+wrote build/org/recursive_descent_tree.svg
+
+=== Rejects malformed input ===
+  "1 + ": rejected
+  "(1 + 2": rejected
+  "1 2": rejected
+#+end_example
+
+Every expression evaluates correctly: multiplication binds tighter than addition,
+subtraction is left-associative, unary minus and nesting work, and malformed input is
+rejected with an exception. The parse tree shows /why/ -- =1 + 2 * 3= builds a =+= node whose
+right child is the =*= subtree, so the multiplication is performed first, exactly as the
+call stack =expr -> term -> factor= dictates.
+
+#+attr_latex: :width 0.7\linewidth
+[[file:../../build/org/recursive_descent_tree.svg]]
+
+* Uses and cautions
+
+Recursive descent is the default for hand-written parsers -- compilers, configuration
+readers, query languages -- because it is readable, easy to extend, and gives precise error
+positions. Its constraints: it needs an LL(k) grammar (no left recursion, limited
+lookahead), and deep nesting can overflow the call stack (mitigated by an explicit stack or a
+loop for repetition). When a grammar resists LL factoring, reach for a Pratt parser (for
+expressions) or a table-driven LL/LR parser (companion reports).
+
+* Complexity
+
+\(O(n)\) time for an LL(k) grammar over \(n\) tokens with bounded lookahead; stack depth
+proportional to the parse-tree height.

@@ -47,6 +47,7 @@
 #include <datamunge/algorithms/cpu_scheduling.hpp>
 #include <datamunge/algorithms/cycle_detection.hpp>
 #include <datamunge/algorithms/cyk_parser.hpp>
+#include <datamunge/algorithms/context_free_grammar.hpp>
 #include <datamunge/algorithms/cohen_sutherland.hpp>
 #include <datamunge/algorithms/connected_components.hpp>
 #include <datamunge/algorithms/davis_putnam.hpp>
@@ -67,6 +68,7 @@
 #include <datamunge/algorithms/elementary.hpp>
 #include <datamunge/algorithms/elementary_more.hpp>
 #include <datamunge/algorithms/ellipsoid.hpp>
+#include <datamunge/algorithms/earley_parser.hpp>
 #include <datamunge/algorithms/elias_gamma.hpp>
 #include <datamunge/algorithms/exact_cover.hpp>
 #include <datamunge/algorithms/exp_golomb.hpp>
@@ -120,6 +122,7 @@
 #include <datamunge/algorithms/lamport_clock.hpp>
 #include <datamunge/algorithms/lex_bfs.hpp>
 #include <datamunge/algorithms/library_sort.hpp>
+#include <datamunge/algorithms/ll1_parser.hpp>
 #include <datamunge/algorithms/interpolation_extra.hpp>
 #include <datamunge/algorithms/linde_buzo_gray.hpp>
 #include <datamunge/algorithms/logitboost.hpp>
@@ -163,6 +166,7 @@
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/rc4.hpp>
+#include <datamunge/algorithms/recursive_descent_parser.hpp>
 #include <datamunge/algorithms/reference_counting.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
 #include <datamunge/algorithms/salsa20.hpp>
@@ -175,10 +179,13 @@
 #include <datamunge/algorithms/sobel.hpp>
 #include <datamunge/algorithms/signed_reversals.hpp>
 #include <datamunge/algorithms/shunting_yard.hpp>
+#include <datamunge/algorithms/slr_parser.hpp>
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
+#include <datamunge/algorithms/packrat_parser.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
 #include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/algorithms/pratt_parser.hpp>
 #include <datamunge/algorithms/package_merge.hpp>
 #include <datamunge/algorithms/petrick.hpp>
 #include <datamunge/algorithms/phase_estimation.hpp>

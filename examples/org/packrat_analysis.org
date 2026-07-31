@@ -1,0 +1,181 @@
+#+title: Packrat Parsing: PEGs in Linear Time
+#+subtitle: A literate C++ study of memoized PEG parsing, using =datamunge='s =algorithms::PackratParser=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A *Parsing Expression Grammar* (PEG) looks like a CFG but is recognition-based and
+unambiguous: its choice operator is *ordered* (try the first alternative, fall back only on
+failure), and it adds *syntactic predicates* =&e= (match without consuming) and =!e= (fail if
+=e= matches). A naive PEG parser can be exponential; *packrat* parsing makes it *linear* by
+memoizing every =(rule, position)= result. This report implements a packrat parser in
+=datamunge='s =algorithms::PackratParser= as a literate program: we parse \(a^n b^n\), use a
+=!= predicate, and measure the memoization that guarantees linear time.
+#+end_abstract
+
+* Ordered choice, predicates, and memoization
+
+A PEG rule is an expression over: literals, sequence \(e_1 e_2\), *ordered choice*
+\(e_1/e_2\), repetition \(e^\ast\)/\(e^+\), option \(e?\), and the predicates \(\&e\) and
+\(!e\). Unlike a CFG's symmetric choice, \(e_1/e_2\) commits to \(e_1\) if it succeeds and
+never reconsiders -- so a PEG describes exactly what a greedy recursive-descent parser does,
+deterministically. The predicates add power without consuming input: \(!e\) succeeds
+precisely when \(e\) would fail, giving unbounded negative lookahead.
+
+The catch is that the same rule may be attempted at the same position many times, so a naive
+interpreter can blow up exponentially. *Packrat* parsing stores the result of every
+\((\text{rule}, \text{position})\) in a memo table:
+\[
+  \text{memo}[(\text{rule}, p)] = \text{end position or failure},
+\]
+so each is computed *once*. That single table converts the exponential retry tree into a
+linear-time, linear-space parse -- trading memory for a guarantee.
+
+#+name: packrat-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/packrat_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// S <- 'a' S 'b' / 'a' 'b'
+static PackratParser make_anbn() {
+    std::map<std::string, PegExpr> rules;
+    rules["S"] = peg_choice({
+        peg_seq({peg_lit("a"), peg_ref("S"), peg_lit("b")}),
+        peg_seq({peg_lit("a"), peg_lit("b")})});
+    return PackratParser(std::move(rules), "S");
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+parse_rule(name, pos):                 # memoized -> linear time
+    if (name, pos) in memo: return memo[(name, pos)]
+    r = parse_expr(rules[name], pos)
+    memo[(name, pos)] = r
+    return r
+
+parse_expr(e, pos):
+    Literal s : match s at pos else fail
+    Seq   ...: parse each child in turn; fail if any fails
+    Choice...: try each child in order; first success wins   # ordered choice
+    Star  e  : match e greedily zero or more times
+    And   e  : succeed at pos iff e matches (consume nothing)
+    Not   e  : succeed at pos iff e fails    (consume nothing)
+#+end_example
+
+* A worked example
+
+We parse \(a^n b^n\) via the ordered-choice recursion, use a =!= predicate to match =a=\(^+\)
+not followed by =c=, and count rule invocations to see memoization at work.
+
+#+name: packrat-run
+#+begin_src c++ :eval no
+    auto p = make_anbn();
+    std::cout << "=== PEG  S <- 'a' S 'b' / 'a' 'b'  (a^n b^n) ===\n";
+    for (const std::string& s : {"ab","aabb","aaabbb","aab","abb"})
+        std::cout << "  \"" << s << "\" -> " << (p.parse(s) ? "accept" : "reject") << "\n";
+
+    // NOT predicate: a+ not followed by c.
+    std::map<std::string, PegExpr> rules;
+    rules["Start"] = peg_seq({peg_plus(peg_lit("a")), peg_not(peg_lit("c"))});
+    PackratParser np(std::move(rules), "Start");
+    std::cout << "\n=== Start <- 'a'+ !'c'  (negative lookahead) ===\n";
+    for (const std::string& s : {"aaa","aaac",""})
+        std::cout << "  \"" << s << "\" -> " << (np.parse(s) ? "accept" : "reject") << "\n";
+
+    // Memoization: rule invocations stay linear as input grows.
+    std::cout << "\n=== Memoized rule invocations vs input length ===\n";
+    std::vector<double> lens, calls;
+    for (int n = 1; n <= 8; ++n) {
+        std::string s(n, 'a'); s += std::string(n, 'b');  // a^n b^n
+        auto q = make_anbn();
+        q.parse(s);
+        lens.push_back(s.size());
+        calls.push_back(q.rule_calls());
+        std::cout << "  n=" << n << "  input len " << (int)s.size()
+                  << "  rule calls " << (int)q.rule_calls()
+                  << "  memo hits " << q.memo_hits() << "\n";
+    }
+    RPlot pl = RPlot::create();
+    pl.line(lens, calls, "memoized rule calls", {37,99,235}, 2.0);
+    pl.points(lens, calls, "", {220,38,38}, 5.0);
+    pl.save_svg("build/org/packrat_memo.svg");
+    std::cout << "\nwrote build/org/packrat_memo.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/packrat_analysis.cpp <<'CPP'
+<<packrat-includes>>
+
+int main() {
+<<packrat-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/packrat_analysis.cpp -o build/org/packrat_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/packrat_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== PEG  S <- 'a' S 'b' / 'a' 'b'  (a^n b^n) ===
+  "ab" -> accept
+  "aabb" -> accept
+  "aaabbb" -> accept
+  "aab" -> reject
+  "abb" -> reject
+
+=== Start <- 'a'+ !'c'  (negative lookahead) ===
+  "aaa" -> accept
+  "aaac" -> reject
+  "" -> reject
+
+=== Memoized rule invocations vs input length ===
+  n=1  input len 2  rule calls 2  memo hits 0
+  n=2  input len 4  rule calls 3  memo hits 0
+  n=3  input len 6  rule calls 4  memo hits 0
+  n=4  input len 8  rule calls 5  memo hits 0
+  n=5  input len 10  rule calls 6  memo hits 0
+  n=6  input len 12  rule calls 7  memo hits 0
+  n=7  input len 14  rule calls 8  memo hits 0
+  n=8  input len 16  rule calls 9  memo hits 0
+
+wrote build/org/packrat_memo.svg
+#+end_example
+
+The PEG recognises \(a^n b^n\) through ordered choice, and the =!= predicate accepts
+=a=\(^+\) only when no =c= follows -- negative lookahead a plain CFG cannot express. The
+invocation count grows linearly with input length: memoization ensures each =(rule,
+position)= is evaluated once, which is the whole point of packrat parsing.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/packrat_memo.svg]]
+
+* Uses and cautions
+
+PEGs and packrat parsers are popular for programming-language and data-format grammars where
+a single deterministic parse is wanted and lexing/parsing can be unified (no separate
+tokenizer). Caveats: the memo table costs \(O(n)\) memory (heavy for huge inputs); ordered
+choice can silently mask alternatives (\(a/ab\) never matches =ab= because =a= wins first),
+so rule order matters; and left recursion needs special handling (unsupported here). For
+ambiguity enumeration or natural-language grammars, use Earley instead.
+
+* Complexity
+
+\(O(n)\) time and \(O(n)\) space with memoization, over \(n\) input characters; without
+memoization the same grammar can be exponential.

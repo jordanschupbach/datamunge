@@ -791,6 +791,38 @@ We derive keys with =datamunge='s C++ =algorithms::pbkdf2_hmac_sha256=, and repo
 
 We keyed-hash with =datamunge='s C++ =algorithms::siphash24=, and report it as a literate program: an ARX keyed PRF reproduces the SipHash paper vectors and keeps hash-table bucket loads even under a secret key, so an attacker cannot force collisions, as the compiled binary demonstrates.
 
+* Parsing & Grammars
+
+** [[./recursive_descent_analysis.html][Recursive-Descent Parsing: The Grammar as Code]] ([[./recursive_descent_analysis.pdf][PDF]])
+/A literate C++ study of top-down expression parsing using datamunge/
+
+We parse and evaluate arithmetic with =datamunge='s C++ =algorithms::recursive_descent_eval=, and report it as a literate program: one function per grammar rule encodes precedence directly, so 1 + 2 * 3 = 7, malformed input is rejected, and the call stack mirrors the parse tree, as the compiled binary shows.
+
+** [[./pratt_analysis.html][Pratt Parsing: Precedence from Binding Powers]] ([[./pratt_analysis.pdf][PDF]])
+/A literate C++ study of top-down operator-precedence parsing using datamunge/
+
+We evaluate expressions with =datamunge='s C++ =algorithms::pratt_eval=, and report it as a literate program: numeric binding powers capture precedence and associativity uniformly, giving 2 ^ 3 ^ 2 = 512 (right-associative), as the compiled binary shows.
+
+** [[./earley_analysis.html][The Earley Parser: Any Context-Free Grammar]] ([[./earley_analysis.pdf][PDF]])
+/A literate C++ study of chart parsing using datamunge/
+
+We recognise arbitrary CFGs with =datamunge='s C++ =algorithms::earley_recognize=, and report it as a literate program: a predict/scan/complete chart accepts the non-regular language a^n b^n and parses a left-recursive grammar that would loop an LL parser, as the compiled binary shows.
+
+** [[./ll1_analysis.html][LL(1) Parsing: FIRST, FOLLOW, and a Predictive Table]] ([[./ll1_analysis.pdf][PDF]])
+/A literate C++ study of table-driven top-down parsing using datamunge/
+
+We build FIRST/FOLLOW and a predictive table with =datamunge='s C++ =algorithms::LL1Parser=, and report it as a literate program: a stack-driven parser recognises an arithmetic grammar and correctly reports that a left-recursive grammar is not LL(1), as the compiled binary shows.
+
+** [[./packrat_analysis.html][Packrat Parsing: PEGs in Linear Time]] ([[./packrat_analysis.pdf][PDF]])
+/A literate C++ study of memoized PEG parsing using datamunge/
+
+We parse Parsing Expression Grammars with =datamunge='s C++ =algorithms::PackratParser=, and report it as a literate program: ordered choice and a !-predicate recognise a^n b^n and negative lookahead, while (rule, position) memoization keeps invocations linear, as the compiled binary measures.
+
+** [[./slr_analysis.html][SLR Parsing: Bottom-Up with an LR(0) Automaton]] ([[./slr_analysis.pdf][PDF]])
+/A literate C++ study of shift-reduce parsing using datamunge/
+
+We build an LR(0) automaton and SLR table with =datamunge='s C++ =algorithms::SLRParser=, and report it as a literate program: bottom-up shift-reduce parsing handles the left-recursive grammar LL cannot, and the parse-stack depth trace shows reductions rebuilding the tree from the leaves, as the compiled binary shows.
+
 * Distributed Systems
 
 ** [[./lamport_clock_analysis.html][Lamport Clocks: Logical Time in Distributed Systems]] ([[./lamport_clock_analysis.pdf][PDF]])

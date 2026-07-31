@@ -859,20 +859,20 @@ Parsing
 Further information: Parsing
 
     [x] CYK algorithm: an O(n3) algorithm for parsing context-free grammars in Chomsky normal form -- datamunge::algorithms::cyk_recognize (CNF dynamic-programming parser); report examples/org/cyk_analysis.org
-    Earley parser: another O(n3) algorithm for parsing any context-free grammar
+    [x] Earley parser: another O(n3) algorithm for parsing any context-free grammar  -- datamunge::algorithms::earley_recognize (chart parser, any CFG incl. left recursion); report examples/org/earley_analysis.org
     GLR parser: an algorithm for parsing any context-free grammar by Masaru Tomita. It is tuned for deterministic grammars, on which it performs almost linear time and O(n3) in worst case.[clarification needed]
     Inside-outside algorithm: an O(n3) algorithm for re-estimating production probabilities in probabilistic context-free grammars
     Lexical analysis
-    LL parser: a relatively simple linear time parsing algorithm for a limited class of context-free grammars
+    [x] LL parser: a relatively simple linear time parsing algorithm for a limited class of context-free grammars  -- datamunge::algorithms::LL1Parser (FIRST/FOLLOW + predictive table); report examples/org/ll1_analysis.org
     LR parser: A more complex linear time parsing algorithm for a larger class of context-free grammars. Variants:
         Canonical LR parser
         LALR (look-ahead LR) parser
         Operator-precedence parser
-        Simple LR parser
+        [x] Simple LR parser  -- datamunge::algorithms::SLRParser (LR(0) automaton + SLR(1) table, bottom-up shift-reduce); report examples/org/slr_analysis.org
         Simple precedence parser
-    Packrat parser: a linear time parsing algorithm supporting some context-free grammars and parsing expression grammars
-    Pratt parser
-    Recursive descent parser: a top-down parser suitable for LL(k) grammars
+    [x] Packrat parser: a linear time parsing algorithm supporting some context-free grammars and parsing expression grammars  -- datamunge::algorithms::PackratParser (memoized PEG interpreter); report examples/org/packrat_analysis.org
+    [x] Pratt parser  -- datamunge::algorithms::pratt_eval (top-down operator-precedence via binding powers); report examples/org/pratt_analysis.org
+    [x] Recursive descent parser: a top-down parser suitable for LL(k) grammars  -- datamunge::algorithms::recursive_descent_eval (one function per grammar rule); report examples/org/recursive_descent_analysis.org
     [x] Shunting-yard algorithm: converts an infix-notation math expression to postfix -- datamunge::algorithms::shunting_yard_to_postfix (+ evaluate_rpn); report examples/org/shunting_yard_analysis.org
 
 Quantum algorithms
