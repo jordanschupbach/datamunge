@@ -1,0 +1,178 @@
+#+title: SHA-256: The Standard Secure Hash
+#+subtitle: A literate C++ study of FIPS 180-4, using =datamunge='s =algorithms::sha256=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*SHA-256*, the workhorse of the SHA-2 family, is the hash behind TLS certificates, digital
+signatures, HMAC, and proof-of-work blockchains. Like MD5 and SHA-1 it is a Merkle-Damgard
+construction, but its richer round function -- two "big sigma" rotation mixers plus
+majority and choice functions, driven by constants from the cube roots of primes -- has
+resisted every practical collision and preimage attack to date. This report implements it
+in =datamunge='s =algorithms::sha256= as a literate program: we reproduce the FIPS 180-4
+vectors and measure the avalanche across the 256-bit digest.
+#+end_abstract
+
+* The SHA-256 round
+
+SHA-256 pads a message (big-endian length) into 512-bit blocks and keeps eight 32-bit
+state words \((a,\dots,h)\), initialised to the fractional parts of the square roots of the
+first eight primes. Each block expands its sixteen words to sixty-four with
+
+\[
+  W_t = \sigma_1(W_{t-2}) + W_{t-7} + \sigma_0(W_{t-15}) + W_{t-16},
+\]
+
+where the small-sigma mixers combine rotations and a shift,
+\(\sigma_0(x)=\text{ROTR}_7 x\oplus\text{ROTR}_{18} x\oplus(x\!\gg\!3)\) and
+\(\sigma_1(x)=\text{ROTR}_{17} x\oplus\text{ROTR}_{19} x\oplus(x\!\gg\!10)\). Each of the 64
+rounds computes
+
+\[
+  T_1 = h + \Sigma_1(e) + \text{Ch}(e,f,g) + K_t + W_t,\qquad
+  T_2 = \Sigma_0(a) + \text{Maj}(a,b,c),
+\]
+
+with \(\text{Ch}(e,f,g)=(e\wedge f)\oplus(\neg e\wedge g)\),
+\(\text{Maj}=(a\wedge b)\oplus(a\wedge c)\oplus(b\wedge c)\), the big-sigma mixers
+\(\Sigma_0(x)=\text{ROTR}_2\oplus\text{ROTR}_{13}\oplus\text{ROTR}_{22}\) and
+\(\Sigma_1(x)=\text{ROTR}_6\oplus\text{ROTR}_{11}\oplus\text{ROTR}_{25}\), and constants
+\(K_t\) drawn from the cube roots of the first 64 primes. The words shift down and
+\(a\leftarrow T_1+T_2\), \(e\leftarrow d+T_1\).
+
+#+name: sha256-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/sha256.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static int digest_hamming(const std::array<std::uint8_t, 32>& a,
+                          const std::array<std::uint8_t, 32>& b) {
+    int d = 0;
+    for (int i = 0; i < 32; ++i) {
+        std::uint8_t x = a[i] ^ b[i];
+        while (x) { d += x & 1; x >>= 1; }
+    }
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+SHA-256(message):
+    h[0..7] = frac(sqrt(first 8 primes))          # 0x6a09e667 ...
+    pad message with 0x80, zeros to 56 mod 64, then 64-bit big-endian bit length
+    for each 512-bit block:
+        W[0..15] = block words (big-endian)
+        for t in 16..63:
+            s0 = rotr(W[t-15],7) ^ rotr(W[t-15],18) ^ (W[t-15] >> 3)
+            s1 = rotr(W[t-2],17) ^ rotr(W[t-2],19) ^ (W[t-2] >> 10)
+            W[t] = W[t-16] + s0 + W[t-7] + s1
+        a..h = h[0..7]
+        for t in 0..63:
+            T1 = h + Sigma1(e) + Ch(e,f,g) + K[t] + W[t]
+            T2 = Sigma0(a) + Maj(a,b,c)
+            h,g,f,e = g,f,e, d+T1
+            d,c,b,a = c,b,a, T1+T2
+        h[0..7] += a..h
+    return h[0]||...||h[7]   # 32 big-endian bytes
+#+end_example
+
+* A worked example
+
+We verify the FIPS 180-4 vectors, then measure the avalanche: flip each input bit of a
+fixed message and count how many of the 256 output bits change (ideal 128).
+
+#+name: sha256-run
+#+begin_src c++ :eval no
+    std::cout << "=== FIPS 180-4 reference digests ===\n";
+    std::cout << "sha256(\"\")    = " << sha256_hex("") << "\n";
+    std::cout << "sha256(\"abc\") = " << sha256_hex("abc") << "\n";
+
+    const std::string base = "avalanche";
+    auto base_digest = sha256(base);
+    std::vector<double> changes;
+    int total_bits = static_cast<int>(base.size()) * 8;
+    for (int bit = 0; bit < total_bits; ++bit) {
+        std::string m = base;
+        m[bit / 8] ^= static_cast<char>(1u << (bit % 8));
+        changes.push_back(digest_hamming(base_digest, sha256(m)));
+    }
+    double mean = 0;
+    for (double c : changes) mean += c;
+    mean /= changes.size();
+    std::cout << "\n=== Avalanche over " << total_bits << " single-bit input flips ===\n";
+    std::cout << "output bits changed: mean " << mean << " of 256 (ideal 128)\n";
+
+    std::vector<double> bins(9, 0.0);  // centred 112,116,...,144
+    std::vector<std::string> labels = {"112","116","120","124","128","132","136","140","144"};
+    for (double c : changes) {
+        int idx = static_cast<int>((c - 110) / 4);
+        if (idx < 0) idx = 0; if (idx > 8) idx = 8;
+        bins[idx] += 1.0;
+    }
+    RPlot p = RPlot::barplot(bins, labels, "SHA-256 avalanche: output bits changed per input-bit flip", {109, 40, 217});
+    p.abline_v(4.0, {220, 38, 38}, 1.5);  // the ideal-128 column
+    p.save_svg("build/org/sha256_avalanche.svg");
+    std::cout << "wrote build/org/sha256_avalanche.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/sha256_analysis.cpp <<'CPP'
+<<sha256-includes>>
+
+int main() {
+<<sha256-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/sha256_analysis.cpp -o build/org/sha256_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/sha256_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== FIPS 180-4 reference digests ===
+sha256("")    = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+sha256("abc") = ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+
+=== Avalanche over 72 single-bit input flips ===
+output bits changed: mean 129.069 of 256 (ideal 128)
+wrote build/org/sha256_avalanche.svg
+#+end_example
+
+The digests match FIPS 180-4. The avalanche histogram centres on 128 changed bits of 256 --
+the two-layer schedule and the Sigma/Ch/Maj mixers give SHA-256 the sharp diffusion a
+modern hash needs, with no known shortcut to a collision.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/sha256_avalanche.svg]]
+
+* Uses and cautions
+
+SHA-256 is a *current standard* with no known practical collision or preimage attack. It
+underpins TLS certificate signatures, code signing, HMAC (see the companion report),
+Bitcoin's proof-of-work, and content addressing. Two cautions remain: like all
+Merkle-Damgard hashes it admits *length-extension*, so never authenticate with a bare
+\(H(\text{key}\,\|\,\text{message})\) -- use HMAC; and for password storage use a
+deliberately slow KDF (scrypt, Argon2), not a fast hash.
+
+* Complexity
+
+\(O(n)\) time over \(n\) bytes: one 64-round compression per 512-bit block with a 64-word
+schedule, \(O(1)\) state.

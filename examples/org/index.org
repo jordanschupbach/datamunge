@@ -729,6 +729,38 @@ We hash game positions with =datamunge='s C++ =algorithms::zobrist_hash= / =zobr
 
 We convert binary integers to decimal digits with =datamunge='s C++ =algorithms::double_dabble=, and report it as a literate program: shifting into a BCD field with an add-3 correction before each shift converts values up to the full 32-bit range using only shifts and adds -- no division -- as the compiled binary verifies.
 
+* Cryptography & Security
+
+** [[./md5_analysis.html][MD5: The Merkle-Damgard Message Digest]] ([[./md5_analysis.pdf][PDF]])
+/A literate C++ study of the RFC 1321 hash using datamunge/
+
+We hash messages with =datamunge='s C++ =algorithms::md5=, and report it as a literate program: a 64-round Merkle-Damgard compression reproduces the RFC 1321 test suite and shows the avalanche effect -- one flipped input bit changes ~64 of 128 output bits -- while the report explains why MD5 is cryptographically broken, as the compiled binary measures.
+
+** [[./sha1_analysis.html][SHA-1: Message Schedule and the 160-bit Digest]] ([[./sha1_analysis.pdf][PDF]])
+/A literate C++ study of the FIPS 180 hash using datamunge/
+
+We hash messages with =datamunge='s C++ =algorithms::sha1=, and report it as a literate program: an 80-round compression with an XOR-and-rotate message schedule reproduces the FIPS 180 vectors and centres its avalanche on ~80 of 160 changed bits, with a note on the SHAttered collision, as the compiled binary shows.
+
+** [[./sha256_analysis.html][SHA-256: The Standard Secure Hash]] ([[./sha256_analysis.pdf][PDF]])
+/A literate C++ study of the FIPS 180-4 hash using datamunge/
+
+We hash messages with =datamunge='s C++ =algorithms::sha256=, and report it as a literate program: the SHA-2 round with its Sigma/Ch/Maj mixers reproduces the FIPS 180-4 vectors and centres its avalanche on ~128 of 256 changed bits -- a current standard with no known practical attack -- as the compiled binary measures.
+
+** [[./hmac_analysis.html][HMAC: Keyed Message Authentication]] ([[./hmac_analysis.pdf][PDF]])
+/A literate C++ study of RFC 2104 over SHA-256 using datamunge/
+
+We authenticate messages with =datamunge='s C++ =algorithms::hmac_sha256=, and report it as a literate program: two nested keyed SHA-256 hashes reproduce the RFC 4231 tags, accept the genuine message while rejecting a tampered one and a wrong key, and scramble the whole tag on a one-bit key change, as the compiled binary shows.
+
+** [[./diffie_hellman_analysis.html][Diffie-Hellman: Public Key Agreement]] ([[./diffie_hellman_analysis.pdf][PDF]])
+/A literate C++ study of prime-field key exchange using datamunge/
+
+We agree on shared secrets with =datamunge='s C++ =algorithms::dh_public_key= / =dh_shared_secret=, and report it as a literate program: both parties derive g^(ab) mod p from only the public g, p, A, B, and the power-map plot shows the one-wayness that discrete-log security rests on, as the compiled binary confirms.
+
+** [[./shamir_secret_sharing_analysis.html][Shamir's Secret Sharing: Thresholds from Polynomials]] ([[./shamir_secret_sharing_analysis.pdf][PDF]])
+/A literate C++ study of (k, n) threshold sharing using datamunge/
+
+We split and reconstruct secrets with =datamunge='s C++ =algorithms::shamir_split= / =shamir_combine=, and report it as a literate program: a random degree k-1 polynomial over a prime field lets any k of n shares recover the secret via Lagrange interpolation while any k-1 reveal nothing, as the compiled binary demonstrates.
+
 * Distributed Systems
 
 ** [[./lamport_clock_analysis.html][Lamport Clocks: Logical Time in Distributed Systems]] ([[./lamport_clock_analysis.pdf][PDF]])
