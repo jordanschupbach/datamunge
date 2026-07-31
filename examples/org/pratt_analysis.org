@@ -1,0 +1,138 @@
+#+title: Pratt Parsing: Precedence from Binding Powers
+#+subtitle: A literate C++ study of top-down operator-precedence parsing, using =datamunge='s =algorithms::pratt_eval=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Recursive descent needs one function per precedence level; a grammar with ten precedence
+tiers needs ten functions. *Pratt parsing* (Vaughan Pratt, 1973) collapses them into a
+single loop driven by numeric *binding powers*, handling precedence and associativity --
+including right-associative exponentiation -- uniformly and extensibly. This report
+implements a Pratt evaluator in =datamunge='s =algorithms::pratt_eval= as a literate
+program: we show it gets =2 ^ 3 ^ 2 = 512= (right-associative) rather than 64, and visualise
+how binding powers order the operators.
+#+end_abstract
+
+* Binding powers and the min-bp loop
+
+Give each infix operator a *binding power*: \(+,-\) bind at 10, \(\ast,/\) at 20, and \(\wedge\)
+at 30. The core routine parses an atom, then loops, consuming an operator only while its
+binding power exceeds the caller's minimum:
+\[
+  \text{parse}(\text{min\_bp}):\ \text{lhs}\gets\text{atom};\quad
+  \textbf{while } \text{bp}(\text{op}) > \text{min\_bp}:\ \text{lhs}\gets
+  \text{op}\big(\text{lhs},\ \text{parse}(\text{rbp}(\text{op}))\big).
+\]
+The recursive call passes the operator's *right* binding power as the new minimum. For a
+left-associative operator, \(\text{rbp}=\text{bp}\), so a following operator of equal
+precedence does *not* exceed the minimum and binds to the left. For right-associative
+\(\wedge\), we set \(\text{rbp}=\text{bp}-1\), so an equal-precedence \(\wedge\) *does* exceed
+it and re-associates to the right -- making =2 ^ 3 ^ 2= parse as \(2^{(3^2)}\). This single
+mechanism captures every precedence and associativity rule.
+
+#+name: pratt-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pratt_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+parse_expr(min_bp):
+    lhs = atom()                       # number, (expr), or prefix -atom
+    loop:
+        op = peek()
+        if lbp(op) <= min_bp: break
+        consume op
+        rhs = parse_expr(rbp(op))       # rbp = lbp for left-assoc; lbp-1 for right-assoc ^
+        lhs = apply(op, lhs, rhs)
+    return lhs
+# binding powers: + - :10   * / :20   ^ :30
+#+end_example
+
+* A worked example
+
+We evaluate expressions that hinge on precedence and associativity, contrasting the
+right-associative power result (512) with the left-associative reading (64), then plot the
+binding powers that produce this ordering.
+
+#+name: pratt-run
+#+begin_src c++ :eval no
+    std::vector<std::string> exprs = {"1 + 2 * 3", "2 * 3 + 4", "(1 + 2) * 3",
+                                      "2 ^ 3 + 1", "2 + 3 ^ 2", "2 ^ 3 ^ 2"};
+    std::cout << "=== Pratt evaluation ===\n";
+    for (const auto& e : exprs)
+        std::cout << "  " << e << "  =  " << pratt_eval(e) << "\n";
+    std::cout << "\nnote: 2 ^ 3 ^ 2 = 2^(3^2) = 2^9 = 512 (right-assoc), not (2^3)^2 = 64\n";
+
+    // Plot the binding powers.
+    std::vector<double> bp = {10, 10, 20, 20, 30};
+    std::vector<std::string> ops = {"+","-","*","/","^"};
+    RPlot p = RPlot::barplot(bp, ops, "Pratt binding powers (higher binds tighter)", {109, 40, 217});
+    p.save_svg("build/org/pratt_binding_powers.svg");
+    std::cout << "wrote build/org/pratt_binding_powers.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pratt_analysis.cpp <<'CPP'
+<<pratt-includes>>
+
+int main() {
+<<pratt-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pratt_analysis.cpp -o build/org/pratt_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pratt_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Pratt evaluation ===
+  1 + 2 * 3  =  7
+  2 * 3 + 4  =  10
+  (1 + 2) * 3  =  9
+  2 ^ 3 + 1  =  9
+  2 + 3 ^ 2  =  11
+  2 ^ 3 ^ 2  =  512
+
+note: 2 ^ 3 ^ 2 = 2^(3^2) = 2^9 = 512 (right-assoc), not (2^3)^2 = 64
+wrote build/org/pratt_binding_powers.svg
+#+end_example
+
+Precedence and associativity both fall out of the binding powers: =2 ^ 3 + 1= is
+\(2^3+1=9\) (power binds tighter than \(+\)), and =2 ^ 3 ^ 2= is \(2^{9}=512\), the
+right-associative reading, because \(\wedge\) passes a lower right binding power to its
+recursive call. The bar chart shows the three tiers that drive this -- one number per
+operator is all Pratt parsing needs.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pratt_binding_powers.svg]]
+
+* Uses and cautions
+
+Pratt parsing is the go-to for *expression languages* with rich operator sets -- it is the
+parser in many production interpreters and formatters -- because adding an operator means
+adding one table entry, not restructuring functions. It handles prefix, infix, and postfix
+operators uniformly. For full programming-language grammars (statements, declarations) it is
+usually paired with recursive descent for the non-expression parts; for arbitrary or
+ambiguous CFGs, use Earley or an LR parser (companion reports).
+
+* Complexity
+
+\(O(n)\) time over \(n\) tokens: each token is consumed once, and the recursion depth tracks
+the operator nesting.

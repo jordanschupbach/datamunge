@@ -1,0 +1,169 @@
+#+title: The Earley Parser: Any Context-Free Grammar
+#+subtitle: A literate C++ study of chart parsing, using =datamunge='s =algorithms::earley_recognize=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+Top-down parsers (recursive descent, LL) reject left recursion; bottom-up parsers (LR)
+reject ambiguity. *Earley's algorithm* (1970) accepts *every* context-free grammar --
+ambiguous, left-recursive, anything -- with no preprocessing, running in \(O(n^3)\) worst
+case and often far less. It works by filling a *chart* of partially-matched rules. This
+report implements it in =datamunge='s =algorithms::earley_recognize= as a literate program:
+we recognise the non-regular language \(a^n b^n\), parse a left-recursive expression grammar
+that would loop an LL parser forever, and plot the chart's growth.
+#+end_abstract
+
+* Predict, scan, complete
+
+Earley keeps one *state set* \(S_k\) per input position. Each *item* is a dotted production
+with an *origin* -- \(A\to\alpha\bullet\beta,\ (j)\) means "parsing an \(A\) that began at
+\(j\); matched \(\alpha\); expecting \(\beta\)." Starting from the start symbol in \(S_0\),
+three operations fill the chart:
+- *predict*: a dot before nonterminal \(B\) adds \(B\to\bullet\gamma,\ (k)\) to \(S_k\) --
+  we might start a \(B\) here;
+- *scan*: a dot before terminal \(a\) that matches input token \(k\) copies the item, dot
+  advanced, into \(S_{k+1}\);
+- *complete*: a finished item \(B\to\gamma\bullet,\ (j)\) advances every item in \(S_j\)
+  whose dot waited on \(B\).
+The string is accepted iff \(S_n\) holds a completed start item spanning \([0,n]\). Because
+prediction adds *all* alternatives and completion revisits earlier sets, Earley needs no
+grammar transformation -- left recursion and ambiguity are handled directly.
+
+#+name: earley-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/earley_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Earley(grammar, tokens[0..n-1]):
+    S[0] = { start -> . rhs , origin 0  for each start production }
+    for k in 0..n:
+        for each item in S[k]:            # index loop: process items added during the pass
+            if item is  A -> a . B b  and B nonterminal:   # PREDICT
+                add  B -> . gamma , origin k   to S[k]
+            elif item is  A -> a . t b  and t == tokens[k]: # SCAN
+                add  A -> a t . b , same origin   to S[k+1]
+            elif item is  A -> a . (complete):              # COMPLETE
+                for each  X -> u . A v , origin j  in S[item.origin]:
+                    add  X -> u A . v , origin j   to S[k]
+    accept iff S[n] has  start -> rhs . , origin 0
+#+end_example
+
+* A worked example
+
+We recognise \(a^n b^n\) (a language no regular expression or finite automaton can match),
+then a left-recursive arithmetic grammar, and finally plot the number of chart items at each
+position for a length-8 string.
+
+#+name: earley-run
+#+begin_src c++ :eval no
+    // S -> a S b | a b   (a^n b^n, n >= 1)
+    ContextFreeGrammar anbn;
+    anbn.start = "S";
+    anbn.productions = {{"S", {"a","S","b"}}, {"S", {"a","b"}}};
+
+    std::cout << "=== a^n b^n recognition ===\n";
+    for (auto toks : std::vector<std::vector<std::string>>{
+             {"a","b"}, {"a","a","b","b"}, {"a","a","a","b","b","b"},
+             {"a","a","b"}, {"a","b","b"}, {"b","a"}}) {
+        std::cout << "  ";
+        for (auto& t : toks) std::cout << t;
+        std::cout << " -> " << (earley_recognize(anbn, toks) ? "accept" : "reject") << "\n";
+    }
+
+    // Left-recursive expression grammar: E -> E + T | T ; T -> T * F | F ; F -> ( E ) | id
+    ContextFreeGrammar expr;
+    expr.start = "E";
+    expr.productions = {{"E",{"E","+","T"}},{"E",{"T"}},{"T",{"T","*","F"}},
+                        {"T",{"F"}},{"F",{"(","E",")"}},{"F",{"id"}}};
+    std::cout << "\n=== Left-recursive expression grammar (LL would loop forever) ===\n";
+    std::vector<std::string> e1 = {"id","+","id","*","id"};
+    std::vector<std::string> e2 = {"(","id","+","id",")","*","id"};
+    std::cout << "  id + id * id       -> " << (earley_recognize(expr, e1) ? "accept" : "reject") << "\n";
+    std::cout << "  (id + id) * id     -> " << (earley_recognize(expr, e2) ? "accept" : "reject") << "\n";
+    std::cout << "  id +               -> " << (earley_recognize(expr, {"id","+"}) ? "accept" : "reject") << "\n";
+
+    // Chart growth for aaaabbbb.
+    std::vector<std::string> big = {"a","a","a","a","b","b","b","b"};
+    auto sizes = earley_chart_sizes(anbn, big);
+    std::cout << "\n=== Chart items per position for aaaabbbb ===\n  ";
+    for (int s : sizes) std::cout << s << " ";
+    std::cout << "\n";
+    std::vector<double> ys; std::vector<std::string> labels;
+    for (std::size_t i = 0; i < sizes.size(); ++i) { ys.push_back(sizes[i]); labels.push_back(std::to_string(i)); }
+    RPlot p = RPlot::barplot(ys, labels, "Earley chart size per input position (aaaabbbb)", {16, 122, 87});
+    p.save_svg("build/org/earley_chart.svg");
+    std::cout << "wrote build/org/earley_chart.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/earley_analysis.cpp <<'CPP'
+<<earley-includes>>
+
+int main() {
+<<earley-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/earley_analysis.cpp -o build/org/earley_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/earley_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== a^n b^n recognition ===
+  ab -> accept
+  aabb -> accept
+  aaabbb -> accept
+  aab -> reject
+  abb -> reject
+  ba -> reject
+
+=== Left-recursive expression grammar (LL would loop forever) ===
+  id + id * id       -> accept
+  (id + id) * id     -> accept
+  id +               -> reject
+
+=== Chart items per position for aaaabbbb ===
+  2 4 4 4 4 2 2 2 1
+wrote build/org/earley_chart.svg
+#+end_example
+
+Earley recognises \(a^n b^n\) exactly -- accepting balanced strings, rejecting the rest --
+and parses the *left-recursive* expression grammar directly, something a top-down LL parser
+cannot do without rewriting the grammar. The chart-size plot shows the bounded number of
+items per position that gives Earley its polynomial cost.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/earley_chart.svg]]
+
+* Uses and cautions
+
+Earley is the parser of choice when the grammar is *general* -- natural-language grammars
+(it underlies many computational-linguistics tools), grammar workbenches, and any setting
+where writing an LL/LR-friendly grammar is impractical. It also enumerates *all* parses of
+an ambiguous sentence. The trade-offs: \(O(n^3)\) worst case is slower than the linear
+LL/LR parsers, and the classic formulation needs care with \(\varepsilon\)-productions
+(nullable predictions), which this implementation avoids by using \(\varepsilon\)-free
+grammars.
+
+* Complexity
+
+\(O(n^3)\) time worst case, \(O(n^2)\) for unambiguous grammars, \(O(n)\) for many practical
+ones; \(O(n^2)\) space for the chart.

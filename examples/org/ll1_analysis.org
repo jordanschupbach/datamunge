@@ -1,0 +1,173 @@
+#+title: LL(1) Parsing: FIRST, FOLLOW, and a Predictive Table
+#+subtitle: A literate C++ study of table-driven top-down parsing, using =datamunge='s =algorithms::LL1Parser=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+An *LL(1)* parser reads input *L*eft-to-right, builds a *L*eftmost derivation, and uses *1*
+token of lookahead to pick each production -- with *no backtracking*. The decision comes from
+a parse table computed from two classic sets, *FIRST* and *FOLLOW*. This report implements
+the full pipeline in =datamunge='s =algorithms::LL1Parser= as a literate program: we build
+FIRST/FOLLOW and the table for an arithmetic grammar, recognise expressions with a stack,
+verify the grammar is LL(1), and confirm a left-recursive grammar is *not*.
+#+end_abstract
+
+* FIRST, FOLLOW, and the table
+
+\(\mathrm{FIRST}(\alpha)\) is the set of terminals that can begin a string derived from
+\(\alpha\) (plus \(\varepsilon\) if \(\alpha\) can derive the empty string).
+\(\mathrm{FOLLOW}(A)\) is the set of terminals that can appear immediately after the
+nonterminal \(A\). Both are least fixed points computed by iterating to convergence. The
+predictive table is then
+\[
+  M[A][a] = (A\to\alpha)\quad\text{for every } a\in\mathrm{FIRST}(\alpha),\ \text{and, if }
+  \varepsilon\in\mathrm{FIRST}(\alpha),\ \text{for every } a\in\mathrm{FOLLOW}(A).
+\]
+A grammar is *LL(1)* exactly when this rule never tries to put two productions in one cell.
+Parsing runs a stack seeded with the start symbol: if the top is a terminal, match it against
+the input; if it is a nonterminal \(A\), pop it and push \(M[A][a]\)'s right-hand side
+(reversed). The stack is the pending part of the leftmost derivation. Because LL(1) is
+top-down, it *cannot* handle left recursion (which we confirm below), so the arithmetic
+grammar is written right-recursively with \(\varepsilon\)-productions.
+
+#+name: ll1-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/ll1_parser.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+FIRST/FOLLOW: iterate to a fixed point over all productions.
+build table M[A][a]:
+    for each production A -> alpha:
+        for a in FIRST(alpha) \ {eps}: M[A][a] = (A -> alpha)
+        if eps in FIRST(alpha): for b in FOLLOW(A): M[A][b] = (A -> alpha)
+    conflict if any cell assigned twice  =>  grammar is not LL(1)
+
+parse(tokens):
+    stack = [ $, start ];  push $ to input
+    while stack not empty:
+        X = top
+        if X terminal: match X with lookahead, pop, advance
+        else: replace X on stack with reverse(M[X][lookahead].rhs)
+    accept iff input exhausted
+#+end_example
+
+* A worked example
+
+We build the parser for the LL(1) arithmetic grammar (=E -> T E'=, =E' -> + T E' | eps=, ...),
+inspect a FIRST and a FOLLOW set, recognise expressions, and plot the FIRST/FOLLOW set sizes
+per nonterminal.
+
+#+name: ll1-run
+#+begin_src c++ :eval no
+    ContextFreeGrammar g;
+    g.start = "E";
+    g.productions = {
+        {"E",{"T","E'"}}, {"E'",{"+","T","E'"}}, {"E'",{}},
+        {"T",{"F","T'"}}, {"T'",{"*","F","T'"}}, {"T'",{}},
+        {"F",{"(","E",")"}}, {"F",{"id"}}};
+    LL1Parser parser(g);
+
+    std::cout << "=== Grammar is LL(1)? " << (parser.is_ll1() ? "yes" : "no") << " ===\n";
+    std::cout << "FIRST(E)  = { "; for (auto& s : parser.first("E"))  std::cout << (s.empty()?"eps":s) << " "; std::cout << "}\n";
+    std::cout << "FOLLOW(E) = { "; for (auto& s : parser.follow("E")) std::cout << s << " "; std::cout << "}\n";
+
+    std::cout << "\n=== Recognition ===\n";
+    for (auto toks : std::vector<std::vector<std::string>>{
+             {"id","+","id","*","id"}, {"(","id","+","id",")","*","id"}, {"id"},
+             {"id","+"}, {"id","id"}}) {
+        std::cout << "  ";
+        for (auto& t : toks) std::cout << t << " ";
+        std::cout << "-> " << (parser.recognize(toks) ? "accept" : "reject") << "\n";
+    }
+
+    // A left-recursive grammar is not LL(1).
+    ContextFreeGrammar lr;
+    lr.start = "E";
+    lr.productions = {{"E",{"E","+","T"}},{"E",{"T"}},{"T",{"T","*","F"}},
+                      {"T",{"F"}},{"F",{"(","E",")"}},{"F",{"id"}}};
+    LL1Parser lrp(lr);
+    std::cout << "\nleft-recursive grammar is LL(1)? " << (lrp.is_ll1() ? "yes" : "no") << "\n";
+
+    // Plot FIRST/FOLLOW set sizes per nonterminal.
+    std::vector<std::string> nts = {"E","E'","T","T'","F"};
+    std::vector<double> firsts, follows;
+    for (auto& nt : nts) { firsts.push_back(parser.first(nt).size()); follows.push_back(parser.follow(nt).size()); }
+    RPlot p = RPlot::create();
+    p.bars({0,2,4,6,8}, firsts, "FIRST size", {37,99,235}, 0.8);
+    p.bars({0.9,2.9,4.9,6.9,8.9}, follows, "FOLLOW size", {220,38,38}, 0.8);
+    p.legend({"FIRST","FOLLOW"}, {{37,99,235},{220,38,38}});
+    p.save_svg("build/org/ll1_firstfollow.svg");
+    std::cout << "\nwrote build/org/ll1_firstfollow.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/ll1_analysis.cpp <<'CPP'
+<<ll1-includes>>
+
+int main() {
+<<ll1-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/ll1_analysis.cpp -o build/org/ll1_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/ll1_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Grammar is LL(1)? yes ===
+FIRST(E)  = { ( id }
+FOLLOW(E) = { $ ) }
+
+=== Recognition ===
+  id + id * id -> accept
+  ( id + id ) * id -> accept
+  id -> accept
+  id + -> reject
+  id id -> reject
+
+left-recursive grammar is LL(1)? no
+
+wrote build/org/ll1_firstfollow.svg
+#+end_example
+
+The arithmetic grammar is LL(1): FIRST and FOLLOW converge, the table has no conflicts, and
+the stack-driven parser accepts well-formed expressions while rejecting truncated or doubled
+input. The left-recursive grammar reports *not LL(1)* -- its \(E\to E+T\) rule puts two
+productions in the same cell -- which is exactly why top-down parsing needs the
+right-recursive form. The bar chart shows how small the FIRST/FOLLOW sets stay for this
+grammar.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/ll1_firstfollow.svg]]
+
+* Uses and cautions
+
+LL(1) parsing is fast (linear), uses little memory, and produces a leftmost derivation
+directly, which is why it underlies many hand-tuned and generated parsers (ANTLR generalises
+it to LL(*)). Its constraints are real: the grammar must be left-factored and free of left
+recursion, and one token of lookahead limits the languages it covers. When those constraints
+bite, move to LR/SLR parsing (bottom-up, accepts left recursion; companion report) or a
+general Earley parser.
+
+* Complexity
+
+Table construction is polynomial in the grammar size; parsing is \(O(n)\) over \(n\) tokens
+with \(O(1)\) lookahead and a stack bounded by the derivation depth.
