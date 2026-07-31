@@ -761,6 +761,36 @@ We agree on shared secrets with =datamunge='s C++ =algorithms::dh_public_key= / 
 
 We split and reconstruct secrets with =datamunge='s C++ =algorithms::shamir_split= / =shamir_combine=, and report it as a literate program: a random degree k-1 polynomial over a prime field lets any k of n shares recover the secret via Lagrange interpolation while any k-1 reveal nothing, as the compiled binary demonstrates.
 
+** [[./chacha20_analysis.html][ChaCha20: A Modern ARX Stream Cipher]] ([[./chacha20_analysis.pdf][PDF]])
+/A literate C++ study of the RFC 8439 stream cipher using datamunge/
+
+We encrypt with =datamunge='s C++ =algorithms::chacha20_block= / =chacha20_encrypt=, and report it as a literate program: a table-free ARX quarter-round over columns and diagonals reproduces the RFC 8439 keystream and encryption vectors and yields byte-uniform keystream, as the compiled binary measures.
+
+** [[./salsa20_analysis.html][Salsa20: The ARX Core Behind ChaCha]] ([[./salsa20_analysis.pdf][PDF]])
+/A literate C++ study of Bernstein's stream cipher using datamunge/
+
+We run =datamunge='s C++ =algorithms::salsa20_core= / =salsa20_encrypt=, and report it as a literate program: alternating column and row rounds reproduce Bernstein's documented core vector, round-trip encryption, and a byte-uniform keystream, as the compiled binary shows.
+
+** [[./tea_analysis.html][TEA: A Block Cipher in a Dozen Lines]] ([[./tea_analysis.pdf][PDF]])
+/A literate C++ study of the Tiny Encryption Algorithm using datamunge/
+
+We encrypt 64-bit blocks with =datamunge='s C++ =algorithms::tea_encrypt= / =tea_decrypt=, and report it as a literate program: a 64-round Feistel network of shift/add/XOR round-trips exactly and centres its avalanche on ~32 of 64 changed bits, with a note on TEA's equivalent-key weakness, as the compiled binary measures.
+
+** [[./rc4_analysis.html][RC4: A Stream Cipher from a Shuffled Permutation]] ([[./rc4_analysis.pdf][PDF]])
+/A literate C++ study of Rivest's cipher using datamunge/
+
+We generate keystream with =datamunge='s C++ =algorithms::rc4_encrypt= / =rc4_keystream=, and report it as a literate program: a shuffled 256-byte permutation reproduces the classic keystream vectors and exposes the second-byte-zero bias (~2/256) that helped break WEP, as the compiled binary measures.
+
+** [[./pbkdf2_analysis.html][PBKDF2: Stretching Passwords into Keys]] ([[./pbkdf2_analysis.pdf][PDF]])
+/A literate C++ study of the RFC 2898 KDF over HMAC-SHA-256 using datamunge/
+
+We derive keys with =datamunge='s C++ =algorithms::pbkdf2_hmac_sha256=, and report it as a literate program: iterated salted HMAC reproduces the standard PBKDF2-HMAC-SHA256 vectors, makes each salt yield an unrelated key, and dials attacker cost linearly with the iteration count, as the compiled binary shows.
+
+** [[./siphash_analysis.html][SipHash: Keyed Hashing Against Hash Flooding]] ([[./siphash_analysis.pdf][PDF]])
+/A literate C++ study of SipHash-2-4 using datamunge/
+
+We keyed-hash with =datamunge='s C++ =algorithms::siphash24=, and report it as a literate program: an ARX keyed PRF reproduces the SipHash paper vectors and keeps hash-table bucket loads even under a secret key, so an attacker cannot force collisions, as the compiled binary demonstrates.
+
 * Distributed Systems
 
 ** [[./lamport_clock_analysis.html][Lamport Clocks: Logical Time in Distributed Systems]] ([[./lamport_clock_analysis.pdf][PDF]])

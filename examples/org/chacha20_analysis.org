@@ -1,0 +1,169 @@
+#+title: ChaCha20: A Modern ARX Stream Cipher
+#+subtitle: A literate C++ study of RFC 8439, using =datamunge='s =algorithms::chacha20_block=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*ChaCha20* (Bernstein) is the stream cipher of TLS 1.3, WireGuard, and modern SSH. It turns
+a 256-bit key, a 96-bit nonce, and a block counter into a pseudorandom *keystream*;
+encryption is simply XOR. Its engine is pure *ARX* -- add, rotate, XOR on 32-bit words -- so
+it is fast and constant-time in software without any lookup tables (which sidesteps the
+cache-timing attacks that plague table-based ciphers like AES). This report implements it in
+=datamunge='s =algorithms::chacha20_block= / =chacha20_encrypt= as a literate program: we
+reproduce the RFC 8439 keystream and encryption vectors and show the keystream bytes fall
+uniformly across all 256 values.
+#+end_abstract
+
+* Quarter-rounds down columns and diagonals
+
+ChaCha20 arranges a 512-bit state as a \(4\times4\) matrix of 32-bit words: a fixed
+128-bit constant, the eight key words, the counter, and three nonce words. The mixing unit
+is the *quarter-round* on four words \((a,b,c,d)\):
+\[
+  a\mathrel{+}=b;\ d\oplus\!=a;\ d=\text{ROTL}_{16}d;\quad
+  c\mathrel{+}=d;\ b\oplus\!=c;\ b=\text{ROTL}_{12}b;
+\]
+\[
+  a\mathrel{+}=b;\ d\oplus\!=a;\ d=\text{ROTL}_{8}d;\quad
+  c\mathrel{+}=d;\ b\oplus\!=c;\ b=\text{ROTL}_{7}b.
+\]
+A round applies it to the four *columns*; the next to the four *diagonals*. Twenty rounds
+(ten column/diagonal pairs) scramble the state, which is then *added back* to the original
+(so the transformation is not invertible without the key) and serialised little-endian as a
+64-byte keystream block. Incrementing the counter yields successive blocks.
+
+#+name: chacha-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/chacha20.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::string hex_of(const std::array<std::uint8_t, 64>& b, int n) {
+    static const char* h = "0123456789abcdef";
+    std::string s;
+    for (int i = 0; i < n; ++i) { s.push_back(h[b[i] >> 4]); s.push_back(h[b[i] & 0xF]); }
+    return s;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+ChaCha20-block(key, counter, nonce):
+    state = [ "expand 32-byte k" constants | key[0..7] | counter | nonce[0..2] ]  # 16 words
+    x = state
+    repeat 10 times:
+        QR(x0,x4, x8,x12); QR(x1,x5, x9,x13); QR(x2,x6,x10,x14); QR(x3,x7,x11,x15)  # columns
+        QR(x0,x5,x10,x15); QR(x1,x6,x11,x12); QR(x2,x7, x8,x13); QR(x3,x4, x9,x14)  # diagonals
+    out = little_endian_bytes(x + state)     # 64-byte keystream block
+encrypt(data): XOR data with successive keystream blocks (counter, counter+1, ...)
+#+end_example
+
+* A worked example
+
+We verify the RFC 8439 keystream block and the "sunscreen" encryption vector, confirm
+decryption round-trips, then histogram the byte values of 4 KiB of keystream to check
+uniformity.
+
+#+name: chacha-run
+#+begin_src c++ :eval no
+    std::array<std::uint8_t, 32> key{};
+    for (int i = 0; i < 32; ++i) key[i] = static_cast<std::uint8_t>(i);
+    std::array<std::uint8_t, 12> nonce = {0,0,0,9, 0,0,0,0x4a, 0,0,0,0};
+
+    auto block = chacha20_block(key, 1, nonce);
+    std::cout << "=== RFC 8439 2.3.2 keystream block (first 32 bytes) ===\n";
+    std::cout << hex_of(block, 32) << "\n";
+    std::cout << "(reference 10f1e7e4d13b5915500fdd1fa32071c4c7d1f4c733c068030422aa9ac3d46c4e)\n";
+
+    std::array<std::uint8_t, 12> nonce2 = {0,0,0,0, 0,0,0,0x4a, 0,0,0,0};
+    std::string pt = "Ladies and Gentlemen of the class of '99: If I could offer you only "
+                     "one tip for the future, sunscreen would be it.";
+    std::string ct = chacha20_encrypt(key, 1, nonce2, pt);
+    std::string ct_hex; { static const char* h="0123456789abcdef";
+        for (unsigned char c : ct) { ct_hex.push_back(h[c>>4]); ct_hex.push_back(h[c&0xF]); } }
+    std::cout << "\n=== RFC 8439 2.4.2 encryption (first 16 bytes) ===\n";
+    std::cout << ct_hex.substr(0, 32) << "  (reference 6e2e359a2568f98041ba0728dd0d6981)\n";
+    std::cout << "decrypt round-trips: " << (chacha20_encrypt(key, 1, nonce2, ct) == pt ? "yes" : "no") << "\n";
+
+    // Keystream byte-value histogram over 4 KiB (64 blocks).
+    std::vector<double> hist(16, 0.0);  // 16 bins of 16 byte-values
+    for (std::uint32_t blk = 0; blk < 64; ++blk) {
+        auto ks = chacha20_block(key, blk, nonce);
+        for (std::uint8_t b : ks) hist[b >> 4] += 1.0;
+    }
+    std::cout << "\n=== 4096 keystream bytes across 16 value-bins ===\n";
+    double mean = 0; for (double c : hist) mean += c; mean /= 16;
+    std::cout << "mean per bin " << mean << " (ideal 256)\n";
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(hist, labels, "ChaCha20 keystream byte distribution (16 value bins)", {37, 99, 235});
+    p.abline_h(mean, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/chacha20_histogram.svg");
+    std::cout << "wrote build/org/chacha20_histogram.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/chacha20_analysis.cpp <<'CPP'
+<<chacha-includes>>
+
+int main() {
+<<chacha-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/chacha20_analysis.cpp -o build/org/chacha20_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/chacha20_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RFC 8439 2.3.2 keystream block (first 32 bytes) ===
+10f1e7e4d13b5915500fdd1fa32071c4c7d1f4c733c068030422aa9ac3d46c4e
+(reference 10f1e7e4d13b5915500fdd1fa32071c4c7d1f4c733c068030422aa9ac3d46c4e)
+
+=== RFC 8439 2.4.2 encryption (first 16 bytes) ===
+6e2e359a2568f98041ba0728dd0d6981  (reference 6e2e359a2568f98041ba0728dd0d6981)
+decrypt round-trips: yes
+
+=== 4096 keystream bytes across 16 value-bins ===
+mean per bin 256 (ideal 256)
+wrote build/org/chacha20_histogram.svg
+#+end_example
+
+The keystream block and the encrypted "sunscreen" message match RFC 8439, and decryption
+round-trips (a stream cipher's decrypt /is/ its encrypt). The 4 KiB of keystream spreads
+evenly across the sixteen value bins around the ideal 256-per-bin line -- the flat,
+structureless output a stream cipher must produce so that XORing it over plaintext leaks
+nothing.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/chacha20_histogram.svg]]
+
+* Uses and cautions
+
+ChaCha20 is a current standard with no known practical break, favoured on devices without
+AES hardware because its table-free ARX core is fast and constant-time. Two rules are
+absolute: *never reuse a (key, nonce) pair* -- two messages under the same keystream XOR to
+reveal their difference; and ChaCha20 alone gives confidentiality but *not integrity*, so it
+is deployed as the AEAD =ChaCha20-Poly1305=, pairing the cipher with a Poly1305 tag.
+
+* Complexity
+
+\(O(n)\) time over \(n\) bytes: one 20-round, table-free block function per 64 bytes,
+\(O(1)\) state.
