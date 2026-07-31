@@ -1,0 +1,154 @@
+#+title: Newell's Method: A Robust Polygon Normal
+#+subtitle: A literate C++ study of the area-weighted normal, using =datamunge='s =algorithms::newell_normal=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A triangle's normal is one cross product, but a polygon with more vertices may be slightly
+*non-planar*, and picking two edges to cross gives an unreliable, vertex-order-dependent
+answer -- especially at near-collinear corners. *Newell's method* computes a robust,
+area-weighted normal by summing a contribution from every edge. This report implements it in
+=datamunge='s =algorithms::newell_normal= as a literate program: we recover the exact normal
+of a planar square, match a tilted triangle's cross-product normal, and read the polygon area
+straight out of the same computation.
+#+end_abstract
+
+* Summing projected areas
+
+Newell's normal accumulates, over the polygon's edges taken cyclically,
+\[
+  n_x = \sum_i (y_i - y_{i+1})(z_i + z_{i+1}),\quad
+  n_y = \sum_i (z_i - z_{i+1})(x_i + x_{i+1}),\quad
+  n_z = \sum_i (x_i - x_{i+1})(y_i + y_{i+1}).
+\]
+Each component is twice the *signed area* of the polygon projected onto a coordinate plane
+(it is the shoelace formula in disguise), so the vector \((n_x,n_y,n_z)\) is the polygon's
+projected-area vector. Its direction is the average surface normal -- stable even when the
+vertices are not exactly coplanar or when some corners are nearly collinear (those edges just
+contribute little) -- and its length is *twice the polygon's area*. So one loop yields both
+the plane orientation and the area. This is the standard way to find a face's supporting
+plane in mesh processing, back-face culling, and the depth sort of the painter's algorithm.
+
+#+name: nn-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/newell_normal.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+newell_normal(polygon):
+    n = (0,0,0)
+    for i in 0..m-1:
+        cur = polygon[i];  nxt = polygon[(i+1) mod m]
+        n.x += (cur.y - nxt.y) * (cur.z + nxt.z)
+        n.y += (cur.z - nxt.z) * (cur.x + nxt.x)
+        n.z += (cur.x - nxt.x) * (cur.y + nxt.y)
+    area = 0.5 * length(n)
+    return normalize(n), area
+#+end_example
+
+* A worked example
+
+We compute the normal of a planar square in the \(z=0\) plane (expect \((0,0,1)\) and area
+4), a tilted triangle (compare to its cross product), and a slightly *non-planar* quad to
+show Newell averages gracefully where a single cross product would not.
+
+#+name: nn-run
+#+begin_src c++ :eval no
+    std::cout << std::fixed << std::setprecision(4);
+
+    std::vector<Point3D> square = {{0,0,0},{2,0,0},{2,2,0},{0,2,0}};
+    auto ns = newell_normal(square);
+    std::cout << "=== Planar square in z=0 plane ===\n";
+    std::cout << "normal = (" << ns[0] << ", " << ns[1] << ", " << ns[2] << ")  (expect 0,0,1)\n";
+    std::cout << "area   = " << newell_polygon_area(square) << "  (expect 4)\n";
+
+    std::vector<Point3D> tri = {{0,0,0},{1,0,1},{0,1,1}};
+    auto nt = newell_normal(tri);
+    double inv = 1.0/std::sqrt(3.0);
+    std::cout << "\n=== Tilted triangle ===\n";
+    std::cout << "Newell normal = (" << nt[0] << ", " << nt[1] << ", " << nt[2] << ")\n";
+    std::cout << "cross product = (" << -inv << ", " << -inv << ", " << inv << ")\n";
+
+    std::vector<Point3D> quad = {{0,0,0},{2,0,0.1},{2,2,0},{0,2,-0.1}};  // slightly warped
+    auto nq = newell_normal(quad);
+    std::cout << "\n=== Slightly non-planar quad (Newell averages the tilt) ===\n";
+    std::cout << "normal = (" << nq[0] << ", " << nq[1] << ", " << nq[2] << ")\n";
+    std::cout << "area   = " << newell_polygon_area(quad) << "\n";
+
+    // Plot the square (xy projection) and its normal direction as an arrow.
+    RPlot p = RPlot::create();
+    p.polygon({0,2,2,0}, {0,0,2,2}, {191, 219, 254}, 1.0);
+    p.segments({1}, {1}, {1.0 + ns[0]}, {1.0 + ns[1]}, {220, 38, 38}, 2.5);  // normal (projects to a point for z-normal)
+    p.text(1.0, 1.0, "n=(0,0,1)  (out of page)", {17,24,39}, 13.0);
+    p.save_svg("build/org/newell_square.svg");
+    std::cout << "\nwrote build/org/newell_square.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/newell_normal_analysis.cpp <<'CPP'
+<<nn-includes>>
+
+int main() {
+<<nn-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/newell_normal_analysis.cpp -o build/org/newell_normal_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/newell_normal_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Planar square in z=0 plane ===
+normal = (0.0000, 0.0000, 1.0000)  (expect 0,0,1)
+area   = 4.0000  (expect 4)
+
+=== Tilted triangle ===
+Newell normal = (-0.5774, -0.5774, 0.5774)
+cross product = (-0.5774, -0.5774, 0.5774)
+
+=== Slightly non-planar quad (Newell averages the tilt) ===
+normal = (-0.0499, 0.0499, 0.9975)
+area   = 4.0100
+
+wrote build/org/newell_square.svg
+#+end_example
+
+The planar square gives the exact normal \((0,0,1)\) and area 4, and the tilted triangle's
+Newell normal matches its cross product to full precision. The warped quad -- whose corners
+do not share a plane -- still yields a sensible averaged normal and area, where naively
+crossing two of its edges would depend on which pair you chose. One loop over the edges
+delivers both the orientation and the area.
+
+#+attr_latex: :width 0.6\linewidth
+[[file:../../build/org/newell_square.svg]]
+
+* Uses and cautions
+
+Newell's method is the go-to for a polygon's supporting plane: face normals in mesh
+processing, back-face culling, lighting, and the depth ordering of the painter's algorithm.
+Notes: the normal's sign follows the vertex winding (reverse the order to flip it); a
+degenerate (zero-area or collinear) polygon yields a zero vector, which callers should guard;
+and for a genuinely curved surface a single face normal is only an average -- per-vertex
+normals give smoother shading.
+
+* Complexity
+
+\(O(m)\) time for an \(m\)-vertex polygon -- one pass over the edges -- and \(O(1)\) memory.

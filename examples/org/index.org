@@ -823,6 +823,38 @@ We parse Parsing Expression Grammars with =datamunge='s C++ =algorithms::Packrat
 
 We build an LR(0) automaton and SLR table with =datamunge='s C++ =algorithms::SLRParser=, and report it as a literate program: bottom-up shift-reduce parsing handles the left-recursive grammar LL cannot, and the parse-stack depth trace shows reductions rebuilding the tree from the leaves, as the compiled binary shows.
 
+* Computer Graphics & Rendering
+
+** [[./marching_squares_analysis.html][Marching Squares: Contours from a Scalar Field]] ([[./marching_squares_analysis.pdf][PDF]])
+/A literate C++ study of iso-contour extraction using datamunge/
+
+We extract iso-contours with =datamunge='s C++ =algorithms::marching_squares=, and report it as a literate program: a 16-case per-cell classification with edge interpolation traces the level set of a radial field as a circle whose segment midpoints sit within 0.03 of the iso-radius, as the compiled binary measures.
+
+** [[./summed_area_table_analysis.html][The Summed-Area Table: O(1) Rectangle Sums]] ([[./summed_area_table_analysis.pdf][PDF]])
+/A literate C++ study of the integral image using datamunge/
+
+We precompute prefix sums with =datamunge='s C++ =algorithms::SummedAreaTable=, and report it as a literate program: one pass builds a table answering any rectangle sum in four lookups, matching brute force exactly and making box filters O(1) per pixel regardless of window size, as the compiled binary shows.
+
+** [[./slerp_analysis.html][Slerp: Constant-Velocity Rotation Interpolation]] ([[./slerp_analysis.pdf][PDF]])
+/A literate C++ study of quaternion Slerp using datamunge/
+
+We interpolate rotations with =datamunge='s C++ =algorithms::slerp=, and report it as a literate program: the great-circle formula keeps every quaternion unit-length and sweeps equal angles in equal time, giving a straight angle-vs-t line, as the compiled binary measures.
+
+** [[./painters_algorithm_analysis.html][The Painter's Algorithm: Depth-Sorted Overdraw]] ([[./painters_algorithm_analysis.pdf][PDF]])
+/A literate C++ study of hidden-surface removal using datamunge/
+
+We render with =datamunge='s C++ =algorithms::painter_order= / =painter_render=, and report it as a literate program: sorting objects back-to-front and overdrawing makes nearer rectangles occlude farther ones with no per-pixel depth test, as the compiled raster shows.
+
+** [[./scanline_fill_analysis.html][Scanline Polygon Fill: The Even-Odd Rule]] ([[./scanline_fill_analysis.pdf][PDF]])
+/A literate C++ study of span-based rasterization using datamunge/
+
+We fill polygons with =datamunge='s C++ =algorithms::scanline_fill=, and report it as a literate program: sorted edge crossings filled in pairs (even-odd rule) rasterize a square to exactly 100 pixels and handle concave shapes, as the compiled binary measures.
+
+** [[./newell_normal_analysis.html][Newell's Method: A Robust Polygon Normal]] ([[./newell_normal_analysis.pdf][PDF]])
+/A literate C++ study of the area-weighted normal using datamunge/
+
+We compute polygon normals with =datamunge='s C++ =algorithms::newell_normal=, and report it as a literate program: summing projected edge areas gives the exact normal and area of a planar square, matches a tilted triangle's cross product, and averages gracefully over a non-planar quad, as the compiled binary shows.
+
 * Distributed Systems
 
 ** [[./lamport_clock_analysis.html][Lamport Clocks: Logical Time in Distributed Systems]] ([[./lamport_clock_analysis.pdf][PDF]])
