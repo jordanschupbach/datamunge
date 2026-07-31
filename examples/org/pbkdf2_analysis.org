@@ -1,0 +1,153 @@
+#+title: PBKDF2: Stretching Passwords into Keys
+#+subtitle: A literate C++ study of RFC 2898 over HMAC-SHA-256, using =datamunge='s =algorithms::pbkdf2_hmac_sha256=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A password is a poor cryptographic key: short and guessable. *PBKDF2* (Password-Based Key
+Derivation Function 2; RFC 2898) turns one into a strong key by iterating a pseudorandom
+function thousands of times, so every guess an attacker makes costs those thousands of
+hashes too. This report implements it in =datamunge='s =algorithms::pbkdf2_hmac_sha256= as a
+literate program: we reproduce the standard PBKDF2-HMAC-SHA256 vectors, show that a *salt*
+makes each derivation unique, and visualise how the *iteration count* dials in attacker cost.
+#+end_abstract
+
+* Iterated HMAC, salted and stretched
+
+PBKDF2 derives output block \(i\) by chaining a pseudorandom function \(\mathrm{PRF}\) (here
+HMAC-SHA-256) \(c\) times and XORing the results:
+\[
+  T_i = U_1 \oplus U_2 \oplus \dots \oplus U_c,\qquad
+  U_1 = \mathrm{PRF}(P,\ S \,\|\, \mathrm{INT32BE}(i)),\quad U_j = \mathrm{PRF}(P, U_{j-1}).
+\]
+The blocks \(T_1, T_2, \dots\) are concatenated and truncated to the requested key length.
+Two parameters do the work. The *salt* \(S\) -- a unique per-user random value -- means two
+users with the same password get different keys, so an attacker cannot precompute a single
+table (a "rainbow table") that cracks everyone at once. The *iteration count* \(c\) sets the
+cost: raising it makes both the legitimate one-time derivation and every attacker guess
+proportionally slower, a knob tuned upward as hardware improves.
+
+#+name: pbkdf2-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/pbkdf2.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+PBKDF2(P, S, c, dkLen):                 # PRF = HMAC-SHA-256, hLen = 32
+    blocks = ceil(dkLen / hLen)
+    for i in 1..blocks:
+        U = PRF(P, S || INT32BE(i))     # U_1
+        T = U
+        for j in 2..c:
+            U = PRF(P, U)               # U_j chains on the previous
+            T = T XOR U
+        output block i = T
+    return first dkLen bytes of concatenated blocks
+#+end_example
+
+* A worked example
+
+We reproduce three standard vectors, show that changing only the salt yields a completely
+different key, then plot the number of HMAC evaluations against the iteration count -- the
+straight line that /is/ the attacker's cost multiplier.
+
+#+name: pbkdf2-run
+#+begin_src c++ :eval no
+    std::cout << "=== Standard PBKDF2-HMAC-SHA256 vectors (\"password\",\"salt\") ===\n";
+    std::cout << "c=1     : " << pbkdf2_hmac_sha256_hex("password", "salt", 1, 32) << "\n";
+    std::cout << "c=2     : " << pbkdf2_hmac_sha256_hex("password", "salt", 2, 32) << "\n";
+    std::cout << "c=4096  : " << pbkdf2_hmac_sha256_hex("password", "salt", 4096, 32) << "\n";
+
+    std::cout << "\n=== Same password, different salt -> unrelated keys ===\n";
+    std::cout << "salt=\"salt1\": " << pbkdf2_hmac_sha256_hex("password", "salt1", 1000, 16) << "\n";
+    std::cout << "salt=\"salt2\": " << pbkdf2_hmac_sha256_hex("password", "salt2", 1000, 16) << "\n";
+
+    // Cost curve: HMAC evaluations = c per 32-byte block. Plot vs iteration count.
+    std::vector<double> iters = {1000, 2000, 4000, 8000, 16000, 32000};
+    std::vector<double> hmac_calls;
+    for (double c : iters) hmac_calls.push_back(c);  // one 32-byte block -> exactly c HMACs
+    std::cout << "\n=== Work factor (HMAC-SHA256 evaluations per derivation) ===\n";
+    for (std::size_t i = 0; i < iters.size(); ++i)
+        std::cout << "  c=" << (int)iters[i] << " -> " << (int)hmac_calls[i] << " HMAC calls\n";
+
+    RPlot p = RPlot::create();
+    p.line(iters, hmac_calls, "HMAC evaluations", {37, 99, 235}, 2.0);
+    p.points(iters, hmac_calls, "", {220, 38, 38}, 5.0);
+    p.save_svg("build/org/pbkdf2_cost.svg");
+    std::cout << "\nwrote build/org/pbkdf2_cost.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/pbkdf2_analysis.cpp <<'CPP'
+<<pbkdf2-includes>>
+
+int main() {
+<<pbkdf2-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/pbkdf2_analysis.cpp -o build/org/pbkdf2_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/pbkdf2_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Standard PBKDF2-HMAC-SHA256 vectors ("password","salt") ===
+c=1     : 120fb6cffcf8b32c43e7225256c4f837a86548c92ccc35480805987cb70be17b
+c=2     : ae4d0c95af6b46d32d0adff928f06dd02a303f8ef3c251dfd6e2d85a95474c43
+c=4096  : c5e478d59288c841aa530db6845c4c8d962893a001ce4e11a4963873aa98134a
+
+=== Same password, different salt -> unrelated keys ===
+salt="salt1": 43a5fbdf861506858816102f630c3ba7
+salt="salt2": e388b7cf7ab7dceb5e7a02dd8b8b5b58
+
+=== Work factor (HMAC-SHA256 evaluations per derivation) ===
+  c=1000 -> 1000 HMAC calls
+  c=2000 -> 2000 HMAC calls
+  c=4000 -> 4000 HMAC calls
+  c=8000 -> 8000 HMAC calls
+  c=16000 -> 16000 HMAC calls
+  c=32000 -> 32000 HMAC calls
+
+wrote build/org/pbkdf2_cost.svg
+#+end_example
+
+The derived keys match the standard vectors. Changing only the salt from =salt1= to =salt2=
+gives an entirely unrelated key, so a precomputed table for one salt is useless for another.
+The cost curve is a straight line through the origin: doubling the iteration count doubles
+the HMAC evaluations -- and therefore doubles the time to test every candidate password,
+which is precisely the tunable defence PBKDF2 provides.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/pbkdf2_cost.svg]]
+
+* Uses and cautions
+
+PBKDF2 is a sound, widely-standardised KDF (WPA2, LUKS disk encryption, many password
+vaults) and is FIPS-approved. Its limitation is that it is only *CPU-hard*: it uses little
+memory, so attackers parallelise it cheaply on GPUs and ASICs. *Memory-hard* functions --
+scrypt and especially *Argon2* (the Password Hashing Competition winner) -- force large
+memory use per guess and are preferred for new password-hashing designs. Always use a unique
+random salt per password and choose \(c\) as high as your latency budget allows.
+
+* Complexity
+
+\(O(c \cdot \lceil dkLen/hLen\rceil)\) PRF evaluations: linear in the iteration count and the
+number of output blocks.

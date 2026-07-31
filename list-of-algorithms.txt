@@ -770,25 +770,25 @@ Further information: Cryptography, Topics in cryptography, and List of cryptogra
     Key derivation functions, often used for password hashing and key stretching
         Argon2
         bcrypt
-        PBKDF2
+        [x] PBKDF2  -- datamunge::algorithms::pbkdf2_hmac_sha256 (RFC 2898, iterated HMAC-SHA256 KDF); report examples/org/pbkdf2_analysis.org
         scrypt
     Message authentication codes (symmetric authentication algorithms, which take a key as a parameter):
         [x] HMAC: keyed-hash message authentication  -- datamunge::algorithms::hmac_sha256 / hmac_sha256_hex (RFC 2104 over SHA-256); report examples/org/hmac_analysis.org
         Poly1305
-        SipHash
+        [x] SipHash  -- datamunge::algorithms::siphash24 (SipHash-2-4 keyed PRF, anti-hash-flooding); report examples/org/siphash_analysis.org
     Secret sharing, secret splitting, key splitting, M of N algorithms
         Blakey's scheme
         [x] Shamir's secret sharing  -- datamunge::algorithms::shamir_split / shamir_combine ((k,n) threshold over a prime field); report examples/org/shamir_secret_sharing_analysis.org
     Symmetric (secret key) encryption:
         Advanced Encryption Standard (AES), winner of NIST competition, also known as Rijndael
         Blowfish
-        ChaCha20 updated variant of Salsa20
+        [x] ChaCha20 updated variant of Salsa20  -- datamunge::algorithms::chacha20_block / chacha20_encrypt (RFC 8439 ARX stream cipher); report examples/org/chacha20_analysis.org
         Data Encryption Standard (DES), sometimes DE Algorithm, winner of NBS selection competition, replaced by AES for most purposes
         IDEA
-        RC4 (cipher)
-        Salsa20
+        [x] RC4 (cipher)  -- datamunge::algorithms::rc4_encrypt / rc4_keystream (KSA+PRGA permutation stream cipher); report examples/org/rc4_analysis.org
+        [x] Salsa20  -- datamunge::algorithms::salsa20_core / salsa20_encrypt (Bernstein ARX stream cipher); report examples/org/salsa20_analysis.org
         Threefish
-        Tiny Encryption Algorithm (TEA)
+        [x] Tiny Encryption Algorithm (TEA)  -- datamunge::algorithms::tea_encrypt / tea_decrypt (64-round Feistel block cipher); report examples/org/tea_analysis.org
         Twofish
     Post-quantum cryptography
     Proof-of-work algorithms

@@ -1,0 +1,153 @@
+#+title: Salsa20: The ARX Core Behind ChaCha
+#+subtitle: A literate C++ study of Bernstein's stream cipher, using =datamunge='s =algorithms::salsa20_core=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*Salsa20* (Bernstein) is the eSTREAM-portfolio stream cipher that ChaCha20 later refined. It
+shares ChaCha's shape -- a \(4\times4\) matrix of 32-bit words, seeded from a 256-bit key,
+stirred by 20 ARX rounds and fed forward -- but uses different rotation constants and
+alternates *column* rounds with *row* rounds. This report implements it in =datamunge='s
+=algorithms::salsa20_core= / =salsa20_block= as a literate program: we reproduce Bernstein's
+documented core test vector, verify encryption round-trips, and show the keystream is
+byte-uniform.
+#+end_abstract
+
+* Column rounds and row rounds
+
+Salsa20's quarter-round mixes four words with the rotation amounts \(7,9,13,18\):
+\[
+  b\oplus\!=\text{ROTL}_{7}(a+d),\quad c\oplus\!=\text{ROTL}_{9}(b+a),\quad
+  d\oplus\!=\text{ROTL}_{13}(c+b),\quad a\oplus\!=\text{ROTL}_{18}(d+c).
+\]
+A *column round* applies it to the four columns of the matrix; a *row round* to the four
+rows. Ten double-rounds (20 rounds total) later, the stirred matrix is added back to the
+original state and serialised little-endian. ChaCha's later redesign -- updating each word
+twice per round along diagonals rather than rows -- gives faster diffusion, but Salsa20's
+core is the historically important, heavily-cryptanalysed original. The *core* function (20
+rounds + feed-forward on a raw 64-byte block) is the exact unit Bernstein's specification
+pins with a test vector, which we reproduce.
+
+#+name: salsa-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/salsa20.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Salsa20-block(key, counter, nonce):
+    state = [ "expand 32-byte k" constants | key | nonce | counter ]   # 16 words, fixed layout
+    x = state
+    repeat 10 times:
+        column_round(x):  QR(0,4,8,12) QR(5,9,13,1) QR(10,14,2,6) QR(15,3,7,11)
+        row_round(x):     QR(0,1,2,3)  QR(5,6,7,4)  QR(10,11,8,9) QR(15,12,13,14)
+    out = little_endian_bytes(x + state)      # 64-byte keystream block
+    where QR(a,b,c,d): b^=rotl(a+d,7); c^=rotl(b+a,9); d^=rotl(c+b,13); a^=rotl(d+c,18)
+encrypt(data): XOR data with successive keystream blocks
+#+end_example
+
+* A worked example
+
+We reproduce Bernstein's documented Salsa20-core vector, encrypt a multi-block message and
+decrypt it back, and histogram the keystream bytes.
+
+#+name: salsa-run
+#+begin_src c++ :eval no
+    // Bernstein's Salsa20 core documented example.
+    std::array<std::uint8_t, 64> in = {
+        211,159,13,115,76,55,82,183,3,117,222,37,191,187,234,136,
+        49,237,179,48,1,106,178,219,175,199,166,48,86,16,179,207,
+        31,240,32,63,15,83,93,161,116,147,48,113,238,55,204,36,
+        79,201,235,79,3,81,156,47,203,26,244,243,88,118,104,54};
+    auto out = salsa20_core(in);
+    std::cout << "=== Salsa20 core (documented vector) first 8 output bytes ===\n";
+    for (int i = 0; i < 8; ++i) std::cout << (int)out[i] << " ";
+    std::cout << "\n(reference 109 42 178 168 156 240 248 238)\n";
+
+    std::array<std::uint8_t, 32> key{};
+    for (int i = 0; i < 32; ++i) key[i] = static_cast<std::uint8_t>(i * 7 + 1);
+    std::array<std::uint8_t, 8> nonce = {1,2,3,4,5,6,7,8};
+    std::string pt = "Salsa20 stream cipher round-trip over multiple 64-byte blocks!!";
+    std::string ct = salsa20_encrypt(key, 0, nonce, pt);
+    std::cout << "\n=== Encryption ===\n";
+    std::cout << "ciphertext != plaintext: " << (ct != pt ? "yes" : "no") << "\n";
+    std::cout << "decrypt round-trips    : " << (salsa20_encrypt(key, 0, nonce, ct) == pt ? "yes" : "no") << "\n";
+
+    std::vector<double> hist(16, 0.0);
+    for (std::uint64_t blk = 0; blk < 64; ++blk) {
+        auto ks = salsa20_block(key, blk, nonce);
+        for (std::uint8_t b : ks) hist[b >> 4] += 1.0;
+    }
+    double mean = 0; for (double c : hist) mean += c; mean /= 16;
+    std::cout << "\n=== 4096 keystream bytes across 16 value-bins, mean " << mean << " (ideal 256) ===\n";
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(hist, labels, "Salsa20 keystream byte distribution (16 value bins)", {16, 122, 87});
+    p.abline_h(mean, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/salsa20_histogram.svg");
+    std::cout << "wrote build/org/salsa20_histogram.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/salsa20_analysis.cpp <<'CPP'
+<<salsa-includes>>
+
+int main() {
+<<salsa-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/salsa20_analysis.cpp -o build/org/salsa20_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/salsa20_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Salsa20 core (documented vector) first 8 output bytes ===
+109 42 178 168 156 240 248 238
+(reference 109 42 178 168 156 240 248 238)
+
+=== Encryption ===
+ciphertext != plaintext: yes
+decrypt round-trips    : yes
+
+=== 4096 keystream bytes across 16 value-bins, mean 256 (ideal 256) ===
+wrote build/org/salsa20_histogram.svg
+#+end_example
+
+The core output matches Bernstein's published vector, encryption round-trips, and the
+keystream bytes spread evenly across the value bins around the ideal 256-per-bin line. The
+column/row alternation diffuses key and counter into an output indistinguishable from
+random -- the property the XOR encryption relies on.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/salsa20_histogram.svg]]
+
+* Uses and cautions
+
+Salsa20 (and its reduced-round Salsa20/12, Salsa20/8) sees use where its lineage is trusted,
+but new designs generally prefer ChaCha20 for its faster per-round diffusion, and pair it
+with a MAC (Poly1305) for integrity. The stream-cipher rules apply unchanged: *never reuse a
+(key, nonce)*, and authenticate separately -- confidentiality is not integrity.
+
+* Complexity
+
+\(O(n)\) time over \(n\) bytes: one 20-round, table-free block function per 64 bytes,
+\(O(1)\) state.

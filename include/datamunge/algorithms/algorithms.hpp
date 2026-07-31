@@ -38,6 +38,7 @@
 #include <datamunge/algorithms/clock_synchronization.hpp>
 #include <datamunge/algorithms/check_digits.hpp>
 #include <datamunge/algorithms/checksums.hpp>
+#include <datamunge/algorithms/chacha20.hpp>
 #include <datamunge/algorithms/cheney.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
@@ -161,11 +162,14 @@
 #include <datamunge/algorithms/optics.hpp>
 #include <datamunge/algorithms/ode.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
+#include <datamunge/algorithms/rc4.hpp>
 #include <datamunge/algorithms/reference_counting.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
+#include <datamunge/algorithms/salsa20.hpp>
 #include <datamunge/algorithms/sha1.hpp>
 #include <datamunge/algorithms/sha256.hpp>
 #include <datamunge/algorithms/shamir_secret_sharing.hpp>
+#include <datamunge/algorithms/siphash.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/shannon_fano_elias.hpp>
 #include <datamunge/algorithms/sobel.hpp>
@@ -174,6 +178,7 @@
 #include <datamunge/algorithms/pde_solvers.hpp>
 #include <datamunge/algorithms/pcnn.hpp>
 #include <datamunge/algorithms/pearson_hashing.hpp>
+#include <datamunge/algorithms/pbkdf2.hpp>
 #include <datamunge/algorithms/package_merge.hpp>
 #include <datamunge/algorithms/petrick.hpp>
 #include <datamunge/algorithms/phase_estimation.hpp>
@@ -231,6 +236,7 @@
 #include <datamunge/algorithms/substrings.hpp>
 #include <datamunge/algorithms/tabular_rl.hpp>
 #include <datamunge/algorithms/tarjan_lca.hpp>
+#include <datamunge/algorithms/tea.hpp>
 #include <datamunge/algorithms/ternary_search.hpp>
 #include <datamunge/algorithms/todd_coxeter.hpp>
 #include <datamunge/algorithms/truncated_binary_exponential_backoff.hpp>

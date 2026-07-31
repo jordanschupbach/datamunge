@@ -1,0 +1,163 @@
+#+title: RC4: A Stream Cipher from a Shuffled Permutation
+#+subtitle: A literate C++ study of Rivest's cipher, using =datamunge='s =algorithms::rc4_encrypt=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*RC4* (Rivest, 1987) generates a keystream by continuously shuffling a 256-byte permutation
+and reading entries out of it. For two decades its speed and one-page implementation made it
+ubiquitous -- WEP, WPA-TKIP, SSL/TLS, BitTorrent. This report implements it in =datamunge='s
+=algorithms::rc4_encrypt= / =rc4_keystream= as a literate program: we reproduce the classic
+published keystream vectors and expose the statistical bias in the early bytes that
+ultimately doomed it.
+#+end_abstract
+
+* Shuffle, then read
+
+RC4 has two phases over a permutation \(S\) of the bytes \(0..255\). The *key-scheduling
+algorithm* (KSA) starts from the identity and shuffles it under the key:
+\[
+  j \leftarrow j + S[i] + \text{key}[i \bmod \ell] \pmod{256},\quad \text{swap}(S[i],S[j]),
+\]
+for \(i=0..255\). The *pseudo-random generation algorithm* (PRGA) then walks \(S\) forever,
+swapping as it goes and emitting one keystream byte per step:
+\[
+  i \leftarrow i+1,\quad j \leftarrow j + S[i],\quad \text{swap}(S[i],S[j]),\quad
+  K \leftarrow S[\,S[i]+S[j]\,],
+\]
+all mod 256. Encryption XORs \(K\) with the plaintext. The design is elegant and fast, but
+the KSA imperfectly randomises \(S\): the first output bytes carry detectable biases -- the
+second byte is twice as likely to be zero, and the Fluhrer-Mantin-Shamir attack recovers
+key bytes from many related-IV keystreams, which is exactly how WEP fell.
+
+#+name: rc4-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/rc4.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static std::string hex_of(const std::string& s) {
+    static const char* h = "0123456789abcdef";
+    std::string o;
+    for (unsigned char c : s) { o.push_back(h[c>>4]); o.push_back(h[c&0xF]); }
+    return o;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+KSA(key):                              # key scheduling
+    for i in 0..255: S[i] = i
+    j = 0
+    for i in 0..255:
+        j = (j + S[i] + key[i mod keylen]) mod 256
+        swap(S[i], S[j])
+
+PRGA():                                # keystream generation, one byte per call
+    i = (i + 1) mod 256
+    j = (j + S[i]) mod 256
+    swap(S[i], S[j])
+    return S[(S[i] + S[j]) mod 256]
+
+encrypt(data): XOR each byte with the next PRGA output
+#+end_example
+
+* A worked example
+
+We reproduce three classic RC4 vectors, then expose the second-byte bias: over many random
+keys, how often is keystream byte 2 equal to zero? A truly uniform cipher gives \(1/256\);
+RC4 gives about twice that.
+
+#+name: rc4-run
+#+begin_src c++ :eval no
+    std::cout << "=== Classic RC4 vectors ===\n";
+    std::cout << "rc4(\"Key\", \"Plaintext\")     = " << hex_of(rc4_encrypt("Key", "Plaintext"))
+              << "  (reference bbf316e8d940af0ad3)\n";
+    std::cout << "rc4(\"Wiki\", \"pedia\")        = " << hex_of(rc4_encrypt("Wiki", "pedia"))
+              << "  (reference 1021bf0420)\n";
+    std::cout << "rc4(\"Secret\", \"Attack...\")  = " << hex_of(rc4_encrypt("Secret", "Attack at dawn"))
+              << "\n";
+
+    // Second-byte bias: fraction of keys for which keystream[1] == 0.
+    const int N = 20000;
+    int zero_second = 0;
+    std::vector<double> byte2_hist(16, 0.0);
+    for (int k = 0; k < N; ++k) {
+        std::string key = "k" + std::to_string(k * 2654435761u % 1000000);
+        auto ks = rc4_keystream(key, 2);
+        if (ks[1] == 0) ++zero_second;
+        byte2_hist[ks[1] >> 4] += 1.0;
+    }
+    std::cout << "\n=== Second-byte-zero bias over " << N << " random keys ===\n";
+    std::cout << "P(keystream byte 2 == 0) = " << (double)zero_second / N
+              << "  (uniform " << 1.0/256 << ", RC4 ~" << 2.0/256 << ")\n";
+
+    double mean = 0; for (double c : byte2_hist) mean += c; mean /= 16;
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(byte2_hist, labels, "RC4 second keystream byte: value-bin counts (bin 0 is inflated)", {190, 24, 93});
+    p.abline_h(mean, {37, 99, 235}, 1.5);
+    p.save_svg("build/org/rc4_bias.svg");
+    std::cout << "wrote build/org/rc4_bias.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/rc4_analysis.cpp <<'CPP'
+<<rc4-includes>>
+
+int main() {
+<<rc4-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/rc4_analysis.cpp -o build/org/rc4_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rc4_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Classic RC4 vectors ===
+rc4("Key", "Plaintext")     = bbf316e8d940af0ad3  (reference bbf316e8d940af0ad3)
+rc4("Wiki", "pedia")        = 1021bf0420  (reference 1021bf0420)
+rc4("Secret", "Attack...")  = 45a01f645fc35b383552544b9bf5
+
+=== Second-byte-zero bias over 20000 random keys ===
+P(keystream byte 2 == 0) = 0.0062  (uniform 0.00390625, RC4 ~0.0078125)
+wrote build/org/rc4_bias.svg
+#+end_example
+
+The three keystreams match the published vectors. The bias measurement shows the famous
+flaw: keystream byte 2 is zero roughly twice as often as the \(1/256\) a uniform cipher
+would give, and the lowest value bin (holding the zero byte) rides visibly above the mean
+line. That structure -- invisible per message but decisive over many -- is what statistical
+attacks accumulate to break RC4.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/rc4_bias.svg]]
+
+* Uses and cautions
+
+RC4 is *deprecated and prohibited* in TLS (RFC 7465) and must not be used in new systems.
+Beyond the byte-2 bias shown here, broader keystream biases enable plaintext recovery of
+frequently-sent secrets (cookies), and WEP's related-key exposure is textbook. It remains
+worth studying as a beautifully simple design whose subtle statistical leaks are a lesson in
+why "looks random" is not "is secure." Use ChaCha20 or AES-GCM instead.
+
+* Complexity
+
+KSA is \(O(256)\); PRGA is \(O(1)\) per keystream byte; encryption is \(O(n)\) over \(n\)
+bytes with \(O(1)\) state (the 256-byte permutation).

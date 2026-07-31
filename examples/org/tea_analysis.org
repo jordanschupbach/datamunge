@@ -1,0 +1,163 @@
+#+title: TEA: A Block Cipher in a Dozen Lines
+#+subtitle: A literate C++ study of the Tiny Encryption Algorithm, using =datamunge='s =algorithms::tea_encrypt=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+The *Tiny Encryption Algorithm* (Wheeler & Needham, 1994) is a 64-bit block cipher with a
+128-bit key famous for its size: a *Feistel network* of 64 rounds using only addition, XOR,
+and shifts -- no S-boxes, no key schedule tables, a dozen lines of code. This report
+implements it in =datamunge='s =algorithms::tea_encrypt= / =tea_decrypt= as a literate
+program. We verify exact round-trip decryption and measure TEA's *avalanche*: flipping one
+plaintext bit changes about half the ciphertext bits.
+#+end_abstract
+
+* A Feistel network with a golden-ratio constant
+
+TEA splits its 64-bit block into two 32-bit halves \((v_0, v_1)\) and mixes them for 32
+double-rounds. A running accumulator \(\text{sum}\) grows by the constant
+\(\delta = \lfloor 2^{32}/\phi\rfloor = \texttt{0x9E3779B9}\) (from the golden ratio) each
+double-round, so no two rounds use the same key material:
+\[
+  v_0 \mathrel{+}= ((v_1\!\ll\!4)+k_0)\oplus(v_1+\text{sum})\oplus((v_1\!\gg\!5)+k_1),
+\]
+\[
+  v_1 \mathrel{+}= ((v_0\!\ll\!4)+k_2)\oplus(v_0+\text{sum})\oplus((v_0\!\gg\!5)+k_3).
+\]
+The shift-add-XOR combination provides diffusion (the shifts move bits between positions)
+and nonlinearity (addition carries interact with XOR). Decryption runs the identical
+structure with \(\text{sum}\) starting at \(32\delta\) and counting *down*, undoing each
+half-update in reverse -- the hallmark of a Feistel design: the same round function both
+encrypts and decrypts.
+
+#+name: tea-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/tea.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static int popcount64(std::uint64_t x) { int d = 0; while (x) { d += x & 1; x >>= 1; } return d; }
+static std::uint64_t join(std::array<std::uint32_t, 2> v) {
+    return (static_cast<std::uint64_t>(v[0]) << 32) | v[1];
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+TEA-encrypt(v0, v1, key k[0..3]):
+    sum = 0; delta = 0x9E3779B9
+    repeat 32 times:
+        sum += delta
+        v0 += ((v1<<4)+k0) ^ (v1+sum) ^ ((v1>>5)+k1)
+        v1 += ((v0<<4)+k2) ^ (v0+sum) ^ ((v0>>5)+k3)
+    return (v0, v1)
+
+TEA-decrypt(v0, v1, key):        # inverse: sum counts down from 32*delta
+    sum = 0xC6EF3720
+    repeat 32 times:
+        v1 -= ((v0<<4)+k2) ^ (v0+sum) ^ ((v0>>5)+k3)
+        v0 -= ((v1<<4)+k0) ^ (v1+sum) ^ ((v1>>5)+k1)
+        sum -= delta
+    return (v0, v1)
+#+end_example
+
+* A worked example
+
+We encrypt a block, confirm decryption recovers it exactly, then measure avalanche: flip
+each of the 64 plaintext bits and count how many of the 64 ciphertext bits change (ideal
+32).
+
+#+name: tea-run
+#+begin_src c++ :eval no
+    std::array<std::uint32_t, 4> key = {0x01234567u, 0x89abcdefu, 0xfedcba98u, 0x76543210u};
+    std::array<std::uint32_t, 2> pt = {0xdeadbeefu, 0x01234567u};
+    auto ct = tea_encrypt(pt, key);
+    auto back = tea_decrypt(ct, key);
+    std::cout << std::hex << "=== Encrypt / decrypt ===\n";
+    std::cout << "plaintext  = " << pt[0] << " " << pt[1] << "\n";
+    std::cout << "ciphertext = " << ct[0] << " " << ct[1] << "\n";
+    std::cout << "decrypted  = " << back[0] << " " << back[1] << "\n" << std::dec;
+    std::cout << "round-trips exactly: " << ((back == pt) ? "yes" : "no") << "\n";
+
+    // Avalanche: flip each plaintext bit, count ciphertext bit changes.
+    std::uint64_t base_ct = join(ct);
+    std::vector<double> changes;
+    for (int bit = 0; bit < 64; ++bit) {
+        std::array<std::uint32_t, 2> p = pt;
+        if (bit < 32) p[0] ^= (1u << bit); else p[1] ^= (1u << (bit - 32));
+        changes.push_back(popcount64(base_ct ^ join(tea_encrypt(p, key))));
+    }
+    double mean = 0; for (double c : changes) mean += c; mean /= changes.size();
+    std::cout << "\n=== Avalanche over 64 plaintext-bit flips ===\n";
+    std::cout << "ciphertext bits changed: mean " << mean << " of 64 (ideal 32)\n";
+
+    std::vector<double> bins(9, 0.0);
+    std::vector<std::string> labels = {"16","20","24","28","32","36","40","44","48"};
+    for (double c : changes) { int idx = (int)((c - 14) / 4); if (idx<0) idx=0; if (idx>8) idx=8; bins[idx]+=1.0; }
+    RPlot p = RPlot::barplot(bins, labels, "TEA avalanche: ciphertext bits changed per plaintext-bit flip", {217, 70, 20});
+    p.abline_v(4.0, {37, 99, 235}, 1.5);
+    p.save_svg("build/org/tea_avalanche.svg");
+    std::cout << "wrote build/org/tea_avalanche.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/tea_analysis.cpp <<'CPP'
+<<tea-includes>>
+
+int main() {
+<<tea-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/tea_analysis.cpp -o build/org/tea_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/tea_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Encrypt / decrypt ===
+plaintext  = deadbeef 1234567
+ciphertext = f3e25016 2162a7f5
+decrypted  = deadbeef 1234567
+round-trips exactly: yes
+
+=== Avalanche over 64 plaintext-bit flips ===
+ciphertext bits changed: mean 32.2812 of 64 (ideal 32)
+wrote build/org/tea_avalanche.svg
+#+end_example
+
+Decryption recovers the plaintext exactly, confirming the Feistel inverse, and the
+avalanche histogram centres near 32 changed ciphertext bits -- one flipped input bit
+cascades through the 64 rounds to scramble roughly half the block, the diffusion a block
+cipher needs.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/tea_avalanche.svg]]
+
+* Uses and cautions
+
+TEA's virtue is pedagogical: it shows a working block cipher small enough to memorise. It is
+*not for production* -- it has equivalent keys (each key has three others giving identical
+encryption, halving effective key space by two bits) and is weak under related-key attacks,
+which broke its use in the original Xbox. Its successors *XTEA* and *XXTEA* patch the key
+schedule; for real work use AES or ChaCha20. Note too that encrypting each block
+independently (ECB mode) leaks equal plaintext blocks -- a real deployment needs a chaining
+or counter mode.
+
+* Complexity
+
+\(O(1)\) per 64-bit block: 32 double-rounds of shift/add/XOR, no tables, \(O(1)\) state.

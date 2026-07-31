@@ -1,0 +1,161 @@
+#+title: SipHash: Keyed Hashing Against Hash Flooding
+#+subtitle: A literate C++ study of SipHash-2-4, using =datamunge='s =algorithms::siphash24=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A hash table is fast only while its buckets stay short. An attacker who can predict the hash
+can deliberately send keys that all land in one bucket, degrading the table to a linked list
+and stalling the server -- a *hash-flooding* denial of service. *SipHash* (Aumasson &
+Bernstein, 2012) stops this with a secret *key*: the same input hashes differently under
+different keys, so an attacker without the key cannot force collisions. It is now the default
+table hash in Python, Rust, Ruby, and Swift. This report implements SipHash-2-4 in
+=datamunge='s =algorithms::siphash24= as a literate program: we reproduce the reference
+vectors and show keyed hashing keeps bucket loads even under adversarial-looking inputs.
+#+end_abstract
+
+* Four words, absorbed and finalised
+
+SipHash keeps four 64-bit words \((v_0,v_1,v_2,v_3)\) seeded by XORing the 128-bit key into
+fixed constants. It absorbs the message eight bytes at a time; for each block it XORs the
+block into \(v_3\), applies *two* SipRounds, then XORs the block into \(v_0\). The SipRound
+is an ARX permutation:
+\[
+  v_0\mathrel{+}=v_1,\ v_1=\text{ROTL}_{13}v_1,\ v_1\oplus\!=v_0,\ v_0=\text{ROTL}_{32}v_0,\ \dots
+\]
+A final block encodes the message length; then *four* finalisation rounds (after flipping a
+bit of \(v_2\)) mix the state, and the 64-bit output is \(v_0\oplus v_1\oplus v_2\oplus
+v_3\). The "2" compression rounds and "4" finalisation rounds name it *SipHash-2-4*. The
+small, fixed round count makes it fast on short inputs -- the regime a hash table lives in --
+while the key makes its outputs unpredictable.
+
+#+name: siphash-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/siphash.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+SipHash-2-4(key k0||k1, message m):
+    v0 = 0x736f6d6570736575 ^ k0;  v1 = 0x646f72616e646f6d ^ k1
+    v2 = 0x6c7967656e657261 ^ k0;  v3 = 0x7465646279746573 ^ k1
+    for each 8-byte little-endian block w of m:
+        v3 ^= w; SipRound; SipRound; v0 ^= w        # 2 compression rounds
+    b = (len(m) mod 256) << 56 | last_partial_block
+    v3 ^= b; SipRound; SipRound; v0 ^= b
+    v2 ^= 0xff
+    SipRound x4                                      # 4 finalization rounds
+    return v0 ^ v1 ^ v2 ^ v3
+#+end_example
+
+* A worked example
+
+We verify two reference vectors from the SipHash paper, then simulate a hash table: hash a
+list of words into 16 buckets under one key, and again under a one-bit-different key, and
+check both stay evenly loaded -- an attacker who tuned inputs for one key gains nothing under
+another.
+
+#+name: siphash-run
+#+begin_src c++ :eval no
+    std::array<std::uint8_t, 16> key{};
+    for (int i = 0; i < 16; ++i) key[i] = static_cast<std::uint8_t>(i);
+
+    std::string msg15;
+    for (int i = 0; i < 15; ++i) msg15.push_back(static_cast<char>(i));
+    std::cout << std::hex << "=== SipHash paper reference vectors (key = 00..0f) ===\n";
+    std::cout << "siphash(\"\")        = 0x" << siphash24(key, "")
+              << "  (reference 0x726fdb47dd0e0e31)\n";
+    std::cout << "siphash(00..0e)    = 0x" << siphash24(key, msg15)
+              << "  (reference 0xa129ca6149be45e5)\n" << std::dec;
+
+    const std::vector<std::string> words = {
+        "the","quick","brown","fox","jumps","over","lazy","dog","hash","table",
+        "flood","attack","bucket","chain","collision","secret","key","siphash","denial","service",
+        "alpha","beta","gamma","delta","one","two","three","four","five","six","seven","eight"};
+
+    std::array<std::uint8_t, 16> key2 = key; key2[0] ^= 1;  // one-bit-different key
+    std::vector<double> buckets1(16, 0.0), buckets2(16, 0.0);
+    for (const auto& w : words) {
+        buckets1[siphash24(key, w) & 0xF] += 1.0;
+        buckets2[siphash24(key2, w) & 0xF] += 1.0;
+    }
+    std::cout << "\n=== " << words.size() << " words into 16 buckets ===\n";
+    std::cout << "key A: "; for (double b : buckets1) std::cout << (int)b << " "; std::cout << "\n";
+    std::cout << "key B: "; for (double b : buckets2) std::cout << (int)b << " "; std::cout << "\n";
+    std::cout << "(ideal ~" << words.size() / 16.0 << " per bucket; the two keys give different layouts)\n";
+
+    std::vector<std::string> labels;
+    for (int i = 0; i < 16; ++i) labels.push_back(std::to_string(i));
+    RPlot p = RPlot::barplot(buckets1, labels, "SipHash bucket loads under a secret key (32 words, 16 buckets)", {37, 99, 235});
+    p.abline_h(words.size() / 16.0, {220, 38, 38}, 1.5);
+    p.save_svg("build/org/siphash_buckets.svg");
+    std::cout << "\nwrote build/org/siphash_buckets.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/siphash_analysis.cpp <<'CPP'
+<<siphash-includes>>
+
+int main() {
+<<siphash-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/siphash_analysis.cpp -o build/org/siphash_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/siphash_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== SipHash paper reference vectors (key = 00..0f) ===
+siphash("")        = 0x726fdb47dd0e0e31  (reference 0x726fdb47dd0e0e31)
+siphash(00..0e)    = 0xa129ca6149be45e5  (reference 0xa129ca6149be45e5)
+
+=== 32 words into 16 buckets ===
+key A: 4 5 1 2 2 0 4 2 3 1 0 0 1 2 2 3
+key B: 2 4 2 1 3 1 7 4 0 2 1 0 3 2 0 0
+(ideal ~2 per bucket; the two keys give different layouts)
+
+wrote build/org/siphash_buckets.svg
+#+end_example
+
+Both reference vectors match the SipHash paper. The word list spreads near the ideal
+two-per-bucket average, and the one-bit-different key produces an entirely different bucket
+layout -- so even an attacker who somehow tuned a collision set for key A gains nothing once
+the server runs under key B. That per-process secret key, chosen at startup, is what turns an
+ordinary hash table into a hash-flooding-resistant one.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/siphash_buckets.svg]]
+
+* Uses and cautions
+
+SipHash is the right default for *hash-table keying* in adversarial settings -- it is fast on
+short inputs and carries a security proof as a PRF -- which is why language runtimes adopted
+it after the 2011 wave of hash-flooding attacks. Two clarifications: SipHash is *not* a
+general cryptographic hash (its 64-bit output is too short for collision resistance, and it
+is not meant for digital signatures -- use SHA-256 there); and its guarantee holds only while
+the key stays secret, so seed it from a secure RNG at process start and never expose it.
+
+* Complexity
+
+\(O(n)\) time over \(n\) bytes: two SipRounds per 8-byte block plus four finalisation rounds,
+\(O(1)\) state.
