@@ -1,0 +1,165 @@
+#+title: Diffie-Hellman: Public Key Agreement
+#+subtitle: A literate C++ study of key exchange over a prime field, using =datamunge='s =algorithms::dh_public_key=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+In 1976 Diffie and Hellman showed that two people who have never met can agree on a shared
+secret while an eavesdropper hears every word. The trick is *modular exponentiation*: it is
+cheap to compute \(g^x\bmod p\) but -- for well-chosen \(p\) -- believed hard to invert
+(the /discrete logarithm/ problem). This report implements the exchange in =datamunge='s
+=algorithms::dh_public_key= / =dh_shared_secret= as a literate program. We walk through the
+classic \(p=23, g=5\) example by hand, run an exchange over a larger prime, and plot the
+map \(x\mapsto g^x\bmod p\) to see the scrambling that makes the secret safe.
+#+end_abstract
+
+* Exponentiation you can't undo
+
+Fix a prime \(p\) and a generator \(g\) of the multiplicative group \(\mathbb{Z}_p^\ast\).
+Alice draws a private \(a\) and sends \(A=g^a\bmod p\); Bob draws private \(b\) and sends
+\(B=g^b\bmod p\). Each exponentiates what they received:
+
+\[
+  B^a = (g^b)^a = g^{ab} = (g^a)^b = A^b \pmod p,
+\]
+
+so both hold the same \(s=g^{ab}\bmod p\). An eavesdropper knows \(g, p, A, B\) but to find
+\(s\) must recover \(a\) from \(A=g^a\) -- the discrete logarithm, for which no efficient
+classical algorithm is known when \(p\) is a large safe prime. Both public values are
+computed by *square-and-multiply* modular exponentiation in \(O(\log a)\) multiplications;
+=datamunge='s =mod_pow= keeps every product exact with a 128-bit intermediate.
+
+#+name: dh-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/diffie_hellman.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+Diffie-Hellman(public g, p):
+    Alice: pick secret a; send A = g^a mod p
+    Bob:   pick secret b; send B = g^b mod p
+    Alice computes s = B^a mod p
+    Bob   computes s = A^b mod p
+    # both s are equal to g^(ab) mod p
+    where g^x mod p is evaluated by square-and-multiply:
+        result = 1
+        while x > 0:
+            if x is odd: result = result * base mod p
+            base = base * base mod p
+            x = x >> 1
+#+end_example
+
+* A worked example
+
+We reproduce the textbook \(p=23,g=5\) exchange, then run one over the Mersenne prime
+\(2^{31}-1\) to show both parties still agree. Finally we tabulate \(g^x\bmod p\) for the
+small group and plot it: the points scatter with no visible trend, which is exactly the
+one-wayness the security rests on.
+
+#+name: dh-run
+#+begin_src c++ :eval no
+    std::cout << "=== Textbook exchange: p = 23, g = 5 ===\n";
+    const std::uint64_t p = 23, g = 5;
+    const std::uint64_t a = 6, b = 15;      // private secrets
+    std::uint64_t A = dh_public_key(g, a, p);
+    std::uint64_t B = dh_public_key(g, b, p);
+    std::cout << "Alice sends A = 5^6  mod 23 = " << A << "\n";
+    std::cout << "Bob   sends B = 5^15 mod 23 = " << B << "\n";
+    std::uint64_t s_alice = dh_shared_secret(B, a, p);
+    std::uint64_t s_bob   = dh_shared_secret(A, b, p);
+    std::cout << "Alice computes B^a mod p = " << s_alice << "\n";
+    std::cout << "Bob   computes A^b mod p = " << s_bob << "\n";
+    std::cout << "shared secret agrees: " << (s_alice == s_bob ? "yes" : "no")
+              << " (= " << s_alice << ")\n";
+
+    std::cout << "\n=== Larger prime: p = 2^31 - 1, g = 7 ===\n";
+    const std::uint64_t P = 2147483647ULL, G = 7;
+    const std::uint64_t a2 = 123456, b2 = 987654;
+    std::uint64_t A2 = dh_public_key(G, a2, P);
+    std::uint64_t B2 = dh_public_key(G, b2, P);
+    std::cout << "A = " << A2 << ", B = " << B2 << "\n";
+    std::cout << "Alice's secret = " << dh_shared_secret(B2, a2, P) << "\n";
+    std::cout << "Bob's   secret = " << dh_shared_secret(A2, b2, P) << "\n";
+
+    // Plot x -> g^x mod p over the small group: a scrambled permutation.
+    std::vector<double> xs, ys;
+    for (std::uint64_t x = 0; x < p; ++x) {
+        xs.push_back(static_cast<double>(x));
+        ys.push_back(static_cast<double>(dh_public_key(g, x, p)));
+    }
+    RPlot plot = RPlot::create();
+    plot.points(xs, ys, "g^x mod p", {37, 99, 235}, 4.0);
+    plot.save_svg("build/org/dh_powermap.svg");
+    std::cout << "\nwrote build/org/dh_powermap.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/diffie_hellman_analysis.cpp <<'CPP'
+<<dh-includes>>
+
+int main() {
+<<dh-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/diffie_hellman_analysis.cpp -o build/org/diffie_hellman_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/diffie_hellman_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== Textbook exchange: p = 23, g = 5 ===
+Alice sends A = 5^6  mod 23 = 8
+Bob   sends B = 5^15 mod 23 = 19
+Alice computes B^a mod p = 2
+Bob   computes A^b mod p = 2
+shared secret agrees: yes (= 2)
+
+=== Larger prime: p = 2^31 - 1, g = 7 ===
+A = 744111946, B = 1598667707
+Alice's secret = 490982923
+Bob's   secret = 490982923
+
+wrote build/org/dh_powermap.svg
+#+end_example
+
+Both parties derive the same secret in each exchange, having transmitted only \(g,p,A,B\).
+The power-map plot shows \(x\mapsto 5^x\bmod 23\) jumping around its range with no
+exploitable structure -- knowing \(A=5^a\) tells you nothing about \(a\) short of trying
+every exponent, and that gap between easy-forward and hard-inverse is the whole security
+argument.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/dh_powermap.svg]]
+
+* Uses and cautions
+
+Diffie-Hellman is the basis of forward-secret key agreement in TLS, SSH, Signal, and IPsec;
+modern deployments use the elliptic-curve variant (ECDH, e.g. X25519) for the same math on
+a curve group. Three cautions: plain DH is *unauthenticated*, so it must be combined with
+signatures or a password to stop a man-in-the-middle who swaps \(A\) and \(B\); parameters
+must be a large *safe prime* (or a vetted curve) with a proper generator; and Shor's
+algorithm breaks it on a large quantum computer, motivating post-quantum key exchange. This
+64-bit implementation is for illustration -- real use needs 2048-bit-plus fields.
+
+* Complexity
+
+Each public value and shared secret is one modular exponentiation, \(O(\log a)\) modular
+multiplications; \(O(1)\) state.

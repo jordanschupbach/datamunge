@@ -51,6 +51,7 @@
 #include <datamunge/algorithms/davis_putnam.hpp>
 #include <datamunge/algorithms/decision_tree_induction.hpp>
 #include <datamunge/algorithms/difference_map.hpp>
+#include <datamunge/algorithms/diffie_hellman.hpp>
 #include <datamunge/algorithms/dijkstra.hpp>
 #include <datamunge/algorithms/distribution_sorts.hpp>
 #include <datamunge/algorithms/division.hpp>
@@ -79,6 +80,8 @@
 #include <datamunge/algorithms/filtered_back_projection.hpp>
 #include <datamunge/algorithms/frank_wolfe.hpp>
 #include <datamunge/algorithms/fuzzy_c_means.hpp>
+#include <datamunge/algorithms/hex_encoding.hpp>
+#include <datamunge/algorithms/hmac.hpp>
 #include <datamunge/algorithms/hopfield_network.hpp>
 #include <datamunge/algorithms/histogram_equalization.hpp>
 #include <datamunge/algorithms/huffman_coding.hpp>
@@ -138,6 +141,7 @@
 #include <datamunge/algorithms/miller_rabin.hpp>
 #include <datamunge/algorithms/modular_exponentiation.hpp>
 #include <datamunge/algorithms/multiplication.hpp>
+#include <datamunge/algorithms/md5.hpp>
 #include <datamunge/algorithms/median_filter.hpp>
 #include <datamunge/algorithms/move_to_front.hpp>
 #include <datamunge/algorithms/midpoint_circle.hpp>
@@ -159,6 +163,9 @@
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/reference_counting.hpp>
 #include <datamunge/algorithms/self_organizing_map.hpp>
+#include <datamunge/algorithms/sha1.hpp>
+#include <datamunge/algorithms/sha256.hpp>
+#include <datamunge/algorithms/shamir_secret_sharing.hpp>
 #include <datamunge/algorithms/shannon_fano.hpp>
 #include <datamunge/algorithms/shannon_fano_elias.hpp>
 #include <datamunge/algorithms/sobel.hpp>

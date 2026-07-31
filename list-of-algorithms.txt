@@ -752,10 +752,10 @@ Further information: Cryptography, Topics in cryptography, and List of cryptogra
         RSA
     Cryptographic hash functions (see also the section on message authentication codes):
         BLAKE
-        MD5 – Note that there is now a method of generating collisions for MD5
+        [x] MD5 – Note that there is now a method of generating collisions for MD5  -- datamunge::algorithms::md5 / md5_hex (RFC 1321, Merkle-Damgard); report examples/org/md5_analysis.org
         RIPEMD-160
-        SHA-1 – Note that there is now a method of generating collisions for SHA-1
-        SHA-2 (SHA-224, SHA-256, SHA-384, SHA-512)
+        [x] SHA-1 – Note that there is now a method of generating collisions for SHA-1  -- datamunge::algorithms::sha1 / sha1_hex (FIPS 180, 80-round message schedule); report examples/org/sha1_analysis.org
+        [x] SHA-2 (SHA-224, SHA-256, SHA-384, SHA-512)  -- datamunge::algorithms::sha256 / sha256_hex (FIPS 180-4, SHA-2 family); report examples/org/sha256_analysis.org
         SHA-3 (SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256)
         Tiger (TTH), usually used in Tiger tree hashes
         WHIRLPOOL
@@ -765,7 +765,7 @@ Further information: Cryptography, Topics in cryptography, and List of cryptogra
         Linear-feedback shift register (note: many LFSR-based algorithms are weak or have been broken)
         Yarrow algorithm
     Key exchange
-        Diffie–Hellman key exchange
+        [x] Diffie–Hellman key exchange  -- datamunge::algorithms::dh_public_key / dh_shared_secret (prime-field key agreement); report examples/org/diffie_hellman_analysis.org
         Elliptic-curve Diffie–Hellman (ECDH)
     Key derivation functions, often used for password hashing and key stretching
         Argon2
@@ -773,12 +773,12 @@ Further information: Cryptography, Topics in cryptography, and List of cryptogra
         PBKDF2
         scrypt
     Message authentication codes (symmetric authentication algorithms, which take a key as a parameter):
-        HMAC: keyed-hash message authentication
+        [x] HMAC: keyed-hash message authentication  -- datamunge::algorithms::hmac_sha256 / hmac_sha256_hex (RFC 2104 over SHA-256); report examples/org/hmac_analysis.org
         Poly1305
         SipHash
     Secret sharing, secret splitting, key splitting, M of N algorithms
         Blakey's scheme
-        Shamir's secret sharing
+        [x] Shamir's secret sharing  -- datamunge::algorithms::shamir_split / shamir_combine ((k,n) threshold over a prime field); report examples/org/shamir_secret_sharing_analysis.org
     Symmetric (secret key) encryption:
         Advanced Encryption Standard (AES), winner of NIST competition, also known as Rijndael
         Blowfish

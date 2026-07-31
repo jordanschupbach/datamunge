@@ -1,0 +1,183 @@
+#+title: HMAC: Keyed Message Authentication
+#+subtitle: A literate C++ study of RFC 2104 over SHA-256, using =datamunge='s =algorithms::hmac_sha256=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+A hash tells you /whether data changed/; a *message authentication code* tells you whether
+it changed /and/ that it came from someone holding a shared secret. *HMAC* (Bellare,
+Canetti, Krawczyk; RFC 2104) builds a MAC from any Merkle-Damgard hash by nesting two
+keyed hashes, sidestepping the length-extension weakness that dooms the naive
+\(H(\text{key}\,\|\,\text{message})\). This report implements HMAC-SHA-256 in =datamunge='s
+=algorithms::hmac_sha256= as a literate program: we reproduce the RFC 4231 test vectors,
+demonstrate tamper detection, and show that a one-bit key change scrambles the whole tag.
+#+end_abstract
+
+* Two nested hashes
+
+HMAC pads the key \(K\) to the hash's block size \(B\) (64 bytes for SHA-256), hashing it
+down first if it is longer, to get \(K'\). It then computes
+
+\[
+  \mathrm{HMAC}(K,m) = H\big((K'\oplus\text{opad})\,\|\,H((K'\oplus\text{ipad})\,\|\,m)\big),
+\]
+
+where \(\text{ipad}=\texttt{0x36}\) repeated \(B\) times and \(\text{opad}=\texttt{0x5c}\)
+repeated \(B\) times. The *inner* hash binds the message to the key; the *outer* hash wraps
+the inner digest under the key again. Because the outer call only ever sees a fixed-length
+digest, an attacker cannot extend the message the way they could with a raw hash -- HMAC is
+a pseudorandom function whenever the compression function is, a guarantee that holds even
+though the underlying hash (here SHA-256) is public and unkeyed.
+
+#+name: hmac-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/hmac.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+static int tag_hamming(const std::array<std::uint8_t, 32>& a,
+                       const std::array<std::uint8_t, 32>& b) {
+    int d = 0;
+    for (int i = 0; i < 32; ++i) {
+        std::uint8_t x = a[i] ^ b[i];
+        while (x) { d += x & 1; x >>= 1; }
+    }
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+HMAC(K, m):
+    B = block size of H (64 for SHA-256)
+    if length(K) > B: K = H(K)
+    K' = K padded with zeros to B bytes
+    ipad = 0x36 repeated B times
+    opad = 0x5c repeated B times
+    inner = H( (K' XOR ipad) || m )
+    return H( (K' XOR opad) || inner )
+#+end_example
+
+* A worked example
+
+We verify two RFC 4231 vectors, then use HMAC as intended: authenticate a message,
+recompute the tag on the receiver side and accept it, and reject both a tampered message
+and a wrong key. Finally we flip each bit of the key and count how many of the 256 tag bits
+change -- the key-avalanche a MAC needs.
+
+#+name: hmac-run
+#+begin_src c++ :eval no
+    std::cout << "=== RFC 4231 reference tags ===\n";
+    std::string key1(20, '\x0b');
+    std::cout << "HMAC(0x0b*20, \"Hi There\")            = " << hmac_sha256_hex(key1, "Hi There") << "\n";
+    std::cout << "HMAC(\"Jefe\", \"what do ya want...\")   = "
+              << hmac_sha256_hex("Jefe", "what do ya want for nothing?") << "\n";
+
+    std::cout << "\n=== Authenticating a transfer ===\n";
+    const std::string key = "shared-secret-key";
+    const std::string msg = "transfer $100 to Alice";
+    auto tag = hmac_sha256(key, msg);
+
+    // Receiver recomputes with the same key -> accept.
+    bool ok = (hmac_sha256(key, msg) == tag);
+    // Attacker tampers the message but cannot forge the tag.
+    bool tampered_ok = (hmac_sha256(key, "transfer $900 to Mallory") == tag);
+    // Wrong key -> reject.
+    bool wrongkey_ok = (hmac_sha256("guessed-key", msg) == tag);
+    std::cout << "genuine message + key : " << (ok ? "ACCEPT" : "reject") << "\n";
+    std::cout << "tampered amount+payee : " << (tampered_ok ? "ACCEPT" : "REJECT") << "\n";
+    std::cout << "wrong key             : " << (wrongkey_ok ? "ACCEPT" : "REJECT") << "\n";
+
+    // Key avalanche: flip each bit of the key, measure tag bit changes.
+    std::vector<double> changes;
+    int total_bits = static_cast<int>(key.size()) * 8;
+    for (int bit = 0; bit < total_bits; ++bit) {
+        std::string k = key;
+        k[bit / 8] ^= static_cast<char>(1u << (bit % 8));
+        changes.push_back(tag_hamming(tag, hmac_sha256(k, msg)));
+    }
+    double mean = 0;
+    for (double c : changes) mean += c;
+    mean /= changes.size();
+    std::cout << "\n=== Key avalanche over " << total_bits << " single-bit key flips ===\n";
+    std::cout << "tag bits changed: mean " << mean << " of 256 (ideal 128)\n";
+
+    std::vector<double> bins(9, 0.0);
+    std::vector<std::string> labels = {"112","116","120","124","128","132","136","140","144"};
+    for (double c : changes) {
+        int idx = static_cast<int>((c - 110) / 4);
+        if (idx < 0) idx = 0; if (idx > 8) idx = 8;
+        bins[idx] += 1.0;
+    }
+    RPlot p = RPlot::barplot(bins, labels, "HMAC-SHA256 key avalanche: tag bits changed per key-bit flip", {217, 70, 20});
+    p.abline_v(4.0, {37, 99, 235}, 1.5);  // the ideal-128 column
+    p.save_svg("build/org/hmac_avalanche.svg");
+    std::cout << "wrote build/org/hmac_avalanche.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/hmac_analysis.cpp <<'CPP'
+<<hmac-includes>>
+
+int main() {
+<<hmac-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/hmac_analysis.cpp -o build/org/hmac_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hmac_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RFC 4231 reference tags ===
+HMAC(0x0b*20, "Hi There")            = b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7
+HMAC("Jefe", "what do ya want...")   = 5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843
+
+=== Authenticating a transfer ===
+genuine message + key : ACCEPT
+tampered amount+payee : REJECT
+wrong key             : REJECT
+
+=== Key avalanche over 136 single-bit key flips ===
+tag bits changed: mean 128.846 of 256 (ideal 128)
+wrote build/org/hmac_avalanche.svg
+#+end_example
+
+The tags match RFC 4231. The verifier accepts the genuine message, rejects the tampered
+amount, and rejects the wrong key -- exactly the integrity-plus-authenticity guarantee a
+MAC provides. The key-avalanche histogram centres on 128 changed tag bits, so even a
+one-bit key error yields a completely unrelated tag, leaving an attacker no gradient to
+climb toward a forgery.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/hmac_avalanche.svg]]
+
+* Uses and cautions
+
+HMAC is the standard way to authenticate messages under a shared key: API request signing,
+TLS record integrity, JWT signatures (=HS256=), and webhook verification. Two practical
+notes: compare tags in *constant time* to avoid timing side channels (a byte-by-byte
+early-exit compare leaks how much of the tag was correct); and HMAC provides integrity and
+authenticity, *not confidentiality* -- pair it with encryption (or use an AEAD mode) when
+the message must also stay secret.
+
+* Complexity
+
+\(O(n)\) time over an \(n\)-byte message: two SHA-256 passes plus one over the short key,
+\(O(1)\) extra state.

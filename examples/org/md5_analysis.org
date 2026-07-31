@@ -1,0 +1,181 @@
+#+title: MD5: The Merkle-Damgard Message Digest
+#+subtitle: A literate C++ study of RFC 1321, using =datamunge='s =algorithms::md5=
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+*MD5* (Rivest, 1992) compresses a message of any length into a fixed 128-bit fingerprint.
+It is the archetypal *Merkle-Damgard* hash: pad the message, split it into 512-bit blocks,
+and fold each block into a 128-bit running state through 64 nonlinear rounds. This report
+implements MD5 in =datamunge='s =algorithms::md5= as a literate program -- every number
+below comes from one compiled binary. We reproduce the RFC 1321 test suite exactly, then
+measure MD5's *avalanche*: flipping a single input bit changes about half the output bits.
+We close by noting why MD5, despite that good diffusion, is cryptographically dead.
+#+end_abstract
+
+* Padding, blocks, and a 128-bit state
+
+MD5 hashes a message \(M\) in three movements. First *pad*: append a single 1 bit
+(the byte =0x80=), then zero bits, until the length is \(56 \bmod 64\) bytes, and finally
+the original bit-length as a 64-bit little-endian integer. This makes the padded length a
+multiple of 64 bytes (512 bits) and bakes the length into the input, thwarting trivial
+extensions. Second, initialise a 128-bit state as four 32-bit words
+\((A,B,C,D)\). Third, for each 512-bit block run 64 rounds; each round applies one of four
+nonlinear mixing functions
+
+\[
+  F(B,C,D) = (B\wedge C)\vee(\neg B\wedge D),\quad
+  G = (D\wedge B)\vee(\neg D\wedge C),\quad
+  H = B\oplus C\oplus D,\quad
+  I = C\oplus(B\vee\neg D),
+\]
+
+adds a message word \(M_g\) and the sine-derived constant
+\(K_i = \lfloor 2^{32}\,|\sin(i+1)|\rfloor\), rotates left by a fixed per-step amount, and
+accumulates into \(B\). After all blocks, the state words -- emitted little-endian -- are the
+digest.
+
+#+name: md5-includes
+#+begin_src c++ :eval no
+#include <datamunge/algorithms/md5.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace datamunge::algorithms;
+using namespace datamunge::plot;
+
+// Popcount of the XOR of two digests: how many output bits differ.
+static int digest_hamming(const std::array<std::uint8_t, 16>& a,
+                          const std::array<std::uint8_t, 16>& b) {
+    int d = 0;
+    for (int i = 0; i < 16; ++i) {
+        std::uint8_t x = a[i] ^ b[i];
+        while (x) { d += x & 1; x >>= 1; }
+    }
+    return d;
+}
+#+end_src
+
+** Pseudocode
+
+#+begin_example
+MD5(message):
+    A,B,C,D = 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476
+    pad message with 0x80, zeros to 56 mod 64, then 64-bit little-endian bit length
+    for each 512-bit block:
+        split block into sixteen 32-bit words M[0..15]
+        a,b,c,d = A,B,C,D
+        for i in 0..63:
+            if    i < 16: f = (b&c)|(~b&d);      g = i
+            elif  i < 32: f = (d&b)|(~d&c);      g = (5i+1) mod 16
+            elif  i < 48: f = b^c^d;             g = (3i+5) mod 16
+            else:         f = c^(b|~d);          g = (7i)   mod 16
+            f = f + a + K[i] + M[g]
+            a,d,c = d,c,b
+            b = b + rotl(f, s[i])
+        A,B,C,D += a,b,c,d
+    return A||B||C||D as 16 little-endian bytes
+#+end_example
+
+* A worked example
+
+We verify five RFC 1321 reference digests, then quantify the avalanche effect: starting
+from a fixed message, flip each single bit in turn and count how many of the 128 output
+bits change. Ideal diffusion centres this count on 64 (half the bits).
+
+#+name: md5-run
+#+begin_src c++ :eval no
+    std::cout << "=== RFC 1321 reference digests ===\n";
+    std::cout << "md5(\"\")               = " << md5_hex("") << "\n";
+    std::cout << "md5(\"abc\")            = " << md5_hex("abc") << "\n";
+    std::cout << "md5(\"message digest\") = " << md5_hex("message digest") << "\n";
+    std::cout << "md5(\"abc...xyz\")      = " << md5_hex("abcdefghijklmnopqrstuvwxyz") << "\n";
+
+    // Avalanche: flip every bit of an 8-byte message, measure output bit changes.
+    const std::string base = "avalanche";
+    auto base_digest = md5(base);
+    std::vector<double> changes;
+    int total_bits = static_cast<int>(base.size()) * 8;
+    for (int bit = 0; bit < total_bits; ++bit) {
+        std::string m = base;
+        m[bit / 8] ^= static_cast<char>(1u << (bit % 8));
+        changes.push_back(digest_hamming(base_digest, md5(m)));
+    }
+    double mean = 0;
+    for (double c : changes) mean += c;
+    mean /= changes.size();
+    std::cout << "\n=== Avalanche over " << total_bits << " single-bit input flips ===\n";
+    std::cout << "output bits changed: mean " << mean << " of 128 (ideal 64)\n";
+
+    // Histogram the change counts into bins for the plot.
+    std::vector<double> bins(9, 0.0);  // bins centred 48,52,...,80
+    std::vector<std::string> labels = {"48","52","56","60","64","68","72","76","80"};
+    for (double c : changes) {
+        int idx = static_cast<int>((c - 46) / 4);
+        if (idx < 0) idx = 0; if (idx > 8) idx = 8;
+        bins[idx] += 1.0;
+    }
+    RPlot p = RPlot::barplot(bins, labels, "MD5 avalanche: output bits changed per input-bit flip", {37, 99, 235});
+    p.abline_v(4.0, {220, 38, 38}, 1.5);  // the ideal-64 column
+    p.save_svg("build/org/md5_avalanche.svg");
+    std::cout << "wrote build/org/md5_avalanche.svg\n";
+#+end_src
+
+#+begin_src shell :exports both
+mkdir -p build/org
+cat > build/org/md5_analysis.cpp <<'CPP'
+<<md5-includes>>
+
+int main() {
+<<md5-run>>
+    return 0;
+}
+CPP
+
+c++ -std=c++23 -O2 build/org/md5_analysis.cpp -o build/org/md5_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/md5_analysis
+#+end_src
+
+* Results
+
+#+begin_example
+=== RFC 1321 reference digests ===
+md5("")               = d41d8cd98f00b204e9800998ecf8427e
+md5("abc")            = 900150983cd24fb0d6963f7d28e17f72
+md5("message digest") = f96b697d7cb7938d525a2f31aaf161d0
+md5("abc...xyz")      = c3fcd3d76192e4007dfb496cca67e13b
+
+=== Avalanche over 72 single-bit input flips ===
+output bits changed: mean 63.7778 of 128 (ideal 64)
+wrote build/org/md5_avalanche.svg
+#+end_example
+
+The digests match RFC 1321 to the character. The avalanche histogram clusters tightly
+around 64 changed output bits -- flipping any single input bit cascades through the 64
+rounds and scrambles roughly half of the 128-bit digest, exactly the diffusion a hash
+needs so that similar inputs give unrelated outputs.
+
+#+attr_latex: :width 0.8\linewidth
+[[file:../../build/org/md5_avalanche.svg]]
+
+* Uses and cautions
+
+MD5 is *cryptographically broken*. Wang's 2004 attack produces colliding message pairs in
+seconds, and chosen-prefix collisions have been used to forge real certificates. It must
+never guard integrity or authenticity against an adversary. Its good diffusion and speed
+keep it alive only as a *non-adversarial* checksum -- deduplication keys, cache tags,
+detecting accidental corruption -- where no attacker is choosing the inputs. For anything
+security-bearing, use SHA-256 (see the companion report) or SHA-3.
+
+* Complexity
+
+\(O(n)\) time over \(n\) message bytes: one 64-round compression per 512-bit block, with
+\(O(1)\) state. Constant memory beyond the input.
