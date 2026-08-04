@@ -55,7 +55,8 @@ const gypContent = `
       'xcode_settings': {
         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
         'CLANG_CXX_LIBRARY': 'libc++',
-        'MACOSX_DEPLOYMENT_TARGET': '10.14',
+        # std::filesystem (used in plot.cpp) is only available on macOS 10.15+.
+        'MACOSX_DEPLOYMENT_TARGET': '10.15',
         'GCC_ENABLE_CPP_RTTI': 'YES'
       },
       'libraries' : [ '-lxml2' ], #   '-lblas', '-llapack', '-llapacke', '-lcblas'
