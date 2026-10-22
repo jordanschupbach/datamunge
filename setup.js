@@ -20,6 +20,21 @@ function getSourcesFromFile(filePath) {
 const sourcesFilenames = getSourcesFromFile("lib_sources.txt");
 console.log("Sources Filenames:", sourcesFilenames);
 
+// DATAMUNGE_USE_SYSTEM_LIB=1 links an already-installed libdatamunge (found via pkg-config) instead
+// of compiling the core sources into the addon. The nix build uses this so a core change compiles
+// the core once rather than once per binding; the default stays self-contained for npm users.
+const useSystemLib = process.env.DATAMUNGE_USE_SYSTEM_LIB === "1";
+const pkgConfigDatamunge = (args) =>
+  execSync(`pkg-config ${args} datamunge`).toString().trim();
+const coreSources = useSystemLib ? "" : `${sourcesFilenames}, `;
+const coreIncludeDir = useSystemLib
+  ? pkgConfigDatamunge("--variable=includedir")
+  : "include";
+const coreLibDir = useSystemLib ? pkgConfigDatamunge("--variable=libdir") : "";
+const coreLibraries = useSystemLib ? "'-ldatamunge', " : "";
+const coreLibraryDirs = useSystemLib ? `'${coreLibDir}', ` : "";
+const coreRpath = useSystemLib ? `'-Wl,-rpath,${coreLibDir}'` : "";
+
 // Remove binding.gyp if it exists
 if (fs.existsSync(gypFilePath)) {
   fs.unlinkSync(gypFilePath);
@@ -40,9 +55,9 @@ const gypContent = `
   'targets': [
     {
       'target_name': 'datamungejs',
-      'sources': [ ${sourcesFilenames}, 'src/datamunge_js_wrap.cpp' ],
+      'sources': [ ${coreSources}'src/datamunge_js_wrap.cpp' ],
       'include_dirs': [
-        "include",
+        "${coreIncludeDir}",
         "<!@(node -p \\\"require('node-addon-api').include\\\")",
         '${includeDir}'
       ],
@@ -57,10 +72,12 @@ const gypContent = `
         'CLANG_CXX_LIBRARY': 'libc++',
         # std::filesystem (used in plot.cpp) is only available on macOS 10.15+.
         'MACOSX_DEPLOYMENT_TARGET': '10.15',
-        'GCC_ENABLE_CPP_RTTI': 'YES'
+        'GCC_ENABLE_CPP_RTTI': 'YES',
+        'OTHER_LDFLAGS': [ ${coreRpath} ]
       },
-      'libraries' : [ '-lxml2' ], #   '-lblas', '-llapack', '-llapacke', '-lcblas'
-      'library_dirs' : [ '/usr/lib' ],
+      'ldflags': [ ${coreRpath} ],
+      'libraries' : [ ${coreLibraries}'-lxml2' ], #   '-lblas', '-llapack', '-llapacke', '-lcblas'
+      'library_dirs' : [ ${coreLibraryDirs}'/usr/lib' ],
       'msvs_settings': {
         'VCCLCompilerTool': { 'ExceptionHandling': 1 },
       }

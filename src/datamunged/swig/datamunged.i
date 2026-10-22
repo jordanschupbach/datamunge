@@ -163,6 +163,7 @@
 
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
+%include "datamunge/vector.i"
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
 %include "datamunge/stats/hypothesis_test_result.hpp"

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <datamunge/algebra/algebra.hpp>
 #include <datamunge/autodiff/autodiff.hpp>
 #include <datamunge/bayes/bayes.hpp>
@@ -15,6 +17,9 @@
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/random/random.hpp>
 #include <datamunge/stats/stats.hpp>
+#include <datamunge/vector.hpp>
+#include <datamunge/bspline_regression.hpp>
+#include <datamunge/pspline_regression.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -337,6 +342,8 @@ class GGPlot {
   GGPlot& scale_color_manual(const std::vector<datamunge::plot::RGB>& values);
   GGPlot& labs(const std::string& title = "", const std::string& x = "", const std::string& y = "");
 
+  /// @brief Renders the plot as a standalone SVG document and returns it as a string.
+  [[nodiscard]] std::string to_svg() const;
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
   void show(const std::string& title_hint = "") const;

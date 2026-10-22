@@ -186,12 +186,62 @@
 %{
   #include "datamunge/datamunge.hpp"
 %}
+// Plot/RPlot setters return *this for chaining. The default proxy for a returned reference
+// doesn't own the object, so in `dm.RPlot.create().points(...)` the temporary that does own it
+// is collected and the chain dangles. Returning `self` keeps the owning proxy alive instead.
+%pythonappend datamunge::plot::Plot::size %{ val = self %}
+%pythonappend datamunge::plot::Plot::title %{ val = self %}
+%pythonappend datamunge::plot::Plot::x_label %{ val = self %}
+%pythonappend datamunge::plot::Plot::y_label %{ val = self %}
+%pythonappend datamunge::plot::Plot::background %{ val = self %}
+%pythonappend datamunge::plot::Plot::axis_color %{ val = self %}
+%pythonappend datamunge::plot::Plot::grid_color %{ val = self %}
+%pythonappend datamunge::plot::Plot::show_grid %{ val = self %}
+%pythonappend datamunge::plot::Plot::x_limits %{ val = self %}
+%pythonappend datamunge::plot::Plot::y_limits %{ val = self %}
+%pythonappend datamunge::plot::Plot::hide_axes %{ val = self %}
+%pythonappend datamunge::plot::Plot::x_tick_labels %{ val = self %}
+%pythonappend datamunge::plot::RPlot::size %{ val = self %}
+%pythonappend datamunge::plot::RPlot::title %{ val = self %}
+%pythonappend datamunge::plot::RPlot::x_label %{ val = self %}
+%pythonappend datamunge::plot::RPlot::y_label %{ val = self %}
+%pythonappend datamunge::plot::RPlot::background %{ val = self %}
+%pythonappend datamunge::plot::RPlot::axis_color %{ val = self %}
+%pythonappend datamunge::plot::RPlot::grid_color %{ val = self %}
+%pythonappend datamunge::plot::RPlot::show_grid %{ val = self %}
+%pythonappend datamunge::plot::RPlot::x_limits %{ val = self %}
+%pythonappend datamunge::plot::RPlot::y_limits %{ val = self %}
+%pythonappend datamunge::plot::RPlot::hide_axes %{ val = self %}
+%pythonappend datamunge::plot::RPlot::x_tick_labels %{ val = self %}
+%pythonappend datamunge::plot::RPlot::xlab %{ val = self %}
+%pythonappend datamunge::plot::RPlot::ylab %{ val = self %}
+%pythonappend datamunge::plot::RPlot::points %{ val = self %}
+%pythonappend datamunge::plot::RPlot::line %{ val = self %}
+%pythonappend datamunge::plot::RPlot::lines %{ val = self %}
+%pythonappend datamunge::plot::RPlot::bars %{ val = self %}
+%pythonappend datamunge::plot::RPlot::box %{ val = self %}
+%pythonappend datamunge::plot::RPlot::abline %{ val = self %}
+%pythonappend datamunge::plot::RPlot::abline_h %{ val = self %}
+%pythonappend datamunge::plot::RPlot::abline_v %{ val = self %}
+%pythonappend datamunge::plot::RPlot::qqline %{ val = self %}
+%pythonappend datamunge::plot::RPlot::legend %{ val = self %}
+%pythonappend datamunge::plot::RPlot::text %{ val = self %}
+%pythonappend datamunge::plot::RPlot::polygon %{ val = self %}
+%pythonappend datamunge::plot::RPlot::segments %{ val = self %}
+%pythonappend datamunge::plot::RLayout::add %{ val = self %}
+%pythonappend datamunge::plot::RLayout::size %{ val = self %}
 %include "datamunge/plot/plot.hpp"
 %template(RGBVector) std::vector<datamunge::plot::RGB>;
 %template(DataSeriesVector) std::vector<datamunge::plot::DataSeries>;
 %template(ABLineVector) std::vector<datamunge::plot::ABLine>;
 %template(LegendEntryVector) std::vector<datamunge::plot::LegendEntry>;
 %include "datamunge/datamunge.hpp"
+%include "datamunge/vector.i"
+%pythoncode %{
+BSR = BSplineRegression
+PSR = PSplineRegression
+RGBA = RGB
+%}
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
 %include "datamunge/stats/hypothesis_test_result.hpp"

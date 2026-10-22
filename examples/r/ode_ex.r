@@ -6,7 +6,7 @@
 library(datamunger)
 
 options <- ODEOptions()
-options$method <- StepMethod_StepMethod_RK4_get()
+options$method <- StepMethod_RK4_get()
 options$step_size <- 0.01
 solver <- ODESolver__SWIG_0(options)
 
@@ -19,15 +19,15 @@ cat("exact y(2) =", exact, "\n")
 for (method_name in c("RK4", "RK45", "AdamsMoulton")) {
   opts <- ODEOptions()
   if (method_name == "RK4") {
-    opts$method <- StepMethod_StepMethod_RK4_get()
+    opts$method <- StepMethod_RK4_get()
     opts$step_size <- 0.01
   } else if (method_name == "RK45") {
-    opts$method <- StepMethod_StepMethod_RK45_get()
+    opts$method <- StepMethod_RK45_get()
     opts$step_size <- 0.1
     opts$abs_tol <- 1e-8
     opts$rel_tol <- 1e-8
   } else {
-    opts$method <- StepMethod_StepMethod_AdamsMoulton_get()
+    opts$method <- StepMethod_AdamsMoulton_get()
     opts$multistep_order <- 4
     opts$step_size <- 0.01
   }
@@ -58,7 +58,7 @@ cat("wrote ode_harmonic_oscillator.svg\n")
 
 cat("\n=================== Lorenz attractor (phase plane) ===================\n")
 lorenz_options <- ODEOptions()
-lorenz_options$method <- StepMethod_StepMethod_RK4_get()
+lorenz_options$method <- StepMethod_RK4_get()
 lorenz_options$step_size <- 0.005
 lorenz_solver <- ODESolver__SWIG_0(lorenz_options)
 lorenz_sol <- ODESolver_solve_builtin(lorenz_solver, "lorenz", c(10.0, 28.0, 8.0 / 3.0), c(1.0, 1.0, 1.0), 0.0, 25.0)

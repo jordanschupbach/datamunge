@@ -71,7 +71,28 @@
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "php-from-source": "php-from-source",
+        "swig": "swig",
         "systems": "systems"
+      }
+    },
+    "swig": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791565668,
+        "narHash": "sha256-OD1rBM1tVx65mKY531C6CDCRqg4l/n2yzNqv+dxvsoc=",
+        "owner": "jordanschupbach",
+        "repo": "swig",
+        "rev": "c24c9d00a3f4e07400664b7c5567b17d2916efb8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jordanschupbach",
+        "repo": "swig",
+        "type": "github"
       }
     },
     "systems": {

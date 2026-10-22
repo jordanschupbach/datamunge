@@ -7,4 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- The native SWIG wrapper the generated [DllImport("datamunge_csharp")] classes load, built by
+       `just build-csharp`. Copied next to the assembly (and so into every project referencing this
+       one, e.g. a `#:project` file-based app), where the runtime looks for it first. -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../../build/dotnet/release/*datamunge_csharp.*"
+          Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+
 </Project>

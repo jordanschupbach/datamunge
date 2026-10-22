@@ -7,22 +7,13 @@
   buildPythonPackage,
   libxml2,
   pkg-config,
+  datamunge,
 }:
 buildPythonPackage rec {
   pname = "pydatamunge";
   version = "0.0.1";
   pyproject = true;
-  src = lib.cleanSourceWith {
-    src = ../.;
-    filter =
-      path: type:
-      let
-        base = builtins.baseNameOf path;
-      in
-      !(
-        base == ".git" || base == "build" || base == "dist" || base == "node_modules" || base == "result"
-      );
-  };
+  src = import ./source.nix { inherit lib; };
   build-system = [ setuptools ];
   meta = {
     description = "Python bindings to the datamunge library.";
@@ -31,7 +22,10 @@ buildPythonPackage rec {
   };
   buildInputs = [
     pkg-config
+    datamunge
   ];
+  # Link the nix-built core instead of recompiling it here (see setup.py).
+  env.DATAMUNGE_USE_SYSTEM_LIB = "1";
   nativeBuildInputs = [
     pkg-config
   ];

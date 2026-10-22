@@ -541,6 +541,8 @@ GGPlot& GGPlot::labs(const std::string& title, const std::string& x, const std::
   return *this;
 }
 
+std::string GGPlot::to_svg() const { return impl_.to_svg(); }
+
 void GGPlot::save(const std::string& path) const { impl_.save(path); }
 
 void GGPlot::save_svg(const std::string& path) const { impl_.save_svg(path); }

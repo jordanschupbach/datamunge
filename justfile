@@ -2,7 +2,11 @@ TARGET := "bspline_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 
-NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false"
+# Set DATAMUNGE_SWIG_SRC to a local checkout of the swig fork (e.g. ~/projects/swig) to build
+# against it instead of the github:jordanschupbach/swig revision pinned in flake.lock.
+SWIG_SRC := env_var_or_default("DATAMUNGE_SWIG_SRC", "")
+SWIG_OVERRIDE := if SWIG_SRC == "" { "" } else { " --override-input swig git+file://" + SWIG_SRC }
+NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + SWIG_OVERRIDE
 BINDINGS_DIR := "src"
 
 # {{{ run commands
@@ -228,6 +232,10 @@ run-benchmark:
 
 # {{{ prebuild commands
 
+# Update the pinned swig fork revision in flake.lock to the latest github:jordanschupbach/swig.
+update-swig:
+  nix flake update swig
+
 prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r prebuild-perl prebuild-ruby prebuild-tcl prebuild-lua prebuild-d prebuild-guile prebuild-octave prebuild-go prebuild-php prebuild-java prebuild-ocaml
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
@@ -235,7 +243,7 @@ prebuild-python:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -doxygen -c++ -python -o ../src/datamunge_python_wrap.cpp -oh ../src/datamunge_python_wrap.h ../src/pydatamunge/swig/pydatamunge.i && mv ../src/datamunge.py ../src/pydatamunge/datamunge.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -javascript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
   # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
   perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"datamunge_js_callbacks.inl\"\n/s' src/datamunge_js_wrap.cpp
   perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  DatamungeJS_RegisterCallbackBridge(env, exports);\n/s' src/datamunge_js_wrap.cpp
@@ -247,43 +255,6 @@ prebuild-csharp:
 
 prebuild-r:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
-  # Work around a swig-jse R-backend codegen bug: for a namespace-level `enum class` (not
-  # nested inside a class -- nested enums like plot::DataSeries::Kind are unaffected),
-  # defineEnumeration()'s .values=c(...) table calls a differently-named (and never-generated)
-  # .Call symbol than the enum's own per-member accessor functions use, so the package fails
-  # to load at all. Insert the missing doubled prefix (e.g. R_swig_TrendType_None_get ->
-  # R_swig_TrendType_TrendType_None_get) for every such enum.
-  perl -0777 -pi -e "s/'R_swig_TrendType_(?!TrendType_)/'R_swig_TrendType_TrendType_/g" R/datamunger.R
-  perl -0777 -pi -e "s/'R_swig_SeasonalType_(?!SeasonalType_)/'R_swig_SeasonalType_SeasonalType_/g" R/datamunger.R
-  perl -0777 -pi -e "s/'R_swig_Alternative_(?!Alternative_)/'R_swig_Alternative_Alternative_/g" R/datamunger.R
-  perl -0777 -pi -e "s/'R_swig_PAdjustMethod_(?!PAdjustMethod_)/'R_swig_PAdjustMethod_PAdjustMethod_/g" R/datamunger.R
-  perl -0777 -pi -e "s/'R_swig_MonomialOrder_(?!MonomialOrder_)/'R_swig_MonomialOrder_MonomialOrder_/g" R/datamunger.R
-  perl -0777 -pi -e "s/'R_swig_StepMethod_(?!StepMethod_)/'R_swig_StepMethod_StepMethod_/g" R/datamunger.R
-  # Work around a second swig-jse R-backend bug: std::vector<std::size_t> (used throughout
-  # this codebase, vs. the bare std::vector<size_t> the SizeVector %template/%apply fix is
-  # keyed to -- see the size_t %apply notes elsewhere in this file) gets its own, never-
-  # registered S4 class name for RETURN values specifically (parameters are fine via the
-  # %apply fix; only the return-value class registration differs). Point every reference at
-  # the class that's actually registered.
-  perl -0777 -pi -e "s/_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t/_p_std__vectorT_size_t_t/g" R/datamunger.R
-  # Third swig-jse R-backend bug, layered on top of the above: for a std::vector<size_t>
-  # RETURN VALUE (as opposed to a constructor that creates a genuine new SizeVector object),
-  # the underlying .Call already returns a plain R integer vector directly (matching how
-  # vector<double> returns work -- no pointer involved), so wrapping it in
-  # new("_p_std__vectorT_size_t_t", ref=ans) is wrong and throws an "invalid object for slot
-  # ref" error. Strip that erroneous wrapping. Genuine SizeVector-constructing calls are
-  # unaffected because they're followed by a reg.finalizer(...) line that this pattern doesn't
-  # match, so only by-value vector<size_t> returns (e.g. KMeans_labels, DataFrame_shape,
-  # Tensor_shape) get unwrapped.
-  perl -0777 -pi -e "s/;ans = (\.Call\('R_swig_[^\n]*?PACKAGE='datamunger'\));\n\s*ans <- if \(is\.null\(ans\)\) ans\n\s*else new\(\"_p_std__vectorT_size_t_t\", ref=ans\);\n\s*\n\s*ans\n/;\$1;\n/g" R/datamunger.R
-  # Fourth swig-jse R-backend bug: an overload-dispatch check for a std::vector<std::vector<double>>
-  # parameter (e.g. RPlot::boxplot's `groups`) generates
-  # `all(sapply(argv[[1]], is.integer) || sapply(argv[[1]], is.numeric))` -- the `||` between
-  # two per-element sapply() results is only safe when the list has exactly one element (both
-  # sides then reduce to length-1 logicals); with two or more groups each side is a longer
-  # vector and R >= 4.3 hard-errors on `||`/`&&` with non-scalar operands. Use the element-wise
-  # `|` operator instead (still safe pre-4.3), which `all()` can then correctly reduce.
-  perl -0777 -pi -e "s/sapply\(argv\[\[1\]\] , is\.integer\) \|\| sapply\(argv\[\[1\]\], is\.numeric\)/sapply(argv[[1]] , is.integer) | sapply(argv[[1]], is.numeric)/g" R/datamunger.R
 
 prebuild-perl:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
@@ -332,18 +303,6 @@ prebuild-java:
 
 prebuild-ocaml:
   {{ NIX_DEVELOP }} .#ocaml --command bash -c "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
-  # Work around a swig-jse OCaml-backend codegen bug: for ANY `enum class` (nested or
-  # namespace-level), the generated SWIG_ENUM__... initializers reference the enumerator by
-  # its bare name in the ENCLOSING namespace (e.g. `datamunge::stats::Additive`) instead of
-  # correctly qualifying it with the enum class name (`datamunge::stats::TrendType::Additive`)
-  # -- a hard C++ compile error, not a warning. Insert the missing enum-class qualifier for
-  # every affected enumerator (see datamunge_ocaml_bindings.md memory for the full diagnosis).
-  perl -0777 -pi -e "s/= datamunge::plot::DataSeries::(Scatter|Line|Bar|Box|Polygon|Text|Segment)\b/= static_cast<int>(datamunge::plot::DataSeries::Kind::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
-  perl -0777 -pi -e "s/= datamunge::stats::(None|Additive|AdditiveDamped)\b/= static_cast<int>(datamunge::stats::TrendType::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
-  perl -0777 -pi -e "s/= datamunge::stats::Multiplicative\b/= static_cast<int>(datamunge::stats::SeasonalType::Multiplicative)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
-  perl -0777 -pi -e "s/= datamunge::stats::(TwoSided|Less|Greater)\b/= static_cast<int>(datamunge::stats::Alternative::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
-  perl -0777 -pi -e "s/= datamunge::stats::(Bonferroni|Holm|Hochberg|Hommel|BH|BY)\b/= static_cast<int>(datamunge::stats::PAdjustMethod::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
-  perl -0777 -pi -e "s/= datamunge::ode::(Euler|Midpoint|RK4|RK45|AdamsBashforth|AdamsMoulton)\b/= static_cast<int>(datamunge::ode::StepMethod::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
 
 # }}} prebuild commands
 
@@ -360,6 +319,9 @@ build-php: prebuild-php
   rm -rf build/datamungePHP
   {{ NIX_DEVELOP }} .#php --command bash -c 'cmake -S src/datamungePHP -B build/datamungePHP'
   {{ NIX_DEVELOP }} .#php --command bash -c 'cmake --build build/datamungePHP -j{{ JOBS }} --verbose'
+  # Loaded through PHP_INI_SCAN_DIR (set by the default dev shell), so a plain `php script.php` has it.
+  mkdir -p build/php/conf.d
+  bash -c 'for f in build/datamungePHP/libdatamungePHP.*; do printf "extension=%s\n" "$(pwd)/$f" > build/php/conf.d/datamunge.ini; done'
 
 
 build: build-debug
@@ -414,6 +376,8 @@ build-go: prebuild-go build-cpp
   {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
 
 build-d: prebuild-d
+  # The native wrapper the generated module dlopens at startup (found via the dev shells' library path).
+  {{ NIX_DEVELOP }} .#d --command bash -c 'mkdir -p build/d && ext="$(case "$(uname -s)" in Darwin) echo dylib;; *) echo so;; esac)" && c++ -std=c++17 -shared -fPIC -O1 $(pkg-config --cflags datamunge) -o "build/d/libdatamunge_wrap.$ext" {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.cpp $(pkg-config --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)'
   bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
@@ -438,19 +402,23 @@ build-tcl: prebuild-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
+  # pkgIndex.tcl loads Datamunge[info sharedlibextension] (.dylib on macOS); CMake names the module .so.
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ "$ext" != ".so" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi'
 
 build-lua: prebuild-lua
   rm -rf build/datamungelua
-  {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'rm -rf build/lua/prefix && cmake --install build/datamungelua --prefix build/lua/prefix'
 
 build-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
 
 build-guile: prebuild-guile
   rm -rf build/datamungeguile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
   {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'rm -rf build/guile/prefix && cmake --install build/datamungeguile --prefix build/guile/prefix'
 
 build-octave: prebuild-octave
   {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
@@ -496,23 +464,23 @@ repl-cpp:
 repl-tcl: build-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
 
-repl-lua:
+repl-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'lua'
 
-repl-ruby:
+repl-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -r octruby'
 
 repl-ocaml:
   {{ NIX_DEVELOP }} .#ocaml --command bash -c 'utop'
 
-repl-guile:
+repl-guile: build-guile
   {{ NIX_DEVELOP }} .#guile --command bash -c 'guile'
 
 repl-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
 
-repl-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m"'
+repl-octave: build-octave
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf'
 
 repl-d:
   bash -c 'set -euo pipefail; \
@@ -543,7 +511,7 @@ test-python: prebuild-python
   # precedence, since it's older code without the changes just built above).
   {{ NIX_DEVELOP }} .#python --command bash -c 'PYTHONPATH=src build/venv/pydatamunge/bin/python -m pytest -q tests/python'
 
-test-r: prebuild-r
+test-r: build-r
   {{ NIX_DEVELOP }} .#r --command bash -c 'R -q -e "testthat::test_local(\".\")"'
 
 test-csharp: build-csharp
@@ -558,7 +526,7 @@ test-rust:
 test-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -c 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_datamunge.php'
 
-test-lua:
+test-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'lua tests/lua/test_datamunge.lua'
 
 test-perl: build-perl
@@ -567,14 +535,14 @@ test-perl: build-perl
 test-tcl: build-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_datamunge.tcl'
 
-test-ruby:
+test-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_datamunge\""'
 
-test-guile:
+test-guile: build-guile
   {{ NIX_DEVELOP }} .#guile --command bash -c 'guile --no-auto-compile -s tests/guile/test_datamunge.scm'
 
-test-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m" --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
+test-octave: build-octave
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
 
 test-d: prebuild-d
   bash -c 'set -euo pipefail; \
@@ -752,6 +720,11 @@ org-examples:
         bash -c "$export_cmd"; \
       fi'
 
+# Regenerate examples/mepml/*.mepml from examples/org/*.org (needs mep-mepml on PATH),
+# compiling and running each report's C++ block to fill in its results.
+mepml-from-org:
+    python3 scripts/org_to_mepml.py --run examples/org examples/mepml
+
 prebuild-docs-pages:
     @echo "Exporting Org pages -> Markdown"
     @bash -c 'set -euo pipefail; \
@@ -793,6 +766,12 @@ docs-bindings: prebuild-swig
 
 docs-all: docs docs-bindings
     @echo "Core + binding docs are up to date."
+
+# README.mepml is the source of README.org: export it with mep's mepml tool
+# (build/README.org, which the document's //? Post: copies back to the top).
+# Edit README.mepml, not README.org.
+readme MEP_MEPML="mep-mepml":
+    {{ MEP_MEPML }} build README.mepml org
 
 # }}} docs commands
 
@@ -876,10 +855,10 @@ windows-run: build
 # {{{ all commands
 
 test-nix:
-  nix flake check --accept-flake-config -L
+  nix flake check --accept-flake-config -L{{ SWIG_OVERRIDE }}
 
 build-nix PACKAGE="datamunge":
-  nix build --accept-flake-config ".#{{ PACKAGE }}"
+  nix build --accept-flake-config{{ SWIG_OVERRIDE }} ".#{{ PACKAGE }}"
 
 update-java-deps:
   nix/update-jdatamunge-gradle-deps.sh

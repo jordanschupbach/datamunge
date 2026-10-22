@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <fstream>
 #include <map>
 #include <numeric>
 #include <set>
@@ -500,10 +501,9 @@ RPlot GGPlot::build_panel(const dstruct::DataFrame& panel_data, const std::strin
   return panel;
 }
 
-void GGPlot::save_svg(const std::string& path) const {
+std::string GGPlot::to_svg() const {
   if (facet_column_.empty()) {
-    build_panel(data_, "").save_svg(path);
-    return;
+    return build_panel(data_, "").to_svg();
   }
 
   auto facets = split_by_group(data_, facet_column_);
@@ -519,7 +519,15 @@ void GGPlot::save_svg(const std::string& path) const {
     RPlot panel = build_panel(panel_data, label);
     layout.add(panel);
   }
-  layout.save_svg(path);
+  return layout.to_svg();
+}
+
+void GGPlot::save_svg(const std::string& path) const {
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error("GGPlot::save_svg: could not open output file");
+  }
+  out << to_svg();
 }
 
 void GGPlot::save(const std::string& path) const {

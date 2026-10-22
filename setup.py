@@ -28,7 +28,34 @@ def find_cpp_sources(directory):
     return sources
 
 
-sources = find_cpp_sources("src") + ["src/datamunge_python_wrap.cpp"]
+# DATAMUNGE_USE_SYSTEM_LIB=1 links an already-installed libdatamunge (found via pkg-config) instead
+# of compiling the core sources into the extension. The nix build uses this so a core change
+# compiles the core once rather than once per binding; the default stays self-contained for PyPI.
+use_system_lib = os.environ.get("DATAMUNGE_USE_SYSTEM_LIB") == "1"
+
+
+def pkg_config_datamunge(*args):
+    return subprocess.run(
+        ["pkg-config", *args, "datamunge"],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.strip()
+
+
+if use_system_lib:
+    sources = ["src/datamunge_python_wrap.cpp"]
+    core_include_dir = pkg_config_datamunge("--variable=includedir")
+    core_lib_dir = pkg_config_datamunge("--variable=libdir")
+    core_link = {
+        "library_dirs": [core_lib_dir],
+        "runtime_library_dirs": [core_lib_dir],
+        "libraries": ["datamunge"],
+    }
+else:
+    sources = find_cpp_sources("src") + ["src/datamunge_python_wrap.cpp"]
+    core_include_dir = "include/"
+    core_link = {"libraries": []}  # 'xml2'
 
 
 def get_pkgconfig_include_dirs(package):
@@ -51,14 +78,14 @@ def get_pkgconfig_include_dirs(package):
 
 # sources = find_cpp_sources('source/datamunge')
 # sources = [ 'source/datamunge/datamunge.cpp', 'src/datamunge_python_wrap.cpp' ]
-include_dirs = ["include/"]  # + get_pkgconfig_include_dirs('libxml-2.0')
+include_dirs = [core_include_dir]  # + get_pkgconfig_include_dirs('libxml-2.0')
 ext_modules = [
     Extension(
         "pydatamunge._datamunge",
         sources=sources,
         include_dirs=include_dirs,
-        libraries=[],  # 'xml2'
         extra_compile_args=["-O3", "-std=c++23"],
+        **core_link,
     ),
 ]
 

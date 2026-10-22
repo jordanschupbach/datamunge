@@ -1,0 +1,27 @@
+//? Title: Bidirectional Search
+
+\toc
+
+> Mathematics and algorithm
+
+Two BFS waves grow from start and goal in an undirected unweighted graph.
+When their visited sets meet, joining predecessor chains gives a shortest
+path.  If branching factor is \(b\) and distance \(d\), searching two halves
+visits about \(2b^{d/2}\) states rather than \(b^d\).
+
+```
+initialize queues and predecessor maps at both endpoints
+alternate frontier expansion until a cross-visited edge appears
+join the two predecessor chains at the meeting point
+```
+
+> C\+\+ example
+
+```{cpp, results="output", exports="both", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/search_batch.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::bidirectional_search(4,{{0,1},{1,2},{2,3}},0,3);std::cout<<r.path.size();}
+```
+// result_begin:
+// 4
+// result_end

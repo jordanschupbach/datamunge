@@ -1,0 +1,45 @@
+//? Title: SFC64: Small Fast Counter Random Generation
+//? Subtitle: A compact addition/rotation/xor generator
+
+SFC64 keeps three 64-bit state words and an incrementing counter. Its compact
+state and inexpensive arithmetic make it useful for high-throughput,
+reproducible simulations. It is not designed for cryptographic use.
+
+> Mathematics and pseudocode
+
+Each step adds the two primary state words and the counter, then refreshes the
+state through xor, shift, addition, and a 24-bit rotate:
+
+```
+result = a + b + counter
+counter = counter + 1
+a = b xor (b >> 11)
+b = c + (c << 3)
+c = rotl(c, 24) + result
+return result
+```
+
+The implementation initializes `a`, `b`, and `c` from SplitMix64 so a simple
+64-bit seed gives reproducible nonzero state.
+
+> Executable example
+
+```{cpp, results="output", exports="both", flags="-std=c++17 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  datamunge::random::Sfc64 rng(0xC0FFEEULL);
+  std::cout << "raw word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "uniform01 = " << rng.uniform01() << "\n"
+            << "normal(0,1) = " << rng.normal() << "\n"
+            << "integer[0,99] = " << rng.uniform_u64(0, 99) << "\n";
+}
+```
+// result_begin:
+// raw word = 13215376215447164276
+// uniform01 = 0.697952
+// normal(0,1) = -2.880934
+// integer[0,99] = 86
+// result_end

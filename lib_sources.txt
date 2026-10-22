@@ -43,6 +43,9 @@ datamunge/algorithms/quickselect
 datamunge/plot
 datamunge/plot/ggplot
 datamunge/random
+datamunge/vector
+datamunge/bspline_regression
+datamunge/pspline_regression
 datamunge/stats/agglomerative_clustering
 datamunge/stats/dbscan
 datamunge/stats/decision_tree_classifier
@@ -144,6 +147,7 @@ datamunge/stats/fisher_exact_test
 datamunge/stats/normality_test
 datamunge/stats/p_adjust
 datamunge/fda/bspline
+datamunge/fda/pspline
 datamunge/image/netpbm
 datamunge/image/bmp
 datamunge/image/png

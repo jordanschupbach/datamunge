@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <cmath>
 #include <initializer_list>
+#include <ostream>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace datamunge::linalg {
@@ -229,5 +232,36 @@ private:
 
 template <typename T>
 DenseMatrix<T> operator*(T s, const DenseMatrix<T>& m) { return m * s; }
+
+// One row per line, columns right-aligned and separated by a space, no
+// trailing newline (Eigen's layout). Each element is formatted with the
+// stream's own flags and precision, so `std::fixed << std::setprecision(3)`
+// applies; a width set on the stream is consumed, not applied per element.
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const DenseMatrix<T>& m) {
+    std::vector<std::string> cells(m.rows() * m.cols());
+    std::vector<std::size_t> width(m.cols(), 0);
+    std::ostringstream cell;
+    cell.flags(os.flags());
+    cell.precision(os.precision());
+    cell.imbue(os.getloc());
+    for (std::size_t i = 0; i < m.rows(); ++i)
+        for (std::size_t j = 0; j < m.cols(); ++j) {
+            cell.str("");
+            cell << m(i, j);
+            cells[i * m.cols() + j] = cell.str();
+            width[j] = std::max(width[j], cells[i * m.cols() + j].size());
+        }
+    os.width(0);
+    for (std::size_t i = 0; i < m.rows(); ++i) {
+        if (i > 0) os << '\n';
+        for (std::size_t j = 0; j < m.cols(); ++j) {
+            const std::string& s = cells[i * m.cols() + j];
+            if (j > 0) os << ' ';
+            os << std::string(width[j] - s.size(), ' ') << s;
+        }
+    }
+    return os;
+}
 
 } // namespace datamunge::linalg

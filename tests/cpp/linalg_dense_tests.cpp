@@ -4,6 +4,8 @@
 #include <datamunge/linalg/solvers.hpp>
 
 #include <cmath>
+#include <iomanip>
+#include <sstream>
 #include <vector>
 
 using namespace datamunge::linalg;
@@ -171,6 +173,27 @@ TEST(DenseMatrix, SolvableWithGMRES) {
     A.spmv(result.x, Ax);
     for (std::size_t i = 0; i < 3; ++i)
         EXPECT_NEAR(Ax[i], b[i], 1e-7);
+}
+
+TEST(DenseMatrix, StreamOutputAlignsColumns) {
+    DenseMatrix<double> A(2, 3, {1, -20, 3, 400, 5, -6});
+    std::ostringstream os;
+    os << A;
+    EXPECT_EQ(os.str(), "  1 -20  3\n"
+                        "400   5 -6");
+}
+
+TEST(DenseMatrix, StreamOutputUsesStreamFormatting) {
+    DenseMatrix<double> A(1, 2, {1.0 / 3.0, 2.5});
+    std::ostringstream os;
+    os << std::fixed << std::setprecision(2) << A << " done";
+    EXPECT_EQ(os.str(), "0.33 2.50 done");
+}
+
+TEST(DenseMatrix, StreamOutputEmpty) {
+    std::ostringstream os;
+    os << DenseMatrix<double>{};
+    EXPECT_EQ(os.str(), "");
 }
 
 // ============================================================
