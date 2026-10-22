@@ -11,8 +11,8 @@
 // Print the confusion matrix and save the checkpoint (.npz) and validation
 // history under output/nn/models/mlp_mnist. Require at least 96% test accuracy
 // at the default training budget. No augmentation or access to test data
-// during training. Options: data=PATH epochs=12 batch=256 lr=.001 (tflow's
-// device= and threads= options are dropped: nn runs on one CPU thread).
+// during training. Options: data=PATH epochs=12 batch=256 lr=.001 threads=N
+// (tflow's device= option is dropped; nn runs on the CPU).
 
 #include "common/mnist.hpp"
 

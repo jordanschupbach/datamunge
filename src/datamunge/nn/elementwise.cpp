@@ -521,10 +521,31 @@ Tensor clip(const Tensor& x, const Tensor& low, const Tensor& high) { return min
 
 // ---- activations ----------------------------------------------------------------------------
 
+/// g where x > 0, alpha * g elsewhere, in one pass. Linear in g (and its
+/// own gradient), so second-order gradients still flow; constant in x a.e.
+Tensor leaky_relu_backward(const Tensor& x, const Tensor& g, double alpha) {
+  if (x.dtype() != g.dtype() || g.shape() != x.shape())
+    return where(greater(x, 0.0), g, alpha == 0.0 ? zeros({}, g.dtype()) : mul(g, alpha));
+  Tensor out = compute(g.dtype(), [&](auto tag) -> Tensor {
+    using T = typename decltype(tag)::type;
+    if constexpr (std::is_same<T, bool>::value) {
+      throw std::logic_error("leaky_relu_backward: bool");
+    } else {
+      const T a = static_cast<T>(alpha);
+      return detail::map_binary<T, T>(nograd(x), nograd(g), g.dtype(), [a](T xv, T gv) { return xv > T(0) ? gv : a * gv; });
+    }
+  });
+  SavedTensor sx(x);
+  record("LeakyReluGrad", {g}, {out}, [sx, alpha](const Grads& gg, const Grads&) {
+    return Grads{leaky_relu_backward(sx.get(), gg[0], alpha)};
+  });
+  return out;
+}
+
 Tensor relu(const Tensor& x) {
   Tensor      out = unary_kernel(x, x.dtype(), [](auto v) { return v > 0 ? v : decltype(v)(0); });
   SavedTensor sx(x);
-  record("Relu", {x}, {out}, [sx](const Grads& g, const Grads&) { return Grads{where(greater(sx.get(), 0.0), g[0], 0.0)}; });
+  record("Relu", {x}, {out}, [sx](const Grads& g, const Grads&) { return Grads{leaky_relu_backward(sx.get(), g[0], 0.0)}; });
   return out;
 }
 
@@ -545,7 +566,7 @@ Tensor leaky_relu(const Tensor& x, double alpha) {
   Tensor out = unary_kernel(xf, xf.dtype(), [alpha](auto v) { return v > 0 ? v : static_cast<decltype(v)>(alpha) * v; });
   SavedTensor sx(xf);
   record("LeakyRelu", {xf}, {out}, [sx, alpha](const Grads& g, const Grads&) {
-    return Grads{where(greater(sx.get(), 0.0), g[0], mul(g[0], alpha))};
+    return Grads{leaky_relu_backward(sx.get(), g[0], alpha)};
   });
   return out;
 }
@@ -734,7 +755,7 @@ Tensor where(const Tensor& condition, const Tensor& a, const Tensor& b) {
       const Shape sa   = detail::broadcast_strides(ac, shape);
       const Shape sb   = detail::broadcast_strides(bc, shape);
       const std::array<const Shape*, 4> st{&so, &sc, &sa, &sb};
-      detail::strided_rows<4>(shape, st, {0, cond.offset(), ac.offset(), bc.offset()},
+      detail::parallel_strided_rows<4>(shape, st, {0, cond.offset(), ac.offset(), bc.offset()},
                               [&](const auto& off, std::int64_t n, const auto& step) {
                                 for (std::int64_t j = 0; j < n; ++j)
                                   dst[off[0] + j] = pc[off[1] + j * step[1]] ? pa[off[2] + j * step[2]]

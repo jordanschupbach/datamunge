@@ -34,3 +34,9 @@ set_target_properties(linalg_bench PROPERTIES CXX_STANDARD 17)
 # Benchmarks must be built with optimisations; suppress the debug flags that
 # the parent preset may inject.
 target_compile_options(linalg_bench PRIVATE -O3 -DNDEBUG)
+
+# datamunge::nn speed benchmarks (`just bench-nn`).
+add_executable(nn_bench ${CMAKE_CURRENT_SOURCE_DIR}/nn/nn_bench.cpp)
+target_link_libraries(nn_bench datamunge::datamunge benchmark::benchmark)
+set_target_properties(nn_bench PROPERTIES CXX_STANDARD 17)
+target_compile_options(nn_bench PRIVATE -O3 -DNDEBUG)

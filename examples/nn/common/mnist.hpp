@@ -16,6 +16,9 @@
 // initialisation uses datamunge's generator (seed 17), so trajectories match
 // tflow only statistically. Checkpoints are .npz files of the parameter
 // store (nn::ParameterStore::save/load) instead of TF SaveV2 bundles.
+// A custom LogitsBuilder (e.g. a CNN) receives flattened [batch, 784] pixels
+// and reshapes them itself, as tflow's architecture lambdas do. threads=N
+// sets nn's intra-op thread count (default: all cores).
 #pragma once
 
 #include <algorithm>
@@ -89,6 +92,8 @@ inline int Run(int argc, char** argv, const std::string& name, const std::vector
         batch = std::stoi(value);
       else if (key == "lr")
         rate = std::stod(value);
+      else if (key == "threads")
+        nn::set_num_threads(std::stoi(value));
       else
         throw std::invalid_argument("unknown argument: " + key);
     }
