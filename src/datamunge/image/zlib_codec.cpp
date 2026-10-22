@@ -215,25 +215,10 @@ void inflate_dynamic_block(BitReader& reader, std::vector<unsigned char>& out) {
 
 } // namespace
 
-std::vector<unsigned char> zlib_decompress(const std::vector<unsigned char>& compressed, std::size_t expected_size) {
-    if (compressed.size() < 6) { // 2-byte header + at least an empty deflate stream + 4-byte trailer
-        throw std::runtime_error("zlib_decompress: input too short to be a valid zlib stream");
-    }
-    const unsigned char cmf = compressed[0];
-    const unsigned char flg = compressed[1];
-    if ((cmf & 0x0Fu) != 8) {
-        throw std::runtime_error("zlib_decompress: unsupported compression method (only DEFLATE/method 8 is supported)");
-    }
-    if (((static_cast<unsigned int>(cmf) << 8) | flg) % 31 != 0) {
-        throw std::runtime_error("zlib_decompress: invalid zlib header checksum");
-    }
-    if (flg & 0x20u) {
-        throw std::runtime_error("zlib_decompress: preset dictionaries are not supported");
-    }
-
+std::vector<unsigned char> deflate_decompress(const unsigned char* data, std::size_t size, std::size_t expected_size) {
     std::vector<unsigned char> out;
     out.reserve(expected_size);
-    BitReader reader(compressed.data() + 2, compressed.size() - 2 - 4);
+    BitReader reader(data, size);
 
     bool final_block = false;
     while (!final_block) {
@@ -253,13 +238,34 @@ std::vector<unsigned char> zlib_decompress(const std::vector<unsigned char>& com
             inflate_dynamic_block(reader, out);
             break;
         default:
-            throw std::runtime_error("zlib_decompress: reserved (invalid) block type");
+            throw std::runtime_error("deflate_decompress: reserved (invalid) block type");
         }
     }
 
     if (out.size() != expected_size) {
-        throw std::runtime_error("zlib_decompress: decompressed size does not match the expected size");
+        throw std::runtime_error("deflate_decompress: decompressed size does not match the expected size");
     }
+
+    return out;
+}
+
+std::vector<unsigned char> zlib_decompress(const std::vector<unsigned char>& compressed, std::size_t expected_size) {
+    if (compressed.size() < 6) { // 2-byte header + at least an empty deflate stream + 4-byte trailer
+        throw std::runtime_error("zlib_decompress: input too short to be a valid zlib stream");
+    }
+    const unsigned char cmf = compressed[0];
+    const unsigned char flg = compressed[1];
+    if ((cmf & 0x0Fu) != 8) {
+        throw std::runtime_error("zlib_decompress: unsupported compression method (only DEFLATE/method 8 is supported)");
+    }
+    if (((static_cast<unsigned int>(cmf) << 8) | flg) % 31 != 0) {
+        throw std::runtime_error("zlib_decompress: invalid zlib header checksum");
+    }
+    if (flg & 0x20u) {
+        throw std::runtime_error("zlib_decompress: preset dictionaries are not supported");
+    }
+
+    std::vector<unsigned char> out = deflate_decompress(compressed.data() + 2, compressed.size() - 2 - 4, expected_size);
 
     const std::size_t trailer_offset = compressed.size() - 4;
     const std::uint32_t expected_adler = (static_cast<std::uint32_t>(compressed[trailer_offset]) << 24) |
