@@ -580,8 +580,32 @@ test-cpp:
       find ./build/ -name "compile_commands.json" -exec cat {} + | jq -s add > compile_commands.json; \
       ctest --test-dir build/debug/tests --output-on-failure'
 
+# Incrementally rebuild the C++ tests and run only the nn (tensor + autograd) suites.
+test-nn:
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/tests -j{{ JOBS }} && ./build/debug/tests/run_tests --gtest_filter='Nn*'"
+
 
 # }}} test commands
+
+# {{{ nn examples (datamunge::nn ports of ~/projects/tflow_examples)
+
+build-nn-examples:
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S examples/nn -B build/nn-examples -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/nn-examples -j{{ JOBS }}"
+
+run-nn NAME *ARGS: build-nn-examples
+  ./build/nn-examples/bin/{{ NAME }} {{ ARGS }}
+
+# Run every nn example; each exits nonzero when its checks fail.
+run-all-nn: build-nn-examples
+  @bash -c 'pass=0; fail=0; failed=""; \
+    for f in $(find examples/nn -path "examples/nn/[0-9]*" -name "*.cpp" | sort); do n="$(basename "$f" .cpp)"; \
+      printf "\n========== %s ==========\n" "$n"; \
+      if ./build/nn-examples/bin/"$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## nn examples: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+# }}} nn examples
 
 # {{{ utilities
 
