@@ -1,0 +1,29 @@
+//? Title: D*-Style Grid Replanning
+
+> Mathematics and pseudocode
+
+D\* maintains cost-to-go labels as obstacle knowledge changes.  This API is the
+replanning kernel: on each updated occupancy grid it propagates Manhattan
+lower bounds and returns the new optimal route.
+
+```
+insert start with g+h; repeatedly pop minimum
+relax four free neighbors; record predecessors; stop at goal
+rerun after changed cells, preserving the D* replanning interface
+```
+
+Each repair is \(O(RC\log(RC))\).
+
+> Example
+
+```{cpp, results="output", exports="both", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/search_more.hpp>
+int main() {
+  using datamunge::algorithms::d_star_replan;
+  const auto result =
+      d_star_replan({{0, 0}, {0, 0}}, {0, 0}, {1, 1});
+  return result.found ? 0 : 1;
+}
+```
+// result_begin:
+// result_end

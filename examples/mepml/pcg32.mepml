@@ -1,0 +1,42 @@
+//? Title: PCG32: Permuted Congruential Random Generation
+//? Subtitle: A small-state LCG with a rotated xorshift output permutation
+
+PCG32 uses a compact 64-bit linear-congruential state plus an odd increment
+that selects an independent stream. This implementation combines two permuted
+32-bit outputs into each `next_u64()` word.
+
+> Mathematics and pseudocode
+
+The transition is \(s_{n+1}=6364136223846793005s_n+c\pmod {2^{64}}\), where
+\(c\) is odd. XSH-RR permutes the old state before returning it:
+
+```
+old = state
+state = old * 6364136223846793005 + increment
+x = ((old >> 18) xor old) >> 27
+r = old >> 59
+return rotate_right_32(x, r)
+```
+
+Each selected stream has period \(2^{64}\). PCG is for simulation, not
+adversarial or secret-key use.
+
+> Executable example
+
+```{cpp, results="output", exports="both", flags="-std=c++17 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/random.hpp>
+#include <iomanip>
+#include <iostream>
+int main() {
+  datamunge::random::Pcg32 rng(0xC0FFEEULL);
+  std::cout << "raw word = " << rng.next_u64() << "\n"
+            << std::fixed << std::setprecision(6)
+            << "exponential(rate=4) = " << rng.exponential(4.0) << "\n"
+            << "Bernoulli(0.3) = " << rng.bernoulli(0.3) << "\n";
+}
+```
+// result_begin:
+// raw word = 3763436240344971625
+// exponential(rate=4) = 0.018741
+// Bernoulli(0.3) = 0
+// result_end

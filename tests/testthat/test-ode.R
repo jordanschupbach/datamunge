@@ -1,6 +1,6 @@
 test_that("ODESolver's RK4 matches exponential decay's closed form", {
   options <- ODEOptions()
-  options$method <- StepMethod_StepMethod_RK4_get()
+  options$method <- StepMethod_RK4_get()
   options$step_size <- 0.01
   solver <- ODESolver__SWIG_0(options)
 
@@ -13,7 +13,7 @@ test_that("ODESolver's RK4 matches exponential decay's closed form", {
 
 test_that("ODESolver's adaptive RK45 matches exponential decay and uses few steps", {
   options <- ODEOptions()
-  options$method <- StepMethod_StepMethod_RK45_get()
+  options$method <- StepMethod_RK45_get()
   options$step_size <- 0.1
   options$abs_tol <- 1e-8
   options$rel_tol <- 1e-8
@@ -27,7 +27,7 @@ test_that("ODESolver's adaptive RK45 matches exponential decay and uses few step
 
 test_that("ODESolver's Adams-Bashforth-Moulton matches exponential decay", {
   options <- ODEOptions()
-  options$method <- StepMethod_StepMethod_AdamsMoulton_get()
+  options$method <- StepMethod_AdamsMoulton_get()
   options$multistep_order <- 4
   options$step_size <- 0.001
   solver <- ODESolver__SWIG_0(options)
@@ -39,7 +39,7 @@ test_that("ODESolver's Adams-Bashforth-Moulton matches exponential decay", {
 
 test_that("ODESolver's harmonic_oscillator matches the closed-form solution", {
   options <- ODEOptions()
-  options$method <- StepMethod_StepMethod_RK4_get()
+  options$method <- StepMethod_RK4_get()
   options$step_size <- 0.001
   solver <- ODESolver__SWIG_0(options)
 

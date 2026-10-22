@@ -1,6 +1,5 @@
 %module(directors="1") datamungejs
 
-%include <std_shared_ptr.i>
 %include <stdint.i>
 %include <std_vector.i>
 %include <std_string.i>
@@ -72,6 +71,7 @@
 %}
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
+%include "datamunge/vector.i"
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
 %include "datamunge/stats/hypothesis_test_result.hpp"

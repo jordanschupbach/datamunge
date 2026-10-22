@@ -1,0 +1,55 @@
+//? Title: PageRank
+
+\abstract(
+PageRank is the stationary distribution of a random surfer who follows links
+most of the time and teleports otherwise.  We derive the Markov equation,
+handle dangling pages, give pseudocode, and rank a three-page network.
+)
+
+\toc
+
+> Mathematics
+
+Let \(P\) distribute each page's probability uniformly over its outgoing
+links.  With damping \(0\le d<1\), PageRank satisfies
+
+$$
+r=\frac{1-d}{n}\mathbf1+dP^\top r.
+$$
+
+Dangling pages distribute their mass uniformly.  Teleportation makes the
+chain irreducible and aperiodic, so the probability vector is unique and
+power iteration converges.
+
+> Pseudocode
+
+```
+r <- uniform probability vector
+repeat:
+  dangling <- sum r[u] over pages with no outgoing links
+  next[v] <- (1-d)/n + d*dangling/n
+  for every link u->v: next[v] += d*r[u]/outdegree[u]
+  swap(r,next)
+until L1 change < tolerance
+```
+
+Each iteration is \(O(n+m)\) time with \(O(n+m)\) storage.
+
+> C\+\+ example
+
+```{cpp, results="output", exports="both", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/network_analysis.hpp>
+#include <iostream>
+int main() {
+  auto r=datamunge::algorithms::page_rank(3,{{0,2},{1,2},{2,2}});
+  for(double x:r)std::cout<<x<<'\n';
+}
+```
+// result_begin:
+// 0.05
+// 0.05
+// 0.9
+// result_end
+
+Pages 0 and 1 tie by symmetry, while page 2 receives both endorsements and
+therefore has the greatest score; the returned values sum to one.

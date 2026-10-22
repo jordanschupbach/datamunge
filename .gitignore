@@ -14,6 +14,7 @@ docs/org/pages/*.pdf
 *.o
 *.a
 .direnv
+.envrc.local
 .cache
 *.so
 node_modules
@@ -59,3 +60,6 @@ src/octruby/ext/octruby/mkmf.log
 examples/ocaml/datamunge_ex.cmi
 examples/ocaml/datamunge_ex.cmx
 tmp/
+
+# figures mep copies into place for mepml blocks with file= (scripts/org_to_mepml.py)
+examples/mepml/figures/

@@ -233,3 +233,26 @@ TEST(GGPlot, GeomPointRejectsNonNumericXColumn) {
   plot.geom_point();
   EXPECT_THROW(plot.save_svg("unused.svg"), std::invalid_argument);
 }
+
+TEST(GGPlot, ToSvgReturnsSameDocumentAsSaveSvg) {
+  DataFrame df;
+  df.add_column("x", std::vector<double>{1.0, 2.0, 1.0, 2.0});
+  df.add_column("y", std::vector<double>{1.0, 2.0, 3.0, 4.0});
+  df.add_column("facet", std::vector<std::string>{"p", "p", "q", "q"});
+
+  const auto out_dir = std::filesystem::temp_directory_path();
+  const auto path = out_dir / "datamunge_ggplot_to_svg_test.svg";
+
+  auto plain = GGPlot::create(df, Aes{"x", "y", "", "", ""});
+  plain.geom_point();
+  plain.save_svg(path.string());
+  EXPECT_EQ(plain.to_svg(), read_file(path));
+
+  auto faceted = GGPlot::create(df, Aes{"x", "y", "", "", ""});
+  faceted.geom_point();
+  faceted.facet_wrap("facet");
+  faceted.save_svg(path.string());
+  EXPECT_EQ(faceted.to_svg(), read_file(path));
+
+  std::filesystem::remove(path);
+}

@@ -66,6 +66,10 @@ struct Image {
   }
 
   void set_pixel(int x, int y, RGB color) {
+    if (color.alpha < 1.0) {
+      blend_pixel(x, y, color, color.alpha);
+      return;
+    }
     if (x < 0 || y < 0) {
       return;
     }
@@ -386,6 +390,14 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
 
   for (const auto& series : plot.series()) {
     const std::string color = rgb_css(series.color);
+    // Translucent series: scatter points each get their own opacity so overlaps darken; any
+    // other kind is wrapped in one group so its own overlapping parts don't double up.
+    const double alpha = std::clamp(series.color.alpha, 0.0, 1.0);
+    const bool translucent = alpha < 1.0;
+    const bool group_alpha = translucent && series.kind != DataSeries::Kind::Scatter;
+    if (group_alpha) {
+      out << "  <g opacity=\"" << alpha << "\">\n";
+    }
     switch (series.kind) {
       case DataSeries::Kind::Line: {
         out << "  <polyline fill=\"none\" stroke=\"" << color << "\" stroke-width=\""
@@ -400,7 +412,11 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
         for (std::size_t i = 0; i < series.x.size(); ++i) {
           out << "  <circle cx=\"" << map_x(layout, series.x[i]) << "\" cy=\""
               << map_y(layout, series.y[i]) << "\" r=\"" << series.marker_size << "\" fill=\""
-              << color << "\"/>\n";
+              << color << "\"";
+          if (translucent) {
+            out << " fill-opacity=\"" << alpha << "\"";
+          }
+          out << "/>\n";
         }
         break;
       }
@@ -491,6 +507,9 @@ void write_series(std::ostringstream& out, const Plot& plot, const Layout& layou
         }
         break;
       }
+    }
+    if (group_alpha) {
+      out << "  </g>\n";
     }
   }
 
@@ -1554,12 +1573,16 @@ Plot& Plot::x_tick_labels(std::vector<std::string> labels) {
   return *this;
 }
 
+std::string Plot::to_svg() const {
+  return svg_string(*this);
+}
+
 void Plot::save_svg(const std::string& path) const {
   std::ofstream out(path);
   if (!out) {
     throw std::runtime_error("Plot::save_svg: could not open output file");
   }
-  out << svg_string(*this);
+  out << to_svg();
 }
 
 void Plot::save(const std::string& path) const {
@@ -1613,6 +1636,70 @@ Plot& Plot::add_legend_entry(LegendEntry entry) {
 RPlot RPlot::create() {
   return RPlot{};
 }
+
+RPlot& RPlot::size(std::size_t width, std::size_t height) {
+  Plot::size(width, height);
+  return *this;
+}
+
+RPlot& RPlot::title(std::string value) {
+  Plot::title(std::move(value));
+  return *this;
+}
+
+RPlot& RPlot::x_label(std::string value) {
+  Plot::x_label(std::move(value));
+  return *this;
+}
+
+RPlot& RPlot::y_label(std::string value) {
+  Plot::y_label(std::move(value));
+  return *this;
+}
+
+RPlot& RPlot::background(RGB color) {
+  Plot::background(color);
+  return *this;
+}
+
+RPlot& RPlot::axis_color(RGB color) {
+  Plot::axis_color(color);
+  return *this;
+}
+
+RPlot& RPlot::grid_color(RGB color) {
+  Plot::grid_color(color);
+  return *this;
+}
+
+RPlot& RPlot::show_grid(bool enabled) {
+  Plot::show_grid(enabled);
+  return *this;
+}
+
+RPlot& RPlot::x_limits(double min_x, double max_x) {
+  Plot::x_limits(min_x, max_x);
+  return *this;
+}
+
+RPlot& RPlot::y_limits(double min_y, double max_y) {
+  Plot::y_limits(min_y, max_y);
+  return *this;
+}
+
+RPlot& RPlot::hide_axes(bool enabled) {
+  Plot::hide_axes(enabled);
+  return *this;
+}
+
+RPlot& RPlot::x_tick_labels(std::vector<std::string> labels) {
+  Plot::x_tick_labels(std::move(labels));
+  return *this;
+}
+
+RPlot& RPlot::xlab(std::string value) { return x_label(std::move(value)); }
+
+RPlot& RPlot::ylab(std::string value) { return y_label(std::move(value)); }
 
 RPlot RPlot::plot(std::vector<double> x, std::vector<double> y, std::string type, std::string label, RGB color) {
   require_xy_same_size(x, y, "RPlot::plot");
@@ -1874,6 +1961,14 @@ RPlot& RPlot::lines(std::vector<double> x, std::vector<double> y, std::string la
   return line(std::move(x), std::move(y), std::move(label), color, stroke_width);
 }
 
+RPlot& RPlot::points(std::vector<double> x, std::vector<double> y, RGB color, double marker_size) {
+  return points(std::move(x), std::move(y), "", color, marker_size);
+}
+
+RPlot& RPlot::lines(std::vector<double> x, std::vector<double> y, RGB color, double stroke_width) {
+  return line(std::move(x), std::move(y), "", color, stroke_width);
+}
+
 RPlot& RPlot::bars(std::vector<double> x, std::vector<double> y, std::string label, RGB color, double bar_width) {
   require_xy_same_size(x, y, "RPlot::bars");
   DataSeries series;
@@ -2020,11 +2115,8 @@ RLayout& RLayout::size(std::size_t width, std::size_t height) {
   return *this;
 }
 
-void RLayout::save_svg(const std::string& path) const {
-  std::ofstream out(path);
-  if (!out) {
-    throw std::runtime_error("RLayout::save_svg: could not open output file");
-  }
+std::string RLayout::to_svg() const {
+  std::ostringstream out;
   const double cell_w = static_cast<double>(width_) / static_cast<double>(cols_);
   const double cell_h = static_cast<double>(height_) / static_cast<double>(rows_);
   out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -2042,6 +2134,15 @@ void RLayout::save_svg(const std::string& path) const {
         << panels_[i].svg_fragment << "  </svg>\n";
   }
   out << "</svg>\n";
+  return out.str();
+}
+
+void RLayout::save_svg(const std::string& path) const {
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error("RLayout::save_svg: could not open output file");
+  }
+  out << to_svg();
 }
 
 void RLayout::save(const std::string& path) const {

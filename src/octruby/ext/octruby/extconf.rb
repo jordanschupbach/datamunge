@@ -6,6 +6,12 @@ have_pkg_config = find_executable("pkg-config")
 configured = false
 if have_pkg_config
   configured = pkg_config("datamunge")
+  if configured
+    # Pin the extension to the libdatamunge it was built against (a nix store path), so it loads
+    # without DYLD_/LD_LIBRARY_PATH and keeps working after the dev shell moves to a newer core.
+    libdir = `pkg-config --variable=libdir datamunge`.strip
+    $LDFLAGS << " -Wl,-rpath,#{libdir}" unless libdir.empty?
+  end
 end
 
 unless configured

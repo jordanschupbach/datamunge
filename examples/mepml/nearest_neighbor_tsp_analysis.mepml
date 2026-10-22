@@ -1,0 +1,32 @@
+//? Title: Nearest-Neighbour TSP
+
+\toc
+
+> Algorithm
+
+From the current city, repeatedly visit the closest unvisited city, then
+return to the start.  The invariant is that the partial route contains each
+selected city once; termination therefore yields a Hamiltonian cycle.
+
+```
+tour <- start
+while an unvisited city remains: append the nearest one
+append start
+```
+
+The direct scan costs \(O(n^2)\).  It is fast but greedy and has no constant
+approximation ratio on arbitrary instances.
+
+> C\+\+ example
+
+```{cpp, results="output", exports="both", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/tour_search.hpp>
+#include <iostream>
+int main(){auto r=datamunge::algorithms::nearest_neighbor_tsp(
+{{0,1,2},{1,0,1},{2,1,0}});std::cout<<r.cost;}
+```
+// result_begin:
+// 4
+// result_end
+
+It returns the three-city cycle of cost 4.

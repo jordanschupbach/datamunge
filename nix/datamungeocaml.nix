@@ -10,17 +10,7 @@ pkgs.stdenv.mkDerivation rec {
   pname = "datamungeocaml";
   version = "0.0.1";
 
-  src = pkgs.lib.cleanSourceWith {
-    src = ../.;
-    filter =
-      path: type:
-      let
-        base = builtins.baseNameOf path;
-      in
-      !(
-        base == ".git" || base == "build" || base == "dist" || base == "node_modules" || base == "result"
-      );
-  };
+  src = import ./source.nix { lib = pkgs.lib; };
 
   nativeBuildInputs = [
     pkgs.swig

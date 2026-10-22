@@ -48,6 +48,8 @@ class GGPlot final {
   GGPlot& scale_color_manual(std::vector<RGB> values);
   GGPlot& labs(std::string title = "", std::string x = "", std::string y = "");
 
+  /// Renders the plot (or faceted layout) as a standalone SVG document and returns it as a string.
+  std::string to_svg() const;
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
   void show(const std::string& title_hint = "") const;

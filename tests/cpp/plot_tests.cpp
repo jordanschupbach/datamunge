@@ -413,3 +413,42 @@ TEST(RLayout, SavesSvgWithOneNestedSvgPerPanel) {
 
   std::filesystem::remove(path);
 }
+
+TEST(PlotSvg, ToSvgReturnsSameDocumentAsSaveSvg) {
+  const auto out_dir = std::filesystem::temp_directory_path();
+  const auto path = out_dir / "datamunge_plot_to_svg_test.svg";
+
+  auto p = RPlot::plot({0.0, 1.0, 2.0}, {0.0, 1.0, 4.0}, "p", "pts");
+  p.title("To Svg");
+  const std::string svg = p.to_svg();
+  EXPECT_EQ(svg.rfind("<?xml", 0), 0U);
+  EXPECT_NE(svg.find("<svg"), std::string::npos);
+  EXPECT_NE(svg.find("To Svg"), std::string::npos);
+  EXPECT_NE(svg.find("</svg>"), std::string::npos);
+
+  p.save_svg(path.string());
+  EXPECT_EQ(svg, read_file(path));
+
+  std::filesystem::remove(path);
+}
+
+TEST(RLayout, ToSvgReturnsSameDocumentAsSaveSvg) {
+  const auto out_dir = std::filesystem::temp_directory_path();
+  const auto path = out_dir / "datamunge_layout_to_svg_test.svg";
+
+  auto layout = RLayout::create(1, 2);
+  auto p1 = RPlot::create();
+  p1.points({0.0, 1.0}, {0.0, 1.0}, "left");
+  auto p2 = RPlot::create();
+  p2.line({0.0, 1.0}, {1.0, 0.0}, "right");
+  layout.add(p1).add(p2);
+
+  const std::string svg = layout.to_svg();
+  EXPECT_NE(svg.find("left"), std::string::npos);
+  EXPECT_NE(svg.find("right"), std::string::npos);
+
+  layout.save_svg(path.string());
+  EXPECT_EQ(svg, read_file(path));
+
+  std::filesystem::remove(path);
+}

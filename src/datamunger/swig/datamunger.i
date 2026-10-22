@@ -183,6 +183,10 @@
 %}
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
+// datamunge::rnorm(mean, sd, n) would mask stats::rnorm(n, mean, sd), which has a different
+// argument order, for anyone who attaches datamunger; R users have rnorm()/runif()/seq() already.
+%ignore datamunge::rnorm;
+%include "datamunge/vector.i"
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
 %include "datamunge/stats/hypothesis_test_result.hpp"

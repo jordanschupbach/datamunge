@@ -60,6 +60,12 @@ target_include_directories(
 
 target_link_libraries(${PROJECT_NAME} PRIVATE datamunge::datamunge)
 
+# A PHP extension leaves the Zend API to be resolved from the php binary that loads it; macOS's
+# linker refuses undefined symbols unless told so.
+if(APPLE)
+  target_link_options(${PROJECT_NAME} PRIVATE -undefined dynamic_lookup)
+endif()
+
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 
 packageProject(

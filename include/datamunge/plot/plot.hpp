@@ -14,7 +14,11 @@ struct RGB {
   int r{31};
   int g{41};
   int b{55};
+  double alpha{1.0}; ///< opacity in [0, 1]; 1 is opaque
 };
+
+/// `RGBA{r, g, b, alpha}` reads better than `RGB{r, g, b, alpha}` for translucent colors.
+using RGBA = RGB;
 
 struct DataSeries {
   enum class Kind {
@@ -92,6 +96,8 @@ class Plot {
   const std::vector<ABLine>& reference_lines() const noexcept { return ablines_; }
   const std::vector<LegendEntry>& legend_entries() const noexcept { return legend_entries_; }
 
+  /// Renders the plot as a standalone SVG document and returns it as a string.
+  std::string to_svg() const;
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
   void view(const std::string& title_hint = "") const;
@@ -133,6 +139,23 @@ class Plot {
 class RPlot final : public Plot {
  public:
   static RPlot create();
+
+  /// Plot's setters, returning RPlot& so they chain with the RPlot verbs below.
+  RPlot& size(std::size_t width, std::size_t height);
+  RPlot& title(std::string value);
+  RPlot& x_label(std::string value);
+  RPlot& y_label(std::string value);
+  /// R-style aliases for x_label() / y_label().
+  RPlot& xlab(std::string value);
+  RPlot& ylab(std::string value);
+  RPlot& background(RGB color);
+  RPlot& axis_color(RGB color);
+  RPlot& grid_color(RGB color);
+  RPlot& show_grid(bool enabled = true);
+  RPlot& x_limits(double min_x, double max_x);
+  RPlot& y_limits(double min_y, double max_y);
+  RPlot& hide_axes(bool enabled = true);
+  RPlot& x_tick_labels(std::vector<std::string> labels);
 
   /// Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
   static RPlot plot(std::vector<double> x,
@@ -189,6 +212,9 @@ class RPlot final : public Plot {
                std::string         label = "",
                RGB                 color = {220, 38, 38},
                double              stroke_width = 2.0);
+  /// Unlabeled shorthands: `points(x, y, {r, g, b}, size)` / `lines(x, y, {r, g, b}, width)`.
+  RPlot& points(std::vector<double> x, std::vector<double> y, RGB color, double marker_size = 4.0);
+  RPlot& lines(std::vector<double> x, std::vector<double> y, RGB color, double stroke_width = 2.0);
   /// Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
   RPlot& bars(std::vector<double> x,
               std::vector<double> y,
@@ -237,6 +263,8 @@ class RLayout final {
   RLayout& add(const Plot& panel);
   RLayout& size(std::size_t width, std::size_t height);
 
+  /// Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+  std::string to_svg() const;
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
 

@@ -8,6 +8,12 @@
       inputs.systems.follows = "systems";
     };
     php-from-source.url = "path:./nix/flakes/php";
+    # SWIG fork used for every binding's wrapper generation (in place of nixpkgs' swig).
+    # To build against a local checkout instead, see DATAMUNGE_SWIG_SRC in .envrc / justfile.
+    swig = {
+      url = "github:jordanschupbach/swig";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -15,6 +21,7 @@
       nixpkgs,
       flake-utils,
       php-from-source,
+      swig,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -25,49 +32,93 @@
         has = builtins.hasAttr;
         nodePackages = if has "nodePackages" pkgs then pkgs.nodePackages else { };
         opt = cond: xs: lib.optionals cond xs;
+        # `pkgs` with nixpkgs' swig replaced by the fork, for the binding packages in nix/ (which
+        # take swig from `pkgs`). Only used there, so nothing else in nixpkgs gets rebuilt.
+        swigPkg = swig.packages.${system}.swig;
+        bindingPkgs = pkgs // { swig = swigPkg; };
         datamunge = import ./nix/datamunge.nix { inherit pkgs; };
         # The custom php-from-source flake only targets x86_64-linux; fall back to the
         # nixpkgs PHP (which supports darwin) on any host it doesn't provide.
         phpPackage =
           if has system php-from-source.packages then php-from-source.packages.${system} else pkgs.php;
         lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
+        # php-config/phpize for building the extension; nixpkgs' wrapped PHP keeps them in the
+        # unwrapped package's dev output.
+        phpDev = lib.optional (phpPackage ? unwrapped) phpPackage.unwrapped.dev;
+        # The prebuilt SDK: nixpkgs' source-built dotnet-sdk_10 doesn't build on aarch64-darwin.
+        dotnetSdk = pkgs.dotnetCorePackages.sdk_10_0-bin;
+
+        # Dev shells deliberately do NOT include the nix-built binding packages (pydatamunge,
+        # datamunger, datamungejs, ...). Every binding depends on the core `datamunge` package, so
+        # listing them here made each C++ edit rebuild every binding on the next direnv reload.
+        # Instead, shells only build the core, and each language finds the binding built in the
+        # working tree by `just build-<lang>`; rebuilding a binding is an explicit, manual step.
+        # (The nix binding packages are still exposed under `packages` and used by `checks` and
+        # the hermetic `docs-pages` shell.)
+        localBindingsHook = ''
+          datamungeRoot="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+          export DATAMUNGE_PREFIX="${datamunge}"
+          export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+
+          # just build-python: in-place editable install of src/pydatamunge
+          export PYTHONPATH="$datamungeRoot/src''${PYTHONPATH:+:}$PYTHONPATH"
+          # just build-r
+          export R_LIBS="$datamungeRoot/build/r/library''${R_LIBS:+:}$R_LIBS"
+          # just build-javascript: build/Release/datamungejs.node behind ./index.js
+          mkdir -p "$datamungeRoot/build/node_modules/@datamunge"
+          ln -sfn "$datamungeRoot" "$datamungeRoot/build/node_modules/@datamunge/datamungejs"
+          export NODE_PATH="$datamungeRoot/build/node_modules''${NODE_PATH:+:}$NODE_PATH"
+          # just build-ruby
+          export RUBYLIB="$datamungeRoot/src/octruby/lib''${RUBYLIB:+:}$RUBYLIB"
+          # just build-perl
+          export PERL5LIB="$datamungeRoot/build/perl/lib/perl5''${PERL5LIB:+:}$PERL5LIB"
+          # just build-tcl (space-separated list)
+          export TCLLIBPATH="$datamungeRoot/build/datamungetcl''${TCLLIBPATH:+ $TCLLIBPATH}"
+          # just build-lua (installs into build/lua/prefix)
+          export LUA_PATH="$datamungeRoot/build/lua/prefix/share/lua/?.lua;''${LUA_PATH:-;}"
+          export LUA_CPATH="$datamungeRoot/build/lua/prefix/lib/lua/?.so;$datamungeRoot/build/lua/prefix/lib64/lua/?.so;''${LUA_CPATH:-;}"
+          # just build-octave
+          export OCTAVE_PATH="$datamungeRoot/build/datamungeoctave''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+          # just build-guile (installs into build/guile/prefix)
+          guileVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)"
+          # (empty, not a failure, when guile-3.0.pc isn't on PKG_CONFIG_PATH -- as in the default shell)
+          guileVersion="''${guileVersion:-3.0}"
+          export GUILE_LOAD_PATH="$datamungeRoot/build/guile/prefix/share/guile/site/$guileVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+          export GUILE_EXTENSION_PATH="$datamungeRoot/build/guile/prefix/lib/guile/$guileVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+          # just install-ocaml
+          export OCAMLPATH="$datamungeRoot/build/ocaml/prefix/lib''${OCAMLPATH:+:}$OCAMLPATH"
+          # (the toplevel's `#require "datamungeocaml"` dlopens the stubs from here, and finds
+          # `#use "topfind"` through OCAMLTOP_INCLUDE_PATH)
+          export CAML_LD_LIBRARY_PATH="$datamungeRoot/build/ocaml/prefix/lib/stublibs''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
+          if command -v ocamlfind >/dev/null 2>&1; then
+            export OCAMLTOP_INCLUDE_PATH="$(dirname "$(ocamlfind query findlib)")''${OCAMLTOP_INCLUDE_PATH:+:}$OCAMLTOP_INCLUDE_PATH"
+          fi
+          # just prebuild-go: a workspace holding src/godatamunge, so `import "datamunge"` resolves
+          # from a Go program anywhere (a mepml block's temp file, say), linked against the core.
+          mkdir -p "$datamungeRoot/build/go"
+          printf 'go 1.21\n\nuse %s\n' "$datamungeRoot/src/godatamunge" > "$datamungeRoot/build/go/go.work"
+          export GOWORK="$datamungeRoot/build/go/go.work"
+          export CGO_CPPFLAGS="$(pkg-config --cflags datamunge)''${CGO_CPPFLAGS:+ $CGO_CPPFLAGS}"
+          export CGO_LDFLAGS="$(pkg-config --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)''${CGO_LDFLAGS:+ $CGO_LDFLAGS}"
+          # just build-java: the generated classes' jar, and the JNI library they load
+          export CLASSPATH="$datamungeRoot/src/jdatamunge/build/libs/jdatamunge.jar''${CLASSPATH:+:}$CLASSPATH"
+          export JDK_JAVA_OPTIONS="-Djava.library.path=$datamungeRoot/src/jdatamunge-datamunge/build/cmake''${JDK_JAVA_OPTIONS:+ $JDK_JAVA_OPTIONS}"
+          # just build-d: libdatamunge_wrap, which the generated D module dlopens by leaf name at
+          # startup. (macOS ignores LD_LIBRARY_PATH there; its fallback path can't shadow anything.)
+          case "$(uname -s)" in
+            Darwin) export DYLD_FALLBACK_LIBRARY_PATH="$datamungeRoot/build/d:''${DYLD_FALLBACK_LIBRARY_PATH:-$HOME/lib:/usr/local/lib:/usr/lib}" ;;
+            *) export LD_LIBRARY_PATH="$datamungeRoot/build/d''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" ;;
+          esac
+          # just build-php writes an ini loading the extension here (the leading ':' keeps PHP's
+          # own scan directory too)
+          export PHP_INI_SCAN_DIR=":$datamungeRoot/build/php/conf.d"
+        '';
 
         # {{{ Bindings
 
-        # Swig javascript next evolution
-        swig-jse = pkgs.stdenv.mkDerivation {
-
-          name = "swig-jse";
-
-          src = pkgs.fetchFromGitHub {
-            owner = "mmomtchev";
-            repo = "swig";
-            rev = "aa2e126a14c6456ab0e4b3b7bfd56c11c5a8dc02";
-            sha256 = "sha256-E/sfMQQb8DFT8kxQwlqy8/hFI/JXvJDbGp7MvwseJhs=";
-          };
-
-          buildInputs = [
-            pkgs.autoconf
-            pkgs.automake
-            pkgs.bison
-            pkgs.libtool
-            pkgs.pcre2
-          ];
-
-          buildPhase = ''
-            ./autogen.sh
-            ./configure --prefix=$out
-            make
-          '';
-
-          installPhase = ''
-            make install
-          '';
-
-        };
-
         pythonPkgs = pkgs.python3.pkgs;
         pydatamunge = import ./nix/pydatamunge.nix {
+          inherit datamunge;
           inherit (pkgs)
             lib
             stdenv
@@ -80,6 +131,7 @@
         };
 
         datamungejs = import ./nix/datamungejs.nix {
+          inherit datamunge;
           inherit (pkgs)
             lib
             buildNpmPackage
@@ -90,22 +142,25 @@
 
         datamunger = pkgs.rPackages.buildRPackage {
           name = "datamunger";
-          src = pkgs.lib.cleanSource ./.;
+          src = import ./nix/source.nix { inherit lib; };
           buildInputs = [
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.R
             pkgs.xorg.libX11.dev
+            datamunge
           ];
+          # Link the nix-built core instead of recompiling it here (see src/Makevars).
+          env.DATAMUNGE_USE_SYSTEM_LIB = "1";
         };
 
-        datamungetcl = import ./nix/datamungetcl.nix { pkgs = pkgs; };
-        octruby = import ./nix/octruby.nix { pkgs = pkgs; };
-        datamungelua = import ./nix/datamungelua.nix { pkgs = pkgs; };
-        datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = pkgs; };
-        datamungeguile = import ./nix/datamungeguile.nix { pkgs = pkgs; };
-        datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = pkgs; };
-        datamunged = import ./nix/datamunged.nix { pkgs = pkgs; };
+        datamungetcl = import ./nix/datamungetcl.nix { pkgs = bindingPkgs; };
+        octruby = import ./nix/octruby.nix { pkgs = bindingPkgs; };
+        datamungelua = import ./nix/datamungelua.nix { pkgs = bindingPkgs; };
+        datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = bindingPkgs; };
+        datamungeguile = import ./nix/datamungeguile.nix { pkgs = bindingPkgs; };
+        datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = bindingPkgs; };
+        datamunged = import ./nix/datamunged.nix { pkgs = bindingPkgs; };
 
         # }}} Bindings
 
@@ -607,7 +662,6 @@
             datamungeguile
             datamungeoctave
             datamunged
-            swig-jse
             ;
 
           rename-datamunge = pkgs.writeShellApplication {
@@ -638,6 +692,7 @@
             (pkgs.python3.withPackages (
               python-pkgs: with python-pkgs; [
                 python-lsp-server
+                numpy
               ]
             ))
 
@@ -647,8 +702,6 @@
             pkgs.just
             pkgs.jq
 
-            #
-            swig-jse
 
             # Core library + pkg-config visibility
             datamunge
@@ -656,35 +709,25 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.stdenv.cc
-            pkgs.swig
+            swigPkg
 
-            # Language runtimes + bindings for runnable examples
-            pydatamunge
-
-            datamungejs
+            # Language runtimes for runnable examples. The bindings themselves come from the
+            # working tree (`just build-<lang>`), not nix; see localBindingsHook.
             pkgs.nodejs
-
-            datamunger
             pkgs.R
-
-            octruby
             pkgs.ruby
-
             pkgs.perl
-
             phpPackage
-
-            datamungelua
             lua
-
-            datamungetcl
             pkgs.tcl
-
-            datamungeoctave
             pkgs.octave
-
-            datamungeguile
             pkgs.guile
+            pkgs.jdk
+            pkgs.ldc
+            dotnetSdk
+          ]
+          ++ phpDev
+          ++ [
 
             # For building/running OCaml + Go examples during export
             pkgs.ocamlPackages.ocaml
@@ -694,21 +737,7 @@
             pkgs.go
           ];
 
-          shellHook = ''
-            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-
-            # Octave: make the installed .m files discoverable.
-            export DATAMUNGE_PREFIX="${datamunge}"
-            export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-
-            # Guile: make the installed module + extension discoverable.
-            effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
-            if [ -z "$effectiveVersion" ]; then
-              effectiveVersion="3.0"
-            fi
-            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-          '';
+          shellHook = localBindingsHook;
         };
 
         devShells.format =
@@ -803,7 +832,7 @@
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.arrow-cpp
-            pkgs.swig
+            swigPkg
             pkgs.cling
             pkgs.doxygen
             pkgs.graphviz
@@ -823,7 +852,7 @@
             gradleWrapped
             pkgs.jdk
             pkgs.cmake
-            pkgs.swig
+            swigPkg
             pkgs.just
           ];
 
@@ -841,7 +870,6 @@
             pkgs.just
             (pkgs.python3.withPackages (
               python-pkgs: with python-pkgs; [
-                pydatamunge
                 ipython
                 pip
                 pytest
@@ -851,6 +879,7 @@
               ]
             ))
           ];
+          shellHook = localBindingsHook;
         };
 
         devShells.jsbuild = pkgs.mkShell {
@@ -867,7 +896,6 @@
 
         devShells.javascript = pkgs.mkShell {
           packages = [
-            datamungejs
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.python3
@@ -876,11 +904,11 @@
             pkgs.prefetch-npm-deps
             pkgs.nodePackages.npm
           ];
+          shellHook = localBindingsHook;
         };
 
         devShells.r = pkgs.mkShell {
           packages = [
-            datamunger
             pkgs.R
             pkgs.rPackages.testthat
             pkgs.pkg-config
@@ -888,21 +916,28 @@
             pkgs.xorg.libX11.dev
             pkgs.just
           ];
+          shellHook = localBindingsHook;
         };
 
         devShells.csharp = pkgs.mkShell {
           packages = [
             pkgs.cmake
-            pkgs.dotnet-sdk_10
+            dotnetSdk
+            pkgs.just
+          ]
+          # (neither builds on aarch64-darwin)
+          ++ opt pkgs.stdenv.isLinux [
             pkgs.mono
             pkgs.dotnet-repl
-            pkgs.just
           ];
         };
 
         devShells.php = pkgs.mkShell {
           packages = [
             phpPackage
+          ]
+          ++ phpDev
+          ++ [
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.cmake
@@ -949,7 +984,7 @@
             datamunged
             pkgs.dub
             pkgs.ldc
-            pkgs.swig
+            swigPkg
             pkgs.pkg-config
             pkgs.stdenv.cc
             pkgs.just
@@ -996,85 +1031,63 @@
         devShells.tcl = pkgs.mkShell {
           packages = [
             datamunge
-            datamungetcl
             pkgs.tcl
             pkgs.tk
             pkgs.arrow-cpp
-            pkgs.swig
+            swigPkg
             pkgs.cmake
             pkgs.pkg-config
             pkgs.just
           ];
 
-          shellHook = ''
-            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
-            export TCLLIBPATH="${datamungetcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
-          '';
+          shellHook = localBindingsHook;
         };
 
         devShells.ruby = pkgs.mkShell {
           packages = [
             datamunge
-            octruby
             pkgs.ruby
-            pkgs.swig
+            swigPkg
             pkgs.pkg-config
             pkgs.libxml2
             pkgs.just
           ];
 
-          shellHook = ''
-            export DATAMUNGE_PREFIX="${datamunge}"
-            export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
-          '';
+          shellHook = localBindingsHook;
         };
 
         devShells.octave = pkgs.mkShell {
           packages = [
             datamunge
-            datamungeoctave
             pkgs.octave
             pkgs.arrow-cpp
-            pkgs.swig
+            swigPkg
             pkgs.cmake
             pkgs.pkg-config
             pkgs.just
           ];
 
-          shellHook = ''
-            export DATAMUNGE_PREFIX="${datamunge}"
-            export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-          '';
+          shellHook = localBindingsHook;
         };
 
         devShells.lua = pkgs.mkShell {
           packages = [
             datamunge
-            datamungelua
             lua
             pkgs.arrow-cpp
-            pkgs.swig
+            swigPkg
             pkgs.cmake
             pkgs.pkg-config
             pkgs.just
           ];
 
-          shellHook = ''
-            luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
-            if [ -z "$luaVersion" ]; then
-              echo "Could not determine Lua version from _VERSION" >&2
-              ${lua}/bin/lua -e 'print("_VERSION=" .. tostring(_VERSION))' >&2
-              exit 1
-            fi
-            export LUA_PATH="${datamungelua}/share/lua/$luaVersion/?.lua;${datamungelua}/share/lua/?.lua;./?.lua;;"
-            export LUA_CPATH="${datamungelua}/lib/lua/$luaVersion/?.so;${datamungelua}/lib/lua/?.so;${datamungelua}/lib64/lua/$luaVersion/?.so;${datamungelua}/lib64/lua/?.so;;"
-          '';
+          shellHook = localBindingsHook;
         };
 
         devShells.ocaml = pkgs.mkShell {
           packages = [
             datamunge
-            pkgs.swig
+            swigPkg
             pkgs.pkg-config
             pkgs.stdenv.cc
             pkgs.gnumake
@@ -1098,24 +1111,15 @@
         devShells.guile = pkgs.mkShell {
           packages = [
             datamunge
-            datamungeguile
             pkgs.guile
             pkgs.arrow-cpp
-            pkgs.swig
+            swigPkg
             pkgs.cmake
             pkgs.pkg-config
             pkgs.just
           ];
 
-          shellHook = ''
-            effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
-            if [ -z "$effectiveVersion" ]; then
-              effectiveVersion="3.0"
-            fi
-
-            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-          '';
+          shellHook = localBindingsHook;
         };
 
         # The example reports contain only C++ and shell Babel blocks. Keep
@@ -1176,12 +1180,7 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.stdenv.cc
-            # swig-jse must win on PATH over stock pkgs.swig: prebuild-javascript/prebuild-r
-            # (invoked here via nested `nix develop .#cpp`, which doesn't itself provide a
-            # swig and so inherits whatever this shell put on PATH) need swig-jse-only flags
-            # like -typescript/-napi and generate swig-jse-specific R/JS codegen.
-            swig-jse
-            pkgs.swig
+            swigPkg
 
             # Language runtimes + bindings for runnable examples
             pydatamunge
