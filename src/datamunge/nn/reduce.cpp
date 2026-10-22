@@ -22,9 +22,13 @@ struct Packed {
   std::int64_t inner{1};
   Shape        out_shape;   // result shape honouring keepdims
   Shape        keep_shape;  // result shape with keepdims = true
+  /// When set, `data` is laid out [inner, outer] instead (reduced axes
+  /// leading, as in a per-channel reduction of NHWC data), with no copy.
+  bool columns{false};
 };
 
-Packed pack_for_reduce(const Tensor& x, const std::vector<std::int64_t>& axes, bool keepdims) {
+Packed pack_for_reduce(const Tensor& x, const std::vector<std::int64_t>& axes, bool keepdims,
+                       bool allow_columns = false) {
   const std::int64_t rank = x.dim();
   std::vector<bool>  reduced(static_cast<std::size_t>(rank), false);
   for (auto a : axes) reduced[static_cast<std::size_t>(a)] = true;
@@ -48,6 +52,13 @@ Packed pack_for_reduce(const Tensor& x, const std::vector<std::int64_t>& axes, b
   p.keep_shape = detail::keepdims_shape(x.shape(), axes);
   if (keepdims) p.out_shape = p.keep_shape;
   NoGradGuard guard;
+  bool        leading = !axes.empty();
+  for (std::size_t i = 0; i < axes.size(); ++i) leading = leading && axes[i] == static_cast<std::int64_t>(i);
+  if (allow_columns && leading && p.outer > 1 && x.is_contiguous()) {
+    p.data    = nograd(x);
+    p.columns = true;
+    return p;
+  }
   p.data = detail::make_view(nograd(x), perm_shape, perm_strides, x.offset()).contiguous();
   return p;
 }
@@ -58,12 +69,25 @@ Tensor fold_rows(const Packed& p, DType out_dtype, Acc init, Step step, Finish f
   Tensor   out = empty(p.out_shape, out_dtype);
   Out*     dst = out.data_ptr<Out>();
   const T* src = p.data.data_ptr<T>();
-  for (std::int64_t o = 0; o < p.outer; ++o) {
-    Acc      acc = init;
-    const T* row = src + o * p.inner;
-    for (std::int64_t i = 0; i < p.inner; ++i) acc = step(acc, row[i]);
-    dst[o] = static_cast<Out>(finish(acc, p.inner));
+  if (p.columns) {
+    // Stream the rows once, keeping one accumulator per kept element.
+    std::vector<Acc> acc(static_cast<std::size_t>(p.outer), init);
+    for (std::int64_t i = 0; i < p.inner; ++i) {
+      const T* row = src + i * p.outer;
+      for (std::int64_t o = 0; o < p.outer; ++o) acc[static_cast<std::size_t>(o)] = step(acc[static_cast<std::size_t>(o)], row[o]);
+    }
+    for (std::int64_t o = 0; o < p.outer; ++o) dst[o] = static_cast<Out>(finish(acc[static_cast<std::size_t>(o)], p.inner));
+    return out;
   }
+  parallel_for(0, p.outer, std::max<std::int64_t>(1, detail::kParallelGrain / std::max<std::int64_t>(p.inner, 1)),
+               [&](std::int64_t lo, std::int64_t hi) {
+                 for (std::int64_t o = lo; o < hi; ++o) {
+                   Acc      acc = init;
+                   const T* row = src + o * p.inner;
+                   for (std::int64_t i = 0; i < p.inner; ++i) acc = step(acc, row[i]);
+                   dst[o] = static_cast<Out>(finish(acc, p.inner));
+                 }
+               });
   return out;
 }
 
@@ -78,7 +102,7 @@ Tensor sum(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto  axes = detail::normalize_axes(axes_in, x.dim(), "sum");
   const DType dt   = x.dtype() == DType::Bool ? DType::Int64 : x.dtype();
   Tensor      xc   = as_dtype(x, dt);
-  Packed      p    = pack_for_reduce(xc, axes, keepdims);
+  Packed      p    = pack_for_reduce(xc, axes, keepdims, true);
   Tensor      out  = dispatch(dt, [&](auto tag) -> Tensor {
     using T = typename decltype(tag)::type;
     if constexpr (std::is_same<T, bool>::value) {
@@ -111,7 +135,7 @@ Tensor extremum(const Tensor& x, const Axes& axes_in, bool keepdims, const char*
   const auto axes = detail::normalize_axes(axes_in, x.dim(), name);
   for (auto a : axes)
     if (x.shape()[static_cast<std::size_t>(a)] == 0) throw std::invalid_argument(std::string(name) + ": empty axis");
-  Packed p   = pack_for_reduce(x, axes, keepdims);
+  Packed p   = pack_for_reduce(x, axes, keepdims, true);
   Tensor out = dispatch(x.dtype(), [&](auto tag) {
     using T = typename decltype(tag)::type;
     return fold_rows<T, T, T>(
@@ -147,7 +171,7 @@ Tensor prod(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto  axes = detail::normalize_axes(axes_in, x.dim(), "prod");
   const DType dt   = x.dtype() == DType::Bool ? DType::Int64 : x.dtype();
   Tensor      xc   = as_dtype(x, dt);
-  Packed      p    = pack_for_reduce(xc, axes, keepdims);
+  Packed      p    = pack_for_reduce(xc, axes, keepdims, true);
   Tensor      out  = dispatch(dt, [&](auto tag) -> Tensor {
     using T = typename decltype(tag)::type;
     if constexpr (std::is_same<T, bool>::value) {
@@ -235,7 +259,7 @@ template <bool IsAll>
 Tensor bool_reduce(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto  axes = detail::normalize_axes(axes_in, x.dim(), IsAll ? "all" : "any");
   NoGradGuard guard;
-  Packed      p = pack_for_reduce(detail::cast_raw(nograd(x), DType::Bool), axes, keepdims);
+  Packed      p = pack_for_reduce(detail::cast_raw(nograd(x), DType::Bool), axes, keepdims, true);
   return fold_rows<bool, bool, bool>(
       p, DType::Bool, IsAll, [](bool a, bool v) { return IsAll ? (a && v) : (a || v); },
       [](bool a, std::int64_t) { return a; });

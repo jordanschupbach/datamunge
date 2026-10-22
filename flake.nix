@@ -839,12 +839,16 @@
             pkgs.doctest
             pkgs.cmake
             pkgs.xorg.libX11.dev
+            # benchmarks/ (nn GEMM, conv and training benchmarks)
+            pkgs.gbenchmark
 
             # pkgs.nodejs
             # pkgs.prefetch-npm-deps
             # pkgs.nodePackages.npm
 
-          ];
+          ]
+          # CBLAS for datamunge::nn GEMM on Linux (macOS uses Accelerate).
+          ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ];
         };
 
         devShells.java = pkgs.mkShell {

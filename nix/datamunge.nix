@@ -18,7 +18,9 @@ let
       pkgs.clang
       pkgs.arrow-cpp
       pkgs.xorg.libX11.dev
-    ];
+    ]
+    # CBLAS for datamunge::nn GEMM (macOS uses the Accelerate framework instead).
+    ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ];
 
     cmakeFlags = [
       "-DCMAKE_CXX_COMPILER=clang++"

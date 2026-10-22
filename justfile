@@ -642,6 +642,14 @@ benchmark:
         --benchmark_out="benchmarks/results/$(date +%Y%m%d_%H%M%S).json"
     @echo "Results saved to benchmarks/results/"
 
+# Build and run the datamunge::nn speed benchmarks (GEMM, conv, pooling, batch norm, a cnn_mnist epoch).
+bench-nn *ARGS:
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --target nn_bench -j{{ JOBS }}"
+    mkdir -p benchmarks/results
+    ./build/benchmarks/nn_bench --benchmark_format=json --benchmark_out="benchmarks/results/nn_$(date +%Y%m%d_%H%M%S).json" \
+        --benchmark_out_format=json {{ ARGS }}
+
 benchmark-compare BASE NEW:
     @echo "Comparing {{ BASE }} vs {{ NEW }}"
     python3 build/benchmarks/_deps/benchmark-src/tools/compare.py benchmarks \

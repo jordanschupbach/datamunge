@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "datamunge/nn/conv.hpp"
 #include "datamunge/nn/params.hpp"
 #include "datamunge/nn/random.hpp"
 #include "datamunge/nn/tensor.hpp"
@@ -63,6 +64,75 @@ Tensor masked_mean(const Tensor& x, const Tensor& mask);
 Tensor layer_norm(ParameterStore& store, const std::string& name, const Tensor& x, double eps = 1e-5);
 /// y = gamma x / sqrt(mean(x^2) + eps) over the last axis; parameter "<name>/gamma".
 Tensor rms_norm(ParameterStore& store, const std::string& name, const Tensor& x, double eps = 1e-6);
+
+// ---- convolution and normalization layers ----------------------------------------------
+
+struct ConvLayerOptions {
+  std::int64_t stride{1};
+  std::int64_t dilation{1};
+  Padding      padding{Padding::Same};
+  Activation   activation{Activation::None};
+  bool         bias{true};
+  Initializer  init{init::glorot_uniform()};
+  double       alpha{0.2};  // LeakyReLU slope
+};
+
+/// act(conv2d(x, W) + b) for x [N, H, W, C]: W is "<name>/W" [k, k, C, filters],
+/// b is "<name>/b" [filters] (tflow's Conv2DLayer).
+Tensor conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+              std::int64_t kernel, const ConvLayerOptions& options = {});
+/// 1-D convolution of x [N, L, C]: W is "<name>/W" [1, k, C, filters] (tflow's Conv1DLayer layout).
+Tensor conv1d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+              std::int64_t kernel, const ConvLayerOptions& options = {});
+/// Depthwise convolution: W is "<name>/W" [k, k, C, multiplier], b "<name>/b" [C multiplier].
+Tensor depthwise_conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t multiplier,
+                        std::int64_t kernel, const ConvLayerOptions& options = {});
+/// Depthwise ("<name>/depthwise/W", no bias or activation) then a 1x1
+/// convolution ("<name>/pointwise/W", "<name>/pointwise/b") with the activation.
+Tensor separable_conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+                        std::int64_t kernel, const ConvLayerOptions& options = {}, std::int64_t multiplier = 1);
+/// Transposed convolution to `filters` channels: W is "<name>/W" [k, k, filters, C]
+/// (initialised with the fans of the forward [k, k, C, filters] kernel, as tflow does).
+/// The output is [N, H s, W s, filters] for SAME, [N, (H-1) s + k, ..] for VALID.
+Tensor conv2d_transpose(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+                        std::int64_t kernel, const ConvLayerOptions& options = {});
+
+struct BatchNormOptions {
+  double momentum{0.99};
+  double eps{1e-3};
+  /// Learn gamma ("<name>/gamma"); otherwise gamma is fixed at 1.
+  bool scale{true};
+  /// Learn beta ("<name>/beta"); otherwise beta is fixed at 0.
+  bool center{true};
+  /// Update the moving averages on a training-mode call. Turn off for extra
+  /// passes within one step (e.g. a GAN's second discriminator call), since TF
+  /// runs the update op once per step.
+  bool update_stats{true};
+};
+
+/// Batch normalization over every axis but the last (tflow's BatchNorm).
+/// While `training` it normalizes with the batch statistics and updates the
+/// moving averages "<name>/moving_mean" and "<name>/moving_var" in `stats`
+/// (a separate, non-trained store); otherwise it uses those averages.
+///   mean <- m mean + (1 - m) batch_mean,  var <- m var + (1 - m) batch_var (unbiased)
+Tensor batch_norm(ParameterStore& params, ParameterStore& stats, const std::string& name, const Tensor& x,
+                  bool training, const BatchNormOptions& options = {});
+
+/// Group normalization of x [N, H, W, C] over (H, W, C / groups) per example
+/// and group; "<name>/gamma" and "<name>/beta" are [C].
+Tensor group_norm(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t groups,
+                  double eps = 1e-5);
+/// Group norm with one group per channel.
+Tensor instance_norm(ParameterStore& store, const std::string& name, const Tensor& x, double eps = 1e-5);
+
+/// Noisy linear layer with factorised Gaussian noise (Fortunato et al. 2018):
+///   W = mu_W + sigma_W (f(e_in) f(e_out)^T) s,  b = mu_b + sigma_b f(e_out) s
+/// with f(e) = sign(e) sqrt|e|, fresh e ~ N(0, 1) from `noise` on every call
+/// and s = `noise_scale` (1 to explore, 0 for the mean weights). Parameters
+/// "<name>/mu_W", "<name>/sigma_W" [in, units], "<name>/mu_b", "<name>/sigma_b" [units].
+Tensor noisy_dense(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t units,
+                   Generator& noise, double noise_scale = 1.0, Activation activation = Activation::None,
+                   double sigma0 = 0.5);
 
 // ---- recurrent cells (one time step; unroll with a loop or `unroll`) -------------------
 

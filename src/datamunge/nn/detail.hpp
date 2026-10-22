@@ -13,6 +13,7 @@
 
 #include "datamunge/nn/autograd.hpp"
 #include "datamunge/nn/ops.hpp"
+#include "datamunge/nn/parallel.hpp"
 #include "datamunge/nn/tensor.hpp"
 
 namespace datamunge::nn::detail {
@@ -125,6 +126,37 @@ void strided_rows(const Shape& shape, const std::array<const Shape*, K>& strides
   }
 }
 
+/// Elementwise kernels run in parallel above this many elements.
+constexpr std::int64_t kParallelGrain = 32768;
+
+/// strided_rows split over the leading axis across threads (f must be thread-safe).
+template <std::size_t K, typename F>
+void parallel_strided_rows(const Shape& shape, const std::array<const Shape*, K>& strides,
+                           std::array<std::int64_t, K> base, F&& f) {
+  const std::int64_t n = shape_numel(shape);
+  if (shape.empty() || n < 2 * kParallelGrain || shape[0] < 2) {
+    strided_rows<K>(shape, strides, base, f);
+    return;
+  }
+  const std::int64_t per_row = n / shape[0];
+  parallel_for(0, shape[0], std::max<std::int64_t>(1, kParallelGrain / std::max<std::int64_t>(per_row, 1)),
+               [&](std::int64_t lo, std::int64_t hi) {
+                 Shape sub = shape;
+                 sub[0]    = hi - lo;
+                 std::array<std::int64_t, K> off = base;
+                 for (std::size_t k = 0; k < K; ++k) off[k] += lo * (*strides[k])[0];
+                 strided_rows<K>(sub, strides, off, f);
+               });
+}
+
+/// out[i] = f(i) for i in [0, n), in parallel for large n.
+template <typename F>
+void parallel_elements(std::int64_t n, F&& f) {
+  parallel_for(0, n, kParallelGrain, [&](std::int64_t lo, std::int64_t hi) {
+    for (std::int64_t i = lo; i < hi; ++i) f(i);
+  });
+}
+
 template <typename T>
 T* raw_data(const Tensor& t) {
   return reinterpret_cast<T*>(t.impl()->storage->bytes.get());
@@ -138,14 +170,13 @@ Tensor map_unary(const Tensor& x, DType out_dtype, F&& f) {
   Out*       dst = out.data_ptr<Out>();
   const In*  src = raw_data<In>(x);
   if (x.is_contiguous()) {
-    const In*          s = src + x.offset();
-    const std::int64_t n = x.numel();
-    for (std::int64_t i = 0; i < n; ++i) dst[i] = f(s[i]);
+    const In* s = src + x.offset();
+    parallel_elements(x.numel(), [&](std::int64_t i) { dst[i] = f(s[i]); });
     return out;
   }
   const Shape                         out_strides = contiguous_strides(x.shape());
   const std::array<const Shape*, 2> st{&out_strides, &x.strides()};
-  strided_rows<2>(x.shape(), st, {0, x.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
+  parallel_strided_rows<2>(x.shape(), st, {0, x.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
     for (std::int64_t j = 0; j < n; ++j) dst[off[0] + j] = f(src[off[1] + j * step[1]]);
   });
   return out;
@@ -161,24 +192,28 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
   const In*   pa    = raw_data<In>(a);
   const In*   pb    = raw_data<In>(b);
   if (a.shape() == shape && b.shape() == shape && a.is_contiguous() && b.is_contiguous()) {
-    const In*          sa = pa + a.offset();
-    const In*          sb = pb + b.offset();
-    const std::int64_t n  = out.numel();
-    for (std::int64_t i = 0; i < n; ++i) dst[i] = f(sa[i], sb[i]);
+    const In* sa = pa + a.offset();
+    const In* sb = pb + b.offset();
+    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], sb[i]); });
     return out;
   }
   if (b.numel() == 1 && a.shape() == shape && a.is_contiguous()) {
-    const In           vb = pb[b.offset()];
-    const In*          sa = pa + a.offset();
-    const std::int64_t n  = out.numel();
-    for (std::int64_t i = 0; i < n; ++i) dst[i] = f(sa[i], vb);
+    const In  vb = pb[b.offset()];
+    const In* sa = pa + a.offset();
+    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], vb); });
+    return out;
+  }
+  if (a.numel() == 1 && b.shape() == shape && b.is_contiguous()) {
+    const In  va = pa[a.offset()];
+    const In* sb = pb + b.offset();
+    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(va, sb[i]); });
     return out;
   }
   const Shape                         out_strides = contiguous_strides(shape);
   const Shape                         sa          = broadcast_strides(a, shape);
   const Shape                         sb          = broadcast_strides(b, shape);
   const std::array<const Shape*, 3> st{&out_strides, &sa, &sb};
-  strided_rows<3>(shape, st, {0, a.offset(), b.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
+  parallel_strided_rows<3>(shape, st, {0, a.offset(), b.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
     for (std::int64_t j = 0; j < n; ++j) dst[off[0] + j] = f(pa[off[1] + j * step[1]], pb[off[2] + j * step[2]]);
   });
   return out;

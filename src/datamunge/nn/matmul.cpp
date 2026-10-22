@@ -1,18 +1,22 @@
 // Matrix products.
 
 #include "detail.hpp"
+#include "gemm.hpp"
+#include "datamunge/nn/parallel.hpp"
 
 namespace datamunge::nn {
 
 using detail::as_dtype;
 using detail::dispatch;
+using detail::dispatch_float;
+using detail::gemm;
 using detail::nograd;
 
 namespace {
 
 using Grads = std::vector<Tensor>;
 
-/// C[b] = A[b] @ B[b] for packed [batch, m, k] and [batch, k, n] blocks.
+/// C[b] = A[b] @ B[b] for packed [batch, m, k] and [batch, k, n] blocks (integer dtypes).
 template <typename T>
 void gemm_batched(const T* a, const T* b, T* c, std::int64_t batch, std::int64_t m, std::int64_t k, std::int64_t n) {
   using Acc = typename std::conditional<std::is_integral<T>::value, std::int64_t, T>::type;
@@ -45,30 +49,71 @@ Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a, bool transpose
 
   Tensor out;
   {
-    NoGradGuard  guard;
-    const Tensor av = transpose_a ? swapaxes(nograd(ac), -1, -2) : nograd(ac);
-    const Tensor bv = transpose_b ? swapaxes(nograd(bc), -1, -2) : nograd(bc);
-    const std::int64_t m = av.shape()[av.shape().size() - 2], k = av.shape().back();
-    const std::int64_t k2 = bv.shape()[bv.shape().size() - 2], n = bv.shape().back();
+    NoGradGuard        guard;
+    const Shape&       sa_in = ac.shape();
+    const Shape&       sb_in = bc.shape();
+    const std::size_t  ra = sa_in.size(), rb = sb_in.size();
+    // Stored (untransposed) matrix shapes.
+    const std::int64_t ar = sa_in[ra - 2], acn = sa_in[ra - 1];
+    const std::int64_t br = sb_in[rb - 2], bcn = sb_in[rb - 1];
+    const std::int64_t m = transpose_a ? acn : ar, k = transpose_a ? ar : acn;
+    const std::int64_t k2 = transpose_b ? bcn : br, n = transpose_b ? br : bcn;
     if (k != k2)
-      throw std::invalid_argument("matmul: inner dimensions differ: " + shape_str(av.shape()) + " @ " +
-                                  shape_str(bv.shape()) + (transpose_a || transpose_b ? " (after transposes)" : ""));
-    const Shape batch_a(av.shape().begin(), av.shape().end() - 2);
-    const Shape batch_b(bv.shape().begin(), bv.shape().end() - 2);
+      throw std::invalid_argument("matmul: inner dimensions differ: " + shape_str(sa_in) + " @ " + shape_str(sb_in) +
+                                  (transpose_a || transpose_b ? " (after transposes)" : ""));
+    const Shape batch_a(sa_in.begin(), sa_in.end() - 2);
+    const Shape batch_b(sb_in.begin(), sb_in.end() - 2);
     const Shape batch = broadcast_shapes(batch_a, batch_b);
-    Shape       sa = batch, sb = batch, so = batch;
-    sa.insert(sa.end(), {m, k});
-    sb.insert(sb.end(), {k, n});
+    Shape       so    = batch;
     so.insert(so.end(), {m, n});
-    const Tensor pa = broadcast_to(av, sa).contiguous();
-    const Tensor pb = broadcast_to(bv, sb).contiguous();
-    out             = empty(so, dt);
+    out                   = empty(so, dt);
     const std::int64_t nb = shape_numel(batch);
-    dispatch(dt, [&](auto tag) {
-      using T = typename decltype(tag)::type;
-      if constexpr (!std::is_same<T, bool>::value)
-        gemm_batched<T>(pa.data_ptr<T>(), pb.data_ptr<T>(), out.data_ptr<T>(), nb, m, k, n);
-    });
+
+    if (dt == DType::Float32 || dt == DType::Float64) {
+      dispatch_float(dt, "matmul", [&](auto tag) {
+        using T = typename decltype(tag)::type;
+        T* pc   = out.data_ptr<T>();
+        if (shape_numel(batch_b) == 1 && !transpose_a && batch_a == batch) {
+          // [..., m, k] @ [k, n]: fold the batch into the rows of one GEMM.
+          const Tensor pa = nograd(ac).contiguous();
+          const Tensor pb = nograd(bc).contiguous();
+          gemm(false, transpose_b, nb * m, n, k, T(1), pa.data_ptr<T>(), k, pb.data_ptr<T>(), transpose_b ? k : n,
+               T(0), pc, n);
+          return;
+        }
+        Shape fa = batch, fb = batch;
+        fa.insert(fa.end(), {ar, acn});
+        fb.insert(fb.end(), {br, bcn});
+        const Tensor pa = batch_a == batch ? nograd(ac).contiguous() : broadcast_to(nograd(ac), fa).contiguous();
+        const Tensor pb = batch_b == batch ? nograd(bc).contiguous() : broadcast_to(nograd(bc), fb).contiguous();
+        const T*     da = pa.data_ptr<T>();
+        const T*     db = pb.data_ptr<T>();
+        const auto   one = [&](std::int64_t p) {
+          gemm(transpose_a, transpose_b, m, n, k, T(1), da + p * ar * acn, acn, db + p * br * bcn, bcn, T(0),
+               pc + p * m * n, n);
+        };
+        // Many small matrices: spread the batch over threads (each GEMM then runs serially).
+        if (nb > 1 && m * n * k < (1 << 15))
+          parallel_for(0, nb, 1, [&](std::int64_t lo, std::int64_t hi) {
+            for (std::int64_t p = lo; p < hi; ++p) one(p);
+          });
+        else
+          for (std::int64_t p = 0; p < nb; ++p) one(p);
+      });
+    } else {
+      const Tensor av = transpose_a ? swapaxes(nograd(ac), -1, -2) : nograd(ac);
+      const Tensor bv = transpose_b ? swapaxes(nograd(bc), -1, -2) : nograd(bc);
+      Shape        sa = batch, sb = batch;
+      sa.insert(sa.end(), {m, k});
+      sb.insert(sb.end(), {k, n});
+      const Tensor pa = broadcast_to(av, sa).contiguous();
+      const Tensor pb = broadcast_to(bv, sb).contiguous();
+      dispatch(dt, [&](auto tag) {
+        using T = typename decltype(tag)::type;
+        if constexpr (!std::is_same<T, bool>::value)
+          gemm_batched<T>(pa.data_ptr<T>(), pb.data_ptr<T>(), out.data_ptr<T>(), nb, m, k, n);
+      });
+    }
   }
   SavedTensor sa(ac), sb(bc);
   const bool  need_a = ac.requires_grad(), need_b = bc.requires_grad();
