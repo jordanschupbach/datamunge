@@ -64,3 +64,4 @@ tmp/
 # figures mep copies into place for mepml blocks with file= (scripts/org_to_mepml.py)
 examples/mepml/figures/
 plans/
+/output/

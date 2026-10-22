@@ -16,6 +16,13 @@ namespace datamunge::image::detail {
 ///        output, a Adler-32 mismatch, or a final size that doesn't match @p expected_size.
 [[nodiscard]] std::vector<unsigned char> zlib_decompress(const std::vector<unsigned char>& compressed, std::size_t expected_size);
 
+/// @brief Decompresses a raw DEFLATE (RFC 1951) stream of @p size bytes -- no zlib header or
+///        trailer -- into exactly @p expected_size bytes. This is the payload format of gzip
+///        members and of ZIP entries using method 8. Throws std::runtime_error on any format
+///        violation or a size mismatch.
+[[nodiscard]] std::vector<unsigned char> deflate_decompress(const unsigned char* data, std::size_t size,
+                                                            std::size_t expected_size);
+
 /// @brief Compresses @p data into a valid zlib stream using ONLY DEFLATE "stored"
 ///        (uncompressed) blocks -- no Huffman coding or LZ77 matching, so this produces no
 ///        actual compression (roughly a 5-byte-per-64KB-block overhead over the input size).

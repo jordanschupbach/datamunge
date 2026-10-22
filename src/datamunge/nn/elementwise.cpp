@@ -560,7 +560,8 @@ Tensor elu(const Tensor& x, double alpha) {
   record(
       "Elu", {xf}, {out},
       [sx, alpha](const Grads& g, const Grads& o) {
-        return Grads{where(greater(sx.get(), 0.0), g[0], mul(g[0], add(o[0], alpha)))};
+        // x >= 0 takes the linear branch, as TF EluGrad does at x = 0.
+        return Grads{where(greater_equal(sx.get(), 0.0), g[0], mul(g[0], add(o[0], alpha)))};
       },
       true);
   return out;
@@ -578,7 +579,8 @@ Tensor selu(const Tensor& x) {
   record(
       "Selu", {xf}, {out},
       [sx](const Grads& g, const Grads& o) {
-        return Grads{where(greater(sx.get(), 0.0), mul(g[0], scale), mul(g[0], add(o[0], scale * alpha)))};
+        // x >= 0 takes the linear branch, as TF SeluGrad does at x = 0.
+        return Grads{where(greater_equal(sx.get(), 0.0), mul(g[0], scale), mul(g[0], add(o[0], scale * alpha)))};
       },
       true);
   return out;
