@@ -16,6 +16,22 @@ namespace {
 
 using Grads = std::vector<Tensor>;
 
+// Index the original packed batch without materializing broadcast copies.
+// Matching/singleton batches bypass this helper in the common paths below.
+std::int64_t batch_matrix_index(std::int64_t flat, const Shape& batch, const Shape& source) {
+  std::int64_t index = 0, stride = 1;
+  for (std::size_t axis = batch.size(); axis-- > 0;) {
+    const auto coordinate = flat % batch[axis];
+    flat /= batch[axis];
+    if (axis + source.size() >= batch.size()) {
+      const auto size = source[axis + source.size() - batch.size()];
+      if (size != 1) index += coordinate * stride;
+      stride *= size;
+    }
+  }
+  return index;
+}
+
 /// C[b] = A[b] @ B[b] for packed [batch, m, k] and [batch, k, n] blocks (integer dtypes).
 template <typename T>
 void gemm_batched(const T* a, const T* b, T* c, std::int64_t batch, std::int64_t m, std::int64_t k, std::int64_t n) {
@@ -73,24 +89,28 @@ Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a, bool transpose
       dispatch_float(dt, "matmul", [&](auto tag) {
         using T = typename decltype(tag)::type;
         T* pc   = out.data_ptr<T>();
+        if (nb == 0 || m == 0 || n == 0) return;
         if (shape_numel(batch_b) == 1 && !transpose_a && batch_a == batch) {
           // [..., m, k] @ [k, n]: fold the batch into the rows of one GEMM.
-          const Tensor pa = nograd(ac).contiguous();
-          const Tensor pb = nograd(bc).contiguous();
+          const Tensor pa = ac.contiguous();
+          const Tensor pb = bc.contiguous();
           gemm(false, transpose_b, nb * m, n, k, T(1), pa.data_ptr<T>(), k, pb.data_ptr<T>(), transpose_b ? k : n,
                T(0), pc, n);
           return;
         }
-        Shape fa = batch, fb = batch;
-        fa.insert(fa.end(), {ar, acn});
-        fb.insert(fb.end(), {br, bcn});
-        const Tensor pa = batch_a == batch ? nograd(ac).contiguous() : broadcast_to(nograd(ac), fa).contiguous();
-        const Tensor pb = batch_b == batch ? nograd(bc).contiguous() : broadcast_to(nograd(bc), fb).contiguous();
-        const T*     da = pa.data_ptr<T>();
-        const T*     db = pb.data_ptr<T>();
-        const auto   one = [&](std::int64_t p) {
-          gemm(transpose_a, transpose_b, m, n, k, T(1), da + p * ar * acn, acn, db + p * br * bcn, bcn, T(0),
-               pc + p * m * n, n);
+        const bool shared_a = shape_numel(batch_a) == 1;
+        const bool shared_b = shape_numel(batch_b) == 1;
+        const bool matching_a = batch_a == batch, matching_b = batch_b == batch;
+        // Pack each original operand once. Partial broadcasting only changes
+        // matrix offsets, keeping reused matrices hot without expanded buffers.
+        const Tensor pa = ac.contiguous(), pb = bc.contiguous();
+        const T* da = pa.data_ptr<T>();
+        const T* db = pb.data_ptr<T>();
+        const auto one = [&](std::int64_t p) {
+          const auto ai = shared_a ? 0 : matching_a ? p : batch_matrix_index(p, batch, batch_a);
+          const auto bi = shared_b ? 0 : matching_b ? p : batch_matrix_index(p, batch, batch_b);
+          gemm(transpose_a, transpose_b, m, n, k, T(1), da + ai * ar * acn, acn,
+               db + bi * br * bcn, bcn, T(0), pc + p * m * n, n);
         };
         // Many small matrices: spread the batch over threads (each GEMM then runs serially).
         if (nb > 1 && m * n * k < (1 << 15))

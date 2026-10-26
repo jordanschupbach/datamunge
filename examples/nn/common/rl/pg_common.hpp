@@ -8,6 +8,7 @@
 // tensor (eager) instead of adding graph nodes, ObsMatrix/IntVector return
 // nn::Tensor (actions as int64), and TF hardware options are ignored.
 #pragma once
+#include "common/runtime.hpp"
 
 #include <cmath>
 #include <cstdint>
@@ -65,6 +66,14 @@ inline void ParsePgConfig(int argc, char** argv, PgConfig* c) {
     else if (key == "eval_every") c->eval_every = static_cast<int>(v);
     else if (key == "seed") c->seed = static_cast<uint64_t>(v);
     else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->n_envs = std::min(c->n_envs, 4);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    example_runtime::Describe();
   }
 }
 

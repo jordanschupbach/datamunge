@@ -3842,203 +3842,205 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__image__HSV swig_types[124]
 #define SWIGTYPE_p_datamunge__image__Image swig_types[125]
 #define SWIGTYPE_p_datamunge__image__Pixel swig_types[126]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[127]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[128]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[129]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[163]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[164]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[165]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[166]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[167]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[168]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[169]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[170]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[171]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[172]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[173]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[174]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[175]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[176]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[177]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[178]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[179]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[180]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[181]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[182]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[183]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[184]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[185]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[186]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[187]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[188]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[189]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[190]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[191]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[192]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[193]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[194]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[195]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[196]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[197]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[198]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[199]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[200]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[201]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[202]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[203]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[204]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[205]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[206]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[207]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[208]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[209]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[210]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[211]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[212]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[213]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[214]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[215]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[216]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[217]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[218]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[219]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[220]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[221]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[222]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[223]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[224]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[225]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[226]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[227]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[228]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[229]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[230]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[231]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[232]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[233]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[234]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[235]
-#define SWIGTYPE_p_difference_type swig_types[236]
-#define SWIGTYPE_p_first_type swig_types[237]
-#define SWIGTYPE_p_int swig_types[238]
-#define SWIGTYPE_p_long_long swig_types[239]
-#define SWIGTYPE_p_p_PyObject swig_types[240]
-#define SWIGTYPE_p_second_type swig_types[241]
-#define SWIGTYPE_p_short swig_types[242]
-#define SWIGTYPE_p_signed_char swig_types[243]
-#define SWIGTYPE_p_size_type swig_types[244]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[245]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[246]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[247]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[248]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[249]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[250]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[251]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[252]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[253]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[254]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[255]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[256]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[257]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[258]
-#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[259]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__ABLine_t swig_types[260]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__DataSeries_t swig_types[261]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__LegendEntry_t swig_types[262]
-#define SWIGTYPE_p_std__allocatorT_datamunge__plot__RGB_t swig_types[263]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[264]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[265]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[266]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[267]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[268]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[269]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[270]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[271]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[272]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[273]
-#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[274]
-#define SWIGTYPE_p_std__invalid_argument swig_types[275]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[276]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[277]
-#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[278]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[279]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[280]
-#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[281]
-#define SWIGTYPE_p_std__string swig_types[282]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[283]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[284]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[285]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[286]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[287]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[288]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[289]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[290]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[291]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[292]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[293]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[294]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[295]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[296]
-#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[297]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[298]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[299]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[300]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[301]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[302]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[303]
-#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[304]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[305]
-#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[306]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[307]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[308]
-#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[309]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[310]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[311]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[312]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[313]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[314]
-#define SWIGTYPE_p_unsigned_char swig_types[315]
-#define SWIGTYPE_p_unsigned_int swig_types[316]
-#define SWIGTYPE_p_unsigned_long_long swig_types[317]
-#define SWIGTYPE_p_unsigned_short swig_types[318]
-#define SWIGTYPE_p_value_type swig_types[319]
-#define SWIGTYPE_p_vertex_type swig_types[320]
-#define SWIGTYPE_p_weight_type swig_types[321]
-static swig_type_info *swig_types[323];
-static swig_module_info swig_module = {swig_types, 322, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__nn__NnModel swig_types[127]
+#define SWIGTYPE_p_datamunge__nn__NnTensor swig_types[128]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[129]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[130]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[131]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[175]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[176]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[177]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[178]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[179]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[180]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[181]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[182]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[183]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[184]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[185]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[186]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[187]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[188]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[189]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[190]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[191]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[192]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[193]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[194]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[195]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[196]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[197]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[198]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[199]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[200]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[201]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[202]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[203]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[204]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[205]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[206]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[207]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[208]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[209]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[210]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[211]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[212]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[213]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[214]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[215]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[216]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[217]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[218]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[219]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[220]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[221]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[222]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[223]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[224]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[225]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[226]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[227]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[228]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[229]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[230]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[231]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[232]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[233]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[234]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[235]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[236]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[237]
+#define SWIGTYPE_p_difference_type swig_types[238]
+#define SWIGTYPE_p_first_type swig_types[239]
+#define SWIGTYPE_p_int swig_types[240]
+#define SWIGTYPE_p_long_long swig_types[241]
+#define SWIGTYPE_p_p_PyObject swig_types[242]
+#define SWIGTYPE_p_second_type swig_types[243]
+#define SWIGTYPE_p_short swig_types[244]
+#define SWIGTYPE_p_signed_char swig_types[245]
+#define SWIGTYPE_p_size_type swig_types[246]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[247]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[248]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[249]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[250]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[251]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[252]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[253]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[254]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[255]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[256]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[257]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[258]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[259]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[260]
+#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[261]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__ABLine_t swig_types[262]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__DataSeries_t swig_types[263]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__LegendEntry_t swig_types[264]
+#define SWIGTYPE_p_std__allocatorT_datamunge__plot__RGB_t swig_types[265]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[266]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[267]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[268]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[269]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[270]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[271]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[272]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[273]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[274]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[275]
+#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[276]
+#define SWIGTYPE_p_std__invalid_argument swig_types[277]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[278]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[279]
+#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[280]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[281]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[282]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[283]
+#define SWIGTYPE_p_std__string swig_types[284]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[285]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[286]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[287]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[288]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[289]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[290]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[291]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[292]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[293]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[294]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[295]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[296]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[297]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[298]
+#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[299]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[300]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[301]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[302]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[303]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[304]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[305]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[306]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[307]
+#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[308]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[309]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[310]
+#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[311]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[312]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[313]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[314]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[315]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[316]
+#define SWIGTYPE_p_unsigned_char swig_types[317]
+#define SWIGTYPE_p_unsigned_int swig_types[318]
+#define SWIGTYPE_p_unsigned_long_long swig_types[319]
+#define SWIGTYPE_p_unsigned_short swig_types[320]
+#define SWIGTYPE_p_value_type swig_types[321]
+#define SWIGTYPE_p_vertex_type swig_types[322]
+#define SWIGTYPE_p_weight_type swig_types[323]
+static swig_type_info *swig_types[325];
+static swig_module_info swig_module = {swig_types, 324, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -9192,6 +9194,10 @@ SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_da
 SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_datamunge_algebra_Complex_Sg__erase__SWIG_1(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator first,std::vector< datamunge::algebra::Complex >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::algebra::Complex >::iterator std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_0(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator pos,std::vector< datamunge::algebra::Complex >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_algebra_Complex_Sg__insert__SWIG_1(std::vector< datamunge::algebra::Complex > *self,std::vector< datamunge::algebra::Complex >::iterator pos,std::vector< datamunge::algebra::Complex >::size_type n,std::vector< datamunge::algebra::Complex >::value_type const &x){ self->insert(pos, n, x); }
+
+  #include "datamunge/nn/api.hpp"
+
+SWIGINTERN std::string datamunge_nn_NnTensor___repr__(datamunge::nn::NnTensor const *self){ return self->str(); }
 
 
 /* ---------------------------------------------------
@@ -201661,6 +201667,7106 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_new_NnTensor__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
+  {
+    try {
+      result = (datamunge::nn::NnTensor *)new datamunge::nn::NnTensor();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_NnTensor__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_NnTensor" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_NnTensor" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_NnTensor" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_NnTensor" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_NnTensor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_NnTensor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = (datamunge::nn::NnTensor *)new datamunge::nn::NnTensor((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< int,std::allocator< int > > const &)*arg2,(std::string const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_NnTensor__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_NnTensor" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_NnTensor" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_NnTensor" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_NnTensor" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (datamunge::nn::NnTensor *)new datamunge::nn::NnTensor((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_NnTensor(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_NnTensor", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 0) {
+    return _wrap_new_NnTensor__SWIG_0(self, argc, argv);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_NnTensor__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_new_NnTensor__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_NnTensor'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::NnTensor()\n"
+    "    datamunge::nn::NnTensor::NnTensor(std::vector< double,std::allocator< double > > const &,std::vector< int,std::allocator< int > > const &,std::string const &)\n"
+    "    datamunge::nn::NnTensor::NnTensor(std::vector< double,std::allocator< double > > const &,std::vector< int,std::allocator< int > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_zeros__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_zeros" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_zeros" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_zeros" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_zeros" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::zeros((std::vector< int,std::allocator< int > > const &)*arg1,(std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_zeros__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_zeros" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_zeros" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::zeros((std::vector< int,std::allocator< int > > const &)*arg1);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_zeros(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_zeros", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_zeros__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_zeros__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_zeros'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::zeros(std::vector< int,std::allocator< int > > const &,std::string const &)\n"
+    "    datamunge::nn::NnTensor::zeros(std::vector< int,std::allocator< int > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_ones__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_ones" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_ones" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_ones" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_ones" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::ones((std::vector< int,std::allocator< int > > const &)*arg1,(std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_ones__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_ones" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_ones" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::ones((std::vector< int,std::allocator< int > > const &)*arg1);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_ones(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_ones", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_ones__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_ones__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_ones'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::ones(std::vector< int,std::allocator< int > > const &,std::string const &)\n"
+    "    datamunge::nn::NnTensor::ones(std::vector< int,std::allocator< int > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_full__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  double arg2 ;
+  std::string *arg3 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_full" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_full" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_full" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnTensor_full" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_full" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::full((std::vector< int,std::allocator< int > > const &)*arg1,arg2,(std::string const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_full__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  double arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_full" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_full" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_full" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = datamunge::nn::NnTensor::full((std::vector< int,std::allocator< int > > const &)*arg1,arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_full(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_full", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_full__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_NnTensor_full__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_full'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::full(std::vector< int,std::allocator< int > > const &,double,std::string const &)\n"
+    "    datamunge::nn::NnTensor::full(std::vector< int,std::allocator< int > > const &,double)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_arange__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  std::string *arg4 = 0 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "NnTensor_arange" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_arange" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_arange" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnTensor_arange" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_arange" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::arange(arg1,arg2,arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_arange__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "NnTensor_arange" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_arange" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_arange" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = datamunge::nn::NnTensor::arange(arg1,arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_arange__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "NnTensor_arange" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_arange" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = datamunge::nn::NnTensor::arange(arg1,arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_arange(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_arange", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_arange__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_arange__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnTensor_arange__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_arange'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::arange(double,double,double,std::string const &)\n"
+    "    datamunge::nn::NnTensor::arange(double,double,double)\n"
+    "    datamunge::nn::NnTensor::arange(double,double)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_randn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::string *arg5 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_randn" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_randn" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_randn" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "NnTensor_randn" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_randn" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::randn((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3,arg4,(std::string const &)*arg5);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_randn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  double arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_randn" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_randn" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_randn" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    try {
+      result = datamunge::nn::NnTensor::randn((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3,arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_randn__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_randn" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_randn" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = datamunge::nn::NnTensor::randn((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_randn__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_randn" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_randn" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  {
+    try {
+      result = datamunge::nn::NnTensor::randn((std::vector< int,std::allocator< int > > const &)*arg1,arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_randn(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_randn", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_randn__SWIG_3(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_randn__SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_NnTensor_randn__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_NnTensor_randn__SWIG_0(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_randn'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::randn(std::vector< int,std::allocator< int > > const &,unsigned int,double,double,std::string const &)\n"
+    "    datamunge::nn::NnTensor::randn(std::vector< int,std::allocator< int > > const &,unsigned int,double,double)\n"
+    "    datamunge::nn::NnTensor::randn(std::vector< int,std::allocator< int > > const &,unsigned int,double)\n"
+    "    datamunge::nn::NnTensor::randn(std::vector< int,std::allocator< int > > const &,unsigned int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_uniform__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::string *arg5 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_uniform" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_uniform" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_uniform" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "NnTensor_uniform" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_uniform" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::uniform((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3,arg4,(std::string const &)*arg5);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_uniform__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  double arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_uniform" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_uniform" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_uniform" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    try {
+      result = datamunge::nn::NnTensor::uniform((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3,arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_uniform__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  double arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_uniform" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_uniform" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = datamunge::nn::NnTensor::uniform((std::vector< int,std::allocator< int > > const &)*arg1,arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_uniform__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  unsigned int arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_uniform" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_uniform" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  {
+    try {
+      result = datamunge::nn::NnTensor::uniform((std::vector< int,std::allocator< int > > const &)*arg1,arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_uniform(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_uniform", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_uniform__SWIG_3(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_uniform__SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_NnTensor_uniform__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< int,std::allocator< int > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_NnTensor_uniform__SWIG_0(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_uniform'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::uniform(std::vector< int,std::allocator< int > > const &,unsigned int,double,double,std::string const &)\n"
+    "    datamunge::nn::NnTensor::uniform(std::vector< int,std::allocator< int > > const &,unsigned int,double,double)\n"
+    "    datamunge::nn::NnTensor::uniform(std::vector< int,std::allocator< int > > const &,unsigned int,double)\n"
+    "    datamunge::nn::NnTensor::uniform(std::vector< int,std::allocator< int > > const &,unsigned int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_load_npy(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_load_npy" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_load_npy" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = datamunge::nn::NnTensor::load_npy((std::string const &)*arg1);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_save_npy(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_save_npy", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_save_npy" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_save_npy" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_save_npy" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((datamunge::nn::NnTensor const *)arg1)->save_npy((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_defined(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_defined" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = (bool)((datamunge::nn::NnTensor const *)arg1)->defined();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_values(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_values" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->values();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_shape(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_shape" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->shape();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_dtype(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_dtype" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->dtype();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_ndim(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_ndim" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::nn::NnTensor const *)arg1)->ndim();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_numel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_numel" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::nn::NnTensor const *)arg1)->numel();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_item(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_item" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = (double)((datamunge::nn::NnTensor const *)arg1)->item();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_at(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_at", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_at" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_at" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_at" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)((datamunge::nn::NnTensor const *)arg1)->at((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_str(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_str" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->str();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_astype(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_astype", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_astype" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_astype" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_astype" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->astype((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_reshape(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_reshape", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_reshape" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_reshape" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_reshape" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->reshape((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_transpose__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_transpose" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_transpose" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_transpose" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->transpose((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_transpose__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_transpose" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->transpose();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_transpose(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_transpose", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_transpose__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_transpose__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_transpose'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::transpose(std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::nn::NnTensor::transpose() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_slice(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_slice", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_slice" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_slice" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_slice" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_slice" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->slice(arg2,arg3,arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_concat(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_concat", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_concat" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_concat" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_concat" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_concat" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->concat((datamunge::nn::NnTensor const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_add(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_add", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_add" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_add" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_add" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->add((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sub(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_sub", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sub" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_sub" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_sub" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sub((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mul(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_mul", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_mul" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_mul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_mul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->mul((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_div(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_div", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_div" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_div" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_div" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->div((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_add_scalar(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_add_scalar", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_add_scalar" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_add_scalar" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->add_scalar(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mul_scalar(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_mul_scalar", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_mul_scalar" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_mul_scalar" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->mul_scalar(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_pow(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_pow", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_pow" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_pow" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->pow(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_neg(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_neg" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->neg();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_matmul__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  bool val4 ;
+  int ecode4 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_matmul" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_matmul" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnTensor_matmul" "', argument " "4"" of type '" "bool""'");
+  } 
+  arg4 = static_cast< bool >(val4);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->matmul((datamunge::nn::NnTensor const &)*arg2,arg3,arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_matmul__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_matmul" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_matmul" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->matmul((datamunge::nn::NnTensor const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_matmul__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_matmul" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_matmul" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->matmul((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_matmul(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_matmul", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_matmul__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_matmul__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_bool(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_NnTensor_matmul__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_matmul'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::matmul(datamunge::nn::NnTensor const &,bool,bool) const\n"
+    "    datamunge::nn::NnTensor::matmul(datamunge::nn::NnTensor const &,bool) const\n"
+    "    datamunge::nn::NnTensor::matmul(datamunge::nn::NnTensor const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_exp(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_exp" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->exp();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_log(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_log" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->log();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sqrt(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sqrt" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sqrt();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_abs(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_abs" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->abs();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_square(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_square" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->square();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_tanh(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_tanh" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->tanh();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sigmoid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sigmoid" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sigmoid();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_relu(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_relu" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->relu();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_activate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnTensor_activate", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_activate" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_activate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_activate" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->activate((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_softmax__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_softmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_softmax" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->softmax(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_softmax__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_softmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->softmax();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_softmax(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_softmax", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_softmax__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_softmax__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_softmax'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::softmax(int) const\n"
+    "    datamunge::nn::NnTensor::softmax() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_log_softmax__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_log_softmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_log_softmax" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->log_softmax(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_log_softmax__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_log_softmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->log_softmax();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_log_softmax(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_log_softmax", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_log_softmax__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_log_softmax__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_log_softmax'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::log_softmax(int) const\n"
+    "    datamunge::nn::NnTensor::log_softmax() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sum__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sum" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_sum" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_sum" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_sum" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sum((std::vector< int,std::allocator< int > > const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sum__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sum" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_sum" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_sum" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sum((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sum__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_sum" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->sum();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_sum(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_sum", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_sum__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_sum__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_sum__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_sum'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::sum(std::vector< int,std::allocator< int > > const &,bool) const\n"
+    "    datamunge::nn::NnTensor::sum(std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::nn::NnTensor::sum() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mean__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_mean" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_mean" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_mean" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_mean" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->mean((std::vector< int,std::allocator< int > > const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mean__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_mean" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_mean" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_mean" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->mean((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mean__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_mean" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->mean();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_mean(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_mean", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_mean__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_mean__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_mean__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_mean'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::mean(std::vector< int,std::allocator< int > > const &,bool) const\n"
+    "    datamunge::nn::NnTensor::mean(std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::nn::NnTensor::mean() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_max__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_max" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_max" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_max" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_max" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->max((std::vector< int,std::allocator< int > > const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_max__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_max" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_max" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_max" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->max((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_max__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_max" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->max();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_max(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_max", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_max__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_max__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_max__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_max'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::max(std::vector< int,std::allocator< int > > const &,bool) const\n"
+    "    datamunge::nn::NnTensor::max(std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::nn::NnTensor::max() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_min__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_min" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_min" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_min" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnTensor_min" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->min((std::vector< int,std::allocator< int > > const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_min__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_min" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnTensor_min" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnTensor_min" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->min((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_min__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_min" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->min();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_min(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_min", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_min__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnTensor_min__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< int,std::allocator< int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnTensor_min__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_min'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::min(std::vector< int,std::allocator< int > > const &,bool) const\n"
+    "    datamunge::nn::NnTensor::min(std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::nn::NnTensor::min() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_argmax__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_argmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_argmax" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->argmax(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_argmax__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_argmax" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->argmax();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_argmax(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_argmax", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_argmax__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_argmax__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_argmax'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::argmax(int) const\n"
+    "    datamunge::nn::NnTensor::argmax() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_set_requires_grad__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_set_requires_grad" "', argument " "1"" of type '" "datamunge::nn::NnTensor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnTensor_set_requires_grad" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      (arg1)->set_requires_grad(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_set_requires_grad__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_set_requires_grad" "', argument " "1"" of type '" "datamunge::nn::NnTensor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      (arg1)->set_requires_grad();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_set_requires_grad(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnTensor_set_requires_grad", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnTensor_set_requires_grad__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnTensor, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_bool(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnTensor_set_requires_grad__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnTensor_set_requires_grad'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnTensor::set_requires_grad(bool)\n"
+    "    datamunge::nn::NnTensor::set_requires_grad()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_requires_grad(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_requires_grad" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = (bool)((datamunge::nn::NnTensor const *)arg1)->requires_grad();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_backward(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_backward" "', argument " "1"" of type '" "datamunge::nn::NnTensor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      (arg1)->backward();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_grad(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_grad" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->grad();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_zero_grad(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_zero_grad" "', argument " "1"" of type '" "datamunge::nn::NnTensor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      (arg1)->zero_grad();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor_detach(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor_detach" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnTensor const *)arg1)->detach();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnTensor___repr__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnTensor___repr__" "', argument " "1"" of type '" "datamunge::nn::NnTensor const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  result = datamunge_nn_NnTensor___repr__((datamunge::nn::NnTensor const *)arg1);
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_NnTensor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnTensor *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_NnTensor" "', argument " "1"" of type '" "datamunge::nn::NnTensor *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnTensor * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *NnTensor_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *NnTensor_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_new_NnModel__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  unsigned int arg1 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  datamunge::nn::NnModel *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_NnModel" "', argument " "1"" of type '" "unsigned int""'");
+  } 
+  arg1 = static_cast< unsigned int >(val1);
+  {
+    try {
+      result = (datamunge::nn::NnModel *)new datamunge::nn::NnModel(arg1);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__nn__NnModel, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_NnModel__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
+  {
+    try {
+      result = (datamunge::nn::NnModel *)new datamunge::nn::NnModel();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__nn__NnModel, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_NnModel(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_NnModel", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 0) {
+    return _wrap_new_NnModel__SWIG_1(self, argc, argv);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_unsigned_SS_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_NnModel__SWIG_0(self, argc, argv);
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_NnModel'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::NnModel(unsigned int)\n"
+    "    datamunge::nn::NnModel::NnModel()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_NnModel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_NnModel" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_dense__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_dense" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_dense" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_add_dense" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_dense" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_dense(arg2,(std::string const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_dense__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_dense" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_dense" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      (arg1)->add_dense(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_dense(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_dense", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnModel_add_dense__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_NnModel_add_dense__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_dense'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_dense(int,std::string const &)\n"
+    "    datamunge::nn::NnModel::add_dense(int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_conv2d__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  int res6 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_conv2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_conv2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_conv2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnModel_add_conv2d" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "NnModel_add_conv2d" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_conv2d" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res6 = SWIG_AsPtr_std_string(swig_obj[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "NnModel_add_conv2d" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_conv2d" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    arg6 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_conv2d(arg2,arg3,arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_conv2d__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_conv2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_conv2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_conv2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnModel_add_conv2d" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "NnModel_add_conv2d" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_conv2d" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_conv2d(arg2,arg3,arg4,(std::string const &)*arg5);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_conv2d__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_conv2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_conv2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_conv2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "NnModel_add_conv2d" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  {
+    try {
+      (arg1)->add_conv2d(arg2,arg3,arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_conv2d__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_conv2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_conv2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_conv2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->add_conv2d(arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_conv2d(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[7] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_conv2d", 0, 6, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_add_conv2d__SWIG_3(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_NnModel_add_conv2d__SWIG_2(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_NnModel_add_conv2d__SWIG_1(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                return _wrap_NnModel_add_conv2d__SWIG_0(self, argc, argv);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_conv2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_conv2d(int,int,int,std::string const &,std::string const &)\n"
+    "    datamunge::nn::NnModel::add_conv2d(int,int,int,std::string const &)\n"
+    "    datamunge::nn::NnModel::add_conv2d(int,int,int)\n"
+    "    datamunge::nn::NnModel::add_conv2d(int,int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_max_pool2d__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_max_pool2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_max_pool2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_max_pool2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_add_max_pool2d" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_max_pool2d" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_max_pool2d(arg2,arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_max_pool2d__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_max_pool2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_max_pool2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_max_pool2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->add_max_pool2d(arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_max_pool2d(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_max_pool2d", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_add_max_pool2d__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnModel_add_max_pool2d__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_max_pool2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_max_pool2d(int,int,std::string const &)\n"
+    "    datamunge::nn::NnModel::add_max_pool2d(int,int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_avg_pool2d__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_avg_pool2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_avg_pool2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_avg_pool2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_add_avg_pool2d" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_avg_pool2d" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_avg_pool2d(arg2,arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_avg_pool2d__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_avg_pool2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_avg_pool2d" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_avg_pool2d" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->add_avg_pool2d(arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_avg_pool2d(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_avg_pool2d", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_add_avg_pool2d__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnModel_add_avg_pool2d__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_avg_pool2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_avg_pool2d(int,int,std::string const &)\n"
+    "    datamunge::nn::NnModel::add_avg_pool2d(int,int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_global_avg_pool2d(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_global_avg_pool2d" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      (arg1)->add_global_avg_pool2d();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_batch_norm__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_batch_norm" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_batch_norm" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_add_batch_norm" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      (arg1)->add_batch_norm(arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_batch_norm__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_batch_norm" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_batch_norm" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->add_batch_norm(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_batch_norm__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_batch_norm" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      (arg1)->add_batch_norm();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_batch_norm(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_batch_norm", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnModel_add_batch_norm__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnModel_add_batch_norm__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_add_batch_norm__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_batch_norm'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_batch_norm(double,double)\n"
+    "    datamunge::nn::NnModel::add_batch_norm(double)\n"
+    "    datamunge::nn::NnModel::add_batch_norm()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_layer_norm__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_layer_norm" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_layer_norm" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->add_layer_norm(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_layer_norm__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_layer_norm" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      (arg1)->add_layer_norm();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_layer_norm(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_add_layer_norm", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnModel_add_layer_norm__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_NnModel_add_layer_norm__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_add_layer_norm'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::add_layer_norm(double)\n"
+    "    datamunge::nn::NnModel::add_layer_norm()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_dropout(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_add_dropout", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_dropout" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NnModel_add_dropout" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->add_dropout(arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_activation(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_add_activation", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_activation" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_add_activation" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_activation" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_activation((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_flatten(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_flatten" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      (arg1)->add_flatten();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_add_reshape(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_add_reshape", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_add_reshape" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_add_reshape" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_add_reshape" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->add_reshape((std::vector< int,std::allocator< int > > const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_num_layers(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_num_layers" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::nn::NnModel const *)arg1)->num_layers();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_summary(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_summary" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnModel const *)arg1)->summary();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_forward__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_forward" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_forward" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_forward" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_forward" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = (arg1)->forward((datamunge::nn::NnTensor const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_forward__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_forward" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_forward" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_forward" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = (arg1)->forward((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_forward(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_forward", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnModel_forward__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_forward__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_forward'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::forward(datamunge::nn::NnTensor const &,bool)\n"
+    "    datamunge::nn::NnModel::forward(datamunge::nn::NnTensor const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_predict(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_predict", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_predict" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_predict" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_predict" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  {
+    try {
+      result = (arg1)->predict((datamunge::nn::NnTensor const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_loss__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_loss" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_loss" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "NnModel_loss" "', argument " "5"" of type '" "bool""'");
+  } 
+  arg5 = static_cast< bool >(val5);
+  {
+    try {
+      result = (double)(arg1)->loss((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3,(std::string const &)*arg4,arg5);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_loss__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_loss" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_loss" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      result = (double)(arg1)->loss((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_loss__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_loss" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_loss" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    try {
+      result = (double)(arg1)->loss((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_loss(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_loss", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_NnModel_loss__SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnModel_loss__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_bool(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_NnModel_loss__SWIG_0(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_loss'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::loss(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &,std::string const &,bool)\n"
+    "    datamunge::nn::NnModel::loss(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &,std::string const &)\n"
+    "    datamunge::nn::NnModel::loss(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_compute_gradients__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_compute_gradients" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_compute_gradients" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_compute_gradients" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_compute_gradients" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_compute_gradients" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_compute_gradients" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_compute_gradients" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      result = (double)(arg1)->compute_gradients((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_compute_gradients__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_compute_gradients" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_compute_gradients" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_compute_gradients" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_compute_gradients" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_compute_gradients" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    try {
+      result = (double)(arg1)->compute_gradients((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_compute_gradients(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_compute_gradients", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_NnModel_compute_gradients__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnModel_compute_gradients__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_compute_gradients'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::compute_gradients(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &,std::string const &)\n"
+    "    datamunge::nn::NnModel::compute_gradients(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_gradient(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_gradient", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_gradient" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_gradient" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_gradient" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnModel const *)arg1)->gradient((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_set_optimizer__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_set_optimizer" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_set_optimizer" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_set_optimizer" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NnModel_set_optimizer" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      (arg1)->set_optimizer((std::string const &)*arg2,arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_set_optimizer__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_set_optimizer" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_set_optimizer" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_set_optimizer" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->set_optimizer((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_set_optimizer__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_set_optimizer" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      (arg1)->set_optimizer();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_set_optimizer(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_set_optimizer", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_NnModel_set_optimizer__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_NnModel_set_optimizer__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_NnModel_set_optimizer__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_set_optimizer'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::set_optimizer(std::string const &,double)\n"
+    "    datamunge::nn::NnModel::set_optimizer(std::string const &)\n"
+    "    datamunge::nn::NnModel::set_optimizer()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_train_step__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_train_step" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_train_step" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_train_step" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_train_step" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_train_step" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "NnModel_train_step" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_train_step" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      result = (double)(arg1)->train_step((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3,(std::string const &)*arg4);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_train_step__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  datamunge::nn::NnTensor *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_train_step" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_train_step" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_train_step" "', argument " "2"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::nn::NnTensor * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_train_step" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_train_step" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    try {
+      result = (double)(arg1)->train_step((datamunge::nn::NnTensor const &)*arg2,(datamunge::nn::NnTensor const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_train_step(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "NnModel_train_step", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_NnModel_train_step__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__nn__NnModel, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_NnModel_train_step__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'NnModel_train_step'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::nn::NnModel::train_step(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &,std::string const &)\n"
+    "    datamunge::nn::NnModel::train_step(datamunge::nn::NnTensor const &,datamunge::nn::NnTensor const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_parameter_names(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_parameter_names" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      result = ((datamunge::nn::NnModel const *)arg1)->parameter_names();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_parameter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::nn::NnTensor result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_parameter", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_parameter" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_parameter" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_parameter" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::nn::NnModel const *)arg1)->parameter((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::nn::NnTensor(result)), SWIGTYPE_p_datamunge__nn__NnTensor, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_set_parameter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::nn::NnTensor *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_set_parameter", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_set_parameter" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_set_parameter" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_set_parameter" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__nn__NnTensor,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "NnModel_set_parameter" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_set_parameter" "', argument " "3"" of type '" "datamunge::nn::NnTensor const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::nn::NnTensor * >(argp3);
+  {
+    try {
+      (arg1)->set_parameter((std::string const &)*arg2,(datamunge::nn::NnTensor const &)*arg3);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_parameter_count(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_parameter_count" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::nn::NnModel const *)arg1)->parameter_count();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_save(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_save", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_save" "', argument " "1"" of type '" "datamunge::nn::NnModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((datamunge::nn::NnModel const *)arg1)->save((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_NnModel_load(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::nn::NnModel *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "NnModel_load", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__nn__NnModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NnModel_load" "', argument " "1"" of type '" "datamunge::nn::NnModel *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::nn::NnModel * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NnModel_load" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "NnModel_load" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->load((std::string const &)*arg2);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *NnModel_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__nn__NnModel, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *NnModel_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_nn_gemm_backend(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "nn_gemm_backend", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = datamunge::nn::nn_gemm_backend();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_nn_get_num_threads(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "nn_get_num_threads", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (int)datamunge::nn::nn_get_num_threads();
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_nn_set_num_threads(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  ecode1 = SWIG_AsVal_int(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "nn_set_num_threads" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  {
+    try {
+      datamunge::nn::nn_set_num_threads(arg1);
+    } catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what());
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { "delete_SwigPyIterator", _wrap_delete_SwigPyIterator, METH_O, NULL},
 	 { "SwigPyIterator_value", _wrap_SwigPyIterator_value, METH_O, NULL},
@@ -207955,6 +215061,119 @@ static PyMethodDef SwigMethods[] = {
 		":raises: std::invalid_argument if order is negative, or std::invalid_argument propagated from\n"
 		"            Expr::differentiate() if f contains a non-constant exponent.\n"
 		""},
+	 { "new_NnTensor", _wrap_new_NnTensor, METH_VARARGS, "\n"
+		"*Overload 1:*\n"
+		"An empty (undefined) tensor.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 2:*\n"
+		"`values` in row-major order filling `shape`; dtype \"float32\", \"float64\", \"int32\", \"int64\" or \"bool\".\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 3:*\n"
+		"`values` in row-major order filling `shape`; dtype \"float32\", \"float64\", \"int32\", \"int64\" or \"bool\".\n"
+		""},
+	 { "NnTensor_zeros", _wrap_NnTensor_zeros, METH_VARARGS, NULL},
+	 { "NnTensor_ones", _wrap_NnTensor_ones, METH_VARARGS, NULL},
+	 { "NnTensor_full", _wrap_NnTensor_full, METH_VARARGS, NULL},
+	 { "NnTensor_arange", _wrap_NnTensor_arange, METH_VARARGS, "start, start + step, ... below stop."},
+	 { "NnTensor_randn", _wrap_NnTensor_randn, METH_VARARGS, "Seeded N(mean, std^2) and U(low, high) samples."},
+	 { "NnTensor_uniform", _wrap_NnTensor_uniform, METH_VARARGS, NULL},
+	 { "NnTensor_load_npy", _wrap_NnTensor_load_npy, METH_O, "NumPy .npy files."},
+	 { "NnTensor_save_npy", _wrap_NnTensor_save_npy, METH_VARARGS, NULL},
+	 { "NnTensor_defined", _wrap_NnTensor_defined, METH_O, NULL},
+	 { "NnTensor_values", _wrap_NnTensor_values, METH_O, NULL},
+	 { "NnTensor_shape", _wrap_NnTensor_shape, METH_O, NULL},
+	 { "NnTensor_dtype", _wrap_NnTensor_dtype, METH_O, NULL},
+	 { "NnTensor_ndim", _wrap_NnTensor_ndim, METH_O, NULL},
+	 { "NnTensor_numel", _wrap_NnTensor_numel, METH_O, NULL},
+	 { "NnTensor_item", _wrap_NnTensor_item, METH_O, "The value of a one-element tensor."},
+	 { "NnTensor_at", _wrap_NnTensor_at, METH_VARARGS, "The element at a full index."},
+	 { "NnTensor_str", _wrap_NnTensor_str, METH_O, "A short printable description with the values."},
+	 { "NnTensor_astype", _wrap_NnTensor_astype, METH_VARARGS, NULL},
+	 { "NnTensor_reshape", _wrap_NnTensor_reshape, METH_VARARGS, NULL},
+	 { "NnTensor_transpose", _wrap_NnTensor_transpose, METH_VARARGS, "Permutes axes; an empty `perm` reverses them."},
+	 { "NnTensor_slice", _wrap_NnTensor_slice, METH_VARARGS, "x[start:stop] along `axis`."},
+	 { "NnTensor_concat", _wrap_NnTensor_concat, METH_VARARGS, NULL},
+	 { "NnTensor_add", _wrap_NnTensor_add, METH_VARARGS, NULL},
+	 { "NnTensor_sub", _wrap_NnTensor_sub, METH_VARARGS, NULL},
+	 { "NnTensor_mul", _wrap_NnTensor_mul, METH_VARARGS, NULL},
+	 { "NnTensor_div", _wrap_NnTensor_div, METH_VARARGS, NULL},
+	 { "NnTensor_add_scalar", _wrap_NnTensor_add_scalar, METH_VARARGS, NULL},
+	 { "NnTensor_mul_scalar", _wrap_NnTensor_mul_scalar, METH_VARARGS, NULL},
+	 { "NnTensor_pow", _wrap_NnTensor_pow, METH_VARARGS, NULL},
+	 { "NnTensor_neg", _wrap_NnTensor_neg, METH_O, NULL},
+	 { "NnTensor_matmul", _wrap_NnTensor_matmul, METH_VARARGS, NULL},
+	 { "NnTensor_exp", _wrap_NnTensor_exp, METH_O, NULL},
+	 { "NnTensor_log", _wrap_NnTensor_log, METH_O, NULL},
+	 { "NnTensor_sqrt", _wrap_NnTensor_sqrt, METH_O, NULL},
+	 { "NnTensor_abs", _wrap_NnTensor_abs, METH_O, NULL},
+	 { "NnTensor_square", _wrap_NnTensor_square, METH_O, NULL},
+	 { "NnTensor_tanh", _wrap_NnTensor_tanh, METH_O, NULL},
+	 { "NnTensor_sigmoid", _wrap_NnTensor_sigmoid, METH_O, NULL},
+	 { "NnTensor_relu", _wrap_NnTensor_relu, METH_O, NULL},
+	 { "NnTensor_activate", _wrap_NnTensor_activate, METH_VARARGS, "Any activation by name: \"relu\", \"gelu\", \"silu\", \"softplus\", \"elu\", \"leaky_relu\", ..."},
+	 { "NnTensor_softmax", _wrap_NnTensor_softmax, METH_VARARGS, NULL},
+	 { "NnTensor_log_softmax", _wrap_NnTensor_log_softmax, METH_VARARGS, NULL},
+	 { "NnTensor_sum", _wrap_NnTensor_sum, METH_VARARGS, NULL},
+	 { "NnTensor_mean", _wrap_NnTensor_mean, METH_VARARGS, NULL},
+	 { "NnTensor_max", _wrap_NnTensor_max, METH_VARARGS, NULL},
+	 { "NnTensor_min", _wrap_NnTensor_min, METH_VARARGS, NULL},
+	 { "NnTensor_argmax", _wrap_NnTensor_argmax, METH_VARARGS, NULL},
+	 { "NnTensor_set_requires_grad", _wrap_NnTensor_set_requires_grad, METH_VARARGS, "Marks a float tensor as a leaf whose gradient `backward` accumulates."},
+	 { "NnTensor_requires_grad", _wrap_NnTensor_requires_grad, METH_O, NULL},
+	 { "NnTensor_backward", _wrap_NnTensor_backward, METH_O, "Back-propagates from this one-element tensor into every leaf's grad()."},
+	 { "NnTensor_grad", _wrap_NnTensor_grad, METH_O, "The accumulated gradient (undefined if none)."},
+	 { "NnTensor_zero_grad", _wrap_NnTensor_zero_grad, METH_O, NULL},
+	 { "NnTensor_detach", _wrap_NnTensor_detach, METH_O, "The same values without gradient history."},
+	 { "NnTensor___repr__", _wrap_NnTensor___repr__, METH_O, NULL},
+	 { "delete_NnTensor", _wrap_delete_NnTensor, METH_O, NULL},
+	 { "NnTensor_swigregister", NnTensor_swigregister, METH_O, NULL},
+	 { "NnTensor_swiginit", NnTensor_swiginit, METH_VARARGS, NULL},
+	 { "new_NnModel", _wrap_new_NnModel, METH_VARARGS, NULL},
+	 { "delete_NnModel", _wrap_delete_NnModel, METH_O, NULL},
+	 { "NnModel_add_dense", _wrap_NnModel_add_dense, METH_VARARGS, "Fully connected layer; activation \"none\", \"relu\", \"tanh\", \"sigmoid\", \"gelu\", ..."},
+	 { "NnModel_add_conv2d", _wrap_NnModel_add_conv2d, METH_VARARGS, "2-D convolution on NHWC input; padding \"same\" or \"valid\"."},
+	 { "NnModel_add_max_pool2d", _wrap_NnModel_add_max_pool2d, METH_VARARGS, NULL},
+	 { "NnModel_add_avg_pool2d", _wrap_NnModel_add_avg_pool2d, METH_VARARGS, NULL},
+	 { "NnModel_add_global_avg_pool2d", _wrap_NnModel_add_global_avg_pool2d, METH_O, NULL},
+	 { "NnModel_add_batch_norm", _wrap_NnModel_add_batch_norm, METH_VARARGS, "Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults)."},
+	 { "NnModel_add_layer_norm", _wrap_NnModel_add_layer_norm, METH_VARARGS, NULL},
+	 { "NnModel_add_dropout", _wrap_NnModel_add_dropout, METH_VARARGS, "Inverted dropout, active only when training."},
+	 { "NnModel_add_activation", _wrap_NnModel_add_activation, METH_VARARGS, NULL},
+	 { "NnModel_add_flatten", _wrap_NnModel_add_flatten, METH_O, "Collapses every axis but the first."},
+	 { "NnModel_add_reshape", _wrap_NnModel_add_reshape, METH_VARARGS, "Reshapes each example (the batch axis is kept): e.g. {28, 28, 1}."},
+	 { "NnModel_num_layers", _wrap_NnModel_num_layers, METH_O, NULL},
+	 { "NnModel_summary", _wrap_NnModel_summary, METH_O, "One line per layer with its parameter shapes (after the first forward pass)."},
+	 { "NnModel_forward", _wrap_NnModel_forward, METH_VARARGS, "\n"
+		"Runs the network. `training` enables dropout and batch statistics (and\n"
+		"updates batch-norm moving averages).\n"
+		""},
+	 { "NnModel_predict", _wrap_NnModel_predict, METH_VARARGS, "forward(x, false) without recording gradients."},
+	 { "NnModel_loss", _wrap_NnModel_loss, METH_VARARGS, "\n"
+		"Loss of the network on (x, y): \"mse\", \"softmax_cross_entropy\" (y holds\n"
+		"integer class labels) or \"sigmoid_cross_entropy\" (y in [0, 1]).\n"
+		""},
+	 { "NnModel_compute_gradients", _wrap_NnModel_compute_gradients, METH_VARARGS, "\n"
+		"Computes the loss in training mode and stores the gradient of every\n"
+		"parameter (read them with `gradient`). Returns the loss.\n"
+		""},
+	 { "NnModel_gradient", _wrap_NnModel_gradient, METH_VARARGS, NULL},
+	 { "NnModel_set_optimizer", _wrap_NnModel_set_optimizer, METH_VARARGS, "Optimizer for `train_step`: \"sgd\", \"momentum\", \"adam\", \"adamw\", \"rmsprop\", \"adagrad\", ..."},
+	 { "NnModel_train_step", _wrap_NnModel_train_step, METH_VARARGS, "compute_gradients followed by one optimizer update. Returns the loss."},
+	 { "NnModel_parameter_names", _wrap_NnModel_parameter_names, METH_O, NULL},
+	 { "NnModel_parameter", _wrap_NnModel_parameter, METH_VARARGS, NULL},
+	 { "NnModel_set_parameter", _wrap_NnModel_set_parameter, METH_VARARGS, NULL},
+	 { "NnModel_parameter_count", _wrap_NnModel_parameter_count, METH_O, NULL},
+	 { "NnModel_save", _wrap_NnModel_save, METH_VARARGS, "Parameters and batch-norm statistics as one .npz archive (\"state/...\" for statistics)."},
+	 { "NnModel_load", _wrap_NnModel_load, METH_VARARGS, "Loads an archive written by save() (or any .npz with the same names)."},
+	 { "NnModel_swigregister", NnModel_swigregister, METH_O, NULL},
+	 { "NnModel_swiginit", NnModel_swiginit, METH_VARARGS, NULL},
+	 { "nn_gemm_backend", _wrap_nn_gemm_backend, METH_NOARGS, "The GEMM backend nn uses (\"accelerate\", \"openblas\", \"cblas\" or \"builtin\")."},
+	 { "nn_get_num_threads", _wrap_nn_get_num_threads, METH_NOARGS, "Threads used by nn kernels."},
+	 { "nn_set_num_threads", _wrap_nn_set_num_threads, METH_O, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -208133,6 +215352,8 @@ static swig_type_info _swigt__p_datamunge__geometry__detail__CanonicalEdgeHash =
 static swig_type_info _swigt__p_datamunge__image__HSV = {"_p_datamunge__image__HSV", "datamunge::image::HSV *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "std::vector< datamunge::image::Image >::value_type *|datamunge::image::Image *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__image__Pixel = {"_p_datamunge__image__Pixel", "datamunge::image::Pixel *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__nn__NnModel = {"_p_datamunge__nn__NnModel", "datamunge::nn::NnModel *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__nn__NnTensor = {"_p_datamunge__nn__NnTensor", "datamunge::nn::NnTensor *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODEOptions = {"_p_datamunge__ode__ODEOptions", "datamunge::ode::ODEOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODESolution = {"_p_datamunge__ode__ODESolution", "datamunge::ode::ODESolution *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODESolver = {"_p_datamunge__ode__ODESolver", "datamunge::ode::ODESolver *", 0, 0, (void*)0, 0};
@@ -208457,6 +215678,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__image__HSV,
   &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__image__Pixel,
+  &_swigt__p_datamunge__nn__NnModel,
+  &_swigt__p_datamunge__nn__NnTensor,
   &_swigt__p_datamunge__ode__ODEOptions,
   &_swigt__p_datamunge__ode__ODESolution,
   &_swigt__p_datamunge__ode__ODESolver,
@@ -208781,6 +216004,8 @@ static swig_cast_info _swigc__p_datamunge__geometry__detail__CanonicalEdgeHash[]
 static swig_cast_info _swigc__p_datamunge__image__HSV[] = {  {&_swigt__p_datamunge__image__HSV, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__image__Pixel[] = {  {&_swigt__p_datamunge__image__Pixel, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__nn__NnModel[] = {  {&_swigt__p_datamunge__nn__NnModel, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__nn__NnTensor[] = {  {&_swigt__p_datamunge__nn__NnTensor, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODEOptions[] = {  {&_swigt__p_datamunge__ode__ODEOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODESolution[] = {  {&_swigt__p_datamunge__ode__ODESolution, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODESolver[] = {  {&_swigt__p_datamunge__ode__ODESolver, 0, 0, 0},{0, 0, 0, 0}};
@@ -209105,6 +216330,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__image__HSV,
   _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__image__Pixel,
+  _swigc__p_datamunge__nn__NnModel,
+  _swigc__p_datamunge__nn__NnTensor,
   _swigc__p_datamunge__ode__ODEOptions,
   _swigc__p_datamunge__ode__ODESolution,
   _swigc__p_datamunge__ode__ODESolver,

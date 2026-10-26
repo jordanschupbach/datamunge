@@ -32,4 +32,10 @@ void save_npz(const std::string& path, const NamedTensors& arrays);
 /// Members in archive order, with the ".npy" suffix removed.
 NamedTensors load_npz(const std::string& path);
 
+/// In-memory forms of the .npz encoding: encode_npz returns the bytes
+/// save_npz writes; decode_npz reads an archive already in memory (same
+/// rules as load_npz, errors without a file name).
+std::vector<unsigned char> encode_npz(const NamedTensors& arrays);
+NamedTensors               decode_npz(const std::vector<unsigned char>& bytes);
+
 }  // namespace datamunge::nn

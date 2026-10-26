@@ -136,19 +136,23 @@ void StopGradient() {
 // 5. Gradients feeding an update: fit y = 3x - 1
 // ---------------------------------------------------------------------------
 
-void GradientDescent() {
+void GradientDescent(int steps) {
   Header("Gradient descent: fit y = 3x - 1");
   const Tensor x = nn::tensor({-2, -1, 0, 1, 2, 3});
   const Tensor t = nn::tensor({-7, -4, -1, 2, 5, 8});
   Tensor       w = nn::scalar(0.f).requires_grad_();
   Tensor       c = nn::scalar(0.f).requires_grad_();
   const float  lr = 0.05f;
-  for (int step = 0; step <= 100; ++step) {
+  const double initial_loss = nn::mean(nn::square(x * w + c - t), {0}).item();
+  for (int step = 0; step <= steps; ++step) {
     const Tensor loss = nn::mean(nn::square(x * w + c - t), {0});
-    if (step % 20 == 0) std::printf("  step %3d  loss %.5f  w %.4f  c %.4f\n", step, loss.item(), w.item(), c.item());
-    if (step == 100) {
-      check::Near(w.item(), 3, 0.05, "slope");
-      check::Near(c.item(), -1, 0.15, "intercept");
+    if (step % 20 == 0 || step == steps) std::printf("  step %3d  loss %.5f  w %.4f  c %.4f\n", step, loss.item(), w.item(), c.item());
+    if (step == steps) {
+      check::Require(loss.item() < initial_loss, "gradient descent must reduce loss");
+      if (steps >= 100) {
+        check::Near(w.item(), 3, 0.05, "slope");
+        check::Near(c.item(), -1, 0.15, "intercept");
+      }
       break;
     }
     const auto grads = nn::grad(loss, {w, c});
@@ -161,13 +165,20 @@ void GradientDescent() {
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 100;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive training budget required");
     ScalarDerivatives();
     MatrixGradients();
     Jacobian();
     StopGradient();
-    GradientDescent();
+    GradientDescent(steps);
     std::cout << "\nAll autodiff checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << "\n";

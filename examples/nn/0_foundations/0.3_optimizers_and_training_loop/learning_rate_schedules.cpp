@@ -64,11 +64,11 @@ void Boundaries() {
   std::cout << "  endpoint, transition, clamping, cycle and invalid-input checks passed\n";
 }
 
-void Train(const Schedule& schedule) {
+void Train(const Schedule& schedule, int steps) {
   Tensor        w = nn::scalar(2).requires_grad_();
   nn::Optimizer opt({w}, 0.0);
   double        expected = 2;
-  for (int i = 0; i < 100; ++i) {
+  for (int i = 0; i < steps; ++i) {
     const std::int64_t step = opt.iterations();
     check::Require(step == i, "schedule uses optimizer update index");
     const float rate = static_cast<float>(schedule.second(step));
@@ -77,14 +77,22 @@ void Train(const Schedule& schedule) {
     opt.minimize(.5 * nn::square(w));
   }
   check::Near(w.item(), expected, 2e-6, "closed-form scheduled SGD trajectory");
-  check::Require(std::abs(expected) < .5, "scheduled fit must reduce parameter error");
+  check::Require(std::abs(expected) <= 2, "scheduled fit cannot increase parameter error");
+  if (steps >= 100) check::Require(std::abs(expected) < .5, "scheduled fit must reduce parameter error");
   std::printf("  %-15s w=%11.5g, closed form=%11.5g\n", schedule.first, w.item<float>(), expected);
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 100;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive training budget required");
     const std::vector<Schedule> schedules{
         {"step", [](std::int64_t t) { return sch::step_decay(.1, .5, 25, t); }},
         {"exponential", [](std::int64_t t) { return sch::exponential(.1, .5, 25, t); }},
@@ -104,7 +112,7 @@ int main() {
       std::cout << '\n';
     }
     std::cout << "\n== nn::Optimizer SGD vs closed-form trajectory\n";
-    for (const auto& schedule : schedules) Train(schedule);
+    for (const auto& schedule : schedules) Train(schedule, steps);
     std::cout << "All learning-rate schedule checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

@@ -1,0 +1,24 @@
+[
+  {
+    "case": "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time",
+    "native_ns": 61470.039829018744,
+    "eager_ns": 50000.59130434783,
+    "eager_cv_percent": 0.12566867248023922,
+    "graph_ns": 109413.86345381525,
+    "graph_cv_percent": 0.17084143558279186,
+    "native_cv_percent": 0.06279868294097297,
+    "native_over_eager": 1.2293862577515875,
+    "native_over_graph": 0.5618121679339647
+  },
+  {
+    "case": "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time",
+    "native_ns": 60914.4555649164,
+    "eager_ns": 50059.82144479782,
+    "eager_cv_percent": 0.5370008696634611,
+    "graph_ns": 108431.01506024097,
+    "graph_cv_percent": 9.460065968835497,
+    "native_cv_percent": 0.12223226848216977,
+    "native_over_eager": 1.216833256828298,
+    "native_over_graph": 0.561780737098829
+  }
+]

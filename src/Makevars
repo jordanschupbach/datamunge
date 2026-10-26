@@ -1,45 +1,21 @@
-
-
-# TODO: fix this to remove empty lines and comments from lib_sources.txt
-# DATAMUNGE_USE_SYSTEM_LIB=1 links an already-installed libdatamunge (found via pkg-config) instead
-# of compiling the core sources into the package. The nix build uses this so a core change compiles
-# the core once rather than once per binding; the default stays self-contained for CRAN-style builds.
+# R's normal build rules compile only the selected core and SWIG objects.
+CXX_STD = CXX23
 ifeq ($(DATAMUNGE_USE_SYSTEM_LIB),1)
 SOURCES = datamunge_r_wrap.cpp
-DATAMUNGE_LIBDIR := $(shell pkg-config --variable=libdir datamunge)
-DATAMUNGE_CPPFLAGS := $(shell pkg-config --cflags datamunge)
-DATAMUNGE_LIBS := $(shell pkg-config --libs datamunge) -Wl,-rpath,$(DATAMUNGE_LIBDIR)
+PKG_CPPFLAGS = $(shell pkg-config --cflags datamunge)
+PKG_LIBS = $(shell pkg-config --libs datamunge) -Wl,-rpath,$(shell pkg-config --variable=libdir datamunge)
 else
-SOURCES = $(shell sed 's|^|../src/|; s|$$|.cpp|' ../lib_sources.txt) datamunge_r_wrap.cpp 
+SOURCES = $(addsuffix .cpp,$(shell sed -e '/^[[:space:]]*\#/d' -e '/^[[:space:]]*$$/d' ../lib_sources.txt)) datamunge_r_wrap.cpp
+PKG_CPPFLAGS = -I../include
+PKG_LIBS = -pthread
+ifeq ($(shell uname -s),Darwin)
+PKG_CPPFLAGS += -DDATAMUNGE_HAVE_CBLAS=1 -DDATAMUNGE_HAVE_LAPACK=1 -DACCELERATE_NEW_LAPACK=1
+PKG_LIBS += -framework Accelerate
 endif
-# SOURCES = $(wildcard $(shell find ../src/datamunge -name '*.cpp')) datamunge_r_wrap.cpp 
-OBJECTS = $(SOURCES:%.cpp=%.o)
-HEADERS = $(shell find ../include -type f \( -name '*.hpp' -o -name '*.h' \))
+endif
+OBJECTS = $(SOURCES:.cpp=.o)
+all: $(SHLIB)
 
-
-$(SHLIB):
-  @echo "SOURCES: $(SOURCES)"
-  @echo "OBJECTS: $(OBJECTS)"
-	R CMD SHLIB $(SOURCES)
-	R CMD SHLIB -o datamunger.so $(OBJECTS)
-
+# Headers can affect every translation unit, including the generated wrapper.
+HEADERS := $(shell find ../include datamunge -type f \( -name '*.hpp' -o -name '*.h' \))
 $(OBJECTS): $(HEADERS)
-
-#  datamunge/datamunge.cpp datamunge/datamunge.cpp
-
-# The datamunge C++ sources require C++23 (e.g. std::popcount and other <bit>/ranges
-# features); the CMake build uses -std=gnu++23, so match that here since R defaults to C++17.
-CXX_STD = CXX23
-
-# R builds this binding directly with R CMD SHLIB rather than through CMake, so carry over
-# the X11 support that CMake normally detects for Plot::show().
-ifeq ($(DATAMUNGE_USE_SYSTEM_LIB),1)
-PKG_CPPFLAGS += $(DATAMUNGE_CPPFLAGS)
-PKG_LIBS += $(DATAMUNGE_LIBS)
-else
-PKG_CPPFLAGS += -I$(CURDIR)/../include -DDATAMUNGE_HAVE_X11=1
-PKG_LIBS += -lX11
-endif
-
-clean:
-	rm -f ./*.o ./datamunge_r_wrap.o ./datamunger.so ./datamunge/*.o ./datamunge/*.so

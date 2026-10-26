@@ -5,6 +5,8 @@
 
 #include "datamunge/nn/autograd.hpp"
 #include "datamunge/nn/ops.hpp"
+#include "detail.hpp"
+#include "vector_math.hpp"
 
 namespace datamunge::nn {
 
@@ -109,8 +111,49 @@ Tensor layer_norm(ParameterStore& store, const std::string& name, const Tensor& 
   const std::int64_t features = last_dim(x, "layer_norm");
   const Tensor       gamma    = store.get(name + "/gamma", {features}, init::ones());
   const Tensor       beta     = store.get(name + "/beta", {features}, init::zeros());
-  const Tensor       mu       = mean(x, {-1}, true);
-  const Tensor       var      = mean(square(sub(x, mu)), {-1}, true);
+  if (!is_grad_enabled() && features > 0 && is_floating(x.dtype()) && x.is_contiguous() &&
+      gamma.is_contiguous() && beta.is_contiguous() && x.dtype() == gamma.dtype() &&
+      x.dtype() == beta.dtype()) {
+#if defined(__clang__)
+#pragma clang fp contract(off)
+#endif
+    Tensor out = empty(x.shape(), x.dtype());
+    detail::dispatch_float(x.dtype(), "layer_norm", [&](auto tag) {
+      using T         = typename decltype(tag)::type;
+      const T* source = x.data_ptr<T>();
+      const T* scale  = gamma.data_ptr<T>();
+      const T* bias   = beta.data_ptr<T>();
+      T*       dest   = out.data_ptr<T>();
+      parallel_for(
+          0,
+          x.numel() / features,
+          std::max<std::int64_t>(1, detail::kParallelGrain / features),
+          [&](std::int64_t lo, std::int64_t hi) {
+            for (auto row = lo; row < hi; ++row) {
+              const T* src = source + row * features;
+              T*       dst = dest + row * features;
+              const T  mu =
+                  static_cast<T>(detail::sum_values(src, features)) / static_cast<T>(features);
+              // Output doubles as row-local square scratch, preserving T rounding.
+              for (std::int64_t i = 0; i < features; ++i) {
+                const T d = src[i] - mu;
+                dst[i]    = d * d;
+              }
+              const T var =
+                  static_cast<T>(detail::sum_values(dst, features)) / static_cast<T>(features);
+              const T inverse = T(1) / std::sqrt(var + static_cast<T>(eps));
+              for (std::int64_t i = 0; i < features; ++i) {
+                const T normalized = (src[i] - mu) * inverse;
+                const T scaled     = normalized * scale[i];
+                dst[i]             = scaled + bias[i];
+              }
+            }
+          });
+    });
+    return out;
+  }
+  const Tensor mu  = mean(x, {-1}, true);
+  const Tensor var = mean(square(sub(x, mu)), {-1}, true);
   return add(mul(mul(sub(x, mu), rsqrt(add(var, eps))), gamma), beta);
 }
 
@@ -175,18 +218,55 @@ Tensor stack_time(const std::vector<Tensor>& steps) { return stack(steps, 1); }
 
 Tensor recurrent(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t units, RnnKind kind) {
   if (x.dim() != 3) throw std::invalid_argument("recurrent: input must be [batch, time, features]");
-  const std::int64_t  batch = x.shape()[0];
+  const std::int64_t batch = x.shape()[0], steps = x.shape()[1], in = x.shape()[2];
   std::vector<Tensor> outputs;
-  Tensor              h     = zeros({batch, units}, to_floating(x.dtype()));
-  LstmState           state = lstm_zero_state(batch, units, to_floating(x.dtype()));
-  for (const Tensor& step : time_steps(x)) {
-    switch (kind) {
-      case RnnKind::Simple: h = rnn_step(store, name, step, h); break;
-      case RnnKind::Gru: h = gru_step(store, name, step, h); break;
-      case RnnKind::Lstm:
-        state = lstm_step(store, name, step, state);
-        h     = state.h;
-        break;
+  outputs.reserve(static_cast<std::size_t>(steps));
+  Tensor h = zeros({batch, units}, to_floating(x.dtype()));
+  if (steps == 0) return stack_time(outputs);
+  if (kind != RnnKind::Simple && kind != RnnKind::Lstm && kind != RnnKind::Gru) {
+    outputs.assign(static_cast<std::size_t>(steps), h);
+    return stack_time(outputs);
+  }
+
+  // Preserve parameter names and initialization order from the single-step
+  // cells, but fetch them once and project every input timestep in one GEMM.
+  const std::int64_t gates = (kind == RnnKind::Lstm ? 4 : kind == RnnKind::Gru ? 2 : 1) * units;
+  const std::string suffix = kind == RnnKind::Gru ? "_zr" : "";
+  const Tensor Wx = store.get(name + "/Wx" + suffix, {in, gates}, init::uniform(std::sqrt(6.0 / static_cast<double>(in + gates))));
+  const Tensor Wh = store.get(name + "/Wh" + suffix, {units, gates}, init::uniform(std::sqrt(6.0 / static_cast<double>(units + gates))));
+  const Tensor b = store.get(name + "/b" + suffix, {gates}, [units, kind](const Shape& shape, DType dt, Generator&) {
+    if (kind == RnnKind::Lstm) return concat({zeros({units}, dt), full({units}, 1.0, dt), zeros({2 * units}, dt)}, 0);
+    return zeros(shape, dt);
+  });
+  Tensor Wxn, Whn, bn;
+  if (kind == RnnKind::Gru) {
+    Wxn = store.get(name + "/Wx_n", {in, units}, init::uniform(std::sqrt(6.0 / static_cast<double>(in + units))));
+    Whn = store.get(name + "/Wh_n", {units, units}, init::uniform(std::sqrt(6.0 / static_cast<double>(2 * units))));
+    bn = store.get(name + "/b_n", {units}, init::zeros());
+  }
+  // Small float32 cells favor per-step GEMM; larger batches benefit from
+  // a time-major projection whose timestep views are contiguous.
+  const bool batch_projection = batch > 1 || x.dtype() != DType::Float32;
+  const auto projected = batch_projection ? unstack(matmul(swapaxes(x, 0, 1), Wx), 0) : time_steps(x);
+  const auto projected_n = kind == RnnKind::Gru && batch_projection
+                               ? unstack(matmul(swapaxes(x, 0, 1), Wxn), 0) : std::vector<Tensor>{};
+  Tensor c;
+  if (kind == RnnKind::Lstm) c = zeros({batch, units}, to_floating(x.dtype()));
+  for (std::size_t t = 0; t < projected.size(); ++t) {
+    const Tensor input_gate = batch_projection ? projected[t] : matmul(projected[t], Wx);
+    const Tensor gate_values = bias_add(add(input_gate, matmul(h, Wh)), b);
+    if (kind == RnnKind::Simple) {
+      h = tanh(gate_values);
+    } else if (kind == RnnKind::Lstm) {
+      const auto parts = split(gate_values, 4, 1);
+      const Tensor i = sigmoid(parts[0]), f = sigmoid(parts[1]), g = tanh(parts[2]), o = sigmoid(parts[3]);
+      c = add(mul(f, c), mul(i, g));
+      h = mul(o, tanh(c));
+    } else {
+      const auto zr = split(sigmoid(gate_values), 2, 1);
+      const Tensor input_n = batch_projection ? projected_n[t] : matmul(projected[t], Wxn);
+      const Tensor n = tanh(bias_add(add(input_n, matmul(mul(zr[1], h), Whn)), bn));
+      h = add(mul(sub(1.0, zr[0]), n), mul(zr[0], h));
     }
     outputs.push_back(h);
   }
@@ -269,6 +349,25 @@ Tensor conv2d_transpose(ParameterStore& store, const std::string& name, const Te
     return transpose(init({s[0], s[1], s[3], s[2]}, dt, g), {0, 1, 3, 2}).contiguous();
   });
   return finish(store, name, conv2d_transpose(x, w, layer_conv_options(options)), filters, options);
+}
+
+Tensor conv3d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+              std::int64_t kernel, const ConvLayerOptions& options) {
+  const std::int64_t in = channels(x, 5, "conv3d layer");
+  const Tensor       w  = store.get(name + "/W", {kernel, kernel, kernel, in, filters}, options.init);
+  return finish(store, name, conv3d(x, w, conv3d_options(options.stride, options.padding, options.dilation)), filters,
+                options);
+}
+
+Tensor conv3d_transpose(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+                        std::int64_t kernel, const ConvLayerOptions& options) {
+  const std::int64_t in   = channels(x, 5, "conv3d_transpose layer");
+  const Initializer  init = options.init;
+  const Tensor w = store.get(name + "/W", {kernel, kernel, kernel, filters, in}, [init](const Shape& s, DType dt, Generator& g) {
+    return transpose(init({s[0], s[1], s[2], s[4], s[3]}, dt, g), {0, 1, 2, 4, 3}).contiguous();
+  });
+  const Conv3DOptions o = conv3d_options(options.stride, options.padding, options.dilation);
+  return finish(store, name, conv3d_transpose(x, w, o), filters, options);
 }
 
 Tensor batch_norm(ParameterStore& params, ParameterStore& stats, const std::string& name, const Tensor& x,

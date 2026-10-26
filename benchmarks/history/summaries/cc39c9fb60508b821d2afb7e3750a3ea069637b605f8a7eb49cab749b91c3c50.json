@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "id": "cc39c9fb60508b821d2afb7e3750a3ea069637b605f8a7eb49cab749b91c3c50",
+  "date": "2026-10-24T09:44:12-06:00",
+  "label": "cache-pass-transpose-reference-confirm",
+  "kind": "calibrated",
+  "profile": "72f1cd94dc713e8e5cb4e2eb530db6bea84b9c67e7dd4883befe38e752111833",
+  "configuration": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1"
+    },
+    "release": {
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+      "CMAKE_CXX_FLAGS": "",
+      "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+      "DATAMUNGE_ENABLE_ARROW": "ON",
+      "DATAMUNGE_USE_BLAS": "ON",
+      "DATAMUNGE_USE_LAPACK": "ON"
+    },
+    "context": {
+      "build": "Clang-21.1.8/Release",
+      "gemm_backend": "accelerate",
+      "lapack_available": "true",
+      "nn_threads": "1 except explicit thread-scaling cases",
+      "num_cpus": 10,
+      "mhz_per_cpu": 24,
+      "caches": [
+        {
+          "type": "Data",
+          "level": 1,
+          "size": 65536,
+          "num_sharing": 0
+        },
+        {
+          "type": "Instruction",
+          "level": 1,
+          "size": 131072,
+          "num_sharing": 0
+        },
+        {
+          "type": "Unified",
+          "level": 2,
+          "size": 6291456,
+          "num_sharing": 1
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "41399622aa94f3c87ce40c7867f11a85480354a475e98dd348d14e77c72ed359",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "command": [
+      "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+      "--benchmark_out=/Users/jordanschupbach/projects/datamunge/benchmarks/results/performance/cache_pass_transpose_before_repeat.json",
+      "--benchmark_out_format=json",
+      "--benchmark_filter=BM_LinalgTensorTransposeLayout|BM_LinalgTensor/(Transpose|Reshape|Concat)/",
+      "--benchmark_min_time=0.1s",
+      "--benchmark_repetitions=5"
+    ],
+    "release": {
+      "configuration": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+        "CMAKE_CXX_FLAGS": "",
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+        "DATAMUNGE_ENABLE_ARROW": "ON",
+        "DATAMUNGE_USE_BLAS": "ON",
+        "DATAMUNGE_USE_LAPACK": "ON"
+      },
+      "core_translation_units": 271,
+      "core_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DACCELERATE_NEW_LAPACK=1 -DDATAMUNGE_HAVE_ARROW=1 -DDATAMUNGE_HAVE_CBLAS=1 -DDATAMUNGE_HAVE_LAPACK=1 -DDATAMUNGE_HAVE_X11=1 -Ddatamunge_EXPORTS -I/Users/jordanschupbach/projects/datamunge/include -I/opt/homebrew/include -I/usr/X11R6/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -F/nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /nix/store/c7cl2s88nwx70vhb9r4l2ysf8x5qjh41-datamunge-0.0.1/include -isystem /nix/store/x2rbyyj8rd25wvahmb9pqpn9b2p6i2iv-emacs-30.2/include -isystem /nix/store/bhryp10d5w5h9rsav5k9m9jb55z26bsl-jq-1.8.1-dev/include -isystem /nix/store/ldza1ndfpwgm48dazvylbyrixvhax80p-gtest-1.17.0-dev/include -isystem /nix/store/aj188fnykkwbgcbrbd3ywyb5xs8rs7ww-python3-3.13.11-env/include -isystem /nix/store/ab43gk9xl2ssnz3yzs484csd5axv1kqk-libxml2-2.15.1-dev/include -isystem /nix/store/yamly6ym3hyi0589isqyb5w0y4n2fdbg-libiconv-109.100.2-dev/include -isystem /nix/store/31xanb0p9gb3asr4zpzr7znjbc4kkx49-arrow-cpp-22.0.0/include -isystem /nix/store/avc2sd5i5h0sdsq0ky6ks4zjg5n60ffh-graphviz-12.2.1/include -isystem /nix/store/c7byifmqyf3l5g7lpgdxd6i9iya2m7fv-doctest-2.4.12/include -isystem /nix/store/qng4vqqwk96yrxcaj2xyx81mfph483ji-libx11-1.8.12-dev/include -isystem /nix/store/in25zi0q9sspb41jqjmjfdwsr3m4j9mg-xorgproto-2025.1/include -isystem /nix/store/7mbgzcixxmbqb56ldcxrm9ajpd90yc54-gbenchmark-1.9.4/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include -isystem /nix/store/47d3ak31qp8qavc3w6np7p48ccylwqwd-compiler-rt-libc-21.1.8-dev/include -isystem /nix/store/nq7w9cx2jhqxi2ha92clba1fjgqns1xg-libresolv-91-dev/include -isystem /nix/store/3ifp90k41wpp3pmy8wgc6iafc86xy24w-libsbuf-14.1.0-dev/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include/c++/v1 -isystem /nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/resource-root/include -isystem /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -isystem /nix/store/6mp7w55mz9frcya56aqzny2y7d6pi9ws-libSystem-B/include  -fPIC -O3 -DNDEBUG -std=gnu++23 -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -fPIC -o CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o -c /Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "output": "_deps/datamunge-build/CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o"
+      },
+      "driver_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DBENCHMARK_STATIC_DEFINE -DDATAMUNGE_BENCH_BUILD=\\\"Clang-21.1.8/Release\\\" -DDATAMUNGE_HAVE_ARROW=1 -I/Users/jordanschupbach/projects/datamunge/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -O3 -DNDEBUG -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -o CMakeFiles/backend_bench.dir/backend/autograd.cpp.o -c /Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "output": "CMakeFiles/backend_bench.dir/backend/autograd.cpp.o"
+      }
+    },
+    "label": "cache-pass-transpose-reference-confirm",
+    "executable_sha256": "7eeb3c087efbfc9d86f4609bd20e5f0bcd4f94db249b74a8e274c461dd1cbaeb",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1"
+    },
+    "loaded_core_sha256": "7f5c960d6bbf793b54afebe865fd3c79b4a3e11f9c419ec689b2a8bfa17ff3cc"
+  },
+  "optional_skips": 0,
+  "cases": {
+    "BM_LinalgTensor/Concat/1024/real_time": {
+      "median_ns": 867.044904897458,
+      "min_ns": 860.2936766663172,
+      "max_ns": 881.2177023193419,
+      "cv_percent": 0.9700860319434669,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2362046058.3206
+      }
+    },
+    "BM_LinalgTensor/Concat/1048576/real_time": {
+      "median_ns": 983336.6330901476,
+      "min_ns": 978788.9712439053,
+      "max_ns": 990182.8489353438,
+      "cv_percent": 0.5339383519790447,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2132689792.5176182
+      }
+    },
+    "BM_LinalgTensor/Concat/65536/real_time": {
+      "median_ns": 59881.772767960465,
+      "min_ns": 59447.5000020503,
+      "max_ns": 60008.24467999801,
+      "cv_percent": 0.37827474871172695,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2188846354.0967445
+      }
+    },
+    "BM_LinalgTensor/Reshape/1024/real_time": {
+      "median_ns": 128.50736318043045,
+      "min_ns": 127.98230214941134,
+      "max_ns": 129.0995005693579,
+      "cv_percent": 0.30815180592957214,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 7968414997.063284
+      }
+    },
+    "BM_LinalgTensor/Reshape/1048576/real_time": {
+      "median_ns": 116119.96161052733,
+      "min_ns": 113147.23320929208,
+      "max_ns": 121595.2898273687,
+      "cv_percent": 2.6752152089635177,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 9030109771.453257
+      }
+    },
+    "BM_LinalgTensor/Reshape/65536/real_time": {
+      "median_ns": 6460.64464420988,
+      "min_ns": 6455.41732305527,
+      "max_ns": 6465.514858481894,
+      "cv_percent": 0.06160471195085633,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 10143879381.871632
+      }
+    },
+    "BM_LinalgTensor/Transpose/1024/real_time": {
+      "median_ns": 537.6088389679813,
+      "min_ns": 534.4637100708087,
+      "max_ns": 563.9047490602628,
+      "cv_percent": 2.238569847035929,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1904730588.0716498
+      }
+    },
+    "BM_LinalgTensor/Transpose/1048576/real_time": {
+      "median_ns": 1264126.5090761327,
+      "min_ns": 1260528.4090651285,
+      "max_ns": 1265490.1545664126,
+      "cv_percent": 0.15253793097232157,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 829486600.0131077
+      }
+    },
+    "BM_LinalgTensor/Transpose/65536/real_time": {
+      "median_ns": 39689.153626016014,
+      "min_ns": 39646.32546203277,
+      "max_ns": 39786.20199016316,
+      "cv_percent": 0.1313139353446412,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1651231986.8933039
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:1024/identity:0/real_time": {
+      "median_ns": 1254546.290557557,
+      "min_ns": 1195935.8974301224,
+      "max_ns": 1255235.7520923042,
+      "cv_percent": 2.6097396080694857,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 13373134276.73021
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:1024/identity:1/real_time": {
+      "median_ns": 377950.9755314274,
+      "min_ns": 377538.72283760953,
+      "max_ns": 378548.34782474034,
+      "cv_percent": 0.10718761891952529,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 44389926435.32663
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:256/identity:0/real_time": {
+      "median_ns": 269279.1276300947,
+      "min_ns": 267196.11237889953,
+      "max_ns": 269876.58666690724,
+      "cv_percent": 0.4508674537530401,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 15576045707.343727
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:256/identity:1/real_time": {
+      "median_ns": 98092.65427498262,
+      "min_ns": 97876.51963758434,
+      "max_ns": 106333.74263453599,
+      "cv_percent": 3.640231920096246,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 42758594218.91194
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:64/identity:0/real_time": {
+      "median_ns": 40267.16815374039,
+      "min_ns": 40080.2620200281,
+      "max_ns": 40504.29513409257,
+      "cv_percent": 0.37429324209620674,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 26040470390.083748
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:1024/cols:64/identity:1/real_time": {
+      "median_ns": 23722.35385879768,
+      "min_ns": 23711.622806762247,
+      "max_ns": 24154.378595739487,
+      "cv_percent": 0.7961918546643505,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 44202021698.24411
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:1024/identity:0/real_time": {
+      "median_ns": 274125.97655995796,
+      "min_ns": 273107.0136832159,
+      "max_ns": 287900.4726565881,
+      "cv_percent": 2.250408557134463,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 15300644078.44473
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:1024/identity:1/real_time": {
+      "median_ns": 91559.16154385831,
+      "min_ns": 91458.17004823801,
+      "max_ns": 91708.14257678854,
+      "cv_percent": 0.10104826346803149,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 45809768561.40017
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:256/identity:0/real_time": {
+      "median_ns": 39857.745732340234,
+      "min_ns": 39821.885664100635,
+      "max_ns": 39883.36660989679,
+      "cv_percent": 0.07236829942833072,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 26307960491.332916
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:256/identity:1/real_time": {
+      "median_ns": 24510.923185548778,
+      "min_ns": 24506.100246028,
+      "max_ns": 24533.026602597998,
+      "cv_percent": 0.04429165257972873,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 42779947212.19732
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:64/identity:0/real_time": {
+      "median_ns": 6477.155340664521,
+      "min_ns": 6469.254521777458,
+      "max_ns": 6808.628625354477,
+      "cv_percent": 2.253281052590098,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 40472087855.330864
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:256/cols:64/identity:1/real_time": {
+      "median_ns": 6080.035061044748,
+      "min_ns": 6076.119476810652,
+      "max_ns": 6137.526958597607,
+      "cv_percent": 0.4296610969584472,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 43115540842.77849
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:1024/identity:0/real_time": {
+      "median_ns": 48883.95533848808,
+      "min_ns": 48778.29134583848,
+      "max_ns": 49167.59700000053,
+      "cv_percent": 0.29869466293232194,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 21450310081.075184
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:1024/identity:1/real_time": {
+      "median_ns": 23803.11645050595,
+      "min_ns": 23657.682112646806,
+      "max_ns": 23852.26436346408,
+      "cv_percent": 0.3327444788548087,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 44052046805.73294
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:256/identity:0/real_time": {
+      "median_ns": 6273.365529580438,
+      "min_ns": 6267.122980014398,
+      "max_ns": 6274.706418356395,
+      "cv_percent": 0.04771542670554033,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 41786820609.11763
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:256/identity:1/real_time": {
+      "median_ns": 6297.114058424716,
+      "min_ns": 6289.658543993837,
+      "max_ns": 6299.884592808833,
+      "cv_percent": 0.06573336542113085,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 41629228495.43841
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:64/identity:0/real_time": {
+      "median_ns": 1748.3901191300974,
+      "min_ns": 1735.2156776181562,
+      "max_ns": 1750.1247619764831,
+      "cv_percent": 0.37968283109972645,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 37483625240.69119
+      }
+    },
+    "BM_LinalgTensorTransposeLayout/rows:64/cols:64/identity:1/real_time": {
+      "median_ns": 1693.7451095066224,
+      "min_ns": 1676.3876817358323,
+      "max_ns": 1694.2660110346799,
+      "cv_percent": 0.4532396860045433,
+      "repetitions": 5,
+      "counters": {
+        "bytes_per_second": 38692953049.523636
+      }
+    }
+  }
+}

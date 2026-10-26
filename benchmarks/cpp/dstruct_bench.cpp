@@ -8,15 +8,16 @@
 using datamunge::dstruct::ThreadSafeVector;
 
 static void BM_ThreadSafeVectorPushBack(benchmark::State& state) {
+  state.SetLabel("independent container per benchmark thread; no shared contention");
   for (auto _ : state) {
     ThreadSafeVector<int> values;
-    values.reserve(static_cast<std::size_t>(state.range(0)) * state.threads());
+    values.reserve(static_cast<std::size_t>(state.range(0)));
     for (int i = 0; i < state.range(0); ++i) {
       values.push_back(i);
     }
     benchmark::DoNotOptimize(values.size());
   }
-  state.SetItemsProcessed(state.iterations() * state.range(0) * state.threads());
+  state.SetItemsProcessed(state.iterations() * state.range(0));
 }
 BENCHMARK(BM_ThreadSafeVectorPushBack)
     ->RangeMultiplier(4)
@@ -41,6 +42,7 @@ BENCHMARK(BM_ThreadSafeVectorSnapshot)
     ->Unit(benchmark::kMicrosecond);
 
 static void BM_ThreadSafeVectorApply(benchmark::State& state) {
+  state.SetLabel("each benchmark thread runs its own internal worker group");
   ThreadSafeVector<int> values;
   std::vector<int> seed(static_cast<std::size_t>(state.range(0)), 7);
   values.append(seed);

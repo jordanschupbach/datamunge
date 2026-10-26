@@ -409,3 +409,17 @@ TEST(SparseCOO, spmv_tiled_sparse_rows) {
     EXPECT_DOUBLE_EQ(y[3], 0.0);
     EXPECT_DOUBLE_EQ(y[4], 3.0);
 }
+
+TEST(SparseCOO, SortedCompressionPreservesDuplicateRoundingAndRemovesScaledZeros) {
+    SparseCOO<double> matrix(3, 3);
+    matrix.set(0, 0, 1e16); matrix.set(0, 0, 1.0); matrix.set(0, 0, -1e16);
+    matrix.set(1, 0, 2.0); matrix.set(1, 0, 3.0); matrix.set(2, 2, 0.0);
+    matrix.compress();
+    EXPECT_EQ(matrix.row_indices(), (std::vector<std::size_t>{1}));
+    EXPECT_EQ(matrix.col_indices(), (std::vector<std::size_t>{0}));
+    EXPECT_EQ(matrix.values(), (std::vector<double>{5.0}));
+    matrix.scale_inplace(0.0);
+    ASSERT_TRUE(matrix.is_compressed());
+    matrix.compress();
+    EXPECT_TRUE(matrix.is_compressed()); EXPECT_EQ(matrix.nnz(), 0u);
+}

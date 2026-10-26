@@ -329,7 +329,7 @@ Tensor load_npy(const std::string& path) {
 
 // ---- npz (ZIP archive of .npy members) -------------------------------------------------------
 
-void save_npz(const std::string& path, const NamedTensors& arrays) {
+std::vector<unsigned char> encode_npz(const NamedTensors& arrays) {
   struct Entry {
     std::string   name;
     std::uint32_t crc, size, offset;
@@ -390,13 +390,16 @@ void save_npz(const std::string& path, const NamedTensors& arrays) {
   put32(out, static_cast<std::uint32_t>(directory_size));
   put32(out, static_cast<std::uint32_t>(directory));
   put16(out, 0);
-  write_file(path, out);
+  return out;
 }
 
-NamedTensors load_npz(const std::string& path) {
-  const Bytes b    = read_file(path);
-  const auto  fail = [&](const std::string& why) -> std::runtime_error {
-    return std::runtime_error("npz: " + why + " (in '" + path + "')");
+void save_npz(const std::string& path, const NamedTensors& arrays) { write_file(path, encode_npz(arrays)); }
+
+namespace {
+
+NamedTensors decode_npz_impl(const Bytes& b, const std::string& source) {
+  const auto fail = [&](const std::string& why) -> std::runtime_error {
+    return std::runtime_error("npz: " + why + (source.empty() ? std::string() : " (in '" + source + "')"));
   };
   // Find the end-of-central-directory record (it may be followed by a comment).
   if (b.size() < 22) throw fail("file too small to be a ZIP archive");
@@ -474,5 +477,11 @@ NamedTensors load_npz(const std::string& path) {
   }
   return result;
 }
+
+}  // namespace
+
+NamedTensors decode_npz(const std::vector<unsigned char>& bytes) { return decode_npz_impl(bytes, ""); }
+
+NamedTensors load_npz(const std::string& path) { return decode_npz_impl(read_file(path), path); }
 
 }  // namespace datamunge::nn

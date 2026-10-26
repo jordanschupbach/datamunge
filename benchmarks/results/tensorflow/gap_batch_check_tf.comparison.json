@@ -1,0 +1,13 @@
+[
+  {
+    "case": "BM_TensorFlowMatched/Mean/rows:32/f64:0/real_time",
+    "native_ns": 3113.6699000757094,
+    "eager_ns": 62904.99186661244,
+    "eager_cv_percent": 2.502945080599508,
+    "graph_ns": 310786.4864864865,
+    "graph_cv_percent": 2.129797874344393,
+    "native_cv_percent": 4.838437711355808,
+    "native_over_eager": 0.04949797794550429,
+    "native_over_graph": 0.01001867853160693
+  }
+]

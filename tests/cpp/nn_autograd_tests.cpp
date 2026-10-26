@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <datamunge/nn/nn.hpp>
 #include <functional>
@@ -502,6 +503,48 @@ TEST(NnAutograd, InPlaceAfterSaveIsDetected) {
   EXPECT_TRUE(w.is_leaf());
 }
 
+TEST(NnAutograd, SelfMultiplySharedEdgeAndHigherDerivatives) {
+  const auto fn = [](const Inputs& in) { return nn::mul(in[0], in[0]); };
+  auto       x  = input({3, 5}, -2, 2, 713);
+  EXPECT_TRUE(nn::gradcheck(fn, {x}).ok);
+  EXPECT_TRUE(nn::gradgradcheck(fn, {x}).ok);
+  auto y = nn::mul(x, x);
+  {
+    nn::NoGradGuard guard;
+    x.add_(nn::ones(x.shape(), x.dtype()));
+  }
+  EXPECT_THROW(nn::grad(nn::sum(y), {x}), std::logic_error);
+
+  // Multiplying the gradient first avoids overflowing 2*x unnecessarily.
+  auto large      = nn::full({1}, 2e38, DType::Float32).requires_grad_();
+  auto seed       = nn::full({1}, 1e-38, DType::Float32);
+  auto derivative = nn::grad({nn::mul(large, large)}, {large}, {seed})[0];
+  EXPECT_NEAR(derivative.item(), 4.0, 1e-5);
+}
+
+TEST(NnAutograd, SquareVjpRetainsScaleOrderAndDifferentiableSeeds) {
+  auto x = nn::tensor({1.0, -2.0, 3.0}).requires_grad_();
+  auto            seed = nn::tensor({4.0, 5.0, -6.0}).requires_grad_();
+  nn::GradOptions options;
+  options.create_graph = true;
+  auto derivative      = nn::grad({nn::square(x)}, {x}, {seed}, options)[0];
+  EXPECT_EQ(vals(derivative), (std::vector<double>{8, -20, -36}));
+  auto second = nn::grad(nn::sum(derivative), {x, seed});
+  EXPECT_EQ(vals(second[0]), (std::vector<double>{8, 10, -12}));
+  EXPECT_EQ(vals(second[1]), (std::vector<double>{2, -4, 6}));
+  auto large      = nn::full({1}, 2e38, DType::Float32).requires_grad_();
+  auto small_seed = nn::full({1}, 1e-38, DType::Float32);
+  EXPECT_TRUE(std::isinf(nn::grad({nn::square(large)}, {large}, {small_seed})[0].item()));
+  for (auto dtype : {DType::Float32, DType::Float64}) {
+    auto strided = nn::transpose(nn::cast(nn::tensor({{1, -2, 3}, {4, 5, -6}}), dtype)).requires_grad_();
+    auto varied_seed = nn::cast(nn::tensor({{2, -1}, {3, -2}, {4, -3}}), dtype);
+    auto ordinary    = nn::grad({nn::square(strided)}, {strided}, {varied_seed})[0];
+    EXPECT_EQ(vals(ordinary), (std::vector<double>{4, -8, -12, -20, 24, 36}));
+    ordinary.add_(nn::ones(ordinary.shape(), dtype));
+    EXPECT_EQ(vals(strided), (std::vector<double>{1, 4, -2, 5, 3, -6}));
+  }
+}
+
 TEST(NnAutograd, NoGradGuard) {
   Tensor x = nn::tensor({1.0}).requires_grad_();
   {
@@ -589,4 +632,64 @@ TEST(NnAutograd, GradcheckMatchesFiniteDifferenceOnLoss) {
       [&](const Inputs& in) { return nn::mean(nn::squared_difference(nn::matmul(x, in[0]) + in[1], t)); }, {W, b});
   EXPECT_TRUE(r.ok) << r.message;
   EXPECT_LT(r.max_abs_error, 1e-8);
+}
+
+TEST(NnAutograd, DenseTraversalHandlesGrowthAncestorRootsDuplicateCapturesAndHigherOrder) {
+  auto x = nn::scalar(2.0, DType::Float64).requires_grad_();
+  auto unused = nn::scalar(7.0, DType::Float64).requires_grad_();
+  auto y = x;
+  for (int i = 0; i < 1024; ++i) y = nn::add(y, 0.001);
+  auto z = nn::square(y);
+  nn::GradOptions options;
+  options.retain_graph = true;
+  options.create_graph = true;
+  options.allow_unused = true;
+  const auto gradients = nn::grad({y, z}, {x, x, unused},
+      {nn::scalar(3.0, DType::Float64), nn::scalar(5.0, DType::Float64)}, options);
+  ASSERT_EQ(gradients.size(), 3u);
+  EXPECT_NEAR(gradients[0].item(), 3 + 10 * y.item(), 1e-11);
+  EXPECT_EQ(gradients[0].item(), gradients[1].item());
+  EXPECT_FALSE(gradients[2].defined());
+  EXPECT_NEAR(nn::grad(gradients[0], {x}, nn::GradOptions{true, false, false})[0].item(), 10, 1e-12);
+  z.backward();
+  EXPECT_NEAR(x.grad().item(), 2 * y.item(), 1e-12);
+}
+
+TEST(NnAutograd, WideCapturePermutationAndDuplicatesKeepGradientPositions) {
+  std::vector<Tensor> leaves;
+  auto loss = nn::scalar(0, DType::Float64);
+  for (int i = 0; i < 257; ++i) {
+    leaves.push_back(nn::scalar(i, DType::Float64).requires_grad_());
+    loss = nn::add(loss, nn::mul(leaves.back(), i + 1));
+  }
+  std::rotate(leaves.begin(), leaves.begin() + 93, leaves.end());
+  leaves.push_back(leaves.front());
+  const auto gradients = nn::grad(loss, leaves);
+  ASSERT_EQ(gradients.size(), leaves.size());
+  for (std::size_t i = 0; i < leaves.size(); ++i)
+    EXPECT_DOUBLE_EQ(gradients[i].item(), leaves[i].item() + 1);
+}
+
+TEST(NnAutograd, FusedSoftmaxVjpMatchesStridedFallbackAndKeepsHigherDerivatives) {
+  for (auto dtype : {DType::Float32, DType::Float64})
+    for (std::int64_t width : {1, 7, 32, 129, 257}) {
+      auto x =
+          nn::cast(
+              nn::reshape(nn::arange(0, 3 * width, 1, DType::Float64), {3, width}) / 128.0, dtype)
+              .requires_grad_();
+      auto seed = nn::cast(
+          nn::reshape(nn::arange(-3 * width, 0, 1, DType::Float64), {3, width}) / 64.0, dtype);
+      auto            strided = nn::transpose(nn::transpose(seed).clone());
+      auto            output  = nn::softmax(x);
+      nn::GradOptions retain;
+      retain.retain_graph = true;
+      const auto packed   = nn::grad({output}, {x}, {seed}, retain)[0].to_vector<double>();
+      const auto fallback = nn::grad({output}, {x}, {strided}, retain)[0].to_vector<double>();
+      ASSERT_EQ(packed.size(), fallback.size());
+      for (std::size_t i = 0; i < packed.size(); ++i)
+        EXPECT_NEAR(packed[i], fallback[i], dtype == DType::Float32 ? 3e-7 : 2e-14);
+    }
+  auto x = input({2, 7}, -1, 1, 992);
+  expect_gradgradcheck(
+      unary("softmax_fused_fallback", [](const Tensor& v) { return nn::softmax(v); }, x));
 }

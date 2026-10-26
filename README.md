@@ -40,11 +40,25 @@ use the following command to enter a development shell with all dependencies:
 nix develop
 ```
 
+If Zsh completion mixes Homebrew and Nix versions of `just`, source
+`scripts/just-completion.zsh` after `compinit` in your Zsh startup configuration.
+It selects the active executable's completion protocol again whenever direnv
+changes `PATH`. This prevents newer dynamic completion loaders from executing
+an older `just`'s default recipe when you press Tab.
+
 To build the project
 
 ```bash
 just build
 ```
+
+`just build` and `just build-cpp` build the core in Release mode. Standalone CMake builds
+also default to Release when no build type is selected; use
+`-DCMAKE_BUILD_TYPE=Debug` for an explicit debug build. The TensorFlow comparison
+uses a separate Release build of both the core and benchmark driver; see
+[the comparison workflow](benchmarks/TENSORFLOW.md).
+All performance plans and TensorFlow/native comparison tables live in
+[PERFORMANCE.md](PERFORMANCE.md).
 
 to run tests:
 
@@ -73,27 +87,32 @@ This repo is intended to be cloned and renamed. All occurrences of the project n
 
 ## Bindings
 
+See [the binding workflow and audit](docs/bindings.md) for source packages, regeneration, and the current language coverage.
+
 ### Test Drive
 
 #### Python
 
 ```bash
-just python
+just build-python
+just test-python
+just repl-python
 ```
 
 #### R
 
 ```bash
 just build-r
-just install-r
-just r
+just test-r
+just repl-r
 ```
 
 #### Javascript
 
 ```bash
-just js
-just js-repl
+just build-javascript
+just test-javascript
+just repl-javascript
 ```
 
 #### Lua
@@ -135,6 +154,23 @@ Binding support is (to be) provided for the following languages:
 
 Each binding lives under `src/` (e.g. `src/rustdatamunge/`, `src/godatamunge/`, `src/octruby/`),
 with SWIG generator inputs kept alongside each binding (typically `src/<binding>/swig/`).
-The C/C++ core remains the single
+The tensor/NN facade is currently exposed in Python and R; the other bindings
+cover their existing core APIs. The C/C++ core remains the single
 source of truth; bindings are (re)generated via the `just prebuild-*` /
 `just build-*` workflows.
+
+CNN and autoencoder examples (sections 1 and 2) are available in
+[C++](examples/cpp/nn/README.md) and through [Python/SWIG](examples/python/nn/README.md).
+
+The NN language rewrite covers 414 canonical C++ examples across foundations,
+CNNs, autoencoders, generative models, recurrent networks, attention and RL.
+Actual implementations use the functional SWIG API (`pydatamunge.nn` /
+`datamungerNN::nn`) with models and loops written in each language. Track completed
+ports and validation in [the migration ledger](examples/nn/language_status.json)
+with `just nn-language-status`; compiled reference wrappers do not count as ports.
+
+Run a completed port with `just python-example NAME epochs=5` or
+`just r-example NAME epochs=5`. Both commands reject unported examples; use
+`just run-nn NAME` for the canonical C++ reference. Classification ports print a
+confusion matrix. See [migration notes](docs/nn-language-migration.md) and the
+[Python](examples/python/nn/README.md) / [R](examples/r/nn/README.md) example docs.

@@ -104,7 +104,7 @@ void CoupledGradients() {
   std::cout << "  coupled gradients: all updates use the same old parameter state\n";
 }
 
-void Quadratic(Kind kind) {
+void Quadratic(Kind kind, int steps) {
   Tensor              w     = nn::tensor({4, 4}).requires_grad_();
   const Tensor        scale = nn::tensor({0.5, 50});
   auto                loss  = [&] { return nn::sum(scale * nn::square(w)); };
@@ -112,19 +112,20 @@ void Quadratic(Kind kind) {
   cfg.kind = kind;
   nn::Optimizer opt({w}, 0.01, cfg);
   std::printf("  %-10s", nn::optimizer_name(kind).c_str());
-  for (int t = 0; t <= 200; ++t) {
-    if (t == 0 || t == 10 || t == 50 || t == 200) {
+  for (int t = 0; t <= steps; ++t) {
+    if (t == 0 || t == 10 || t == 50 || t == steps) {
       nn::NoGradGuard guard;
       const float     value = loss().item<float>();
       std::printf(" %11.5g", value);
-      if (t == 200) check::Require(value < 0.15f, "quadratic must converge");
+      check::Require(std::isfinite(value), "quadratic loss must stay finite");
+      if (t == steps && steps >= 200) check::Require(value < 0.15f, "quadratic must converge");
     }
-    if (t < 200) opt.minimize(loss());
+    if (t < steps) opt.minimize(loss());
   }
   std::printf("\n");
 }
 
-void Minibatches(Kind kind) {
+void Minibatches(Kind kind, int epochs) {
   Tensor              w = nn::scalar(0).requires_grad_(), b = nn::scalar(0).requires_grad_();
   nn::OptimizerConfig cfg;
   cfg.kind = kind;
@@ -132,7 +133,7 @@ void Minibatches(Kind kind) {
   std::vector<int> order(64);
   std::iota(order.begin(), order.end(), 0);
   std::mt19937 rng(7);
-  for (int epoch = 0; epoch < 40; ++epoch) {
+  for (int epoch = 0; epoch < epochs; ++epoch) {
     std::shuffle(order.begin(), order.end(), rng);
     for (int start = 0; start < 64; start += 8) {
       std::vector<float> xs, ys;
@@ -144,24 +145,35 @@ void Minibatches(Kind kind) {
       opt.minimize(nn::mean(nn::square(x * w + b - y)));
     }
   }
-  check::Near(w.item(), 3, 0.005, "learned slope");
-  check::Near(b.item(), -0.5, 0.005, "learned intercept");
+  check::Require(std::isfinite(w.item()) && std::isfinite(b.item()), "finite learned parameters");
+  if (epochs >= 40) {
+    check::Near(w.item(), 3, 0.005, "learned slope");
+    check::Near(b.item(), -0.5, 0.005, "learned intercept");
+  }
+  check::Require(opt.iterations() == 8 * epochs, "one update per minibatch");
   std::printf("  %-10s slope %.5f, intercept %.5f (true: 3, -0.5)\n", nn::optimizer_name(kind).c_str(), w.item(),
               b.item());
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int quadratic_steps = 200, epochs = 40;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) epochs = quadratic_steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) epochs = quadratic_steps = std::stoi(argument.substr(6));
+    }
+    check::Require(epochs > 0, "positive training budget required");
     std::cout << "== Update equations vs TensorFlow fused-kernel formulas\n";
     for (auto kind : {Kind::Sgd, Kind::Momentum, Kind::Nesterov}) KernelAgreement(kind);
     CoupledGradients();
     std::cout << "\n== Ill-conditioned quadratic: 0.5*x^2 + 50*y^2, lr=.01\n"
                  "  method           step 0     step 10     step 50    step 200\n";
-    for (auto kind : {Kind::Sgd, Kind::Momentum, Kind::Nesterov}) Quadratic(kind);
-    std::cout << "\n== Shuffled minibatch regression: 40 epochs, batch 8, seed 7\n";
-    for (auto kind : {Kind::Sgd, Kind::Momentum, Kind::Nesterov}) Minibatches(kind);
+    for (auto kind : {Kind::Sgd, Kind::Momentum, Kind::Nesterov}) Quadratic(kind, quadratic_steps);
+    std::cout << "\n== Shuffled minibatch regression: " << epochs << " epochs, batch 8, seed 7\n";
+    for (auto kind : {Kind::Sgd, Kind::Momentum, Kind::Nesterov}) Minibatches(kind, epochs);
     std::cout << "All SGD/momentum/Nesterov checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

@@ -236,9 +236,22 @@ Tensor linspace(double start, double stop, std::int64_t count, DType dtype = DTy
 Tensor eye(std::int64_t n, DType dtype = DType::Float32);
 
 /// Copies `values` into a tensor of the matching dtype. An empty `shape`
-/// means a 1-D tensor of `values.size()` elements.
+/// means a 1-D tensor of `values.size()` elements, so a one-element vector
+/// gives shape [1], not a 0-d scalar: use `from_scalar` / `scalar`, or
+/// `.reshape({})`, for a 0-d tensor.
 template <typename T>
 Tensor from_vector(const std::vector<T>& values, Shape shape = {});
+
+/// A 0-d tensor holding `value` exactly, with the dtype matching T
+/// (float -> float32, double -> float64, int32/int64, bool).
+template <typename T>
+Tensor from_scalar(T value);
+
+/// Bit-for-bit equality: same dtype, same shape and identical element bytes
+/// (so NaN == NaN with the same payload, while 0.0 != -0.0). Two undefined
+/// tensors are equal; an undefined and a defined one are not. Strided views
+/// compare by their logical (row-major) elements.
+bool equal_bits(const Tensor& a, const Tensor& b);
 
 /// Literal tensors: `tensor({1, 2, 3})`, `tensor({1, 2, 3, 4}, {2, 2})`.
 Tensor tensor(std::initializer_list<double> values, Shape shape = {}, DType dtype = DType::Float32);
@@ -254,6 +267,13 @@ std::vector<T> Tensor::to_vector() const {
   std::vector<T> out(static_cast<std::size_t>(packed.numel()));
   for (std::size_t i = 0; i < out.size(); ++i)
     out[i] = static_cast<T>(detail::read_as_double(*packed.impl(), packed.offset() + static_cast<std::int64_t>(i)));
+  return out;
+}
+
+template <typename T>
+Tensor from_scalar(T value) {
+  Tensor out = empty(Shape{}, dtype_of<T>::value);
+  *out.data_ptr<T>() = value;
   return out;
 }
 

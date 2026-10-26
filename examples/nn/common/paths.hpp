@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <string>
+#include "common/runtime.hpp"
 
 namespace paths {
 
@@ -24,7 +25,7 @@ inline std::filesystem::path Dataset(const std::string& name) { return DataRoot(
 
 inline std::filesystem::path OutputRoot() {
   if (const char* dir = std::getenv("DATAMUNGE_OUTPUT_DIR"); dir && *dir) return dir;
-  return "output/nn";
+  return example_runtime::Full() ? "output/nn/full" : "output/nn/quick";
 }
 
 /// OutputRoot() / relative, created as a directory.

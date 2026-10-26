@@ -1,0 +1,113 @@
+{
+  "id": "865445a7b6592ee49cc33dea5b325a4061533e45648440c484f8e86bec8542a7",
+  "label": "expanded_reduction_repeat_tf",
+  "source": "benchmarks/results/tensorflow/expanded_reduction_repeat_tf.comparison.json",
+  "context": {
+    "date": "2026-10-24T21:18:01.312504+00:00",
+    "build": "TensorFlow-2.21.0",
+    "gemm_backend": "TensorFlow packaged CPU kernels",
+    "nn_threads": "1",
+    "tensorflow_build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    }
+  },
+  "rows": [
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time",
+      "native_ns": 61470.039829018744,
+      "eager_ns": 50000.59130434783,
+      "eager_cv_percent": 0.12566867248023922,
+      "graph_ns": 109413.86345381525,
+      "graph_cv_percent": 0.17084143558279186,
+      "native_cv_percent": 0.06279868294097297,
+      "native_over_eager": 1.2293862577515875,
+      "native_over_graph": 0.5618121679339647
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time",
+      "native_ns": 60914.4555649164,
+      "eager_ns": 50059.82144479782,
+      "eager_cv_percent": 0.5370008696634611,
+      "graph_ns": 108431.01506024097,
+      "graph_cv_percent": 9.460065968835497,
+      "native_cv_percent": 0.12223226848216977,
+      "native_over_eager": 1.216833256828298,
+      "native_over_graph": 0.561780737098829
+    }
+  ],
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "183e058077679c58e188b17e8ac982ec325150696676aa2cc5694cc8024fb37b",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/containers.cpp": "b183cba9802bb6153f35be1f0a53d80d0949428c40502aadf92fb6c21037c655",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "fe35b88ce82f43f1a0317ccf0462ced166b5b7277c0a9e333165cf27e8b2be4a",
+      "benchmarks/backend/tensorflow_extended.cpp": "96162094bf0f2f4446d8ce9d225dbb1b66885cb692910e4799d99bdcf9fe4eb9",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589",
+      "benchmarks/tensorflow_cases.def": "b550118cd6c79b865516b3eeb4cf2eacae983881d5b7d65a8825d2769779790a"
+    },
+    "core_sources_sha256": "5a8a142d8826f9a9ca0f1cd51ead481bb6c794237db881da4dd772f507b9bb06",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "expanded-reduction-repeat-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--paired-native",
+      "--case",
+      "^(Mean|SumAll)/rows:8192/f64:0/",
+      "--native",
+      "benchmarks/results/tensorflow/expanded_reduction_repeat_native.json",
+      "--output",
+      "benchmarks/results/tensorflow/expanded_reduction_repeat_tf.json",
+      "--label",
+      "expanded-reduction-repeat",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "d18833119350eb080d6698a1347f5f32570ae50d7dcbab9d3dbbf968a003eaa8",
+    "case_catalog_sha256": "b550118cd6c79b865516b3eeb4cf2eacae983881d5b7d65a8825d2769779790a",
+    "fixture_factory_sha256": "60286b64cc01e803216f6f6e5db9b45eb0cba8be3bb65c6cb45ec88e3d950bdd",
+    "native_result_sha256": "7f20e14b5982d00fd8b7e53bc242043aec569bdfdcee39ff09d120fb2df251c0",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "case_selection": [
+      "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time"
+    ],
+    "host_load_average_start": [
+      1.93310546875,
+      2.138671875,
+      3.01611328125
+    ],
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/expanded_reduction_repeat_native.json",
+    "host_load_average_end": [
+      1.86279296875,
+      2.1171875,
+      2.99755859375
+    ]
+  }
+}

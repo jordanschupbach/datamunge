@@ -97,6 +97,17 @@ Tensor separable_conv2d(ParameterStore& store, const std::string& name, const Te
 Tensor conv2d_transpose(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
                         std::int64_t kernel, const ConvLayerOptions& options = {});
 
+/// act(conv3d(x, W) + b) for volumes x [N, D, H, W, C]: W is "<name>/W"
+/// [k, k, k, C, filters], b is "<name>/b" [filters] (tflow's Conv3DLayer).
+Tensor conv3d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+              std::int64_t kernel, const ConvLayerOptions& options = {});
+/// Transposed 3-D convolution to `filters` channels: W is "<name>/W"
+/// [k, k, k, filters, C] (initialised with the fans of the forward
+/// [k, k, k, C, filters] kernel). The output is [N, D s, H s, W s, filters]
+/// for SAME, [N, (D-1) s + k, ..] for VALID.
+Tensor conv3d_transpose(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
+                        std::int64_t kernel, const ConvLayerOptions& options = {});
+
 struct BatchNormOptions {
   double momentum{0.99};
   double eps{1e-3};

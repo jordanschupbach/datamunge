@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "id": "135852bb95852e4d8f7c20fc6b86007cb158f01e8d9a3c5e8f21850104db0a01",
+  "date": "2026-10-24T18:42:41.099596+00:00",
+  "label": "release-recheck-repeat-tensorflow",
+  "kind": "calibrated",
+  "profile": "63bd66353761cf8490c4d969811c04fb3d70dc6ecebdb9a75159075129773ead",
+  "configuration": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "tensorflow": "2.21.0",
+      "numpy": "2.5.4"
+    },
+    "context": {
+      "build": "TensorFlow-2.21.0",
+      "gemm_backend": "TensorFlow packaged CPU kernels",
+      "lapack_available": null,
+      "nn_threads": "1",
+      "num_cpus": null,
+      "mhz_per_cpu": null,
+      "caches": null
+    }
+  },
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "73fadbb4fcc6f406d0c5487dd869f1884c5e492ed80d0ce149734a8ff1c0dca2",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ad04f448e2b8c3d70a7a24406dcfb28f5f63e7df41981df0f036df962cae27e4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "core_sources_sha256": "21c6ae92c53bf89c87b80c572d5ca041283519c34fa5276badaa10068a456481",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "release-recheck-repeat-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--build-dir",
+      "build/benchmarks-release",
+      "--paired-native",
+      "--case",
+      "^(Add|Multiply|Relu|Exp|Softmax|SquareGradient)/rows:8192/",
+      "--native",
+      "benchmarks/results/tensorflow/release_repeat_native.json",
+      "--output",
+      "benchmarks/results/tensorflow/release_repeat_tf.json",
+      "--label",
+      "release-recheck-repeat",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "ccd645fa6a09a689cbe0932cc2111c467c6de9ca5158456dde5c0d63d979c350",
+    "native_result_sha256": "813d460b1c0f4880db5d6167f5169a1916f948a9051040a8036ef041327a0fa7",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "case_selection": [
+      "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time"
+    ],
+    "host_load_average_start": [
+      2.37109375,
+      2.66015625,
+      2.88427734375
+    ],
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/release_repeat_native.json",
+    "host_load_average_end": [
+      2.43603515625,
+      2.6474609375,
+      2.8701171875
+    ]
+  },
+  "optional_skips": 0,
+  "cases": {
+    "TensorFlow/eager/Add/rows:8192/f64:0/real_time": {
+      "median_ns": 82883.81041666666,
+      "min_ns": 82393.44583333333,
+      "max_ns": 110777.64791666667,
+      "cv_percent": 13.587885042972427,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Add/rows:8192/f64:1/real_time": {
+      "median_ns": 195523.348733234,
+      "min_ns": 163050.29806259315,
+      "max_ns": 198105.74962742176,
+      "cv_percent": 7.941268076998309,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Exp/rows:8192/f64:0/real_time": {
+      "median_ns": 426309.29615384614,
+      "min_ns": 419881.0884615385,
+      "max_ns": 435959.77692307695,
+      "cv_percent": 1.5603172502126568,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Exp/rows:8192/f64:1/real_time": {
+      "median_ns": 980356.67,
+      "min_ns": 973043.75,
+      "max_ns": 1011337.92,
+      "cv_percent": 1.534355901740672,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time": {
+      "median_ns": 81370.0354449472,
+      "min_ns": 79834.21342383107,
+      "max_ns": 82943.91025641025,
+      "cv_percent": 1.6949913015503297,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time": {
+      "median_ns": 159704.21974522292,
+      "min_ns": 155606.75477707008,
+      "max_ns": 195001.99044585988,
+      "cv_percent": 11.951132406760701,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Relu/rows:8192/f64:0/real_time": {
+      "median_ns": 61668.95443925234,
+      "min_ns": 59497.39602803739,
+      "max_ns": 63236.54088785047,
+      "cv_percent": 2.562660947084882,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Relu/rows:8192/f64:1/real_time": {
+      "median_ns": 162335.58463726885,
+      "min_ns": 154673.60170697013,
+      "max_ns": 164491.10953058323,
+      "cv_percent": 2.5275882579831443,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Softmax/rows:8192/f64:0/real_time": {
+      "median_ns": 674424.1739130435,
+      "min_ns": 672696.4285714285,
+      "max_ns": 676410.198757764,
+      "cv_percent": 0.19848980190739343,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/Softmax/rows:8192/f64:1/real_time": {
+      "median_ns": 1460855.0,
+      "min_ns": 1456761.6666666667,
+      "max_ns": 1696208.3333333333,
+      "cv_percent": 6.980424148222106,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time": {
+      "median_ns": 593785.2393617021,
+      "min_ns": 580955.6702127659,
+      "max_ns": 674016.6223404255,
+      "cv_percent": 6.432604026162742,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time": {
+      "median_ns": 1180360.3406593406,
+      "min_ns": 1174809.5274725275,
+      "max_ns": 1185663.923076923,
+      "cv_percent": 0.34209992317606264,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Add/rows:8192/f64:0/real_time": {
+      "median_ns": 139719.68289473685,
+      "min_ns": 139345.61315789472,
+      "max_ns": 139913.21315789473,
+      "cv_percent": 0.16028664199813195,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Add/rows:8192/f64:1/real_time": {
+      "median_ns": 220832.99387755102,
+      "min_ns": 217975.85102040815,
+      "max_ns": 231434.35306122448,
+      "cv_percent": 2.4553565995826276,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Exp/rows:8192/f64:0/real_time": {
+      "median_ns": 502373.08294930874,
+      "min_ns": 489754.03225806454,
+      "max_ns": 517321.81105990784,
+      "cv_percent": 1.9703518846246655,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Exp/rows:8192/f64:1/real_time": {
+      "median_ns": 948053.34,
+      "min_ns": 947412.92,
+      "max_ns": 1011260.41,
+      "cv_percent": 2.8905055773601487,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time": {
+      "median_ns": 154984.9921976593,
+      "min_ns": 139711.25877763328,
+      "max_ns": 164923.00520156047,
+      "cv_percent": 7.012025278183029,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time": {
+      "median_ns": 234816.77378435517,
+      "min_ns": 230707.10147991544,
+      "max_ns": 244797.2177589852,
+      "cv_percent": 2.265293339878425,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Relu/rows:8192/f64:0/real_time": {
+      "median_ns": 143403.94912985276,
+      "min_ns": 137486.83668005356,
+      "max_ns": 144710.67603748327,
+      "cv_percent": 2.1668375024064632,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Relu/rows:8192/f64:1/real_time": {
+      "median_ns": 224073.1083844581,
+      "min_ns": 221269.93865030675,
+      "max_ns": 227830.26584867077,
+      "cv_percent": 1.1749699872566215,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Softmax/rows:8192/f64:0/real_time": {
+      "median_ns": 744615.6462585034,
+      "min_ns": 741160.4353741497,
+      "max_ns": 756207.768707483,
+      "cv_percent": 0.7924334486579936,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/Softmax/rows:8192/f64:1/real_time": {
+      "median_ns": 1533076.4925373134,
+      "min_ns": 1528936.5671641792,
+      "max_ns": 1616298.5074626866,
+      "cv_percent": 2.412705144049094,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time": {
+      "median_ns": 248802.78475336323,
+      "min_ns": 248580.34304932735,
+      "max_ns": 259734.30493273542,
+      "cv_percent": 1.9123698845693136,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time": {
+      "median_ns": 426378.3724696356,
+      "min_ns": 424168.35222672066,
+      "max_ns": 428232.95951417,
+      "cv_percent": 0.3930449170232617,
+      "repetitions": 5,
+      "counters": {}
+    }
+  }
+}

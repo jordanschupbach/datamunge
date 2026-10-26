@@ -1,0 +1,4 @@
+useDynLib(datamungerNN, .registration=TRUE)
+import(methods)
+export(nn_example_names)
+export(nn_example_run)

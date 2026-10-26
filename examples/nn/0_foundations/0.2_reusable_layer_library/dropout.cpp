@@ -160,9 +160,13 @@ void Regularisation(int steps) {
   std::printf("\n  (training data cover [-1, 1]; the spread grows where there is no data)\n");
   // TF (3000 steps): p=0 train 0.060 / test 0.080; p=0.5 train 0.088 / test 0.049;
   // MC std 0.315 / 0.254 at x = -1.5 / 1.5 vs 0.147 at x = 0.
-  check::Require(mean_train[0] < mean_train[1], "dropout should fit the training noise less closely");
-  check::Require(mean_test[1] < mean_test[0], "dropout should generalise better on [-1, 1]");
-  check::Require(mean_test[1] < 0.1f, "dropout test MSE");
+  if (steps >= 3000) {
+    check::Require(mean_train[0] < mean_train[1], "dropout should fit the training noise less closely");
+    check::Require(mean_test[1] < mean_test[0], "dropout should generalise better on [-1, 1]");
+    check::Require(mean_test[1] < 0.1f, "dropout test MSE");
+  }
+  for (int i = 0; i < 2; ++i)
+    check::Require(std::isfinite(mean_train[i]) && std::isfinite(mean_test[i]), "finite regularisation metrics");
   check::Require(last.mc_std[0] > last.mc_std[100] && last.mc_std[200] > last.mc_std[100],
                  "MC-dropout spread should grow outside the data");
 }
@@ -172,8 +176,11 @@ void Regularisation(int steps) {
 int main(int argc, char** argv) {
   try {
     int steps = 3000;  // steps=N overrides the Adam budget
-    for (int i = 1; i < argc; ++i)
+    for (int i = 1; i < argc; ++i) {
       if (std::string(argv[i]).rfind("steps=", 0) == 0) steps = std::stoi(std::string(argv[i]).substr(6));
+      if (std::string(argv[i]).rfind("epochs=", 0) == 0) steps = std::stoi(std::string(argv[i]).substr(7));
+    }
+    check::Require(steps > 0, "positive training budget required");
     Statistics();
     Regularisation(steps);
   } catch (const std::exception& e) {

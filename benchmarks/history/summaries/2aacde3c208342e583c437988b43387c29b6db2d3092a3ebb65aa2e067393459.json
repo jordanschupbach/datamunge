@@ -1,0 +1,2932 @@
+{
+  "schema_version": 1,
+  "id": "2aacde3c208342e583c437988b43387c29b6db2d3092a3ebb65aa2e067393459",
+  "date": "2026-10-24T14:19:34-06:00",
+  "label": "expanded-before-native-paired",
+  "kind": "calibrated",
+  "profile": "9c43a759eceb483296b8425f66db0b0ec542d55b43459c8285ebe1c484db0def",
+  "configuration": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1"
+    },
+    "release": {
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+      "CMAKE_CXX_FLAGS": "",
+      "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+      "DATAMUNGE_ENABLE_ARROW": "ON",
+      "DATAMUNGE_USE_BLAS": "ON",
+      "DATAMUNGE_USE_LAPACK": "ON"
+    },
+    "context": {
+      "build": "Clang-21.1.8/Release",
+      "gemm_backend": "accelerate",
+      "lapack_available": "true",
+      "nn_threads": "1 except explicit thread-scaling cases",
+      "num_cpus": 10,
+      "mhz_per_cpu": 24,
+      "caches": [
+        {
+          "type": "Data",
+          "level": 1,
+          "size": 65536,
+          "num_sharing": 0
+        },
+        {
+          "type": "Instruction",
+          "level": 1,
+          "size": 131072,
+          "num_sharing": 0
+        },
+        {
+          "type": "Unified",
+          "level": 2,
+          "size": 6291456,
+          "num_sharing": 1
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "34216e7bf38e2c274d0c76f0329788e2f8b47459c4d27e15b3beebba00bfd3c7",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/containers.cpp": "b183cba9802bb6153f35be1f0a53d80d0949428c40502aadf92fb6c21037c655",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "fe35b88ce82f43f1a0317ccf0462ced166b5b7277c0a9e333165cf27e8b2be4a",
+      "benchmarks/backend/tensorflow_extended.cpp": "8839b6eecc392cc37d29ce0aa29dcb5c9728e477fd76f7ea1b0b2d9f0ceee6f4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589",
+      "benchmarks/tensorflow_cases.def": "b550118cd6c79b865516b3eeb4cf2eacae983881d5b7d65a8825d2769779790a"
+    },
+    "core_sources_sha256": "47f91030b684dc9fc3785a038a44e7904c1c6d7ad22442f9db416ceea9f23918",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "expanded-before-native-paired",
+    "release": {
+      "configuration": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+        "CMAKE_CXX_FLAGS": "",
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+        "DATAMUNGE_ENABLE_ARROW": "ON",
+        "DATAMUNGE_USE_BLAS": "ON",
+        "DATAMUNGE_USE_LAPACK": "ON"
+      },
+      "core_translation_units": 271,
+      "driver_translation_units": 11,
+      "effective_optimization_verified": true,
+      "ndebug_verified": true,
+      "core_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DACCELERATE_NEW_LAPACK=1 -DDATAMUNGE_HAVE_ARROW=1 -DDATAMUNGE_HAVE_CBLAS=1 -DDATAMUNGE_HAVE_LAPACK=1 -DDATAMUNGE_HAVE_X11=1 -Ddatamunge_EXPORTS -I/Users/jordanschupbach/projects/datamunge/include -I/opt/homebrew/include -I/usr/X11R6/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -F/nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /nix/store/c7cl2s88nwx70vhb9r4l2ysf8x5qjh41-datamunge-0.0.1/include -isystem /nix/store/x2rbyyj8rd25wvahmb9pqpn9b2p6i2iv-emacs-30.2/include -isystem /nix/store/bhryp10d5w5h9rsav5k9m9jb55z26bsl-jq-1.8.1-dev/include -isystem /nix/store/ldza1ndfpwgm48dazvylbyrixvhax80p-gtest-1.17.0-dev/include -isystem /nix/store/aj188fnykkwbgcbrbd3ywyb5xs8rs7ww-python3-3.13.11-env/include -isystem /nix/store/ab43gk9xl2ssnz3yzs484csd5axv1kqk-libxml2-2.15.1-dev/include -isystem /nix/store/yamly6ym3hyi0589isqyb5w0y4n2fdbg-libiconv-109.100.2-dev/include -isystem /nix/store/31xanb0p9gb3asr4zpzr7znjbc4kkx49-arrow-cpp-22.0.0/include -isystem /nix/store/avc2sd5i5h0sdsq0ky6ks4zjg5n60ffh-graphviz-12.2.1/include -isystem /nix/store/c7byifmqyf3l5g7lpgdxd6i9iya2m7fv-doctest-2.4.12/include -isystem /nix/store/qng4vqqwk96yrxcaj2xyx81mfph483ji-libx11-1.8.12-dev/include -isystem /nix/store/in25zi0q9sspb41jqjmjfdwsr3m4j9mg-xorgproto-2025.1/include -isystem /nix/store/7mbgzcixxmbqb56ldcxrm9ajpd90yc54-gbenchmark-1.9.4/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include -isystem /nix/store/47d3ak31qp8qavc3w6np7p48ccylwqwd-compiler-rt-libc-21.1.8-dev/include -isystem /nix/store/nq7w9cx2jhqxi2ha92clba1fjgqns1xg-libresolv-91-dev/include -isystem /nix/store/3ifp90k41wpp3pmy8wgc6iafc86xy24w-libsbuf-14.1.0-dev/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include/c++/v1 -isystem /nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/resource-root/include -isystem /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -isystem /nix/store/6mp7w55mz9frcya56aqzny2y7d6pi9ws-libSystem-B/include  -fPIC -O3 -DNDEBUG -std=gnu++23 -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -fPIC -o CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o -c /Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "output": "_deps/datamunge-build/CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o"
+      },
+      "driver_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DBENCHMARK_STATIC_DEFINE -DDATAMUNGE_BENCH_BUILD=\\\"Clang-21.1.8/Release\\\" -DDATAMUNGE_HAVE_ARROW=1 -I/Users/jordanschupbach/projects/datamunge/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -O3 -DNDEBUG -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -o CMakeFiles/backend_bench.dir/backend/autograd.cpp.o -c /Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "output": "CMakeFiles/backend_bench.dir/backend/autograd.cpp.o"
+      }
+    },
+    "release_runtime": {
+      "google_benchmark": "release",
+      "driver": "Clang-21.1.8/Release",
+      "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+      "core_sha256": "bd46e7d33290ea56019822bcf5da214f720b2584db39c61745abf0a8ed0c0984",
+      "core_release_provenance": "verified build directory"
+    },
+    "executable_sha256": "a30678ac48d934fa27f2c8db99d52f80397fc06d09f52176efb1cc8cfb5e5681",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1"
+    },
+    "command": [
+      "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+      "--benchmark_min_time=0.1s",
+      "--benchmark_repetitions=5"
+    ],
+    "timing_order": "adjacent to TensorFlow; native first/last alternates per fixture",
+    "paired_case_filters": [
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumLast/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumAll/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Mean/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:64/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:64/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:256/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:256/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Matmul/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumFirst/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumFirst/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumFirst/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SumFirst/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxLast/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxLast/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxLast/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxLast/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Variance/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Variance/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Variance/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Variance/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSumExp/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSumExp/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSumExp/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LogSumExp/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Sigmoid/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Sigmoid/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Sigmoid/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Sigmoid/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Tanh/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Tanh/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Tanh/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Tanh/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Gelu/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Gelu/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Gelu/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Gelu/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/GatherRows/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/GatherRows/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/GatherRows/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/GatherRows/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/TransposeAdd/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/TransposeAdd/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/TransposeAdd/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/TransposeAdd/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulTranspose/rows:64/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulTranspose/rows:64/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulTranspose/rows:512/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulTranspose/rows:512/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchMatmul/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchMatmul/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchMatmul/rows:128/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchMatmul/rows:128/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulGradient/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulGradient/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulGradient/rows:256/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MatmulGradient/rows:256/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Conv2d/rows:1/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Conv2d/rows:1/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Conv2d/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Conv2d/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/ConvInputGradient/rows:1/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/ConvInputGradient/rows:1/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/ConvInputGradient/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/ConvInputGradient/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxPool/rows:1/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxPool/rows:1/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxPool/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/MaxPool/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/AvgPool/rows:1/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/AvgPool/rows:1/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/AvgPool/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/AvgPool/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchNorm/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchNorm/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchNorm/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/BatchNorm/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LayerNorm/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LayerNorm/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LayerNorm/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/LayerNorm/rows:8192/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Attention/rows:16/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Attention/rows:16/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Attention/rows:128/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Attention/rows:128/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/FftPower/rows:64/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/FftPower/rows:64/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/FftPower/rows:2048/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/FftPower/rows:2048/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Solve/rows:8/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Solve/rows:8/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Solve/rows:64/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Solve/rows:64/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Cholesky/rows:8/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Cholesky/rows:8/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Cholesky/rows:64/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/Cholesky/rows:64/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SoftmaxGradient/rows:32/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SoftmaxGradient/rows:32/f64:1/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SoftmaxGradient/rows:8192/f64:0/real_time$",
+      "--benchmark_filter=^BM_TensorFlowMatched/SoftmaxGradient/rows:8192/f64:1/real_time$"
+    ],
+    "paired_case_load_averages": [
+      [
+        3.31738,
+        3.5498,
+        3.1626
+      ],
+      [
+        3.21143,
+        3.52393,
+        3.15576
+      ],
+      [
+        3.11426,
+        3.49854,
+        3.14893
+      ],
+      [
+        3.98584,
+        3.67285,
+        3.2124
+      ],
+      [
+        3.98584,
+        3.67285,
+        3.2124
+      ],
+      [
+        4.06689,
+        3.69482,
+        3.22266
+      ],
+      [
+        4.1416,
+        3.71631,
+        3.23291
+      ],
+      [
+        4.1416,
+        3.71631,
+        3.23291
+      ],
+      [
+        4.0498,
+        3.7041,
+        3.23145
+      ],
+      [
+        4.04541,
+        3.70898,
+        3.23584
+      ],
+      [
+        4.04541,
+        3.70898,
+        3.23584
+      ],
+      [
+        4.52197,
+        3.81299,
+        3.27539
+      ],
+      [
+        4.3999,
+        3.79932,
+        3.27344
+      ],
+      [
+        4.2876,
+        3.78564,
+        3.27148
+      ],
+      [
+        4.2876,
+        3.78564,
+        3.27148
+      ],
+      [
+        4.50439,
+        3.83887,
+        3.29297
+      ],
+      [
+        4.7041,
+        3.89111,
+        3.31445
+      ],
+      [
+        4.56738,
+        3.87598,
+        3.3125
+      ],
+      [
+        4.56738,
+        3.87598,
+        3.3125
+      ],
+      [
+        4.44141,
+        3.86133,
+        3.31055
+      ],
+      [
+        4.44141,
+        3.86133,
+        3.31055
+      ],
+      [
+        4.40576,
+        3.86328,
+        3.31445
+      ],
+      [
+        4.37305,
+        3.86523,
+        3.31836
+      ],
+      [
+        4.66309,
+        3.93359,
+        3.3457
+      ],
+      [
+        4.66309,
+        3.93359,
+        3.3457
+      ],
+      [
+        4.60986,
+        3.93457,
+        3.34912
+      ],
+      [
+        4.56055,
+        3.93555,
+        3.35254
+      ],
+      [
+        4.5957,
+        3.95312,
+        3.36182
+      ],
+      [
+        4.5957,
+        3.95312,
+        3.36182
+      ],
+      [
+        4.3877,
+        3.92041,
+        3.35352
+      ],
+      [
+        4.3877,
+        3.92041,
+        3.35352
+      ],
+      [
+        4.35645,
+        3.92139,
+        3.35693
+      ],
+      [
+        4.40771,
+        3.93896,
+        3.36621
+      ],
+      [
+        4.21484,
+        3.90674,
+        3.35791
+      ],
+      [
+        4.21484,
+        3.90674,
+        3.35791
+      ],
+      [
+        4.51758,
+        3.97461,
+        3.38477
+      ],
+      [
+        4.47607,
+        3.97461,
+        3.38818
+      ],
+      [
+        4.4375,
+        3.97461,
+        3.3916
+      ],
+      [
+        4.4375,
+        3.97461,
+        3.3916
+      ],
+      [
+        4.5625,
+        4.00781,
+        3.40674
+      ],
+      [
+        4.5625,
+        4.00781,
+        3.40674
+      ],
+      [
+        4.69629,
+        4.05615,
+        3.43066
+      ],
+      [
+        4.69629,
+        4.05615,
+        3.43066
+      ],
+      [
+        4.56006,
+        4.03857,
+        3.42773
+      ],
+      [
+        4.56006,
+        4.03857,
+        3.42773
+      ],
+      [
+        4.43506,
+        4.021,
+        3.4248
+      ],
+      [
+        4.56006,
+        4.05371,
+        3.43945
+      ],
+      [
+        5.31592,
+        4.21875,
+        3.50098
+      ],
+      [
+        5.31592,
+        4.21875,
+        3.50098
+      ],
+      [
+        5.05029,
+        4.18164,
+        3.4917
+      ],
+      [
+        5.0459,
+        4.19482,
+        3.50049
+      ],
+      [
+        4.96191,
+        4.19141,
+        3.50293
+      ],
+      [
+        4.96191,
+        4.19141,
+        3.50293
+      ],
+      [
+        5.04492,
+        4.22119,
+        3.51709
+      ],
+      [
+        4.80078,
+        4.18408,
+        3.50781
+      ],
+      [
+        4.81641,
+        4.19727,
+        3.51611
+      ],
+      [
+        4.81641,
+        4.19727,
+        3.51611
+      ],
+      [
+        4.75098,
+        4.19385,
+        3.51855
+      ],
+      [
+        5.57129,
+        4.37305,
+        3.58545
+      ],
+      [
+        5.60547,
+        4.3999,
+        3.59912
+      ],
+      [
+        5.60547,
+        4.3999,
+        3.59912
+      ],
+      [
+        5.47656,
+        4.39307,
+        3.60107
+      ],
+      [
+        5.19775,
+        4.35303,
+        3.59131
+      ],
+      [
+        5.18164,
+        4.36328,
+        3.59912
+      ],
+      [
+        5.18164,
+        4.36328,
+        3.59912
+      ],
+      [
+        5.00684,
+        4.34033,
+        3.59521
+      ],
+      [
+        5.00586,
+        4.35107,
+        3.60303
+      ],
+      [
+        4.76514,
+        4.31201,
+        3.59326
+      ],
+      [
+        4.76514,
+        4.31201,
+        3.59326
+      ],
+      [
+        4.54346,
+        4.27344,
+        3.5835
+      ],
+      [
+        5.54053,
+        4.48438,
+        3.66162
+      ],
+      [
+        5.37695,
+        4.48438,
+        3.6709
+      ],
+      [
+        5.18652,
+        4.45947,
+        3.6665
+      ],
+      [
+        5.09131,
+        4.45166,
+        3.66846
+      ],
+      [
+        5.09131,
+        4.45166,
+        3.66846
+      ],
+      [
+        5.00391,
+        4.44385,
+        3.66992
+      ],
+      [
+        4.68311,
+        4.38623,
+        3.65381
+      ],
+      [
+        4.68311,
+        4.38623,
+        3.65381
+      ],
+      [
+        4.78809,
+        4.4126,
+        3.66748
+      ],
+      [
+        4.88477,
+        4.43848,
+        3.68066
+      ],
+      [
+        4.88477,
+        4.43848,
+        3.68066
+      ],
+      [
+        4.89355,
+        4.44775,
+        3.68799
+      ],
+      [
+        4.90186,
+        4.45654,
+        3.69531
+      ],
+      [
+        4.74951,
+        4.43213,
+        3.69092
+      ],
+      [
+        4.74951,
+        4.43213,
+        3.69092
+      ],
+      [
+        4.76953,
+        4.44141,
+        3.69824
+      ],
+      [
+        4.70752,
+        4.43359,
+        3.69971
+      ],
+      [
+        4.65039,
+        4.42627,
+        3.70117
+      ],
+      [
+        4.65039,
+        4.42627,
+        3.70117
+      ],
+      [
+        4.51807,
+        4.40234,
+        3.69678
+      ],
+      [
+        4.47656,
+        4.39551,
+        3.69824
+      ],
+      [
+        4.43799,
+        4.38867,
+        3.69971
+      ],
+      [
+        4.43799,
+        4.38867,
+        3.69971
+      ],
+      [
+        4.64307,
+        4.43164,
+        3.71875
+      ],
+      [
+        4.51123,
+        4.40771,
+        3.71436
+      ],
+      [
+        4.39014,
+        4.38428,
+        3.70996
+      ],
+      [
+        4.39014,
+        4.38428,
+        3.70996
+      ],
+      [
+        4.35889,
+        4.37744,
+        3.71143
+      ],
+      [
+        4.33008,
+        4.37109,
+        3.71289
+      ],
+      [
+        4.3833,
+        4.38135,
+        3.72021
+      ],
+      [
+        4.27246,
+        4.3584,
+        3.71582
+      ],
+      [
+        4.25049,
+        4.35205,
+        3.71729
+      ],
+      [
+        4.25049,
+        4.35205,
+        3.71729
+      ],
+      [
+        4.22998,
+        4.34619,
+        3.71875
+      ],
+      [
+        4.22998,
+        4.34619,
+        3.71875
+      ],
+      [
+        4.45166,
+        4.39014,
+        3.73779
+      ],
+      [
+        4.97559,
+        4.49951,
+        3.78027
+      ],
+      [
+        4.89746,
+        4.49121,
+        3.78125
+      ],
+      [
+        4.89746,
+        4.49121,
+        3.78125
+      ],
+      [
+        4.98535,
+        4.51611,
+        3.79395
+      ],
+      [
+        5.54688,
+        4.64014,
+        3.8418
+      ],
+      [
+        5.4624,
+        4.65186,
+        3.85449
+      ],
+      [
+        5.18506,
+        4.60742,
+        3.84326
+      ],
+      [
+        5.41016,
+        4.66357,
+        3.86719
+      ],
+      [
+        5.41016,
+        4.66357,
+        3.86719
+      ],
+      [
+        5.45703,
+        4.68555,
+        3.87939
+      ],
+      [
+        5.26025,
+        4.65723,
+        3.87402
+      ],
+      [
+        5.0791,
+        4.62939,
+        3.86865
+      ],
+      [
+        5.0791,
+        4.62939,
+        3.86865
+      ],
+      [
+        5.23291,
+        4.66846,
+        3.88672
+      ],
+      [
+        5.23291,
+        4.66846,
+        3.88672
+      ],
+      [
+        5.29395,
+        4.69043,
+        3.89893
+      ],
+      [
+        5.18994,
+        4.67871,
+        3.89941
+      ],
+      [
+        5.09424,
+        4.66699,
+        3.8999
+      ],
+      [
+        5.09424,
+        4.66699,
+        3.8999
+      ],
+      [
+        5.24658,
+        4.70557,
+        3.91797
+      ],
+      [
+        5.38672,
+        4.74365,
+        3.93555
+      ],
+      [
+        5.27539,
+        4.73096,
+        3.93555
+      ],
+      [
+        5.27539,
+        4.73096,
+        3.93555
+      ],
+      [
+        5.09277,
+        4.70215,
+        3.92969
+      ],
+      [
+        5.64551,
+        4.82324,
+        3.97656
+      ],
+      [
+        5.51367,
+        4.80957,
+        3.97656
+      ],
+      [
+        5.51367,
+        4.80957,
+        3.97656
+      ],
+      [
+        5.31201,
+        4.7793,
+        3.9707
+      ],
+      [
+        5.31201,
+        4.7793,
+        3.9707
+      ],
+      [
+        5.28662,
+        4.78271,
+        3.97656
+      ],
+      [
+        5.18311,
+        4.76953,
+        3.97656
+      ],
+      [
+        5.32812,
+        4.80615,
+        3.99414
+      ],
+      [
+        5.32812,
+        4.80615,
+        3.99414
+      ],
+      [
+        5.46191,
+        4.84229,
+        4.01172
+      ],
+      [
+        5.4248,
+        4.84473,
+        4.01709
+      ],
+      [
+        5.23047,
+        4.81396,
+        4.01074
+      ],
+      [
+        5.23047,
+        4.81396,
+        4.01074
+      ],
+      [
+        5.45215,
+        4.8667,
+        4.03369
+      ],
+      [
+        5.41553,
+        4.86865,
+        4.03906
+      ],
+      [
+        5.22168,
+        4.8374,
+        4.03271
+      ],
+      [
+        5.22168,
+        4.8374,
+        4.03271
+      ],
+      [
+        5.28369,
+        4.85645,
+        4.04395
+      ],
+      [
+        5.50098,
+        4.9082,
+        4.06689
+      ],
+      [
+        5.38037,
+        4.89307,
+        4.06641
+      ],
+      [
+        5.38037,
+        4.89307,
+        4.06641
+      ],
+      [
+        5.54248,
+        4.94482,
+        4.09424
+      ],
+      [
+        5.54248,
+        4.94482,
+        4.09424
+      ],
+      [
+        5.5791,
+        4.96191,
+        4.10498
+      ],
+      [
+        5.69287,
+        4.99561,
+        4.12158
+      ],
+      [
+        5.79736,
+        5.02881,
+        4.13818
+      ],
+      [
+        5.79736,
+        5.02881,
+        4.13818
+      ],
+      [
+        5.7334,
+        5.02832,
+        4.14307
+      ],
+      [
+        5.67432,
+        5.02783,
+        4.14795
+      ],
+      [
+        6.4209,
+        5.19336,
+        4.21143
+      ],
+      [
+        6.4209,
+        5.19336,
+        4.21143
+      ],
+      [
+        6.4668,
+        5.22314,
+        4.22754
+      ],
+      [
+        6.4668,
+        5.22314,
+        4.22754
+      ],
+      [
+        6.62207,
+        5.29736,
+        4.26562
+      ]
+    ],
+    "host_load_average_start": [
+      3.3173828125,
+      3.5498046875,
+      3.16259765625
+    ],
+    "loaded_core_sha256": "bd46e7d33290ea56019822bcf5da214f720b2584db39c61745abf0a8ed0c0984",
+    "host_load_average_end": [
+      6.6220703125,
+      5.29736328125,
+      4.265625
+    ]
+  },
+  "optional_skips": 0,
+  "cases": {
+    "BM_TensorFlowMatched/Add/rows:32/f64:0/real_time": {
+      "median_ns": 2185.306091862596,
+      "min_ns": 1743.8965128236114,
+      "max_ns": 2351.943796196057,
+      "cv_percent": 11.31728551077901,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1874336970.5746195,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Add/rows:32/f64:1/real_time": {
+      "median_ns": 4232.056135406155,
+      "min_ns": 4083.2627553625803,
+      "max_ns": 4468.961040731624,
+      "cv_percent": 3.3804824021685533,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 967851056.0699126,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Add/rows:512/f64:0/real_time": {
+      "median_ns": 28129.351587083,
+      "min_ns": 27754.351586653767,
+      "max_ns": 28257.707822905464,
+      "cv_percent": 0.7032757726912771,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2329808413.717369,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Add/rows:512/f64:1/real_time": {
+      "median_ns": 54437.626058511145,
+      "min_ns": 53296.60790241329,
+      "max_ns": 54843.31746499448,
+      "cv_percent": 1.1576620179609092,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1203873216.836458,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time": {
+      "median_ns": 509044.8007410343,
+      "min_ns": 498777.8796711972,
+      "max_ns": 525584.9022419136,
+      "cv_percent": 1.998318934416994,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2059889421.2720594,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time": {
+      "median_ns": 1150756.4654336954,
+      "min_ns": 1134357.0431877042,
+      "max_ns": 1174396.1895890292,
+      "cv_percent": 1.4290176932276804,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 911205829.8145771,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Attention/rows:128/f64:0/real_time": {
+      "median_ns": 261836.61946966345,
+      "min_ns": 251835.1693673323,
+      "max_ns": 287880.1229670795,
+      "cv_percent": 5.3271730052861095,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 31286685.630881093,
+        "peak_tensor_bytes": 33792.0
+      }
+    },
+    "BM_TensorFlowMatched/Attention/rows:128/f64:1/real_time": {
+      "median_ns": 510685.6272278167,
+      "min_ns": 457859.2545029068,
+      "max_ns": 521879.8200693221,
+      "cv_percent": 5.580121381363579,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 16041179.863371309,
+        "peak_tensor_bytes": 67584.0
+      }
+    },
+    "BM_TensorFlowMatched/Attention/rows:16/f64:0/real_time": {
+      "median_ns": 12727.092845079813,
+      "min_ns": 12610.348407610905,
+      "max_ns": 13211.080162915428,
+      "cv_percent": 1.91488513878418,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 80458280.02235954,
+        "peak_tensor_bytes": 6144.0
+      }
+    },
+    "BM_TensorFlowMatched/Attention/rows:16/f64:1/real_time": {
+      "median_ns": 18891.208106014812,
+      "min_ns": 18773.307795783745,
+      "max_ns": 19571.636443922696,
+      "cv_percent": 1.702712040610325,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 54205109.289647095,
+        "peak_tensor_bytes": 12288.0
+      }
+    },
+    "BM_TensorFlowMatched/AvgPool/rows:1/f64:0/real_time": {
+      "median_ns": 3436.396222194199,
+      "min_ns": 3353.8464177040637,
+      "max_ns": 3545.1008849817167,
+      "cv_percent": 2.3265149517000663,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 297986592.28712523,
+        "peak_tensor_bytes": 1024.0
+      }
+    },
+    "BM_TensorFlowMatched/AvgPool/rows:1/f64:1/real_time": {
+      "median_ns": 4179.424624215395,
+      "min_ns": 3389.8899943656806,
+      "max_ns": 4818.856536645808,
+      "cv_percent": 13.042063688522434,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 245009802.08304054,
+        "peak_tensor_bytes": 2048.0
+      }
+    },
+    "BM_TensorFlowMatched/AvgPool/rows:16/f64:0/real_time": {
+      "median_ns": 27671.99910881253,
+      "min_ns": 25297.05507206287,
+      "max_ns": 31282.14425837191,
+      "cv_percent": 8.631483531048682,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 592078654.5118921,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/AvgPool/rows:16/f64:1/real_time": {
+      "median_ns": 66286.58971915474,
+      "min_ns": 52123.25463636642,
+      "max_ns": 67049.02427553819,
+      "cv_percent": 12.28923383173466,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 247169149.4375602,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchMatmul/rows:128/f64:0/real_time": {
+      "median_ns": 116124.40570722484,
+      "min_ns": 111364.52220977508,
+      "max_ns": 133045.71835800368,
+      "cv_percent": 7.0923100675906525,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 564360261.7457579,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchMatmul/rows:128/f64:1/real_time": {
+      "median_ns": 362906.34545201267,
+      "min_ns": 299394.1272672435,
+      "max_ns": 379988.44775508833,
+      "cv_percent": 10.384898328868143,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 180586536.50261363,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchMatmul/rows:16/f64:0/real_time": {
+      "median_ns": 3444.210849877388,
+      "min_ns": 2661.8832361035384,
+      "max_ns": 3660.974288142842,
+      "cv_percent": 14.023794294528724,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 297310485.51701003,
+        "peak_tensor_bytes": 4096.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchMatmul/rows:16/f64:1/real_time": {
+      "median_ns": 3780.238800522378,
+      "min_ns": 3604.3721796441314,
+      "max_ns": 4830.7837319623995,
+      "cv_percent": 13.96650587822426,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 270882357.9765641,
+        "peak_tensor_bytes": 8192.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchNorm/rows:32/f64:0/real_time": {
+      "median_ns": 20277.203389707858,
+      "min_ns": 16764.470339571206,
+      "max_ns": 20825.776779112577,
+      "cv_percent": 8.54300880085562,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 202000242.4041875,
+        "peak_tensor_bytes": 17920.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchNorm/rows:32/f64:1/real_time": {
+      "median_ns": 28375.143192330805,
+      "min_ns": 27622.85315567314,
+      "max_ns": 29110.85766344661,
+      "cv_percent": 1.9264566246963044,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 144351694.4473803,
+        "peak_tensor_bytes": 35840.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchNorm/rows:8192/f64:0/real_time": {
+      "median_ns": 4017180.942797235,
+      "min_ns": 3530146.4285501945,
+      "max_ns": 4726346.428755538,
+      "cv_percent": 11.774061721067305,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 261022845.35629052,
+        "peak_tensor_bytes": 4195840.0
+      }
+    },
+    "BM_TensorFlowMatched/BatchNorm/rows:8192/f64:1/real_time": {
+      "median_ns": 5061718.454464537,
+      "min_ns": 4914378.7874720255,
+      "max_ns": 7060306.817892882,
+      "cv_percent": 16.184182284836517,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 207158104.39340717,
+        "peak_tensor_bytes": 8391680.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:0/real_time": {
+      "median_ns": 2327.878898097596,
+      "min_ns": 1848.9832760328882,
+      "max_ns": 2542.2778573200303,
+      "cv_percent": 13.517073976837185,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1759541702.6836572,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:1/real_time": {
+      "median_ns": 4011.1833259856585,
+      "min_ns": 3339.3030980620624,
+      "max_ns": 4716.019712889454,
+      "cv_percent": 13.730106562011626,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1021145050.5053891,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:0/real_time": {
+      "median_ns": 32208.797477198867,
+      "min_ns": 28187.42658286759,
+      "max_ns": 33532.95749089578,
+      "cv_percent": 6.861553308695048,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2034723588.9944046,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:1/real_time": {
+      "median_ns": 57527.02339867923,
+      "min_ns": 54882.79999658326,
+      "max_ns": 60193.37748194825,
+      "cv_percent": 3.457514358022905,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1139221119.5391808,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:0/real_time": {
+      "median_ns": 529103.991592659,
+      "min_ns": 458889.88231944636,
+      "max_ns": 596682.7731081598,
+      "cv_percent": 9.344430465252119,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1981795670.9108832,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:1/real_time": {
+      "median_ns": 1197635.775842455,
+      "min_ns": 1077727.3707609656,
+      "max_ns": 1210284.4827087868,
+      "cv_percent": 4.900554973098954,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 875538307.3475727,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Cholesky/rows:64/f64:0/real_time": {
+      "median_ns": 20563.352792813323,
+      "min_ns": 19724.0763816246,
+      "max_ns": 21207.964129815784,
+      "cv_percent": 2.6135357518342803,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 199189307.3697354,
+        "peak_tensor_bytes": 81920.0
+      }
+    },
+    "BM_TensorFlowMatched/Cholesky/rows:64/f64:1/real_time": {
+      "median_ns": 16158.183298830409,
+      "min_ns": 15682.820799702313,
+      "max_ns": 16352.183399430942,
+      "cv_percent": 1.6333897150613106,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 253493844.21802446,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Cholesky/rows:8/f64:0/real_time": {
+      "median_ns": 1619.8294904326965,
+      "min_ns": 1269.7027547575628,
+      "max_ns": 1745.7988374450565,
+      "cv_percent": 14.884930068164934,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 39510331.41327981,
+        "peak_tensor_bytes": 1280.0
+      }
+    },
+    "BM_TensorFlowMatched/Cholesky/rows:8/f64:1/real_time": {
+      "median_ns": 1022.2859851943235,
+      "min_ns": 1013.664342689163,
+      "max_ns": 1054.899086018577,
+      "cv_percent": 1.7257916839313492,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 62604790.56438832,
+        "peak_tensor_bytes": 512.0
+      }
+    },
+    "BM_TensorFlowMatched/Conv2d/rows:1/f64:0/real_time": {
+      "median_ns": 22358.91545389599,
+      "min_ns": 19058.117052666654,
+      "max_ns": 25652.608467168426,
+      "cv_percent": 11.245325838878447,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 45798285.79393686,
+        "peak_tensor_bytes": 6272.0
+      }
+    },
+    "BM_TensorFlowMatched/Conv2d/rows:1/f64:1/real_time": {
+      "median_ns": 25945.164830939262,
+      "min_ns": 24281.327259744914,
+      "max_ns": 27507.56899544948,
+      "cv_percent": 5.063951034123903,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 39467854.86515367,
+        "peak_tensor_bytes": 12544.0
+      }
+    },
+    "BM_TensorFlowMatched/Conv2d/rows:16/f64:0/real_time": {
+      "median_ns": 326608.7013464116,
+      "min_ns": 263859.82657481264,
+      "max_ns": 329708.49517688,
+      "cv_percent": 9.14549840573157,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 50164003.38526991,
+        "peak_tensor_bytes": 100352.0
+      }
+    },
+    "BM_TensorFlowMatched/Conv2d/rows:16/f64:1/real_time": {
+      "median_ns": 434678.36746465653,
+      "min_ns": 379609.2519784723,
+      "max_ns": 457014.76378339465,
+      "cv_percent": 7.411417494611272,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 37692236.89589792,
+        "peak_tensor_bytes": 200704.0
+      }
+    },
+    "BM_TensorFlowMatched/ConvInputGradient/rows:1/f64:0/real_time": {
+      "median_ns": 51807.91915906706,
+      "min_ns": 49941.02020974014,
+      "max_ns": 58783.801535222374,
+      "cv_percent": 7.40503084310217,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 16648.0,
+        "items_per_second": 19765318.05602902
+      }
+    },
+    "BM_TensorFlowMatched/ConvInputGradient/rows:1/f64:1/real_time": {
+      "median_ns": 57689.458286098605,
+      "min_ns": 52257.49118066175,
+      "max_ns": 68353.13806828488,
+      "cv_percent": 11.850504101362688,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 33296.0,
+        "items_per_second": 17750210.011016045
+      }
+    },
+    "BM_TensorFlowMatched/ConvInputGradient/rows:16/f64:0/real_time": {
+      "median_ns": 712286.1841931457,
+      "min_ns": 672641.99561466,
+      "max_ns": 777550.8026513802,
+      "cv_percent": 6.423372784034928,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 266248.0,
+        "items_per_second": 23001990.44090579
+      }
+    },
+    "BM_TensorFlowMatched/ConvInputGradient/rows:16/f64:1/real_time": {
+      "median_ns": 849934.9259417849,
+      "min_ns": 779538.8394439259,
+      "max_ns": 1014022.8950609682,
+      "cv_percent": 10.42964293909919,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 532496.0,
+        "items_per_second": 19276769.90311397
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:32/f64:0/real_time": {
+      "median_ns": 5095.660245362872,
+      "min_ns": 4458.575075247815,
+      "max_ns": 5969.09955904505,
+      "cv_percent": 12.064167220447459,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 803821252.3543777,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:32/f64:1/real_time": {
+      "median_ns": 17756.68756004975,
+      "min_ns": 13514.234961644785,
+      "max_ns": 18420.41804616303,
+      "cv_percent": 11.974371529238812,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 230673653.8641064,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:512/f64:0/real_time": {
+      "median_ns": 77406.916670346,
+      "min_ns": 74492.72200271177,
+      "max_ns": 93220.05599581946,
+      "cv_percent": 10.71651710452264,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 846642688.0055065,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:512/f64:1/real_time": {
+      "median_ns": 272550.7171953105,
+      "min_ns": 245262.6334683974,
+      "max_ns": 303676.3755764235,
+      "cv_percent": 9.098627785482696,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 240454329.65431067,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time": {
+      "median_ns": 1678672.1313073572,
+      "min_ns": 1378605.6364129174,
+      "max_ns": 1719164.1414279323,
+      "cv_percent": 8.66406540859313,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 624646100.000102,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time": {
+      "median_ns": 4887392.241628199,
+      "min_ns": 4520373.586023322,
+      "max_ns": 4916586.206647856,
+      "cv_percent": 3.844482381988886,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 214547134.37337592,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/FftPower/rows:2048/f64:0/real_time": {
+      "median_ns": 189035.703945257,
+      "min_ns": 177859.92433441847,
+      "max_ns": 204511.16942192466,
+      "cv_percent": 5.934423085710592,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 86671457.60329305,
+        "peak_tensor_bytes": 164000.0
+      }
+    },
+    "BM_TensorFlowMatched/FftPower/rows:2048/f64:1/real_time": {
+      "median_ns": 250235.99795770037,
+      "min_ns": 246713.20080996654,
+      "max_ns": 255321.46516569972,
+      "cv_percent": 1.6593064559324633,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 65474192.89677712,
+        "peak_tensor_bytes": 328000.0
+      }
+    },
+    "BM_TensorFlowMatched/FftPower/rows:64/f64:0/real_time": {
+      "median_ns": 10073.780999976083,
+      "min_ns": 9714.358381997517,
+      "max_ns": 10224.470072207094,
+      "cv_percent": 1.907062010761483,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 50825008.0085338,
+        "peak_tensor_bytes": 5280.0
+      }
+    },
+    "BM_TensorFlowMatched/FftPower/rows:64/f64:1/real_time": {
+      "median_ns": 9810.271430528051,
+      "min_ns": 6922.4631945431465,
+      "max_ns": 11259.248043523989,
+      "cv_percent": 17.64893420430332,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 52190197.14446788,
+        "peak_tensor_bytes": 10560.0
+      }
+    },
+    "BM_TensorFlowMatched/GatherRows/rows:32/f64:0/real_time": {
+      "median_ns": 1114.6402013385439,
+      "min_ns": 1032.546083007524,
+      "max_ns": 1447.8532471363635,
+      "cv_percent": 16.44062086822353,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3674728396.733955,
+        "peak_tensor_bytes": 4096.0
+      }
+    },
+    "BM_TensorFlowMatched/GatherRows/rows:32/f64:1/real_time": {
+      "median_ns": 1349.6779606941525,
+      "min_ns": 1271.1637915688166,
+      "max_ns": 1451.201741151497,
+      "cv_percent": 5.291792625095886,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3034798017.9608088,
+        "peak_tensor_bytes": 8192.0
+      }
+    },
+    "BM_TensorFlowMatched/GatherRows/rows:8192/f64:0/real_time": {
+      "median_ns": 160366.14624681533,
+      "min_ns": 138321.71875037602,
+      "max_ns": 163310.62499375548,
+      "cv_percent": 6.529998942888312,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 6538636891.518015,
+        "peak_tensor_bytes": 1048576.0
+      }
+    },
+    "BM_TensorFlowMatched/GatherRows/rows:8192/f64:1/real_time": {
+      "median_ns": 313314.99402751465,
+      "min_ns": 290717.44010835316,
+      "max_ns": 398025.3263680588,
+      "cv_percent": 12.841696320842438,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3346715031.1609926,
+        "peak_tensor_bytes": 2097152.0
+      }
+    },
+    "BM_TensorFlowMatched/Gelu/rows:32/f64:0/real_time": {
+      "median_ns": 35958.355470362796,
+      "min_ns": 31736.007702219427,
+      "max_ns": 37901.8995760075,
+      "cv_percent": 6.4883418818029375,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 113909547.48684101,
+        "peak_tensor_bytes": 81920.0
+      }
+    },
+    "BM_TensorFlowMatched/Gelu/rows:32/f64:1/real_time": {
+      "median_ns": 81704.75037162093,
+      "min_ns": 75926.4943504555,
+      "max_ns": 93534.37788609452,
+      "cv_percent": 8.013484421816782,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 50131724.05973951,
+        "peak_tensor_bytes": 163840.0
+      }
+    },
+    "BM_TensorFlowMatched/Gelu/rows:8192/f64:0/real_time": {
+      "median_ns": 7931208.33404828,
+      "min_ns": 7133130.533232664,
+      "max_ns": 8527111.066117262,
+      "cv_percent": 6.605544523109488,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 132208858.45332243,
+        "peak_tensor_bytes": 20971520.0
+      }
+    },
+    "BM_TensorFlowMatched/Gelu/rows:8192/f64:1/real_time": {
+      "median_ns": 20919172.57140657,
+      "min_ns": 19784333.286224864,
+      "max_ns": 23456696.42714451,
+      "cv_percent": 6.378365543384504,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 50125118.30574261,
+        "peak_tensor_bytes": 41943040.0
+      }
+    },
+    "BM_TensorFlowMatched/LayerNorm/rows:32/f64:0/real_time": {
+      "median_ns": 31462.702398900892,
+      "min_ns": 28084.9076629577,
+      "max_ns": 35927.31543365693,
+      "cv_percent": 11.06657079050059,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 130185892.74591647,
+        "peak_tensor_bytes": 66048.0
+      }
+    },
+    "BM_TensorFlowMatched/LayerNorm/rows:32/f64:1/real_time": {
+      "median_ns": 45157.6469555174,
+      "min_ns": 43191.54065471458,
+      "max_ns": 46228.58711503595,
+      "cv_percent": 2.5591011515667352,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 90704460.39924912,
+        "peak_tensor_bytes": 132096.0
+      }
+    },
+    "BM_TensorFlowMatched/LayerNorm/rows:8192/f64:0/real_time": {
+      "median_ns": 6786572.949931724,
+      "min_ns": 5992656.249873107,
+      "max_ns": 6872041.650058237,
+      "cv_percent": 5.467249388145645,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 154507438.10402113,
+        "peak_tensor_bytes": 16908288.0
+      }
+    },
+    "BM_TensorFlowMatched/LayerNorm/rows:8192/f64:1/real_time": {
+      "median_ns": 9493975.750956452,
+      "min_ns": 8366743.083267163,
+      "max_ns": 10185767.333799353,
+      "cv_percent": 8.046172502036978,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 110446458.6287113,
+        "peak_tensor_bytes": 33816576.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:32/f64:0/real_time": {
+      "median_ns": 10941.736319737438,
+      "min_ns": 9915.464085151109,
+      "max_ns": 12243.562492207668,
+      "cv_percent": 7.859311574015695,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 374346436.4619498,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:32/f64:1/real_time": {
+      "median_ns": 25428.328381387175,
+      "min_ns": 20806.988896967072,
+      "max_ns": 26919.959831815107,
+      "cv_percent": 10.631760127257483,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 161080191.29555357,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:512/f64:0/real_time": {
+      "median_ns": 171093.4609519869,
+      "min_ns": 154217.36019153867,
+      "max_ns": 190561.03149017255,
+      "cv_percent": 7.506061029063241,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 383042108.303549,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:512/f64:1/real_time": {
+      "median_ns": 473101.4234617061,
+      "min_ns": 370149.0213352113,
+      "max_ns": 506460.11389086023,
+      "cv_percent": 12.909486992045624,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 138524208.02387342,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:0/real_time": {
+      "median_ns": 3197643.182996306,
+      "min_ns": 3083435.4508609157,
+      "max_ns": 3483392.0282938085,
+      "cv_percent": 4.598326593496372,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 327921515.9389506,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:1/real_time": {
+      "median_ns": 6440997.790042801,
+      "min_ns": 5020690.790077329,
+      "max_ns": 7164370.57953475,
+      "cv_percent": 13.628692473609668,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 162797137.05553564,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSumExp/rows:32/f64:0/real_time": {
+      "median_ns": 33113.54775937971,
+      "min_ns": 30055.39311279331,
+      "max_ns": 37541.19752982511,
+      "cv_percent": 9.225926524399112,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 123695595.22174034,
+        "peak_tensor_bytes": 33280.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSumExp/rows:32/f64:1/real_time": {
+      "median_ns": 54862.04669072985,
+      "min_ns": 46487.588651419675,
+      "max_ns": 56348.63829668435,
+      "cv_percent": 7.564533917051644,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 74659992.6008978,
+        "peak_tensor_bytes": 66560.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSumExp/rows:8192/f64:0/real_time": {
+      "median_ns": 6667131.94449484,
+      "min_ns": 5894511.555703099,
+      "max_ns": 7455886.555059503,
+      "cv_percent": 9.421011978138443,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 157275423.4848804,
+        "peak_tensor_bytes": 8519680.0
+      }
+    },
+    "BM_TensorFlowMatched/LogSumExp/rows:8192/f64:1/real_time": {
+      "median_ns": 10502893.998901444,
+      "min_ns": 9155480.999404311,
+      "max_ns": 11450590.908432126,
+      "cv_percent": 8.3457187238169,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 99836864.02144745,
+        "peak_tensor_bytes": 17039360.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:256/f64:0/real_time": {
+      "median_ns": 213114.94006798443,
+      "min_ns": 160693.35103802837,
+      "max_ns": 220124.85789847944,
+      "cv_percent": 12.133514903591331,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 307514808.5774455,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:256/f64:1/real_time": {
+      "median_ns": 824214.7058755268,
+      "min_ns": 692584.8059301429,
+      "max_ns": 844356.8647421404,
+      "cv_percent": 7.594786811706021,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 79513262.17891732,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:512/f64:0/real_time": {
+      "median_ns": 1590939.8734257144,
+      "min_ns": 1230762.1266389312,
+      "max_ns": 1687656.645589402,
+      "cv_percent": 12.399051815541489,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 164773040.3761486,
+        "peak_tensor_bytes": 1048576.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:512/f64:1/real_time": {
+      "median_ns": 6400640.136482913,
+      "min_ns": 4610598.500056023,
+      "max_ns": 6724755.681881851,
+      "cv_percent": 13.981271234020337,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 40955903.53624309,
+        "peak_tensor_bytes": 2097152.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:64/f64:0/real_time": {
+      "median_ns": 4634.542395432374,
+      "min_ns": 4189.77348646774,
+      "max_ns": 5555.449582914182,
+      "cv_percent": 10.625297499167214,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 883798151.0400809,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Matmul/rows:64/f64:1/real_time": {
+      "median_ns": 13262.996623810674,
+      "min_ns": 12228.906779375508,
+      "max_ns": 15577.116382772001,
+      "cv_percent": 9.258188139253313,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 308829151.97660303,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/MatmulGradient/rows:256/f64:0/real_time": {
+      "median_ns": 29099.700078058228,
+      "min_ns": 26947.279799769774,
+      "max_ns": 31455.229296011636,
+      "cv_percent": 6.895565996349225,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 106504.0,
+        "items_per_second": 563029857.9040639
+      }
+    },
+    "BM_TensorFlowMatched/MatmulGradient/rows:256/f64:1/real_time": {
+      "median_ns": 61283.87574241469,
+      "min_ns": 52978.37751371974,
+      "max_ns": 78951.47928192429,
+      "cv_percent": 16.449788936117805,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 213008.0,
+        "items_per_second": 267346015.59575647
+      }
+    },
+    "BM_TensorFlowMatched/MatmulGradient/rows:32/f64:0/real_time": {
+      "median_ns": 13552.105069448879,
+      "min_ns": 10428.035841929304,
+      "max_ns": 14458.706640778219,
+      "cv_percent": 12.603451578089132,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 20488.0,
+        "items_per_second": 151120434.02149373
+      }
+    },
+    "BM_TensorFlowMatched/MatmulGradient/rows:32/f64:1/real_time": {
+      "median_ns": 15737.55832126112,
+      "min_ns": 15355.3395014811,
+      "max_ns": 17429.542614430953,
+      "cv_percent": 5.2681794850809265,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 40976.0,
+        "items_per_second": 130134545.5370414
+      }
+    },
+    "BM_TensorFlowMatched/MatmulTranspose/rows:512/f64:0/real_time": {
+      "median_ns": 1439782.14293297,
+      "min_ns": 1312016.6666340085,
+      "max_ns": 1502924.9999705437,
+      "cv_percent": 5.8760025587820985,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 182071990.0484307,
+        "peak_tensor_bytes": 1048576.0
+      }
+    },
+    "BM_TensorFlowMatched/MatmulTranspose/rows:512/f64:1/real_time": {
+      "median_ns": 4176142.857094029,
+      "min_ns": 3908779.7714663404,
+      "max_ns": 4589759.514367741,
+      "cv_percent": 6.559746792841693,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 62771798.99502121,
+        "peak_tensor_bytes": 2097152.0
+      }
+    },
+    "BM_TensorFlowMatched/MatmulTranspose/rows:64/f64:0/real_time": {
+      "median_ns": 5792.864116173973,
+      "min_ns": 5567.706228431313,
+      "max_ns": 6747.636849617425,
+      "cv_percent": 8.457365267356085,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 707076830.710349,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/MatmulTranspose/rows:64/f64:1/real_time": {
+      "median_ns": 10978.314512195693,
+      "min_ns": 8709.500445794247,
+      "max_ns": 12551.403521054472,
+      "cv_percent": 15.209896366586841,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 373099167.0396942,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxLast/rows:32/f64:0/real_time": {
+      "median_ns": 14700.259676288813,
+      "min_ns": 13545.21664433113,
+      "max_ns": 16552.45554630905,
+      "cv_percent": 9.382507812020023,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 278634533.68832356,
+        "peak_tensor_bytes": 128.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxLast/rows:32/f64:1/real_time": {
+      "median_ns": 12745.87912012755,
+      "min_ns": 12171.264904601181,
+      "max_ns": 14827.91676537857,
+      "cv_percent": 8.500604624209123,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 321358767.1274738,
+        "peak_tensor_bytes": 256.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxLast/rows:8192/f64:0/real_time": {
+      "median_ns": 3139277.4211494005,
+      "min_ns": 2889984.657629516,
+      "max_ns": 3383391.447546034,
+      "cv_percent": 6.071462556851357,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 334018265.7753386,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxLast/rows:8192/f64:1/real_time": {
+      "median_ns": 3901755.3546375805,
+      "min_ns": 3723731.1616697675,
+      "max_ns": 4325854.8389384225,
+      "cv_percent": 6.422249380837373,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 268744681.4812915,
+        "peak_tensor_bytes": 65536.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxPool/rows:1/f64:0/real_time": {
+      "median_ns": 4353.265549229968,
+      "min_ns": 3563.8121431262143,
+      "max_ns": 5324.842171500387,
+      "cv_percent": 16.570259838710857,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 235225714.67783105,
+        "peak_tensor_bytes": 3072.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxPool/rows:1/f64:1/real_time": {
+      "median_ns": 5041.503160028027,
+      "min_ns": 4448.624623037507,
+      "max_ns": 5592.138318562726,
+      "cv_percent": 9.762567151376224,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 203114025.2214594,
+        "peak_tensor_bytes": 4096.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxPool/rows:16/f64:0/real_time": {
+      "median_ns": 59482.86419834965,
+      "min_ns": 51756.55863880551,
+      "max_ns": 70362.18788431861,
+      "cv_percent": 12.857904982392931,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 275440670.53271747,
+        "peak_tensor_bytes": 49152.0
+      }
+    },
+    "BM_TensorFlowMatched/MaxPool/rows:16/f64:1/real_time": {
+      "median_ns": 69111.73882062585,
+      "min_ns": 47534.808280182595,
+      "max_ns": 70988.54281722465,
+      "cv_percent": 15.305079107242534,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 237065370.94260353,
+        "peak_tensor_bytes": 65536.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:32/f64:0/real_time": {
+      "median_ns": 2928.218384794334,
+      "min_ns": 2789.974008185341,
+      "max_ns": 3186.4016733192643,
+      "cv_percent": 4.879826964170201,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1398802774.1611514,
+        "peak_tensor_bytes": 12.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:32/f64:1/real_time": {
+      "median_ns": 2396.9610087208366,
+      "min_ns": 2112.9572460566706,
+      "max_ns": 2701.036488575343,
+      "cv_percent": 9.095065599879568,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1708830467.0362048,
+        "peak_tensor_bytes": 24.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:512/f64:0/real_time": {
+      "median_ns": 16024.765902950363,
+      "min_ns": 13865.921049630224,
+      "max_ns": 21324.965523089813,
+      "cv_percent": 16.355151803278904,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4089669727.2772007,
+        "peak_tensor_bytes": 12.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:512/f64:1/real_time": {
+      "median_ns": 23525.77683792315,
+      "min_ns": 19590.340215079475,
+      "max_ns": 26112.46363628885,
+      "cv_percent": 12.392177831742732,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2785710348.7591147,
+        "peak_tensor_bytes": 24.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time": {
+      "median_ns": 239545.49602125128,
+      "min_ns": 225282.6196504624,
+      "max_ns": 293343.5023779997,
+      "cv_percent": 11.019669171990163,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4377356357.837659,
+        "peak_tensor_bytes": 12.0
+      }
+    },
+    "BM_TensorFlowMatched/Mean/rows:8192/f64:1/real_time": {
+      "median_ns": 590663.716684503,
+      "min_ns": 531106.5957963971,
+      "max_ns": 638405.9041617245,
+      "cv_percent": 6.521351679831863,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1775250401.168769,
+        "peak_tensor_bytes": 24.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:32/f64:0/real_time": {
+      "median_ns": 1638.5629045468393,
+      "min_ns": 1438.8577844693834,
+      "max_ns": 1872.2694903903412,
+      "cv_percent": 11.238657245708508,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2499751452.1011257,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:32/f64:1/real_time": {
+      "median_ns": 3204.973808672223,
+      "min_ns": 2535.997648229001,
+      "max_ns": 4011.704196017625,
+      "cv_percent": 16.826342470015078,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1278013564.078677,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:512/f64:0/real_time": {
+      "median_ns": 22474.86436880132,
+      "min_ns": 21015.41027635922,
+      "max_ns": 27584.22599925456,
+      "cv_percent": 11.634265193774407,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2915968653.8964996,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:512/f64:1/real_time": {
+      "median_ns": 53558.37403357836,
+      "min_ns": 51694.1917428331,
+      "max_ns": 54341.81805481082,
+      "cv_percent": 2.0735909684486047,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1223636848.2529414,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time": {
+      "median_ns": 563919.5664622969,
+      "min_ns": 440286.52530558454,
+      "max_ns": 578204.5094908623,
+      "cv_percent": 10.61105356681514,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1859442484.9950776,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time": {
+      "median_ns": 1121994.565271408,
+      "min_ns": 1098593.1217083302,
+      "max_ns": 1145532.2434852384,
+      "cv_percent": 1.6474401474941132,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 934564241.6247816,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:32/f64:0/real_time": {
+      "median_ns": 1017.9923500447514,
+      "min_ns": 1011.6826577794426,
+      "max_ns": 1059.1294595000768,
+      "cv_percent": 1.925431508135771,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4023605874.660981,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:32/f64:1/real_time": {
+      "median_ns": 2073.1991428859315,
+      "min_ns": 1969.9815081417973,
+      "max_ns": 2921.5447081581706,
+      "cv_percent": 18.01165842000646,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1975690571.7693346,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:512/f64:0/real_time": {
+      "median_ns": 19583.40040979863,
+      "min_ns": 18342.957642375328,
+      "max_ns": 19972.482779609683,
+      "cv_percent": 3.198039876226478,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3346507686.5409346,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:512/f64:1/real_time": {
+      "median_ns": 32031.01496278918,
+      "min_ns": 27396.865122219464,
+      "max_ns": 32818.87945153793,
+      "cv_percent": 7.53387066756519,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2046016964.374497,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time": {
+      "median_ns": 424602.189928543,
+      "min_ns": 345313.6647985754,
+      "max_ns": 432994.06425124704,
+      "cv_percent": 10.135155053238403,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2469549203.635682,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time": {
+      "median_ns": 840461.6341200691,
+      "min_ns": 770536.3353058446,
+      "max_ns": 964672.762187902,
+      "cv_percent": 8.284995434340251,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1247619114.8187492,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Sigmoid/rows:32/f64:0/real_time": {
+      "median_ns": 22891.139623175146,
+      "min_ns": 20710.95170675436,
+      "max_ns": 23397.52980408267,
+      "cv_percent": 5.017695078229675,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 178933861.19811973,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Sigmoid/rows:32/f64:1/real_time": {
+      "median_ns": 30658.470655351368,
+      "min_ns": 29228.36993761457,
+      "max_ns": 32566.688755456256,
+      "cv_percent": 4.321759766807084,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 133600923.73965341,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Sigmoid/rows:8192/f64:0/real_time": {
+      "median_ns": 6297413.208812941,
+      "min_ns": 5348746.541737151,
+      "max_ns": 6469850.707920462,
+      "cv_percent": 7.254980202656873,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 166509003.81327462,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Sigmoid/rows:8192/f64:1/real_time": {
+      "median_ns": 9138708.307336155,
+      "min_ns": 9130580.1537461,
+      "max_ns": 9359897.4613437,
+      "cv_percent": 1.071249806439443,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 114740066.6195078,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:32/f64:0/real_time": {
+      "median_ns": 10533.350235080103,
+      "min_ns": 7685.152044180734,
+      "max_ns": 12312.048530670536,
+      "cv_percent": 20.65309833786334,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 388860135.53017026,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:32/f64:1/real_time": {
+      "median_ns": 23908.46356788568,
+      "min_ns": 22342.44976527853,
+      "max_ns": 29205.82180027401,
+      "cv_percent": 11.339159573765139,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 171320084.55373216,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:512/f64:0/real_time": {
+      "median_ns": 170845.7337734461,
+      "min_ns": 132477.13744836894,
+      "max_ns": 178510.3268363237,
+      "cv_percent": 11.551714924282521,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 383597521.2989838,
+        "peak_tensor_bytes": 262144.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:512/f64:1/real_time": {
+      "median_ns": 427823.69727858016,
+      "min_ns": 405376.840160675,
+      "max_ns": 472971.9387666721,
+      "cv_percent": 5.9114957622064175,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 153184595.4697685,
+        "peak_tensor_bytes": 524288.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time": {
+      "median_ns": 2944123.353147149,
+      "min_ns": 2268340.6862722454,
+      "max_ns": 3214937.901836546,
+      "cv_percent": 12.451725238119133,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 356158990.03658074,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time": {
+      "median_ns": 6852972.222582644,
+      "min_ns": 5029569.444660511,
+      "max_ns": 8246326.388972294,
+      "cv_percent": 18.41271275962797,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 153010396.9405597,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/SoftmaxGradient/rows:32/f64:0/real_time": {
+      "median_ns": 42973.804445622394,
+      "min_ns": 41578.7895247604,
+      "max_ns": 43691.1742309176,
+      "cv_percent": 1.8237722943327002,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 98440.0,
+        "items_per_second": 95313879.06748961
+      }
+    },
+    "BM_TensorFlowMatched/SoftmaxGradient/rows:32/f64:1/real_time": {
+      "median_ns": 57785.48840318989,
+      "min_ns": 51231.655659211654,
+      "max_ns": 58503.00140536043,
+      "cv_percent": 5.9675047043598255,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 196880.0,
+        "items_per_second": 70882848.15420702
+      }
+    },
+    "BM_TensorFlowMatched/SoftmaxGradient/rows:8192/f64:0/real_time": {
+      "median_ns": 6214526.041731005,
+      "min_ns": 5086098.9582967395,
+      "max_ns": 7042343.7500721775,
+      "cv_percent": 11.333430558165523,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 25198600.0,
+        "items_per_second": 168729842.46243945
+      }
+    },
+    "BM_TensorFlowMatched/SoftmaxGradient/rows:8192/f64:1/real_time": {
+      "median_ns": 13864161.499441251,
+      "min_ns": 12483567.750678048,
+      "max_ns": 15553765.624645166,
+      "cv_percent": 8.145965199561234,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 50397200.0,
+        "items_per_second": 75632125.32126515
+      }
+    },
+    "BM_TensorFlowMatched/Solve/rows:64/f64:0/real_time": {
+      "median_ns": 42349.26301259067,
+      "min_ns": 37329.05343182656,
+      "max_ns": 42812.519114976516,
+      "cv_percent": 5.57633952303745,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 96719510.76887068,
+        "peak_tensor_bytes": 37888.0
+      }
+    },
+    "BM_TensorFlowMatched/Solve/rows:64/f64:1/real_time": {
+      "median_ns": 36925.1555722175,
+      "min_ns": 29365.417480244992,
+      "max_ns": 40834.111203295906,
+      "cv_percent": 12.58661116955608,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 110927088.4990348,
+        "peak_tensor_bytes": 2048.0
+      }
+    },
+    "BM_TensorFlowMatched/Solve/rows:8/f64:0/real_time": {
+      "median_ns": 3980.239751272488,
+      "min_ns": 3378.2026906748033,
+      "max_ns": 4244.812318078986,
+      "cv_percent": 9.647956036186265,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 16079433.400849564,
+        "peak_tensor_bytes": 1152.0
+      }
+    },
+    "BM_TensorFlowMatched/Solve/rows:8/f64:1/real_time": {
+      "median_ns": 2571.490957776155,
+      "min_ns": 2098.8448827420857,
+      "max_ns": 2919.2980271278916,
+      "cv_percent": 13.511749720524888,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 24888285.065310005,
+        "peak_tensor_bytes": 256.0
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:32/f64:0/real_time": {
+      "median_ns": 10770.339557763375,
+      "min_ns": 8287.725653058586,
+      "max_ns": 11689.31341515755,
+      "cv_percent": 14.650601396584161,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 32776.0,
+        "items_per_second": 380303701.47871155
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:32/f64:1/real_time": {
+      "median_ns": 12407.345170179628,
+      "min_ns": 11922.618008232763,
+      "max_ns": 14200.833260908368,
+      "cv_percent": 7.190956970028937,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 65552.0,
+        "items_per_second": 330127029.0959996
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:512/f64:0/real_time": {
+      "median_ns": 65908.2197802485,
+      "min_ns": 58381.14172250227,
+      "max_ns": 72203.70708537748,
+      "cv_percent": 8.498233472984332,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 524296.0,
+        "items_per_second": 994352452.827742
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:512/f64:1/real_time": {
+      "median_ns": 130296.5982642933,
+      "min_ns": 115328.26601435611,
+      "max_ns": 138900.6514635127,
+      "cv_percent": 6.656675781305581,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 1048592.0,
+        "items_per_second": 502975525.63165885
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time": {
+      "median_ns": 1451845.7029757116,
+      "min_ns": 1422314.35655607,
+      "max_ns": 1476567.6535149612,
+      "cv_percent": 1.3952542709471842,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 8388616.0,
+        "items_per_second": 722236528.2005053
+      }
+    },
+    "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time": {
+      "median_ns": 2492242.7885310473,
+      "min_ns": 2398980.7691228073,
+      "max_ns": 2560060.0960248043,
+      "cv_percent": 2.325069800144707,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 16777232.0,
+        "items_per_second": 420735894.9238012
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:32/f64:0/real_time": {
+      "median_ns": 1787.6282453886272,
+      "min_ns": 1646.6171415316674,
+      "max_ns": 2335.597255576248,
+      "cv_percent": 15.068665644043117,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2291304140.3133216,
+        "peak_tensor_bytes": 4.0
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:32/f64:1/real_time": {
+      "median_ns": 1925.2564930127733,
+      "min_ns": 1592.27537175271,
+      "max_ns": 2343.2332553931633,
+      "cv_percent": 17.69724858300588,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2127508731.8834586,
+        "peak_tensor_bytes": 8.0
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:512/f64:0/real_time": {
+      "median_ns": 13350.512470672811,
+      "min_ns": 12203.507321589726,
+      "max_ns": 18668.909218474244,
+      "cv_percent": 17.771523633352448,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4908875231.865706,
+        "peak_tensor_bytes": 4.0
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:512/f64:1/real_time": {
+      "median_ns": 24576.48626889506,
+      "min_ns": 21059.01512957921,
+      "max_ns": 26064.093583458514,
+      "cv_percent": 7.786695734885993,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2666613904.158662,
+        "peak_tensor_bytes": 8.0
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time": {
+      "median_ns": 241666.7605307833,
+      "min_ns": 201865.669605508,
+      "max_ns": 293797.1175097945,
+      "cv_percent": 16.979796292037154,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4338933487.157964,
+        "peak_tensor_bytes": 4.0
+      }
+    },
+    "BM_TensorFlowMatched/SumAll/rows:8192/f64:1/real_time": {
+      "median_ns": 607131.0976025178,
+      "min_ns": 504509.82110682735,
+      "max_ns": 620372.117862836,
+      "cv_percent": 8.286754082485787,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1727099804.5408823,
+        "peak_tensor_bytes": 8.0
+      }
+    },
+    "BM_TensorFlowMatched/SumFirst/rows:32/f64:0/real_time": {
+      "median_ns": 3902.7655006893574,
+      "min_ns": 3862.843036084809,
+      "max_ns": 4014.639096085957,
+      "cv_percent": 1.6207657373930058,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1049512198.2800429,
+        "peak_tensor_bytes": 512.0
+      }
+    },
+    "BM_TensorFlowMatched/SumFirst/rows:32/f64:1/real_time": {
+      "median_ns": 3754.6860616446174,
+      "min_ns": 3356.353821486178,
+      "max_ns": 4127.524979010716,
+      "cv_percent": 7.967780110220918,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1090903455.7754428,
+        "peak_tensor_bytes": 1024.0
+      }
+    },
+    "BM_TensorFlowMatched/SumFirst/rows:8192/f64:0/real_time": {
+      "median_ns": 695853.5052897213,
+      "min_ns": 534450.8736590414,
+      "max_ns": 709850.8788897706,
+      "cv_percent": 10.986309426674831,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1506891884.6121519,
+        "peak_tensor_bytes": 512.0
+      }
+    },
+    "BM_TensorFlowMatched/SumFirst/rows:8192/f64:1/real_time": {
+      "median_ns": 629277.906968085,
+      "min_ns": 592318.6046434133,
+      "max_ns": 834289.5348864975,
+      "cv_percent": 16.279084370540946,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1666316246.5882986,
+        "peak_tensor_bytes": 1024.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:32/f64:0/real_time": {
+      "median_ns": 2496.703203454664,
+      "min_ns": 2424.9325135651334,
+      "max_ns": 2591.590799216621,
+      "cv_percent": 2.5372771631446756,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1640563441.5546088,
+        "peak_tensor_bytes": 128.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:32/f64:1/real_time": {
+      "median_ns": 2160.7624451125007,
+      "min_ns": 1907.9052205073142,
+      "max_ns": 2342.751533036853,
+      "cv_percent": 7.889173979599202,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1895627170.5225518,
+        "peak_tensor_bytes": 256.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:512/f64:0/real_time": {
+      "median_ns": 18496.18280461351,
+      "min_ns": 17359.36109812758,
+      "max_ns": 19330.51444609125,
+      "cv_percent": 4.418129008904869,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3543217575.8802156,
+        "peak_tensor_bytes": 2048.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:512/f64:1/real_time": {
+      "median_ns": 20401.732226951644,
+      "min_ns": 19410.152837743895,
+      "max_ns": 23771.353710572923,
+      "cv_percent": 8.318020894693065,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3212276255.3183537,
+        "peak_tensor_bytes": 4096.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:8192/f64:0/real_time": {
+      "median_ns": 221604.6560356853,
+      "min_ns": 206235.52851650814,
+      "max_ns": 235779.36242616596,
+      "cv_percent": 4.974989383918896,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4731741736.649913,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/SumLast/rows:8192/f64:1/real_time": {
+      "median_ns": 577783.2278456216,
+      "min_ns": 575572.7847999763,
+      "max_ns": 626827.3544510559,
+      "cv_percent": 4.444907104118126,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1814825958.0151222,
+        "peak_tensor_bytes": 65536.0
+      }
+    },
+    "BM_TensorFlowMatched/Tanh/rows:32/f64:0/real_time": {
+      "median_ns": 25237.69693349034,
+      "min_ns": 19134.03506507028,
+      "max_ns": 26328.716924441334,
+      "cv_percent": 13.084393911358,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 162296900.97294977,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/Tanh/rows:32/f64:1/real_time": {
+      "median_ns": 39702.22991223596,
+      "min_ns": 39083.20530777835,
+      "max_ns": 56217.52864484249,
+      "cv_percent": 18.929028658376374,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 103168008.67493944,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/Tanh/rows:8192/f64:0/real_time": {
+      "median_ns": 6660785.714519165,
+      "min_ns": 6532251.951977654,
+      "max_ns": 6873075.3811819125,
+      "cv_percent": 1.986141825918191,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 157425271.57333952,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/Tanh/rows:8192/f64:1/real_time": {
+      "median_ns": 14111754.200712312,
+      "min_ns": 13436762.499623,
+      "max_ns": 14490533.29997696,
+      "cv_percent": 2.896092011068174,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 74305149.10379261,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/TransposeAdd/rows:32/f64:0/real_time": {
+      "median_ns": 9049.678644830345,
+      "min_ns": 7247.856610466458,
+      "max_ns": 9737.065677546849,
+      "cv_percent": 11.590633727235891,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 452612756.84522253,
+        "peak_tensor_bytes": 16384.0
+      }
+    },
+    "BM_TensorFlowMatched/TransposeAdd/rows:32/f64:1/real_time": {
+      "median_ns": 10845.450326277962,
+      "min_ns": 10156.946958148577,
+      "max_ns": 11098.852984202284,
+      "cv_percent": 3.5293534934241486,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 377669887.0747308,
+        "peak_tensor_bytes": 32768.0
+      }
+    },
+    "BM_TensorFlowMatched/TransposeAdd/rows:8192/f64:0/real_time": {
+      "median_ns": 3795126.078904631,
+      "min_ns": 3730527.3945094086,
+      "max_ns": 3927417.7631197837,
+      "cv_percent": 1.988452440813602,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 276295432.1408593,
+        "peak_tensor_bytes": 4194304.0
+      }
+    },
+    "BM_TensorFlowMatched/TransposeAdd/rows:8192/f64:1/real_time": {
+      "median_ns": 10337259.614831196,
+      "min_ns": 8824391.077863626,
+      "max_ns": 11203009.615061233,
+      "cv_percent": 10.214706738966258,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 101436554.66440783,
+        "peak_tensor_bytes": 8388608.0
+      }
+    },
+    "BM_TensorFlowMatched/Variance/rows:32/f64:0/real_time": {
+      "median_ns": 14892.506174225242,
+      "min_ns": 13424.488968461797,
+      "max_ns": 17151.328568369798,
+      "cv_percent": 9.133073340958639,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 275037656.6631229,
+        "peak_tensor_bytes": 33156.0
+      }
+    },
+    "BM_TensorFlowMatched/Variance/rows:32/f64:1/real_time": {
+      "median_ns": 17146.88882598752,
+      "min_ns": 15073.967747839783,
+      "max_ns": 17879.328956744186,
+      "cv_percent": 6.5342095595838785,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 238877153.8421696,
+        "peak_tensor_bytes": 66312.0
+      }
+    },
+    "BM_TensorFlowMatched/Variance/rows:8192/f64:0/real_time": {
+      "median_ns": 2494200.6309104795,
+      "min_ns": 2355351.92298882,
+      "max_ns": 2691506.399871567,
+      "cv_percent": 5.550936511397234,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 420405634.9778202,
+        "peak_tensor_bytes": 8486916.0
+      }
+    },
+    "BM_TensorFlowMatched/Variance/rows:8192/f64:1/real_time": {
+      "median_ns": 3619829.465182996,
+      "min_ns": 3214460.2788152,
+      "max_ns": 4091702.5116234366,
+      "cv_percent": 9.772686414400713,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 289675524.79630154,
+        "peak_tensor_bytes": 16973832.0
+      }
+    }
+  }
+}

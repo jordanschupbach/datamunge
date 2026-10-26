@@ -1,6 +1,6 @@
-// Box IoU and VOC-style detection mAP for the nn example ports (tflow
-// common/nn/metrics.h). Example-local until the plan's P3 box utilities land
-// in the library.
+// VOC-style detection mAP for the nn example ports (tflow
+// common/nn/metrics.h). Box IoU comes from the library (nn::box_iou in
+// datamunge/nn/boxes.hpp); the mAP rules below are this evaluator's own.
 //
 // Boxes use continuous, half-open xyxy coordinates, without pixel +1.
 // Detections are sorted by score, with input order breaking ties. Each matches
@@ -18,6 +18,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include <datamunge/nn/boxes.hpp>
+
 namespace detection {
 
 struct Box {
@@ -33,10 +35,9 @@ inline void Validate(Box b) {
 inline double IoU(Box a, Box b) {
   Validate(a);
   Validate(b);
-  const double intersection = std::max(0., std::min(a.x2, b.x2) - std::max(a.x1, b.x1)) *
-                              std::max(0., std::min(a.y2, b.y2) - std::max(a.y1, b.y1));
-  const double area = (a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1) - intersection;
-  return area ? intersection / area : 0;
+  // the library's boxes are [y1, x1, y2, x2]
+  return datamunge::nn::box_iou(datamunge::nn::BoxT<double>{a.y1, a.x1, a.y2, a.x2},
+                                datamunge::nn::BoxT<double>{b.y1, b.x1, b.y2, b.x2});
 }
 
 struct GroundTruth {

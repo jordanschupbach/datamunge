@@ -360,3 +360,14 @@ TEST(SparseMatrix, repeated_convert_is_stable) {
         expect_vec_eq(mat.spmv(kX4), kAX4);
     }
 }
+
+TEST(SparseCSR, SpmvRetainsAliasedIndexStorageBehavior) {
+    SparseCSR<std::size_t> matrix;
+    matrix.nrows = matrix.ncols = 2;
+    matrix.row_ptr = {0, 0, 2};
+    matrix.col_idx = {0, 0};
+    matrix.values = {1, 1};
+    const std::vector<std::size_t> x{1, 10};
+    matrix.spmv(x, matrix.col_idx);
+    EXPECT_EQ(matrix.col_idx, (std::vector<std::size_t>{0, 11}));
+}

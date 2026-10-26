@@ -56,6 +56,25 @@ TEST(NnOps, BroadcastMulColumn) {
   expect_vals(r, {1, 2, 3, -4, -5, -6});
 }
 
+TEST(NnOps, UniformBroadcastStorageUsesItsOffsetAndPreservesOperandOrder) {
+  for (const auto dtype : {DType::Float32, DType::Float64, DType::Int64}) {
+    auto x       = nn::cast(nn::tensor({{1, 2, 3}, {4, 5, 6}}), dtype);
+    auto storage = nn::cast(nn::tensor({99, -3, 17}), dtype);
+    auto scalar  = nn::slice_axis(storage, 0, 1, 2);
+    auto uniform = nn::broadcast_to(nn::reshape(scalar, {1, 1}), {2, 3});
+    expect_vals(nn::sub(x, uniform), {4, 5, 6, 7, 8, 9});
+    expect_vals(nn::sub(uniform, x), {-4, -5, -6, -7, -8, -9});
+    expect_vals(nn::mul(x, uniform), {-3, -6, -9, -12, -15, -18});
+    expect_vals(nn::mul(uniform, x), {-3, -6, -9, -12, -15, -18});
+    expect_vals(nn::less(uniform, x), {1, 1, 1, 1, 1, 1});
+    // A partially broadcast vector is not uniform storage.
+    auto varied = nn::broadcast_to(nn::cast(nn::tensor({1, 2, 3}), dtype), {2, 3});
+    expect_vals(nn::mul(x, varied), {1, 4, 9, 4, 10, 18});
+    EXPECT_EQ(nn::mul(nn::zeros({0, 3}, dtype), nn::slice_axis(uniform, 0, 0, 0)).numel(), 0);
+    expect_vals(storage, {99, -3, 17});
+  }
+}
+
 TEST(NnOps, BroadcastRowPlusColumn) {
   // TF: row + col [3]+[2,1] -> [2,3]
   Tensor r = nn::tensor({10, 20, 30}) + nn::tensor({1, -1}, {2, 1});
@@ -396,6 +415,150 @@ TEST(NnOps, SoftmaxRowsSumToOne) {
   // other axis
   expect_vals(nn::sum(nn::softmax(x23(), 0), {0}), {1, 1, 1});
   EXPECT_EQ(nn::softmax(i32({1, 2})).dtype(), DType::Float32);
+}
+
+TEST(NnOps, SoftmaxStableLayoutsAndExceptionalRows) {
+  for (const auto dtype : {DType::Float32, DType::Float64}) {
+    auto x = nn::cast(nn::tensor({{1000, 999, -1000}, {-1000, -1001, -3000}, {2, 2, 2}}), dtype);
+    const auto expected = std::vector<double>{
+        1 / (1 + std::exp(-1.0)),
+        1 / (1 + std::exp(1.0)),
+        0,
+        1 / (1 + std::exp(-1.0)),
+        1 / (1 + std::exp(1.0)),
+        0,
+        1.0 / 3,
+        1.0 / 3,
+        1.0 / 3};
+    expect_vals(nn::softmax(x), expected);
+    // Offset-contiguous rows, strided rows, and a non-last axis take equivalent paths.
+    expect_vals(
+        nn::softmax(nn::slice_axis(x, 0, 1, 3)),
+        std::vector<double>(expected.begin() + 3, expected.end()));
+    expect_vals(nn::softmax(nn::transpose(nn::transpose(x).clone())), expected);
+    expect_vals(nn::transpose(nn::softmax(nn::transpose(x), 0)), expected);
+    expect_vals(nn::sum(nn::exp(nn::log_softmax(x)), {-1}), {1, 1, 1});
+    auto empty = nn::zeros({0, 3}, dtype);
+    EXPECT_EQ(nn::softmax(empty).shape(), empty.shape());
+    EXPECT_EQ(nn::log_softmax(empty).shape(), empty.shape());
+    EXPECT_THROW(nn::softmax(nn::zeros({3, 0}, dtype)), std::invalid_argument);
+    EXPECT_THROW(nn::log_softmax(nn::zeros({3, 0}, dtype)), std::invalid_argument);
+    const double nan = std::numeric_limits<double>::quiet_NaN(),
+                 inf = std::numeric_limits<double>::infinity();
+    auto exceptional = nn::cast(nn::tensor({{0, nan, 1}, {0, inf, 1}, {-inf, -inf, -inf}}), dtype);
+    expect_vals(nn::softmax(exceptional), std::vector<double>(9, nan));
+    expect_vals(nn::log_softmax(exceptional), std::vector<double>(9, nan));
+    std::vector<double> wide_values(3 * 37, 0);
+    wide_values[5] = nan; wide_values[37 + 19] = inf;
+    std::fill(wide_values.begin() + 74, wide_values.end(), -inf);
+    auto wide = nn::cast(nn::from_vector(wide_values, {3, 37}), dtype);
+    expect_vals(nn::softmax(wide), std::vector<double>(3 * 37, nan));
+    expect_vals(nn::log_softmax(wide), std::vector<double>(3 * 37, nan));
+  }
+}
+
+TEST(NnOps, VectorExponentialLayoutsAndSpecialValues) {
+  for (const auto dtype : {DType::Float32, DType::Float64}) {
+    std::vector<double> values(3 * 259);
+    for (std::size_t i = 0; i < values.size(); ++i)
+      values[i] = (static_cast<int>(i % 17) - 8) / 4.0;
+    values[0]             = std::numeric_limits<double>::quiet_NaN();
+    values[1]             = -std::numeric_limits<double>::infinity();
+    values[2]             = std::numeric_limits<double>::infinity();
+    values[3]             = -1000;
+    values[4]             = 1000;
+    auto                x = nn::cast(nn::from_vector(values, {3, 259}), dtype);
+    std::vector<double> expected;
+    for (const auto v : values)
+      expected.push_back(
+          dtype == DType::Float32 ? static_cast<double>(std::exp(static_cast<float>(v)))
+                                  : std::exp(v));
+    expect_vals(nn::exp(x), expected, dtype == DType::Float32 ? 1e-5 : 1e-12);
+    expect_vals(
+        nn::exp(nn::transpose(nn::transpose(x).clone())),
+        expected,
+        dtype == DType::Float32 ? 1e-5 : 1e-12);
+    expect_vals(
+        nn::exp(nn::slice_axis(x, 0, 1, 3)),
+        std::vector<double>(expected.begin() + 259, expected.end()),
+        dtype == DType::Float32 ? 1e-5 : 1e-12);
+  }
+}
+
+TEST(NnOps, SumUnrolledRowsAndTailsRetainDoubleAccumulation) {
+  for (const auto dtype : {DType::Float32, DType::Float64}) {
+    // The small terms would disappear with a Float32 accumulator. Odd lengths
+    // also exercise the scalar tail and reductions through a strided layout.
+    std::vector<double> values(3 * 259);
+    for (std::size_t i = 0; i < values.size(); ++i)
+      values[i] = i % 4 == 0 ? 1e8 : i % 4 == 2 ? -1e8 : 1;
+    auto                x = nn::cast(nn::from_vector(values, {3, 259}), dtype);
+    std::vector<double> expected(3, 0);
+    double              total = 0;
+    for (std::size_t i = 0; i < values.size(); ++i) {
+      expected[i / 259] += values[i];
+      total += values[i];
+    }
+    // Results are rounded to the output dtype after the double accumulation.
+    for (auto& v : expected)
+      if (dtype == DType::Float32)
+        v = static_cast<float>(v);
+    if (dtype == DType::Float32)
+      total = static_cast<float>(total);
+    expect_vals(nn::sum(x, {-1}), expected);
+    expect_vals(nn::sum(nn::transpose(x), {0}), expected);
+    expect_vals(nn::sum(x), {total});
+    expect_vals(nn::sum(nn::zeros({3, 0}, dtype), {-1}), {0, 0, 0});
+  }
+}
+
+TEST(NnOps, Float32WidenedReductionBoundariesAndCancellation) {
+  for (std::int64_t count : {0, 1, 7, 8, 15, 16, 17, 31, 32, 33, 127, 128, 129, 255, 256, 257, 259, 65537}) {
+    std::vector<float> values(static_cast<std::size_t>(count));
+    double             expected = 0;
+    for (std::int64_t i = 0; i < count; ++i) {
+      values[i] = i % 4 == 0 ? 16777216.0f : i % 4 == 2 ? -16777216.0f : 1.0f;
+      expected += static_cast<double>(values[i]);
+    }
+    auto x = nn::from_vector(values, {count});
+    EXPECT_EQ(nn::sum(x).item<float>(), static_cast<float>(expected)) << "count=" << count;
+    if (count > 0) {
+      auto padded = nn::concat({nn::zeros({1}, DType::Float32), x}, 0);
+      EXPECT_EQ(
+          nn::sum(nn::slice_axis(padded, 0, 1, count + 1)).item<float>(),
+          static_cast<float>(expected));
+    }
+  }
+  const float inf      = std::numeric_limits<float>::infinity();
+  auto        infinite = nn::full({37}, inf, DType::Float32);
+  EXPECT_EQ(nn::sum(infinite).item<float>(), inf);
+  infinite.data_ptr<float>()[31] = -inf;
+  EXPECT_TRUE(std::isnan(nn::sum(infinite).item()));
+}
+
+TEST(NnOps, Float64VectorReductionBoundariesAndSpecialValues) {
+  for (std::int64_t count : {0, 1, 15, 16, 17, 31, 32, 33, 127, 128, 129, 255, 256, 257, 259, 65537}) {
+    std::vector<double> values(static_cast<std::size_t>(count));
+    double expected = 0;
+    for (std::int64_t i = 0; i < count; ++i) {
+      values[i] = i % 4 == 0 ? 1e12 : i % 4 == 2 ? -1e12 : 1.0;
+      expected += values[i];
+    }
+    auto x = nn::from_vector(values, {count});
+    EXPECT_EQ(nn::sum(x).item<double>(), expected) << "count=" << count;
+    if (count > 0) {
+      auto padded = nn::concat({nn::zeros({1}, DType::Float64), x}, 0);
+      EXPECT_EQ(nn::sum(nn::slice_axis(padded, 0, 1, count + 1)).item<double>(), expected);
+    }
+  }
+  const double inf = std::numeric_limits<double>::infinity();
+  auto x = nn::full({37}, inf, DType::Float64);
+  EXPECT_EQ(nn::sum(x).item<double>(), inf);
+  x.data_ptr<double>()[31] = -inf;
+  EXPECT_TRUE(std::isnan(nn::sum(x).item<double>()));
+  x = nn::ones({37}, DType::Float64);
+  x.data_ptr<double>()[17] = std::numeric_limits<double>::quiet_NaN();
+  EXPECT_TRUE(std::isnan(nn::sum(x).item<double>()));
 }
 
 TEST(NnOps, Cumsum) {
@@ -742,4 +905,129 @@ TEST(NnOps, BiasAddDotOuter) {
   Tensor o = nn::outer(nn::tensor({1, 2}), nn::tensor({3, 4, 5}));
   EXPECT_EQ(o.shape(), (Shape{2, 3}));
   expect_vals(o, {3, 4, 5, 6, 8, 10});
+}
+
+TEST(NnOps, MatmulSharedTransposesMatchIndependentBatches) {
+  for (auto dt : {DType::Float32, DType::Float64}) {
+    for (bool ta : {false, true}) for (bool tb : {false, true}) for (bool shared_a : {false, true}) {
+      auto make = [dt](Shape shape, double offset) {
+        return nn::add(nn::div(nn::arange(0, double(nn::shape_numel(shape)), 1, dt), 17), offset).reshape(shape);
+      };
+      Shape as{ta ? 3 : 2, ta ? 2 : 3}, bs{tb ? 4 : 3, tb ? 3 : 4};
+      if (!shared_a) as.insert(as.begin(), 5);
+      if (shared_a) bs.insert(bs.begin(), 5);
+      auto a = make(as, -0.4), b = make(bs, 0.2);
+      auto aes = as, bes = bs;
+      if (shared_a) aes.insert(aes.begin(), 5); else bes.insert(bes.begin(), 5);
+      auto reference = nn::matmul(nn::broadcast_to(a, aes).clone(), nn::broadcast_to(b, bes).clone(), ta, tb);
+      expect_vals(nn::matmul(a, b, ta, tb), vals(reference), dt == DType::Float64 ? 1e-10 : 1e-4);
+    }
+  }
+}
+
+TEST(NnOps, VectorActivationsPreserveTailsOffsetsStridesAndExceptionalValues) {
+  for (auto dtype : {DType::Float32, DType::Float64}) {
+    for (std::int64_t width : {1, 7, 10, 11, 31, 32, 33, 259}) {
+      std::vector<double> input(static_cast<std::size_t>(3 * width));
+      for (std::size_t i = 0; i < input.size(); ++i)
+        input[i] = (static_cast<int>(i % 251) - 125) / 8.0;
+      input[0] = -std::numeric_limits<double>::infinity();
+      input[1] = std::numeric_limits<double>::infinity();
+      input[2] = std::numeric_limits<double>::quiet_NaN();
+      if (input.size() > 3)
+        input[3] = -0.0;
+      auto                x = nn::cast(nn::from_vector(input, {3, width}), dtype);
+      std::vector<double> sig, tan;
+      for (double value : input) {
+        const double e = std::exp(-std::abs(value));
+        sig.push_back(value >= 0 ? 1 / (1 + e) : e / (1 + e));
+        tan.push_back(std::tanh(value));
+      }
+      const double tolerance = dtype == DType::Float32 ? 3e-7 : 2e-15;
+      expect_vals(nn::sigmoid(x), sig, tolerance);
+      expect_vals(nn::tanh(x), tan, tolerance);
+      expect_vals(
+          nn::sigmoid(nn::slice_axis(x, 0, 1, 3)),
+          std::vector<double>(sig.begin() + width, sig.end()),
+          tolerance);
+      auto strided = nn::transpose(nn::transpose(x).clone());
+      expect_vals(nn::sigmoid(strided), sig, tolerance);
+      expect_vals(nn::tanh(strided), tan, tolerance);
+      if (input.size() > 3)
+        EXPECT_TRUE(std::signbit(nn::tanh(x).to_vector<double>()[3]));
+    }
+  }
+}
+
+TEST(NnOps, FusedExactGeluMatchesRecordedExpressionAcrossLayouts) {
+  for (auto dtype : {DType::Float32, DType::Float64}) {
+    auto x = nn::cast(nn::reshape(nn::arange(-130, 129, 1, DType::Float64), {7, 37}) / 32.0, dtype);
+    for (auto input : {x, nn::slice_axis(x, 0, 1, 7), nn::transpose(nn::transpose(x).clone())}) {
+      auto            recorded = nn::gelu(input.detach().requires_grad_());
+      nn::NoGradGuard guard;
+      expect_vals(
+          nn::gelu(input), recorded.to_vector<double>(), dtype == DType::Float32 ? 2e-7 : 1e-14);
+    }
+  }
+}
+
+TEST(NnOps, FloatingMaxRowsPropagateNonfiniteValuesAndKeepTailOffsets) {
+  for (auto dtype : {DType::Float32, DType::Float64})
+    for (std::int64_t width : {1, 3, 31, 32, 33, 129}) {
+      auto input =
+          nn::cast(nn::reshape(nn::arange(0, 3 * width, 1, DType::Float64), {3, width}), dtype);
+      expect_vals(
+          nn::max(input, {-1}), {double(width - 1), double(2 * width - 1), double(3 * width - 1)});
+      expect_vals(
+          nn::max(nn::slice_axis(input, 0, 1, 3), {-1}),
+          {double(2 * width - 1), double(3 * width - 1)});
+      auto negative = nn::full({2, width}, -std::numeric_limits<double>::infinity(), dtype);
+      expect_vals(nn::max(negative, {-1}), {-INFINITY, -INFINITY});
+      auto positive = nn::full({2, width}, std::numeric_limits<double>::infinity(), dtype);
+      expect_vals(nn::min(positive, {-1}), {INFINITY, INFINITY});
+      if (dtype == DType::Float32)
+        input.data_ptr<float>()[width / 2] = NAN;
+      else
+        input.data_ptr<double>()[width / 2] = NAN;
+      EXPECT_TRUE(std::isnan(nn::max(input, {-1}).to_vector<double>()[0]));
+    }
+  auto x =
+      nn::full({2, 37}, -std::numeric_limits<double>::infinity(), DType::Float64).requires_grad_();
+  nn::sum(nn::max(x, {-1})).backward();
+  expect_vals(x.grad(), std::vector<double>(74, 1.0 / 37), 1e-15);
+}
+
+TEST(NnOps, TiledTransposedBinaryViewsKeepOffsetsEdgesOperandOrderAndIndependentOutput) {
+  const auto original_threads = nn::get_num_threads();
+  struct Restore {
+    int count;
+    ~Restore() { nn::set_num_threads(count); }
+  } restore{original_threads};
+  for (auto dtype : {DType::Float32, DType::Float64})
+    for (int threads : {1, 4})
+      for (auto dimensions : {std::pair<std::int64_t, std::int64_t>{137, 259}, {16, 4097}}) {
+        nn::set_num_threads(threads);
+        const auto [rows, cols] = dimensions;
+        std::vector<double> values(static_cast<std::size_t>((cols + 2) * rows));
+        for (std::size_t i = 0; i < values.size(); ++i)
+          values[i] = (static_cast<int>(i % 251) - 125) / 128.0;
+        auto       storage = nn::cast(nn::from_vector(values, {cols + 2, rows}), dtype);
+        auto       a       = nn::transpose(nn::slice_axis(storage, 0, 1, cols + 1));
+        auto       b       = nn::transpose(nn::full({cols, rows}, 2.0, dtype));
+        auto       result = nn::sub(a, b), reverse = nn::sub(b, a);
+        auto       comparison = nn::greater(a, nn::transpose(nn::zeros({cols, rows}, dtype)));
+        const auto actual = result.to_vector<double>(), rev = reverse.to_vector<double>(),
+                   truth = comparison.to_vector<double>();
+        for (std::int64_t row = 0; row < rows; ++row)
+          for (std::int64_t col = 0; col < cols; ++col) {
+            const auto   index = static_cast<std::size_t>(row * cols + col);
+            const double value = values[static_cast<std::size_t>((col + 1) * rows + row)];
+            EXPECT_EQ(actual[index], value - 2);
+            EXPECT_EQ(rev[index], 2 - value);
+            EXPECT_EQ(truth[index], value > 0);
+          }
+        nn::NoGradGuard guard;
+        result.fill_(99);
+        EXPECT_EQ(storage.to_vector<double>(), values);
+      }
 }

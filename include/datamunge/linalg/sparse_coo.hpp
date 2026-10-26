@@ -187,6 +187,8 @@ public:
             return;
         }
 
+        if (compress_sorted_if_possible(n)) return;
+
         std::vector<std::size_t> order(n);
         std::iota(order.begin(), order.end(), 0);
         std::stable_sort(order.begin(), order.end(), [&](std::size_t a, std::size_t b) {
@@ -281,6 +283,50 @@ public:
     }
 
 private:
+    bool compress_sorted_if_possible(std::size_t n) {
+        // Already sorted input is common in CSR/structured conversions. Merge
+        // in place, retaining the original stable order of duplicate sums.
+        auto ordered = [&](std::size_t a, std::size_t b) {
+            return row_idx_[a] < row_idx_[b] ||
+                   (row_idx_[a] == row_idx_[b] && col_idx_[a] <= col_idx_[b]);
+        };
+        // Reject common concatenated sorted runs before scanning a long prefix.
+        // A failed sample proves disorder; passing still requires a full scan.
+        bool sorted = true;
+        if (n >= 4) {
+            const auto q = n / 4;
+            sorted = ordered(0, q) && ordered(q, 2 * q) && ordered(2 * q, 3 * q) && ordered(3 * q, n - 1);
+        }
+        if (sorted) {
+            for (std::size_t i = 1; i < n; ++i) {
+                if (!ordered(i - 1, i)) {
+                    sorted = false;
+                    break;
+                }
+            }
+        }
+        if (sorted) {
+            std::size_t out = 0;
+            for (std::size_t i = 0; i < n;) {
+                const auto row = row_idx_[i], col = col_idx_[i];
+                T sum = T{0};
+                std::size_t j = i;
+                while (j < n && row_idx_[j] == row && col_idx_[j] == col) sum += vals_[j++];
+                if (sum != T{0}) {
+                    row_idx_[out] = row;
+                    col_idx_[out] = col;
+                    vals_[out++] = sum;
+                }
+                i = j;
+            }
+            row_idx_.resize(out); col_idx_.resize(out); vals_.resize(out);
+            compressed_ = true;
+            return true;
+        }
+
+        return false;
+    }
+
     std::size_t              rows_{0}, cols_{0};
     std::vector<std::size_t> row_idx_, col_idx_;
     std::vector<T>           vals_;

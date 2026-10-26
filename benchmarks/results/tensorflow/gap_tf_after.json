@@ -1,0 +1,2909 @@
+{
+  "context": {
+    "date": "2026-10-24T17:34:06.076769+00:00",
+    "build": "TensorFlow-2.21.0",
+    "gemm_backend": "TensorFlow packaged CPU kernels",
+    "nn_threads": "1",
+    "tensorflow_build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    }
+  },
+  "backend_benchmark_metadata": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "0b410cea4beba025dd216699ab758cde621ae992d695471fbed2d24bd5ccdbb4",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ad04f448e2b8c3d70a7a24406dcfb28f5f63e7df41981df0f036df962cae27e4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "core_sources_sha256": "bf8b18868399b4286bde574174d6d08ed59f5b9ab3b2c6316eb75b355f7b554d",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "gap-pass-after-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--paired-native",
+      "--case",
+      "(SumLast|SumAll|Mean|SquareGradient|Add|Multiply)/rows:(512|8192)/",
+      "--native",
+      "benchmarks/results/tensorflow/gap_tf_native_after.json",
+      "--output",
+      "benchmarks/results/tensorflow/gap_tf_after.json",
+      "--label",
+      "gap-pass-after",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "1c77372fe28ca90235af18a75e3917c03ee74d4fb46bc63e0a3d9878cf3f15bd",
+    "native_result_sha256": "70a3c91e49cf645075c76b442a2978f5ad8530c3dc895f3d52afd49587e8b9ce",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "case_selection": [
+      "BM_TensorFlowMatched/Add/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/Add/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Mean/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/Mean/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Mean/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/SumAll/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/SumAll/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SumAll/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/SumLast/rows:512/f64:0/real_time",
+      "BM_TensorFlowMatched/SumLast/rows:512/f64:1/real_time",
+      "BM_TensorFlowMatched/SumLast/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SumLast/rows:8192/f64:1/real_time"
+    ],
+    "host_load_average_start": [
+      2.2021484375,
+      2.00634765625,
+      2.2626953125
+    ],
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/gap_tf_native_after.json",
+    "host_load_average_end": [
+      2.19140625,
+      2.04638671875,
+      2.248046875
+    ]
+  },
+  "benchmarks": [
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 8561,
+      "real_time": 12476.862165634855,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 8561,
+      "real_time": 12648.590468403225,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 8561,
+      "real_time": 12598.615815909356,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 8561,
+      "real_time": 12576.504847564536,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 8561,
+      "real_time": 12571.632986800607,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1556,
+      "real_time": 69836.73457583548,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1556,
+      "real_time": 69424.9678663239,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1556,
+      "real_time": 69603.20244215938,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1556,
+      "real_time": 69543.00514138817,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1556,
+      "real_time": 71288.34575835476,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 6537,
+      "real_time": 16680.40247820101,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 6537,
+      "real_time": 16729.501300290653,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 6537,
+      "real_time": 16703.06195502524,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 6537,
+      "real_time": 16729.584059966346,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 6537,
+      "real_time": 16677.961450206516,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1383,
+      "real_time": 80726.62111352132,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1383,
+      "real_time": 74237.37671728127,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1383,
+      "real_time": 73622.25813449024,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1383,
+      "real_time": 74046.3665943601,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1383,
+      "real_time": 73982.46565437455,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1426,
+      "real_time": 77234.57223001402,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1426,
+      "real_time": 77018.78751753156,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1426,
+      "real_time": 77081.37587657783,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1426,
+      "real_time": 77207.60238429172,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1426,
+      "real_time": 78535.82258064517,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 795,
+      "real_time": 131390.7748427673,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 795,
+      "real_time": 131350.0,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 795,
+      "real_time": 131311.68805031446,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 795,
+      "real_time": 130996.90817610062,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 795,
+      "real_time": 130833.70062893082,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 751,
+      "real_time": 145554.81491344873,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 751,
+      "real_time": 145308.92143808256,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 751,
+      "real_time": 145586.94007989348,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 751,
+      "real_time": 145289.39147802928,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 751,
+      "real_time": 145327.67376830892,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 527,
+      "real_time": 206720.98481973435,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 527,
+      "real_time": 207379.26944971536,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 527,
+      "real_time": 206426.944971537,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 527,
+      "real_time": 206431.84629981025,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Add/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 527,
+      "real_time": 206688.96204933585,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 5917,
+      "real_time": 18725.522393104613,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 5917,
+      "real_time": 18689.440087882373,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 5917,
+      "real_time": 18601.149231029238,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 5917,
+      "real_time": 18602.163258407978,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 5917,
+      "real_time": 18606.817982085515,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1313,
+      "real_time": 80437.35719725818,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1313,
+      "real_time": 79969.59862909369,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1313,
+      "real_time": 80179.16984006093,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1313,
+      "real_time": 80297.53769992384,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1313,
+      "real_time": 79985.87814166032,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 3911,
+      "real_time": 28111.682945538225,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 3911,
+      "real_time": 28188.69854257223,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 3911,
+      "real_time": 28130.295065200717,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 3911,
+      "real_time": 28416.49629250831,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 3911,
+      "real_time": 28267.05650728714,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1248,
+      "real_time": 88117.65544871795,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1248,
+      "real_time": 88390.85897435897,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1248,
+      "real_time": 88869.15705128205,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1248,
+      "real_time": 88727.56410256411,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1248,
+      "real_time": 88226.96314102564,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 658,
+      "real_time": 167055.59878419453,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 658,
+      "real_time": 167046.73252279634,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 658,
+      "real_time": 169134.8784194529,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 658,
+      "real_time": 167134.8784194529,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 658,
+      "real_time": 167246.01063829788,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 474,
+      "real_time": 228644.07594936708,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 474,
+      "real_time": 229025.66666666666,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 474,
+      "real_time": 227938.2911392405,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 474,
+      "real_time": 228308.3670886076,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 474,
+      "real_time": 228302.4789029536,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 343,
+      "real_time": 318319.97084548103,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 343,
+      "real_time": 318748.54227405245,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 343,
+      "real_time": 318032.7988338192,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 343,
+      "real_time": 318176.02040816325,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 343,
+      "real_time": 317907.55685131194,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 289,
+      "real_time": 380198.23875432526,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 289,
+      "real_time": 379034.169550173,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 289,
+      "real_time": 379927.0484429066,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 289,
+      "real_time": 379378.169550173,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/BroadcastAdd/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 289,
+      "real_time": 405706.8892733564,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 10000,
+      "real_time": 10318.3542,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 10000,
+      "real_time": 10185.9416,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 10000,
+      "real_time": 10166.5667,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 10000,
+      "real_time": 10147.4417,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 10000,
+      "real_time": 10120.3166,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1576,
+      "real_time": 69359.77157360406,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1576,
+      "real_time": 69520.35723350254,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1576,
+      "real_time": 69165.42385786802,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1576,
+      "real_time": 69485.43274111675,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1576,
+      "real_time": 78147.47208121828,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 7593,
+      "real_time": 14204.524957197418,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 7593,
+      "real_time": 14211.197813775847,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 7593,
+      "real_time": 14177.647175029633,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 7593,
+      "real_time": 14162.145001975503,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 7593,
+      "real_time": 14159.532859212433,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1402,
+      "real_time": 78323.64479315263,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1402,
+      "real_time": 78375.8915834522,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1402,
+      "real_time": 78644.7631954351,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1402,
+      "real_time": 78237.25035663338,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1402,
+      "real_time": 78331.60912981455,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1472,
+      "real_time": 74499.40557065218,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1472,
+      "real_time": 74519.36141304347,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1472,
+      "real_time": 74425.41304347826,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1472,
+      "real_time": 74465.46671195653,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1472,
+      "real_time": 74408.54279891304,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 788,
+      "real_time": 138884.72842639594,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 788,
+      "real_time": 138419.52157360406,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 788,
+      "real_time": 138181.94796954314,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 788,
+      "real_time": 138131.34517766497,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 788,
+      "real_time": 138120.82233502538,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 773,
+      "real_time": 142965.12419146183,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 773,
+      "real_time": 142585.05821474773,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 773,
+      "real_time": 143914.02587322122,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 773,
+      "real_time": 142719.76067270376,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 773,
+      "real_time": 142438.3893919793,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 527,
+      "real_time": 206760.19924098672,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 527,
+      "real_time": 206829.45920303607,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 527,
+      "real_time": 206702.87855787476,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 527,
+      "real_time": 206559.6944971537,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Multiply/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 527,
+      "real_time": 206661.29032258064,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 11619,
+      "real_time": 9514.516395558998,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 11619,
+      "real_time": 9504.909372579395,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 11619,
+      "real_time": 9501.714175058094,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 11619,
+      "real_time": 9489.33858335485,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 11619,
+      "real_time": 9507.35502194681,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1603,
+      "real_time": 67936.91515907673,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1603,
+      "real_time": 68442.21771678103,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1603,
+      "real_time": 67949.98939488459,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1603,
+      "real_time": 68133.5258889582,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1603,
+      "real_time": 68112.52339363693,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 9509,
+      "real_time": 11642.365127773688,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 9509,
+      "real_time": 11585.664423178041,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 9509,
+      "real_time": 11595.68997791566,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 9509,
+      "real_time": 11795.816279314335,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 9509,
+      "real_time": 11711.532022294668,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1534,
+      "real_time": 71046.61016949153,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1534,
+      "real_time": 73009.96870925685,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1534,
+      "real_time": 71052.64015645372,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1534,
+      "real_time": 70661.55997392438,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1534,
+      "real_time": 70560.84289439375,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 2251,
+      "real_time": 48663.87161261662,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 2251,
+      "real_time": 48461.12838738338,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 2251,
+      "real_time": 48578.31674811195,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 2251,
+      "real_time": 48539.093736117284,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 2251,
+      "real_time": 48536.70590848512,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 954,
+      "real_time": 112637.92767295598,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 954,
+      "real_time": 112613.99371069182,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 954,
+      "real_time": 113198.33123689727,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 954,
+      "real_time": 112549.9213836478,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 954,
+      "real_time": 112541.01153039832,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1271,
+      "real_time": 86146.89850511408,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1271,
+      "real_time": 85924.23996852872,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1271,
+      "real_time": 86741.1487018096,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1271,
+      "real_time": 93515.04720692369,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1271,
+      "real_time": 87822.51534225019,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 716,
+      "real_time": 150884.0782122905,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 716,
+      "real_time": 151018.62290502794,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 716,
+      "real_time": 151376.62849162013,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 716,
+      "real_time": 150786.89525139664,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumLast/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 716,
+      "real_time": 150841.18854748603,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 9183,
+      "real_time": 12095.76118915387,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 9183,
+      "real_time": 12090.293694870958,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 9183,
+      "real_time": 12098.347489927039,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 9183,
+      "real_time": 13040.745616900795,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 9183,
+      "real_time": 12077.262332571056,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1612,
+      "real_time": 67451.79342431761,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1612,
+      "real_time": 67627.97270471464,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1612,
+      "real_time": 67578.68052109181,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1612,
+      "real_time": 67397.02233250621,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1612,
+      "real_time": 67717.97456575683,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 7571,
+      "real_time": 14537.385021793687,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 7571,
+      "real_time": 14548.039756967375,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 7571,
+      "real_time": 14803.196407343812,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 7571,
+      "real_time": 14586.090476819443,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 7571,
+      "real_time": 14527.550257561748,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1558,
+      "real_time": 71056.8838254172,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1558,
+      "real_time": 70488.01861360719,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1558,
+      "real_time": 70396.6893453145,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1558,
+      "real_time": 70622.86071887035,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1558,
+      "real_time": 70486.33440308087,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 2181,
+      "real_time": 50009.83906464924,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 2181,
+      "real_time": 49936.649701971575,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 2181,
+      "real_time": 50018.58872077029,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 2181,
+      "real_time": 50016.12425492893,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 2181,
+      "real_time": 49939.553415864284,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 953,
+      "real_time": 111415.6610703043,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 953,
+      "real_time": 110565.71353620147,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 953,
+      "real_time": 110699.19517313746,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 953,
+      "real_time": 111118.09129066108,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 953,
+      "real_time": 110931.5760755509,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1192,
+      "real_time": 90881.53691275168,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1192,
+      "real_time": 90952.81040268457,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1192,
+      "real_time": 90872.2038590604,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1192,
+      "real_time": 90895.37919463088,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1192,
+      "real_time": 90982.1384228188,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 712,
+      "real_time": 152456.40168539327,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 712,
+      "real_time": 152048.63061797753,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 712,
+      "real_time": 152786.92696629214,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 712,
+      "real_time": 151986.48174157302,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SumAll/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 712,
+      "real_time": 152024.46207865168,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 9069,
+      "real_time": 12040.922372918734,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 9069,
+      "real_time": 12020.739111258132,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 9069,
+      "real_time": 12015.570404675267,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 9069,
+      "real_time": 12019.544602492006,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 9069,
+      "real_time": 12020.201676039254,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1618,
+      "real_time": 68084.93016069221,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1618,
+      "real_time": 67982.38566131025,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1618,
+      "real_time": 69873.89245982695,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1618,
+      "real_time": 68068.8609394314,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1618,
+      "real_time": 67646.99258343634,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 7566,
+      "real_time": 14540.664419772667,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 7566,
+      "real_time": 14546.959027227069,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 7566,
+      "real_time": 14507.439994713191,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 7566,
+      "real_time": 14484.938012159662,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 7566,
+      "real_time": 14491.943166798837,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1000,
+      "real_time": 70458.291,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1000,
+      "real_time": 109904.875,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1000,
+      "real_time": 70855.5,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1000,
+      "real_time": 70380.916,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1000,
+      "real_time": 79100.708,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 2189,
+      "real_time": 49857.62174508908,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 2189,
+      "real_time": 49866.224760164456,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 2189,
+      "real_time": 49799.28049337597,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 2189,
+      "real_time": 49815.364550022845,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 2189,
+      "real_time": 54054.153037916854,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 987,
+      "real_time": 158461.7102330294,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 987,
+      "real_time": 110233.45086119554,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 987,
+      "real_time": 118703.98480243162,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 987,
+      "real_time": 115271.40324214792,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 987,
+      "real_time": 110464.41236068896,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1206,
+      "real_time": 91067.37147595357,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1206,
+      "real_time": 90744.09203980099,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1206,
+      "real_time": 90969.66500829188,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1206,
+      "real_time": 90872.65008291874,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1206,
+      "real_time": 90835.54394693201,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 713,
+      "real_time": 152647.49929873773,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 713,
+      "real_time": 152414.91304347827,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 713,
+      "real_time": 151923.03646563814,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 713,
+      "real_time": 218937.9971949509,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 713,
+      "real_time": 181676.07433380085,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 859,
+      "real_time": 128900.07799767172,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 859,
+      "real_time": 128340.36670547148,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 859,
+      "real_time": 130386.93247962747,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 859,
+      "real_time": 128809.22584400466,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 859,
+      "real_time": 149844.00465657742,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1284,
+      "real_time": 106444.63940809968,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1284,
+      "real_time": 109931.3668224299,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1284,
+      "real_time": 111673.22118380062,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1284,
+      "real_time": 80029.0109034268,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1284,
+      "real_time": 79925.88239875389,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 489,
+      "real_time": 220778.54396728016,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 489,
+      "real_time": 220501.19222903886,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 489,
+      "real_time": 220864.34969325154,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 489,
+      "real_time": 220930.12883435583,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 489,
+      "real_time": 221092.61963190185,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 1178,
+      "real_time": 92777.8013582343,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 1178,
+      "real_time": 92838.78013582343,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 1178,
+      "real_time": 92766.65959252972,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 1178,
+      "real_time": 92753.85568760612,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:512/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 1178,
+      "real_time": 92843.0246179966,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 190,
+      "real_time": 573660.3105263158,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 190,
+      "real_time": 572133.1105263158,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 190,
+      "real_time": 572095.6157894736,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 190,
+      "real_time": 570210.5263157894,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 190,
+      "real_time": 571964.4736842106,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 445,
+      "real_time": 245523.50337078652,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 445,
+      "real_time": 245984.55056179775,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 445,
+      "real_time": 245753.5595505618,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 445,
+      "real_time": 244970.78651685393,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 445,
+      "real_time": 245867.51011235954,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 87,
+      "real_time": 1174617.816091954,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 87,
+      "real_time": 1176098.1724137932,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 87,
+      "real_time": 1187667.1494252873,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 87,
+      "real_time": 1181536.4022988505,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/eager/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 87,
+      "real_time": 1178182.471264368,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 245,
+      "real_time": 427930.95510204084,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 245,
+      "real_time": 426116.32653061225,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 245,
+      "real_time": 424077.893877551,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 3,
+      "iterations": 245,
+      "real_time": 423597.78775510204,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_name": "TensorFlow/graph/SquareGradient/rows:8192/f64:1/real_time",
+      "run_type": "iteration",
+      "repetition_index": 4,
+      "iterations": 245,
+      "real_time": 422489.9673469388,
+      "time_unit": "ns",
+      "reference_checked": 1
+    }
+  ]
+}

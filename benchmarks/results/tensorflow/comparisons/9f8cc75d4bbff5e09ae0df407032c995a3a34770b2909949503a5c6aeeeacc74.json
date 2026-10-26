@@ -1,0 +1,230 @@
+{
+  "id": "9f8cc75d4bbff5e09ae0df407032c995a3a34770b2909949503a5c6aeeeacc74",
+  "label": "release_repeat_tf",
+  "source": "benchmarks/results/tensorflow/release_repeat_tf.comparison.json",
+  "context": {
+    "date": "2026-10-24T18:42:41.099596+00:00",
+    "build": "TensorFlow-2.21.0",
+    "gemm_backend": "TensorFlow packaged CPU kernels",
+    "nn_threads": "1",
+    "tensorflow_build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    }
+  },
+  "rows": [
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time",
+      "native_ns": 75951.49025497558,
+      "eager_ns": 61668.95443925234,
+      "eager_cv_percent": 2.562660947084882,
+      "graph_ns": 143403.94912985276,
+      "graph_cv_percent": 2.1668375024064632,
+      "native_cv_percent": 1.8541150067053491,
+      "native_over_eager": 1.2316000967681786,
+      "native_over_graph": 0.5296331845519906
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time",
+      "native_ns": 91259.64600025327,
+      "eager_ns": 81370.0354449472,
+      "eager_cv_percent": 1.6949913015503297,
+      "graph_ns": 154984.9921976593,
+      "graph_cv_percent": 7.012025278183029,
+      "native_cv_percent": 9.127597062114138,
+      "native_over_eager": 1.1215387273856738,
+      "native_over_graph": 0.5888289227634748
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time",
+      "native_ns": 1574215.3595097028,
+      "eager_ns": 1460855.0,
+      "eager_cv_percent": 6.980424148222106,
+      "graph_ns": 1533076.4925373134,
+      "graph_cv_percent": 2.412705144049094,
+      "native_cv_percent": 0.2201690364793629,
+      "native_over_eager": 1.0775986388174752,
+      "native_over_graph": 1.0268341907091032
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time",
+      "native_ns": 1040152.6716435258,
+      "eager_ns": 980356.67,
+      "eager_cv_percent": 1.534355901740672,
+      "graph_ns": 948053.34,
+      "graph_cv_percent": 2.8905055773601487,
+      "native_cv_percent": 0.262655165710913,
+      "native_over_eager": 1.0609941294565026,
+      "native_over_graph": 1.0971457277324985
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time",
+      "native_ns": 150480.28311815302,
+      "eager_ns": 159704.21974522292,
+      "eager_cv_percent": 11.951132406760701,
+      "graph_ns": 234816.77378435517,
+      "graph_cv_percent": 2.265293339878425,
+      "native_cv_percent": 1.608972391058126,
+      "native_over_eager": 0.942243626112166,
+      "native_over_graph": 0.6408412852837639
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time",
+      "native_ns": 150655.3571409907,
+      "eager_ns": 162335.58463726885,
+      "eager_cv_percent": 2.5275882579831443,
+      "graph_ns": 224073.1083844581,
+      "graph_cv_percent": 1.1749699872566215,
+      "native_cv_percent": 3.633452090918574,
+      "native_over_eager": 0.9280488777468164,
+      "native_over_graph": 0.6723491195672648
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time",
+      "native_ns": 374387.3546417765,
+      "eager_ns": 426309.29615384614,
+      "eager_cv_percent": 1.5603172502126568,
+      "graph_ns": 502373.08294930874,
+      "graph_cv_percent": 1.9703518846246655,
+      "native_cv_percent": 2.0060314317976276,
+      "native_over_eager": 0.8782059364397906,
+      "native_over_graph": 0.7452376875843755
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time",
+      "native_ns": 72429.73124827283,
+      "eager_ns": 82883.81041666666,
+      "eager_cv_percent": 13.587885042972427,
+      "graph_ns": 139719.68289473685,
+      "graph_cv_percent": 0.16028664199813195,
+      "native_cv_percent": 2.334388495128706,
+      "native_over_eager": 0.8738706737076886,
+      "native_over_graph": 0.5183931837494974
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time",
+      "native_ns": 583570.6583335802,
+      "eager_ns": 674424.1739130435,
+      "eager_cv_percent": 0.19848980190739343,
+      "graph_ns": 744615.6462585034,
+      "graph_cv_percent": 0.7924334486579936,
+      "native_cv_percent": 0.019407482135044868,
+      "native_over_eager": 0.8652872789948698,
+      "native_over_graph": 0.7837206500640543
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time",
+      "native_ns": 148874.22199324315,
+      "eager_ns": 195523.348733234,
+      "eager_cv_percent": 7.941268076998309,
+      "graph_ns": 220832.99387755102,
+      "graph_cv_percent": 2.4553565995826276,
+      "native_cv_percent": 1.6437183467723622,
+      "native_over_eager": 0.761414035498965,
+      "native_over_graph": 0.6741484566196296
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+      "native_ns": 199976.48857367627,
+      "eager_ns": 593785.2393617021,
+      "eager_cv_percent": 6.432604026162742,
+      "graph_ns": 248802.78475336323,
+      "graph_cv_percent": 1.9123698845693136,
+      "native_cv_percent": 0.1027678768833772,
+      "native_over_eager": 0.33678251885924926,
+      "native_over_graph": 0.8037550253784812
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time",
+      "native_ns": 367338.72507026704,
+      "eager_ns": 1180360.3406593406,
+      "eager_cv_percent": 0.34209992317606264,
+      "graph_ns": 426378.3724696356,
+      "graph_cv_percent": 0.3930449170232617,
+      "native_cv_percent": 0.4060806244091213,
+      "native_over_eager": 0.3112089693432722,
+      "native_over_graph": 0.8615322652098798
+    }
+  ],
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "73fadbb4fcc6f406d0c5487dd869f1884c5e492ed80d0ce149734a8ff1c0dca2",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ad04f448e2b8c3d70a7a24406dcfb28f5f63e7df41981df0f036df962cae27e4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "core_sources_sha256": "21c6ae92c53bf89c87b80c572d5ca041283519c34fa5276badaa10068a456481",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "release-recheck-repeat-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--build-dir",
+      "build/benchmarks-release",
+      "--paired-native",
+      "--case",
+      "^(Add|Multiply|Relu|Exp|Softmax|SquareGradient)/rows:8192/",
+      "--native",
+      "benchmarks/results/tensorflow/release_repeat_native.json",
+      "--output",
+      "benchmarks/results/tensorflow/release_repeat_tf.json",
+      "--label",
+      "release-recheck-repeat",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "ccd645fa6a09a689cbe0932cc2111c467c6de9ca5158456dde5c0d63d979c350",
+    "native_result_sha256": "813d460b1c0f4880db5d6167f5169a1916f948a9051040a8036ef041327a0fa7",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "case_selection": [
+      "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+      "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time"
+    ],
+    "host_load_average_start": [
+      2.37109375,
+      2.66015625,
+      2.88427734375
+    ],
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/release_repeat_native.json",
+    "host_load_average_end": [
+      2.43603515625,
+      2.6474609375,
+      2.8701171875
+    ]
+  }
+}

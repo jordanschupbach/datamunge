@@ -1,0 +1,4 @@
+CXX_STD = CXX23
+SOURCES = $(addsuffix .cpp,$(shell sed -e '/^[[:space:]]*\#/d' -e '/^[[:space:]]*$$/d' ../lib_sources.txt)) datamunge_r_wrap.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+PKG_CPPFLAGS = -I../include

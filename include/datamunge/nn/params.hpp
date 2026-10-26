@@ -11,7 +11,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <map>
 #include <string>
 #include <vector>
 
@@ -27,6 +26,11 @@ namespace init {
 
 /// Fan-in and fan-out of a weight shape: [in, out] for dense weights and
 /// [kh, kw, in, out] (receptive field times channels) for convolutions, as in TF.
+/// The convention is positional, as in Keras: fan_in always uses shape[-2]
+/// and fan_out shape[-1]. For a transposed-convolution kernel [kh, kw, out, in]
+/// (conv2d_transpose's layout) that makes fan_in = kh kw out_channels and
+/// fan_out = kh kw in_channels, so he_* / glorot_* / lecun_* scale such
+/// kernels by the output channels, exactly as Keras Conv2DTranspose does.
 std::pair<double, double> fans(const Shape& shape);
 
 Initializer zeros();
@@ -113,7 +117,9 @@ class ParameterStore {
 
  private:
   std::vector<std::string>              names_;
-  std::map<std::string, std::size_t>    index_;
+  // Open-addressed indices into names_/values_; zero means empty, otherwise index+1.
+  std::vector<std::size_t>              index_;
+  std::size_t find_index(const std::string& name) const;
   std::vector<Tensor>                   values_;
   Generator                             gen_;
   DType                                 dtype_;

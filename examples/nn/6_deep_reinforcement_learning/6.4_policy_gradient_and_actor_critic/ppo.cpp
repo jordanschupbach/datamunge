@@ -162,7 +162,7 @@ float Train(bool clipped, const rl::PgConfig& cfg) {
   const float ev = rl::Evaluate(eval_env, greedy, 20, 777);
   std::printf("  final greedy evaluation over 20 episodes: %.1f\n", ev);
   // A random policy averages about 22; TF's best evaluation is 500 for both variants on this seed.
-  check::Require(std::max(best_eval, ev) >= 150, "PPO learned to balance (best greedy evaluation >= 150)");
+  check::TrainingQuality(std::max(best_eval, ev) >= 150, "PPO learned to balance (best greedy evaluation >= 150)");
   return ev;
 }
 

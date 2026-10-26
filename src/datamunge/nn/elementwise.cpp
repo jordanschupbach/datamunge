@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "detail.hpp"
+#include "vector_math.hpp"
 
 namespace datamunge::nn {
 
@@ -39,6 +40,8 @@ Tensor compute_float(DType dtype, const char* what, F&& f) {
 }
 
 /// Elementwise binary map of two tensors already converted to dtype T.
+/// map_* only reads input storage and creates a fresh output under compute's
+/// NoGradGuard; detached TensorImpl copies serve no purpose in these kernels.
 template <typename Op>
 Tensor binary_kernel(const Tensor& a, const Tensor& b, DType dtype, Op op) {
   return compute(dtype, [&](auto tag) -> Tensor {
@@ -46,7 +49,7 @@ Tensor binary_kernel(const Tensor& a, const Tensor& b, DType dtype, Op op) {
     if constexpr (std::is_same<T, bool>::value) {
       throw std::logic_error("nn: bool arithmetic kernel");
     } else {
-      return detail::map_binary<T, T>(nograd(a), nograd(b), dtype, [&](T x, T y) { return static_cast<T>(op(x, y)); });
+      return detail::map_binary<T, T>(a, b, dtype, [&](T x, T y) { return static_cast<T>(op(x, y)); });
     }
   });
 }
@@ -56,7 +59,7 @@ template <typename Op>
 Tensor unary_kernel(const Tensor& x, DType dtype, Op op) {
   return compute(dtype, [&](auto tag) -> Tensor {
     using T = typename decltype(tag)::type;
-    return detail::map_unary<T, T>(nograd(x), dtype, [&](T v) { return static_cast<T>(op(v)); });
+    return detail::map_unary<T, T>(x, dtype, [&](T v) { return static_cast<T>(op(v)); });
   });
 }
 
@@ -66,7 +69,28 @@ std::pair<Tensor, Tensor> float_unary(const Tensor& x, const char* what, Op op) 
   Tensor xf  = as_dtype(x, to_floating(x.dtype()));
   Tensor out = compute_float(xf.dtype(), what, [&](auto tag) -> Tensor {
     using T = typename decltype(tag)::type;
-    return detail::map_unary<T, T>(nograd(xf), xf.dtype(), [&](T v) { return static_cast<T>(op(v)); });
+    return detail::map_unary<T, T>(xf, xf.dtype(), [&](T v) { return static_cast<T>(op(v)); });
+  });
+  return {xf, out};
+}
+
+// Keep generic strided/tiny inputs on the scalar map. Packed larger inputs
+// can use a platform vector function without allocating an extra tensor.
+template<typename Scalar, typename Vector>
+std::pair<Tensor, Tensor>
+vector_float_unary(const Tensor& x, const char* what, Scalar scalar_fn, Vector vector_fn) {
+  Tensor xf  = as_dtype(x, to_floating(x.dtype()));
+  Tensor out = compute_float(xf.dtype(), what, [&](auto tag) -> Tensor {
+    using T = typename decltype(tag)::type;
+    if (!xf.is_contiguous() || xf.numel() < 32)
+      return detail::map_unary<T, T>(xf, xf.dtype(), scalar_fn);
+    Tensor   result = empty(xf.shape(), xf.dtype());
+    const T* source = xf.data_ptr<T>();
+    T*       dest   = result.data_ptr<T>();
+    parallel_for(0, xf.numel(), detail::kParallelGrain, [&](std::int64_t lo, std::int64_t hi) {
+      vector_fn(source + lo, dest + lo, hi - lo);
+    });
+    return result;
   });
   return {xf, out};
 }
@@ -167,8 +191,23 @@ Tensor sub(const Tensor& a, const Tensor& b) {
 
 Tensor mul(const Tensor& a, const Tensor& b) {
   const DType dt  = arithmetic_dtype(a.dtype(), b.dtype());
-  Tensor      ac  = as_dtype(a, dt), bc = as_dtype(b, dt);
+  Tensor      ac = as_dtype(a, dt), bc = as_dtype(b, dt);
   Tensor      out = binary_kernel(ac, bc, dt, [](auto x, auto y) { return x * y; });
+  if (ac.is_same(bc)) {
+    SavedTensor sx(ac);
+    // One edge and one contribution instead of two identical gradient buffers
+    // followed by accumulation. Scale after g*x to retain overflow behaviour.
+    record("Mul", {ac}, {out}, [sx](const Grads& g, const Grads&) {
+      const Tensor& value = sx.get();
+      if (!is_grad_enabled() && g[0].dtype() == value.dtype())
+        return Grads{binary_kernel(g[0], value, value.dtype(), [](auto seed, auto v) {
+          const auto product = seed * v;
+          return product + product;
+        })};
+      return Grads{mul(mul(g[0], sx.get()), 2.0)};
+    });
+    return out;
+  }
   SavedTensor sa(ac), sb(bc);
   const bool  need_a = ac.requires_grad(), need_b = bc.requires_grad();
   record("Mul", {ac, bc}, {out}, [sa, sb, need_a, need_b](const Grads& g, const Grads&) {
@@ -320,7 +359,15 @@ Tensor square(const Tensor& x) {
   Tensor      xc  = as_dtype(x, x.dtype() == DType::Bool ? DType::Int64 : x.dtype());
   Tensor      out = unary_kernel(xc, xc.dtype(), [](auto v) { return v * v; });
   SavedTensor sx(xc);
-  record("Square", {xc}, {out}, [sx](const Grads& g, const Grads&) { return Grads{mul(g[0], mul(sx.get(), 2.0))}; });
+  record("Square", {xc}, {out}, [sx](const Grads& g, const Grads&) {
+    const Tensor& value = sx.get();
+    if (!is_grad_enabled() && g[0].dtype() == value.dtype())
+      return Grads{binary_kernel(g[0], value, value.dtype(), [](auto seed, auto v) {
+        // Retain Square's existing order: scale x before multiplying by g.
+        return seed * (v + v);
+      })};
+    return Grads{mul(g[0], mul(value, 2.0))};
+  });
   return out;
 }
 
@@ -348,9 +395,25 @@ Tensor reciprocal(const Tensor& x) {
 }
 
 Tensor exp(const Tensor& x) {
-  auto [xf, out] = float_unary(x, "exp", [](auto v) { return std::exp(v); });
+  Tensor xf  = as_dtype(x, to_floating(x.dtype()));
+  Tensor out = compute_float(xf.dtype(), "exp", [&](auto tag) -> Tensor {
+    using T = typename decltype(tag)::type;
+    if (!xf.is_contiguous())
+      return detail::map_unary<T, T>(xf, xf.dtype(), [](T v) { return std::exp(v); });
+    Tensor   result = empty(xf.shape(), xf.dtype());
+    const T* source = xf.data_ptr<T>();
+    T*       dest   = result.data_ptr<T>();
+    parallel_for(0, xf.numel(), detail::kParallelGrain, [&](std::int64_t lo, std::int64_t hi) {
+      detail::exp_values(source + lo, dest + lo, hi - lo);
+    });
+    return result;
+  });
   record(
-      "Exp", {xf}, {out}, [](const Grads& g, const Grads& o) { return Grads{mul(g[0], o[0])}; }, true);
+      "Exp",
+      {xf},
+      {out},
+      [](const Grads& g, const Grads& o) { return Grads{mul(g[0], o[0])}; },
+      true);
   return out;
 }
 
@@ -532,7 +595,7 @@ Tensor leaky_relu_backward(const Tensor& x, const Tensor& g, double alpha) {
       throw std::logic_error("leaky_relu_backward: bool");
     } else {
       const T a = static_cast<T>(alpha);
-      return detail::map_binary<T, T>(nograd(x), nograd(g), g.dtype(), [a](T xv, T gv) { return xv > T(0) ? gv : a * gv; });
+      return detail::map_binary<T, T>(x, g, g.dtype(), [a](T xv, T gv) { return xv > T(0) ? gv : a * gv; });
     }
   });
   SavedTensor sx(x);
@@ -544,8 +607,11 @@ Tensor leaky_relu_backward(const Tensor& x, const Tensor& g, double alpha) {
 
 Tensor relu(const Tensor& x) {
   Tensor      out = unary_kernel(x, x.dtype(), [](auto v) { return v > 0 ? v : decltype(v)(0); });
-  SavedTensor sx(x);
-  record("Relu", {x}, {out}, [sx](const Grads& g, const Grads&) { return Grads{leaky_relu_backward(sx.get(), g[0], 0.0)}; });
+  // The mask out > 0 equals x > 0, so keep the output (often kept alive by
+  // the next op anyway) instead of the input.
+  record(
+      "Relu", {x}, {out}, [](const Grads& g, const Grads& outs) { return Grads{leaky_relu_backward(outs[0].detach(), g[0], 0.0)}; },
+      /*save_outputs=*/true);
   return out;
 }
 
@@ -554,10 +620,14 @@ Tensor relu6(const Tensor& x) {
     using T = decltype(v);
     return v < T(0) ? T(0) : (v > T(6) ? T(6) : v);
   });
-  SavedTensor sx(x);
-  record("Relu6", {x}, {out}, [sx](const Grads& g, const Grads&) {
-    return Grads{where(logical_and(greater(sx.get(), 0.0), less(sx.get(), 6.0)), g[0], 0.0)};
-  });
+  // 0 < out < 6 exactly where 0 < x < 6, so the output is enough.
+  record(
+      "Relu6", {x}, {out},
+      [](const Grads& g, const Grads& outs) {
+        const Tensor y = outs[0].detach();
+        return Grads{where(logical_and(greater(y, 0.0), less(y, 6.0)), g[0], 0.0)};
+      },
+      /*save_outputs=*/true);
   return out;
 }
 
@@ -608,17 +678,35 @@ Tensor selu(const Tensor& x) {
 }
 
 Tensor sigmoid(const Tensor& x) {
-  auto [xf, out] = float_unary(x, "sigmoid", [](auto v) { return stable_sigmoid(v); });
+  auto [xf, out] = vector_float_unary(
+      x,
+      "sigmoid",
+      [](auto v) { return stable_sigmoid(v); },
+      [](const auto* source, auto* dest, std::int64_t count) {
+        detail::sigmoid_values(source, dest, count);
+      });
   record(
-      "Sigmoid", {xf}, {out},
-      [](const Grads& g, const Grads& o) { return Grads{mul(g[0], mul(o[0], sub(1.0, o[0])))}; }, true);
+      "Sigmoid",
+      {xf},
+      {out},
+      [](const Grads& g, const Grads& o) { return Grads{mul(g[0], mul(o[0], sub(1.0, o[0])))}; },
+      true);
   return out;
 }
 
 Tensor tanh(const Tensor& x) {
-  auto [xf, out] = float_unary(x, "tanh", [](auto v) { return std::tanh(v); });
+  auto [xf, out] = vector_float_unary(
+      x,
+      "tanh",
+      [](auto v) { return std::tanh(v); },
+      [](const auto* source, auto* dest, std::int64_t count) {
+        detail::tanh_values(source, dest, count);
+      });
   record(
-      "Tanh", {xf}, {out}, [](const Grads& g, const Grads& o) { return Grads{mul(g[0], sub(1.0, square(o[0])))}; },
+      "Tanh",
+      {xf},
+      {out},
+      [](const Grads& g, const Grads& o) { return Grads{mul(g[0], sub(1.0, square(o[0])))}; },
       true);
   return out;
 }
@@ -647,6 +735,17 @@ Tensor gelu(const Tensor& x, bool approximate) {
     const double c     = std::sqrt(2.0 / kPi);
     Tensor       inner = mul(add(xf, mul(pow(xf, 3.0), 0.044715)), c);
     return mul(mul(xf, 0.5), add(tanh(inner), 1.0));
+  }
+  if (!is_grad_enabled() || !xf.requires_grad()) {
+    return compute_float(xf.dtype(), "gelu", [&](auto tag) {
+      using T       = typename decltype(tag)::type;
+      const T scale = static_cast<T>(1.0 / std::sqrt(2.0));
+      return detail::map_unary<T, T>(xf, xf.dtype(), [scale](T v) {
+        const T left = v * T(0.5), scaled = v * scale;
+        const T factor = T(1) + std::erf(scaled);
+        return left * factor;
+      });
+    });
   }
   return mul(mul(xf, 0.5), add(erf(mul(xf, 1.0 / std::sqrt(2.0))), 1.0));
 }
@@ -720,7 +819,7 @@ Tensor is_finite(const Tensor& x) {
   NoGradGuard guard;
   return dispatch_float(x.dtype(), "is_finite", [&](auto tag) {
     using T = typename decltype(tag)::type;
-    return detail::map_unary<T, bool>(nograd(x), DType::Bool, [](T v) { return std::isfinite(v); });
+    return detail::map_unary<T, bool>(x, DType::Bool, [](T v) { return std::isfinite(v); });
   });
 }
 
@@ -729,7 +828,7 @@ Tensor is_nan(const Tensor& x) {
   NoGradGuard guard;
   return dispatch_float(x.dtype(), "is_nan", [&](auto tag) {
     using T = typename decltype(tag)::type;
-    return detail::map_unary<T, bool>(nograd(x), DType::Bool, [](T v) { return std::isnan(v); });
+    return detail::map_unary<T, bool>(x, DType::Bool, [](T v) { return std::isnan(v); });
   });
 }
 

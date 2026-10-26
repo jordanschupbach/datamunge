@@ -1,0 +1,16 @@
+case	baseline_ms	new_ms	change_percent
+BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time	0.0683337	0.0683067	-0.04
+BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time	0.137502	0.137139	-0.26
+BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:0/real_time	0.620796	0.620976	+0.03
+BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:1/real_time	1.68552	1.67593	-0.57
+BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time	0.0617545	0.0617033	-0.08
+BM_TensorFlowMatched/Mean/rows:8192/f64:1/real_time	0.0882804	0.0722076	-18.21
+BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time	0.0681785	0.068195	+0.02
+BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time	0.136929	0.13714	+0.15
+BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time	0.584807	0.582691	-0.36
+BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time	1.59177	1.59875	+0.44
+BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time	0.0616091	0.061575	-0.06
+BM_TensorFlowMatched/SumAll/rows:8192/f64:1/real_time	0.0879995	0.0720181	-18.16
+BM_TensorFlowMatched/SumLast/rows:8192/f64:0/real_time	0.0658971	0.0659848	+0.13
+BM_TensorFlowMatched/SumLast/rows:8192/f64:1/real_time	0.0745699	0.0746763	+0.14
+14 comparable cases; 0 removed, 0 added. Negative is faster.

@@ -48,18 +48,25 @@ struct Job {
   void work() {
     const bool was  = tls_in_parallel;
     tls_in_parallel = true;
+    std::int64_t completed = 0;
+    std::exception_ptr failure;
     while (true) {
-      const std::int64_t i = next.fetch_add(1);
+      const std::int64_t i = next.fetch_add(1, std::memory_order_relaxed);
       if (i >= chunks) break;
-      std::exception_ptr failure;
       try {
         (*body)(i);
       } catch (...) {
-        failure = std::current_exception();
+        if (!failure) failure = std::current_exception();
       }
+      ++completed;
+    }
+    // Publish completion once per participant rather than once per chunk.
+    // The caller still waits for every claimed chunk before body can expire.
+    if (completed != 0) {
       std::lock_guard<std::mutex> lock(mutex);
       if (failure && !error) error = failure;
-      if (--remaining == 0) done.notify_all();
+      remaining -= completed;
+      if (remaining == 0) done.notify_all();
     }
     tls_in_parallel = was;
   }

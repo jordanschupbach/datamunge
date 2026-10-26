@@ -1,0 +1,644 @@
+{
+  "id": "bbbe5abecabdda8c64589266e20dafb2adbd4fd6cb7afa73fb76f8aad938fa12",
+  "label": "tensorflow_before",
+  "source": "benchmarks/results/tensorflow/tensorflow_before.comparison.json",
+  "context": {
+    "date": "2026-10-24T16:31:11.607651+00:00",
+    "build": "TensorFlow-2.21.0",
+    "gemm_backend": "TensorFlow packaged CPU kernels",
+    "nn_threads": "1",
+    "tensorflow_build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    }
+  },
+  "rows": [
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:8192/f64:0/real_time",
+      "native_ns": 508745.14907429164,
+      "eager_ns": 49765.20172648796,
+      "graph_ns": 111305.95482546202,
+      "native_over_eager": 10.222909411085691,
+      "native_over_graph": 4.570691207600266
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:8192/f64:0/real_time",
+      "native_ns": 509148.3345445753,
+      "eager_ns": 49835.860570393845,
+      "graph_ns": 111447.04684317719,
+      "native_over_eager": 10.216505318000804,
+      "native_over_graph": 4.568522441523497
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:8192/f64:1/real_time",
+      "native_ns": 505738.4187764562,
+      "eager_ns": 90657.98270181219,
+      "graph_ns": 152349.74848484847,
+      "native_over_eager": 5.578531572226864,
+      "native_over_graph": 3.319588143768764
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:8192/f64:1/real_time",
+      "native_ns": 505469.01444177434,
+      "eager_ns": 90718.35371900827,
+      "graph_ns": 153191.97894736842,
+      "native_over_eager": 5.571849506963254,
+      "native_over_graph": 3.299578854682962
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:8192/f64:0/real_time",
+      "native_ns": 190909.1637097712,
+      "eager_ns": 48336.97248908297,
+      "graph_ns": 112314.0688172043,
+      "native_over_eager": 3.9495473936206604,
+      "native_over_graph": 1.6997796066001634
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:512/f64:0/real_time",
+      "native_ns": 32230.91668542582,
+      "eager_ns": 11861.017080244925,
+      "graph_ns": 67937.56510903427,
+      "native_over_eager": 2.717382199803751,
+      "native_over_graph": 0.47441966213681364
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:512/f64:0/real_time",
+      "native_ns": 32064.1706645752,
+      "eager_ns": 11821.29197483166,
+      "graph_ns": 67716.22962962963,
+      "native_over_eager": 2.7124083165225943,
+      "native_over_graph": 0.47350791442389073
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:512/f64:1/real_time",
+      "native_ns": 31987.244002719985,
+      "eager_ns": 14323.807189982495,
+      "graph_ns": 70803.40618955513,
+      "native_over_eager": 2.233152372023731,
+      "native_over_graph": 0.4517754967477641
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:512/f64:1/real_time",
+      "native_ns": 31802.495452683914,
+      "eager_ns": 14335.301452309302,
+      "graph_ns": 71022.19857235561,
+      "native_over_eager": 2.21847413244043,
+      "native_over_graph": 0.4477824693118214
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:8192/f64:1/real_time",
+      "native_ns": 176183.65746331515,
+      "eager_ns": 85228.37276264591,
+      "graph_ns": 150082.52827586207,
+      "native_over_eager": 2.0671948994494156,
+      "native_over_graph": 1.1739118436189813
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:512/f64:0/real_time",
+      "native_ns": 12225.133409518858,
+      "eager_ns": 9309.850648807032,
+      "graph_ns": 68010.35254027261,
+      "native_over_eager": 1.3131395841549178,
+      "native_over_graph": 0.17975400733704028
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time",
+      "native_ns": 135332.69201519186,
+      "eager_ns": 115261.13229571984,
+      "graph_ns": 206554.65391969407,
+      "native_over_eager": 1.1741398797642852,
+      "native_over_graph": 0.6551907180353708
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time",
+      "native_ns": 137206.18932619828,
+      "eager_ns": 129874.83399734396,
+      "graph_ns": 207776.041015625,
+      "native_over_eager": 1.0564493913347697,
+      "native_over_graph": 0.6603561635669062
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:512/f64:1/real_time",
+      "native_ns": 11220.230018021239,
+      "eager_ns": 11425.861737331954,
+      "graph_ns": 70501.66109324759,
+      "native_over_eager": 0.9820029574978271,
+      "native_over_graph": 0.1591484490440733
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time",
+      "native_ns": 136951.35393729183,
+      "eager_ns": 142690.7722513089,
+      "graph_ns": 206769.76937618147,
+      "native_over_eager": 0.9597772285939505,
+      "native_over_graph": 0.6623374120427284
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time",
+      "native_ns": 67784.62309703797,
+      "eager_ns": 72945.79207920792,
+      "graph_ns": 127225.6176853056,
+      "native_over_eager": 0.929246515322423,
+      "native_over_graph": 0.5327906779333091
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time",
+      "native_ns": 68120.61617018553,
+      "eager_ns": 74287.5927174646,
+      "graph_ns": 138512.5956632653,
+      "native_over_eager": 0.9169851071802296,
+      "native_over_graph": 0.4918008780644899
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time",
+      "native_ns": 68057.59581511524,
+      "eager_ns": 76942.41287613715,
+      "graph_ns": 138859.40101522842,
+      "native_over_eager": 0.8845264045030041,
+      "native_over_graph": 0.4901187482988747
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time",
+      "native_ns": 3071063.412948127,
+      "eager_ns": 3734302.8846153845,
+      "graph_ns": 4034903.9444444445,
+      "native_over_eager": 0.8223926949258247,
+      "native_over_graph": 0.7611242932255166
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time",
+      "native_ns": 1094507.2777787342,
+      "eager_ns": 1343789.4468085107,
+      "graph_ns": 2468235.0566037735,
+      "native_over_eager": 0.8144931338597579,
+      "native_over_graph": 0.44343721431651145
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:0/real_time",
+      "native_ns": 3100863.8889438263,
+      "eager_ns": 4448988.866666666,
+      "graph_ns": 4845123.047619048,
+      "native_over_eager": 0.696981714693995,
+      "native_over_graph": 0.6399969326821593
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:512/f64:0/real_time",
+      "native_ns": 192324.3373837611,
+      "eager_ns": 277353.54468085105,
+      "graph_ns": 425653.08152173914,
+      "native_over_eager": 0.6934266428974885,
+      "native_over_graph": 0.45183353705836765
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:512/f64:0/real_time",
+      "native_ns": 67083.77062642954,
+      "eager_ns": 97858.40707964601,
+      "graph_ns": 271715.5243362832,
+      "native_over_eager": 0.6855187267848198,
+      "native_over_graph": 0.24688972332476916
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:512/f64:1/real_time",
+      "native_ns": 8240.960759014268,
+      "eager_ns": 12605.669283276451,
+      "graph_ns": 73808.45791726105,
+      "native_over_eager": 0.6537503542114415,
+      "native_over_graph": 0.11165333881182489
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:32/f64:0/real_time",
+      "native_ns": 4301.347917121164,
+      "eager_ns": 7136.969031993437,
+      "graph_ns": 151522.49847467968,
+      "native_over_eager": 0.6026855234819126,
+      "native_over_graph": 0.028387519744072495
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:512/f64:1/real_time",
+      "native_ns": 8335.146851914098,
+      "eager_ns": 13941.737422379927,
+      "graph_ns": 72112.58309455587,
+      "native_over_eager": 0.5978556760460954,
+      "native_over_graph": 0.11558519323853425
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:512/f64:0/real_time",
+      "native_ns": 195071.72128571398,
+      "eager_ns": 328800.4662756598,
+      "graph_ns": 622678.4294117647,
+      "native_over_eager": 0.5932829825191601,
+      "native_over_graph": 0.313278430842699
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:512/f64:1/real_time",
+      "native_ns": 8384.11693974489,
+      "eager_ns": 16499.358349529077,
+      "graph_ns": 78645.31012203876,
+      "native_over_eager": 0.5081480601931523,
+      "native_over_graph": 0.10660669945524712
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:512/f64:0/real_time",
+      "native_ns": 4215.486679730792,
+      "eager_ns": 8522.665570510859,
+      "graph_ns": 69518.26029132362,
+      "native_over_eager": 0.49462068467366965,
+      "native_over_graph": 0.0606385525481413
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time",
+      "native_ns": 3849005.473679618,
+      "eager_ns": 7855869.466666667,
+      "graph_ns": 7905481.0,
+      "native_over_eager": 0.48995282953864994,
+      "native_over_graph": 0.48687808795943194
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:512/f64:1/real_time",
+      "native_ns": 107754.14737643722,
+      "eager_ns": 223915.59589041097,
+      "graph_ns": 427966.1458333333,
+      "native_over_eager": 0.48122662893554935,
+      "native_over_graph": 0.2517819421595111
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:512/f64:0/real_time",
+      "native_ns": 4297.0222964489285,
+      "eager_ns": 9929.168208503825,
+      "graph_ns": 69584.5471817606,
+      "native_over_eager": 0.43276760008645526,
+      "native_over_graph": 0.06175253659731018
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:1/real_time",
+      "native_ns": 135959.51169517735,
+      "eager_ns": 318828.8396501458,
+      "graph_ns": 381685.2315789474,
+      "native_over_eager": 0.42643417027257363,
+      "native_over_graph": 0.3562084682520802
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:512/f64:1/real_time",
+      "native_ns": 241765.46392175832,
+      "eager_ns": 571175.9772727273,
+      "graph_ns": 924530.84,
+      "native_over_eager": 0.42327666698475175,
+      "native_over_graph": 0.26150070226079025
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time",
+      "native_ns": 1725744.864135193,
+      "eager_ns": 4155936.64,
+      "graph_ns": 5740525.761904762,
+      "native_over_eager": 0.41524811700093506,
+      "native_over_graph": 0.3006248792728306
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:8192/f64:0/real_time",
+      "native_ns": 68029.9698866609,
+      "eager_ns": 166993.18348623853,
+      "graph_ns": 228499.64693446088,
+      "native_over_eager": 0.40738171742361606,
+      "native_over_graph": 0.29772461708080233
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:8192/f64:1/real_time",
+      "native_ns": 3862791.666607437,
+      "eager_ns": 9689881.384615384,
+      "graph_ns": 10455641.6,
+      "native_over_eager": 0.39864179067665245,
+      "native_over_graph": 0.36944568438606745
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:512/f64:1/real_time",
+      "native_ns": 242901.06933062777,
+      "eager_ns": 669511.9760479042,
+      "graph_ns": 1005856.67,
+      "native_over_eager": 0.3628031730880464,
+      "native_over_graph": 0.2414867610617204
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:512/f64:0/real_time",
+      "native_ns": 4340.426826977303,
+      "eager_ns": 12307.28815818707,
+      "graph_ns": 69543.6305732484,
+      "native_over_eager": 0.3526712604100326,
+      "native_over_graph": 0.06241300304857754
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+      "native_ns": 1277330.6605244833,
+      "eager_ns": 3934367.827586207,
+      "graph_ns": 1356117.8684210526,
+      "native_over_eager": 0.32465969540731643,
+      "native_over_graph": 0.941902389363616
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:1/real_time",
+      "native_ns": 8416.912162284141,
+      "eager_ns": 27713.200505689,
+      "graph_ns": 90101.04851973684,
+      "native_over_eager": 0.3037149087329811,
+      "native_over_graph": 0.09341636196875552
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:32/f64:0/real_time",
+      "native_ns": 2422.531381274509,
+      "eager_ns": 9179.998757558187,
+      "graph_ns": 64333.13713949382,
+      "native_over_eager": 0.26389234304416015,
+      "native_over_graph": 0.03765604304390945
+    },
+    {
+      "case": "BM_TensorFlowMatched/Mean/rows:32/f64:1/real_time",
+      "native_ns": 2407.1539344400558,
+      "eager_ns": 9383.14968045745,
+      "graph_ns": 64404.68461538461,
+      "native_over_eager": 0.2565400762447073,
+      "native_over_graph": 0.03737544790127035
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:32/f64:0/real_time",
+      "native_ns": 2239.3408293947036,
+      "eager_ns": 9063.307862589161,
+      "graph_ns": 64142.19228521333,
+      "native_over_eager": 0.2470776523699571,
+      "native_over_graph": 0.03491213426939475
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:512/f64:0/real_time",
+      "native_ns": 4451.873870486119,
+      "eager_ns": 18419.353032928942,
+      "graph_ns": 80328.61435973353,
+      "native_over_eager": 0.24169545274078538,
+      "native_over_graph": 0.0554207726097379
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumAll/rows:32/f64:1/real_time",
+      "native_ns": 2207.684878567034,
+      "eager_ns": 9193.057375686014,
+      "graph_ns": 64650.236127508855,
+      "native_over_eager": 0.24014697051776965,
+      "native_over_graph": 0.03414813325991331
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:32/f64:1/real_time",
+      "native_ns": 15995.486376213788,
+      "eager_ns": 72523.95908346972,
+      "graph_ns": 332315.45901639346,
+      "native_over_eager": 0.2205545116173838,
+      "native_over_graph": 0.0481334405072763
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time",
+      "native_ns": 1480587.2842675613,
+      "eager_ns": 6911830.75,
+      "graph_ns": 2556773.3658536584,
+      "native_over_eager": 0.21421058151164382,
+      "native_over_graph": 0.5790842880488241
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:32/f64:0/real_time",
+      "native_ns": 13525.804933363206,
+      "eager_ns": 64124.95847750865,
+      "graph_ns": 314275.3364197531,
+      "native_over_eager": 0.21092886848585302,
+      "native_over_graph": 0.04303807319864847
+    },
+    {
+      "case": "BM_TensorFlowMatched/Softmax/rows:32/f64:0/real_time",
+      "native_ns": 13164.909748509159,
+      "eager_ns": 63380.0947503201,
+      "graph_ns": 317923.95264116576,
+      "native_over_eager": 0.2077136331267897,
+      "native_over_graph": 0.041408989914541366
+    },
+    {
+      "case": "BM_TensorFlowMatched/Exp/rows:32/f64:1/real_time",
+      "native_ns": 6847.123146190197,
+      "eager_ns": 34388.17059891107,
+      "graph_ns": 198821.17647058822,
+      "native_over_eager": 0.199112747986862,
+      "native_over_graph": 0.03443860089623349
+    },
+    {
+      "case": "BM_TensorFlowMatched/LogSoftmax/rows:32/f64:1/real_time",
+      "native_ns": 16505.817871594565,
+      "eager_ns": 84574.88940397352,
+      "graph_ns": 340959.80565371027,
+      "native_over_eager": 0.19516215732490316,
+      "native_over_graph": 0.04840986414791192
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:32/f64:0/real_time",
+      "native_ns": 1055.4724324702038,
+      "eager_ns": 6704.220791779994,
+      "graph_ns": 63842.80874635569,
+      "native_over_eager": 0.15743402033601167,
+      "native_over_graph": 0.016532362112443133
+    },
+    {
+      "case": "BM_TensorFlowMatched/SumLast/rows:32/f64:1/real_time",
+      "native_ns": 988.7205149272455,
+      "eager_ns": 6847.983286396474,
+      "graph_ns": 64217.09058614565,
+      "native_over_eager": 0.1443812687001354,
+      "native_over_graph": 0.015396532385734624
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:512/f64:0/real_time",
+      "native_ns": 81411.04939132863,
+      "eager_ns": 784272.2671755726,
+      "graph_ns": 380750.3134328358,
+      "native_over_eager": 0.10380457501642526,
+      "native_over_graph": 0.2138174192355314
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:32/f64:1/real_time",
+      "native_ns": 427.758861186488,
+      "eager_ns": 4594.544397724462,
+      "graph_ns": 64428.553529411765,
+      "native_over_eager": 0.09310147517528483,
+      "native_over_graph": 0.0066392746345176785
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:32/f64:1/real_time",
+      "native_ns": 543.9566160402336,
+      "eager_ns": 5945.397283621837,
+      "graph_ns": 65000.074449076834,
+      "native_over_eager": 0.09149205512955465,
+      "native_over_graph": 0.008368553738602052
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:32/f64:1/real_time",
+      "native_ns": 585.9080948864647,
+      "eager_ns": 8362.834522647037,
+      "graph_ns": 64519.622775800715,
+      "native_over_eager": 0.07006094563987747,
+      "native_over_graph": 0.009081083702588238
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:1/real_time",
+      "native_ns": 667.8968021900534,
+      "eager_ns": 9646.97730815867,
+      "graph_ns": 66818.26962872794,
+      "native_over_eager": 0.0692337901142566,
+      "native_over_graph": 0.009995721318453553
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:512/f64:1/real_time",
+      "native_ns": 92176.15799997227,
+      "eager_ns": 1446702.855263158,
+      "graph_ns": 465914.2775330396,
+      "native_over_eager": 0.06371464441687665,
+      "native_over_graph": 0.19783930745379602
+    },
+    {
+      "case": "BM_TensorFlowMatched/Relu/rows:32/f64:0/real_time",
+      "native_ns": 277.58122152457116,
+      "eager_ns": 4406.114190024321,
+      "graph_ns": 63530.169888693614,
+      "native_over_eager": 0.06299909842396503,
+      "native_over_graph": 0.00436928190198295
+    },
+    {
+      "case": "BM_TensorFlowMatched/Multiply/rows:32/f64:0/real_time",
+      "native_ns": 343.08944839117504,
+      "eager_ns": 5932.3149495789585,
+      "graph_ns": 64305.03012404017,
+      "native_over_eager": 0.057833990829419056,
+      "native_over_graph": 0.005335343871690567
+    },
+    {
+      "case": "BM_TensorFlowMatched/BroadcastAdd/rows:32/f64:0/real_time",
+      "native_ns": 477.4032359974699,
+      "eager_ns": 8704.002196595276,
+      "graph_ns": 66217.03642987249,
+      "native_over_eager": 0.05484870352907477,
+      "native_over_graph": 0.00720967385037031
+    },
+    {
+      "case": "BM_TensorFlowMatched/Add/rows:32/f64:0/real_time",
+      "native_ns": 399.425169439356,
+      "eager_ns": 8104.151084517576,
+      "graph_ns": 64593.76863446631,
+      "native_over_eager": 0.04928649099378593,
+      "native_over_graph": 0.006183648637993053
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:256/f64:1/real_time",
+      "native_ns": 82755.66843430318,
+      "eager_ns": 2952515.9574468085,
+      "graph_ns": 3478198.935483871,
+      "native_over_eager": 0.028028864069498963,
+      "native_over_graph": 0.02379267832844374
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:512/f64:1/real_time",
+      "native_ns": 594381.8855870385,
+      "eager_ns": 22181975.0,
+      "graph_ns": 22877441.6,
+      "native_over_eager": 0.02679571524118292,
+      "native_over_graph": 0.025981134428381118
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:64/f64:1/real_time",
+      "native_ns": 2579.731968288204,
+      "eager_ns": 109103.167,
+      "graph_ns": 352289.85284280934,
+      "native_over_eager": 0.02364488620470755,
+      "native_over_graph": 0.007322754111340449
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:256/f64:0/real_time",
+      "native_ns": 25876.25707938627,
+      "eager_ns": 1418242.91,
+      "graph_ns": 1611669.719512195,
+      "native_over_eager": 0.01824529274705577,
+      "native_over_graph": 0.016055558261166718
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:512/f64:0/real_time",
+      "native_ns": 169881.88360570912,
+      "eager_ns": 10083788.043478262,
+      "graph_ns": 11037070.8,
+      "native_over_eager": 0.016847030389098773,
+      "native_over_graph": 0.015391935657938257
+    },
+    {
+      "case": "BM_TensorFlowMatched/Matmul/rows:64/f64:0/real_time",
+      "native_ns": 1472.3153374034346,
+      "eager_ns": 87510.17888100867,
+      "graph_ns": 353993.82413793105,
+      "native_over_eager": 0.016824503803213618,
+      "native_over_graph": 0.0041591554343890415
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:32/f64:0/real_time",
+      "native_ns": 7015.739931428732,
+      "eager_ns": 656556.2976190476,
+      "graph_ns": 322208.45588235295,
+      "native_over_eager": 0.010685663905548983,
+      "native_over_graph": 0.02177391624380699
+    },
+    {
+      "case": "BM_TensorFlowMatched/SquareGradient/rows:32/f64:1/real_time",
+      "native_ns": 7624.116605427865,
+      "eager_ns": 1073512.5,
+      "graph_ns": 333137.97714285715,
+      "native_over_eager": 0.007102028719207149,
+      "native_over_graph": 0.022885762442384255
+    }
+  ],
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "68ebaae09195301a5eb04d30dbe4e9b59b80423d370c9b65c693924681acf304",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ef263c76434ab5c9804979a7d06e8a22f058e59f48a92fd20c68faf57193d1dc",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "tensorflow-before-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--native",
+      "benchmarks/results/tensorflow/native_before.json",
+      "--output",
+      "benchmarks/results/tensorflow/tensorflow_before.json",
+      "--label",
+      "tensorflow-before",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "a038c4edc8cc5f1e8543a547d7960d505e7afb2ea310bffe5950b9639af8e536",
+    "native_result_sha256": "728df78049e08d95dae6449fd350c2e6c68c347c1390b0b2fe5de2a4af8b01d2",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/native_before.json"
+  }
+}

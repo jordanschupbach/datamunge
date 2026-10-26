@@ -36,10 +36,23 @@ struct SparseCSR {
 
     // y = A * x
     void spmv(const std::vector<T>& x, std::vector<T>& y) const {
-        std::fill(y.begin(), y.end(), T{0});
-        for (std::size_t i = 0; i < nrows; ++i)
+        // Every ordinary output row is assigned below; aliased/oversized
+        // buffers retain the original zero-and-accumulate behavior.
+        if (y.size() != nrows || &x == &y || &values == &y ||
+            static_cast<const void*>(&y) == static_cast<const void*>(&col_idx) ||
+            static_cast<const void*>(&y) == static_cast<const void*>(&row_ptr)) {
+            std::fill(y.begin(), y.end(), T{0});
+            for (std::size_t i = 0; i < nrows; ++i)
+                for (std::size_t k = row_ptr[i]; k < row_ptr[i + 1]; ++k)
+                    y[i] += values[k] * x[col_idx[k]];
+            return;
+        }
+        for (std::size_t i = 0; i < nrows; ++i) {
+            T sum = T{0};
             for (std::size_t k = row_ptr[i]; k < row_ptr[i + 1]; ++k)
-                y[i] += values[k] * x[col_idx[k]];
+                sum += values[k] * x[col_idx[k]];
+            y[i] = sum;
+        }
     }
 
     std::vector<T> spmv(const std::vector<T>& x) const {

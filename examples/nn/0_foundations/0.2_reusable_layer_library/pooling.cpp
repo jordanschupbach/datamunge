@@ -3,22 +3,22 @@
 //
 // Port of tflow's pooling. Pooling summarises each window of a feature map by
 // one number, with no parameters; datamunge/nn/conv.hpp provides max_pool2d,
-// avg_pool2d and global_{avg,max}_pool2d. This program prints the pooled maps
+// avg_pool2d, global_{avg,max}_pool2d and their 3-D versions max_pool3d /
+// avg_pool3d. This program prints the pooled maps
 // of a small image by hand next to the ops, shows how SAME padding changes the
 // average at the border, follows the gradient (max pooling routes it to the
 // arg-max, average pooling spreads it uniformly), checks global pooling
 // against reductions, and measures the small translation tolerance pooling
 // buys.
 //
-// TF -> datamunge: no graph or session; AddSymbolicGradients is nn::grad. The
-// library has no 3-D pooling yet (planned for P3), so MaxPool3D / AvgPool3D
-// are built locally below from 2-D pooling of each depth slice followed by an
-// elementwise max / mean over the depth window. Inputs come from the same
-// std::mt19937_64 streams as TF's, so every printed number matches TF's.
+// TF -> datamunge: no graph or session; AddSymbolicGradients is nn::grad;
+// MaxPool3D / AvgPool3D are nn::max_pool3d / nn::avg_pool3d. Inputs come from
+// the same std::mt19937_64 streams as TF's, so every printed number matches TF's.
 
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <datamunge/nn/conv.hpp>
 #include <datamunge/nn/nn.hpp>
 #include <iostream>
 #include <random>
@@ -57,22 +57,6 @@ void RequireMap(const Tensor& t, const std::vector<float>& expected, const std::
   const auto v = t.to_vector<float>();
   check::Require(v.size() == expected.size(), what + ": size");
   for (std::size_t i = 0; i < v.size(); ++i) check::Near(v[i], expected[i], 1e-6, what);
-}
-
-// Local 3-D pooling (not in the library yet), VALID: x [N, D, H, W, C], cubic window k, stride s.
-Tensor Pool3DLocal(const Tensor& x, std::int64_t k, std::int64_t s, bool max) {
-  const std::int64_t N = x.size(0), D = x.size(1), H = x.size(2), W = x.size(3), C = x.size(4);
-  std::vector<Tensor> slices;
-  for (std::int64_t d = 0; d + k <= D; d += s) {
-    Tensor acc;
-    for (std::int64_t a = 0; a < k; ++a) {
-      const Tensor xs = nn::slice_axis(x, 1, d + a, d + a + 1).reshape({N, H, W, C});
-      const Tensor y  = max ? nn::max_pool2d(xs, k, s) : nn::avg_pool2d(xs, k, s);
-      acc             = !acc.defined() ? y : max ? nn::maximum(acc, y) : acc + y;
-    }
-    slices.push_back(max ? acc : acc * (1.0 / static_cast<double>(k)));
-  }
-  return nn::stack(slices, 1);
 }
 
 // ---------------------------------------------------------------------------
@@ -128,7 +112,7 @@ void GlobalAnd3D() {
   for (auto& e : vs) e = normal(rng);
   const Tensor xv = nn::from_vector(xs, {2, 7, 5, 3}), vv = nn::from_vector(vs, {1, 8, 8, 8, 2});
   const Tensor gavg = nn::global_avg_pool2d(xv), gmax = nn::global_max_pool2d(xv);
-  const Tensor m3 = Pool3DLocal(vv, 2, 2, true), a3 = Pool3DLocal(vv, 2, 2, false);
+  const Tensor m3 = nn::max_pool3d(vv, 2, 2), a3 = nn::avg_pool3d(vv, 2, 2);
   float err_avg = 0, err_max = 0;
   for (int n = 0; n < 2; ++n)
     for (int c = 0; c < 3; ++c) {
@@ -152,7 +136,7 @@ void GlobalAnd3D() {
         m = std::max<double>(m, val), s += val;
       }
   const double op_m = m3.at({0, 1, 2, 3, 1}), op_a = a3.at({0, 1, 2, 3, 1});
-  std::printf("  3-D max pool (local): shape %s, cell (1,2,3,ch 1): op %.4f, hand %.4f; avg pool: op %.4f, hand %.4f\n",
+  std::printf("  3-D max pool: shape %s, cell (1,2,3,ch 1): op %.4f, hand %.4f; avg pool: op %.4f, hand %.4f\n",
               ShapeStr(m3).c_str(), op_m, m, op_a, s / 8);
   check::Require(ShapeStr(gavg) == "[2,3]" && ShapeStr(m3) == "[1,4,4,4,2]" && ShapeStr(a3) == "[1,4,4,4,2]", "global/3-D pool shapes");
   check::Require(err_avg < 1e-6f && err_max == 0.f, "global pooling vs reductions");

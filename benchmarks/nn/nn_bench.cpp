@@ -7,10 +7,12 @@
 
 #include <benchmark/benchmark.h>
 
+#include <datamunge/nn/attention.hpp>
 #include <datamunge/nn/nn.hpp>
 
 #include <algorithm>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace nn = datamunge::nn;
@@ -22,10 +24,11 @@ nn::Tensor random_tensor(const nn::Shape& shape, std::uint64_t seed) {
   return nn::normal(shape, 0.0, 1.0, gen);
 }
 
-/// Restores the default thread count when a benchmark finishes.
+/// Restores the previous thread count when a benchmark finishes.
 struct ThreadScope {
+  int previous = nn::get_num_threads();
   explicit ThreadScope(std::int64_t threads) { nn::set_num_threads(static_cast<int>(threads)); }
-  ~ThreadScope() { nn::set_num_threads(0); }
+  ~ThreadScope() { nn::set_num_threads(previous); }
 };
 
 // ---- GEMM -------------------------------------------------------------------------
@@ -35,7 +38,7 @@ void BM_Matmul(benchmark::State& state) {
   ThreadScope        threads(state.range(1));
   const nn::Tensor   a = random_tensor({n, n}, 1), b = random_tensor({n, n}, 2);
   for (auto _ : state) benchmark::DoNotOptimize(nn::matmul(a, b));
-  state.counters["GFLOPS"] =
+  state.counters["FLOP/s"] =
       benchmark::Counter(2.0 * n * n * n, benchmark::Counter::kIsIterationInvariantRate, benchmark::Counter::kIs1000);
   state.SetLabel(nn::gemm_backend());
 }
@@ -105,6 +108,34 @@ void BM_ReluBiasForwardBackward(benchmark::State& state) {
   for (auto _ : state) benchmark::DoNotOptimize(nn::grad(nn::sum(nn::relu(nn::bias_add(x, b))), {x, b}));
 }
 BENCHMARK(BM_ReluBiasForwardBackward)->Arg(1)->Arg(0)->Unit(benchmark::kMillisecond);
+
+// ---- attention (transformer-sized: B 8, H 8, T 1024, D 64) ----------------------------
+
+/// Args: impl (0 plain, 1 fused), backward (0 forward only, 1 forward + backward), causal.
+/// The plain path materialises 8*8*1024*1024 scores (256 MB in float32) and
+/// their softmax; the fused one keeps one 64x128 tile per thread.
+void BM_Attention(benchmark::State& state) {
+  const bool fused = state.range(0) != 0, backward = state.range(1) != 0, causal = state.range(2) != 0;
+  nn::Tensor q = random_tensor({8, 8, 1024, 64}, 16), k = random_tensor({8, 8, 1024, 64}, 17),
+             v = random_tensor({8, 8, 1024, 64}, 18);
+  if (backward) {
+    q.requires_grad_(true);
+    k.requires_grad_(true);
+    v.requires_grad_(true);
+  }
+  nn::AttentionOptions o;
+  o.impl   = fused ? nn::AttentionImpl::Fused : nn::AttentionImpl::Plain;
+  o.causal = causal;
+  for (auto _ : state) {
+    nn::Tensor out = nn::scaled_dot_product_attention(q, k, v, o).output;
+    if (backward)
+      benchmark::DoNotOptimize(nn::grad({out}, {q, k, v}, {nn::ones_like(out)}));
+    else
+      benchmark::DoNotOptimize(out);
+  }
+  state.SetLabel(std::string(fused ? "fused" : "plain") + (backward ? " fwd+bwd" : " fwd") + (causal ? " causal" : ""));
+}
+BENCHMARK(BM_Attention)->ArgsProduct({{0, 1}, {0, 1}, {0, 1}})->Unit(benchmark::kMillisecond);
 
 // ---- a full cnn_mnist epoch -----------------------------------------------------------
 

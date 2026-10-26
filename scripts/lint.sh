@@ -237,7 +237,21 @@ lint_r() {
 	fi
 }
 
+lint_lib_sources() {
+	# The Python (setup.py) and R (src/Makevars) builds compile the core from
+	# lib_sources.txt rather than through CMake, so it must list every source.
+	local listed actual
+	listed="$(sort lib_sources.txt)"
+	actual="$(cd src && find datamunge \( -name '*.cpp' -o -name '*.c' \) | sed 's/\.cpp$//; s/\.c$//' | sort)"
+	if [ "$listed" != "$actual" ]; then
+		echo "lib_sources.txt is out of date (< listed only, > missing):" >&2
+		diff <(echo "$listed") <(echo "$actual") >&2 || true
+		return 1
+	fi
+}
+
 main() {
+	lint_lib_sources
 	lint_shell
 	lint_nix
 	lint_cpp

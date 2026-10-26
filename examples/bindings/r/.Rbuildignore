@@ -1,0 +1,2 @@
+\.(o|so|dll|dylib)$
+^src/.*\.dSYM(/|$)

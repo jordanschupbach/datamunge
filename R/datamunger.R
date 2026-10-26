@@ -5,7 +5,7 @@
 # the SWIG interface file instead.
 
 ##   Generated via the command line invocation:
-##	 swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i
+##	 swig -c++ -r -Iinclude -outdir src -o src/datamunge_r_wrap.cpp -oh src/datamunge_r_wrap.h src/datamunger/swig/datamunger.i
 
 
 #                         srun.swg                            #
@@ -1170,6 +1170,8 @@ setClass('_p_std__vectorT_std__vectorT_int_t_t', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__MultivariatePolynomial', contains = 'C++Reference')
 setClass('_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t', contains = 'C++Reference')
 setClass('_p_datamunge__algebra__Expr', contains = 'C++Reference')
+setClass('_p_datamunge__nn__NnTensor', contains = 'C++Reference')
+setClass('_p_datamunge__nn__NnModel', contains = 'C++Reference')
 
 
 
@@ -67776,6 +67778,3058 @@ setMethod('$', '_p_datamunge__algebra__Expr', function(x, name)
 );
 # end of accessor method for datamunge::algebra::Expr
 setMethod('delete', '_p_datamunge__algebra__Expr', function(obj) {delete_datamunge__algebra__Expr(obj)})
+# Start of new_NnTensor
+
+`NnTensor__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_NnTensor__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NnTensor);
+  ans
+  
+}
+
+attr(`NnTensor__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+class(`NnTensor__SWIG_0`) = c("SWIGFunction", class('NnTensor__SWIG_0'))
+
+# Start of new_NnTensor
+
+`NnTensor__SWIG_1` = function(values, shape, dtype)
+{
+  values = as.numeric(values);
+  shape = as.integer(shape);
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_new_NnTensor__SWIG_1', values, shape, dtype, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NnTensor);
+  ans
+  
+}
+
+attr(`NnTensor__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor__SWIG_1`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_int_t', 'character')
+class(`NnTensor__SWIG_1`) = c("SWIGFunction", class('NnTensor__SWIG_1'))
+
+# Start of new_NnTensor
+
+`NnTensor__SWIG_2` = function(values, shape)
+{
+  values = as.numeric(values);
+  shape = as.integer(shape);
+  ;ans = .Call('R_swig_new_NnTensor__SWIG_2', values, shape, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NnTensor);
+  ans
+  
+}
+
+attr(`NnTensor__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor__SWIG_2`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_std__vectorT_int_t')
+class(`NnTensor__SWIG_2`) = c("SWIGFunction", class('NnTensor__SWIG_2'))
+
+`NnTensor` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 0) {
+    f <- NnTensor__SWIG_0; 
+  } else if (argc == 2) {
+    if (( is.numeric(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( is.numeric(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_zeros
+
+`NnTensor_zeros__SWIG_0` = function(shape, dtype, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_zeros__SWIG_0', shape, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_zeros__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_zeros__SWIG_0`, "inputTypes") = c('_p_std__vectorT_int_t', 'character')
+class(`NnTensor_zeros__SWIG_0`) = c("SWIGFunction", class('NnTensor_zeros__SWIG_0'))
+
+# Start of NnTensor_zeros
+
+`NnTensor_zeros__SWIG_1` = function(shape, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  ;ans = .Call('R_swig_NnTensor_zeros__SWIG_1', shape, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_zeros__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_zeros__SWIG_1`, "inputTypes") = c('_p_std__vectorT_int_t')
+class(`NnTensor_zeros__SWIG_1`) = c("SWIGFunction", class('NnTensor_zeros__SWIG_1'))
+
+`NnTensor_zeros` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) {
+      f <- NnTensor_zeros__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_zeros__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_zeros with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_ones
+
+`NnTensor_ones__SWIG_0` = function(shape, dtype, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_ones__SWIG_0', shape, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_ones__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_ones__SWIG_0`, "inputTypes") = c('_p_std__vectorT_int_t', 'character')
+class(`NnTensor_ones__SWIG_0`) = c("SWIGFunction", class('NnTensor_ones__SWIG_0'))
+
+# Start of NnTensor_ones
+
+`NnTensor_ones__SWIG_1` = function(shape, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  ;ans = .Call('R_swig_NnTensor_ones__SWIG_1', shape, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_ones__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_ones__SWIG_1`, "inputTypes") = c('_p_std__vectorT_int_t')
+class(`NnTensor_ones__SWIG_1`) = c("SWIGFunction", class('NnTensor_ones__SWIG_1'))
+
+`NnTensor_ones` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) {
+      f <- NnTensor_ones__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_ones__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_ones with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_full
+
+`NnTensor_full__SWIG_0` = function(shape, value, dtype, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_full__SWIG_0', shape, value, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_full__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_full__SWIG_0`, "inputTypes") = c('_p_std__vectorT_int_t', 'numeric', 'character')
+class(`NnTensor_full__SWIG_0`) = c("SWIGFunction", class('NnTensor_full__SWIG_0'))
+
+# Start of NnTensor_full
+
+`NnTensor_full__SWIG_1` = function(shape, value, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  
+  ;ans = .Call('R_swig_NnTensor_full__SWIG_1', shape, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_full__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_full__SWIG_1`, "inputTypes") = c('_p_std__vectorT_int_t', 'numeric')
+class(`NnTensor_full__SWIG_1`) = c("SWIGFunction", class('NnTensor_full__SWIG_1'))
+
+`NnTensor_full` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_full__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_full__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_full with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_arange
+
+`NnTensor_arange__SWIG_0` = function(start, stop, step, dtype, .copy = FALSE)
+{
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_arange__SWIG_0', start, stop, step, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_arange__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_arange__SWIG_0`, "inputTypes") = c('numeric', 'numeric', 'numeric', 'character')
+class(`NnTensor_arange__SWIG_0`) = c("SWIGFunction", class('NnTensor_arange__SWIG_0'))
+
+# Start of NnTensor_arange
+
+`NnTensor_arange__SWIG_1` = function(start, stop, step, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_NnTensor_arange__SWIG_1', start, stop, step, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_arange__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_arange__SWIG_1`, "inputTypes") = c('numeric', 'numeric', 'numeric')
+class(`NnTensor_arange__SWIG_1`) = c("SWIGFunction", class('NnTensor_arange__SWIG_1'))
+
+# Start of NnTensor_arange
+
+`NnTensor_arange__SWIG_2` = function(start, stop, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_NnTensor_arange__SWIG_2', start, stop, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_arange__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_arange__SWIG_2`, "inputTypes") = c('numeric', 'numeric')
+class(`NnTensor_arange__SWIG_2`) = c("SWIGFunction", class('NnTensor_arange__SWIG_2'))
+
+`NnTensor_arange` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_arange__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_arange__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnTensor_arange__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_arange with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_randn
+
+`NnTensor_randn__SWIG_0` = function(shape, seed, mean, std, dtype, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_randn__SWIG_0', shape, seed, mean, std, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_randn__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_randn__SWIG_0`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric', 'numeric', 'character')
+class(`NnTensor_randn__SWIG_0`) = c("SWIGFunction", class('NnTensor_randn__SWIG_0'))
+
+# Start of NnTensor_randn
+
+`NnTensor_randn__SWIG_1` = function(shape, seed, mean, std, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  
+  ;ans = .Call('R_swig_NnTensor_randn__SWIG_1', shape, seed, mean, std, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_randn__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_randn__SWIG_1`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric', 'numeric')
+class(`NnTensor_randn__SWIG_1`) = c("SWIGFunction", class('NnTensor_randn__SWIG_1'))
+
+# Start of NnTensor_randn
+
+`NnTensor_randn__SWIG_2` = function(shape, seed, mean, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  ;ans = .Call('R_swig_NnTensor_randn__SWIG_2', shape, seed, mean, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_randn__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_randn__SWIG_2`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric')
+class(`NnTensor_randn__SWIG_2`) = c("SWIGFunction", class('NnTensor_randn__SWIG_2'))
+
+# Start of NnTensor_randn
+
+`NnTensor_randn__SWIG_3` = function(shape, seed, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_randn__SWIG_3', shape, seed, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_randn__SWIG_3`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_randn__SWIG_3`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer')
+class(`NnTensor_randn__SWIG_3`) = c("SWIGFunction", class('NnTensor_randn__SWIG_3'))
+
+`NnTensor_randn` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 2) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_randn__SWIG_3; 
+    }
+  } else if (argc == 3) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_randn__SWIG_2; 
+    }
+  } else if (argc == 4) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnTensor_randn__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- NnTensor_randn__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_randn with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_uniform
+
+`NnTensor_uniform__SWIG_0` = function(shape, seed, low, high, dtype, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_uniform__SWIG_0', shape, seed, low, high, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_uniform__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_uniform__SWIG_0`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric', 'numeric', 'character')
+class(`NnTensor_uniform__SWIG_0`) = c("SWIGFunction", class('NnTensor_uniform__SWIG_0'))
+
+# Start of NnTensor_uniform
+
+`NnTensor_uniform__SWIG_1` = function(shape, seed, low, high, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  
+  ;ans = .Call('R_swig_NnTensor_uniform__SWIG_1', shape, seed, low, high, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_uniform__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_uniform__SWIG_1`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric', 'numeric')
+class(`NnTensor_uniform__SWIG_1`) = c("SWIGFunction", class('NnTensor_uniform__SWIG_1'))
+
+# Start of NnTensor_uniform
+
+`NnTensor_uniform__SWIG_2` = function(shape, seed, low, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  
+  ;ans = .Call('R_swig_NnTensor_uniform__SWIG_2', shape, seed, low, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_uniform__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_uniform__SWIG_2`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer', 'numeric')
+class(`NnTensor_uniform__SWIG_2`) = c("SWIGFunction", class('NnTensor_uniform__SWIG_2'))
+
+# Start of NnTensor_uniform
+
+`NnTensor_uniform__SWIG_3` = function(shape, seed, .copy = FALSE)
+{
+  shape = as.integer(shape);
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_uniform__SWIG_3', shape, seed, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_uniform__SWIG_3`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_uniform__SWIG_3`, "inputTypes") = c('_p_std__vectorT_int_t', 'integer')
+class(`NnTensor_uniform__SWIG_3`) = c("SWIGFunction", class('NnTensor_uniform__SWIG_3'))
+
+`NnTensor_uniform` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 2) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_uniform__SWIG_3; 
+    }
+  } else if (argc == 3) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_uniform__SWIG_2; 
+    }
+  } else if (argc == 4) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnTensor_uniform__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( is.integer(argv[[1]]) || is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- NnTensor_uniform__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_uniform with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_load_npy
+
+`NnTensor_load_npy` = function(path, .copy = FALSE)
+{
+  path = as(path, "character"); 
+  ;ans = .Call('R_swig_NnTensor_load_npy', path, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_load_npy`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_load_npy`, "inputTypes") = c('character')
+class(`NnTensor_load_npy`) = c("SWIGFunction", class('NnTensor_load_npy'))
+
+# Start of NnTensor_save_npy
+
+`NnTensor_save_npy` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_NnTensor_save_npy', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_save_npy`, 'returnType') = 'void'
+attr(`NnTensor_save_npy`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'character')
+class(`NnTensor_save_npy`) = c("SWIGFunction", class('NnTensor_save_npy'))
+
+# Start of NnTensor_defined
+
+`NnTensor_defined` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_defined', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_defined`, 'returnType') = 'logical'
+attr(`NnTensor_defined`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_defined`) = c("SWIGFunction", class('NnTensor_defined'))
+
+# Start of NnTensor_values
+
+`NnTensor_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_values`, 'returnType') = 'numeric'
+attr(`NnTensor_values`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_values`) = c("SWIGFunction", class('NnTensor_values'))
+
+# Start of NnTensor_shape
+
+`NnTensor_shape` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_shape', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_shape`, 'returnType') = 'integer'
+attr(`NnTensor_shape`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_shape`) = c("SWIGFunction", class('NnTensor_shape'))
+
+# Start of NnTensor_dtype
+
+`NnTensor_dtype` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_dtype', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_dtype`, 'returnType') = 'character'
+attr(`NnTensor_dtype`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_dtype`) = c("SWIGFunction", class('NnTensor_dtype'))
+
+# Start of NnTensor_ndim
+
+`NnTensor_ndim` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_ndim', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_ndim`, 'returnType') = 'integer'
+attr(`NnTensor_ndim`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_ndim`) = c("SWIGFunction", class('NnTensor_ndim'))
+
+# Start of NnTensor_numel
+
+`NnTensor_numel` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_numel', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_numel`, 'returnType') = 'integer'
+attr(`NnTensor_numel`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_numel`) = c("SWIGFunction", class('NnTensor_numel'))
+
+# Start of NnTensor_item
+
+`NnTensor_item` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_item', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_item`, 'returnType') = 'numeric'
+attr(`NnTensor_item`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_item`) = c("SWIGFunction", class('NnTensor_item'))
+
+# Start of NnTensor_at
+
+`NnTensor_at` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  ;.Call('R_swig_NnTensor_at', self, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_at`, 'returnType') = 'numeric'
+attr(`NnTensor_at`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_at`) = c("SWIGFunction", class('NnTensor_at'))
+
+# Start of NnTensor_str
+
+`NnTensor_str` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_str', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_str`, 'returnType') = 'character'
+attr(`NnTensor_str`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_str`) = c("SWIGFunction", class('NnTensor_str'))
+
+# Start of NnTensor_astype
+
+`NnTensor_astype` = function(self, dtype, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  dtype = as(dtype, "character"); 
+  ;ans = .Call('R_swig_NnTensor_astype', self, dtype, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_astype`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_astype`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'character')
+class(`NnTensor_astype`) = c("SWIGFunction", class('NnTensor_astype'))
+
+# Start of NnTensor_reshape
+
+`NnTensor_reshape` = function(self, shape, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  shape = as.integer(shape);
+  ;ans = .Call('R_swig_NnTensor_reshape', self, shape, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_reshape`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_reshape`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_reshape`) = c("SWIGFunction", class('NnTensor_reshape'))
+
+# Start of NnTensor_transpose
+
+`NnTensor_transpose__SWIG_0` = function(self, perm, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  perm = as.integer(perm);
+  ;ans = .Call('R_swig_NnTensor_transpose__SWIG_0', self, perm, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_transpose__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_transpose__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_transpose__SWIG_0`) = c("SWIGFunction", class('NnTensor_transpose__SWIG_0'))
+
+# Start of NnTensor_transpose
+
+`NnTensor_transpose__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_transpose__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_transpose__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_transpose__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_transpose__SWIG_1`) = c("SWIGFunction", class('NnTensor_transpose__SWIG_1'))
+
+`NnTensor_transpose` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_transpose__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor_transpose__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_transpose with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_slice
+
+`NnTensor_slice` = function(self, axis, start, stop, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axis = as.integer(axis);
+  
+  if(length(axis) > 1) {
+    warning("using only the first element of axis");
+  };
+  
+  start = as.integer(start);
+  
+  if(length(start) > 1) {
+    warning("using only the first element of start");
+  };
+  
+  stop = as.integer(stop);
+  
+  if(length(stop) > 1) {
+    warning("using only the first element of stop");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_slice', self, axis, start, stop, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_slice`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_slice`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'integer', 'integer', 'integer')
+class(`NnTensor_slice`) = c("SWIGFunction", class('NnTensor_slice'))
+
+# Start of NnTensor_concat
+
+`NnTensor_concat` = function(self, other, axis, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  axis = as.integer(axis);
+  
+  if(length(axis) > 1) {
+    warning("using only the first element of axis");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_concat', self, other, axis, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_concat`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_concat`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'integer')
+class(`NnTensor_concat`) = c("SWIGFunction", class('NnTensor_concat'))
+
+# Start of NnTensor_add
+
+`NnTensor_add` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_add', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_add`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_add`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnTensor_add`) = c("SWIGFunction", class('NnTensor_add'))
+
+# Start of NnTensor_sub
+
+`NnTensor_sub` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_sub', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sub`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sub`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnTensor_sub`) = c("SWIGFunction", class('NnTensor_sub'))
+
+# Start of NnTensor_mul
+
+`NnTensor_mul` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_mul', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_mul`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_mul`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnTensor_mul`) = c("SWIGFunction", class('NnTensor_mul'))
+
+# Start of NnTensor_div
+
+`NnTensor_div` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_div', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_div`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_div`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnTensor_div`) = c("SWIGFunction", class('NnTensor_div'))
+
+# Start of NnTensor_add_scalar
+
+`NnTensor_add_scalar` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_NnTensor_add_scalar', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_add_scalar`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_add_scalar`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'numeric')
+class(`NnTensor_add_scalar`) = c("SWIGFunction", class('NnTensor_add_scalar'))
+
+# Start of NnTensor_mul_scalar
+
+`NnTensor_mul_scalar` = function(self, value, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_NnTensor_mul_scalar', self, value, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_mul_scalar`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_mul_scalar`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'numeric')
+class(`NnTensor_mul_scalar`) = c("SWIGFunction", class('NnTensor_mul_scalar'))
+
+# Start of NnTensor_pow
+
+`NnTensor_pow` = function(self, exponent, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_NnTensor_pow', self, exponent, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_pow`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_pow`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'numeric')
+class(`NnTensor_pow`) = c("SWIGFunction", class('NnTensor_pow'))
+
+# Start of NnTensor_neg
+
+`NnTensor_neg` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_neg', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_neg`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_neg`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_neg`) = c("SWIGFunction", class('NnTensor_neg'))
+
+# Start of NnTensor_matmul
+
+`NnTensor_matmul__SWIG_0` = function(self, other, transpose_a, transpose_b, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  transpose_a = as.logical(transpose_a);
+  transpose_b = as.logical(transpose_b);
+  ;ans = .Call('R_swig_NnTensor_matmul__SWIG_0', self, other, transpose_a, transpose_b, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_matmul__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_matmul__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'logical', 'logical')
+class(`NnTensor_matmul__SWIG_0`) = c("SWIGFunction", class('NnTensor_matmul__SWIG_0'))
+
+# Start of NnTensor_matmul
+
+`NnTensor_matmul__SWIG_1` = function(self, other, transpose_a, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  transpose_a = as.logical(transpose_a);
+  ;ans = .Call('R_swig_NnTensor_matmul__SWIG_1', self, other, transpose_a, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_matmul__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_matmul__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'logical')
+class(`NnTensor_matmul__SWIG_1`) = c("SWIGFunction", class('NnTensor_matmul__SWIG_1'))
+
+# Start of NnTensor_matmul
+
+`NnTensor_matmul__SWIG_2` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_matmul__SWIG_2', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_matmul__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_matmul__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnTensor_matmul__SWIG_2`) = c("SWIGFunction", class('NnTensor_matmul__SWIG_2'))
+
+`NnTensor_matmul` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_matmul__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_matmul__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.logical(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnTensor_matmul__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_matmul with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_exp
+
+`NnTensor_exp` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_exp', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_exp`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_exp`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_exp`) = c("SWIGFunction", class('NnTensor_exp'))
+
+# Start of NnTensor_log
+
+`NnTensor_log` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_log', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_log`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_log`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_log`) = c("SWIGFunction", class('NnTensor_log'))
+
+# Start of NnTensor_sqrt
+
+`NnTensor_sqrt` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_sqrt', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sqrt`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sqrt`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_sqrt`) = c("SWIGFunction", class('NnTensor_sqrt'))
+
+# Start of NnTensor_abs
+
+`NnTensor_abs` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_abs', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_abs`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_abs`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_abs`) = c("SWIGFunction", class('NnTensor_abs'))
+
+# Start of NnTensor_square
+
+`NnTensor_square` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_square', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_square`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_square`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_square`) = c("SWIGFunction", class('NnTensor_square'))
+
+# Start of NnTensor_tanh
+
+`NnTensor_tanh` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_tanh', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_tanh`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_tanh`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_tanh`) = c("SWIGFunction", class('NnTensor_tanh'))
+
+# Start of NnTensor_sigmoid
+
+`NnTensor_sigmoid` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_sigmoid', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sigmoid`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sigmoid`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_sigmoid`) = c("SWIGFunction", class('NnTensor_sigmoid'))
+
+# Start of NnTensor_relu
+
+`NnTensor_relu` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_relu', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_relu`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_relu`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_relu`) = c("SWIGFunction", class('NnTensor_relu'))
+
+# Start of NnTensor_activate
+
+`NnTensor_activate` = function(self, activation, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  activation = as(activation, "character"); 
+  ;ans = .Call('R_swig_NnTensor_activate', self, activation, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_activate`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_activate`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'character')
+class(`NnTensor_activate`) = c("SWIGFunction", class('NnTensor_activate'))
+
+# Start of NnTensor_softmax
+
+`NnTensor_softmax__SWIG_0` = function(self, axis, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axis = as.integer(axis);
+  
+  if(length(axis) > 1) {
+    warning("using only the first element of axis");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_softmax__SWIG_0', self, axis, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_softmax__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_softmax__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'integer')
+class(`NnTensor_softmax__SWIG_0`) = c("SWIGFunction", class('NnTensor_softmax__SWIG_0'))
+
+# Start of NnTensor_softmax
+
+`NnTensor_softmax__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_softmax__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_softmax__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_softmax__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_softmax__SWIG_1`) = c("SWIGFunction", class('NnTensor_softmax__SWIG_1'))
+
+`NnTensor_softmax` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_softmax__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_softmax__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_softmax with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_log_softmax
+
+`NnTensor_log_softmax__SWIG_0` = function(self, axis, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axis = as.integer(axis);
+  
+  if(length(axis) > 1) {
+    warning("using only the first element of axis");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_log_softmax__SWIG_0', self, axis, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_log_softmax__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_log_softmax__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'integer')
+class(`NnTensor_log_softmax__SWIG_0`) = c("SWIGFunction", class('NnTensor_log_softmax__SWIG_0'))
+
+# Start of NnTensor_log_softmax
+
+`NnTensor_log_softmax__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_log_softmax__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_log_softmax__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_log_softmax__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_log_softmax__SWIG_1`) = c("SWIGFunction", class('NnTensor_log_softmax__SWIG_1'))
+
+`NnTensor_log_softmax` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_log_softmax__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_log_softmax__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_log_softmax with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_sum
+
+`NnTensor_sum__SWIG_0` = function(self, axes, keepdims, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  keepdims = as.logical(keepdims);
+  ;ans = .Call('R_swig_NnTensor_sum__SWIG_0', self, axes, keepdims, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sum__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sum__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t', 'logical')
+class(`NnTensor_sum__SWIG_0`) = c("SWIGFunction", class('NnTensor_sum__SWIG_0'))
+
+# Start of NnTensor_sum
+
+`NnTensor_sum__SWIG_1` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  ;ans = .Call('R_swig_NnTensor_sum__SWIG_1', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sum__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sum__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_sum__SWIG_1`) = c("SWIGFunction", class('NnTensor_sum__SWIG_1'))
+
+# Start of NnTensor_sum
+
+`NnTensor_sum__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_sum__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_sum__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_sum__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_sum__SWIG_2`) = c("SWIGFunction", class('NnTensor_sum__SWIG_2'))
+
+`NnTensor_sum` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_sum__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor_sum__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_sum__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_sum with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_mean
+
+`NnTensor_mean__SWIG_0` = function(self, axes, keepdims, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  keepdims = as.logical(keepdims);
+  ;ans = .Call('R_swig_NnTensor_mean__SWIG_0', self, axes, keepdims, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_mean__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_mean__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t', 'logical')
+class(`NnTensor_mean__SWIG_0`) = c("SWIGFunction", class('NnTensor_mean__SWIG_0'))
+
+# Start of NnTensor_mean
+
+`NnTensor_mean__SWIG_1` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  ;ans = .Call('R_swig_NnTensor_mean__SWIG_1', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_mean__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_mean__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_mean__SWIG_1`) = c("SWIGFunction", class('NnTensor_mean__SWIG_1'))
+
+# Start of NnTensor_mean
+
+`NnTensor_mean__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_mean__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_mean__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_mean__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_mean__SWIG_2`) = c("SWIGFunction", class('NnTensor_mean__SWIG_2'))
+
+`NnTensor_mean` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_mean__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor_mean__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_mean__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_mean with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_max
+
+`NnTensor_max__SWIG_0` = function(self, axes, keepdims, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  keepdims = as.logical(keepdims);
+  ;ans = .Call('R_swig_NnTensor_max__SWIG_0', self, axes, keepdims, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_max__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_max__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t', 'logical')
+class(`NnTensor_max__SWIG_0`) = c("SWIGFunction", class('NnTensor_max__SWIG_0'))
+
+# Start of NnTensor_max
+
+`NnTensor_max__SWIG_1` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  ;ans = .Call('R_swig_NnTensor_max__SWIG_1', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_max__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_max__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_max__SWIG_1`) = c("SWIGFunction", class('NnTensor_max__SWIG_1'))
+
+# Start of NnTensor_max
+
+`NnTensor_max__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_max__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_max__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_max__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_max__SWIG_2`) = c("SWIGFunction", class('NnTensor_max__SWIG_2'))
+
+`NnTensor_max` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_max__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor_max__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_max__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_max with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_min
+
+`NnTensor_min__SWIG_0` = function(self, axes, keepdims, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  keepdims = as.logical(keepdims);
+  ;ans = .Call('R_swig_NnTensor_min__SWIG_0', self, axes, keepdims, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_min__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_min__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t', 'logical')
+class(`NnTensor_min__SWIG_0`) = c("SWIGFunction", class('NnTensor_min__SWIG_0'))
+
+# Start of NnTensor_min
+
+`NnTensor_min__SWIG_1` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = as.integer(axes);
+  ;ans = .Call('R_swig_NnTensor_min__SWIG_1', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_min__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_min__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor', '_p_std__vectorT_int_t')
+class(`NnTensor_min__SWIG_1`) = c("SWIGFunction", class('NnTensor_min__SWIG_1'))
+
+# Start of NnTensor_min
+
+`NnTensor_min__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_min__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_min__SWIG_2`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_min__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_min__SWIG_2`) = c("SWIGFunction", class('NnTensor_min__SWIG_2'))
+
+`NnTensor_min` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_min__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) )) {
+      f <- NnTensor_min__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.integer(argv[[2]]) || is.numeric(argv[[2]]) ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnTensor_min__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_min with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_argmax
+
+`NnTensor_argmax__SWIG_0` = function(self, axis, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axis = as.integer(axis);
+  
+  if(length(axis) > 1) {
+    warning("using only the first element of axis");
+  };
+  
+  ;ans = .Call('R_swig_NnTensor_argmax__SWIG_0', self, axis, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_argmax__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_argmax__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'integer')
+class(`NnTensor_argmax__SWIG_0`) = c("SWIGFunction", class('NnTensor_argmax__SWIG_0'))
+
+# Start of NnTensor_argmax
+
+`NnTensor_argmax__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_argmax__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_argmax__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_argmax__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_argmax__SWIG_1`) = c("SWIGFunction", class('NnTensor_argmax__SWIG_1'))
+
+`NnTensor_argmax` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_argmax__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_argmax__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_argmax with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_set_requires_grad
+
+`NnTensor_set_requires_grad__SWIG_0` = function(self, requires_grad)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  requires_grad = as.logical(requires_grad);
+  ;.Call('R_swig_NnTensor_set_requires_grad__SWIG_0', self, requires_grad, PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_set_requires_grad__SWIG_0`, 'returnType') = 'void'
+attr(`NnTensor_set_requires_grad__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnTensor', 'logical')
+class(`NnTensor_set_requires_grad__SWIG_0`) = c("SWIGFunction", class('NnTensor_set_requires_grad__SWIG_0'))
+
+# Start of NnTensor_set_requires_grad
+
+`NnTensor_set_requires_grad__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_set_requires_grad__SWIG_1', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_set_requires_grad__SWIG_1`, 'returnType') = 'void'
+attr(`NnTensor_set_requires_grad__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_set_requires_grad__SWIG_1`) = c("SWIGFunction", class('NnTensor_set_requires_grad__SWIG_1'))
+
+`NnTensor_set_requires_grad` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) {
+      f <- NnTensor_set_requires_grad__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnTensor') || is.null(argv[[1]]) ) && ( is.logical(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnTensor_set_requires_grad__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnTensor_set_requires_grad with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnTensor_requires_grad
+
+`NnTensor_requires_grad` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_requires_grad', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_requires_grad`, 'returnType') = 'logical'
+attr(`NnTensor_requires_grad`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_requires_grad`) = c("SWIGFunction", class('NnTensor_requires_grad'))
+
+# Start of NnTensor_backward
+
+`NnTensor_backward` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_backward', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_backward`, 'returnType') = 'void'
+attr(`NnTensor_backward`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_backward`) = c("SWIGFunction", class('NnTensor_backward'))
+
+# Start of NnTensor_grad
+
+`NnTensor_grad` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_grad', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_grad`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_grad`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_grad`) = c("SWIGFunction", class('NnTensor_grad'))
+
+# Start of NnTensor_zero_grad
+
+`NnTensor_zero_grad` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnTensor_zero_grad', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnTensor_zero_grad`, 'returnType') = 'void'
+attr(`NnTensor_zero_grad`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_zero_grad`) = c("SWIGFunction", class('NnTensor_zero_grad'))
+
+# Start of NnTensor_detach
+
+`NnTensor_detach` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_NnTensor_detach', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnTensor_detach`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnTensor_detach`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`NnTensor_detach`) = c("SWIGFunction", class('NnTensor_detach'))
+
+# Start of delete_NnTensor
+
+`delete_NnTensor` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NnTensor', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NnTensor`, 'returnType') = 'void'
+attr(`delete_NnTensor`, "inputTypes") = c('_p_datamunge__nn__NnTensor')
+class(`delete_NnTensor`) = c("SWIGFunction", class('delete_NnTensor'))
+
+# Start of accessor method for datamunge::nn::NnTensor
+setMethod('$', '_p_datamunge__nn__NnTensor', function(x, name)
+
+{
+  accessorFuns = list('save_npy' = NnTensor_save_npy, 'defined' = NnTensor_defined, 'values' = NnTensor_values, 'shape' = NnTensor_shape, 'dtype' = NnTensor_dtype, 'ndim' = NnTensor_ndim, 'numel' = NnTensor_numel, 'item' = NnTensor_item, 'at' = NnTensor_at, 'str' = NnTensor_str, 'astype' = NnTensor_astype, 'reshape' = NnTensor_reshape, 'transpose' = NnTensor_transpose, 'slice' = NnTensor_slice, 'concat' = NnTensor_concat, 'add' = NnTensor_add, 'sub' = NnTensor_sub, 'mul' = NnTensor_mul, 'div' = NnTensor_div, 'add_scalar' = NnTensor_add_scalar, 'mul_scalar' = NnTensor_mul_scalar, 'pow' = NnTensor_pow, 'neg' = NnTensor_neg, 'matmul' = NnTensor_matmul, 'exp' = NnTensor_exp, 'log' = NnTensor_log, 'sqrt' = NnTensor_sqrt, 'abs' = NnTensor_abs, 'square' = NnTensor_square, 'tanh' = NnTensor_tanh, 'sigmoid' = NnTensor_sigmoid, 'relu' = NnTensor_relu, 'activate' = NnTensor_activate, 'softmax' = NnTensor_softmax, 'log_softmax' = NnTensor_log_softmax, 'sum' = NnTensor_sum, 'mean' = NnTensor_mean, 'max' = NnTensor_max, 'min' = NnTensor_min, 'argmax' = NnTensor_argmax, 'set_requires_grad' = NnTensor_set_requires_grad, 'requires_grad' = NnTensor_requires_grad, 'backward' = NnTensor_backward, 'grad' = NnTensor_grad, 'zero_grad' = NnTensor_zero_grad, 'detach' = NnTensor_detach);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::nn::NnTensor
+setMethod('delete', '_p_datamunge__nn__NnTensor', function(obj) {delete_datamunge__nn__NnTensor(obj)})
+# Start of new_NnModel
+
+`NnModel__SWIG_0` = function(seed)
+{
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_new_NnModel__SWIG_0', seed, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NnModel);
+  ans
+  
+}
+
+attr(`NnModel__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnModel'
+attr(`NnModel__SWIG_0`, "inputTypes") = c('integer')
+class(`NnModel__SWIG_0`) = c("SWIGFunction", class('NnModel__SWIG_0'))
+
+# Start of new_NnModel
+
+`NnModel__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_NnModel__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_NnModel);
+  ans
+  
+}
+
+attr(`NnModel__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnModel'
+class(`NnModel__SWIG_1`) = c("SWIGFunction", class('NnModel__SWIG_1'))
+
+`NnModel` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- NnModel__SWIG_1; 
+  } else if (argc == 1) {
+    if ( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) {
+      f <- NnModel__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_NnModel
+
+`delete_NnModel` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_NnModel', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_NnModel`, 'returnType') = 'void'
+attr(`delete_NnModel`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`delete_NnModel`) = c("SWIGFunction", class('delete_NnModel'))
+
+# Start of NnModel_add_dense
+
+`NnModel_add_dense__SWIG_0` = function(self, units, activation)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  units = as.integer(units);
+  
+  if(length(units) > 1) {
+    warning("using only the first element of units");
+  };
+  
+  activation = as(activation, "character"); 
+  ;.Call('R_swig_NnModel_add_dense__SWIG_0', self, units, activation, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_dense__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_dense__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'character')
+class(`NnModel_add_dense__SWIG_0`) = c("SWIGFunction", class('NnModel_add_dense__SWIG_0'))
+
+# Start of NnModel_add_dense
+
+`NnModel_add_dense__SWIG_1` = function(self, units)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  units = as.integer(units);
+  
+  if(length(units) > 1) {
+    warning("using only the first element of units");
+  };
+  
+  ;.Call('R_swig_NnModel_add_dense__SWIG_1', self, units, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_dense__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_dense__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer')
+class(`NnModel_add_dense__SWIG_1`) = c("SWIGFunction", class('NnModel_add_dense__SWIG_1'))
+
+`NnModel_add_dense` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- NnModel_add_dense__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_add_dense__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_dense with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_conv2d
+
+`NnModel_add_conv2d__SWIG_0` = function(self, filters, kernel, stride, padding, activation)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  filters = as.integer(filters);
+  
+  if(length(filters) > 1) {
+    warning("using only the first element of filters");
+  };
+  
+  kernel = as.integer(kernel);
+  
+  if(length(kernel) > 1) {
+    warning("using only the first element of kernel");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  padding = as(padding, "character"); 
+  activation = as(activation, "character"); 
+  ;.Call('R_swig_NnModel_add_conv2d__SWIG_0', self, filters, kernel, stride, padding, activation, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_conv2d__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_conv2d__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer', 'integer', 'character', 'character')
+class(`NnModel_add_conv2d__SWIG_0`) = c("SWIGFunction", class('NnModel_add_conv2d__SWIG_0'))
+
+# Start of NnModel_add_conv2d
+
+`NnModel_add_conv2d__SWIG_1` = function(self, filters, kernel, stride, padding)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  filters = as.integer(filters);
+  
+  if(length(filters) > 1) {
+    warning("using only the first element of filters");
+  };
+  
+  kernel = as.integer(kernel);
+  
+  if(length(kernel) > 1) {
+    warning("using only the first element of kernel");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  padding = as(padding, "character"); 
+  ;.Call('R_swig_NnModel_add_conv2d__SWIG_1', self, filters, kernel, stride, padding, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_conv2d__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_conv2d__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer', 'integer', 'character')
+class(`NnModel_add_conv2d__SWIG_1`) = c("SWIGFunction", class('NnModel_add_conv2d__SWIG_1'))
+
+# Start of NnModel_add_conv2d
+
+`NnModel_add_conv2d__SWIG_2` = function(self, filters, kernel, stride)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  filters = as.integer(filters);
+  
+  if(length(filters) > 1) {
+    warning("using only the first element of filters");
+  };
+  
+  kernel = as.integer(kernel);
+  
+  if(length(kernel) > 1) {
+    warning("using only the first element of kernel");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;.Call('R_swig_NnModel_add_conv2d__SWIG_2', self, filters, kernel, stride, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_conv2d__SWIG_2`, 'returnType') = 'void'
+attr(`NnModel_add_conv2d__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer', 'integer')
+class(`NnModel_add_conv2d__SWIG_2`) = c("SWIGFunction", class('NnModel_add_conv2d__SWIG_2'))
+
+# Start of NnModel_add_conv2d
+
+`NnModel_add_conv2d__SWIG_3` = function(self, filters, kernel)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  filters = as.integer(filters);
+  
+  if(length(filters) > 1) {
+    warning("using only the first element of filters");
+  };
+  
+  kernel = as.integer(kernel);
+  
+  if(length(kernel) > 1) {
+    warning("using only the first element of kernel");
+  };
+  
+  ;.Call('R_swig_NnModel_add_conv2d__SWIG_3', self, filters, kernel, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_conv2d__SWIG_3`, 'returnType') = 'void'
+attr(`NnModel_add_conv2d__SWIG_3`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer')
+class(`NnModel_add_conv2d__SWIG_3`) = c("SWIGFunction", class('NnModel_add_conv2d__SWIG_3'))
+
+`NnModel_add_conv2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_add_conv2d__SWIG_3; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_add_conv2d__SWIG_2; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- NnModel_add_conv2d__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.character(argv[[6]]) && length(argv[[6]]) == 1 )) {
+      f <- NnModel_add_conv2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_conv2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_max_pool2d
+
+`NnModel_add_max_pool2d__SWIG_0` = function(self, window, stride, padding)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  window = as.integer(window);
+  
+  if(length(window) > 1) {
+    warning("using only the first element of window");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  padding = as(padding, "character"); 
+  ;.Call('R_swig_NnModel_add_max_pool2d__SWIG_0', self, window, stride, padding, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_max_pool2d__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_max_pool2d__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer', 'character')
+class(`NnModel_add_max_pool2d__SWIG_0`) = c("SWIGFunction", class('NnModel_add_max_pool2d__SWIG_0'))
+
+# Start of NnModel_add_max_pool2d
+
+`NnModel_add_max_pool2d__SWIG_1` = function(self, window, stride)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  window = as.integer(window);
+  
+  if(length(window) > 1) {
+    warning("using only the first element of window");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;.Call('R_swig_NnModel_add_max_pool2d__SWIG_1', self, window, stride, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_max_pool2d__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_max_pool2d__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer')
+class(`NnModel_add_max_pool2d__SWIG_1`) = c("SWIGFunction", class('NnModel_add_max_pool2d__SWIG_1'))
+
+`NnModel_add_max_pool2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_add_max_pool2d__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_add_max_pool2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_max_pool2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_avg_pool2d
+
+`NnModel_add_avg_pool2d__SWIG_0` = function(self, window, stride, padding)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  window = as.integer(window);
+  
+  if(length(window) > 1) {
+    warning("using only the first element of window");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  padding = as(padding, "character"); 
+  ;.Call('R_swig_NnModel_add_avg_pool2d__SWIG_0', self, window, stride, padding, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_avg_pool2d__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_avg_pool2d__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer', 'character')
+class(`NnModel_add_avg_pool2d__SWIG_0`) = c("SWIGFunction", class('NnModel_add_avg_pool2d__SWIG_0'))
+
+# Start of NnModel_add_avg_pool2d
+
+`NnModel_add_avg_pool2d__SWIG_1` = function(self, window, stride)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  window = as.integer(window);
+  
+  if(length(window) > 1) {
+    warning("using only the first element of window");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;.Call('R_swig_NnModel_add_avg_pool2d__SWIG_1', self, window, stride, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_avg_pool2d__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_avg_pool2d__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'integer', 'integer')
+class(`NnModel_add_avg_pool2d__SWIG_1`) = c("SWIGFunction", class('NnModel_add_avg_pool2d__SWIG_1'))
+
+`NnModel_add_avg_pool2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_add_avg_pool2d__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_add_avg_pool2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_avg_pool2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_global_avg_pool2d
+
+`NnModel_add_global_avg_pool2d` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_add_global_avg_pool2d', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_global_avg_pool2d`, 'returnType') = 'void'
+attr(`NnModel_add_global_avg_pool2d`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_add_global_avg_pool2d`) = c("SWIGFunction", class('NnModel_add_global_avg_pool2d'))
+
+# Start of NnModel_add_batch_norm
+
+`NnModel_add_batch_norm__SWIG_0` = function(self, momentum, eps)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  ;.Call('R_swig_NnModel_add_batch_norm__SWIG_0', self, momentum, eps, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_batch_norm__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_batch_norm__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'numeric', 'numeric')
+class(`NnModel_add_batch_norm__SWIG_0`) = c("SWIGFunction", class('NnModel_add_batch_norm__SWIG_0'))
+
+# Start of NnModel_add_batch_norm
+
+`NnModel_add_batch_norm__SWIG_1` = function(self, momentum)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NnModel_add_batch_norm__SWIG_1', self, momentum, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_batch_norm__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_batch_norm__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'numeric')
+class(`NnModel_add_batch_norm__SWIG_1`) = c("SWIGFunction", class('NnModel_add_batch_norm__SWIG_1'))
+
+# Start of NnModel_add_batch_norm
+
+`NnModel_add_batch_norm__SWIG_2` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_add_batch_norm__SWIG_2', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_batch_norm__SWIG_2`, 'returnType') = 'void'
+attr(`NnModel_add_batch_norm__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_add_batch_norm__SWIG_2`) = c("SWIGFunction", class('NnModel_add_batch_norm__SWIG_2'))
+
+`NnModel_add_batch_norm` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) {
+      f <- NnModel_add_batch_norm__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnModel_add_batch_norm__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_add_batch_norm__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_batch_norm with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_layer_norm
+
+`NnModel_add_layer_norm__SWIG_0` = function(self, eps)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NnModel_add_layer_norm__SWIG_0', self, eps, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_layer_norm__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_add_layer_norm__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'numeric')
+class(`NnModel_add_layer_norm__SWIG_0`) = c("SWIGFunction", class('NnModel_add_layer_norm__SWIG_0'))
+
+# Start of NnModel_add_layer_norm
+
+`NnModel_add_layer_norm__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_add_layer_norm__SWIG_1', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_layer_norm__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_add_layer_norm__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_add_layer_norm__SWIG_1`) = c("SWIGFunction", class('NnModel_add_layer_norm__SWIG_1'))
+
+`NnModel_add_layer_norm` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) {
+      f <- NnModel_add_layer_norm__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnModel_add_layer_norm__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_add_layer_norm with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_add_dropout
+
+`NnModel_add_dropout` = function(self, rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_NnModel_add_dropout', self, rate, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_dropout`, 'returnType') = 'void'
+attr(`NnModel_add_dropout`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'numeric')
+class(`NnModel_add_dropout`) = c("SWIGFunction", class('NnModel_add_dropout'))
+
+# Start of NnModel_add_activation
+
+`NnModel_add_activation` = function(self, activation)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  activation = as(activation, "character"); 
+  ;.Call('R_swig_NnModel_add_activation', self, activation, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_activation`, 'returnType') = 'void'
+attr(`NnModel_add_activation`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_add_activation`) = c("SWIGFunction", class('NnModel_add_activation'))
+
+# Start of NnModel_add_flatten
+
+`NnModel_add_flatten` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_add_flatten', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_flatten`, 'returnType') = 'void'
+attr(`NnModel_add_flatten`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_add_flatten`) = c("SWIGFunction", class('NnModel_add_flatten'))
+
+# Start of NnModel_add_reshape
+
+`NnModel_add_reshape` = function(self, shape)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  shape = as.integer(shape);
+  ;.Call('R_swig_NnModel_add_reshape', self, shape, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_add_reshape`, 'returnType') = 'void'
+attr(`NnModel_add_reshape`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_std__vectorT_int_t')
+class(`NnModel_add_reshape`) = c("SWIGFunction", class('NnModel_add_reshape'))
+
+# Start of NnModel_num_layers
+
+`NnModel_num_layers` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_num_layers', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_num_layers`, 'returnType') = 'integer'
+attr(`NnModel_num_layers`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_num_layers`) = c("SWIGFunction", class('NnModel_num_layers'))
+
+# Start of NnModel_summary
+
+`NnModel_summary` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_summary', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_summary`, 'returnType') = 'character'
+attr(`NnModel_summary`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_summary`) = c("SWIGFunction", class('NnModel_summary'))
+
+# Start of NnModel_forward
+
+`NnModel_forward__SWIG_0` = function(self, x, training, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  training = as.logical(training);
+  ;ans = .Call('R_swig_NnModel_forward__SWIG_0', self, x, training, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnModel_forward__SWIG_0`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnModel_forward__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', 'logical')
+class(`NnModel_forward__SWIG_0`) = c("SWIGFunction", class('NnModel_forward__SWIG_0'))
+
+# Start of NnModel_forward
+
+`NnModel_forward__SWIG_1` = function(self, x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;ans = .Call('R_swig_NnModel_forward__SWIG_1', self, x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnModel_forward__SWIG_1`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnModel_forward__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor')
+class(`NnModel_forward__SWIG_1`) = c("SWIGFunction", class('NnModel_forward__SWIG_1'))
+
+`NnModel_forward` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 )) {
+      f <- NnModel_forward__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_forward__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_forward with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_predict
+
+`NnModel_predict` = function(self, x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;ans = .Call('R_swig_NnModel_predict', self, x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnModel_predict`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnModel_predict`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor')
+class(`NnModel_predict`) = c("SWIGFunction", class('NnModel_predict'))
+
+# Start of NnModel_loss
+
+`NnModel_loss__SWIG_0` = function(self, x, y, s_loss, training, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  s_loss = as(s_loss, "character"); 
+  training = as.logical(training);
+  ;.Call('R_swig_NnModel_loss__SWIG_0', self, x, y, s_loss, training, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_loss__SWIG_0`, 'returnType') = 'numeric'
+attr(`NnModel_loss__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'character', 'logical')
+class(`NnModel_loss__SWIG_0`) = c("SWIGFunction", class('NnModel_loss__SWIG_0'))
+
+# Start of NnModel_loss
+
+`NnModel_loss__SWIG_1` = function(self, x, y, s_loss, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  s_loss = as(s_loss, "character"); 
+  ;.Call('R_swig_NnModel_loss__SWIG_1', self, x, y, s_loss, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_loss__SWIG_1`, 'returnType') = 'numeric'
+attr(`NnModel_loss__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'character')
+class(`NnModel_loss__SWIG_1`) = c("SWIGFunction", class('NnModel_loss__SWIG_1'))
+
+# Start of NnModel_loss
+
+`NnModel_loss__SWIG_2` = function(self, x, y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  ;.Call('R_swig_NnModel_loss__SWIG_2', self, x, y, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_loss__SWIG_2`, 'returnType') = 'numeric'
+attr(`NnModel_loss__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnModel_loss__SWIG_2`) = c("SWIGFunction", class('NnModel_loss__SWIG_2'))
+
+`NnModel_loss` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 )) {
+      f <- NnModel_loss__SWIG_2; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_loss__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.logical(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- NnModel_loss__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_loss with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_compute_gradients
+
+`NnModel_compute_gradients__SWIG_0` = function(self, x, y, loss, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  loss = as(loss, "character"); 
+  ;.Call('R_swig_NnModel_compute_gradients__SWIG_0', self, x, y, loss, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_compute_gradients__SWIG_0`, 'returnType') = 'numeric'
+attr(`NnModel_compute_gradients__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'character')
+class(`NnModel_compute_gradients__SWIG_0`) = c("SWIGFunction", class('NnModel_compute_gradients__SWIG_0'))
+
+# Start of NnModel_compute_gradients
+
+`NnModel_compute_gradients__SWIG_1` = function(self, x, y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  ;.Call('R_swig_NnModel_compute_gradients__SWIG_1', self, x, y, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_compute_gradients__SWIG_1`, 'returnType') = 'numeric'
+attr(`NnModel_compute_gradients__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnModel_compute_gradients__SWIG_1`) = c("SWIGFunction", class('NnModel_compute_gradients__SWIG_1'))
+
+`NnModel_compute_gradients` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 )) {
+      f <- NnModel_compute_gradients__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_compute_gradients__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_compute_gradients with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_gradient
+
+`NnModel_gradient` = function(self, name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  name = as(name, "character"); 
+  ;ans = .Call('R_swig_NnModel_gradient', self, name, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnModel_gradient`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnModel_gradient`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_gradient`) = c("SWIGFunction", class('NnModel_gradient'))
+
+# Start of NnModel_set_optimizer
+
+`NnModel_set_optimizer__SWIG_0` = function(self, kind, learning_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  kind = as(kind, "character"); 
+  
+  ;.Call('R_swig_NnModel_set_optimizer__SWIG_0', self, kind, learning_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_set_optimizer__SWIG_0`, 'returnType') = 'void'
+attr(`NnModel_set_optimizer__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character', 'numeric')
+class(`NnModel_set_optimizer__SWIG_0`) = c("SWIGFunction", class('NnModel_set_optimizer__SWIG_0'))
+
+# Start of NnModel_set_optimizer
+
+`NnModel_set_optimizer__SWIG_1` = function(self, kind)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  kind = as(kind, "character"); 
+  ;.Call('R_swig_NnModel_set_optimizer__SWIG_1', self, kind, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_set_optimizer__SWIG_1`, 'returnType') = 'void'
+attr(`NnModel_set_optimizer__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_set_optimizer__SWIG_1`) = c("SWIGFunction", class('NnModel_set_optimizer__SWIG_1'))
+
+# Start of NnModel_set_optimizer
+
+`NnModel_set_optimizer__SWIG_2` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_set_optimizer__SWIG_2', self, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_set_optimizer__SWIG_2`, 'returnType') = 'void'
+attr(`NnModel_set_optimizer__SWIG_2`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_set_optimizer__SWIG_2`) = c("SWIGFunction", class('NnModel_set_optimizer__SWIG_2'))
+
+`NnModel_set_optimizer` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) {
+      f <- NnModel_set_optimizer__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- NnModel_set_optimizer__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- NnModel_set_optimizer__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_set_optimizer with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_train_step
+
+`NnModel_train_step__SWIG_0` = function(self, x, y, loss, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  loss = as(loss, "character"); 
+  ;.Call('R_swig_NnModel_train_step__SWIG_0', self, x, y, loss, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_train_step__SWIG_0`, 'returnType') = 'numeric'
+attr(`NnModel_train_step__SWIG_0`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor', 'character')
+class(`NnModel_train_step__SWIG_0`) = c("SWIGFunction", class('NnModel_train_step__SWIG_0'))
+
+# Start of NnModel_train_step
+
+`NnModel_train_step__SWIG_1` = function(self, x, y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  if (inherits(y, "ExternalReference")) y = slot(y,"ref"); 
+  ;.Call('R_swig_NnModel_train_step__SWIG_1', self, x, y, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_train_step__SWIG_1`, 'returnType') = 'numeric'
+attr(`NnModel_train_step__SWIG_1`, "inputTypes") = c('_p_datamunge__nn__NnModel', '_p_datamunge__nn__NnTensor', '_p_datamunge__nn__NnTensor')
+class(`NnModel_train_step__SWIG_1`) = c("SWIGFunction", class('NnModel_train_step__SWIG_1'))
+
+`NnModel_train_step` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 )) {
+      f <- NnModel_train_step__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__nn__NnModel') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__nn__NnTensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__nn__NnTensor') && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- NnModel_train_step__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for NnModel_train_step with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of NnModel_parameter_names
+
+`NnModel_parameter_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_parameter_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_parameter_names`, 'returnType') = 'character'
+attr(`NnModel_parameter_names`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_parameter_names`) = c("SWIGFunction", class('NnModel_parameter_names'))
+
+# Start of NnModel_parameter
+
+`NnModel_parameter` = function(self, name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  name = as(name, "character"); 
+  ;ans = .Call('R_swig_NnModel_parameter', self, name, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__nn__NnTensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`NnModel_parameter`, 'returnType') = '_p_datamunge__nn__NnTensor'
+attr(`NnModel_parameter`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_parameter`) = c("SWIGFunction", class('NnModel_parameter'))
+
+# Start of NnModel_set_parameter
+
+`NnModel_set_parameter` = function(self, name, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  name = as(name, "character"); 
+  if (inherits(value, "ExternalReference")) value = slot(value,"ref"); 
+  ;.Call('R_swig_NnModel_set_parameter', self, name, value, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_set_parameter`, 'returnType') = 'void'
+attr(`NnModel_set_parameter`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character', '_p_datamunge__nn__NnTensor')
+class(`NnModel_set_parameter`) = c("SWIGFunction", class('NnModel_set_parameter'))
+
+# Start of NnModel_parameter_count
+
+`NnModel_parameter_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_NnModel_parameter_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_parameter_count`, 'returnType') = 'integer'
+attr(`NnModel_parameter_count`, "inputTypes") = c('_p_datamunge__nn__NnModel')
+class(`NnModel_parameter_count`) = c("SWIGFunction", class('NnModel_parameter_count'))
+
+# Start of NnModel_save
+
+`NnModel_save` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_NnModel_save', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_save`, 'returnType') = 'void'
+attr(`NnModel_save`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_save`) = c("SWIGFunction", class('NnModel_save'))
+
+# Start of NnModel_load
+
+`NnModel_load` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_NnModel_load', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`NnModel_load`, 'returnType') = 'void'
+attr(`NnModel_load`, "inputTypes") = c('_p_datamunge__nn__NnModel', 'character')
+class(`NnModel_load`) = c("SWIGFunction", class('NnModel_load'))
+
+# Start of accessor method for datamunge::nn::NnModel
+setMethod('$', '_p_datamunge__nn__NnModel', function(x, name)
+
+{
+  accessorFuns = list('add_dense' = NnModel_add_dense, 'add_conv2d' = NnModel_add_conv2d, 'add_max_pool2d' = NnModel_add_max_pool2d, 'add_avg_pool2d' = NnModel_add_avg_pool2d, 'add_global_avg_pool2d' = NnModel_add_global_avg_pool2d, 'add_batch_norm' = NnModel_add_batch_norm, 'add_layer_norm' = NnModel_add_layer_norm, 'add_dropout' = NnModel_add_dropout, 'add_activation' = NnModel_add_activation, 'add_flatten' = NnModel_add_flatten, 'add_reshape' = NnModel_add_reshape, 'num_layers' = NnModel_num_layers, 'summary' = NnModel_summary, 'forward' = NnModel_forward, 'predict' = NnModel_predict, 'loss' = NnModel_loss, 'compute_gradients' = NnModel_compute_gradients, 'gradient' = NnModel_gradient, 'set_optimizer' = NnModel_set_optimizer, 'train_step' = NnModel_train_step, 'parameter_names' = NnModel_parameter_names, 'parameter' = NnModel_parameter, 'set_parameter' = NnModel_set_parameter, 'parameter_count' = NnModel_parameter_count, 'save' = NnModel_save, 'load' = NnModel_load);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::nn::NnModel
+setMethod('delete', '_p_datamunge__nn__NnModel', function(obj) {delete_datamunge__nn__NnModel(obj)})
+# Start of nn_gemm_backend
+
+`nn_gemm_backend` = function(.copy = FALSE)
+{
+  ;.Call('R_swig_nn_gemm_backend', as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`nn_gemm_backend`, 'returnType') = 'character'
+class(`nn_gemm_backend`) = c("SWIGFunction", class('nn_gemm_backend'))
+
+# Start of nn_get_num_threads
+
+`nn_get_num_threads` = function(.copy = FALSE)
+{
+  ;.Call('R_swig_nn_get_num_threads', as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`nn_get_num_threads`, 'returnType') = 'integer'
+class(`nn_get_num_threads`) = c("SWIGFunction", class('nn_get_num_threads'))
+
+# Start of nn_set_num_threads
+
+`nn_set_num_threads` = function(threads)
+{
+  threads = as.integer(threads);
+  
+  if(length(threads) > 1) {
+    warning("using only the first element of threads");
+  };
+  
+  ;.Call('R_swig_nn_set_num_threads', threads, PACKAGE='datamunger');
+  
+}
+
+attr(`nn_set_num_threads`, 'returnType') = 'void'
+attr(`nn_set_num_threads`, "inputTypes") = c('integer')
+class(`nn_set_num_threads`) = c("SWIGFunction", class('nn_set_num_threads'))
+
 
 defineEnumeration("_datamunge__plot__DataSeries__Kind",
  .values=c("Scatter" = .Call('R_swig_DataSeries_Kind_Scatter_get',FALSE, PACKAGE='datamunger'),

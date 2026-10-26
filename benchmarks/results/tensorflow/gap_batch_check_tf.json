@@ -1,0 +1,143 @@
+{
+  "context": {
+    "date": "2026-10-24T17:44:10.855936+00:00",
+    "build": "TensorFlow-2.21.0",
+    "gemm_backend": "TensorFlow packaged CPU kernels",
+    "nn_threads": "1",
+    "tensorflow_build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    }
+  },
+  "backend_benchmark_metadata": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "0bffa1252ce8a42894411be7b743027134f77c741b5a334630f798b8deafe7c7",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ad04f448e2b8c3d70a7a24406dcfb28f5f63e7df41981df0f036df962cae27e4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "core_sources_sha256": "bf8b18868399b4286bde574174d6d08ed59f5b9ab3b2c6316eb75b355f7b554d",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "label": "gap-harness-batch-check-tensorflow",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "TF_NUM_INTRAOP_THREADS": "1",
+      "TF_NUM_INTEROP_THREADS": "1"
+    },
+    "release": {
+      "configuration": {
+        "tensorflow": "2.21.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "command": [
+      "scripts/benchmark_tensorflow.py",
+      "--case",
+      "^Mean/rows:32/f64:0/",
+      "--repetitions",
+      "3",
+      "--native",
+      "benchmarks/results/tensorflow/gap_batch_check_native.json",
+      "--output",
+      "benchmarks/results/tensorflow/gap_batch_check_tf.json",
+      "--label",
+      "gap-harness-batch-check",
+      "--benchmark_min_time=0.1s"
+    ],
+    "driver_sha256": "0aa3b8182ada130cfbfe94114fe38c92cc1d30800f63799587207f1add2a8629",
+    "native_result_sha256": "54e7c092147fe5fc6c1b6ad8731f3b13758df6f59cccad4441f66a4a3eada43f",
+    "device": "/CPU:0",
+    "synchronous": true,
+    "case_selection": [
+      "BM_TensorFlowMatched/Mean/rows:32/f64:0/real_time"
+    ],
+    "host_load_average_start": [
+      4.1533203125,
+      4.33154296875,
+      3.5009765625
+    ],
+    "timing_scope": "warm synchronous call; output allocation included; host copy excluded; graph trace excluded",
+    "python": "3.13.11 (main, Dec  5 2025, 16:06:33) [Clang 21.1.8 ]",
+    "native_result": "benchmarks/results/tensorflow/gap_batch_check_native.json",
+    "host_load_average_end": [
+      4.1533203125,
+      4.33154296875,
+      3.5009765625
+    ]
+  },
+  "benchmarks": [
+    {
+      "name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 2459,
+      "real_time": 64595.109800732,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 2459,
+      "real_time": 62904.99186661244,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/eager/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 2459,
+      "real_time": 61445.11671411143,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 0,
+      "iterations": 370,
+      "real_time": 314188.85135135136,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 1,
+      "iterations": 370,
+      "real_time": 310786.4864864865,
+      "time_unit": "ns",
+      "reference_checked": 1
+    },
+    {
+      "name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_name": "TensorFlow/graph/Mean/rows:32/f64:0/real_time",
+      "run_type": "iteration",
+      "repetition_index": 2,
+      "iterations": 370,
+      "real_time": 301483.22162162163,
+      "time_unit": "ns",
+      "reference_checked": 1
+    }
+  ]
+}

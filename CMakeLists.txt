@@ -6,8 +6,16 @@ project(
   LANGUAGES CXX
 )
 
+# An unspecified single-configuration build should be usable for production and
+# performance comparisons. Explicit Debug builds and multi-config generators
+# retain their normal configuration selection.
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR AND NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+
 option(DATAMUNGE_ENABLE_ARROW "Enable Apache Arrow integration when available" ON)
 option(DATAMUNGE_USE_BLAS "Use the platform BLAS (Accelerate or OpenBLAS) for nn GEMM when found" ON)
+option(DATAMUNGE_USE_LAPACK "Use LAPACK (Accelerate, OpenBLAS's or another) for nn linear algebra when found" ON)
 
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
@@ -116,6 +124,47 @@ if(DATAMUNGE_USE_BLAS)
         message(STATUS "datamunge::nn GEMM: built-in (no CBLAS found)")
       endif()
     endif()
+  endif()
+endif()
+
+# datamunge::nn linear algebra (SVD, eigen, QR, Cholesky, LU, eig) calls
+# LAPACK for larger matrices when available; the built-in kernels remain for
+# small matrices and as the fallback. On Linux OpenBLAS usually bundles LAPACK;
+# otherwise any LAPACK found by FindLAPACK is used.
+if(DATAMUNGE_USE_LAPACK)
+  set(DATAMUNGE_LAPACK_BACKEND "")
+  if(APPLE)
+    find_library(ACCELERATE_FRAMEWORK Accelerate)
+    if(ACCELERATE_FRAMEWORK)
+      target_link_libraries(${PROJECT_NAME} PRIVATE ${ACCELERATE_FRAMEWORK})
+      target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_LAPACK=1 ACCELERATE_NEW_LAPACK=1)
+      set(DATAMUNGE_LAPACK_BACKEND "Accelerate")
+    endif()
+  else()
+    if(DATAMUNGE_OPENBLAS_FOUND)
+      include(CheckCXXSourceCompiles)
+      set(CMAKE_REQUIRED_LIBRARIES ${DATAMUNGE_OPENBLAS_LINK_LIBRARIES})
+      check_cxx_source_compiles("extern \"C\" void dgesdd_(); int main() { dgesdd_(); return 0; }"
+                                DATAMUNGE_OPENBLAS_HAS_LAPACK)
+      unset(CMAKE_REQUIRED_LIBRARIES)
+      if(DATAMUNGE_OPENBLAS_HAS_LAPACK)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_LAPACK=1)
+        set(DATAMUNGE_LAPACK_BACKEND "OpenBLAS")
+      endif()
+    endif()
+    if(NOT DATAMUNGE_LAPACK_BACKEND)
+      find_package(LAPACK QUIET)
+      if(LAPACK_FOUND)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${LAPACK_LIBRARIES})
+        target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_LAPACK=1)
+        set(DATAMUNGE_LAPACK_BACKEND "${LAPACK_LIBRARIES}")
+      endif()
+    endif()
+  endif()
+  if(DATAMUNGE_LAPACK_BACKEND)
+    message(STATUS "datamunge::nn linalg: LAPACK (${DATAMUNGE_LAPACK_BACKEND})")
+  else()
+    message(STATUS "datamunge::nn linalg: built-in kernels (no LAPACK found)")
   endif()
 endif()
 

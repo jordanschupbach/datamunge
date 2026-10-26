@@ -1,0 +1,24 @@
+[
+  {
+    "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time",
+    "native_ns": 1411760.4892398566,
+    "eager_ns": 4131534.9677419355,
+    "eager_cv_percent": 4.912142511363876,
+    "graph_ns": 1559926.0337078653,
+    "graph_cv_percent": 11.053178819382843,
+    "native_cv_percent": 3.2332751426370523,
+    "native_over_eager": 0.34170362837602836,
+    "native_over_graph": 0.9050175833556501
+  },
+  {
+    "case": "BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time",
+    "native_ns": 2473442.3077461543,
+    "eager_ns": 7429413.166666667,
+    "eager_cv_percent": 5.773791111470416,
+    "graph_ns": 2636961.0434782607,
+    "graph_cv_percent": 4.050914673264897,
+    "native_cv_percent": 5.342911693508044,
+    "native_over_eager": 0.33292566347550523,
+    "native_over_graph": 0.9379897036641776
+  }
+]

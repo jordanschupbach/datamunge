@@ -1,0 +1,1145 @@
+{
+  "schema_version": 1,
+  "id": "c06b61aea753212c8739c0c40901848f1244febef52317c28698eba3eb3939a9",
+  "date": "2026-10-24T14:02:26-06:00",
+  "label": "containers-adjacent-after",
+  "kind": "calibrated",
+  "profile": "9c43a759eceb483296b8425f66db0b0ec542d55b43459c8285ebe1c484db0def",
+  "configuration": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    },
+    "release": {
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+      "CMAKE_CXX_FLAGS": "",
+      "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+      "DATAMUNGE_ENABLE_ARROW": "ON",
+      "DATAMUNGE_USE_BLAS": "ON",
+      "DATAMUNGE_USE_LAPACK": "ON"
+    },
+    "context": {
+      "build": "Clang-21.1.8/Release",
+      "gemm_backend": "accelerate",
+      "lapack_available": "true",
+      "nn_threads": "1 except explicit thread-scaling cases",
+      "num_cpus": 10,
+      "mhz_per_cpu": 24,
+      "caches": [
+        {
+          "type": "Data",
+          "level": 1,
+          "size": 65536,
+          "num_sharing": 0
+        },
+        {
+          "type": "Instruction",
+          "level": 1,
+          "size": 131072,
+          "num_sharing": 0
+        },
+        {
+          "type": "Unified",
+          "level": 2,
+          "size": 6291456,
+          "num_sharing": 1
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "revision": "ab6634407119e299e00d71abefb19b0695a4c795",
+    "dirty": true,
+    "working_diff_sha256": "de2d6aeb31555087c0470e3ad88180e5f5569d9e36b8827763d11863d0fe4d35",
+    "benchmark_sources_sha256": {
+      "benchmarks/backend/autograd.cpp": "63ebf2da866d892f3ae808f66f8780eac1f8d745a01db088afb5fd771bf6b72c",
+      "benchmarks/backend/common.hpp": "53d8b8f0ec5525951a87773ea895bcbdf348eed9c3e52d15f4deb17c5d9f6490",
+      "benchmarks/backend/containers.cpp": "b183cba9802bb6153f35be1f0a53d80d0949428c40502aadf92fb6c21037c655",
+      "benchmarks/backend/coverage_gaps.cpp": "c306b700bc7c2f106c7f154b83e79901625111eec940a766d83360d7ed387599",
+      "benchmarks/backend/linalg.cpp": "08ce268714aa1eda43c694710ee7f9abd5bc5e1dc7b8f51b9db1c0eabbd49341",
+      "benchmarks/backend/main.cpp": "a1a38f42eba519c233d18cacc644497e6a5ce5419cbd160e86064b350e709e66",
+      "benchmarks/backend/networks.cpp": "3d21aa71d5fa88d2819520c25bacc4daf62295dae29cbb15a7c2fbbf6c39dc2b",
+      "benchmarks/backend/optim.cpp": "64b34f33ac893f315036e9e4f77eaa2407ccdc8880be7932518af82ce72ca65a",
+      "benchmarks/backend/parallel.cpp": "33007ecc04e92093a340d877ce753ea00baa53fcf427e475335624ffac871016",
+      "benchmarks/backend/tensorflow.cpp": "ad04f448e2b8c3d70a7a24406dcfb28f5f63e7df41981df0f036df962cae27e4",
+      "benchmarks/backend/tensors.cpp": "46486e3acfecdf854a2a991d0199e500aee9228479b29bdadac58c21573b0589"
+    },
+    "core_sources_sha256": "47f91030b684dc9fc3785a038a44e7904c1c6d7ad22442f9db416ceea9f23918",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "command": [
+      "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+      "--benchmark_min_time=0.1s",
+      "--benchmark_repetitions=5"
+    ],
+    "release": {
+      "configuration": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++",
+        "CMAKE_CXX_FLAGS": "",
+        "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+        "DATAMUNGE_ENABLE_ARROW": "ON",
+        "DATAMUNGE_USE_BLAS": "ON",
+        "DATAMUNGE_USE_LAPACK": "ON"
+      },
+      "core_translation_units": 271,
+      "driver_translation_units": 10,
+      "effective_optimization_verified": true,
+      "ndebug_verified": true,
+      "core_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DACCELERATE_NEW_LAPACK=1 -DDATAMUNGE_HAVE_ARROW=1 -DDATAMUNGE_HAVE_CBLAS=1 -DDATAMUNGE_HAVE_LAPACK=1 -DDATAMUNGE_HAVE_X11=1 -Ddatamunge_EXPORTS -I/Users/jordanschupbach/projects/datamunge/include -I/opt/homebrew/include -I/usr/X11R6/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -F/nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /nix/store/c7cl2s88nwx70vhb9r4l2ysf8x5qjh41-datamunge-0.0.1/include -isystem /nix/store/x2rbyyj8rd25wvahmb9pqpn9b2p6i2iv-emacs-30.2/include -isystem /nix/store/bhryp10d5w5h9rsav5k9m9jb55z26bsl-jq-1.8.1-dev/include -isystem /nix/store/ldza1ndfpwgm48dazvylbyrixvhax80p-gtest-1.17.0-dev/include -isystem /nix/store/aj188fnykkwbgcbrbd3ywyb5xs8rs7ww-python3-3.13.11-env/include -isystem /nix/store/ab43gk9xl2ssnz3yzs484csd5axv1kqk-libxml2-2.15.1-dev/include -isystem /nix/store/yamly6ym3hyi0589isqyb5w0y4n2fdbg-libiconv-109.100.2-dev/include -isystem /nix/store/31xanb0p9gb3asr4zpzr7znjbc4kkx49-arrow-cpp-22.0.0/include -isystem /nix/store/avc2sd5i5h0sdsq0ky6ks4zjg5n60ffh-graphviz-12.2.1/include -isystem /nix/store/c7byifmqyf3l5g7lpgdxd6i9iya2m7fv-doctest-2.4.12/include -isystem /nix/store/qng4vqqwk96yrxcaj2xyx81mfph483ji-libx11-1.8.12-dev/include -isystem /nix/store/in25zi0q9sspb41jqjmjfdwsr3m4j9mg-xorgproto-2025.1/include -isystem /nix/store/7mbgzcixxmbqb56ldcxrm9ajpd90yc54-gbenchmark-1.9.4/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include -isystem /nix/store/47d3ak31qp8qavc3w6np7p48ccylwqwd-compiler-rt-libc-21.1.8-dev/include -isystem /nix/store/nq7w9cx2jhqxi2ha92clba1fjgqns1xg-libresolv-91-dev/include -isystem /nix/store/3ifp90k41wpp3pmy8wgc6iafc86xy24w-libsbuf-14.1.0-dev/include -isystem /nix/store/4xn1831cq93sq6iw249110qy3a26rcbx-libcxx-20.1.0+apple-sdk-26.0/include/c++/v1 -isystem /nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/resource-root/include -isystem /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -isystem /nix/store/6mp7w55mz9frcya56aqzny2y7d6pi9ws-libSystem-B/include  -fPIC -O3 -DNDEBUG -std=gnu++23 -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -fPIC -o CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o -c /Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/src/datamunge/algorithms/advanced_graph.cpp",
+        "output": "_deps/datamunge-build/CMakeFiles/datamunge.dir/src/datamunge/algorithms/advanced_graph.cpp.o"
+      },
+      "driver_command_example": {
+        "directory": "/Users/jordanschupbach/projects/datamunge/build/benchmarks",
+        "command": "/nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ -DBENCHMARK_STATIC_DEFINE -DDATAMUNGE_BENCH_BUILD=\\\"Clang-21.1.8/Release\\\" -DDATAMUNGE_HAVE_ARROW=1 -I/Users/jordanschupbach/projects/datamunge/include -I/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/PackageProjectInclude -O3 -DNDEBUG -arch arm64 -isysroot /nix/store/8pk2m0fn7z5dlb86z5qlv1pxa8w68idx-apple-sdk-14.4/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -o CMakeFiles/backend_bench.dir/backend/autograd.cpp.o -c /Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "file": "/Users/jordanschupbach/projects/datamunge/benchmarks/backend/autograd.cpp",
+        "output": "CMakeFiles/backend_bench.dir/backend/autograd.cpp.o"
+      }
+    },
+    "label": "containers-adjacent-after",
+    "executable_sha256": "2bba7227a4d3c7cc6c444d80368bc7abe3a9855ab03566f376ede84d3dd2dc52",
+    "thread_environment": {
+      "DATAMUNGE_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    },
+    "release_runtime": {
+      "google_benchmark": "release",
+      "driver": "Clang-21.1.8/Release",
+      "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+      "core_sha256": "bd46e7d33290ea56019822bcf5da214f720b2584db39c61745abf0a8ed0c0984",
+      "core_release_provenance": "verified build directory"
+    },
+    "loaded_core_sha256": "bd46e7d33290ea56019822bcf5da214f720b2584db39c61745abf0a8ed0c0984",
+    "paired_commands": [
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerParameters/Lookup/16/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmph40rq7y8/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerParameters/Lookup/256/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpyhl47jj1/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerParameters/Lookup/4096/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpbijsv62s/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerParameters/Create/4096/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmp75bp2a0x/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerOptimizer/First/4096/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpywxx5gdt/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerOptimizer/Warm/16/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpgh4iazfl/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerOptimizer/Warm/4096/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpsk79ncdq/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_AutogradChain/RetainedBackward/elements:32/depth:128/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpvghmgze8/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_AutogradChain/RetainedBackward/elements:4096/depth:128/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpqycpc68j/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_LayerComponent/BatchNorm/batch:16/f64:0/backward:0/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpa6h8de6p/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_LayerComponent/BatchNorm/batch:16/f64:1/backward:0/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmp303zus2i/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_ContainerBatchNorm/256/4/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpze6587kg/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_Network/MLP_TrainingStep/1/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmp8cwv1ice/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_Network/Transformer_TrainingStep/32/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpm9l7kb__/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_Network/CNN_Inference/32/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmp_lgu9ddk/observation.json",
+        "--benchmark_out_format=json"
+      ],
+      [
+        "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "--benchmark_filter=^BM_Network/MLP_Inference/1/real_time$",
+        "--benchmark_min_time=0.1s",
+        "--benchmark_repetitions=5",
+        "--benchmark_out=/var/folders/ph/wpr1r8r14r9249x3kb9rl2k40000gn/T/tmpkf3ykb0v/observation.json",
+        "--benchmark_out_format=json"
+      ]
+    ],
+    "paired_contexts": [
+      {
+        "date": "2026-10-24T14:02:26-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.53271,
+          2.93604,
+          3.06689
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:27-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.53271,
+          2.93604,
+          3.06689
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:33-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.48975,
+          2.92041,
+          3.06055
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:35-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.48975,
+          2.92041,
+          3.06055
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:40-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.26025,
+          2.85645,
+          3.03613
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:42-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.26025,
+          2.85645,
+          3.03613
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:47-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.23926,
+          2.8418,
+          3.02979
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:49-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.23926,
+          2.8418,
+          3.02979
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:54-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.13965,
+          2.81104,
+          3.01758
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:02:56-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.12842,
+          2.79736,
+          3.01123
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:01-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.27783,
+          2.81689,
+          3.0166
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:03-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.27783,
+          2.81689,
+          3.0166
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:08-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.41553,
+          2.83643,
+          3.02197
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:10-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.46191,
+          2.83887,
+          3.02148
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:16-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.66504,
+          2.87451,
+          3.03271
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      },
+      {
+        "date": "2026-10-24T14:03:18-06:00",
+        "host_name": "Jordans-MacBook-Air.local",
+        "executable": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/backend_bench",
+        "num_cpus": 10,
+        "mhz_per_cpu": 24,
+        "cpu_scaling_enabled": false,
+        "caches": [
+          {
+            "type": "Data",
+            "level": 1,
+            "size": 65536,
+            "num_sharing": 0
+          },
+          {
+            "type": "Instruction",
+            "level": 1,
+            "size": 131072,
+            "num_sharing": 0
+          },
+          {
+            "type": "Unified",
+            "level": 2,
+            "size": 6291456,
+            "num_sharing": 1
+          }
+        ],
+        "load_avg": [
+          2.66504,
+          2.87451,
+          3.03271
+        ],
+        "library_version": "v1.9.4",
+        "library_build_type": "release",
+        "json_schema_version": 1,
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "build": "Clang-21.1.8/Release",
+        "core_library_path": "/Users/jordanschupbach/projects/datamunge/build/benchmarks/_deps/datamunge-build/libdatamunge.dylib",
+        "gemm_backend": "accelerate",
+        "lapack_available": "true",
+        "nn_threads": "1 except explicit thread-scaling cases",
+        "seed": "42"
+      }
+    ],
+    "timing_order": "adjacent matching baseline/candidate clients; first variant alternates per fixture",
+    "comparison_driver_sha256": "ef9715ad9bc14cf124c97aa7d0ff4ec80ff50e6d6c6437d2923a811fa76a8c0e"
+  },
+  "optional_skips": 0,
+  "cases": {
+    "BM_AutogradChain/RetainedBackward/elements:32/depth:128/real_time": {
+      "median_ns": 86531.47417664964,
+      "min_ns": 86092.29985953087,
+      "max_ns": 86690.84791617516,
+      "cv_percent": 0.2670269666339202,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 34056.0,
+        "items_per_second": 47335377.54873125
+      }
+    },
+    "BM_AutogradChain/RetainedBackward/elements:4096/depth:128/real_time": {
+      "median_ns": 151564.49231866433,
+      "min_ns": 150165.82999554373,
+      "max_ns": 153292.15820596158,
+      "cv_percent": 0.7546963576446918,
+      "repetitions": 5,
+      "counters": {
+        "gradient_peak_tensor_bytes": 4228104.0,
+        "items_per_second": 3459174322.2923517
+      }
+    },
+    "BM_ContainerBatchNorm/256/4/real_time": {
+      "median_ns": 140867.53731086623,
+      "min_ns": 139792.59914668178,
+      "max_ns": 141983.52026118676,
+      "cv_percent": 0.628033820507715,
+      "repetitions": 5,
+      "counters": {}
+    },
+    "BM_ContainerOptimizer/First/4096/real_time": {
+      "median_ns": 2074495.641863905,
+      "min_ns": 2067080.8507251178,
+      "max_ns": 2100544.776085507,
+      "cv_percent": 0.6540654393485441,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1974455.8230644448
+      }
+    },
+    "BM_ContainerOptimizer/Warm/16/real_time": {
+      "median_ns": 2959.2818785928043,
+      "min_ns": 2929.2320522908844,
+      "max_ns": 2971.0601454558423,
+      "cv_percent": 0.5383917926850565,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 5406717.121387675
+      }
+    },
+    "BM_ContainerOptimizer/Warm/4096/real_time": {
+      "median_ns": 829804.2426199222,
+      "min_ns": 827199.455649253,
+      "max_ns": 830930.4733748944,
+      "cv_percent": 0.1824454497949047,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 4936103.950333866
+      }
+    },
+    "BM_ContainerParameters/Create/4096/real_time": {
+      "median_ns": 1160968.9237217426,
+      "min_ns": 1154569.559298965,
+      "max_ns": 1170190.3304591246,
+      "cv_percent": 0.5051018655747793,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 3528087.5450734426
+      }
+    },
+    "BM_ContainerParameters/Lookup/16/real_time": {
+      "median_ns": 169.8055164167943,
+      "min_ns": 168.5184860164218,
+      "max_ns": 173.8894432001707,
+      "cv_percent": 1.3392744885412944,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 94225442.95161398
+      }
+    },
+    "BM_ContainerParameters/Lookup/256/real_time": {
+      "median_ns": 2704.05853990853,
+      "min_ns": 2685.3843918651824,
+      "max_ns": 2708.634295109728,
+      "cv_percent": 0.40813426886246806,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 94672506.61247139
+      }
+    },
+    "BM_ContainerParameters/Lookup/4096/real_time": {
+      "median_ns": 59485.36611489615,
+      "min_ns": 59183.783736635,
+      "max_ns": 59658.87952184407,
+      "cv_percent": 0.3181189275994591,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 68857271.41846222
+      }
+    },
+    "BM_LayerComponent/BatchNorm/batch:16/f64:0/backward:0/real_time": {
+      "median_ns": 5984.922258471569,
+      "min_ns": 5870.509627730401,
+      "max_ns": 6180.51007685975,
+      "cv_percent": 2.122453217721413,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2673384.767421538
+      }
+    },
+    "BM_LayerComponent/BatchNorm/batch:16/f64:1/backward:0/real_time": {
+      "median_ns": 5820.458439570147,
+      "min_ns": 5723.968114064395,
+      "max_ns": 6085.950436737051,
+      "cv_percent": 2.9949769732011093,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 2748924.361563113
+      }
+    },
+    "BM_Network/CNN_Inference/32/real_time": {
+      "median_ns": 84240.89740669943,
+      "min_ns": 83848.87386892832,
+      "max_ns": 84922.47555964848,
+      "cv_percent": 0.48564389686278786,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 379862.99986228696,
+        "peak_tensor_bytes": 131072.0
+      }
+    },
+    "BM_Network/MLP_Inference/1/real_time": {
+      "median_ns": 1193.5012123861773,
+      "min_ns": 1182.1192436137558,
+      "max_ns": 1207.8029195557056,
+      "cv_percent": 0.7662713667208266,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 837870.954484153,
+        "peak_tensor_bytes": 512.0
+      }
+    },
+    "BM_Network/MLP_TrainingStep/1/real_time": {
+      "median_ns": 9620.924930770458,
+      "min_ns": 9595.626488237123,
+      "max_ns": 9768.589762954549,
+      "cv_percent": 0.7532009387584513,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 103940.11045671038,
+        "peak_tensor_bytes": 22140.0
+      }
+    },
+    "BM_Network/Transformer_TrainingStep/32/real_time": {
+      "median_ns": 326730.5208112946,
+      "min_ns": 326519.6237474547,
+      "max_ns": 330470.68304198055,
+      "cv_percent": 0.5185733601662654,
+      "repetitions": 5,
+      "counters": {
+        "items_per_second": 1567040.6264118466,
+        "peak_tensor_bytes": 1124372.0
+      }
+    }
+  }
+}

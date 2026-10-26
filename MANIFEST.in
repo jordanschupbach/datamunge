@@ -1,6 +1,22 @@
-include README.md
-include src/datamunge_python_wrap.cpp
-include src/datamunge_python_wrap.h
-recursive-include include *.h *.hpp
-recursive-include source *.c *.cc *.cpp *.cxx
+include README.md LICENSE* lib_sources.txt
+include src/datamunge_python_wrap.cpp src/datamunge_python_wrap.h
+recursive-include include *.h *.hpp *.i
+recursive-include src/datamunge *.h *.hpp *.c *.cc *.cpp *.cxx
+recursive-include src/pydatamunge *.py *.i
+# Optional, native-backed NN example extension (built only on explicit request).
+include scripts/prebuild_nn_examples.py
+recursive-include examples/bindings *.hpp *.i
+recursive-include examples/cpp/nn *.cpp
+recursive-include examples/nn/common *.hpp
+prune build
 
+include scripts/prebuild_nn_api.py src/nn_python_wrap.cpp
+recursive-include prebindings/nn *.i
+# Preserve handwritten language ports when regenerating from a source archive.
+recursive-include examples/python/nn *.py
+recursive-include examples/r/nn *.R
+recursive-include examples/bindings/r *.R
+
+include scripts/nn_migration_status.py
+recursive-include examples/nn *.cpp
+include examples/nn/language_status.json

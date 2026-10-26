@@ -31,32 +31,8 @@ struct EpisodeStats {
 };
 
 // Run `episodes` episodes of `env` choosing actions with `policy(obs)`.
-inline EpisodeStats RunEpisodes(Env& env, int episodes, uint64_t seed,
-                                const std::function<Action(const Obs&)>& policy) {
-  EpisodeStats stats;
-  for (int e = 0; e < episodes; ++e) {
-    Obs obs = env.reset(seed + e);
-    float ret = 0;
-    int len = 0;
-    while (true) {
-      StepResult r = env.step(policy(obs));
-      ret += r.reward;
-      ++len;
-      obs = r.obs;
-      if (r.done()) break;
-    }
-    stats.returns.push_back(ret);
-    stats.lengths.push_back(len);
-  }
-  return stats;
-}
 
 // Uniformly random actions.
-inline EpisodeStats RunRandom(Env& env, int episodes, uint64_t seed) {
-  std::mt19937_64 rng(seed);
-  const ActionSpace space = env.action_space();
-  return RunEpisodes(env, episodes, seed, [&](const Obs&) { return space.Sample(rng); });
-}
 
 inline void PrintStats(const std::string& label, const EpisodeStats& s) {
   std::printf("  %-32s return mean %8.2f  min %8.2f  max %8.2f   length mean %6.1f\n",

@@ -17,8 +17,8 @@
 //
 // Differences from TF: the "TF graph" side (Softmax, ArgMax, InTopK) is
 // written with nn tensor ops (InTopK: fewer than k strictly higher scores).
-// Box IoU and detection mAP are not in the library yet (plan P3 box
-// utilities), so they come from examples/nn/common/detection_metrics.hpp.
+// Box IoU comes from the library (nn::box_iou in boxes.hpp); detection mAP
+// is example code in examples/nn/common/detection_metrics.hpp.
 
 #include <algorithm>
 #include <cmath>

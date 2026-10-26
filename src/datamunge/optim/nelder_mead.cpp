@@ -38,6 +38,7 @@ double NelderMead::optimize(ArbitraryFunction& function, std::vector<double>& co
     for (std::size_t i = 0; i < simplex.size(); ++i) values[i] = function.evaluate(simplex[i]);
 
     std::vector<std::size_t> order(dimension + 1);
+    std::vector<double> centroid(dimension), reflected(dimension), expanded(dimension), contracted(dimension);
     for (std::size_t iteration = 0; iteration < options_.max_iterations; ++iteration) {
         std::iota(order.begin(), order.end(), 0);
         std::sort(order.begin(), order.end(), [&values](const std::size_t a, const std::size_t b) {
@@ -58,47 +59,44 @@ double NelderMead::optimize(ArbitraryFunction& function, std::vector<double>& co
         }
         if (max_distance <= options_.tolerance && values[worst] - values[best] <= options_.tolerance) break;
 
-        std::vector<double> centroid(dimension, 0.0);
+        std::fill(centroid.begin(), centroid.end(), 0.0);
         for (std::size_t rank = 0; rank < dimension; ++rank) {
             for (std::size_t j = 0; j < dimension; ++j) centroid[j] += simplex[order[rank]][j];
         }
         for (double& component : centroid) component /= static_cast<double>(dimension);
 
-        auto point_from_centroid = [&](const double factor) {
-            std::vector<double> point(dimension);
+        auto point_from_centroid = [&](const double factor, std::vector<double>& point) {
             for (std::size_t j = 0; j < dimension; ++j)
                 point[j] = centroid[j] + factor * (centroid[j] - simplex[worst][j]);
-            return point;
         };
-        auto reflected = point_from_centroid(options_.reflection);
+        point_from_centroid(options_.reflection, reflected);
         const double reflected_value = function.evaluate(reflected);
         if (reflected_value < values[best]) {
-            auto expanded = point_from_centroid(options_.expansion);
+            point_from_centroid(options_.expansion, expanded);
             const double expanded_value = function.evaluate(expanded);
             if (expanded_value < reflected_value) {
-                simplex[worst] = std::move(expanded);
+                simplex[worst].swap(expanded);
                 values[worst] = expanded_value;
             } else {
-                simplex[worst] = std::move(reflected);
+                simplex[worst].swap(reflected);
                 values[worst] = reflected_value;
             }
             continue;
         }
         if (reflected_value < values[second_worst]) {
-            simplex[worst] = std::move(reflected);
+            simplex[worst].swap(reflected);
             values[worst] = reflected_value;
             continue;
         }
 
         const bool outside = reflected_value < values[worst];
-        std::vector<double> contracted(dimension);
         for (std::size_t j = 0; j < dimension; ++j) {
             const double direction = outside ? reflected[j] - centroid[j] : simplex[worst][j] - centroid[j];
             contracted[j] = centroid[j] + options_.contraction * direction;
         }
         const double contracted_value = function.evaluate(contracted);
         if (contracted_value < (outside ? reflected_value : values[worst])) {
-            simplex[worst] = std::move(contracted);
+            simplex[worst].swap(contracted);
             values[worst] = contracted_value;
             continue;
         }

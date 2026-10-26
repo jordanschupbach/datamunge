@@ -1,0 +1,12 @@
+Package: datamungerNN
+Type: Package
+Title: Functional Datamunge Neural Network Bindings
+Version: 0.0.1
+Authors@R: person("Jordan", "Schupbach", role = c("aut", "cre"), email = "jordans1882@gmail.com")
+Description: SWIG bindings to the functional C++ neural network API, including tensors,
+    named parameters, layers, differentiation, optimizers and datasets.
+License: Unlicense
+Encoding: UTF-8
+Imports: methods
+Suggests: testthat
+SystemRequirements: C++23, GNU make

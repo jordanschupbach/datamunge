@@ -1,0 +1,15 @@
+test_that("functional layers differentiate and optimize", {
+  parameters <- nn$ParameterStore(11L)
+  inputs <- nn$from_vector(c(.1, .8, .7, .2), c(2L, 2L))
+  predictions <- nn$dense(parameters, "output", inputs, 2L, nn$Activation$Sigmoid)
+  loss <- nn$mean(nn$square(nn$sub(predictions, inputs)))
+  gradients <- nn$grad(loss, parameters$parameters())
+  expect_length(gradients, 2L)
+  expect_equal(parameters$names(), c("output/W", "output/b"))
+  configuration <- nn$OptimizerConfig()
+  configuration$kind <- nn$OptimizerKind$Adam
+  optimizer <- nn$Optimizer(parameters, .003, configuration)
+  before <- parameters$flatten()
+  optimizer$step(nn$tensor_vector(gradients))
+  expect_false(identical(before, parameters$flatten()))
+})

@@ -65,3 +65,10 @@ tmp/
 examples/mepml/figures/
 plans/
 /output/
+
+# Large raw benchmark archives; compact history summaries remain versionable.
+/benchmarks/history/runs/
+
+# R source packages and temporary SWIG staging directories.
+/datamunger_*.tar.gz
+/src/.swig-*/

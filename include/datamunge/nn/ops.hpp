@@ -262,6 +262,10 @@ Tensor argsort(const Tensor& x, bool descending = false);
 
 /// Batched matrix product over the last two axes. Leading (batch) axes
 /// broadcast, as in TF BatchMatMulV2. Both inputs need rank >= 2.
+/// Results are deterministic for fixed shapes, but not batch-invariant: the
+/// BLAS kernel blocks the reduction differently for different row counts, so
+/// one row of a [N, K] x [K, M] product can differ in the last bits (~1e-6
+/// relative in float32) from the same row computed with a different N.
 Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a = false, bool transpose_b = false);
 /// x + bias along the last axis (NHWC channels).
 Tensor bias_add(const Tensor& x, const Tensor& bias);

@@ -1,5 +1,7 @@
 #include "datamunge/nn/tensor.hpp"
 
+#include "datamunge/nn/memory.hpp"
+
 #include <cmath>
 #include <cstring>
 #include <iomanip>
@@ -334,7 +336,13 @@ std::ostream& operator<<(std::ostream& out, const Tensor& tensor) { return out <
 
 Tensor empty(const Shape& shape, DType dtype) {
   auto impl     = std::make_shared<TensorImpl>();
-  impl->storage = std::make_shared<Storage>(static_cast<std::size_t>(shape_numel(shape)) * dtype_size(dtype));
+  // A deleter (rather than make_shared) lets nn/memory.hpp count live bytes.
+  const std::size_t nbytes = static_cast<std::size_t>(shape_numel(shape)) * dtype_size(dtype);
+  impl->storage = std::shared_ptr<Storage>(new Storage(nbytes), [](Storage* s) {
+    detail::note_storage_free(static_cast<std::int64_t>(s->nbytes));
+    delete s;
+  });
+  detail::note_storage_alloc(static_cast<std::int64_t>(nbytes));
   impl->shape   = shape;
   impl->strides = contiguous_strides(shape);
   impl->dtype   = dtype;
@@ -426,6 +434,17 @@ Tensor cast(const Tensor& x, DType dtype) {
     });
   }
   return out;
+}
+
+bool equal_bits(const Tensor& a, const Tensor& b) {
+  if (!a.defined() || !b.defined()) return a.defined() == b.defined();
+  if (a.dtype() != b.dtype() || a.shape() != b.shape()) return false;
+  if (a.numel() == 0) return true;
+  const Tensor      pa = a.contiguous(), pb = b.contiguous();
+  const std::size_t width = dtype_size(a.dtype());
+  const auto*       da = pa.impl()->storage->bytes.get() + static_cast<std::size_t>(pa.offset()) * width;
+  const auto*       db = pb.impl()->storage->bytes.get() + static_cast<std::size_t>(pb.offset()) * width;
+  return std::memcmp(da, db, static_cast<std::size_t>(a.numel()) * width) == 0;
 }
 
 }  // namespace datamunge::nn
