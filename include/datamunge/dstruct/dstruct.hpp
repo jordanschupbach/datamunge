@@ -1,7 +1,27 @@
 #pragma once
 
 #include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/dstruct/associative.hpp>
+#include <datamunge/dstruct/association_list.hpp>
+#include <datamunge/dstruct/array_variants.hpp>
+#include <datamunge/dstruct/bloom_filter.hpp>
+#include <datamunge/dstruct/bitmap.hpp>
+#include <datamunge/dstruct/count_min_sketch.hpp>
+#include <datamunge/dstruct/control_table.hpp>
+#include <datamunge/dstruct/dag.hpp>
+#include <datamunge/dstruct/dope_vector.hpp>
+#include <datamunge/dstruct/dary_heap.hpp>
+#include <datamunge/dstruct/matrix.hpp>
+#include <datamunge/dstruct/general_trees.hpp>
+#include <datamunge/dstruct/image.hpp>
+#include <datamunge/dstruct/foundational.hpp>
+#include <datamunge/dstruct/free_list.hpp>
+#include <datamunge/dstruct/gap_buffer.hpp>
+#include <datamunge/dstruct/self_organizing_list.hpp>
 #include <datamunge/dstruct/directed_graph.hpp>
 #include <datamunge/dstruct/threadsafe_vector.hpp>
+#include <datamunge/dstruct/tree_indexes.hpp>
 #include <datamunge/dstruct/undirected_graph.hpp>
 #include <datamunge/dstruct/weighted_graph.hpp>
+#include <datamunge/dstruct/value_types.hpp>
+#include <datamunge/dstruct/variable_length_array.hpp>

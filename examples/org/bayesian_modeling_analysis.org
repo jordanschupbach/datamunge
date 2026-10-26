@@ -1,16 +1,14 @@
 #+title: Bayesian Modeling: MAP, Hamiltonian Monte Carlo, and the No-U-Turn Sampler
 #+subtitle: A literate C++ study of gradient-based Bayesian inference using datamunge
 #+options: toc:t num:t
-#+property: header-args:shell :dir ../.. :results output verbatim :exports both
-#+property: header-args :noweb yes
 
 #+begin_abstract
 We fit two Bayesian models with =datamunge='s C++ =bayes= module -- a
 Normal-Normal conjugate model with a known closed-form posterior, and a
 Bayesian logistic regression on iris with no closed form at all -- and
-report it as a literate program: every fragment below is a real,
-compiled, executed chunk of the single C++ binary that produced every
-number and figure in this document. On the conjugate model, three
+report it as a literate program: the C++ in §3.3.6 is the real, compiled,
+executed source of the single binary that produced every number and
+figure in this document. On the conjugate model, three
 different inference methods are checked directly against the exact
 posterior $N(2.0767, 0.3156^2)$: L-BFGS-based MAP recovers the posterior
 mode to four decimal places ($\mu=2.0767$); Hamiltonian Monte Carlo (HMC)
@@ -35,8 +33,8 @@ implements it.
 * Introduction
 
 Every classical inference report in this project so far -- including the
-[[file:hypothesis_tests_analysis.org][hypothesis tests companion
-report]] -- has asked a frequentist question: given the data, how
+[[file:hypothesis_tests_analysis.org][hypothesis tests companion report]] -- 
+has asked a frequentist question: given the data, how
 surprising is a fixed null hypothesis, or what single point estimate
 best explains it? Bayesian inference asks a different question
 entirely: given a *prior* belief about a parameter and the data actually
@@ -60,16 +58,15 @@ logistic regression -- and compares the result against the frequentist
 maximum-likelihood fit already familiar from the
 [[file:glm_iris_analysis.org][GLM companion report]].
 
-As with its companions, this document is a /literate program/: prose and
-source are interleaved in reading order, and a single "assembling the
-program" step (§3.3.6) weaves every named chunk below into one =.cpp=
-file, compiles it, and runs it. Every number and figure from §4 onward is
-that program's literal output.
+As with its companions, this document is a /literate program/: §3.3 walks
+through the program part by part in the order it is written, and §3.3.6 is
+that program -- a single C++ block Babel compiles and runs. Every number and
+figure from §4 onward is its literal output.
 
 §2 derives the Bayesian inference problem, MAP estimation, Hamiltonian
 dynamics, the leapfrog integrator, dual-averaging adaptation, and NUTS's
 trajectory doubling, each tied to the specific library call that
-implements it. §3 describes the program chunk by chunk. §4 reports the
+implements it. §3 describes the program part by part. §4 reports the
 results of both models alongside three figures. §5 discusses what
 checking against a closed-form posterior actually buys us, and what the
 logistic regression's separation behavior means. §6 concludes.
@@ -235,12 +232,74 @@ returning an =autodiff::Var= log-density, matching the way Stan models
 are written as a sequence of distribution statements rather than as a
 formula string.
 
-** Program, presented as a literate whole
+** The program, part by part
+
+The whole program is one C++ block (§3.3.6); the subsections below
+walk through its parts in the order they appear in it.
 
 *** Includes and helpers
 
-#+name: bayes-includes
-#+begin_src c++ :eval no
+The includes, the three =using= groups and the two small statistics
+helpers (=mean_of= / =sd_of=) mirror the reference example
+(=examples/cpp/source/bayes_ex.cpp=), extended here with three =RPlot=
+visualizations.
+
+*** The conjugate model: exact posterior, MAP, HMC, and NUTS
+
+The exact posterior mean/SD the program computes come directly from the
+standard conjugate-update formula for a Normal likelihood with known
+variance and
+a Normal prior (§2.1's normalizing-constant obstacle disappears
+entirely in this special case, since the posterior is available in closed
+form) --
+this is the ground truth every inference method below is checked
+against.
+
+*** Visualizing the conjugate posterior
+
+Note that =RPlot::curve()= (used elsewhere in this project to plot a
+mathematical function directly) is a *static factory* method like
+=RPlot::boxplot()= / =RPlot::hist()=, not a chainable instance method like
+=RPlot::lines()= -- calling it on an existing plot object returns a
+*brand-new*, independent =RPlot= rather than adding a series to the one
+already built. This report evaluates the exact posterior density at 200
+points directly and adds it via =RPlot::lines()= instead, exactly the
+technique the [[file:hypothesis_tests_analysis.org][hypothesis tests report]]'s 
+own boxplot fix (a genuine library bug, unlike this one) grew
+out of the same kind of careful figure-by-figure verification.
+
+*** Bayesian logistic regression vs. GLM's MLE
+
+Three estimates of the same two coefficients, differing only in what
+regularization they apply: =stats::GLM= fits the frequentist
+maximum-likelihood model from a =DataFrame= and a formula, and the same
+hundred flowers then go through an =AutodiffModel= that sums a weak
+$N(0, 10)$ prior on each coefficient with a =bernoulli_logit_lpmf= term
+per observation -- fitted by =MAP= and sampled by =NUTS= (1000 warmup,
+3000 post-warmup draws).
+
+*** Visualizing the shrinkage
+
+All three fitted probability curves are evaluated on the same 200-point
+petal-length grid and drawn together, which is what turns the numerical
+gap between the MLE's slope and the two Bayesian ones into something
+visible.
+
+*** The program
+
+Here it is in full -- one =C++= block, not a =shell= block writing out a
+=.cpp= file and not a set of fragments woven together by =<<name>>=
+references: Babel compiles and runs exactly what is printed below. The
+=$(pkg-config ...)= substitutions in =:flags= and =:libs= are expanded
+before the compiler is invoked, so the include and library paths come
+from =datamunge='s own installed =.pc= file instead of being hard-coded
+here, and =:main no= says the body already supplies its own =main=.
+
+#+name: bayes-analysis
+#+header: :main no :dir ../.. :results output verbatim :exports results
+#+header: :flags -std=c++20 -O2 $(pkg-config --cflags datamunge)
+#+header: :libs $(pkg-config --libs datamunge)
+#+begin_src C++
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/datamunge.hpp>
 #include <datamunge/datasets/datasets.hpp>
@@ -249,6 +308,7 @@ formula string.
 #include <datamunge/stats/glm.hpp>
 
 #include <cmath>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 
@@ -267,40 +327,37 @@ using datamunge::bayes::normal_lpdf;
 
 namespace {
 
-void print_vec(const std::vector<double>& v) {
+void print_vec(const std::vector<double> &v) {
     std::cout << "[";
     for (std::size_t i = 0; i < v.size(); ++i) std::cout << (i ? ", " : "") << v[i];
     std::cout << "]";
 }
 
-double mean_of(const std::vector<std::vector<double>>& samples, std::size_t dim) {
+double mean_of(const std::vector<std::vector<double>> &samples, std::size_t dim) {
     double s = 0.0;
-    for (const auto& row : samples) s += row[dim];
+    for (const auto &row : samples) s += row[dim];
     return s / static_cast<double>(samples.size());
 }
 
-double sd_of(const std::vector<std::vector<double>>& samples, std::size_t dim,
-             double mean) {
+double sd_of(const std::vector<std::vector<double>> &samples, std::size_t dim, double mean) {
     double s = 0.0;
-    for (const auto& row : samples) {
+    for (const auto &row : samples) {
         const double d = row[dim] - mean;
         s += d * d;
     }
     return std::sqrt(s / static_cast<double>(samples.size() - 1));
 }
 
-} // namespace
-#+end_src
+}  // namespace
 
-This mirrors the reference example (=examples/cpp/source/bayes_ex.cpp=),
-extended below with three =RPlot= visualizations.
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+    // The figures below are written here; the program makes its own
+    // output directory rather than relying on a prior shell step.
+    std::filesystem::create_directories("build/org");
 
-*** The conjugate model: exact posterior, MAP, HMC, and NUTS
-
-#+name: bayes-conjugate-setup
-#+begin_src c++ :eval no
-    std::cout << "=== Normal-Normal conjugate model:"
-                 " MAP, HMC, NUTS vs. the exact posterior ===\n";
+    std::cout <<
+        "=== Normal-Normal conjugate model:" " MAP, HMC, NUTS vs. the exact posterior ===\n";
     const std::vector<double> y{2.1, 1.8, 2.5, 2.0, 1.9, 2.3, 2.2, 1.7, 2.4, 1.95};
     constexpr double sigma = 1.0, mu0 = 0.0, tau0 = 5.0;
 
@@ -308,32 +365,20 @@ extended below with three =RPlot= visualizations.
     for (const double v : y) sum_y += v;
     const double n = static_cast<double>(y.size());
     const double precision_post = 1.0 / (tau0 * tau0) + n / (sigma * sigma);
-    const double exact_mean =
-        (mu0 / (tau0 * tau0) + sum_y / (sigma * sigma)) / precision_post;
+    const double exact_mean = (mu0 / (tau0 * tau0) + sum_y / (sigma * sigma)) / precision_post;
     const double exact_sd = std::sqrt(1.0 / precision_post);
     std::cout << "Exact posterior: N(" << exact_mean << ", " << exact_sd << "^2)\n\n";
 
-    AutodiffModel conjugate_model([&](Tape&, const std::vector<Var>& params) {
-        Var lp = normal_lpdf(params[0], mu0, tau0);
-        for (const double yi : y) lp = lp + normal_lpdf(yi, params[0], sigma);
-        return lp;
+    AutodiffModel conjugate_model([&](Tape &, const std::vector<Var> & params) {
+        Var lp =
+            normal_lpdf(params[0], mu0, tau0); for (const double yi : y) lp =
+            lp + normal_lpdf(yi, params[0], sigma); return lp;
     });
-#+end_src
 
-The exact posterior mean/SD above come directly from the standard
-conjugate-update formula for a Normal likelihood with known variance and
-a Normal prior (§2.1's normalizing-constant obstacle disappears entirely
-in this special case, since the posterior is available in closed form) --
-this is the ground truth every inference method below is checked
-against.
-
-#+name: bayes-conjugate-fit
-#+begin_src c++ :eval no
     {
         std::vector<double> coords{0.0};
         const double log_post = MAP().optimize(conjugate_model, coords);
-        std::cout << "MAP:  mu = " << coords[0]
-                   << " (log-posterior = " << log_post << ")\n";
+        std::cout << "MAP:  mu = " << coords[0] << " (log-posterior = " << log_post << ")\n";
     }
     std::vector<std::vector<double>> nuts_samples;
     {
@@ -345,9 +390,8 @@ against.
         const auto result = HMC(options).sample(conjugate_model, {0.0});
         const double m = mean_of(result.samples, 0);
         const double s = sd_of(result.samples, 0, m);
-        std::cout << "HMC:  mu ~ N(" << m << ", " << s << "^2), accept rate = "
-                  << result.accept_rate
-                  << ", step size = " << result.final_step_size << "\n";
+        std::cout << "HMC:  mu ~ N(" << m << ", " << s << "^2), accept rate = " <<
+            result.accept_rate << ", step size = " << result.final_step_size << "\n";
     }
     {
         NUTSOptions options;
@@ -358,21 +402,15 @@ against.
         nuts_samples = result.samples;
         const double m = mean_of(result.samples, 0);
         const double s = sd_of(result.samples, 0, m);
-        std::cout << "NUTS: mu ~ N(" << m << ", " << s << "^2), accept rate = "
-                  << result.accept_rate
-                  << ", step size = " << result.final_step_size
-                  << ", divergences = " << result.num_divergences << "\n";
+        std::cout << "NUTS: mu ~ N(" << m << ", " << s << "^2), accept rate = " <<
+            result.accept_rate << ", step size = " << result.final_step_size <<
+            ", divergences = " << result.num_divergences << "\n";
     }
-#+end_src
 
-*** Visualizing the conjugate posterior
-
-#+name: bayes-conjugate-figures
-#+begin_src c++ :eval no
     {
         std::vector<double> mu_samples;
         mu_samples.reserve(nuts_samples.size());
-        for (const auto& row : nuts_samples) mu_samples.push_back(row[0]);
+        for (const auto &row : nuts_samples) mu_samples.push_back(row[0]);
 
         constexpr std::size_t bins = 40;
         double lo = *std::min_element(mu_samples.begin(), mu_samples.end());
@@ -381,8 +419,7 @@ against.
         std::vector<double> counts(bins, 0.0);
         for (double v : mu_samples) {
             auto idx = static_cast<std::ptrdiff_t>((v - lo) / bin_width);
-            idx = std::clamp<std::ptrdiff_t>(idx, 0,
-                                              static_cast<std::ptrdiff_t>(bins) - 1);
+            idx = std::clamp<std::ptrdiff_t>(idx, 0, static_cast<std::ptrdiff_t>(bins) - 1);
             counts[static_cast<std::size_t>(idx)] += 1.0;
         }
         std::vector<double> centers(bins), density(bins);
@@ -397,20 +434,18 @@ against.
         constexpr std::size_t n_curve = 200;
         std::vector<double> curve_x(n_curve), curve_y(n_curve);
         for (std::size_t i = 0; i < n_curve; ++i) {
-            const double x = lo + (hi - lo) * static_cast<double>(i)
-                                       / static_cast<double>(n_curve - 1);
+            const double x =
+                lo + (hi - lo) * static_cast<double>(i) / static_cast<double>(n_curve - 1);
             const double z = (x - exact_mean) / exact_sd;
             curve_x[i] = x;
-            curve_y[i] = std::exp(-0.5 * z * z)
-                         / (exact_sd * std::sqrt(2.0 * 3.14159265358979323846));
+            curve_y[i] =
+                std::exp(-0.5 * z * z) / (exact_sd * std::sqrt(2.0 * 3.14159265358979323846));
         }
         plot.lines(curve_x, curve_y, "exact posterior", {220, 38, 38}, 2.5);
-        plot.legend({"NUTS samples", "exact posterior"},
-                    {{96, 165, 250}, {220, 38, 38}});
-        plot.title("NUTS posterior samples vs. exact posterior density")
-            .x_label("mu")
-            .y_label("density");
-        plot.save_svg("build/org/bayes_posterior_density.svg");
+        plot.legend({"NUTS samples", "exact posterior"}, {{96, 165, 250}, {220, 38, 38}});
+        plot.title("NUTS posterior samples vs. exact posterior density").x_label("mu").y_label(
+            "density");
+        plot.save_svg("examples/org/bayes_posterior_density.svg");
         std::cout << "wrote bayes_posterior_density.svg\n";
     }
     {
@@ -420,29 +455,11 @@ against.
             mu_samples[i] = nuts_samples[i][0];
         }
         auto trace = RPlot::plot(idx, mu_samples, "l", "mu");
-        trace.title("NUTS trace plot: mu")
-            .x_label("post-warmup iteration")
-            .y_label("mu");
+        trace.title("NUTS trace plot: mu").x_label("post-warmup iteration").y_label("mu");
         trace.save_svg("build/org/bayes_nuts_trace.svg");
         std::cout << "wrote bayes_nuts_trace.svg\n";
     }
-#+end_src
 
-Note that =RPlot::curve()= (used elsewhere in this project to plot a
-mathematical function directly) is a *static factory* method like
-=RPlot::boxplot()= / =RPlot::hist()=, not a chainable instance method like
-=RPlot::lines()= -- calling it on an existing plot object returns a
-*brand-new*, independent =RPlot= rather than adding a series to the one
-already built. This report evaluates the exact posterior density at 200
-points directly and adds it via =RPlot::lines()= instead, exactly the
-technique the [[file:hypothesis_tests_analysis.org][hypothesis tests
-report]]'s own boxplot fix (a genuine library bug, unlike this one) grew
-out of the same kind of careful figure-by-figure verification.
-
-*** Bayesian logistic regression vs. GLM's MLE
-
-#+name: bayes-logistic-setup
-#+begin_src c++ :eval no
     std::cout << "\n=== Bayesian logistic regression vs. GLM's MLE (iris) ===\n";
     const auto iris = datamunge::datasets::iris();
     std::vector<double> is_virginica, petal_length;
@@ -461,15 +478,14 @@ out of the same kind of careful figure-by-figure verification.
     std::cout << "GLM MLE:        ";
     print_vec(glm.coefficients());
     std::cout << "\n";
-#+end_src
 
-#+name: bayes-logistic-fit
-#+begin_src c++ :eval no
-    AutodiffModel logistic_model([&](Tape&, const std::vector<Var>& params) {
-        Var lp = normal_lpdf(params[0], 0.0, 10.0) + normal_lpdf(params[1], 0.0, 10.0);
-        for (std::size_t i = 0; i < petal_length.size(); ++i) {
-            const Var eta = params[0] + params[1] * petal_length[i];
-            lp = lp + bernoulli_logit_lpmf(is_virginica[i], eta);
+    AutodiffModel logistic_model([&](Tape &, const std::vector<Var> & params) {
+        Var lp =
+            normal_lpdf(params[0], 0.0, 10.0) + normal_lpdf(params[1], 0.0, 10.0); for (
+            std::size_t i = 0; i < petal_length.size(); ++i) {
+            const Var eta =
+                params[0] + params[1] * petal_length[i]; lp =
+                lp + bernoulli_logit_lpmf(is_virginica[i], eta);
         }
         return lp;
     });
@@ -489,20 +505,12 @@ out of the same kind of careful figure-by-figure verification.
         const auto result = NUTS(options).sample(logistic_model, {0.0, 0.0});
         nuts_mean0 = mean_of(result.samples, 0);
         nuts_mean1 = mean_of(result.samples, 1);
-        std::cout << "Bayes NUTS mean: [" << nuts_mean0 << ", " << nuts_mean1
-                  << "] (posterior mean, accept rate = " << result.accept_rate << ")\n";
+        std::cout << "Bayes NUTS mean: [" << nuts_mean0 << ", " << nuts_mean1 <<
+            "] (posterior mean, accept rate = " << result.accept_rate << ")\n";
     }
-    std::cout << "(Petal.Length nearly separates these two species,\n"
-                 " so the unregularized MLE inflates toward the separating\n"
-                 " boundary; the weak Normal(0, 10) prior visibly pulls the\n"
-                 " Bayesian estimate back -- a real, expected difference,\n"
-                 " not a bug.)\n";
-#+end_src
+    std::cout <<
+        "(Petal.Length nearly separates these two species,\n" " so the unregularized MLE inflates toward the separating\n" " boundary; the weak Normal(0, 10) prior visibly pulls the\n" " Bayesian estimate back -- a real, expected difference,\n" " not a bug.)\n";
 
-*** Visualizing the shrinkage
-
-#+name: bayes-logistic-figure
-#+begin_src c++ :eval no
     {
         double lo = *std::min_element(petal_length.begin(), petal_length.end());
         double hi = *std::max_element(petal_length.begin(), petal_length.end());
@@ -510,8 +518,8 @@ out of the same kind of careful figure-by-figure verification.
         constexpr std::size_t n_pts = 200;
         std::vector<double> xs(n_pts), glm_p(n_pts), map_p(n_pts), nuts_p(n_pts);
         for (std::size_t i = 0; i < n_pts; ++i) {
-            const double x = lo + (hi - lo) * static_cast<double>(i)
-                                       / static_cast<double>(n_pts - 1);
+            const double x =
+                lo + (hi - lo) * static_cast<double>(i) / static_cast<double>(n_pts - 1);
             xs[i] = x;
             glm_p[i] = 1.0 / (1.0 + std::exp(-(glm_coef[0] + glm_coef[1] * x)));
             map_p[i] = 1.0 / (1.0 + std::exp(-(map_coords[0] + map_coords[1] * x)));
@@ -523,52 +531,55 @@ out of the same kind of careful figure-by-figure verification.
         plot.lines(xs, nuts_p, "Bayes NUTS mean", {22, 163, 74});
         plot.legend({"GLM MLE", "Bayes MAP", "Bayes NUTS mean"},
                     {{220, 38, 38}, {96, 165, 250}, {22, 163, 74}});
-        plot.title("P(virginica) vs. petal length: MLE vs. weakly-regularized Bayes")
-            .x_label("Petal length (cm)")
-            .y_label("P(virginica)");
+        plot.title("P(virginica) vs. petal length: MLE vs. weakly-regularized Bayes").x_label(
+            "Petal length (cm)").y_label("P(virginica)");
         plot.save_svg("build/org/bayes_logistic_curves.svg");
         std::cout << "wrote bayes_logistic_curves.svg\n";
     }
-#+end_src
-
-*** Assembling and running the program
-
-#+begin_export latex
-\tiny
-#+end_export
-#+begin_src shell :exports results :dir ../../
-set -euo pipefail
-mkdir -p build/org
-cat > build/org/bayes_analysis.cpp <<'CPP'
-<<bayes-includes>>
-
-int main() {
-    std::cout << std::fixed << std::setprecision(4);
-
-<<bayes-conjugate-setup>>
-
-<<bayes-conjugate-fit>>
-
-<<bayes-conjugate-figures>>
-
-<<bayes-logistic-setup>>
-
-<<bayes-logistic-fit>>
-
-<<bayes-logistic-figure>>
 
     return 0;
 }
-CPP
-
-c++ -std=c++20 -O2 build/org/bayes_analysis.cpp -o build/org/bayes_analysis \
-  $(pkg-config --cflags --libs datamunge)
-
-./build/org/bayes_analysis
 #+end_src
-#+begin_export latex
-\normalsize
-#+end_export
+#+RESULTS: bayes-analysis
+=== Normal-Normal conjugate model: MAP, HMC, NUTS vs. the exact posterior ===
+Exact posterior: N(2.0767, 0.3156^2)
+
+MAP:  mu = 2.0767 (log-posterior = -12.1145)
+HMC:  mu ~ N(2.0737, 0.3129^2), accept rate = 0.7898, step size = 0.4452
+NUTS: mu ~ N(2.0813, 0.3076^2), accept rate = 0.8369, step size = 0.4156, divergences = 1
+wrote bayes_posterior_density.svg
+wrote bayes_nuts_trace.svg
+
+=== Bayesian logistic regression vs. GLM's MLE (iris) ===
+GLM MLE:        [-43.7809, 9.0020]
+#+RESULTS: bayes-analysis
+=== Normal-Normal conjugate model: MAP, HMC, NUTS vs. the exact posterior ===
+Exact posterior: N(2.0767, 0.3156^2)
+
+MAP:  mu = 2.0767 (log-posterior = -12.1145)
+HMC:  mu ~ N(2.0737, 0.3129^2), accept rate = 0.7898, step size = 0.4452
+NUTS: mu ~ N(2.0813, 0.3076^2), accept rate = 0.8369, step size = 0.4156, divergences = 1
+wrote bayes_posterior_density.svg
+wrote bayes_nuts_trace.svg
+
+=== Bayesian logistic regression vs. GLM's MLE (iris) ===
+GLM MLE:        [-43.7809, 9.0020]
+Bayes MAP:      [-26.5388, 5.4588] (weak Normal(0, 10) priors)
+Bayes NUTS mean: [-27.8953, 5.7351] (posterior mean, accept rate = 0.8450)
+(Petal.Length nearly separates these two species,
+ so the unregularized MLE inflates toward the separating
+ boundary; the weak Normal(0, 10) prior visibly pulls the
+ Bayesian estimate back -- a real, expected difference,
+ not a bug.)
+wrote bayes_logistic_curves.svg
+Bayes MAP:      [-26.5388, 5.4588] (weak Normal(0, 10) priors)
+Bayes NUTS mean: [-27.8953, 5.7351] (posterior mean, accept rate = 0.8450)
+(Petal.Length nearly separates these two species,
+ so the unregularized MLE inflates toward the separating
+ boundary; the weak Normal(0, 10) prior visibly pulls the
+ Bayesian estimate back -- a real, expected difference,
+ not a bug.)
+wrote bayes_logistic_curves.svg
 
 * Results
 
@@ -642,7 +653,7 @@ reasonably well-behaved (here, two-dimensional but still smooth and
 unimodal) posterior.
 
 #+ATTR_HTML: :alt Fitted probability curves comparing the GLM maximum-likelihood fit against the Bayes MAP and NUTS posterior-mean fits :width 100%
-[[file:../../build/org/bayes_logistic_curves.svg]]
+[[file:bayes_logistic_curves.svg]]
 
 The fitted curves make the regularization effect directly visible: the
 red MLE curve is noticeably steeper -- closer to a step function -- than
@@ -712,7 +723,7 @@ beyond both Bayesian estimates under a merely weakly-informative prior,
 visible directly in the fitted probability curves. As with its
 companions, this entire report is reproducible end to end via
 =just org-example bayesian_modeling_analysis=, which re-executes
-§3.3.6's assembly block -- and therefore every number and figure above --
+§3.3.6's program block -- and therefore every number and figure above --
 from the =datamunge= source tree.
 
 * References

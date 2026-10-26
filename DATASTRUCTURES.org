@@ -1,0 +1,1187 @@
+* DONE Array
+** Plan
+- [ ] Specify the Array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Record
+** Plan
+- [ ] Specify the Record API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Product type
+** Plan
+- [ ] Specify the Product type API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO String
+** Plan
+- [ ] Specify the String API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Union
+** Plan
+- [ ] Specify the Union API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Tagged union
+** Plan
+- [ ] Specify the Tagged union API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Container
+** Plan
+- [ ] Specify the Container API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE List
+** Plan
+- [ ] Specify the List API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Tuple
+** Plan
+- [ ] Specify the Tuple API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Associative array
+** Plan
+- [ ] Specify the Associative array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Multimap
+** Plan
+- [ ] Specify the Multimap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Set
+** Plan
+- [ ] Specify the Set API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Multiset
+** Plan
+- [ ] Specify the Multiset API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Stack
+** Plan
+- [ ] Specify the Stack API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Queue
+** Plan
+- [ ] Specify the Queue API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Double-ended queue
+** Plan
+- [ ] Specify the Double-ended queue API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Graph
+** Plan
+- [ ] Specify the Graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Bit array
+** Plan
+- [ ] Specify the Bit array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Bit field
+** Plan
+- [ ] Specify the Bit field API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Bitboard
+** Plan
+- [ ] Specify the Bitboard API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Bitmap
+** Plan
+- [ ] Specify the Bitmap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Circular buffer
+** Plan
+- [ ] Specify the Circular buffer API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Control table
+** Plan
+- [ ] Specify the Control table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Image
+** Plan
+- [ ] Specify the Image API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Dope vector
+** Plan
+- [ ] Specify the Dope vector API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Dynamic array
+** Plan
+- [ ] Specify the Dynamic array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Gap buffer
+** Plan
+- [ ] Specify the Gap buffer API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hashed array tree
+** Plan
+- [ ] Specify the Hashed array tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Lookup table
+** Plan
+- [ ] Specify the Lookup table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Matrix
+** Plan
+- [ ] Specify the Matrix API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Parallel array
+** Plan
+- [ ] Specify the Parallel array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Sorted array
+** Plan
+- [ ] Specify the Sorted array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Sparse matrix
+** Plan
+- [ ] Specify the Sparse matrix API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Iliffe vector
+** Plan
+- [ ] Specify the Iliffe vector API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Variable-length array
+** Plan
+- [ ] Specify the Variable-length array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Doubly linked list
+** Plan
+- [ ] Specify the Doubly linked list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Array list
+** Plan
+- [ ] Specify the Array list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Linked list
+** Plan
+- [ ] Specify the Linked list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Association list
+** Plan
+- [ ] Specify the Association list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Self-organizing list
+** Plan
+- [ ] Specify the Self-organizing list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Skip list
+** Plan
+- [ ] Specify the Skip list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Unrolled linked list
+** Plan
+- [ ] Specify the Unrolled linked list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO VList
+** Plan
+- [ ] Specify the VList API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Conc-tree list
+** Plan
+- [ ] Specify the Conc-tree list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO XOR linked list
+** Plan
+- [ ] Specify the XOR linked list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Zipper
+** Plan
+- [ ] Specify the Zipper API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Doubly connected edge list
+** Plan
+- [ ] Specify the Doubly connected edge list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Difference list
+** Plan
+- [ ] Specify the Difference list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Free list
+** Plan
+- [ ] Specify the Free list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO AA tree
+** Plan
+- [ ] Specify the AA tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO AVL tree
+** Plan
+- [ ] Specify the AVL tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Binary search tree
+** Plan
+- [ ] Specify the Binary search tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Binary tree
+** Plan
+- [ ] Specify the Binary tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Cartesian tree
+** Plan
+- [ ] Specify the Cartesian tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Left-child right-sibling binary tree
+** Plan
+- [ ] Specify the Left-child right-sibling binary tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Order statistic tree
+** Plan
+- [ ] Specify the Order statistic tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Pagoda
+** Plan
+- [ ] Specify the Pagoda API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Randomized binary search tree
+** Plan
+- [ ] Specify the Randomized binary search tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Red-black tree
+** Plan
+- [ ] Specify the Red-black tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Rope
+** Plan
+- [ ] Specify the Rope API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Scapegoat tree
+** Plan
+- [ ] Specify the Scapegoat tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Self-balancing binary search tree
+** Plan
+- [ ] Specify the Self-balancing binary search tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Splay tree
+** Plan
+- [ ] Specify the Splay tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO T-tree
+** Plan
+- [ ] Specify the T-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Tango tree
+** Plan
+- [ ] Specify the Tango tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Threaded binary tree
+** Plan
+- [ ] Specify the Threaded binary tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Top tree
+** Plan
+- [ ] Specify the Top tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Treap
+** Plan
+- [ ] Specify the Treap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO WAVL tree
+** Plan
+- [ ] Specify the WAVL tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Weight-balanced tree
+** Plan
+- [ ] Specify the Weight-balanced tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Zip tree
+** Plan
+- [ ] Specify the Zip tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO B-tree
+** Plan
+- [ ] Specify the B-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO B+ tree
+** Plan
+- [ ] Specify the B+ tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO B*-tree
+** Plan
+- [ ] Specify the B*-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Dancing tree
+** Plan
+- [ ] Specify the Dancing tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO 2-3 tree
+** Plan
+- [ ] Specify the 2-3 tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO 2-3-4 tree
+** Plan
+- [ ] Specify the 2-3-4 tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Queap
+** Plan
+- [ ] Specify the Queap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Fusion tree
+** Plan
+- [ ] Specify the Fusion tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Bx-tree
+** Plan
+- [ ] Specify the Bx-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Heap
+** Plan
+- [ ] Specify the Heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Min-max heap
+** Plan
+- [ ] Specify the Min-max heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Binary heap
+** Plan
+- [ ] Specify the Binary heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO B-heap
+** Plan
+- [ ] Specify the B-heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Weak heap
+** Plan
+- [ ] Specify the Weak heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Binomial heap
+** Plan
+- [ ] Specify the Binomial heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Fibonacci heap
+** Plan
+- [ ] Specify the Fibonacci heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO AF-heap
+** Plan
+- [ ] Specify the AF-heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Leonardo heap
+** Plan
+- [ ] Specify the Leonardo heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO 2-3 heap
+** Plan
+- [ ] Specify the 2-3 heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Soft heap
+** Plan
+- [ ] Specify the Soft heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Pairing heap
+** Plan
+- [ ] Specify the Pairing heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Leftist heap
+** Plan
+- [ ] Specify the Leftist heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Beap
+** Plan
+- [ ] Specify the Beap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Skew heap
+** Plan
+- [ ] Specify the Skew heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Ternary heap
+** Plan
+- [ ] Specify the Ternary heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE D-ary heap
+** Plan
+- [ ] Specify the D-ary heap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Brodal queue
+** Plan
+- [ ] Specify the Brodal queue API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Radix tree
+** Plan
+- [ ] Specify the Radix tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Suffix tree
+** Plan
+- [ ] Specify the Suffix tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Suffix array
+** Plan
+- [ ] Specify the Suffix array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Compressed suffix array
+** Plan
+- [ ] Specify the Compressed suffix array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO FM-index
+** Plan
+- [ ] Specify the FM-index API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Generalised suffix tree
+** Plan
+- [ ] Specify the Generalised suffix tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Judy array
+** Plan
+- [ ] Specify the Judy array API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Trie
+** Plan
+- [ ] Specify the Trie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO X-fast trie
+** Plan
+- [ ] Specify the X-fast trie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Y-fast trie
+** Plan
+- [ ] Specify the Y-fast trie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Merkle tree
+** Plan
+- [ ] Specify the Merkle tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Ternary search tree
+** Plan
+- [ ] Specify the Ternary search tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Ternary tree
+** Plan
+- [ ] Specify the Ternary tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE K-ary tree
+** Plan
+- [ ] Specify the K-ary tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO And-or tree
+** Plan
+- [ ] Specify the And-or tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO (a,b)-tree
+** Plan
+- [ ] Specify the (a,b)-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Link/cut tree
+** Plan
+- [ ] Specify the Link/cut tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO SPQR-tree
+** Plan
+- [ ] Specify the SPQR-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Spaghetti stack
+** Plan
+- [ ] Specify the Spaghetti stack API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Disjoint-set data structure
+** Plan
+- [ ] Specify the Disjoint-set data structure API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Enfilade
+** Plan
+- [ ] Specify the Enfilade API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Exponential tree
+** Plan
+- [ ] Specify the Exponential tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Fenwick tree
+** Plan
+- [ ] Specify the Fenwick tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Van Emde Boas tree
+** Plan
+- [ ] Specify the Van Emde Boas tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Rose tree
+** Plan
+- [ ] Specify the Rose tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Segment tree
+** Plan
+- [ ] Specify the Segment tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Interval tree
+** Plan
+- [ ] Specify the Interval tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Range tree
+** Plan
+- [ ] Specify the Range tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Bin
+** Plan
+- [ ] Specify the Bin API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO K-d tree
+** Plan
+- [ ] Specify the K-d tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Implicit k-d tree
+** Plan
+- [ ] Specify the Implicit k-d tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Min/max k-d tree
+** Plan
+- [ ] Specify the Min/max k-d tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Relaxed k-d tree
+** Plan
+- [ ] Specify the Relaxed k-d tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Adaptive k-d tree
+** Plan
+- [ ] Specify the Adaptive k-d tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Quadtree
+** Plan
+- [ ] Specify the Quadtree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Octree
+** Plan
+- [ ] Specify the Octree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Linear octree
+** Plan
+- [ ] Specify the Linear octree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Z-order
+** Plan
+- [ ] Specify the Z-order API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO UB-tree
+** Plan
+- [ ] Specify the UB-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO R-tree
+** Plan
+- [ ] Specify the R-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO R+ tree
+** Plan
+- [ ] Specify the R+ tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO R* tree
+** Plan
+- [ ] Specify the R* tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hilbert R-tree
+** Plan
+- [ ] Specify the Hilbert R-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO X-tree
+** Plan
+- [ ] Specify the X-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Metric tree
+** Plan
+- [ ] Specify the Metric tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Cover tree
+** Plan
+- [ ] Specify the Cover tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO M-tree
+** Plan
+- [ ] Specify the M-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO VP-tree
+** Plan
+- [ ] Specify the VP-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO BK-tree
+** Plan
+- [ ] Specify the BK-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Bounding interval hierarchy
+** Plan
+- [ ] Specify the Bounding interval hierarchy API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Bounding volume hierarchy
+** Plan
+- [ ] Specify the Bounding volume hierarchy API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO BSP tree
+** Plan
+- [ ] Specify the BSP tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Rapidly exploring random tree
+** Plan
+- [ ] Specify the Rapidly exploring random tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Abstract syntax tree
+** Plan
+- [ ] Specify the Abstract syntax tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Parse tree
+** Plan
+- [ ] Specify the Parse tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Decision tree
+** Plan
+- [ ] Specify the Decision tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Alternating decision tree
+** Plan
+- [ ] Specify the Alternating decision tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Game tree
+** Plan
+- [ ] Specify the Game tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Expectiminimax tree
+** Plan
+- [ ] Specify the Expectiminimax tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Finger tree
+** Plan
+- [ ] Specify the Finger tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Expression tree
+** Plan
+- [ ] Specify the Expression tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Log-structured merge-tree
+** Plan
+- [ ] Specify the Log-structured merge-tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO PQ tree
+** Plan
+- [ ] Specify the PQ tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Approximate membership query filter
+** Plan
+- [ ] Specify the Approximate membership query filter API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Bloom filter
+** Plan
+- [ ] Specify the Bloom filter API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Cuckoo filter
+** Plan
+- [ ] Specify the Cuckoo filter API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Quotient filter
+** Plan
+- [ ] Specify the Quotient filter API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Count-min sketch
+** Plan
+- [ ] Specify the Count-min sketch API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Distributed hash table
+** Plan
+- [ ] Specify the Distributed hash table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Double hashing
+** Plan
+- [ ] Specify the Double hashing API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Dynamic perfect hash table
+** Plan
+- [ ] Specify the Dynamic perfect hash table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hash array mapped trie
+** Plan
+- [ ] Specify the Hash array mapped trie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hash list
+** Plan
+- [ ] Specify the Hash list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Hash table
+** Plan
+- [ ] Specify the Hash table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hash tree
+** Plan
+- [ ] Specify the Hash tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hash trie
+** Plan
+- [ ] Specify the Hash trie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Koorde
+** Plan
+- [ ] Specify the Koorde API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Prefix hash tree
+** Plan
+- [ ] Specify the Prefix hash tree API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Rolling hash
+** Plan
+- [ ] Specify the Rolling hash API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO MinHash
+** Plan
+- [ ] Specify the MinHash API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Ctrie
+** Plan
+- [ ] Specify the Ctrie API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Adjacency list
+** Plan
+- [ ] Specify the Adjacency list API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Adjacency matrix
+** Plan
+- [ ] Specify the Adjacency matrix API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Graph-structured stack
+** Plan
+- [ ] Specify the Graph-structured stack API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Scene graph
+** Plan
+- [ ] Specify the Scene graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Binary decision diagram
+** Plan
+- [ ] Specify the Binary decision diagram API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Zero-suppressed decision diagram
+** Plan
+- [ ] Specify the Zero-suppressed decision diagram API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO And-inverter graph
+** Plan
+- [ ] Specify the And-inverter graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Directed graph
+** Plan
+- [ ] Specify the Directed graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* DONE Directed acyclic graph
+** Plan
+- [ ] Specify the Directed acyclic graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Propositional directed acyclic graph
+** Plan
+- [ ] Specify the Propositional directed acyclic graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Multigraph
+** Plan
+- [ ] Specify the Multigraph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Hypergraph
+** Plan
+- [ ] Specify the Hypergraph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Lightmap
+** Plan
+- [ ] Specify the Lightmap API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Winged edge
+** Plan
+- [ ] Specify the Winged edge API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Quad-edge
+** Plan
+- [ ] Specify the Quad-edge API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Routing table
+** Plan
+- [ ] Specify the Routing table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Symbol table
+** Plan
+- [ ] Specify the Symbol table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO Piece table
+** Plan
+- [ ] Specify the Piece table API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.
+
+* TODO E-graph
+** Plan
+- [ ] Specify the E-graph API, representation, complexity targets, and invariants in the public C/C++ interface.
+- [ ] Implement the core data structure in `source/` and `include/`, without using an STL container as its backing implementation.
+- [ ] Add focused core tests for standard operations, boundary conditions, ownership, and invariant preservation.

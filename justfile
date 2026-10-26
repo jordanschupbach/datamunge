@@ -1,4 +1,4 @@
-TARGET := "bspline_ex"
+TARGET := "dataframe_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 NN_JOBS := env_var_or_default("DATAMUNGE_EXAMPLE_BUILD_JOBS", "4")
@@ -460,8 +460,15 @@ repl-csharp: build-csharp
 repl-java:
   {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
 
-repl-cpp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c 'cling $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) -ldatamunge -std=c++17'
+# C++ REPL on clang-repl, with the std headers and <datamunge/datamunge.hpp>
+# already included. Optional EXAMPLE also preloads examples/cpp/source/<EXAMPLE>.cpp
+# and calls its main(), e.g. `just repl-cpp dataframe_ex`.
+repl-cpp EXAMPLE="":
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'exec scripts/cpp_repl.sh {{ EXAMPLE }}'
+
+# Same, but on cling instead of clang-repl.
+repl-cling EXAMPLE="":
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'exec scripts/cpp_repl.sh --cling {{ EXAMPLE }}'
 
 repl-tcl: build-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'

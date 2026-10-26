@@ -1,0 +1,120 @@
+#+TITLE: Title
+#+AUTHOR: Jordan Schupbach
+#+DATE: 2026-09-23
+#+STARTUP: noindent
+
+* MAP estimationn
+
+
+#+name: bayes-analysis
+#+header: :main no :dir ../.. :results output verbatim :exports results
+#+header: :flags -std=c++20 -O2 $(pkg-config --cflags datamunge)
+#+header: :libs $(pkg-config --libs datamunge)
+#+begin_src c++
+#include <iostream>
+
+#include <datamunge/bayes/bayes.hpp>
+#include <datamunge/datamunge.hpp>
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/glm.hpp>
+
+using datamunge::autodiff::Tape;
+using datamunge::autodiff::Var;
+using datamunge::bayes::AutodiffModel;
+using datamunge::bayes::HMC;
+using datamunge::bayes::HMCOptions;
+using datamunge::bayes::MAP;
+using datamunge::bayes::NUTS;
+using datamunge::bayes::NUTSOptions;
+using datamunge::plot::RPlot;
+
+using datamunge::bayes::bernoulli_logit_lpmf;
+using datamunge::bayes::normal_lpdf;
+
+int main() {
+    std::cout << "Hellozz, World!" << std::endl;
+
+    std::cout << "\n=== Bayesian logistic regression vs. GLM's MLE (iris) ===\n";
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> is_virginica, petal_length;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const auto species = iris.string_at("Species", i);
+        if (species != "versicolor" && species != "virginica") continue;
+        is_virginica.push_back(species == "virginica" ? 1.0 : 0.0);
+        petal_length.push_back(iris.double_at("Petal.Length", i));
+    }
+    datamunge::dstruct::DataFrame df;
+    df.add_column("Petal.Length", petal_length);
+    df.add_column("is_virginica", is_virginica);
+    datamunge::stats::GLMOptions glm_options;
+    glm_options.family = datamunge::stats::GLMFamily::Binomial;
+    const datamunge::stats::GLM glm(df, "is_virginica ~ Petal.Length", glm_options);
+    std::cout << "GLM MLE:        ";
+    print_vec(glm.coefficients());
+    std::cout << "\n";
+
+//     AutodiffModel logistic_model([&](Tape &, const std::vector<Var> & params) {
+//         Var lp =
+//             normal_lpdf(params[0], 0.0, 10.0) + normal_lpdf(params[1], 0.0, 10.0); for (
+//             std::size_t i = 0; i < petal_length.size(); ++i) {
+//             const Var eta =
+//                 params[0] + params[1] * petal_length[i]; lp =
+//                 lp + bernoulli_logit_lpmf(is_virginica[i], eta);
+//         }
+//         return lp;
+//     });
+//     std::vector<double> map_coords{0.0, 0.0};
+//     {
+//         MAP().optimize(logistic_model, map_coords);
+//         std::cout << "Bayes MAP:      ";
+//         print_vec(map_coords);
+//         std::cout << " (weak Normal(0, 10) priors)\n";
+//     }
+//     double nuts_mean0 = 0.0, nuts_mean1 = 0.0;
+//     {
+//         NUTSOptions options;
+//         options.num_warmup = 1000;
+//         options.num_samples = 3000;
+//         options.initial_step_size = 0.05;
+//         const auto result = NUTS(options).sample(logistic_model, {0.0, 0.0});
+//         nuts_mean0 = mean_of(result.samples, 0);
+//         nuts_mean1 = mean_of(result.samples, 1);
+//         std::cout << "Bayes NUTS mean: [" << nuts_mean0 << ", " << nuts_mean1 <<
+//             "] (posterior mean, accept rate = " << result.accept_rate << ")\n";
+//     }
+//     std::cout <<
+//         "(Petal.Length nearly separates these two species,\n" " so the unregularized MLE inflates toward the separating\n" " boundary; the weak Normal(0, 10) prior visibly pulls the\n" " Bayesian estimate back -- a real, expected difference,\n" " not a bug.)\n";
+// 
+//     {
+//         double lo = *std::min_element(petal_length.begin(), petal_length.end());
+//         double hi = *std::max_element(petal_length.begin(), petal_length.end());
+//         const auto glm_coef = glm.coefficients();
+//         constexpr std::size_t n_pts = 200;
+//         std::vector<double> xs(n_pts), glm_p(n_pts), map_p(n_pts), nuts_p(n_pts);
+//         for (std::size_t i = 0; i < n_pts; ++i) {
+//             const double x =
+//                 lo + (hi - lo) * static_cast<double>(i) / static_cast<double>(n_pts - 1);
+//             xs[i] = x;
+//             glm_p[i] = 1.0 / (1.0 + std::exp(-(glm_coef[0] + glm_coef[1] * x)));
+//             map_p[i] = 1.0 / (1.0 + std::exp(-(map_coords[0] + map_coords[1] * x)));
+//             nuts_p[i] = 1.0 / (1.0 + std::exp(-(nuts_mean0 + nuts_mean1 * x)));
+//         }
+//         auto plot = RPlot::create();
+//         plot.line(xs, glm_p, "GLM MLE", {220, 38, 38});
+//         plot.lines(xs, map_p, "Bayes MAP", {96, 165, 250});
+//         plot.lines(xs, nuts_p, "Bayes NUTS mean", {22, 163, 74});
+//         plot.legend({"GLM MLE", "Bayes MAP", "Bayes NUTS mean"},
+//                     {{220, 38, 38}, {96, 165, 250}, {22, 163, 74}});
+//         plot.title("P(virginica) vs. petal length: MLE vs. weakly-regularized Bayes").x_label(
+//             "Petal length (cm)").y_label("P(virginica)");
+//         plot.save_svg("build/org/bayes_logistic_curves.svg");
+//         std::cout << "wrote bayes_logistic_curves.svg\n";
+//     }
+    return 0;
+}
+#+end_src
+#+RESULTS: bayes-analysis
+
+
