@@ -36,8 +36,8 @@ recursions, tying each to the corresponding library call.
 
 Every report in this project so far has modeled /cross-sectional/ data:
 observations assumed independent (or grouped, per the
-[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM
-companion reports]]) but never /ordered in time/ in a way the model
+[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM companion reports]]) 
+but never /ordered in time/ in a way the model
 itself needs to respect. This report's subject, time series forecasting,
 inverts that assumption entirely: a time series' defining feature is that
 observation $t$ depends on observations $t-1, t-2, \ldots$, and the whole
@@ -84,7 +84,7 @@ average, order $q$) expresses the current shock as a linear combination of
 the $q$ most recent shocks. Combined,
 
 \[
-\phi(B) (1-B)^d y_t = \theta(B) \, \varepsilon_t ,
+  \phi(B) (1-B)^d y_t = \theta(B) \, \varepsilon_t ,
 \]
 
 with $\phi(B) = 1 - \phi_1 B - \cdots - \phi_p B^p$ (=ar_coefficients()=)
@@ -124,8 +124,8 @@ residual sum of squares over the remainder with
 =datamunge::optim::DifferentialEvolution=. This is, per the library's own
 documentation, "a standard, textbook ARIMA fitting method" that "will
 differ slightly from exact-ML fits" -- an honestly stated approximation,
-in the same spirit as the [[file:glmm_analysis.org][GLMM companion
-report]]'s PQL caveat relative to exact (RE)ML.
+in the same spirit as the [[file:glmm_analysis.org][GLMM companion report]]'s 
+PQL caveat relative to exact (RE)ML.
 
 ** Forecasting and forecast uncertainty
 
@@ -609,8 +609,8 @@ different kinds of after-the-fact interpretability.
 
 **Connection to the wider project.** This report's
 simulated-data-with-known-truth approach follows directly from the
-[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM
-companion reports]]' own use of simulation to check recovery against a
+[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM companion reports]]' 
+own use of simulation to check recovery against a
 known answer; here, uniquely, the check is qualitative (does the forecast
 shape and parameter story make sense) rather than a direct numeric
 comparison against one "true" coefficient, since neither ARIMA's nor
