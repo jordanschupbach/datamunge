@@ -13594,4 +13594,339 @@ def taylor_series(f, var, center, order):
                 Expr::differentiate() if f contains a non-constant exponent.
     """
     return _datamunge.taylor_series(f, var, center, order)
+class NnTensor(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        An empty (undefined) tensor.
+
+        |
+
+        *Overload 2:*
+        `values` in row-major order filling `shape`; dtype "float32", "float64", "int32", "int64" or "bool".
+
+        |
+
+        *Overload 3:*
+        `values` in row-major order filling `shape`; dtype "float32", "float64", "int32", "int64" or "bool".
+        """
+        _datamunge.NnTensor_swiginit(self, _datamunge.new_NnTensor(*args))
+
+    @staticmethod
+    def zeros(*args):
+        return _datamunge.NnTensor_zeros(*args)
+
+    @staticmethod
+    def ones(*args):
+        return _datamunge.NnTensor_ones(*args)
+
+    @staticmethod
+    def full(*args):
+        return _datamunge.NnTensor_full(*args)
+
+    @staticmethod
+    def arange(*args):
+        r"""start, start + step, ... below stop."""
+        return _datamunge.NnTensor_arange(*args)
+
+    @staticmethod
+    def randn(*args):
+        r"""Seeded N(mean, std^2) and U(low, high) samples."""
+        return _datamunge.NnTensor_randn(*args)
+
+    @staticmethod
+    def uniform(*args):
+        return _datamunge.NnTensor_uniform(*args)
+
+    @staticmethod
+    def load_npy(path):
+        r"""NumPy .npy files."""
+        return _datamunge.NnTensor_load_npy(path)
+
+    def save_npy(self, path):
+        return _datamunge.NnTensor_save_npy(self, path)
+
+    def defined(self):
+        return _datamunge.NnTensor_defined(self)
+
+    def values(self):
+        return _datamunge.NnTensor_values(self)
+
+    def shape(self):
+        return _datamunge.NnTensor_shape(self)
+
+    def dtype(self):
+        return _datamunge.NnTensor_dtype(self)
+
+    def ndim(self):
+        return _datamunge.NnTensor_ndim(self)
+
+    def numel(self):
+        return _datamunge.NnTensor_numel(self)
+
+    def item(self):
+        r"""The value of a one-element tensor."""
+        return _datamunge.NnTensor_item(self)
+
+    def at(self, index):
+        r"""The element at a full index."""
+        return _datamunge.NnTensor_at(self, index)
+
+    def str(self):
+        r"""A short printable description with the values."""
+        return _datamunge.NnTensor_str(self)
+
+    def astype(self, dtype):
+        return _datamunge.NnTensor_astype(self, dtype)
+
+    def reshape(self, shape):
+        return _datamunge.NnTensor_reshape(self, shape)
+
+    def transpose(self, *args):
+        r"""Permutes axes; an empty `perm` reverses them."""
+        return _datamunge.NnTensor_transpose(self, *args)
+
+    def slice(self, axis, start, stop):
+        r"""x[start:stop] along `axis`."""
+        return _datamunge.NnTensor_slice(self, axis, start, stop)
+
+    def concat(self, other, axis):
+        return _datamunge.NnTensor_concat(self, other, axis)
+
+    def add(self, other):
+        return _datamunge.NnTensor_add(self, other)
+
+    def sub(self, other):
+        return _datamunge.NnTensor_sub(self, other)
+
+    def mul(self, other):
+        return _datamunge.NnTensor_mul(self, other)
+
+    def div(self, other):
+        return _datamunge.NnTensor_div(self, other)
+
+    def add_scalar(self, value):
+        return _datamunge.NnTensor_add_scalar(self, value)
+
+    def mul_scalar(self, value):
+        return _datamunge.NnTensor_mul_scalar(self, value)
+
+    def pow(self, exponent):
+        return _datamunge.NnTensor_pow(self, exponent)
+
+    def neg(self):
+        return _datamunge.NnTensor_neg(self)
+
+    def matmul(self, other, transpose_a=False, transpose_b=False):
+        return _datamunge.NnTensor_matmul(self, other, transpose_a, transpose_b)
+
+    def exp(self):
+        return _datamunge.NnTensor_exp(self)
+
+    def log(self):
+        return _datamunge.NnTensor_log(self)
+
+    def sqrt(self):
+        return _datamunge.NnTensor_sqrt(self)
+
+    def abs(self):
+        return _datamunge.NnTensor_abs(self)
+
+    def square(self):
+        return _datamunge.NnTensor_square(self)
+
+    def tanh(self):
+        return _datamunge.NnTensor_tanh(self)
+
+    def sigmoid(self):
+        return _datamunge.NnTensor_sigmoid(self)
+
+    def relu(self):
+        return _datamunge.NnTensor_relu(self)
+
+    def activate(self, activation):
+        r"""Any activation by name: "relu", "gelu", "silu", "softplus", "elu", "leaky_relu", ..."""
+        return _datamunge.NnTensor_activate(self, activation)
+
+    def softmax(self, axis=-1):
+        return _datamunge.NnTensor_softmax(self, axis)
+
+    def log_softmax(self, axis=-1):
+        return _datamunge.NnTensor_log_softmax(self, axis)
+
+    def sum(self, *args):
+        return _datamunge.NnTensor_sum(self, *args)
+
+    def mean(self, *args):
+        return _datamunge.NnTensor_mean(self, *args)
+
+    def max(self, *args):
+        return _datamunge.NnTensor_max(self, *args)
+
+    def min(self, *args):
+        return _datamunge.NnTensor_min(self, *args)
+
+    def argmax(self, axis=-1):
+        return _datamunge.NnTensor_argmax(self, axis)
+
+    def set_requires_grad(self, requires_grad=True):
+        r"""Marks a float tensor as a leaf whose gradient `backward` accumulates."""
+        return _datamunge.NnTensor_set_requires_grad(self, requires_grad)
+
+    def requires_grad(self):
+        return _datamunge.NnTensor_requires_grad(self)
+
+    def backward(self):
+        r"""Back-propagates from this one-element tensor into every leaf's grad()."""
+        return _datamunge.NnTensor_backward(self)
+
+    def grad(self):
+        r"""The accumulated gradient (undefined if none)."""
+        return _datamunge.NnTensor_grad(self)
+
+    def zero_grad(self):
+        return _datamunge.NnTensor_zero_grad(self)
+
+    def detach(self):
+        r"""The same values without gradient history."""
+        return _datamunge.NnTensor_detach(self)
+
+    def __repr__(self):
+        return _datamunge.NnTensor___repr__(self)
+    __swig_destroy__ = _datamunge.delete_NnTensor
+
+# Register NnTensor in _datamunge:
+_datamunge.NnTensor_swigregister(NnTensor)
+class NnModel(object):
+    r"""
+    A sequential network. Layers are added by spec and own parameters named
+    "<kind><index>/..." (e.g. "dense0/W", "conv1/b"); batch-norm moving
+    statistics live in a second store. Parameters are created on the first
+    forward pass, when the input width is known.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, seed=0):
+        _datamunge.NnModel_swiginit(self, _datamunge.new_NnModel(seed))
+    __swig_destroy__ = _datamunge.delete_NnModel
+
+    def add_dense(self, *args):
+        r"""Fully connected layer; activation "none", "relu", "tanh", "sigmoid", "gelu", ..."""
+        return _datamunge.NnModel_add_dense(self, *args)
+
+    def add_conv2d(self, *args):
+        r"""2-D convolution on NHWC input; padding "same" or "valid"."""
+        return _datamunge.NnModel_add_conv2d(self, *args)
+
+    def add_max_pool2d(self, *args):
+        return _datamunge.NnModel_add_max_pool2d(self, *args)
+
+    def add_avg_pool2d(self, *args):
+        return _datamunge.NnModel_add_avg_pool2d(self, *args)
+
+    def add_global_avg_pool2d(self):
+        return _datamunge.NnModel_add_global_avg_pool2d(self)
+
+    def add_batch_norm(self, momentum=0.99, eps=1e-3):
+        r"""Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults)."""
+        return _datamunge.NnModel_add_batch_norm(self, momentum, eps)
+
+    def add_layer_norm(self, eps=1e-5):
+        return _datamunge.NnModel_add_layer_norm(self, eps)
+
+    def add_dropout(self, rate):
+        r"""Inverted dropout, active only when training."""
+        return _datamunge.NnModel_add_dropout(self, rate)
+
+    def add_activation(self, activation):
+        return _datamunge.NnModel_add_activation(self, activation)
+
+    def add_flatten(self):
+        r"""Collapses every axis but the first."""
+        return _datamunge.NnModel_add_flatten(self)
+
+    def add_reshape(self, shape):
+        r"""Reshapes each example (the batch axis is kept): e.g. {28, 28, 1}."""
+        return _datamunge.NnModel_add_reshape(self, shape)
+
+    def num_layers(self):
+        return _datamunge.NnModel_num_layers(self)
+
+    def summary(self):
+        r"""One line per layer with its parameter shapes (after the first forward pass)."""
+        return _datamunge.NnModel_summary(self)
+
+    def forward(self, x, training=False):
+        r"""
+        Runs the network. `training` enables dropout and batch statistics (and
+        updates batch-norm moving averages).
+        """
+        return _datamunge.NnModel_forward(self, x, training)
+
+    def predict(self, x):
+        r"""forward(x, false) without recording gradients."""
+        return _datamunge.NnModel_predict(self, x)
+
+    def loss(self, *args):
+        r"""
+        Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
+        integer class labels) or "sigmoid_cross_entropy" (y in [0, 1]).
+        """
+        return _datamunge.NnModel_loss(self, *args)
+
+    def compute_gradients(self, *args):
+        r"""
+        Computes the loss in training mode and stores the gradient of every
+        parameter (read them with `gradient`). Returns the loss.
+        """
+        return _datamunge.NnModel_compute_gradients(self, *args)
+
+    def gradient(self, name):
+        return _datamunge.NnModel_gradient(self, name)
+
+    def set_optimizer(self, *args):
+        r"""Optimizer for `train_step`: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ..."""
+        return _datamunge.NnModel_set_optimizer(self, *args)
+
+    def train_step(self, *args):
+        r"""compute_gradients followed by one optimizer update. Returns the loss."""
+        return _datamunge.NnModel_train_step(self, *args)
+
+    def parameter_names(self):
+        return _datamunge.NnModel_parameter_names(self)
+
+    def parameter(self, name):
+        return _datamunge.NnModel_parameter(self, name)
+
+    def set_parameter(self, name, value):
+        return _datamunge.NnModel_set_parameter(self, name, value)
+
+    def parameter_count(self):
+        return _datamunge.NnModel_parameter_count(self)
+
+    def save(self, path):
+        r"""Parameters and batch-norm statistics as one .npz archive ("state/..." for statistics)."""
+        return _datamunge.NnModel_save(self, path)
+
+    def load(self, path):
+        r"""Loads an archive written by save() (or any .npz with the same names)."""
+        return _datamunge.NnModel_load(self, path)
+
+# Register NnModel in _datamunge:
+_datamunge.NnModel_swigregister(NnModel)
+
+def nn_gemm_backend():
+    r"""The GEMM backend nn uses ("accelerate", "openblas", "cblas" or "builtin")."""
+    return _datamunge.nn_gemm_backend()
+
+def nn_get_num_threads():
+    r"""Threads used by nn kernels."""
+    return _datamunge.nn_get_num_threads()
+
+def nn_set_num_threads(threads):
+    return _datamunge.nn_set_num_threads(threads)
 

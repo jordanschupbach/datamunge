@@ -1,0 +1,8 @@
+case	baseline_ms	new_ms	change_percent
+BM_ContainerFFT/1/real_time	0.000401539	0.00037839	-5.77
+BM_ContainerFFT/16/real_time	0.00776548	0.00777058	+0.07
+BM_ContainerFFT/64/real_time	0.0424552	0.0423376	-0.28
+BM_ContainerGraph/16/real_time	0.00831969	0.0046046	-44.65
+BM_ContainerGraph/256/real_time	0.143881	0.07598	-47.19
+BM_ContainerGraph/4096/real_time	2.77065	1.43728	-48.12
+6 comparable cases; 0 removed, 0 added. Negative is faster.

@@ -18,6 +18,15 @@
 ///   AddSymbolicGradients -> nn::grad(outputs, inputs, grad_outputs)
 ///   StopGradient         -> nn::stop_gradient(x) or NoGradGuard
 ///   custom gradient      -> nn::Function / nn::apply_function
+///
+/// Memory: a node keeps the tensors its backward needs (`SavedTensor`
+/// captures and saved outputs) until that backward has run; with
+/// `retain_graph = false` the engine then frees them at once, so live memory
+/// falls steadily during the backward pass. `checkpoint` trades compute for
+/// memory by not keeping a segment's intermediates at all and recomputing
+/// them during backward; `reversible_sequence` rebuilds activations of
+/// additive coupling blocks (RevNet) from their outputs. `nn/memory.hpp`
+/// reports live and peak tensor bytes.
 
 #include <cstdint>
 #include <functional>
@@ -28,6 +37,8 @@
 #include "datamunge/nn/tensor.hpp"
 
 namespace datamunge::nn {
+
+class Generator;
 
 // ---- grad mode ------------------------------------------------------------------
 
@@ -94,6 +105,10 @@ class Node : public std::enable_shared_from_this<Node> {
   [[nodiscard]] const std::vector<Edge>&       next_edges() const noexcept { return next_edges_; }
   [[nodiscard]] const std::vector<TensorMeta>& input_meta() const noexcept { return input_meta_; }
   [[nodiscard]] const std::vector<TensorMeta>& output_meta() const noexcept { return output_meta_; }
+  /// Creation order (process-wide counter): a node made later has a larger number.
+  [[nodiscard]] std::uint64_t                  sequence_nr() const noexcept { return sequence_nr_; }
+  /// True once `release()` has freed the backward function and saved values.
+  [[nodiscard]] bool                           released() const noexcept { return released_; }
 
   /// Runs the backward function. Throws if the node was already released.
   virtual std::vector<Tensor> apply(const std::vector<Tensor>& grad_outputs);
@@ -113,6 +128,7 @@ class Node : public std::enable_shared_from_this<Node> {
   bool                    released_{false};
   std::vector<Tensor>     saved_outputs_;  // detached
   std::vector<std::uint64_t> saved_versions_;
+  std::uint64_t           sequence_nr_{0};
 };
 
 /// Sink node that adds incoming gradients into a leaf tensor's `grad()`.
@@ -162,6 +178,9 @@ struct GradOptions {
   /// Record the backward pass so the returned gradients are differentiable.
   bool create_graph{false};
   /// Return an undefined tensor (instead of throwing) for inputs the outputs do not depend on.
+  /// Outputs with no history (undefined, or not requiring grad) are then
+  /// ignored instead of rejected; if none has history every gradient is
+  /// undefined. Without allow_unused such outputs throw std::invalid_argument.
   bool allow_unused{false};
 };
 
@@ -213,5 +232,74 @@ class Function {
   CustomForward  forward_;
   CustomBackward backward_;
 };
+
+// ---- gradient checkpointing --------------------------------------------------------
+
+/// A segment of a model for `checkpoint`: tensors in, tensors out.
+using CheckpointFn = std::function<std::vector<Tensor>(const std::vector<Tensor>& inputs)>;
+/// A one-tensor segment (a layer or a block).
+using CheckpointFn1 = std::function<Tensor(const Tensor& input)>;
+
+/// Options for `checkpoint`.
+struct CheckpointOptions {
+  /// Replay the default generator's draws (dropout, noise, ...) during the
+  /// recomputation, so it sees the same random numbers as the forward pass.
+  bool preserve_rng_state{true};
+  /// Further generators `fn` draws from (for example a ParameterStore's
+  /// `generator()`); their states are replayed the same way.
+  std::vector<Generator*> generators;
+};
+
+/// Runs `fn(inputs)` without keeping its intermediate tensors, and runs it
+/// again during the backward pass to rebuild them (gradient checkpointing,
+/// "rematerialization"). Memory falls from every intermediate of `fn` to its
+/// inputs and outputs; the price is one extra forward of `fn` per backward.
+///
+/// Gradients reach the inputs and every tensor `fn` reads from its closure
+/// (parameters, tensors computed earlier), whichever of `grad` / `backward`
+/// is used. With `create_graph` the recomputation is recorded, so second
+/// order gradients go through a checkpoint, and checkpoints may be nested.
+///
+/// `fn` must compute the same values when it runs again: its random draws are
+/// replayed from the generators in `options`, but other side effects (batch
+/// norm moving averages, counters) happen twice unless `fn` skips them when
+/// `in_recompute()` is true. `fn` must not call `grad` / `backward` itself.
+/// When grad mode is off, or nothing `fn` uses requires grad, this is just
+/// `fn(inputs)`.
+std::vector<Tensor> checkpoint(const CheckpointFn& fn, const std::vector<Tensor>& inputs,
+                               const CheckpointOptions& options = {});
+/// One input, one output.
+Tensor checkpoint(const CheckpointFn1& fn, const Tensor& input, const CheckpointOptions& options = {});
+
+/// Runs `layers` in order, split into `segments` consecutive groups of about
+/// equal length; every group but the last is a `checkpoint`. For n layers,
+/// sqrt(n) segments keep about 2 sqrt(n) activations instead of n.
+Tensor checkpoint_sequential(const std::vector<CheckpointFn1>& layers, std::int64_t segments, const Tensor& input,
+                             const CheckpointOptions& options = {});
+
+/// True while `checkpoint` or `reversible_sequence` re-runs a forward
+/// function during the backward pass (use it to skip side effects such as
+/// moving-average updates).
+bool in_recompute();
+
+/// An additive coupling block: y1 = x1 + f(x2), y2 = x2 + g(y1). It is
+/// inverted exactly (up to rounding) by x2 = y2 - g(y1), x1 = y1 - f(x2).
+struct ReversibleBlock {
+  CheckpointFn1 f;
+  CheckpointFn1 g;
+};
+
+/// Runs a chain of reversible blocks (RevNet, https://arxiv.org/abs/1707.04585)
+/// on the halves (x1, x2) and returns (y1, y2) of the last block. No
+/// activation inside the chain is kept: the backward pass walks the blocks in
+/// reverse, rebuilds each block's input from its output, recomputes f and g
+/// on it and backpropagates through that block alone, so memory does not
+/// grow with the number of blocks. Gradients reach x1, x2 and every tensor
+/// f and g read from their closures. Rebuilt inputs differ from the forward
+/// ones by rounding, which can grow over many blocks. f and g must be
+/// deterministic (see `checkpoint`); second order (`create_graph`) is not
+/// supported — use `checkpoint` for that.
+std::vector<Tensor> reversible_sequence(const std::vector<ReversibleBlock>& blocks, const Tensor& x1,
+                                        const Tensor& x2);
 
 }  // namespace datamunge::nn

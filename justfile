@@ -1,6 +1,7 @@
 TARGET := "bspline_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
+NN_JOBS := env_var_or_default("DATAMUNGE_EXAMPLE_BUILD_JOBS", "4")
 
 # Set DATAMUNGE_SWIG_SRC to a local checkout of the swig fork (e.g. ~/projects/swig) to build
 # against it instead of the github:jordanschupbach/swig revision pinned in flake.lock.
@@ -63,7 +64,7 @@ run-d: build-d
     fi'
 
 run-python: build-python
-  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
 
 run-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -c 'php --php-ini .user.ini examples/php/{{ TARGET }}.php'
@@ -225,7 +226,7 @@ view-plot: examples
 
 run-benchmark:
     @echo "Running Benchmarks"
-    ./build/benchmarks/${BENCH_TARGET}
+    python3 scripts/benchmark_backend.py run --no-build --suite {{ BENCH_TARGET }}
 
 
 # }}} run commands
@@ -240,7 +241,7 @@ prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r pr
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -doxygen -c++ -python -o ../src/datamunge_python_wrap.cpp -oh ../src/datamunge_python_wrap.h ../src/pydatamunge/swig/pydatamunge.i && mv ../src/datamunge.py ../src/pydatamunge/datamunge.py"
+  {{ NIX_DEVELOP }} .#python --command python scripts/prebuild_bindings.py python
 
 prebuild-javascript:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -javascript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
@@ -254,7 +255,7 @@ prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "sed -i 's/DllImport(\"datamunge\"/DllImport(\"datamunge_csharp\"/g' ./{{ BINDINGS_DIR }}/datamungedotnet/datamungePINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
+  {{ NIX_DEVELOP }} .#r --command python3 scripts/prebuild_bindings.py r
 
 prebuild-perl:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
@@ -324,7 +325,7 @@ build-php: prebuild-php
   bash -c 'for f in build/datamungePHP/libdatamungePHP.*; do printf "extension=%s\n" "$(pwd)/$f" > build/php/conf.d/datamunge.ini; done'
 
 
-build: build-debug
+build: build-cpp
 
 build-example-installed:
   {{ NIX_DEVELOP }} .#cpp --command bash -c 'cmake -S examples/cpp -B build/debug/examples-installed -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=ON'
@@ -340,9 +341,9 @@ build-debug:
 
 build-cpp:
     @echo "Building datamunge"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S . -B build"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build -j{{ JOBS }} --verbose"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release"
+    {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake --build build --config Release -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
 build-csharp: prebuild-csharp
@@ -356,9 +357,8 @@ build-javascript: prebuild-javascript
     {{ NIX_DEVELOP }} .#jsbuild --command bash -c "npm --prefix . run build"
 
 build-python: prebuild-python
-  rm -rf build/venv/pydatamunge-run
-  {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge-run'
-  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python -m pip install -e . --no-build-isolation'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'if test -f build/nn-python/enabled; then export DATAMUNGE_BUILD_NN_EXAMPLES=${DATAMUNGE_BUILD_NN_EXAMPLES:-1}; fi; CMAKE_BUILD_PARALLEL_LEVEL={{ JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
 
 
 build-java: prebuild-java
@@ -393,8 +393,10 @@ build-perl: prebuild-perl build-cpp
 build-ruby: prebuild-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c "set -euo pipefail; cd {{ BINDINGS_DIR }}/octruby/ext/octruby && ruby extconf.rb && make -j1 && dlext=\"\$(ruby -e 'print RbConfig::CONFIG[\"DLEXT\"]')\" && so=\"\$(find . -type f \( -name 'octruby*.so' -o -name \"octruby*.\$dlext\" \) -print -quit)\" && test -n \"\$so\" && mkdir -p ../../lib/octruby && cp -f \"\$so\" \"../../lib/octruby/octruby.\$dlext\""
 
+package-r: prebuild-r
+  {{ NIX_DEVELOP }} .#r --command python3 scripts/build_r_source.py
+
 build-r: prebuild-r
-  rm -rf build/r/library
   {{ NIX_DEVELOP }} .#r --command bash -c 'mkdir -p build/r/library && R CMD INSTALL -l build/r/library .'
 
 build-tcl: prebuild-tcl
@@ -440,11 +442,11 @@ install-ocaml: build-ocaml
 repl-javascript: prebuild-javascript build-javascript
   {{ NIX_DEVELOP }} .#javascript --command bash -c 'node'
 
-repl-python: prebuild-python
-  {{ NIX_DEVELOP }} .#python --command bash -c 'ipython'
+repl-python: build-python
+  {{ NIX_DEVELOP }} .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 
-repl-r: prebuild-r
-  {{ NIX_DEVELOP }} .#r --command bash -c 'R'
+repl-r: build-r
+  {{ NIX_DEVELOP }} .#r --command bash -c 'R_LIBS="$(pwd)/build/r/library" R'
 
 repl-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -c 'php -a --php-ini .user.ini'
@@ -501,18 +503,13 @@ test-python-build: prebuild-python
   {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge-build'
   {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-build/bin/python setup.py sdist bdist_wheel'
 
-test-python: prebuild-python
-  rm -rf build/venv/pydatamunge
-  {{ NIX_DEVELOP }} .#python --command bash -c 'python -m venv --system-site-packages build/venv/pydatamunge'
-  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge/bin/python -m pip install -e . --no-build-isolation'
-  # PYTHONPATH=src is required despite the editable install: --system-site-packages pulls in
-  # the nix flake's own pinned pydatamunge build, which otherwise shadows this fresh local one
-  # on sys.path (the pinned build wins even though the venv's own editable install should take
-  # precedence, since it's older code without the changes just built above).
-  {{ NIX_DEVELOP }} .#python --command bash -c 'PYTHONPATH=src build/venv/pydatamunge/bin/python -m pytest -q tests/python'
+# Test installed packages, with no source-tree override or older installed binding.
+test-python: build-python
+  {{ NIX_DEVELOP }} .#python --command bash -c 'env -u PYTHONPATH PYTHONNOUSERSITE=1 build/venv/pydatamunge-run/bin/python -m pytest --import-mode=importlib -q tests/python bindings_tests/python'
 
 test-r: build-r
-  {{ NIX_DEVELOP }} .#r --command bash -c 'R -q -e "testthat::test_local(\".\")"'
+  {{ NIX_DEVELOP }} .#r --command Rscript -e 'library(datamunger, lib.loc="build/r/library"); stopifnot(startsWith(find.package("datamunger"), normalizePath("build/r/library"))); testthat::test_dir("tests/testthat", stop_on_failure=TRUE); testthat::test_dir("bindings_tests/r", stop_on_failure=TRUE)'
+
 
 test-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/datamungedotnet.tests'
@@ -582,28 +579,98 @@ test-cpp:
 
 # Incrementally rebuild the C++ tests and run only the nn (tensor + autograd) suites.
 test-nn:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/debug/tests -j{{ JOBS }} && ./build/debug/tests/run_tests --gtest_filter='Nn*'"
+  {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake --build build/debug/tests -j{{ NN_JOBS }} && ./build/debug/tests/run_tests --gtest_filter='Nn*'"
 
 
 # }}} test commands
 
 # {{{ nn examples (datamunge::nn ports of ~/projects/tflow_examples)
 
-build-nn-examples:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S examples/nn -B build/nn-examples -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/nn-examples -j{{ JOBS }}"
+configure-nn-examples:
+  {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake -S examples/nn -B build/nn-examples -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
 
-run-nn NAME *ARGS: build-nn-examples
-  ./build/nn-examples/bin/{{ NAME }} {{ ARGS }}
+build-nn-examples: configure-nn-examples
+  {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "cmake --build build/nn-examples -j{{ NN_JOBS }}"
 
-# Run every nn example; each exits nonzero when its checks fail.
-run-all-nn: build-nn-examples
-  @bash -c 'pass=0; fail=0; failed=""; \
-    for f in $(find examples/nn -path "examples/nn/[0-9]*" -name "*.cpp" | sort); do n="$(basename "$f" .cpp)"; \
-      printf "\n========== %s ==========\n" "$n"; \
-      if ./build/nn-examples/bin/"$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
-    printf "\n########## nn examples: %d passed, %d failed ##########\n" "$pass" "$fail"; \
-    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+build-nn-sections: configure-nn-examples
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/nn-examples --parallel {{ NN_JOBS }} --target nn_sections_1_2
+
+run-nn NAME *ARGS: configure-nn-examples
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --build-only {{ NAME }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --force {{ NAME }} --example-args {{ ARGS }}
+
+# Explicit opt-in to long convergence experiments.
+run-nn-full NAME *ARGS: configure-nn-examples
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --build-only {{ NAME }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py --full --force {{ NAME }} --example-args {{ ARGS }}
+
+# Run the nn examples that changed since they last passed (each exits nonzero when its checks
+# fail). Keys hash each example and every repo header it includes; options: --force (run all),
+# --with-library (also rerun after library changes), --list, NAME... (only those examples).
+run-all-nn *ARGS: build-nn-examples
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/run_nn_examples.py {{ ARGS }}
+
+# Optional SWIG-backed replicas of the migrated CNN / autoencoder sections.
+prebuild-nn-python: prebuild-python
+  {{ NIX_DEVELOP }} .#python --command python scripts/prebuild_nn_api.py python
+  {{ NIX_DEVELOP }} .#python --command python scripts/prebuild_nn_examples.py
+
+build-nn-python: prebuild-nn-python
+  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'DATAMUNGE_BUILD_NN_EXAMPLES=1 CMAKE_BUILD_PARALLEL_LEVEL={{ NN_JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
+  touch build/nn-python/enabled
+
+test-nn-python: build-nn-python
+  {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python -m pytest --import-mode=importlib -q tests/python/test_nn_language_examples.py tests/python/test_nn_functional_api.py
+
+run-nn-python NAME *ARGS: build-nn-python
+  {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python scripts/run_nn_python_examples.py --force {{ NAME }} --example-args {{ ARGS }}
+
+run-nn-python-full NAME *ARGS: build-nn-python
+  {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python scripts/run_nn_python_examples.py --full --force {{ NAME }} --example-args {{ ARGS }}
+
+run-all-nn-python *ARGS: build-nn-python
+  {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python scripts/run_nn_python_examples.py {{ ARGS }}
+
+prebuild-nn-r:
+  {{ NIX_DEVELOP }} .#r --command Rscript --vanilla scripts/prebuild_nn_r.R
+
+build-nn-r: prebuild-nn-r
+  mkdir -p build/r/library
+  {{ NIX_DEVELOP }} .#r --command env DATAMUNGE_USE_SYSTEM_LIB=1 MAKEFLAGS=-j{{ NN_JOBS }} R CMD INSTALL -l build/r/library build/nn-r-native/source/datamungerNN
+
+package-nn-r: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command bash -c 'mkdir -p dist && cd dist && R CMD build --no-manual ../build/nn-r-native/source/datamungerNN'
+
+test-nn-r: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command Rscript -e 'library(datamungerNN, lib.loc="build/r/library"); testthat::test_dir("bindings_tests/r-nn", stop_on_failure=TRUE)'
+
+run-nn-r NAME *ARGS: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library DATAMUNGE_EXAMPLES_FULL=0 Rscript --vanilla -e 'args <- commandArgs(TRUE); quit(status=datamungerNN::nn_example_run(args[[1L]], args[-1L]))' {{ NAME }} {{ ARGS }}
+
+run-nn-r-full NAME *ARGS: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library DATAMUNGE_EXAMPLES_FULL=1 Rscript --vanilla -e 'args <- commandArgs(TRUE); quit(status=datamungerNN::nn_example_run(args[[1L]], args[-1L]))' {{ NAME }} {{ ARGS }}
+
+run-all-nn-r *ARGS: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'for (name in datamungerNN::nn_example_names()) { cat("\n==", name, "==\n"); status <- datamungerNN::nn_example_run(name, commandArgs(TRUE)); if (status != 0L) quit(status=status) }' {{ ARGS }}
+
+# Genuine language implementations; these commands never build C++ experiment adapters.
+build-nn-api-python: prebuild-python
+  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  {{ NIX_DEVELOP }} .#python --command bash -c 'DATAMUNGE_USE_SYSTEM_LIB=1 DATAMUNGE_BUILD_NN_EXAMPLES=0 CMAKE_BUILD_PARALLEL_LEVEL={{ NN_JOBS }} build/venv/pydatamunge-run/bin/python -m pip install . --no-deps --no-build-isolation'
+
+python-example NAME *ARGS: build-nn-api-python
+  {{ NIX_DEVELOP }} .#python --command build/venv/pydatamunge-run/bin/python -I scripts/python_example.py {{ NAME }} {{ ARGS }}
+
+r-example NAME *ARGS: build-nn-r
+  {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'args <- commandArgs(TRUE); quit(status=datamungerNN::nn_example_run(args[[1L]], args[-1L]))' {{ NAME }} {{ ARGS }}
+
+nn-language-status:
+  python3 scripts/nn_migration_status.py --refresh
+
+# Run C++/Python/R for each NAME (epochs=5) and record passing evidence in the ledger.
+validate-nn-ports *ARGS:
+  python3 scripts/validate_nn_ports.py {{ ARGS }}
 
 # }}} nn examples
 
@@ -636,24 +703,53 @@ flamechart:
 benchmark:
     @echo "Building benchmarks"
     {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks -j{{ JOBS }}"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --config Release -j{{ JOBS }}"
+    mkdir -p benchmarks/results
     @echo "Running {{ BENCH_TARGET }}"
-    ./build/benchmarks/{{ BENCH_TARGET }} --benchmark_format=json \
-        --benchmark_out="benchmarks/results/$(date +%Y%m%d_%H%M%S).json"
+    python3 scripts/benchmark_backend.py run --no-build --suite {{ BENCH_TARGET }}
     @echo "Results saved to benchmarks/results/"
 
 # Build and run the datamunge::nn speed benchmarks (GEMM, conv, pooling, batch norm, a cnn_mnist epoch).
 bench-nn *ARGS:
     {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --target nn_bench -j{{ JOBS }}"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --config Release --target nn_bench -j{{ JOBS }}"
     mkdir -p benchmarks/results
-    ./build/benchmarks/nn_bench --benchmark_format=json --benchmark_out="benchmarks/results/nn_$(date +%Y%m%d_%H%M%S).json" \
-        --benchmark_out_format=json {{ ARGS }}
+    python3 scripts/benchmark_backend.py run --no-build --suite nn_bench -- {{ ARGS }}
+
+# Persistent observations and raw-run import; history emits TSV for plotting.
+benchmark-history *ARGS:
+    python3 scripts/benchmark_backend.py history {{ ARGS }}
+
+benchmark-record FILE *ARGS:
+    python3 scripts/benchmark_backend.py record '{{ FILE }}' {{ ARGS }}
 
 benchmark-compare BASE NEW:
-    @echo "Comparing {{ BASE }} vs {{ NEW }}"
-    python3 build/benchmarks/_deps/benchmark-src/tools/compare.py benchmarks \
-        benchmarks/results/{{ BASE }} benchmarks/results/{{ NEW }}
+    python3 scripts/benchmark_backend.py compare '{{ BASE }}' '{{ NEW }}'
+
+# Focused backend suites; forward Google Benchmark options after --.
+bench-backend *ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/benchmark_backend.py run --jobs {{ JOBS }} {{ ARGS }}
+
+bench-backend-smoke:
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/benchmark_backend.py run --jobs {{ JOBS }} --smoke
+
+# Check the agreed operation matrix and all current tensor optimizer registrations.
+bench-backend-audit:
+    python3 scripts/benchmark_backend.py audit
+
+# Optional isolated TensorFlow CPU comparison (see benchmarks/TENSORFLOW.md).
+bench-tensorflow *ARGS:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/benchmarks --config Release --target backend_bench -j {{ JOBS }}
+    build/tensorflow-venv/bin/python scripts/benchmark_tensorflow.py {{ ARGS }}
+
+# Existing correctness tests linked to the same core as the benchmarks.
+bench-backend-check:
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_BENCH_CHECKS=ON
+    {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/benchmarks --config Release --target backend_checks -j {{ JOBS }}
+    ./build/benchmarks/backend_checks
+    python3 -m unittest discover -s benchmarks -p 'test*runner.py'
+
 
 
 memcheck:

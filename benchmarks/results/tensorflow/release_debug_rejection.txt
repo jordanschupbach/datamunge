@@ -1,0 +1,11 @@
+-- The CXX compiler identification is Clang 21.1.8
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring incomplete, errors occurred!
+CMake Error at CMakeLists.txt:14 (message):
+  Benchmarks require Release for the driver and linked core
+
+

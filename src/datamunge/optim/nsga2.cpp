@@ -35,12 +35,20 @@ std::vector<std::vector<std::size_t>> fast_non_dominated_sort(std::vector<Indivi
     std::vector<int> dom_count(N, 0);                     // how many dominate p
     std::vector<std::vector<std::size_t>> fronts(1);
 
+    // Visit each unordered pair once. Appending lower then higher indices
+    // keeps every dominated list in the original ascending order.
     for (std::size_t p = 0; p < N; ++p) {
-        for (std::size_t q = 0; q < N; ++q) {
-            if (p == q) continue;
-            if (dominates(pop[p].f, pop[q].f)) dominated[p].push_back(q);
-            else if (dominates(pop[q].f, pop[p].f)) ++dom_count[p];
+        for (std::size_t q = p + 1; q < N; ++q) {
+            if (dominates(pop[p].f, pop[q].f)) {
+                dominated[p].push_back(q);
+                ++dom_count[q];
+            } else if (dominates(pop[q].f, pop[p].f)) {
+                dominated[q].push_back(p);
+                ++dom_count[p];
+            }
         }
+    }
+    for (std::size_t p = 0; p < N; ++p) {
         if (dom_count[p] == 0) {
             pop[p].rank = 0;
             fronts[0].push_back(p);
@@ -59,7 +67,7 @@ std::vector<std::vector<std::size_t>> fast_non_dominated_sort(std::vector<Indivi
             }
         }
         ++fi;
-        fronts.push_back(next);
+        fronts.push_back(std::move(next));
     }
     fronts.pop_back(); // last pushed front is empty
     return fronts;
@@ -75,8 +83,10 @@ void assign_crowding_distance(std::vector<Individual>& pop, const std::vector<st
     const std::size_t m = pop[front[0]].f.size();
     const double inf = std::numeric_limits<double>::infinity();
 
+    std::vector<std::size_t> order;
+    order.reserve(sz);
     for (std::size_t k = 0; k < m; ++k) {
-        std::vector<std::size_t> order(front);
+        order = front;
         std::sort(order.begin(), order.end(),
                   [&](std::size_t a, std::size_t b) { return pop[a].f[k] < pop[b].f[k]; });
         pop[order.front()].crowding = inf;
@@ -157,7 +167,7 @@ std::vector<ParetoPoint> NSGA2::optimize(MultiObjectiveFunction& function, const
         // ---- Elitist survival: rank the combined 2N pool, fill N front by front ----
         std::vector<Individual> combined;
         combined.reserve(2 * N);
-        combined.insert(combined.end(), pop.begin(), pop.end());
+        combined.insert(combined.end(), std::make_move_iterator(pop.begin()), std::make_move_iterator(pop.end()));
         combined.insert(combined.end(), std::make_move_iterator(offspring.begin()),
                         std::make_move_iterator(offspring.end()));
 
@@ -167,14 +177,14 @@ std::vector<ParetoPoint> NSGA2::optimize(MultiObjectiveFunction& function, const
         for (const auto& fr : fronts) {
             assign_crowding_distance(combined, fr);
             if (next.size() + fr.size() <= N) {
-                for (const std::size_t i : fr) next.push_back(combined[i]);
+                for (const std::size_t i : fr) next.push_back(std::move(combined[i]));
             } else {
                 // Partially fill from this front, taking the most crowding-distant first.
                 std::vector<std::size_t> order(fr);
                 std::sort(order.begin(), order.end(), [&](std::size_t a, std::size_t b) {
                     return combined[a].crowding > combined[b].crowding;
                 });
-                for (std::size_t k = 0; next.size() < N; ++k) next.push_back(combined[order[k]]);
+                for (std::size_t k = 0; next.size() < N; ++k) next.push_back(std::move(combined[order[k]]));
                 break;
             }
             if (next.size() == N) break;

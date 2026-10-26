@@ -1,6 +1,7 @@
 #include <datamunge/optim/differential_evolution.hpp>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <random>
 #include <stdexcept>
@@ -22,16 +23,16 @@ void validate_bounds(const std::size_t n, const std::vector<double>& lower_bound
                                          ": lower_bound must be < upper_bound in every dimension");
 }
 
-std::vector<std::size_t> random_distinct_indices(std::mt19937_64& rng, const std::size_t population_size,
+std::array<std::size_t, 5> random_distinct_indices(std::mt19937_64& rng, const std::size_t population_size,
                                                    const std::size_t exclude, const std::size_t count) {
     std::uniform_int_distribution<std::size_t> dist(0, population_size - 1);
-    std::vector<std::size_t> result;
-    result.reserve(count);
-    while (result.size() < count) {
+    std::array<std::size_t, 5> result{};
+    std::size_t used = 0;
+    while (used < count) {
         const std::size_t r = dist(rng);
         if (r == exclude) continue;
-        if (std::find(result.begin(), result.end(), r) != result.end()) continue;
-        result.push_back(r);
+        if (std::find(result.begin(), result.begin() + used, r) != result.begin() + used) continue;
+        result[used++] = r;
     }
     return result;
 }
@@ -83,9 +84,9 @@ double DifferentialEvolution::optimize(ArbitraryFunction& function, std::vector<
     double prev_best = values[best_idx];
     std::size_t stagnant = 0;
 
+    std::vector<double> mutant(n), trial(n);
     for (std::size_t gen = 0; gen < options_.max_generations; ++gen) {
         for (std::size_t i = 0; i < pop.size(); ++i) {
-            std::vector<double> mutant(n);
             switch (mutation) {
                 case Mutation::Rand1: {
                     const auto idx = random_distinct_indices(rng, pop.size(), i, 3);
@@ -116,7 +117,7 @@ double DifferentialEvolution::optimize(ArbitraryFunction& function, std::vector<
             }
             for (std::size_t j = 0; j < n; ++j) mutant[j] = std::clamp(mutant[j], lower_bound[j], upper_bound[j]);
 
-            std::vector<double> trial = pop[i];
+            trial = pop[i];
             if (exponential) {
                 std::size_t j = dim_dist(rng);
                 std::size_t count = 0;

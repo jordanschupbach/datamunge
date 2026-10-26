@@ -157,7 +157,7 @@ void Invariants(Kind kind) {
               nn::optimizer_name(kind).c_str());
 }
 
-void Fit(Kind kind) {
+void Fit(Kind kind, int steps) {
   Tensor              w      = nn::tensor({4, -4}).requires_grad_();
   const Tensor        target = nn::tensor({1.5, -0.75}), weight = nn::tensor({1, 30});
   auto                loss   = [&] { return nn::sum(weight * nn::square(w - target)); };
@@ -165,29 +165,40 @@ void Fit(Kind kind) {
   cfg.kind = kind;
   if (kind == Kind::AdamW) cfg.weight_decay = 0.01;
   nn::Optimizer opt({w}, 0.1, cfg);
-  for (int t = 0; t < 4000; ++t) {
+  const double initial_loss = loss().item();
+  for (int t = 0; t < steps; ++t) {
     opt.set_learning_rate(t < 3200 ? 0.1f : t < 3600 ? 0.01f : 0.001f);
     opt.minimize(loss());
   }
   nn::NoGradGuard guard;
   const auto      v = w.to_vector<float>();
-  check::Near(v[0], 1.5, 0.04, "fit first coordinate");
-  check::Near(v[1], -0.75, 0.04, "fit second coordinate");
+  check::Require(loss().item() < initial_loss, "adaptive fit must reduce loss");
+  if (steps >= 4000) {
+    check::Near(v[0], 1.5, 0.04, "fit first coordinate");
+    check::Near(v[1], -0.75, 0.04, "fit second coordinate");
+  }
   std::printf("  %-8s w=(%9.5f, %9.5f), loss %.6g, %lld slot floats + one int64 step\n",
               nn::optimizer_name(kind).c_str(), v[0], v[1], loss().item<float>(), SlotFloats(opt));
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 4000;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive training budget required");
     std::cout << "== Agreement with TensorFlow fused-kernel formulas\n";
     for (auto kind : {Kind::Adagrad, Kind::RMSProp, Kind::Adam}) FusedKernel(kind);
     std::cout << "\n== Bias correction and state invariants\n";
     for (auto kind : kinds) Invariants(kind);
-    std::cout << "\n== Anisotropic quadratic, true w=(1.5,-.75), 4000 updates\n"
+    std::cout << "\n== Anisotropic quadratic, true w=(1.5,-.75), " << steps << " updates\n"
                  "   lr=.1 for 3200 steps, .01 for 400, .001 for 400; AdamW decay=.01\n";
-    for (auto kind : kinds) Fit(kind);
+    for (auto kind : kinds) Fit(kind, steps);
     std::cout << "All adaptive optimizer checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

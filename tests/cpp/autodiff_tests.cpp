@@ -3,6 +3,7 @@
 #include <datamunge/autodiff/autodiff.hpp>
 
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -212,4 +213,38 @@ TEST(AutodiffDrivers, HessianOfRosenbrockAtOriginMatchesHandDerivation) {
     EXPECT_NEAR(H(1, 1), 200.0, 1e-9);
     EXPECT_NEAR(H(0, 1), 0.0, 1e-9);
     EXPECT_NEAR(H(1, 0), 0.0, 1e-9);
+}
+
+TEST(Autodiff, ReusedSeedsResetValuesAndEveryDerivativeComponent) {
+    auto objective = [](auto& values) {
+        auto sum = values[0] * 0.0;
+        for (const auto& value : values) sum = sum + value * value;
+        for (auto& value : values) value = value * 0.0 + 123.0;
+        return sum;
+    };
+    const std::vector<double> point{2.0, 3.0};
+    const auto gradient = datamunge::autodiff::gradient_forward(objective, point);
+    EXPECT_DOUBLE_EQ(gradient[0], 4.0); EXPECT_DOUBLE_EQ(gradient[1], 6.0);
+    const auto hessian = datamunge::autodiff::hessian(objective, point);
+    EXPECT_DOUBLE_EQ(hessian(0, 0), 2.0); EXPECT_DOUBLE_EQ(hessian(1, 1), 2.0);
+    EXPECT_DOUBLE_EQ(hessian(0, 1), 0.0); EXPECT_DOUBLE_EQ(hessian(1, 0), 0.0);
+    auto outputs = [](auto& values) {
+        auto a = values[0] * values[0], b = values[0] * values[1];
+        for (auto& value : values) value = value * 0.0 + 123.0;
+        return std::vector<decltype(a)>{a, b};
+    };
+    const auto jacobian = datamunge::autodiff::jacobian_forward(outputs, point);
+    EXPECT_DOUBLE_EQ(jacobian(0, 0), 4.0); EXPECT_DOUBLE_EQ(jacobian(0, 1), 0.0);
+    EXPECT_DOUBLE_EQ(jacobian(1, 0), 3.0); EXPECT_DOUBLE_EQ(jacobian(1, 1), 2.0);
+}
+
+TEST(Tape, ParentOrderAndUnusedNonfiniteNodesRemainObservable) {
+    Tape tape;
+    const auto x = tape.new_leaf(2.0);
+    const auto output = tape.record_binary(4.0, x, 2.0, x, 3.0);
+    EXPECT_DOUBLE_EQ(tape.backward(output)[x], 5.0);
+    // A zero adjoint multiplied by a nonfinite local gradient still propagates
+    // NaN; an optimization must not skip this node or stop at output's index.
+    tape.record_unary(0.0, x, std::numeric_limits<double>::quiet_NaN());
+    EXPECT_TRUE(std::isnan(tape.backward(output)[x]));
 }

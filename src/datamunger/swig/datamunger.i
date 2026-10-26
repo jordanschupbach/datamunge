@@ -279,3 +279,22 @@
 %include "datamunge/algebra/groebner.hpp"
 
 %include "datamunge/algebra/expression.hpp"
+
+// datamunge::nn binding surface: NnTensor (tensors, core ops, autograd) and NnModel
+// (sequential models, gradients, optimizer steps, .npz weights). See include/datamunge/nn/api.hpp;
+// the full nn API is C++ only.
+%{
+  #include "datamunge/nn/api.hpp"
+%}
+// nn errors (bad shapes, unknown names, missing files) become language exceptions
+// instead of aborting the process. Scoped to this header only.
+%include <exception.i>
+%exception {
+  try {
+    $action
+  } catch (const std::exception& e) {
+    SWIG_exception(SWIG_RuntimeError, e.what());
+  }
+}
+%include "datamunge/nn/api.hpp"
+%exception;

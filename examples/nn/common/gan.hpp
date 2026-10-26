@@ -496,4 +496,228 @@ class WassersteinGanModel {
   bool training_graph_{false};
 };
 
+// ---- shared pieces of the compact MNIST GANs (job 3.1a: lsgan, hinge_gan,
+// conditional_gan, auxiliary_classifier_gan, infogan, ...) -------------------------------
+
+/// tflow LeastSquaresGanObjectives (a = 0, b = c = 1): D .5 mean (real - 1)^2 +
+/// .5 mean fake^2; G .5 mean (fake - 1)^2. Raw unbounded scores.
+inline LogisticGanLoss LeastSquaresGanObjectives(const Tensor& real, const Tensor& fake) {
+  return {.5 * (nn::mean(nn::square(real - 1.0)) + nn::mean(nn::square(fake))), .5 * nn::mean(nn::square(fake - 1.0))};
+}
+
+/// tflow HingeGanObjectives: D mean relu(1 - real) + mean relu(1 + fake); G -mean fake
+/// (ReLU subgradient 0 at the margin, as TF).
+inline LogisticGanLoss HingeGanObjectives(const Tensor& real, const Tensor& fake) {
+  return {nn::mean(nn::relu(1.0 - real)) + nn::mean(nn::relu(1.0 + fake)), -nn::mean(fake)};
+}
+
+/// [n, 28, 28, 1] (or any [n, ...784]) -> [n, 784] (tflow UndercompleteModel::Flatten).
+inline Tensor Flat784(const Tensor& x) { return nn::reshape(x, {-1, 784}); }
+
+/// tflow MlpGanGenerate: z [n, 16] -> 32 tanh -> 784 sigmoid.
+inline Tensor MlpGanGenerate(nn::ParameterStore& p, const Tensor& z) {
+  return nn::dense(p, "output", nn::dense(p, "hidden", z, 32, nn::Activation::Tanh), 784, nn::Activation::Sigmoid);
+}
+/// tflow MlpGanDiscriminate: image [n, 784] -> 32 tanh -> 1 raw score.
+inline Tensor MlpGanDiscriminate(nn::ParameterStore& p, const Tensor& x) {
+  return nn::dense(p, "output", nn::dense(p, "hidden", x, 32, nn::Activation::Tanh), 1);
+}
+/// One-hot float32 [n, 10] of integer class IDs.
+inline Tensor OneHot10(const Tensor& labels) { return nn::one_hot(nn::cast(labels, nn::DType::Int64), 10); }
+/// tflow ConditionalGanGenerate: concat(z, onehot) [n, 26] -> 32 tanh -> 784 sigmoid.
+inline Tensor ConditionalGanGenerate(nn::ParameterStore& p, const Tensor& z, const Tensor& labels) {
+  return MlpGanGenerate(p, nn::concat({z, OneHot10(labels)}, 1));
+}
+/// tflow ConditionalGanDiscriminate: concat(image, onehot) [n, 794] -> 32 tanh -> 1 logit.
+inline Tensor ConditionalGanDiscriminate(nn::ParameterStore& p, const Tensor& image, const Tensor& labels) {
+  return MlpGanDiscriminate(p, nn::concat({image, OneHot10(labels)}, 1));
+}
+
+/// tflow ConditionalGanModel::ValidateCondition: one int32 class 0..9 per 16-D noise row.
+inline void ValidateCondition(const Tensor& z, const Tensor& labels, std::int64_t width = 16) {
+  check::Require(z.dtype() == nn::DType::Float32 && z.dim() == 2 && z.size(1) == width &&
+                     labels.dtype() == nn::DType::Int32 && labels.shape() == nn::Shape({z.size(0)}),
+                 "one valid integer class per " + std::to_string(width) + "-D noise vector");
+  for (auto c : labels.contiguous().to_vector<std::int32_t>()) check::Require(c >= 0 && c < 10, "class ID 0..9 before OneHot");
+}
+
+/// Separate parameter groups ("<k>/<name>" arrays) with one optimizer each, as
+/// tflow's GAN models keep them: gradients of a group's objective w.r.t. that
+/// group only, explicit Apply of (possibly pre-captured) gradients.
+class GroupedGan {
+ public:
+  std::vector<std::unique_ptr<nn::ParameterStore>> groups;
+  std::vector<std::unique_ptr<nn::Optimizer>>      optimizers;
+
+  explicit GroupedGan(const std::vector<std::uint64_t>& seeds) {
+    for (auto s : seeds) groups.push_back(std::make_unique<nn::ParameterStore>(s));
+  }
+  virtual ~GroupedGan() = default;
+  nn::ParameterStore& Group(int k) { return *groups.at(k); }
+
+  /// One Adam per group in `trainable` (default: all groups).
+  void MakeAdam(double lr, double beta1, double beta2 = .999, std::vector<int> trainable = {}) {
+    if (trainable.empty())
+      for (int k = 0; k < int(groups.size()); ++k) trainable.push_back(k);
+    optimizers.resize(groups.size());
+    for (int k : trainable) {
+      nn::OptimizerConfig c;
+      c.kind       = nn::OptimizerKind::Adam;
+      c.beta1      = beta1;
+      c.beta2      = beta2;
+      optimizers[k] = std::make_unique<nn::Optimizer>(Group(k), lr, c);
+    }
+  }
+
+  /// d objective / d group k, keyed "<k>/<name>" (unused parameters get zeros).
+  Arrays GradientOf(int k, const Tensor& objective) {
+    auto&           store = Group(k);
+    nn::GradOptions o;
+    o.allow_unused = true;
+    const auto g   = nn::grad(objective, store.parameters(), o);
+    Arrays     out;
+    for (std::size_t i = 0; i < g.size(); ++i)
+      out.emplace(std::to_string(k) + "/" + store.names()[i],
+                  g[i].defined() ? g[i] : nn::zeros(store.at(store.names()[i]).shape(), store.dtype()));
+    return out;
+  }
+  /// One optimizer step of group k from gradients keyed "<k>/<name>".
+  void Apply(int k, const Arrays& gradients) {
+    std::vector<Tensor> ordered;
+    for (const auto& name : Group(k).names()) ordered.push_back(gradients.at(std::to_string(k) + "/" + name));
+    optimizers.at(k)->step(ordered);
+  }
+
+  std::vector<std::pair<std::string, nn::ParameterStore*>> Stores() {
+    std::vector<std::pair<std::string, nn::ParameterStore*>> s;
+    for (int k = 0; k < int(groups.size()); ++k) s.emplace_back(std::to_string(k) + "/", groups[k].get());
+    return s;
+  }
+  Arrays AllArrays() {
+    std::vector<std::pair<std::string, const nn::ParameterStore*>> s;
+    for (auto& [k, v] : Stores()) s.emplace_back(k, v);
+    return Snapshot(s);
+  }
+  void Save(const std::string& path) { SaveArrays(path, AllArrays()); }
+  void Load(const std::string& path) { LoadArrays(path, Stores()); }
+  std::int64_t Count(int k) { return Group(k).count(); }
+};
+
+/// tflow's Mosaic: 28x28 digits [n, 784] in [0, 1] at 3x with 4-pixel gray-220 gaps.
+inline void Mosaic(const std::filesystem::path& path, const Tensor& images, std::int64_t columns) {
+  nn::save_image_grid(nn::reshape(images, {-1, 28, 28, 1}), path.string(), columns, 0, 1, 4, 220 / 255., 3);
+}
+
+/// The fit-pool mean image repeated n times, [n, 784] (tflow AutoencoderConstant(AutoencoderMean)).
+inline Tensor FitMean(const Tensor& fit, std::int64_t n) {
+  return nn::tile(nn::mean(Flat784(fit), {0}, true), {n, 1});
+}
+
+/// Coarse-pixel MMD between real images and [n, 784] samples.
+inline double CoarseMmd(const Tensor& real, const Tensor& fake) {
+  return ImqMmd(GanCoarsePixels(Flat784(real)), GanCoarsePixels(Flat784(fake))).item();
+}
+
+/// Mean generated pixel and mean per-pixel variance across samples of [n, d].
+inline std::pair<double, double> PixelMoments(const Tensor& x) {
+  const Tensor mean = nn::mean(nn::cast(x, nn::DType::Float64), {0}, true);
+  return {nn::mean(mean).item(), nn::mean(nn::square(nn::cast(x, nn::DType::Float64) - mean)).item()};
+}
+
+/// Max |a - b| over all elements.
+inline double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  return nn::max(nn::abs(nn::cast(a, nn::DType::Float64) - nn::cast(b, nn::DType::Float64))).item();
+}
+
+/// Checks that only arrays with one of `owners` prefixes changed between two
+/// snapshots, and (if `require_change`) that at least one of them did.
+inline void RequireOnlyOwnersChanged(const Arrays& before, const Arrays& after, const std::vector<std::string>& owners,
+                                     const std::string& message, bool require_change = true) {
+  bool changed = false;
+  for (const auto& [key, value] : before) {
+    bool own = false;
+    for (const auto& o : owners) own |= key.rfind(o, 0) == 0;
+    if (own)
+      changed |= !BitEqual(value, after.at(key));
+    else
+      check::Require(BitEqual(value, after.at(key)), message);
+  }
+  if (require_change) check::Require(changed, "intended GAN group updates");
+}
+
+enum class GanObjective { Logistic, LeastSquares, Hinge };
+
+/// tflow ml::{Vanilla,LeastSquares,Hinge,Conditional}GanModel: the compact MLP
+/// GAN (G 16 [+ one-hot 10] -> 32 tanh -> 784 sigmoid, D 784 [+ one-hot 10] ->
+/// 32 tanh -> 1) with group 0 = G, group 1 = D and separate Adam (.0002, beta1
+/// .5). Logistic models expose real/fake_logit and probabilities, the others
+/// raw real/fake_score. `labels` are ignored unless `conditional`.
+class MlpGanModel : public GroupedGan {
+ public:
+  GanObjective objective;
+  bool         conditional;
+
+  MlpGanModel(GanObjective kind, bool conditional_model, std::uint64_t g_seed, std::uint64_t d_seed,
+              bool training = true)
+      : GroupedGan({g_seed, d_seed}), objective(kind), conditional(conditional_model) {
+    {
+      nn::NoGradGuard guard;
+      const Tensor    labels = nn::zeros({2}, nn::DType::Int32);
+      Discriminate(Generate(nn::zeros({2, 16}), labels), labels);
+    }
+    if (training) MakeAdam(.0002, .5);
+  }
+
+  Tensor Generate(const Tensor& z, const Tensor& labels) {
+    return conditional ? ConditionalGanGenerate(Group(0), z, labels) : MlpGanGenerate(Group(0), z);
+  }
+  Tensor Discriminate(const Tensor& image, const Tensor& labels) {
+    return conditional ? ConditionalGanDiscriminate(Group(1), image, labels) : MlpGanDiscriminate(Group(1), image);
+  }
+
+  /// Every Evaluate field; the losses keep their graph when grad mode is on.
+  Arrays Forward(const Tensor& x, const Tensor& z, const Tensor& labels) {
+    if (conditional) {
+      ValidateCondition(z, labels);
+      check::Require(x.size(0) == z.size(0), "matching real/fake conditional batch sizes");
+    }
+    const Tensor fake = Generate(z, labels);
+    const Tensor real_score = Discriminate(Flat784(x), labels), fake_score = Discriminate(fake, labels);
+    const auto   loss = objective == GanObjective::Logistic       ? LogisticGanObjectives(real_score, fake_score)
+                        : objective == GanObjective::LeastSquares ? LeastSquaresGanObjectives(real_score, fake_score)
+                                                                  : HingeGanObjectives(real_score, fake_score);
+    Arrays out{{"fake", fake}, {"discriminator_loss", loss.discriminator}, {"generator_loss", loss.generator}};
+    if (objective == GanObjective::Logistic) {
+      out.emplace("real_logit", real_score);
+      out.emplace("fake_logit", fake_score);
+      out.emplace("real_probability", nn::sigmoid(real_score));
+      out.emplace("fake_probability", nn::sigmoid(fake_score));
+    } else {
+      out.emplace("real_score", real_score);
+      out.emplace("fake_score", fake_score);
+    }
+    return out;
+  }
+
+  Arrays Evaluate(const Tensor& x, const Tensor& z, const Tensor& labels = {}) {
+    check::Require(x.size(0) >= 2 && z.size(0) >= 2, "pixel MMD diagnostic needs >= 2 cases EACH");
+    nn::NoGradGuard guard;
+    Arrays          out = Forward(x, z, labels);
+    out.emplace("pixel_mmd", ImqMmd(GanCoarsePixels(Flat784(x)), GanCoarsePixels(out.at("fake"))));
+    RequireFinite(out, "all GAN fields finite");
+    return out;
+  }
+  Tensor Sample(const Tensor& z, const Tensor& labels = {}) {
+    if (conditional) ValidateCondition(z, labels);
+    nn::NoGradGuard guard;
+    return Generate(z, labels);
+  }
+  Arrays Gradient(int group, const Tensor& x, const Tensor& z, const Tensor& labels = {}) {
+    return GradientOf(group, Forward(x, z, labels).at(group == 0 ? "generator_loss" : "discriminator_loss"));
+  }
+  void Update(int group, const Tensor& x, const Tensor& z, const Tensor& labels = {}) {
+    Apply(group, Gradient(group, x, z, labels));
+  }
+};
+
 }  // namespace gan

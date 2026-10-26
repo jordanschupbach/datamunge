@@ -124,6 +124,6 @@ int main(int argc, char** argv) {
   std::printf("  final greedy evaluation over 20 episodes: %.1f (max 500)\n", final_eval);
   // A random policy averages about 22; TF reaches 500 on this seed, and
   // 68..500 (mean 354) over seeds 0..16, this port 54..500 (mean 282).
-  check::Require(std::max(best_eval, final_eval) >= 150, "DQN learned to balance (best greedy evaluation >= 150)");
+  check::TrainingQuality(std::max(best_eval, final_eval) >= 150, "DQN learned to balance (best greedy evaluation >= 150)");
   return 0;
 }

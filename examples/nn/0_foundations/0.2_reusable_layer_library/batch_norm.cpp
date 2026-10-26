@@ -108,7 +108,7 @@ void HandCheck() {
 // 2. Moving statistics and the inference branch
 // ---------------------------------------------------------------------------
 
-void MovingStatistics() {
+void MovingStatistics(int steps) {
   std::printf(
       "\n== Moving statistics, momentum 0.9, batches of 32 from N(m_c, s_c^2) with m = (1, 2, 3, 4), s = (1, 2, 0.5, "
       "3)\n");
@@ -117,10 +117,10 @@ void MovingStatistics() {
   const std::vector<float> mean = {1, 2, 3, 4}, std = {1, 2, 0.5f, 3};
   std::vector<float>       mm, mv;
   std::printf("  %6s | %-31s | %-31s\n", "step", "moving mean", "moving var");
-  for (int step = 1; step <= 300; ++step) {
+  for (int step = 1; step <= steps; ++step) {
     nn::NoGradGuard g;
     nn::batch_norm(p, stats, "bn1", RandomMatrix(32, 4, rng, mean, std), true, Options(0.9));
-    if (step == 1 || step == 10 || step == 30 || step == 100 || step == 300) {
+    if (step == 1 || step == 10 || step == 30 || step == 100 || step == steps) {
       mm = stats.at("bn1/moving_mean").to_vector<float>(), mv = stats.at("bn1/moving_var").to_vector<float>();
       std::printf("  %6d |", step);
       for (int c = 0; c < 4; ++c) std::printf(" %7.3f", mm[c]);
@@ -132,7 +132,7 @@ void MovingStatistics() {
   std::printf("  %6s |   1.000   2.000   3.000   4.000 |   1.000   4.000   0.250   9.000\n", "target");
   // TF prints exactly these values at step 300 (same data stream).
   const float tf_mean[4] = {1.021f, 2.041f, 2.990f, 4.014f}, tf_var[4] = {1.102f, 4.113f, 0.234f, 8.317f};
-  for (int c = 0; c < 4; ++c) {
+  if (steps == 300) for (int c = 0; c < 4; ++c) {
     check::Near(mm[c], tf_mean[c], 2e-3, "moving mean vs TF at step 300");
     check::Near(mv[c], tf_var[c], 2e-3, "moving var vs TF at step 300");
   }
@@ -146,8 +146,13 @@ void MovingStatistics() {
     for (int i = 0; i < 4096; ++i) s += y[i * 4 + c], ss += double(y[i * 4 + c]) * y[i * 4 + c];
     const double m = s / 4096, sd = std::sqrt(ss / 4096 - m * m);
     std::printf("  %.3f / %.3f", m, sd);
-    check::Near(m, tf_m[c], 2e-3, "inference output mean vs TF");
-    check::Near(sd, tf_s[c], 2e-3, "inference output std vs TF");
+    if (steps == 300) {
+      check::Near(m, tf_m[c], 2e-3, "inference output mean vs TF");
+      check::Near(sd, tf_s[c], 2e-3, "inference output std vs TF");
+    }
+    for (int i = 0; i < 4096; ++i)
+      check::Near(y[i * 4 + c], (fresh.at({i, c}) - mm[c]) / std::sqrt(mv[c] + kEps), 1e-5,
+                  "inference uses the current moving statistics");
   }
   std::printf("\n");
 }
@@ -270,10 +275,17 @@ void Backward() {
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 300;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive statistics-update budget required");
     HandCheck();
-    MovingStatistics();
+    MovingStatistics(steps);
     DeepStack();
     Backward();
   } catch (const std::exception& e) {

@@ -63,7 +63,7 @@ std::vector<std::pair<std::string, Tensor>> Slots(const nn::Optimizer& opt) {
   return out;
 }
 
-void Accumulation() {
+void Accumulation(int steps) {
   Tensor w = nn::scalar(3).requires_grad_(), b = nn::scalar(-1).requires_grad_();
   Tensor w_ref = nn::scalar(3).requires_grad_(), b_ref = nn::scalar(-1).requires_grad_();
   auto   loss  = [](const Tensor& weight, const Tensor& bias, const Tensor& x, const Tensor& y) {
@@ -91,7 +91,7 @@ void Accumulation() {
   check::Near(accumulator.total_weight(), 0, 0, "invalid weight cannot mutate accumulation");
 
   double worst = 0;
-  for (int update = 0; update < 10; ++update) {
+  for (int update = 0; update < steps; ++update) {
     int start = 0;
     for (int size : {2, 3, 2}) {
       const Tensor bx = nn::from_vector(std::vector<float>(xs.begin() + start, xs.begin() + start + size));
@@ -121,18 +121,25 @@ void Accumulation() {
     check::Require(micro.iterations() == update + 1, "one optimizer step per accumulated batch");
     check::Near(accumulator.total_weight(), 0, 0, "accumulator reset after apply");
   }
-  std::printf("  microbatches 2+3+2 vs batch 7: max weight/moment error %.3g over 10 Adam updates\n", worst);
+  std::printf("  microbatches 2+3+2 vs batch 7: max weight/moment error %.3g over %d Adam updates\n", worst, steps);
   std::cout << "  empty updates and zero weights rejected without changing optimizer state\n";
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 10;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive training budget required");
     std::cout << "== Gradient clipping\n";
     Clipping();
     std::cout << "\n== Sample-weighted accumulation, then global-norm clipping\n";
-    Accumulation();
+    Accumulation(steps);
     std::cout << "All clipping and accumulation checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

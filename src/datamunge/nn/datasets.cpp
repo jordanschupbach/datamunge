@@ -1,21 +1,29 @@
-// Dataset loaders: IDX (MNIST), CIFAR binary, CSV.
+// Dataset loaders: IDX (MNIST), CIFAR binary, CSV, image folders (PNG/JPEG).
 
 #include "datamunge/nn/datasets.hpp"
 
+#include <algorithm>
 #include <cctype>
 #include <cerrno>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <sstream>
+#include <set>
 #include <stdexcept>
 
 #include "datamunge/image/detail/crc32.hpp"
 #include "datamunge/image/detail/zlib_codec.hpp"
+#include "datamunge/image/jpeg.hpp"
+#include "datamunge/image/png.hpp"
+#include "datamunge/nn/autograd.hpp"
+#include "datamunge/nn/image_ops.hpp"
 #include "datamunge/nn/ops.hpp"
+#include "datamunge/nn/parallel.hpp"
 
 namespace datamunge::nn {
 
@@ -337,6 +345,121 @@ Tensor read_csv(const std::string& path, std::vector<std::string>* column_names,
   }
   const auto n = static_cast<std::int64_t>(rows.size() - first);
   return from_vector(values, {n, static_cast<std::int64_t>(columns)});
+}
+
+// ---------------------------------------------------------------------------
+// Image folders (tflow common/data/image_folder.h semantics).
+
+namespace {
+
+namespace fs = std::filesystem;
+
+std::string lower_extension(const fs::path& path) {
+  std::string ext = path.extension().string();
+  for (char& c : ext) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+  return ext;
+}
+
+bool is_image_extension(const std::string& ext) { return ext == ".png" || ext == ".jpg" || ext == ".jpeg"; }
+
+}  // namespace
+
+ImageFolder scan_image_folder(const std::string& root, std::vector<std::string> class_names) {
+  const fs::path base(root);
+  if (!fs::is_directory(base)) throw std::invalid_argument("scan_image_folder: '" + root + "' is not a directory");
+  std::vector<std::string> discovered;
+  for (const auto& entry : fs::directory_iterator(base))
+    if (entry.is_directory()) discovered.push_back(entry.path().filename().string());
+  std::sort(discovered.begin(), discovered.end());
+  if (class_names.empty()) class_names = discovered;
+  std::set<std::string> unique;
+  for (const auto& name : class_names) {
+    const fs::path part(name);
+    if (name.empty() || name == "." || name == ".." || part.filename() != part || !unique.insert(name).second)
+      throw std::invalid_argument("scan_image_folder: invalid or duplicate class name '" + name + "'");
+  }
+  for (const auto& name : discovered)
+    if (!unique.count(name)) throw std::invalid_argument("scan_image_folder: unknown image class '" + name + "'");
+  ImageFolder result{std::move(class_names), {}};
+  for (std::size_t label = 0; label < result.class_names.size(); ++label) {
+    const fs::path directory = base / result.class_names[label];
+    if (!fs::exists(directory)) continue;  // a class absent from this split keeps its label
+    std::vector<fs::path> paths;
+    for (const auto& entry : fs::directory_iterator(directory))
+      if (entry.is_regular_file() && is_image_extension(lower_extension(entry.path()))) paths.push_back(entry.path());
+    std::sort(paths.begin(), paths.end());
+    for (const auto& path : paths) result.images.push_back({path.string(), static_cast<std::int64_t>(label)});
+  }
+  if (result.images.empty()) throw std::invalid_argument("scan_image_folder: no PNG/JPEG images found in '" + root + "'");
+  return result;
+}
+
+Tensor load_image_rgb(const std::string& path, std::int64_t height, std::int64_t width) {
+  if (height <= 0 || width <= 0) throw std::invalid_argument("load_image_rgb: resize dimensions must be positive");
+  const std::string ext = lower_extension(fs::path(path));
+  if (!is_image_extension(ext)) throw std::invalid_argument("load_image_rgb: unsupported image extension in '" + path + "'");
+  image::Image img;
+  try {
+    if (ext == ".png") {
+      img = image::read_png(path);
+    } else {
+      image::JpegDecodeOptions options;
+      options.channels = 3;
+      img = image::read_jpeg(path, options);
+    }
+  } catch (const std::exception& e) {
+    throw std::runtime_error("image decode failed for " + path + ": " + e.what());
+  }
+  // To RGB like DecodePng(channels=3): gray expands, alpha is dropped.
+  const int ch = img.channels();
+  const std::int64_t h = img.height(), w = img.width();
+  Tensor rgb = empty({1, h, w, 3}, DType::Float32);
+  float* dst = rgb.data_ptr<float>();
+  const std::uint8_t* src = img.data().data();
+  const std::int64_t n = h * w;
+  for (std::int64_t i = 0; i < n; ++i) {
+    const std::uint8_t* p = src + i * ch;
+    for (int c = 0; c < 3; ++c) dst[i * 3 + c] = static_cast<float>(ch >= 3 ? p[c] : p[0]);
+  }
+  NoGradGuard guard;
+  Tensor resized = resize_bilinear(rgb, ImageSize{height, width}, false, true).contiguous();
+  Tensor out = empty({height, width, 3}, DType::Float32);
+  const float* r = resized.data_ptr<float>();
+  float* o = out.data_ptr<float>();
+  for (std::int64_t i = 0; i < height * width * 3; ++i) o[i] = r[i] * (1.f / 255.f);
+  return out;
+}
+
+ImageDataset load_image_batch(const std::vector<ImageFile>& images, const std::vector<std::size_t>& rows,
+                              std::int64_t height, std::int64_t width) {
+  if (height <= 0 || width <= 0) throw std::invalid_argument("load_image_batch: resize dimensions must be positive");
+  const auto count = static_cast<std::int64_t>(rows.size());
+  for (std::size_t row : rows)
+    if (row >= images.size()) throw std::out_of_range("load_image_batch: row index out of range");
+  Tensor batch = empty({count, height, width, 3}, DType::Float32);
+  Tensor labels = empty({count}, DType::Int64);
+  const std::int64_t stride = height * width * 3;
+  float* dst = batch.data_ptr<float>();
+  std::int64_t* lab = labels.data_ptr<std::int64_t>();
+  parallel_for(0, count, 1, [&](std::int64_t lo, std::int64_t hi) {
+    for (std::int64_t i = lo; i < hi; ++i) {
+      const ImageFile& file = images[rows[static_cast<std::size_t>(i)]];
+      const Tensor one = load_image_rgb(file.path, height, width);
+      std::copy_n(one.data_ptr<float>(), stride, dst + i * stride);
+      lab[i] = file.label;
+    }
+  });
+  return {batch, labels};
+}
+
+ImageDataset load_image_folder(const std::string& root, std::int64_t height, std::int64_t width,
+                               std::vector<std::string> class_names, ImageFolder* folder) {
+  ImageFolder scan = scan_image_folder(root, std::move(class_names));
+  std::vector<std::size_t> rows(scan.images.size());
+  for (std::size_t i = 0; i < rows.size(); ++i) rows[i] = i;
+  ImageDataset data = load_image_batch(scan.images, rows, height, width);
+  if (folder) *folder = std::move(scan);
+  return data;
 }
 
 }  // namespace datamunge::nn

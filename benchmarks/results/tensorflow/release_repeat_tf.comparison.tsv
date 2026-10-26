@@ -1,0 +1,13 @@
+case	native_us	eager_us	graph_us	native_over_eager	native_over_graph	native_cv_percent	eager_cv_percent	graph_cv_percent
+BM_TensorFlowMatched/Relu/rows:8192/f64:0/real_time	75.9515	61.669	143.404	1.2316	0.529633	1.85	2.56	2.17
+BM_TensorFlowMatched/Multiply/rows:8192/f64:0/real_time	91.2596	81.37	154.985	1.12154	0.588829	9.13	1.69	7.01
+BM_TensorFlowMatched/Softmax/rows:8192/f64:1/real_time	1574.22	1460.86	1533.08	1.0776	1.02683	0.22	6.98	2.41
+BM_TensorFlowMatched/Exp/rows:8192/f64:1/real_time	1040.15	980.357	948.053	1.06099	1.09715	0.263	1.53	2.89
+BM_TensorFlowMatched/Multiply/rows:8192/f64:1/real_time	150.48	159.704	234.817	0.942244	0.640841	1.61	12	2.27
+BM_TensorFlowMatched/Relu/rows:8192/f64:1/real_time	150.655	162.336	224.073	0.928049	0.672349	3.63	2.53	1.17
+BM_TensorFlowMatched/Exp/rows:8192/f64:0/real_time	374.387	426.309	502.373	0.878206	0.745238	2.01	1.56	1.97
+BM_TensorFlowMatched/Add/rows:8192/f64:0/real_time	72.4297	82.8838	139.72	0.873871	0.518393	2.33	13.6	0.16
+BM_TensorFlowMatched/Softmax/rows:8192/f64:0/real_time	583.571	674.424	744.616	0.865287	0.783721	0.0194	0.198	0.792
+BM_TensorFlowMatched/Add/rows:8192/f64:1/real_time	148.874	195.523	220.833	0.761414	0.674148	1.64	7.94	2.46
+BM_TensorFlowMatched/SquareGradient/rows:8192/f64:0/real_time	199.976	593.785	248.803	0.336783	0.803755	0.103	6.43	1.91
+BM_TensorFlowMatched/SquareGradient/rows:8192/f64:1/real_time	367.339	1180.36	426.378	0.311209	0.861532	0.406	0.342	0.393

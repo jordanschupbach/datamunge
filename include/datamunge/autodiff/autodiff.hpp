@@ -27,8 +27,8 @@ template <typename F>
 std::vector<double> gradient_forward(F&& f, const std::vector<double>& x) {
     const std::size_t n = x.size();
     std::vector<double> grad(n);
+    std::vector<Dual> seeded(n);
     for (std::size_t i = 0; i < n; ++i) {
-        std::vector<Dual> seeded(n);
         for (std::size_t j = 0; j < n; ++j) seeded[j] = Dual(x[j], j == i ? 1.0 : 0.0);
         grad[i] = f(seeded).derivative();
     }
@@ -65,8 +65,8 @@ template <typename F>
 linalg::DenseMatrix<double> jacobian_forward(F&& f, const std::vector<double>& x) {
     const std::size_t n = x.size();
     linalg::DenseMatrix<double> jac;
+    std::vector<Dual> seeded(n);
     for (std::size_t i = 0; i < n; ++i) {
-        std::vector<Dual> seeded(n);
         for (std::size_t j = 0; j < n; ++j) seeded[j] = Dual(x[j], j == i ? 1.0 : 0.0);
         const std::vector<Dual> outputs = f(seeded);
         if (i == 0) jac = linalg::DenseMatrix<double>(outputs.size(), n, 0.0);
@@ -82,9 +82,9 @@ template <typename F>
 linalg::DenseMatrix<double> hessian(F&& f, const std::vector<double>& x) {
     const std::size_t n = x.size();
     linalg::DenseMatrix<double> H(n, n, 0.0);
+    std::vector<HyperDual> seeded(n);
     for (std::size_t i = 0; i < n; ++i) {
         for (std::size_t j = i; j < n; ++j) {
-            std::vector<HyperDual> seeded(n);
             for (std::size_t k = 0; k < n; ++k)
                 seeded[k] = HyperDual(x[k], k == i ? 1.0 : 0.0, k == j ? 1.0 : 0.0, 0.0);
             const double h = f(seeded).eps1eps2();

@@ -10,13 +10,16 @@ using namespace datamunge::linalg;
 // ============================================================
 // Reproducible matrix generators
 //
-// Using a simple LCG so matrix generation is allocation-free and
+// Using a mixed 64-bit generator so matrix generation is deterministic and
 // produces the same matrix for a given (n, seed) pair across runs.
 // ============================================================
 
-static uint64_t lcg_next(uint64_t& s) {
-    s = s * 6364136223846793005ULL + 1442695040888963407ULL;
-    return s;
+static uint64_t random_next(uint64_t& s) {
+    // SplitMix64: mix low bits before modulo indexing power-of-two dimensions.
+    uint64_t z = (s += 0x9e3779b97f4a7c15ULL);
+    z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
+    z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
+    return z ^ (z >> 31);
 }
 
 // n×n random sparse matrix, ~density fraction non-zeros.
@@ -29,9 +32,9 @@ static SparseCOO<double> make_random_coo(std::size_t        n,
     SparseCOO<double> mat(n, n, target);
     uint64_t          s = seed;
     for (std::size_t k = 0; k < target; ++k) {
-        const std::size_t r = lcg_next(s) % n;
-        const std::size_t c = lcg_next(s) % n;
-        const double      v = static_cast<double>(lcg_next(s) % 1000) / 100.0 + 0.1;
+        const std::size_t r = random_next(s) % n;
+        const std::size_t c = random_next(s) % n;
+        const double      v = static_cast<double>(random_next(s) % 1000) / 100.0 + 0.1;
         mat.set(r, c, v);
     }
     if (do_compress) mat.compress();
@@ -61,8 +64,11 @@ static void BM_CSR_spmv(benchmark::State& state) {
     const auto nnz = mat.nnz();
     auto x = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
-    for (auto _ : state)
+    for (auto _ : state) {
         mat.spmv(x, y);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(nnz));
     state.SetBytesProcessed(state.iterations() * static_cast<int64_t>(nnz) * sizeof(double) * 2);
     state.counters["nnz"] = static_cast<double>(nnz);
@@ -76,8 +82,11 @@ static void BM_CSC_spmv(benchmark::State& state) {
     const auto nnz = mat.nnz();
     auto x = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
-    for (auto _ : state)
+    for (auto _ : state) {
         mat.spmv(x, y);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(nnz));
     state.SetBytesProcessed(state.iterations() * static_cast<int64_t>(nnz) * sizeof(double) * 2);
     state.counters["nnz"] = static_cast<double>(nnz);
@@ -91,8 +100,11 @@ static void BM_ELL_spmv(benchmark::State& state) {
     const auto nnz = mat.nnz();
     auto x = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
-    for (auto _ : state)
+    for (auto _ : state) {
         mat.spmv(x, y);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(nnz));
     state.SetBytesProcessed(state.iterations() * static_cast<int64_t>(nnz) * sizeof(double) * 2);
     state.counters["nnz"] = static_cast<double>(nnz);
@@ -106,8 +118,11 @@ static void BM_DIA_spmv(benchmark::State& state) {
     const auto nnz = mat.nnz();
     auto x = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
-    for (auto _ : state)
+    for (auto _ : state) {
         mat.spmv(x, y);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(nnz));
     state.SetBytesProcessed(state.iterations() * static_cast<int64_t>(nnz) * sizeof(double) * 2);
     state.counters["nnz"] = static_cast<double>(nnz);
@@ -121,8 +136,11 @@ static void BM_COO_spmv(benchmark::State& state) {
     auto       A   = make_random_coo(n, 0.01);
     auto       x   = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
-    for (auto _ : state)
+    for (auto _ : state) {
         A.spmv(x, y);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(A.nnz()));
     state.SetBytesProcessed(state.iterations() * static_cast<int64_t>(A.nnz()) * sizeof(double) * 2);
     state.counters["nnz"] = static_cast<double>(A.nnz());
@@ -135,8 +153,11 @@ static void BM_COO_spmv_tiled_l1(benchmark::State& state) {
     auto       x   = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
     constexpr std::size_t block = 32 * 1024 / sizeof(double);
-    for (auto _ : state)
+    for (auto _ : state) {
         A.spmv_tiled(x, y, block);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(A.nnz()));
     state.counters["nnz"] = static_cast<double>(A.nnz());
 }
@@ -148,8 +169,11 @@ static void BM_COO_spmv_tiled_l2(benchmark::State& state) {
     auto       x   = std::vector<double>(n, 1.0);
     std::vector<double> y(n);
     constexpr std::size_t block = 256 * 1024 / sizeof(double);
-    for (auto _ : state)
+    for (auto _ : state) {
         A.spmv_tiled(x, y, block);
+        benchmark::DoNotOptimize(y.data());
+        benchmark::ClobberMemory();
+    }
     state.SetItemsProcessed(state.iterations() * static_cast<int64_t>(A.nnz()));
     state.counters["nnz"] = static_cast<double>(A.nnz());
 }
@@ -178,13 +202,14 @@ static void BM_compress(benchmark::State& state) {
 
     for (auto _ : state) {
         state.PauseTiming();
-        // Build an uncompressed COO with ~20% duplicates so compress() has real work
+        // Build uncompressed COO with 20% extra duplicate insertions
         SparseCOO<double> A(n, n, static_cast<std::size_t>(target * 1.2));
         uint64_t          s = 0xDEADBEEFULL;
         for (std::size_t k = 0; k < target; ++k) {
-            A.set(lcg_next(s) % n, lcg_next(s) % n, 1.0);
-            if (k % 5 == 0)  // 20% are duplicates of earlier entries
-                A.set(lcg_next(s) % (k + 1) % n, lcg_next(s) % (k + 1) % n, 1.0);
+            const auto row = random_next(s) % n, col = random_next(s) % n;
+            A.set(row, col, 1.0);
+            if (k % 5 == 0)  // one explicit duplicate per five base entries
+                A.set(row, col, 1.0);
         }
         state.ResumeTiming();
 
@@ -277,3 +302,33 @@ static void BM_sparse_matrix_coo_to_csr(benchmark::State& state) {
     }
 }
 BENCHMARK(BM_sparse_matrix_coo_to_csr)->RangeMultiplier(4)->Range(128, 4096)->Unit(benchmark::kMicrosecond);
+
+static void BM_CSR_to_COO(benchmark::State& state) {
+    const auto n = static_cast<std::size_t>(state.range(0));
+    auto coo = make_random_coo(n, 0.01);
+    auto csr = to_csr(coo);
+    auto reference = to_coo(csr);
+    if (reference.row_indices() != coo.row_indices() || reference.col_indices() != coo.col_indices() || reference.values() != coo.values()) {
+        state.SkipWithError("CSR round-trip reference failed"); return;
+    }
+    for (auto _ : state) {
+        auto result = to_coo(csr);
+        benchmark::DoNotOptimize(result);
+    }
+    state.counters["nnz"] = static_cast<double>(csr.nnz());
+}
+BENCHMARK(BM_CSR_to_COO)->RangeMultiplier(4)->Range(128, 4096)->Unit(benchmark::kMicrosecond);
+
+static void BM_compress_sorted(benchmark::State& state) {
+    const auto n = static_cast<std::size_t>(state.range(0));
+    auto source = make_random_coo(n, 0.01);
+    for (auto _ : state) {
+        state.PauseTiming();
+        auto work = source;
+        state.ResumeTiming();
+        work.compress();
+        benchmark::DoNotOptimize(work);
+    }
+    state.counters["nnz"] = static_cast<double>(source.nnz());
+}
+BENCHMARK(BM_compress_sorted)->RangeMultiplier(4)->Range(128, 4096)->Unit(benchmark::kMicrosecond);

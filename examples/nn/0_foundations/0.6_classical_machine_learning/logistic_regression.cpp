@@ -64,7 +64,7 @@ class Adam {
   int                 t_{0};
 };
 
-void Binary() {
+void Binary(int steps) {
   // Stable loss and gradient at extreme logits.
   Tensor       extreme = nn::tensor({-1000, -1000, 1000, 1000, 0, 0}).requires_grad_();
   const Tensor labels  = nn::tensor({0, 1, 0, 1, 0, 1});
@@ -102,9 +102,12 @@ void Binary() {
     return std::pair<Tensor, Tensor>{loss, loss + .005 * nn::sum(mask * nn::square(w), {0, 1})};
   };
   Adam opt({w}, .04);
-  for (int step = 0; step < 400; ++step) opt.Step(nn::grad(objective(train_x, train_y).second, {w}));
+  const double initial_objective = objective(train_x, train_y).second.item();
+  for (int step = 0; step < steps; ++step) opt.Step(nn::grad(objective(train_x, train_y).second, {w}));
+  check::Require(objective(train_x, train_y).second.item() < initial_objective, "binary training reduces loss");
   const auto stationarity = nn::grad(objective(train_x, train_y).second, {w})[0].to_vector<double>();
-  for (int j = 0; j < 3; ++j) check::Near(stationarity[j], 0, 1e-5, "binary optimum gradient");
+  if (steps >= 400)
+    for (int j = 0; j < 3; ++j) check::Near(stationarity[j], 0, 1e-5, "binary optimum gradient");
 
   nn::NoGradGuard guard;
   const double    test_loss   = objective(test_x, test_y).first.item();
@@ -112,18 +115,23 @@ void Binary() {
   const auto      tx = test_x.to_vector<double>(), ty = test_y.to_vector<double>();
   int             correct            = 0;
   double          calibration_error = 0;
+  int             confusion[2][2]{};
   for (int i = 0; i < 600; ++i) {
     const double chance = probability[i];
     correct += (chance >= .5) == (ty[i] == 1);
+    ++confusion[ty[i] == 1 ? 1 : 0][chance >= .5 ? 1 : 0];
     const double truth = 1 / (1 + std::exp(-(-.4 + 1.5 * tx[i * 3 + 1] - 2 * tx[i * 3 + 2])));
     calibration_error += std::abs(chance - truth) / 600;
   }
-  check::Require(test_loss < .5 && correct > 450 && calibration_error < .06, "binary generalization and calibration");
+  if (steps >= 400)
+    check::Require(test_loss < .5 && correct > 450 && calibration_error < .06, "binary generalization and calibration");
   std::cout << "  binary test NLL=" << test_loss << "; accuracy=" << correct / 600. << "; mean |p-p_true|="
             << calibration_error << "; weights=" << w.str() << '\n';
+  std::cout << "  Confusion matrix (rows=truth, columns=prediction):\n";
+  for (const auto& row : confusion) std::cout << "    " << row[0] << ' ' << row[1] << '\n';
 }
 
-void Multinomial() {
+void Multinomial(int steps) {
   std::mt19937                    rng(47);
   std::normal_distribution<float> noise(0, .55);
   auto dataset = [&](int n) {
@@ -151,8 +159,10 @@ void Multinomial() {
     return -nn::mean(nn::sum(nn::one_hot(y, 3) * log_probs, {1}), {0});
   };
   Adam opt({W, b}, .04);
-  for (int step = 0; step < 300; ++step)
+  const double initial_nll = nll(train_x, train_y).item();
+  for (int step = 0; step < steps; ++step)
     opt.Step(nn::grad(nll(train_x, train_y) + .5 * .001 * nn::sum(nn::square(W)), {W, b}));
+  check::Require(nll(train_x, train_y).item() < initial_nll, "multinomial training reduces loss");
 
   nn::NoGradGuard guard;
   const Tensor    logits        = nn::matmul(test_x, W) + b;
@@ -168,18 +178,26 @@ void Multinomial() {
                [static_cast<std::size_t>(prediction[static_cast<std::size_t>(i)])];
     check::Near(row_sums[static_cast<std::size_t>(i)], 1, 1e-6, "softmax probabilities sum to one");
   }
-  check::Require(accuracy > .97 && test_nll < .1, "multinomial held-out classification");
-  std::cout << "  multinomial test NLL=" << test_nll << "; accuracy=" << accuracy << "\n  confusion (truth rows):\n";
+  if (steps >= 300) check::Require(accuracy > .97 && test_nll < .1, "multinomial held-out classification");
+  std::cout << "  multinomial test NLL=" << test_nll << "; accuracy=" << accuracy
+            << "\n  Confusion matrix (rows=truth, columns=prediction):\n";
   for (const auto& row : confusion) std::cout << "    " << row[0] << ' ' << row[1] << ' ' << row[2] << '\n';
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int binary_steps = 400, multinomial_steps = 300;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) binary_steps = multinomial_steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) binary_steps = multinomial_steps = std::stoi(argument.substr(6));
+    }
+    check::Require(binary_steps > 0 && multinomial_steps > 0, "positive training budget required");
     std::cout << "== Logistic regression\n";
-    Binary();
-    Multinomial();
+    Binary(binary_steps);
+    Multinomial(multinomial_steps);
     std::cout << "All logistic regression checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

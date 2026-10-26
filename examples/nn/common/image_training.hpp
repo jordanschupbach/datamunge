@@ -16,7 +16,10 @@
 // in training) plus 0.5 * l2 * sum(W^2) over parameters of rank >= 2 (tflow
 // Classifier). The builder gets a `training` flag; layers with state (batch
 // norm) keep it in the separate `state` store, and checkpoints save both
-// stores (best_params.npz, best_state.npz).
+// stores (best_params.npz, best_state.npz). An optional TrainingBuilder adds
+// weighted auxiliary heads to the training objective (tflow's
+// ClassifierNetwork::auxiliary, e.g. GoogLeNet/Inception); TrainingObjective
+// exposes that objective for unit checks.
 #pragma once
 
 #include <algorithm>
@@ -95,6 +98,9 @@ struct ImageTrainingConfig {
   double      label_smoothing = 0.;
   bool        augment = true;
   double      minimum_test_accuracy = .55;
+  /// Seed of the parameter and state stores (tflow's runs used 17). The
+  /// split, batch order and augmentation stream stay fixed, as in tflow.
+  std::uint64_t seed = 17;
 };
 
 /// Mean sparse cross-entropy with optional label smoothing (tflow Classifier's training loss).
@@ -105,121 +111,51 @@ inline nn::Tensor TrainingCrossEntropy(const nn::Tensor& logits, const nn::Tenso
   return -nn::mean(nn::sum(targets * nn::log_softmax(logits, 1), {1}));
 }
 
+/// Training-mode outputs with weighted auxiliary class logits (tflow
+/// ClassifierNetwork's `training` and `auxiliary`, e.g. GoogLeNet's heads).
+struct TrainingNetwork {
+  nn::Tensor                                 logits;
+  std::vector<std::pair<nn::Tensor, double>> auxiliary = {};
+  /// Extra scalar terms added to the objective as they are (tflow
+  /// ClassifierNetwork::penalties, e.g. CondenseNet's group lasso).
+  std::vector<nn::Tensor> penalties = {};
+  /// Optional training loss from the int64 labels, replacing the
+  /// cross-entropy of `logits` (tflow ClassifierNetwork::loss, e.g. a capsule
+  /// margin loss with reconstruction). Auxiliary heads, penalties and L2 still apply.
+  std::function<nn::Tensor(const nn::Tensor& labels)> loss = {};
+};
+/// Optional training-path builder. When given, it replaces model(..., true)
+/// in the objective; evaluation and checkpoint selection still use `model`.
+using TrainingBuilder =
+    std::function<TrainingNetwork(nn::ParameterStore& params, nn::ParameterStore& state, const nn::Tensor& x)>;
+
+/// tflow Classifier's training objective: (smoothed) cross-entropy of the
+/// training logits, plus weight * (smoothed) cross-entropy of every auxiliary
+/// head, plus 0.5 * l2 * sum(W^2) over parameters of rank >= 2.
+inline nn::Tensor TrainingObjective(nn::ParameterStore& params, nn::ParameterStore& state, const LogitsBuilder& model,
+                                    const nn::Tensor& x, const nn::Tensor& y, const ImageTrainingConfig& cfg,
+                                    const TrainingBuilder& training = {}) {
+  TrainingNetwork network = training ? training(params, state, x) : TrainingNetwork{model(params, state, x, true)};
+  nn::Tensor objective =
+      network.loss ? network.loss(y) : TrainingCrossEntropy(network.logits, y, cfg.classes, cfg.label_smoothing);
+  for (const auto& [logits, weight] : network.auxiliary) {
+    if (!std::isfinite(weight) || weight <= 0) throw std::invalid_argument("auxiliary loss weight must be positive and finite");
+    objective = objective + weight * TrainingCrossEntropy(logits, y, cfg.classes, cfg.label_smoothing);
+  }
+  for (const auto& penalty : network.penalties) objective = objective + penalty;
+  if (cfg.l2 > 0) {
+    nn::Tensor penalty;
+    for (const auto& p : params.parameters())
+      if (p.dim() >= 2) penalty = penalty.defined() ? penalty + nn::sum(nn::square(p)) : nn::sum(nn::square(p));
+    if (penalty.defined()) objective = objective + 0.5 * cfg.l2 * penalty;
+  }
+  return objective;
+}
+
 /// Wall-clock seconds per training epoch of the last TrainImages run (for reports).
 inline std::vector<double>& EpochSeconds() {
   static std::vector<double> seconds;
   return seconds;
-}
-
-inline void TrainImages(const nn::ImageDataset& development, const nn::ImageDataset& test,
-                        const LogitsBuilder& model, const ImageTrainingConfig& cfg) {
-  const std::int64_t development_rows = development.images.shape()[0], test_size = test.images.shape()[0];
-  check::Require(development.images.dim() == 4 && test.images.dim() == 4 && cfg.validation_rows > 0 &&
-                     cfg.validation_rows < development_rows && cfg.epochs > 0 && cfg.batch > 0 && cfg.classes > 1,
-                 "valid image training dimensions/config");
-  for (int d = 1; d < 4; ++d)
-    check::Require(development.images.shape()[d] == test.images.shape()[d], "training/test image dimensions match");
-  const std::size_t available = static_cast<std::size_t>(development_rows - cfg.validation_rows);
-  check::Require(cfg.maximum_fit_rows >= 0 && static_cast<std::size_t>(cfg.maximum_fit_rows) <= available,
-                 "valid optional fitting-row limit");
-  const std::size_t        fit_count = cfg.maximum_fit_rows ? static_cast<std::size_t>(cfg.maximum_fit_rows) : available;
-  std::vector<std::size_t> order(static_cast<std::size_t>(development_rows));
-  std::iota(order.begin(), order.end(), 0);
-  std::mt19937_64 split_rng(2026);
-  std::shuffle(order.begin(), order.end(), split_rng);
-  // Keep the validation split fixed when limiting the fitting subset.
-  const std::vector<std::int64_t> fit(order.begin(), order.begin() + static_cast<std::ptrdiff_t>(fit_count)),
-      validation(order.begin() + static_cast<std::ptrdiff_t>(available), order.end());
-  std::vector<std::int64_t> test_rows(static_cast<std::size_t>(test_size));
-  std::iota(test_rows.begin(), test_rows.end(), 0);
-
-  nn::ParameterStore params(17), state(17);
-  {
-    nn::NoGradGuard guard;  // create every parameter (and state entry) before building the optimizer
-    model(params, state, ImageBatch(development, {fit[0], fit[1]}).first, false);
-  }
-  nn::OptimizerConfig config;
-  config.kind = nn::OptimizerKind::Adam;
-  nn::Optimizer           optimizer(params, cfg.learning_rate, config);
-  std::vector<nn::Tensor> weights;
-  for (const auto& p : params.parameters())
-    if (p.dim() >= 2) weights.push_back(p);
-
-  const auto directory = paths::OutputDir("models/" + cfg.name);
-  const auto params_path = (directory / "best_params.npz").string(), state_path = (directory / "best_state.npz").string();
-  std::ofstream history(directory / "history.tsv");
-  check::Require(bool(history), "open image training history");
-  history << "epoch\tvalidation_loss\tvalidation_accuracy\n";
-  std::cout << "== " << cfg.name << ": " << fit_count << " fit / " << validation.size() << " validation / " << test_size
-            << " test\n  parameters=" << params.count() << "; augmentation=" << cfg.augment << "; batch=" << cfg.batch
-            << "; lr=" << cfg.learning_rate << "; threads=" << nn::get_num_threads() << std::endl;
-  nn::BatchOrder batches(fit_count, static_cast<std::size_t>(cfg.batch), 29);
-  nn::Generator  augmentation(151);
-  double         best = std::numeric_limits<double>::infinity();
-  int            best_epoch = -1;
-  EpochSeconds().clear();
-  for (int epoch = 1; epoch <= cfg.epochs; ++epoch) {
-    const auto epoch_start = std::chrono::steady_clock::now();
-    batches.begin_epoch();
-    std::size_t used = 0;
-    for (;;) {
-      auto rows = batches.next();
-      if (rows.empty()) break;
-      used += rows.size();
-      for (auto& row : rows) row = fit[static_cast<std::size_t>(row)];
-      const auto [x, y] = ImageBatch(development, rows, cfg.augment ? &augmentation : nullptr);
-      nn::Tensor objective = TrainingCrossEntropy(model(params, state, x, true), y, cfg.classes, cfg.label_smoothing);
-      if (cfg.l2 > 0 && !weights.empty()) {
-        nn::Tensor penalty = nn::sum(nn::square(weights[0]));
-        for (std::size_t i = 1; i < weights.size(); ++i) penalty = penalty + nn::sum(nn::square(weights[i]));
-        objective = objective + 0.5 * cfg.l2 * penalty;
-      }
-      optimizer.minimize(objective);
-    }
-    check::Require(used == fit_count, "each fit image used once per epoch");
-    const double train_seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - epoch_start).count();
-    const auto   result        = EvaluateImages(params, state, model, development, validation, cfg.classes);
-    const double loss = result.loss.value(), accuracy = result.accuracy.value();
-    if (loss < best) {
-      best       = loss;
-      best_epoch = epoch;
-      params.save(params_path);
-      if (state.size()) state.save(state_path);
-    }
-    history << epoch << '\t' << loss << '\t' << accuracy << '\n';
-    history.flush();
-    const double seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - epoch_start).count();
-    EpochSeconds().push_back(seconds);
-    std::cout << "  epoch " << epoch << ": validation NLL=" << loss << ", accuracy=" << accuracy << " ("
-              << std::setprecision(3) << train_seconds << " s train, " << seconds << " s total)" << std::setprecision(6)
-              << std::endl;
-  }
-  params.load(params_path);
-  if (state.size()) state.load(state_path);
-  check::Near(EvaluateImages(params, state, model, development, validation, cfg.classes).loss.value(), best, 1e-6,
-              "best image checkpoint validation loss");
-  const auto result = EvaluateImages(params, state, model, test, test_rows, cfg.classes);
-  std::cout << "  selected epoch=" << best_epoch << "; test NLL=" << result.loss.value()
-            << "; accuracy=" << result.accuracy.value() << "\n  confusion (truth rows):\n";
-  std::uint64_t total = 0, correct = 0;
-  const auto&   cells = result.confusion.cells();
-  for (int i = 0; i < cfg.classes; ++i) {
-    std::cout << "   ";
-    for (int j = 0; j < cfg.classes; ++j) {
-      std::cout << ' ' << std::setw(4) << cells[i][j];
-      total += cells[i][j];
-    }
-    correct += cells[i][i];
-    std::cout << '\n';
-  }
-  check::Require(total == static_cast<std::uint64_t>(test_size), "all test images evaluated");
-  check::Near(result.accuracy.value(), double(correct) / total, 1e-7, "confusion agrees with accuracy");
-  check::Require(result.accuracy.value() >= cfg.minimum_test_accuracy, "image classifier demonstration accuracy threshold");
-  check::Require(bool(history), "write image training history");
-  double train_total = 0;
-  for (double s : EpochSeconds()) train_total += s;
-  std::printf("  training time %.1f s (%.2f s/epoch)\n", train_total, train_total / cfg.epochs);
-  std::cout << "  best checkpoint and history: " << directory.string() << "\nAll " << cfg.name << " checks passed.\n";
 }
 
 /// Parses key=value options shared by the CIFAR-10 runners; returns false for an unknown key.
@@ -239,6 +175,8 @@ inline bool ParseCifarOption(const std::string& key, const std::string& value, s
     cfg.augment = value == "1";
   else if (key == "threads")
     nn::set_num_threads(std::stoi(value));
+  else if (key == "seed")
+    cfg.seed = std::stoull(value);
   else
     return false;
   return true;
@@ -255,29 +193,6 @@ inline std::pair<nn::ImageDataset, nn::ImageDataset> LoadCifar10(const std::file
                      test.images.shape() == nn::Shape({10000, 32, 32, 3}),
                  "official CIFAR-10 split sizes");
   return {std::move(development), std::move(test)};
-}
-
-/// Command-line runner for architecture demonstrations on CIFAR-10 (tflow
-/// RunCifar10). Options: data=PATH epochs= batch= lr= fit= augment=0|1 threads=.
-/// Returns the process exit code.
-inline int RunCifar10(int argc, char** argv, ImageTrainingConfig cfg, const LogitsBuilder& architecture) {
-  try {
-    std::filesystem::path directory = paths::Dataset("cifar10");
-    for (int i = 1; i < argc; ++i) {
-      const std::string argument = argv[i];
-      const auto        equal    = argument.find('=');
-      if (equal == std::string::npos) throw std::invalid_argument("expected key=value option");
-      if (!ParseCifarOption(argument.substr(0, equal), argument.substr(equal + 1), directory, cfg))
-        throw std::invalid_argument("unknown option: " + argument);
-    }
-    check::Require(cfg.classes == 10, "CIFAR-10 runner requires ten output classes");
-    const auto [development, test] = LoadCifar10(directory);
-    TrainImages(development, test, architecture, cfg);
-    return 0;
-  } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
-    return 1;
-  }
 }
 
 }  // namespace image_training

@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <datamunge/linalg/tensor.hpp>
+#include <datamunge/nn/parallel.hpp>
+#include "../../src/datamunge/nn/gemm.hpp"
 
 #include <cmath>
 #include <stdexcept>
@@ -302,4 +304,146 @@ TEST(Tensor, OutOfRangeAndRankMismatchIndexingThrow) {
     EXPECT_THROW(t.at({2, 0}), std::out_of_range);
     EXPECT_THROW(t.at({0}), std::invalid_argument);
     EXPECT_THROW(t.at_flat(4), std::out_of_range);
+}
+
+TEST(Tensor, BroadcastHandlesScalarMixedBoolAndMultipleExpandedAxes) {
+    auto a = Tensor::arange(0, 24).reshape({2, 1, 3, 4});
+    auto b = Tensor::from_bool_values({1, 5, 1, 4},
+        {0,1,0,1, 1,0,1,0, 1,1,0,0, 0,0,1,1, 1,1,1,0});
+    auto c = a.add(b);
+    EXPECT_EQ(c.shape(), (std::vector<std::size_t>{2,5,3,4}));
+    for (std::size_t i=0;i<2;++i) for(std::size_t j=0;j<5;++j)
+        for(std::size_t k=0;k<3;++k) for(std::size_t l=0;l<4;++l)
+            EXPECT_DOUBLE_EQ(c.at({i,j,k,l}), a.at({i,0,k,l})+b.at({0,j,0,l}));
+    auto scalar=Tensor::from_values({}, {2});
+    EXPECT_DOUBLE_EQ(scalar.multiply(a).at({1,0,2,3}),46);
+    EXPECT_DOUBLE_EQ(a.subtract(scalar).at_flat(0),-2);
+    auto strings=Tensor::from_string_values({2,1},{"b","a"});
+    auto ordered=strings.less(Tensor::from_string_values({1,2},{"b","c"}));
+    EXPECT_DOUBLE_EQ(ordered.at({0,0}),0);
+    EXPECT_DOUBLE_EQ(ordered.at({0,1}),1);
+    EXPECT_DOUBLE_EQ(ordered.at({1,0}),1);
+}
+
+TEST(Tensor, EmptyStructuralAndBroadcastResultsStayEmpty) {
+    auto x=Tensor::zeros({2,0,3});
+    EXPECT_EQ(x.add(Tensor::ones({1,1,3})).shape(), x.shape());
+    EXPECT_EQ(x.add(Tensor::ones({1,1,3})).size(),0u);
+    EXPECT_EQ(x.slice(0,0,1).size(),0u);
+    EXPECT_EQ(x.index_select(0,{1}).size(),0u);
+    EXPECT_EQ(x.transpose().size(),0u);
+    EXPECT_EQ(Tensor::concatenate({x,x},0).size(),0u);
+    EXPECT_EQ(x.sum_axis(0).size(),0u);
+    EXPECT_THROW(x.sum_axis(1),std::invalid_argument);
+}
+
+TEST(Tensor, StructuralSpanCopiesPreserveStringsBoolsAndIndependence) {
+    auto strings=Tensor::from_string_values({2,3},{"a","b","c","d","e","f"});
+    auto sliced=strings.slice(1,0,3,2);
+    EXPECT_EQ(sliced.string_at({1,1}),"f");
+    auto gathered=strings.index_select(1,{2,0,2});
+    EXPECT_EQ(gathered.string_at({1,0}),"f");
+    EXPECT_EQ(gathered.string_at({1,1}),"d");
+    auto cat=Tensor::concatenate({sliced,sliced},1);
+    EXPECT_EQ(cat.string_at({1,2}),"d");
+    auto transposed=strings.reshape({1,2,3}).transpose({2,0,1});
+    EXPECT_EQ(transposed.string_at({2,0,1}),"f");
+    strings.set_string({1,2},"changed");
+    EXPECT_EQ(transposed.string_at({2,0,1}),"f");
+    auto bits=Tensor::from_bool_values({2,2},{0,1,1,0});
+    auto copy=bits.reshape({4});copy.set_flat(0,1);
+    EXPECT_DOUBLE_EQ(bits.at_flat(0),0);
+    EXPECT_DOUBLE_EQ(bits.transpose().at({0,1}),1);
+    EXPECT_DOUBLE_EQ(Tensor::concatenate({bits,bits},1).at({1,2}),1);
+}
+
+TEST(Tensor, AxisTraversalMatchesCoordinatesAcrossAllDimensions) {
+    auto input=Tensor::arange(-12,12).reshape({2,3,4});
+    for(std::size_t axis=0;axis<3;++axis) {
+        auto sum=input.sum_axis(axis,true);
+        auto maximum=input.max_axis(axis,true);
+        auto argmin=input.argmin_axis(axis,true);
+        for(std::size_t i=0;i<sum.shape()[0];++i)
+            for(std::size_t j=0;j<sum.shape()[1];++j)
+                for(std::size_t k=0;k<sum.shape()[2];++k) {
+                    std::vector<std::size_t> index{i,j,k};double expected=0;
+                    for(std::size_t n=0;n<input.shape()[axis];++n) {index[axis]=n;expected+=input.at(index);}
+                    EXPECT_DOUBLE_EQ(sum.at({i,j,k}),expected);
+                    index[axis]=input.shape()[axis]-1;
+                    EXPECT_DOUBLE_EQ(maximum.at({i,j,k}),input.at(index));
+                    EXPECT_DOUBLE_EQ(argmin.at({i,j,k}),0);
+                }
+    }
+    auto bits=Tensor::from_bool_values({2,3},{1,0,1,0,1,1});
+    EXPECT_DOUBLE_EQ(bits.mean_axis(0).at_flat(0),0.5);
+    EXPECT_DOUBLE_EQ(bits.sum_axis(1).at_flat(1),2);
+    EXPECT_EQ(bits.argmax(),0u);
+    auto scalar=Tensor::from_values({}, {3});
+    EXPECT_DOUBLE_EQ(scalar.transpose().at_flat(0),3);
+    EXPECT_DOUBLE_EQ(Tensor::zeros({0}).sum(),0);
+}
+
+TEST(Tensor, PackedMatrixProductsMatchScalarReferenceAndBoolConversion) {
+    auto a=Tensor::zeros({7,9}),b=Tensor::zeros({9,5});
+    for(std::size_t i=0;i<a.size();++i)a.set_flat(i,std::sin(double(i)));
+    for(std::size_t i=0;i<b.size();++i)b.set_flat(i,std::cos(double(i)*0.3));
+    auto c=a.matmul(b);
+    for(std::size_t i=0;i<7;++i)for(std::size_t j=0;j<5;++j) {
+        double expected=0;for(std::size_t k=0;k<9;++k)expected+=a.at({i,k})*b.at({k,j});
+        EXPECT_NEAR(c.at({i,j}),expected,1e-12);
+    }
+    auto bits=Tensor::from_bool_values({2,3},{1,0,1,0,1,0});
+    auto numeric=Tensor::from_values({3,2},{1,2,3,4,5,6});
+    auto mixed=bits.matmul(numeric);
+    EXPECT_EQ(mixed.dtype(),TensorDType::Float64);
+    EXPECT_DOUBLE_EQ(mixed.at({0,0}),6);
+    EXPECT_DOUBLE_EQ(mixed.at({0,1}),8);
+    EXPECT_DOUBLE_EQ(mixed.at({1,0}),3);
+    auto both=bits.matmul(bits.transpose());
+    EXPECT_DOUBLE_EQ(both.at({0,0}),2);
+    EXPECT_DOUBLE_EQ(both.at({0,1}),0);
+    auto v=Tensor::from_bool_values({3},{1,0,1});
+    EXPECT_DOUBLE_EQ(v.dot(Tensor::from_values({3},{2,3,4})),6);
+    EXPECT_DOUBLE_EQ(v.outer(v).at({2,2}),1);
+    EXPECT_EQ(Tensor::zeros({0,3}).matmul(numeric).size(),0u);
+    auto zero=Tensor::zeros({2,0}).matmul(Tensor::zeros({0,3}));
+    EXPECT_EQ(zero.shape(),(std::vector<std::size_t>{2,3}));
+    EXPECT_DOUBLE_EQ(zero.sum(),0);
+    auto independent=numeric.matmul(Tensor::eye(2));independent.set_flat(0,99);
+    EXPECT_DOUBLE_EQ(numeric.at_flat(0),1);
+}
+
+
+TEST(Tensor, SharedPortableGemmMatchesScalarAcrossBlockBoundaries) {
+    const std::int64_t m=67,n=11,k=259;
+    std::vector<double> a(m*k),b(k*n),at(k*m),bt(n*k),c(m*n,1.0);
+    for(std::int64_t i=0;i<m;++i)for(std::int64_t p=0;p<k;++p)
+        at[p*m+i]=a[i*k+p]=std::sin(double(i*k+p)*0.13);
+    for(std::int64_t p=0;p<k;++p)for(std::int64_t j=0;j<n;++j)
+        bt[j*k+p]=b[p*n+j]=std::cos(double(p*n+j)*0.07);
+    const int threads=datamunge::nn::get_num_threads();datamunge::nn::set_num_threads(1);
+    datamunge::nn::detail::gemm_builtin(true,true,m,n,k,0.7,at.data(),m,bt.data(),k,0.5,c.data(),n);
+    datamunge::nn::set_num_threads(threads);
+    auto product=Tensor::from_values({std::size_t(m),std::size_t(k)},a).matmul(
+        Tensor::from_values({std::size_t(k),std::size_t(n)},b));
+    for(std::int64_t i=0;i<m;++i)for(std::int64_t j=0;j<n;++j) {
+        double expected=0;for(std::int64_t p=0;p<k;++p)expected+=a[i*k+p]*b[p*n+j];
+        EXPECT_NEAR(c[i*n+j],0.5+0.7*expected,1e-10);
+        EXPECT_NEAR(product.at({std::size_t(i),std::size_t(j)}),expected,1e-10);
+    }
+}
+
+
+TEST(LinalgTensor, LargeTransposeTileEdgesAndIdentityAreIndependentCopies) {
+    using datamunge::linalg::Tensor;
+    auto input = Tensor::arange(0, 257 * 131).reshape({257, 131});
+    auto transposed = input.transpose();
+    EXPECT_EQ(transposed.shape(), (std::vector<std::size_t>{131, 257}));
+    for (std::size_t row = 0; row < 257; ++row)
+        for (std::size_t col = 0; col < 131; ++col)
+            EXPECT_DOUBLE_EQ(transposed.at_flat(col * 257 + row), double(row * 131 + col));
+    auto identity = input.transpose({0, 1});
+    identity.set_flat(0, -1);
+    transposed.set_flat(0, -2);
+    EXPECT_DOUBLE_EQ(input.at_flat(0), 0);
 }

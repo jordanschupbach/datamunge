@@ -1,8 +1,10 @@
 #include <datamunge/optim/lbfgs.hpp>
 
+#include <array>
 #include <cmath>
 #include <deque>
 #include <limits>
+#include <utility>
 
 namespace datamunge::optim {
 
@@ -17,15 +19,26 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
     double value = function.evaluate(coordinates);
     std::vector<double> grad = function.gradient(coordinates);
 
+    // Call-local scratch: preserve evaluation/line-search order while reusing
+    // the vectors whose dimensions do not change between iterations.
+    std::array<std::vector<double>, 6> scratch;
+    for (auto& buffer : scratch) buffer.resize(n);
+    auto& q = scratch[0];
+    auto& r = scratch[1];
+    auto& direction = scratch[2];
+    auto& new_coords = scratch[3];
+    auto& s = scratch[4];
+    auto& y = scratch[5];
+    std::vector<double> alpha, new_grad;
     for (std::size_t iter = 0; iter < options_.max_iterations; ++iter) {
         double grad_norm_sq = 0.0;
         for (const double g : grad) grad_norm_sq += g * g;
         if (std::sqrt(grad_norm_sq) < options_.tolerance) break;
 
         // Two-loop recursion: computes direction = -H_k * grad using the last `m` (s, y) pairs.
-        std::vector<double> q = grad;
+        q = grad;
         const std::size_t m = s_history.size();
-        std::vector<double> alpha(m);
+        alpha.resize(m);
         for (std::size_t idx = m; idx-- > 0;) {
             double dot = 0.0;
             for (std::size_t j = 0; j < n; ++j) dot += s_history[idx][j] * q[j];
@@ -43,7 +56,6 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
             if (yy > 0.0) gamma = sy / yy;
         }
 
-        std::vector<double> r(n);
         for (std::size_t j = 0; j < n; ++j) r[j] = gamma * q[j];
         for (std::size_t idx = 0; idx < m; ++idx) {
             double dot = 0.0;
@@ -52,7 +64,6 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
             for (std::size_t j = 0; j < n; ++j) r[j] += s_history[idx][j] * (alpha[idx] - beta);
         }
 
-        std::vector<double> direction(n);
         for (std::size_t j = 0; j < n; ++j) direction[j] = -r[j];
 
         double dir_dot_grad = 0.0;
@@ -69,8 +80,6 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
         double lo = 0.0;
         double hi = std::numeric_limits<double>::infinity();
         double t = 1.0;
-        std::vector<double> new_coords(n);
-        std::vector<double> new_grad;
         double new_value = value;
         bool found = false;
         for (std::size_t trial = 0; trial < options_.max_line_search_trials; ++trial) {
@@ -100,7 +109,6 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
             new_grad = function.gradient(new_coords);
         }
 
-        std::vector<double> s(n), y(n);
         double sy = 0.0;
         for (std::size_t j = 0; j < n; ++j) {
             s[j] = new_coords[j] - coordinates[j];
@@ -109,12 +117,20 @@ double LBFGS::optimize(DifferentiableFunction& function, std::vector<double>& co
         }
         if (sy > 1e-12) { // curvature condition; skip the update otherwise
             if (s_history.size() >= options_.history_size) {
+                // Recycle the evicted pair instead of allocating a new pair.
+                s_history.front().swap(s);
+                y_history.front().swap(y);
+                auto next_s = std::move(s_history.front());
+                auto next_y = std::move(y_history.front());
                 s_history.pop_front();
                 y_history.pop_front();
                 rho_history.pop_front();
+                s_history.push_back(std::move(next_s));
+                y_history.push_back(std::move(next_y));
+            } else {
+                s_history.push_back(s);
+                y_history.push_back(y);
             }
-            s_history.push_back(s);
-            y_history.push_back(y);
             rho_history.push_back(1.0 / sy);
         }
 

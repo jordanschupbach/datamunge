@@ -7,11 +7,19 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include "common/runtime.hpp"
 
 namespace check {
 
 inline void Require(bool condition, const std::string& message) {
   if (!condition) throw std::runtime_error(message);
+}
+
+// A short demonstration checks execution, derivatives and persistence; reaching
+// a published accuracy/return requires the separately requested full schedule.
+inline void TrainingQuality(bool condition, const std::string& message) {
+  if (example_runtime::Full()) Require(condition, message);
+  else std::cout << "  full-training quality check deferred: " << message << '\n';
 }
 
 inline void Near(double actual, double expected, double tolerance, const std::string& message) {

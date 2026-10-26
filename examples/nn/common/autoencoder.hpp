@@ -17,6 +17,8 @@
 #include <cstring>
 #include <datamunge/nn/nn.hpp>
 #include <filesystem>
+#include <memory>
+#include <ostream>
 #include <random>
 #include <set>
 #include <string>
@@ -253,18 +255,6 @@ class ConvolutionalAutoencoderModel {
     nn::NoGradGuard guard;
     return ConvAeDecode(parameters, codes);
   }
-  std::vector<nn::Tensor> Gradient(const nn::Tensor& images) {
-    auto net = ConvolutionalAutoencoder(parameters, images);
-    return nn::grad(Loss(net.reconstruction, images), parameters.parameters());
-  }
-  /// One Adam step; returns the pre-update MSE.
-  double Update(const nn::Tensor& images) {
-    auto         loss  = Loss(ConvolutionalAutoencoder(parameters, images).reconstruction, images);
-    const double value = loss.item<float>();
-    check::Require(std::isfinite(value) && value >= 0, "finite pre-update MSE");
-    optimizer->minimize(loss);
-    return value;
-  }
 };
 
 // ---- variational autoencoder ---------------------------------------------------------
@@ -394,6 +384,155 @@ inline std::vector<double> VaeScore(VariationalAutoencoderModel& model, const nn
   reconstruction /= double(n * samples);
   kl /= double(n);
   return {reconstruction, kl, reconstruction + kl};
+}
+
+// ---- dense undercomplete autoencoder (tflow's common/nn/autoencoder.h + ml/autoencoder.h) ----
+
+/// [n, 28, 28, 1] (or any n x 784 values) as [n, 784] original pixels.
+inline nn::Tensor Flatten(const nn::Tensor& images) { return nn::reshape(images, {images.size(0), 784}); }
+
+struct DenseAeOutput {
+  nn::Tensor code, reconstruction;
+};
+
+/// "encoder" features -> latent ReLU, "decoder" latent -> features sigmoid (Glorot uniform, zero biases).
+inline DenseAeOutput UndercompleteAutoencoder(nn::ParameterStore& p, const nn::Tensor& input,
+                                              std::int64_t features = 784, std::int64_t latent = 32) {
+  check::Require(features > 1 && latent > 0 && latent < features, "strictly undercomplete positive bottleneck");
+  auto code = nn::dense(p, "encoder", input, latent, nn::Activation::Relu);
+  return {code, nn::dense(p, "decoder", code, features, nn::Activation::Sigmoid)};
+}
+
+/// tflow's ReconstructionMse: mean over every element.
+inline nn::Tensor ReconstructionMse(const nn::Tensor& prediction, const nn::Tensor& original) {
+  return nn::mean(nn::square(prediction - original));
+}
+
+/// Adam(.003), the optimiser of every short autoencoder example.
+inline std::unique_ptr<nn::Optimizer> MakeAdam(nn::ParameterStore& store, double learning_rate = .003) {
+  nn::OptimizerConfig config;
+  config.kind = nn::OptimizerKind::Adam;
+  return std::make_unique<nn::Optimizer>(store, learning_rate, config);
+}
+
+/// tflow's CorruptForDenoising: clamp(float(x + sigma z), 0, 1) with z one float64 bank [1, shape...].
+inline nn::Tensor CorruptForDenoising(const nn::Tensor& clean, const nn::Tensor& standard_noise, float sigma) {
+  nn::Shape shape{1};
+  shape.insert(shape.end(), clean.shape().begin(), clean.shape().end());
+  check::Require(clean.dtype() == nn::DType::Float32 && clean.dim() >= 2 &&
+                     standard_noise.dtype() == nn::DType::Float64 && standard_noise.shape() == shape &&
+                     std::isfinite(sigma) && sigma >= 0,
+                 "aligned single Gaussian bank and nonnegative sigma");
+  const auto          x = clean.contiguous().to_vector<float>();
+  const auto          z = standard_noise.contiguous().to_vector<double>();
+  std::vector<float>  out(x.size());
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    check::Require(std::isfinite(x[i]) && x[i] >= 0 && x[i] <= 1 && std::isfinite(z[i]),
+                   "finite unit-range clean pixels/noise");
+    out[i] = std::clamp(float(double(x[i]) + double(sigma) * z[i]), 0.f, 1.f);
+  }
+  return nn::from_vector(out, clean.shape());
+}
+
+/// tflow's data.npz record: the three pools (+ any extra arrays).
+inline void SaveData(const std::filesystem::path& file, const std::vector<SaliencyData>& pools,
+                     const nn::NamedTensors& extra = {}) {
+  nn::NamedTensors arrays{{"fit_images", pools[0].images},         {"validation_images", pools[1].images},
+                          {"test_images", pools[2].images},        {"fit_source_ids", pools[0].source},
+                          {"validation_source_ids", pools[1].source}, {"test_source_ids", pools[2].source},
+                          {"test_labels", pools[2].labels}};
+  arrays.insert(arrays.end(), extra.begin(), extra.end());
+  nn::save_npz(file.string(), arrays);
+}
+
+/// Index of the first record of `digit` in a label vector (gallery rows).
+inline int FirstOfDigit(const nn::Tensor& labels, int digit) {
+  const auto l = labels.contiguous().to_vector<int>();
+  for (std::size_t b = 0; b < l.size(); ++b)
+    if (l[b] == digit) return int(b);
+  throw std::runtime_error("no record of digit " + std::to_string(digit));
+}
+
+/// Writes digit<k>.png (one panel row per digit: the b-th row of every tensor) and its html sections.
+inline void DigitGallery(const std::filesystem::path& root, const SaliencyData& test,
+                         const std::vector<nn::Tensor>& panels, std::ostream& html) {
+  const auto source = test.source.contiguous().to_vector<int>();
+  for (int digit = 0; digit < 10; ++digit) {
+    const int               b = FirstOfDigit(test.labels, digit);
+    std::vector<nn::Tensor> row;
+    for (const auto& t : panels) row.push_back(Row(t, b));
+    const std::string file = "digit" + std::to_string(digit) + ".png";
+    PanelRow(root / file, row);
+    html << "<section><h2>Digit" << digit << ",source" << source[b] << "</h2><img src='" << file << "'></section>";
+  }
+}
+
+/// Byte-identical parameter stores (matched-initialisation checks).
+inline bool SameArrays(const nn::ParameterStore& a, const nn::ParameterStore& b) {
+  if (a.names() != b.names()) return false;
+  for (const auto& name : a.names())
+    if (Bytes(a.at(name)) != Bytes(b.at(name))) return false;
+  return true;
+}
+
+// ---- 2.3 applications: frozen checkpoints and case figures ------------------------------
+
+/// tflow's ml::UndercompleteModel (784->32 ReLU->784 sigmoid, seed 1471) for the frozen
+/// applications; the training port keeps its own copy in undercomplete_autoencoder.cpp.
+class UndercompleteModel {
+ public:
+  nn::ParameterStore             parameters{1471};
+  std::unique_ptr<nn::Optimizer> optimizer;
+
+  explicit UndercompleteModel(bool training = true) {
+    {
+      nn::NoGradGuard guard;
+      UndercompleteAutoencoder(parameters, nn::zeros({1, 784}));
+    }
+    if (training) optimizer = MakeAdam(parameters);
+  }
+  /// {code, reconstruction, loss}
+  std::vector<nn::Tensor> Evaluate(const nn::Tensor& images) {
+    nn::NoGradGuard guard;
+    auto            x = Flatten(images);
+    auto            n = UndercompleteAutoencoder(parameters, x);
+    return {n.code, n.reconstruction, ReconstructionMse(n.reconstruction, x)};
+  }
+  nn::Tensor Decode(const nn::Tensor& codes) {
+    nn::NoGradGuard guard;
+    return nn::dense(parameters, "decoder", codes, 784, nn::Activation::Sigmoid);
+  }
+};
+
+/// Restores a frozen checkpoint directory written by a training port (best.npz) or by
+/// tflow (model_arrays.npz = its restored best checkpoint); returns the file used.
+inline std::filesystem::path LoadFrozen(nn::ParameterStore& store, const std::filesystem::path& directory,
+                                        const std::string& what) {
+  for (const char* name : {"best.npz", "model_arrays.npz"}) {
+    const auto file = directory / name;
+    if (std::filesystem::exists(file)) {
+      store.load(file.string());
+      return file;
+    }
+  }
+  check::Require(false, what + ": no best.npz/model_arrays.npz in " + directory.string() + " (run the training port first)");
+  return {};
+}
+
+/// One case strip as tflow's case_<k>.png: the b-th 784-pixel row of every tensor, 3x nearest,
+/// 4 px apart on gray 220 (84 x (88 n - 4) RGB).
+inline void CaseStrip3(const std::filesystem::path& path, const std::vector<nn::Tensor>& panels, std::int64_t b) {
+  std::vector<nn::Tensor> tiles;
+  for (const auto& p : panels) tiles.push_back(nn::reshape(Row(p, b), {28, 28, 1}));
+  nn::save_image_grid(nn::tile(nn::stack(tiles, 0), {1, 1, 1, 3}), path.string(), std::int64_t(tiles.size()), 0.0, 1.0,
+                      4, 220.0 / 255.0, 3);
+}
+
+/// tflow's latent-application Mosaic: [n, 784] rows, `columns` per row, 3x nearest, 4 px gray 220 gaps.
+inline void Mosaic3(const std::filesystem::path& path, const nn::Tensor& values, std::int64_t columns) {
+  const auto n = values.size(0);
+  nn::save_image_grid(nn::tile(nn::reshape(values, {n, 28, 28, 1}), {1, 1, 1, 3}), path.string(), columns, 0.0, 1.0, 4,
+                      220.0 / 255.0, 3);
 }
 
 }  // namespace ae

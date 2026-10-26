@@ -85,7 +85,6 @@ double PSO::optimize(ArbitraryFunction& function, std::vector<double>& coordinat
 
         for (std::size_t i = 0; i < swarm.size(); ++i) {
             const std::vector<double>* attractor = &global_best_position;
-            std::vector<double> ring_best;
             if (ring) {
                 std::size_t best_neighbor = i;
                 for (std::size_t d = 1; d <= options_.ring_neighbors; ++d) {
@@ -94,8 +93,10 @@ double PSO::optimize(ArbitraryFunction& function, std::vector<double>& coordinat
                     if (swarm[left].best_value < swarm[best_neighbor].best_value) best_neighbor = left;
                     if (swarm[right].best_value < swarm[best_neighbor].best_value) best_neighbor = right;
                 }
-                ring_best = swarm[best_neighbor].best_position;
-                attractor = &ring_best;
+                // Personal bests are only updated after all coordinates of
+                // this particle have moved, so the selected attractor stays
+                // read-only throughout the coordinate loop (including self).
+                attractor = &swarm[best_neighbor].best_position;
             }
 
             Particle& p = swarm[i];

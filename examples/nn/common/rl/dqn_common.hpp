@@ -10,6 +10,7 @@
 // nodes; the noisy-network head (nn::NoisyDense) is not included, because
 // datamunge::nn has no noisy layer yet.
 #pragma once
+#include "common/runtime.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -81,6 +82,16 @@ inline void ParseConfig(int argc, char** argv, DqnConfig* c) {
     else if (key == "eval_every") c->eval_every = static_cast<int>(v);
     else if (key == "seed") c->seed = static_cast<uint64_t>(v);
     else if (key != "task" && key != "game") std::fprintf(stderr, "unknown option %s\n", arg.c_str());
+  }
+
+  if (!example_runtime::Full()) {
+    c->steps = std::min(c->steps, 512);
+    c->warmup = std::min(c->warmup, 32);
+    c->batch = std::min(c->batch, 8);
+    c->log_every = c->eval_every = std::max(1, c->steps);
+    c->eval_episodes = 1;
+    c->eps_decay_steps = std::min(c->eps_decay_steps, c->steps);
+    example_runtime::Describe();
   }
 }
 

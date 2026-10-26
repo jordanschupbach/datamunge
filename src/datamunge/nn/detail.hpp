@@ -184,7 +184,7 @@ Tensor map_unary(const Tensor& x, DType out_dtype, F&& f) {
 
 /// Elementwise binary map with broadcasting. `a` and `b` must already have
 /// dtype In.
-template <typename In, typename Out, typename F>
+template<typename In, typename Out, typename F>
 Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
   const Shape shape = broadcast_shapes(a.shape(), b.shape());
   Tensor      out   = empty(shape, out_dtype);
@@ -197,41 +197,92 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
     parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], sb[i]); });
     return out;
   }
-  if (b.numel() == 1 && a.shape() == shape && a.is_contiguous()) {
+  // A broadcast scalar keeps its logical shape but every stride is zero.
+  // Treat it like its scalar storage, avoiding the strided loop in VJPs (and
+  // other uniform broadcasts) without expanding or copying the seed.
+  const auto scalar_storage = [](const Tensor& t) {
+    return t.numel() == 1 ||
+           (t.numel() > 0 &&
+            std::all_of(t.strides().begin(), t.strides().end(), [](std::int64_t stride) {
+              return stride == 0;
+            }));
+  };
+  if (scalar_storage(b) && a.shape() == shape && a.is_contiguous()) {
     const In  vb = pb[b.offset()];
     const In* sa = pa + a.offset();
     parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], vb); });
     return out;
   }
-  if (a.numel() == 1 && b.shape() == shape && b.is_contiguous()) {
+  if (scalar_storage(a) && b.shape() == shape && b.is_contiguous()) {
     const In  va = pa[a.offset()];
     const In* sb = pb + b.offset();
     parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(va, sb[i]); });
     return out;
   }
-  const Shape                         out_strides = contiguous_strides(shape);
-  const Shape                         sa          = broadcast_strides(a, shape);
-  const Shape                         sb          = broadcast_strides(b, shape);
+  const Shape out_strides = contiguous_strides(shape);
+  const Shape sa          = broadcast_strides(a, shape);
+  const Shape sb          = broadcast_strides(b, shape);
+  // Two transposed matrices otherwise stream one cache line per scalar.
+  // Tile both dimensions, keeping the input columns and output row spans hot.
+  // Positive, non-broadcast strides also support padded/offset matrix views.
+  if (shape.size() == 2 && shape[0] >= 16 && shape[1] >= 32 && out.numel() >= 32768 && sa[0] == 1 &&
+      sb[0] == 1 && sa[1] >= shape[0] && sb[1] >= shape[0]) {
+    constexpr std::int64_t tile_rows = 16, tile_cols = 32;
+    const auto             row_tiles = (shape[0] + tile_rows - 1) / tile_rows;
+    const auto             col_tiles = (shape[1] + tile_cols - 1) / tile_cols;
+    // Parallelize over both dimensions, so a thin transposed matrix still
+    // exposes enough independent work without changing the global grain policy.
+    parallel_for(
+        0,
+        row_tiles * col_tiles,
+        std::max<std::int64_t>(1, kParallelGrain / (tile_rows * tile_cols)),
+        [&](std::int64_t lo, std::int64_t hi) {
+          for (auto tile = lo; tile < hi; ++tile) {
+            const auto row_begin = (tile / col_tiles) * tile_rows;
+            const auto col_begin = (tile % col_tiles) * tile_cols;
+            const auto row_end   = std::min(shape[0], row_begin + tile_rows);
+            const auto col_end   = std::min(shape[1], col_begin + tile_cols);
+            for (auto row = row_begin; row < row_end; ++row) {
+              const In* left   = pa + a.offset() + row;
+              const In* right  = pb + b.offset() + row;
+              Out*      target = dst + row * shape[1];
+              for (auto j = col_begin; j < col_end; ++j)
+                target[j] = f(left[j * sa[1]], right[j * sb[1]]);
+            }
+          }
+        });
+    return out;
+  }
   const std::array<const Shape*, 3> st{&out_strides, &sa, &sb};
-  parallel_strided_rows<3>(shape, st, {0, a.offset(), b.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
-    for (std::int64_t j = 0; j < n; ++j) dst[off[0] + j] = f(pa[off[1] + j * step[1]], pb[off[2] + j * step[2]]);
-  });
+  parallel_strided_rows<3>(
+      shape,
+      st,
+      {0, a.offset(), b.offset()},
+      [&](const auto& off, std::int64_t n, const auto& step) {
+        for (std::int64_t j = 0; j < n; ++j)
+          dst[off[0] + j] = f(pa[off[1] + j * step[1]], pb[off[2] + j * step[2]]);
+      });
   return out;
 }
 
 /// The same tensor without history, for use inside kernels.
-inline Tensor nograd(const Tensor& t) { return t.defined() ? t.detach() : t; }
+inline Tensor nograd(const Tensor& t) {
+  return t.defined() ? t.detach() : t;
+}
 
 /// Converts without recording (kernel use).
 Tensor cast_raw(const Tensor& x, DType dtype);
 
 /// Converts with recording if needed and returns `x` itself if already `dtype`.
-inline Tensor as_dtype(const Tensor& x, DType dtype) { return x.dtype() == dtype ? x : cast(x, dtype); }
+inline Tensor as_dtype(const Tensor& x, DType dtype) {
+  return x.dtype() == dtype ? x : cast(x, dtype);
+}
 
 /// Shape with 1 at the reduced axes (for broadcasting a reduced gradient back).
 inline Shape keepdims_shape(const Shape& shape, const std::vector<std::int64_t>& axes) {
   Shape out = shape;
-  for (auto a : axes) out[static_cast<std::size_t>(a)] = 1;
+  for (auto a : axes)
+    out[static_cast<std::size_t>(a)] = 1;
   return out;
 }
 

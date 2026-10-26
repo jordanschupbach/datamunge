@@ -1,0 +1,12 @@
+Package: datamungerNN
+Type: Package
+Title: Canonical Datamunge Neural Network Experiments
+Version: 0.0.1
+Authors@R: person("Jordan", "Schupbach", role = c("aut", "cre"), email = "jordans1882@gmail.com")
+Description: Optional native-backed CNN and autoencoder experiments sharing the
+    canonical C++ implementations with the Python example bindings.
+License: Unlicense
+Encoding: UTF-8
+Imports: methods
+Suggests: testthat
+SystemRequirements: C++23, GNU make

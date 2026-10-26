@@ -1,0 +1,54 @@
+Exploratory ARM64 kernels; five 0.1-second repetitions, batches of 128 calls.
+Median ns/call; no API setup/allocation. Not cross-framework evidence.
+128 base 11.2665 ns
+128 neon4 7.68081 ns
+128 neon8 7.88666 ns
+128 neon16 8.36323 ns
+128 tree8 7.89996 ns
+128 tree16 8.35866 ns
+128 unroll2 7.89136 ns
+128 unroll4 7.92849 ns
+65536 base 5704.38 ns
+65536 neon4 5405.55 ns
+65536 neon8 3807.96 ns
+65536 neon16 3809.63 ns
+65536 tree8 3811.71 ns
+65536 tree16 3811.46 ns
+65536 unroll2 3812.6 ns
+65536 unroll4 3812.49 ns
+1048576 base 91414 ns
+1048576 neon4 87250 ns
+1048576 neon8 61035.1 ns
+1048576 neon16 61028.7 ns
+1048576 tree8 61020.5 ns
+1048576 tree16 61060.2 ns
+1048576 unroll2 61059.2 ns
+1048576 unroll4 61046.1 ns
+
+Adjacent-row exploratory rerun (after validation finished):
+32 current 69597.4 ns
+32 one 83415.7 ns
+32 two 95204.4 ns
+128 current 304801 ns
+128 one 308786 ns
+128 two 319579 ns
+259 current 802612 ns
+259 one 773301 ns
+259 two 596406 ns
+1024 current 2.93101e+06 ns
+1024 one 3.04565e+06 ns
+1024 two 4.8206e+06 ns
+
+Initial contended run, excluded from decisions and timing claims:
+32 current 90772.3 ns
+32 one 90589.4 ns
+32 two 91021.8 ns
+128 current 282523 ns
+128 one 325902 ns
+128 two 322251 ns
+259 current 800081 ns
+259 one 707200 ns
+259 two 860521 ns
+1024 current 3.18122e+06 ns
+1024 one 3.19702e+06 ns
+1024 two 5.28624e+06 ns

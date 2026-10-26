@@ -454,3 +454,86 @@ TEST(NnParams, SaveAndLoadNpz) {
   EXPECT_EQ(empty.names(), store.names());
   std::filesystem::remove(path);
 }
+
+TEST(NnLayers, RecurrentProjectionMatchesSingleStepCells) {
+  for (auto dt : {DType::Float32, DType::Float64}) for (int batch : {1, 2}) {
+    for (auto kind : {nn::RnnKind::Simple, nn::RnnKind::Lstm, nn::RnnKind::Gru}) {
+      nn::ParameterStore fused_store(527, dt), reference_store(527, dt);
+      auto x = nn::div(nn::arange(0, batch * 15, 1, dt).reshape({batch, 5, 3}), 30).detach().requires_grad_();
+      auto xr = x.clone().detach().requires_grad_();
+      auto actual = nn::recurrent(fused_store, "cell", x, 4, kind);
+      auto h = nn::zeros({batch, 4}, dt);
+      auto state = nn::lstm_zero_state(batch, 4, dt);
+      std::vector<Tensor> steps;
+      for (const auto& step : nn::time_steps(xr)) {
+        if (kind == nn::RnnKind::Simple) h = nn::rnn_step(reference_store, "cell", step, h);
+        else if (kind == nn::RnnKind::Gru) h = nn::gru_step(reference_store, "cell", step, h);
+        else { state = nn::lstm_step(reference_store, "cell", step, state); h = state.h; }
+        steps.push_back(h);
+      }
+      auto expected = nn::stack_time(steps);
+      const double tol = dt == DType::Float64 ? 1e-10 : 2e-4;
+      expect_close(actual, vals(expected), tol);
+      EXPECT_EQ(fused_store.names(), reference_store.names());
+      EXPECT_EQ(fused_store.flatten(), reference_store.flatten());
+      auto inputs = fused_store.parameters(), refs = reference_store.parameters();
+      inputs.insert(inputs.begin(), x); refs.insert(refs.begin(), xr);
+      auto gradients = nn::grad(nn::sum(nn::square(actual)), inputs);
+      auto reference_gradients = nn::grad(nn::sum(nn::square(expected)), refs);
+      ASSERT_EQ(gradients.size(), reference_gradients.size());
+      for (std::size_t i = 0; i < gradients.size(); ++i) expect_close(gradients[i], vals(reference_gradients[i]), tol);
+    }
+  }
+}
+
+TEST(NnParams, LargeUnsortedStorePreservesNamesAliasesMoveAndCopyMatching) {
+  nn::ParameterStore store(4, DType::Float64), target(5, DType::Float64);
+  std::vector<std::string> names;
+  for (int i = 1023; i >= 0; --i) {
+    names.push_back(i == 0 ? "" : "block/" + std::to_string(i));
+    store.get(names.back(), {1}, nn::init::constant(i));
+  }
+  for (int i = 0; i < 1024; ++i) {
+    const auto& name = names[static_cast<std::size_t>(1023 - i)];
+    target.get(name, {1}, nn::init::zeros());
+    EXPECT_TRUE(store.contains(name));
+    EXPECT_TRUE(store.get(name, {1}, nn::init::zeros()).is_same(store.at(name)));
+    EXPECT_EQ(store.at(name).item(), i);
+  }
+  EXPECT_EQ(store.names(), names);
+  EXPECT_FALSE(store.contains("missing"));
+  target.copy_from(store);
+  auto moved = std::move(store);
+  auto cloned = moved.clone();
+  for (const auto& name : names) {
+    EXPECT_EQ(target.at(name).item(), moved.at(name).item());
+    EXPECT_EQ(cloned.at(name).item(), moved.at(name).item());
+  }
+  moved.set(names.front(), nn::full({1}, -1.0, DType::Float64));
+  EXPECT_EQ(cloned.at(names.front()).item(), 1023);
+  EXPECT_THROW(moved.get(names.front(), {2}, nn::init::zeros()), std::invalid_argument);
+}
+
+TEST(NnParams, InferenceLayerNormMatchesRecordedPrecisionAndLayoutFallback) {
+  for (auto dtype : {DType::Float32, DType::Float64})
+    for (std::int64_t width : {1, 7, 32, 129, 257}) {
+      nn::ParameterStore store(42, dtype);
+      auto               x = nn::cast(
+          nn::reshape(nn::arange(0, 3 * width, 1, DType::Float64), {3, width}) / 64.0, dtype);
+      store.set("ln/gamma", nn::full({width}, 1.25, dtype));
+      store.set("ln/beta", nn::full({width}, -0.75, dtype));
+      const auto      expected = nn::layer_norm(store, "ln", x, 0.003).to_vector<double>();
+      nn::NoGradGuard guard;
+      expect_close(
+          nn::layer_norm(store, "ln", x, 0.003), expected, dtype == DType::Float32 ? 2e-6 : 1e-12);
+      auto strided = nn::transpose(nn::transpose(x).clone());
+      expect_close(
+          nn::layer_norm(store, "ln", strided, 0.003),
+          expected,
+          dtype == DType::Float32 ? 2e-6 : 1e-12);
+      expect_close(
+          nn::layer_norm(store, "ln", nn::slice_axis(x, 0, 1, 3), 0.003),
+          std::vector<double>(expected.begin() + width, expected.end()),
+          dtype == DType::Float32 ? 2e-6 : 1e-12);
+    }
+}

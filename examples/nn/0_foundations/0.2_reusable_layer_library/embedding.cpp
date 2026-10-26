@@ -119,7 +119,7 @@ void Masking() {
 // 3. Learning embeddings with a skip-gram objective
 // ---------------------------------------------------------------------------
 
-void SkipGram() {
+void SkipGram(int steps) {
   std::printf("\n== Skip-gram on a synthetic corpus: 12 words in 3 topics, sentences drawn within a topic\n");
   const int       vocab = 12, dim = 8, window = 2;
   std::mt19937_64 rng(3);
@@ -148,8 +148,36 @@ void SkipGram() {
     loss_of(nn::from_vector(tv), nn::from_vector(cv));  // create both tables before the optimizer
   }
   nn::Optimizer adam(p, 0.05, {nn::OptimizerKind::Adam});
+  auto evaluate = [&](bool print_confusion) {
+    nn::NoGradGuard guard;
+    nn::ConfusionMatrix cm(vocab);
+    double total = 0;
+    for (std::size_t start = 0; start < pairs.size(); start += 512) {
+      const auto stop = std::min(start + 512, pairs.size());
+      std::vector<std::int64_t> targets, contexts;
+      for (auto i = start; i < stop; ++i) {
+        targets.push_back(pairs[i].first);
+        contexts.push_back(pairs[i].second);
+      }
+      const Tensor labels = nn::from_vector(contexts);
+      const Tensor logits = nn::matmul(nn::embedding(p, "in", nn::from_vector(targets), vocab, dim, .5), p.at("out/table"), false, true);
+      total += (stop - start) * nn::sparse_softmax_cross_entropy(logits, labels).item();
+      cm.add(labels, nn::argmax(logits, 1));
+    }
+    if (print_confusion) {
+      std::cout << "  context-word evaluation NLL=" << total / pairs.size() << "; accuracy=" << cm.accuracy() << '\n'
+                << "  Confusion matrix (rows=true context, columns=predicted context; synthetic corpus):\n";
+      for (const auto& row : cm.cells()) {
+        std::cout << "    ";
+        for (auto value : row) std::cout << value << ' ';
+        std::cout << '\n';
+      }
+    }
+    return total / pairs.size();
+  };
+  const double initial_loss = evaluate(false);
   double        last = 0;
-  for (int step = 1; step <= 300; ++step) {
+  for (int step = 1; step <= steps; ++step) {
     for (int i = 0; i < B; ++i) {
       const auto& pr = pairs[rng() % pairs.size()];
       tv[i] = pr.first, cv[i] = pr.second;
@@ -157,7 +185,7 @@ void SkipGram() {
     const Tensor loss = loss_of(nn::from_vector(tv), nn::from_vector(cv));
     adam.minimize(loss);
     last = loss.item();
-    if (step == 1 || step % 100 == 0)
+    if (step == 1 || step % 100 == 0 || step == steps)
       std::printf("  step %3d  loss %.3f  (log 4 = %.3f is the floor: 4 equally likely contexts)\n", step, last,
                   std::log(4.0));
   }
@@ -186,18 +214,28 @@ void SkipGram() {
   }
   std::printf("  mean cosine within a topic %.2f, between topics %.2f\n", within / nw, between / nb);
   // TF: loss 2.555 -> 1.399 (floor log 4 = 1.386); cosine within 0.93, between -0.44.
-  check::Require(last < std::log(4.0) + 0.06, "skip-gram loss should approach log 4");
-  check::Require(within / nw > 0.8, "words of a topic should be close");
-  check::Require(between / nb < -0.2, "words of different topics should be apart");
+  if (steps >= 300) {
+    check::Require(last < std::log(4.0) + 0.06, "skip-gram loss should approach log 4");
+    check::Require(within / nw > 0.8, "words of a topic should be close");
+    check::Require(between / nb < -0.2, "words of different topics should be apart");
+  }
+  check::Require(evaluate(true) < initial_loss, "skip-gram training must reduce corpus loss");
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int steps = 300;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) steps = std::stoi(argument.substr(7));
+      if (argument.rfind("steps=", 0) == 0) steps = std::stoi(argument.substr(6));
+    }
+    check::Require(steps > 0, "positive training budget required");
     LookupAndGradient();
     Masking();
-    SkipGram();
+    SkipGram(steps);
   } catch (const std::exception& e) {
     std::cerr << "FAILED: " << e.what() << "\n";
     return 1;

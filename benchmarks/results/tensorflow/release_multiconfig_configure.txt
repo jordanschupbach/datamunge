@@ -1,0 +1,23 @@
+-- The CXX compiler identification is Clang 21.1.8
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /nix/store/z0dmrxbgqi98f7n8ljza91y5qazdyhcp-clang-wrapper-21.1.8/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- CPM: Adding package datamunge@ (/Users/jordanschupbach/projects/datamunge/benchmarks/..)
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- datamunge::nn GEMM: Accelerate
+-- datamunge::nn linalg: LAPACK (Accelerate)
+-- Configuring done (7.4s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/jordanschupbach/projects/datamunge/build/performance/release-multiconfig-check
+CMake Warning at /Users/jordanschupbach/projects/datamunge/cmake/CPM.cmake:80 (message):
+  CPM: Your project is using an unstable development version of CPM.cmake.
+  Please update to a recent release if possible.  See
+  https://github.com/cpm-cmake/CPM.cmake for details.
+Call Stack (most recent call first):
+  CMakeLists.txt:17 (include)
+
+

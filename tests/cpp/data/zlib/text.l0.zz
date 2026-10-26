@@ -1,0 +1,1033 @@
+x0§ÏX#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <string>
+
+namespace datamunge::image {
+
+/// @brief Reads an uncompressed (BI_RGB) Windows BMP file as an RGB image. Accepts 24-bit
+///        (BGR), 32-bit (BGRx -- the 4th byte is ignored, never treated as alpha, since plain
+///        BITMAPINFOHEADER 32-bit files don't reliably agree on what that byte means), and
+///        8-bit palette (indexed-color) files; any other bit depth or a compressed
+///        (non-BI_RGB) file throws std::runtime_error.
+[[nodiscard]] Image read_bmp(const std::string& path);
+
+/// @brief Writes @p img as an uncompressed 24-bit BGR Windows BMP (BITMAPINFOHEADER, BI_RGB),
+///        converting to RGB first if it isn't already (see to_rgb()) -- any alpha channel is
+///        dropped, matching write_ppm()'s same RGB-only-on-disk tradeoff.
+void write_bmp(const Image& img, const std::string& path);
+
+} // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+
+namespace datamunge::image {
+
+/// @brief A pixel color in HSV space: h in [0, 360), s and v in [0, 1].
+struct HSV {
+    double h{0.0};
+    double s{0.0};
+    double v{0.0};
+};
+
+/// @brief The standard luma-weighted RGB -> grayscale conversion (ITU-R BT.601 coefficients,
+///        the same weights Pillow's "L" conversion and most other libraries use).
+[[nodiscard]] inline std::uint8_t rgb_to_gray(std::uint8_t r, std::uint8_t g, std::uint8_t b) {
+    const double luma = 0.299 * r + 0.587 * g + 0.114 * b;
+    return static_cast<std::uint8_t>(std::clamp(std::lround(luma), 0L, 255L));
+}
+
+[[nodiscard]] inline HSV rgb_to_hsv(std::uint8_t r8, std::uint8_t g8, std::uint8_t b8) {
+    const double r = r8 / 255.0, g = g8 / 255.0, b = b8 / 255.0;
+    const double max_c = std::max({r, g, b});
+    const double min_c = std::min({r, g, b});
+    const double delta = max_c - min_c;
+
+    HSV hsv;
+    hsv.v = max_c;
+    hsv.s = (max_c == 0.0) ? 0.0 : delta / max_c;
+
+    if (delta == 0.0) {
+        hsv.h = 0.0;
+    } else if (max_c == r) {
+        hsv.h = 60.0 * std::fmod((g - b) / delta, 6.0);
+    } else if (max_c == g) {
+        hsv.h = 60.0 * ((b - r) / delta + 2.0);
+    } else {
+        hsv.h = 60.0 * ((r - g) / delta + 4.0);
+    }
+    if (hsv.h < 0.0) hsv.h += 360.0;
+    return hsv;
+}
+
+[[nodiscard]] inline Pixel hsv_to_rgb(const HSV& hsv) {
+    const double c = hsv.v * hsv.s;
+    const double h_prime = hsv.h / 60.0;
+    const double x = c * (1.0 - std::abs(std::fmod(h_prime, 2.0) - 1.0));
+    const double m = hsv.v - c;
+
+    double r1 = 0.0, g1 = 0.0, b1 = 0.0;
+    if (h_prime < 1.0) {
+        r1 = c;
+        g1 = x;
+    } else if (h_prime < 2.0) {
+        r1 = x;
+        g1 = c;
+    } else if (h_prime < 3.0) {
+        g1 = c;
+        b1 = x;
+    } else if (h_prime < 4.0) {
+        g1 = x;
+        b1 = c;
+    } else if (h_prime < 5.0) {
+        r1 = x;
+        b1 = c;
+    } else {
+        r1 = c;
+        b1 = x;
+    }
+
+    const auto to_byte = [](double v) { return static_cast<std::uint8_t>(std::clamp(std::lround((v) * 255.0), 0L, 255L)); };
+    return Pixel{to_byte(r1 + m), to_byte(g1 + m), to_byte(b1 + m), 255};
+}
+
+/// @brief A new image converted to Grayscale mode. Any existing alpha channel is dropped.
+[[nodiscard]] inline Image to_grayscale(const Image& src) {
+    Image out(src.width(), src.height(), ImageMode::Grayscale);
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const Pixel p = src.get_pixel(x, y);
+            out.set_pixel(x, y, Pixel{rgb_to_gray(p.r, p.g, p.b), 0, 0, 255});
+        }
+    }
+    return out;
+}
+
+/// @brief A new image converted to RGB mode. Grayscale sources are expanded (r=g=b); any
+///        existing alpha channel is dropped.
+[[nodiscard]] inline Image to_rgb(const Image& src) {
+    Image out(src.width(), src.height(), ImageMode::RGB);
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const Pixel p = src.get_pixel(x, y);
+            out.set_pixel(x, y, Pixel{p.r, p.g, p.b, 255});
+        }
+    }
+    return out;
+}
+
+/// @brief A new RGBA image with the same colors as @p src and every pixel's alpha set to
+///        @p src's existing alpha (255 for modes with no alpha channel).
+[[nodiscard]] inline Image to_rgba(const Image& src) {
+    Image out(src.width(), src.height(), ImageMode::RGBA);
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            out.set_pixel(x, y, src.get_pixel(x, y));
+        }
+    }
+    return out;
+}
+
+/// @brief One 8-bit single-channel plane, e.g. as produced by split_channels().
+using Channel = std::vector<std::uint8_t>;
+
+/// @brief Splits @p src into one Grayscale-mode Image per channel, in the source's own
+///        channel order (so RGB -> {R, G, B}, RGBA -> {R, G, B, A}, etc.).
+[[nodiscard]] inline std::vector<Image> split_channels(const Image& src) {
+    std::vector<Image> planes(static_cast<std::size_t>(src.channels()), Image(src.width(), src.height(), ImageMode::Grayscale));
+    const auto& data = src.data();
+    const int n = src.channels();
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const std::size_t base = (static_cast<std::size_t>(y) * static_cast<std::size_t>(src.width()) + static_cast<std::size_t>(x)) *
+                                      static_cast<std::size_t>(n);
+            for (int c = 0; c < n; ++c) {
+                planes[static_cast<std::size_t>(c)].set_pixel(x, y, Pixel{data[base + static_cast<std::size_t>(c)], 0, 0, 255});
+            }
+        }
+    }
+    return planes;
+}
+
+/// @brief The inverse of split_channels(): combines Grayscale-mode @p planes (same width and
+///        height, one plane per output channel, in channel order) into a single image of the
+///        matching mode. Throws std::invalid_argument if the plane count isn't 1-4 or the
+///        planes' dimensions disagree.
+[[nodiscard]] inline Image merge_channels(const std::vector<Image>& planes) {
+    if (planes.empty() || planes.size() > 4) {
+        throw std::invalid_argument("merge_channels: expected 1 to 4 planes");
+    }
+    const int width = planes.front().width();
+    const int height = planes.front().height();
+    for (const auto& plane : planes) {
+        if (plane.width() != width || plane.height() != height) {
+            throw std::invalid_argument("merge_channels: all planes must share the same dimensions");
+        }
+    }
+
+    Image out(width, height, static_cast<ImageMode>(planes.size()));
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            Pixel p;
+            std::uint8_t* fields[4] = {&p.r, &p.g, &p.b, &p.a};
+            p.a = 255;
+            for (std::size_t c = 0; c < planes.size(); ++c) {
+                *fields[c] = planes[c].get_pixel(x, y).r;
+            }
+            out.set_pixel(x, y, p);
+        }
+    }
+    return out;
+}
+
+} // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <utility>
+#include <vector>
+
+namespace datamunge::image {
+
+namespace detail {
+inline void set_pixel_clipped(Image& img, int x, int y, const Pixel& color) {
+    if (x >= 0 && x < img.width() && y >= 0 && y < img.height()) {
+        img.set_pixel(x, y, color);
+    }
+}
+
+inline void stamp(Image& img, int cx, int cy, const Pixel& color, int thickness) {
+    const int half = thickness / 2;
+    for (int dy = -half; dy <= half; ++dy) {
+        for (int dx = -half; dx <= half; ++dx) {
+            set_pixel_clipped(img, cx + dx, cy + dy, color);
+        }
+    }
+}
+} // namespace detail
+
+/// @brief Draws a straight line from (x0,y0) to (x1,y1) directly onto @p img (Bresenham's
+///        integer algorithm). @p thickness > 1 stamps a (thickness x thickness) square at
+///        every line pixel -- simple, not a true round/mitered stroke, but sufficient for this
+///        module's scope. Points (and any square stamps) outside @p img's bounds are silently
+///        clipped rather than throwing, matching typical drawing-library behavior for
+///        partially-offscreen shapes.
+inline void draw_line(Image& img, int x0, int y0, int x1, int y1, const Pixel& color, int thickness = 1) {
+    const int dx = std::abs(x1 - x0);
+    const int dy = -std::abs(y1 - y0);
+    const int sx = (x0 < x1) ? 1 : -1;
+    const int sy = (y0 < y1) ? 1 : -1;
+    int err = dx + dy;
+
+    int x = x0, y = y0;
+    while (true) {
+        if (thickness <= 1) {
+            detail::set_pixel_clipped(img, x, y, color);
+        } else {
+            detail::stamp(img, x, y, color, thickness);
+        }
+        if (x == x1 && y == y1) break;
+        const int e2 = 2 * err;
+        if (e2 >= dy) {
+            err += dy;
+            x += sx;
+        }
+        if (e2 <= dx) {
+            err += dx;
+            y += sy;
+        }
+    }
+}
+
+/// @brief Draws the rectangle with corners (x0,y0) and (x1,y1) (either diagonal order works)
+///        onto @p img, either as a one-pixel-wide outline or filled solid.
+inline void draw_rectangle(Image& img, int x0, int y0, int x1, int y1, const Pixel& color, bool filled = false) {
+    if (x0 > x1) std::swap(x0, x1);
+    if (y0 > y1) std::swap(y0, y1);
+
+    if (filled) {
+        for (int y = y0; y <= y1; ++y) {
+            for (int x = x0; x <= x1; ++x) {
+                detail::set_pixel_clipped(img, x, y, color);
+            }
+        }
+    } else {
+        for (int x = x0; x <= x1; ++x) {
+            detail::set_pixel_clipped(img, x, y0, color);
+            detail::set_pixel_clipped(img, x, y1, color);
+        }
+        for (int y = y0; y <= y1; ++y) {
+            detail::set_pixel_clipped(img, x0, y, color);
+            detail::set_pixel_clipped(img, x1, y, color);
+        }
+    }
+}
+
+/// @brief Draws a circle of the given @p radius centered at (cx,cy) onto @p img, either as a
+///        one-pixel-wide outline (the midpoint circle algorithm) or filled solid (bounding-box
+///        scan with a squared-distance test).
+inline void draw_circle(Image& img, int cx, int cy, int radius, const Pixel& color, bool filled = false) {
+    if (radius < 0) {
+        return;
+    }
+
+    if (filled) {
+        const long r_sq = static_cast<long>(radius) * radius;
+        for (int y = -radius; y <= radius; ++y) {
+            for (int x = -radius; x <= radius; ++x) {
+                if (static_cast<long>(x) * x + static_cast<long>(y) * y <= r_sq) {
+                    detail::set_pixel_clipped(img, cx + x, cy + y, color);
+                }
+            }
+        }
+        return;
+    }
+
+    int x = radius, y = 0, err = 0;
+    while (x >= y) {
+        detail::set_pixel_clipped(img, cx + x, cy + y, color);
+        detail::set_pixel_clipped(img, cx + y, cy + x, color);
+        detail::set_pixel_clipped(img, cx - y, cy + x, color);
+        detail::set_pixel_clipped(img, cx - x, cy + y, color);
+        detail::set_pixel_clipped(img, cx - x, cy - y, color);
+        detail::set_pixel_clipped(img, cx - y, cy - x, color);
+        detail::set_pixel_clipped(img, cx + y, cy - x, color);
+        detail::set_pixel_clipped(img, cx + x, cy - y, color);
+
+        if (err <= 0) {
+            y += 1;
+            err += 2 * y + 1;
+        }
+        if (err > 0) {
+            x -= 1;
+            err -= 2 * x + 1;
+        }
+    }
+}
+
+/// @brief Draws the polygon defined by @p points (in order, implicitly closed back to the
+///        first point) onto @p img. Outline mode connects consecutive vertices with
+///        draw_line(); filled mode uses a standard even-odd scanline fill. Fewer than 3 points
+///        draws nothing.
+inline void draw_polygon(Image& img, const std::vector<std::pair<int, int>>& points, const Pixel& color, bool filled = false) {
+    const std::size_t n = points.size();
+    if (n < 3) {
+        return;
+    }
+
+    if (!filled) {
+        for (std::size_t i = 0; i < n; ++i) {
+            const auto& [x0, y0] = points[i];
+            const auto& [x1, y1] = points[(i + 1) % n];
+            draw_line(img, x0, y0, x1, y1, color);
+        }
+        return;
+    }
+
+    int min_y = points[0].second, max_y = points[0].second;
+    for (const auto& [px, py] : points) {
+        min_y = std::min(min_y, py);
+        max_y = std::max(max_y, py);
+    }
+
+    for (int y = min_y; y <= max_y; ++y) {
+        std::vector<double> intersections;
+        for (std::size_t i = 0; i < n; ++i) {
+            const auto& [x0, y0] = points[i];
+            const auto& [x1, y1] = points[(i + 1) % n];
+            if ((y0 <= y && y1 > y) || (y1 <= y && y0 > y)) {
+                const double t = static_cast<double>(y - y0) / (y1 - y0);
+                intersections.push_back(x0 + t * (x1 - x0));
+            }
+        }
+        std::sort(intersections.begin(), intersections.end());
+        for (std::size_t i = 0; i + 1 < intersections.size(); i += 2) {
+            const int x_start = static_cast<int>(std::ceil(intersections[i] - 0.5));
+            const int x_end = static_cast<int>(std::floor(intersections[i + 1] - 0.5));
+            for (int x = x_start; x <= x_end; ++x) {
+                detail::set_pixel_clipped(img, x, y, color);
+            }
+        }
+    }
+}
+
+} // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/color.hpp>
+#include <datamunge/image/image.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+#include <vector>
+
+namespace datamunge::image {
+
+/// @brief A square @p size x @p size convolution kernel, row-major (kernel[ky * size + kx]).
+using Kernel = std::vector<double>;
+
+/// @brief A normalized (sums to 1) box blur kernel of the given odd size.
+[[nodiscard]] inline Kernel box_kernel(int size) {
+    if (size <= 0 || size % 2 == 0) {
+        throw std::invalid_argument("box_kernel: size must be a positive odd number");
+    }
+    return Kernel(static_cast<std::size_t>(size) * static_cast<std::size_t>(size), 1.0 / (size * size));
+}
+
+/// @brief A normalized 2D Gaussian kernel with standard deviation @p sigma; the kernel radius
+///        is chosen as ceil(3*sigma) (covers >99.7% of the distribution's mass), size = 2*radius+1.
+[[nodiscard]] inline Kernel gaussian_kernel(double sigma) {
+    if (sigma <= 0.0) {
+        throw std::invalid_argument("gaussian_kernel: sigma must be positive");
+    }
+    const int radius = std::max(1, static_cast<int>(std::ceil(3.0 * sigma)));
+    const int size = 2 * radius + 1;
+    Kernel kernel(static_cast<std::size_t>(size) * static_cast<std::size_t>(size));
+
+    double sum = 0.0;
+    for (int ky = -radius; ky <= radius; ++ky) {
+        for (int kx = -radius; kx <= radius; ++kx) {
+            const double value = std::exp(-(kx * kx + ky * ky) / (2.0 * sigma * sigma));
+            kernel[static_cast<std::size_t>((ky + radius) * size + (kx + radius))] = value;
+            sum += value;
+        }
+    }
+    for (double& value : kernel) value /= sum;
+    return kernel;
+}
+
+/// @brief Applies a square convolution @p kernel to every channel of @p src (alpha included),
+///        clamping accesses at the border (edge-replicate padding, avoiding any darkening
+///        artifact a zero-padded border would introduce). @p kernel's side length must be odd.
+[[nodiscard]] inline Image convolve(const Image& src, const Kernel& kernel) {
+    const int size = static_cast<int>(std::lround(std::sqrt(static_cast<double>(kernel.size()))));
+    if (size % 2 == 0 || static_cast<std::size_t>(size) * static_cast<std::size_t>(size) != kernel.size()) {
+        throw std::invalid_argument("convolve: kernel must be a square odd-sized matrix");
+    }
+    const int radius = size / 2;
+    const int channels = src.channels();
+
+    Image out(src.width(), src.height(), src.mode());
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            double accum[4] = {0.0, 0.0, 0.0, 0.0};
+            for (int ky = -radius; ky <= radius; ++ky) {
+                const int sy = std::clamp(y + ky, 0, src.height() - 1);
+                for (int kx = -radius; kx <= radius; ++kx) {
+                    const int sx = std::clamp(x + kx, 0, src.width() - 1);
+                    const double weight = kernel[static_cast<std::size_t>((ky + radius) * size + (kx + radius))];
+                    const Pixel p = src.get_pixel(sx, sy);
+                    const std::uint8_t fields[4] = {p.r, p.g, p.b, p.a};
+                    for (int c = 0; c < channels; ++c) accum[c] += weight * fields[c];
+                }
+            }
+            const auto clamp_byte = [](double v) { return static_cast<std::uint8_t>(std::clamp(std::lround(v), 0L, 255L)); };
+            Pixel result = src.get_pixel(x, y);
+            std::uint8_t* fields[4] = {&result.r, &result.g, &result.b, &result.a};
+            for (int c = 0; c < channels; ++c) *fields[c] = clamp_byte(accum[c]);
+            out.set_pixel(x, y, result);
+        }
+    }
+    return out;
+}
+
+[[nodiscard]] inline Image box_blur(const Image& src, int radius) { return convolve(src, box_kernel(2 * radius + 1)); }
+
+[[nodiscard]] inline Image gaussian_blur(const Image& src, double sigma) { return convolve(src, gaussian_kernel(sigma)); }
+
+/// @brief Sharpens @p src via an unsharp-mask kernel: the center weight grows (and the
+///        neighbor weights, already negative, grow more negative) as @p amount increases past
+///        its neutral value of 0 (0 = no change).
+[[nodiscard]] inline Image sharpen(const Image& src, double amount = 1.0) {
+    const double center = 1.0 + 4.0 * amount;
+    const double edge = -amount;
+    const Kernel kernel = {0.0, edge, 0.0, edge, center, edge, 0.0, edge, 0.0};
+    return convolve(src, kernel);
+}
+
+/// @brief Sobel gradient-magnitude edge detection: converts to grayscale first, then computes
+///        the horizontal and vertical Sobel gradients at every pixel and returns their
+///        Euclidean magnitude (clamped to [0, 255]) as a new Grayscale image.
+[[nodiscard]] inline Image sobel_edges(const Image& src) {
+    const Image gray = to_grayscale(src);
+    static constexpr int kGx[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    static constexpr int kGy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+
+    Image out(gray.width(), gray.height(), ImageMode::Grayscale);
+    for (int y = 0; y < gray.height(); ++y) {
+        for (int x = 0; x < gray.width(); ++x) {
+            int gx = 0, gy = 0;
+            for (int ky = -1; ky <= 1; ++ky) {
+                const int sy = std::clamp(y + ky, 0, gray.height() - 1);
+                for (int kx = -1; kx <= 1; ++kx) {
+                    const int sx = std::clamp(x + kx, 0, gray.width() - 1);
+                    const int value = gray.get_pixel(sx, sy).r;
+                    gx += kGx[ky + 1][kx + 1] * value;
+                    gy += kGy[ky + 1][kx + 1] * value;
+                }
+            }
+            const double magnitude = std::sqrt(static_cast<double>(gx) * gx + static_cast<double>(gy) * gy);
+            const std::uint8_t v = static_cast<std::uint8_t>(std::clamp(std::lround(magnitude), 0L, 255L));
+            out.set_pixel(x, y, Pixel{v, v, v, 255});
+        }
+    }
+    return out;
+}
+
+/// @brief Adds @p delta to every color channel (alpha untouched), clamped to [0, 255].
+///        Negative @p delta darkens, positive brightens.
+[[nodiscard]] inline Image adjust_brightness(const Image& src, int delta) {
+    Image out(src.width(), src.height(), src.mode());
+    const auto clamp_byte = [&](int v) { return static_cast<std::uint8_t>(std::clamp(v + delta, 0, 255)); };
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const Pixel p = src.get_pixel(x, y);
+            out.set_pixel(x, y, Pixel{clamp_byte(p.r), clamp_byte(p.g), clamp_byte(p.b), p.a});
+        }
+    }
+    return out;
+}
+
+/// @brief Scales every color channel's distance from mid-gray (128) by @p factor (alpha
+///        untouched), clamped to [0, 255]. factor=1 is a no-op; factor=0 collapses to solid
+///        gray; factor>1 increases contrast.
+[[nodiscard]] inline Image adjust_contrast(const Image& src, double factor) {
+    if (factor < 0.0) {
+        throw std::invalid_argument("adjust_contrast: factor must be non-negative");
+    }
+    Image out(src.width(), src.height(), src.mode());
+    const auto scale_byte = [&](std::uint8_t v) {
+        return static_cast<std::uint8_t>(std::clamp(std::lround((v - 128.0) * factor + 128.0), 0L, 255L));
+    };
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const Pixel p = src.get_pixel(x, y);
+            out.set_pixel(x, y, Pixel{scale_byte(p.r), scale_byte(p.g), scale_byte(p.b), p.a});
+        }
+    }
+    return out;
+}
+
+/// @brief A binary (black/white) Grayscale image: pixels whose luma (rgb_to_gray) is >=
+///        @p level become 255 (white), everything else becomes 0 (black).
+[[nodiscard]] inline Image threshold(const Image& src, std::uint8_t level) {
+    const Image gray = to_grayscale(src);
+    Image out(gray.width(), gray.height(), ImageMode::Grayscale);
+    for (int y = 0; y < gray.height(); ++y) {
+        for (int x = 0; x < gray.width(); ++x) {
+            const std::uint8_t v = (gray.get_pixel(x, y).r >= level) ? 255 : 0;
+            out.set_pixel(x, y, Pixel{v, v, v, 255});
+        }
+    }
+    return out;
+}
+
+} // namespace datamunge::image
+#pragma once
+
+#include <cstdint>
+#include <stdexcept>
+#include <vector>
+
+namespace datamunge::image {
+
+/// @brief The number of stored bytes per pixel doubles as the mode's own value (1/2/3/4), so
+///        `channels()` never needs a separate lookup table.
+enum class ImageMode : int { Grayscale = 1, GrayscaleAlpha = 2, RGB = 3, RGBA = 4 };
+
+/// @brief A pixel value in fully-expanded RGBA form, regardless of the owning Image's actual
+///        mode -- always 4 plain uint8 fields (rather than a variable-length per-mode vector)
+///        so this stays trivially bindable across languages, matching this codebase's
+///        established preference for fixed-shape structs. get_pixel()/set_pixel() handle the
+///        expansion/truncation to and from the Image's real stored channel count.
+struct Pixel {
+    std::uint8_t r{0};
+    std::uint8_t g{0};
+    std::uint8_t b{0};
+    std::uint8_t a{255};
+};
+
+[[nodiscard]] inline bool operator==(const Pixel& lhs, const Pixel& rhs) {
+    return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// @brief A 2D raster image: row-major, top-left origin, interleaved channel bytes (matching
+///        the layout every common image codec uses on disk, so I/O needs no reshuffling).
+///        Pixel data is always stored as the mode's exact channel count (1/2/3/4 bytes per
+///        pixel) -- get_pixel()/set_pixel() are the only place mode-specific expansion happens.
+class Image {
+  public:
+    Image() = default;
+
+    Image(int width, int height, ImageMode mode = ImageMode::RGB) : Image(width, height, mode, Pixel{}) {}
+
+    Image(int width, int height, ImageMode mode, const Pixel& fill_color) : width_(width), height_(height), mode_(mode) {
+        if (width < 0 || height < 0) {
+            throw std::invalid_argument("Image: width and height must be non-negative");
+        }
+        data_.resize(static_cast<std::size_t>(width) * static_cast<std::size_t>(height) * static_cast<std::size_t>(channel_count(mode)));
+        fill(fill_color);
+    }
+
+    [[nodiscard]] int width() const { return width_; }
+    [[nodiscard]] int height() const { return height_; }
+    [[nodiscard]] ImageMode mode() const { return mode_; }
+    [[nodiscard]] int channels() const { return channel_count(mode_); }
+
+    [[nodiscard]] const std::vector<std::uint8_t>& data() const { return data_; }
+    [[nodiscard]] std::vector<std::uint8_t>& data() { return data_; }
+
+    [[nodiscard]] Pixel get_pixel(int x, int y) const {
+        const std::size_t base = pixel_offset(x, y);
+        switch (mode_) {
+        case ImageMode::Grayscale: {
+            const std::uint8_t v = data_[base];
+            return Pixel{v, v, v, 255};
+        }
+        case ImageMode::GrayscaleAlpha: {
+            const std::uint8_t v = data_[base];
+            return Pixel{v, v, v, data_[base + 1]};
+        }
+        case ImageMode::RGB:
+            return Pixel{data_[base], data_[base + 1], data_[base + 2], 255};
+        case ImageMode::RGBA:
+            return Pixel{data_[base], data_[base + 1], data_[base + 2], data_[base + 3]};
+        }
+        throw std::logic_error("Image::get_pixel: unreachable mode");
+    }
+
+    void set_pixel(int x, int y, const Pixel& p) {
+        const std::size_t base = pixel_offset(x, y);
+        switch (mode_) {
+        case ImageMode::Grayscale:
+            data_[base] = p.r;
+            return;
+        case ImageMode::GrayscaleAlpha:
+            data_[base] = p.r;
+            data_[base + 1] = p.a;
+            return;
+        case ImageMode::RGB:
+            data_[base] = p.r;
+            data_[base + 1] = p.g;
+            data_[base + 2] = p.b;
+            return;
+        case ImageMode::RGBA:
+            data_[base] = p.r;
+            data_[base + 1] = p.g;
+            data_[base + 2] = p.b;
+            data_[base + 3] = p.a;
+            return;
+        }
+        throw std::logic_error("Image::set_pixel: unreachable mode");
+    }
+
+    void fill(const Pixel& p) {
+        for (int y = 0; y < height_; ++y) {
+            for (int x = 0; x < width_; ++x) {
+                set_pixel(x, y, p);
+            }
+        }
+    }
+
+    [[nodiscard]] static int channel_count(ImageMode mode) { return static_cast<int>(mode); }
+
+  private:
+    [[nodiscard]] std::size_t pixel_offset(int x, int y) const {
+        if (x < 0 || x >= width_ || y < 0 || y >= height_) {
+            throw std::out_of_range("Image: pixel coordinates out of range");
+        }
+        return (static_cast<std::size_t>(y) * static_cast<std::size_t>(width_) + static_cast<std::size_t>(x)) *
+               static_cast<std::size_t>(channels());
+    }
+
+    int width_{0};
+    int height_{0};
+    ImageMode mode_{ImageMode::RGB};
+    std::vector<std::uint8_t> data_;
+};
+
+} // namespace datamunge::image
+#pragma once
+
+// Convenience umbrella header -- includes the whole image-processing module: the core Image
+// class and pixel type, color-space conversion, geometric transforms (resize/crop/rotate/
+// flip), convolution-based filters and point operations, ImageDraw-style drawing primitives,
+// and file I/O for Netpbm (PPM/PGM/PBM), BMP and PNG, JPEG decoding, and read_image()
+// to open any of them by file signature.
+//
+// Named "imaging.hpp" rather than "image.hpp" (this module's usual umbrella-matches-directory-
+// name convention, e.g. geometry/geometry.hpp) to avoid colliding with image/image.hpp, which
+// is already taken by the core Image class itself.
+
+#include <datamunge/image/bmp.hpp>
+#include <datamunge/image/color.hpp>
+#include <datamunge/image/draw.hpp>
+#include <datamunge/image/filters.hpp>
+#include <datamunge/image/image.hpp>
+#include <datamunge/image/jpeg.hpp>
+#include <datamunge/image/netpbm.hpp>
+#include <datamunge/image/png.hpp>
+#include <datamunge/image/read_image.hpp>
+#include <datamunge/image/transform.hpp>
+#pragma once
+
+/// @file jpeg.hpp
+/// @brief Self-contained JPEG (JFIF/Exif/Adobe) decoder.
+///
+/// Supports baseline and extended sequential DCT (SOF0/SOF1) and progressive DCT (SOF2) with
+/// Huffman coding and 8-bit samples; grayscale, YCbCr, RGB (Adobe transform 0), CMYK and
+/// YCCK; any integral chroma subsampling (4:4:4, 4:2:2, 4:4:0, 4:2:0, 4:1:1, ...); restart
+/// markers. Arithmetic coding, lossless, hierarchical and 12-bit JPEGs throw.
+///
+/// Pixels match libjpeg-turbo bit for bit: the integer IDCTs are libjpeg's jidctfst.c
+/// (IntegerFast) and jidctint.c (IntegerAccurate), chroma upsampling is libjpeg's "fancy"
+/// triangle filter (h2v1/h1v2/h2v2; plain replication for other ratios) and the color
+/// conversion uses libjpeg's fixed-point tables. The defaults reproduce
+/// tf.io.decode_jpeg / tensorflow::ops::DecodeJpeg, whose default dct_method "" means
+/// INTEGER_FAST.
+///
+/// Corrupt or truncated input (including a missing EOI marker, which TensorFlow also rejects)
+/// throws std::runtime_error and never reads out of bounds. Like libjpeg, entropy-coded data
+/// that stops early at a marker is zero-filled rather than rejected.
+
+#include <datamunge/image/image.hpp>
+
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <vector>
+
+namespace datamunge::image {
+
+/// @brief Inverse DCT variant (libjpeg's JDCT_IFAST / JDCT_ISLOW).
+enum class JpegDctMethod { IntegerFast, IntegerAccurate };
+
+/// @brief Color space of the encoded components (libjpeg's jpeg_color_space guess).
+enum class JpegColorSpace { Grayscale, YCbCr, RGB, CMYK, YCCK };
+
+/// @brief Decoding options; the defaults match TensorFlow's DecodeJpeg(channels=0).
+struct JpegDecodeOptions {
+  /// Output channels: 0 = the file's natural count (1 for grayscale, otherwise 3),
+  /// 1 = grayscale (luma for YCbCr), 3 = RGB.
+  int channels = 0;
+  /// IDCT; TensorFlow's default is IntegerFast, djpeg's default is IntegerAccurate.
+  JpegDctMethod dct_method = JpegDctMethod::IntegerFast;
+  /// libjpeg's do_fancy_upsampling (triangle-filter chroma); false replicates samples.
+  bool fancy_upsampling = true;
+};
+
+/// @brief Header-level facts about a JPEG stream.
+struct JpegInfo {
+  int width = 0;
+  int height = 0;
+  int components = 0;                       ///< 1, 3 or 4
+  bool progressive = false;                 ///< SOF2
+  JpegColorSpace color_space = JpegColorSpace::YCbCr;
+  std::vector<int> h_sampling;              ///< per-component horizontal sampling factors
+  std::vector<int> v_sampling;              ///< per-component vertical sampling factors
+  int restart_interval = 0;                 ///< MCUs between restart markers (last DRI seen)
+  bool jfif = false;                        ///< APP0 JFIF marker present
+  bool adobe = false;                       ///< APP14 Adobe marker present
+  int adobe_transform = -1;                 ///< Adobe transform flag, -1 when absent
+  int orientation = 1;                      ///< EXIF orientation 1..8 (1 when absent); not applied
+};
+
+/// @brief True when @p data starts with the JPEG SOI marker (FF D8 FF).
+[[nodiscard]] bool is_jpeg(const std::uint8_t* data, std::size_t size);
+
+/// @brief Parses the markers up to the first scan and returns the stream's header facts.
+///        Throws std::runtime_error when the header is malformed.
+[[nodiscard]] JpegInfo jpeg_info(const std::uint8_t* data, std::size_t size);
+
+/// @brief jpeg_info() of the file at @p path.
+[[nodiscard]] JpegInfo read_jpeg_info(const std::string& path);
+
+/// @brief Decodes a JPEG held in memory to a Grayscale or RGB Image (see JpegDecodeOptions).
+///        Fills @p info when non-null. Throws std::runtime_error on corrupt, truncated or
+///        unsupported input.
+[[nodiscard]] Image decode_jpeg(const std::uint8_t* data, std::size_t size, const JpegDecodeOptions& options = {},
+                                JpegInfo* info = nullptr);
+
+/// @brief decode_jpeg() of a byte vector.
+[[nodiscard]] Image decode_jpeg(const std::vector<std::uint8_t>& bytes, const JpegDecodeOptions& options = {},
+                                JpegInfo* info = nullptr);
+
+/// @brief Reads and decodes the JPEG file at @p path (see decode_jpeg()).
+[[nodiscard]] Image read_jpeg(const std::string& path, const JpegDecodeOptions& options = {}, JpegInfo* info = nullptr);
+
+/// @brief Returns @p img transformed so that it displays upright for EXIF orientation
+///        @p orientation (1 = unchanged, 2 = mirror, 3 = rotate 180, 4 = flip vertically,
+///        5 = transpose, 6 = rotate 90 clockwise, 7 = transverse, 8 = rotate 90
+///        counter-clockwise). Values outside 1..8 throw std::invalid_argument.
+[[nodiscard]] Image apply_exif_orientation(const Image& img, int orientation);
+
+}  // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <cstdint>
+#include <string>
+
+namespace datamunge::image {
+
+/// @brief Reads a binary (P6) Netpbm color image. Only 8-bit-per-channel (maxval <= 255)
+///        files are supported. Throws std::runtime_error on a malformed file or I/O failure.
+[[nodiscard]] Image read_ppm(const std::string& path);
+
+/// @brief Writes @p img as a binary (P6) Netpbm color image, converting to RGB first if it
+///        isn't already (see to_rgb()).
+void write_ppm(const Image& img, const std::string& path);
+
+/// @brief Reads a binary (P5) Netpbm grayscale image. Only 8-bit (maxval <= 255) files are
+///        supported. Throws std::runtime_error on a malformed file or I/O failure.
+[[nodiscard]] Image read_pgm(const std::string& path);
+
+/// @brief Writes @p img as a binary (P5) Netpbm grayscale image, converting to Grayscale first
+///        if it isn't already (see to_grayscale()).
+void write_pgm(const Image& img, const std::string& path);
+
+/// @brief Reads a binary (P4) Netpbm bitmap image (1 bit per pixel: set bits are black) as a
+///        Grayscale image (0 = black, 255 = white). Throws std::runtime_error on a malformed
+///        file or I/O failure.
+[[nodiscard]] Image read_pbm(const std::string& path);
+
+/// @brief Writes @p img as a binary (P4) Netpbm bitmap, converting to grayscale first and then
+///        thresholding: pixels with luma strictly below @p threshold become set (black) bits.
+void write_pbm(const Image& img, const std::string& path, std::uint8_t threshold = 128);
+
+} // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <string>
+
+namespace datamunge::image {
+
+/// @brief Reads a PNG file as an Image (mode matches the file's color type: Grayscale,
+///        GrayscaleAlpha, RGB, or RGBA). Only 8-bit-depth, non-interlaced, non-palette PNGs
+///        are supported (the overwhelming majority of real-world PNGs); indexed-color
+///        (palette), 16-bit-depth, and Adam7-interlaced files throw std::runtime_error, as
+///        does a corrupt file (bad signature, chunk CRC mismatch, or truncated/invalid zlib
+///        stream).
+[[nodiscard]] Image read_png(const std::string& path);
+
+/// @brief Writes @p img as an 8-bit-depth, non-interlaced PNG, using its ImageMode directly as
+///        the PNG color type (Grayscale/GrayscaleAlpha/RGB/RGBA all have a direct PNG
+///        equivalent, so no conversion is ever needed). Every scanline is written with filter
+///        type 0 (None) -- simpler and always correct, at the cost of a somewhat larger file
+///        than a filter-optimizing encoder would produce; any standard PNG decoder still reads
+///        the result correctly.
+void write_png(const Image& img, const std::string& path);
+
+} // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <string>
+
+namespace datamunge::image {
+
+/// @brief Reads an image file of any supported format, chosen by its leading bytes rather than
+///        its extension: PNG (read_png), JPEG (read_jpeg with default options: Grayscale or RGB),
+///        BMP (read_bmp), and binary Netpbm P6/P5/P4 (read_ppm/read_pgm/read_pbm). Throws
+///        std::runtime_error for an unreadable file or an unrecognised signature.
+[[nodiscard]] Image read_image(const std::string& path);
+
+}  // namespace datamunge::image
+#pragma once
+
+#include <datamunge/image/image.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+
+namespace datamunge::image {
+
+enum class ResampleFilter { Nearest, Bilinear };
+
+namespace detail {
+[[nodiscard]] inline std::uint8_t lerp_byte(std::uint8_t a, std::uint8_t b, double t) {
+    return static_cast<std::uint8_t>(std::clamp(std::lround(a + t * (b - a)), 0L, 255L));
+}
+
+[[nodiscard]] inline Pixel bilinear_sample(const Image& src, double x, double y) {
+    const int x0 = std::clamp(static_cast<int>(std::floor(x)), 0, src.width() - 1);
+    const int y0 = std::clamp(static_cast<int>(std::floor(y)), 0, src.height() - 1);
+    const int x1 = std::min(x0 + 1, src.width() - 1);
+    const int y1 = std::min(y0 + 1, src.height() - 1);
+    const double tx = x - x0;
+    const double ty = y - y0;
+
+    const Pixel p00 = src.get_pixel(x0, y0);
+    const Pixel p10 = src.get_pixel(x1, y0);
+    const Pixel p01 = src.get_pixel(x0, y1);
+    const Pixel p11 = src.get_pixel(x1, y1);
+
+    const auto mix = [&](std::uint8_t Pixel::*field) {
+        const std::uint8_t top = lerp_byte(p00.*field, p10.*field, tx);
+        const std::uint8_t bottom = lerp_byte(p01.*field, p11.*field, tx);
+        return lerp_byte(top, bottom, ty);
+    };
+
+    return Pixel{mix(&Pixel::r), mix(&Pixel::g), mix(&Pixel::b), mix(&Pixel::a)};
+}
+} // namespace detail
+
+/// @brief A new image of size @p new_width x @p new_height, resampled from @p src. Nearest
+///        maps each destination pixel to its closest source pixel (blocky, but exact for
+///        integer scale factors); Bilinear interpolates the four surrounding source pixels
+///        (smoother, the usual default for photographic content).
+[[nodiscard]] inline Image resize(const Image& src, int new_width, int new_height, ResampleFilter filter = ResampleFilter::Bilinear) {
+    if (new_width <= 0 || new_height <= 0) {
+        throw std::invalid_argument("resize: new dimensions must be positive");
+    }
+    if (src.width() == 0 || src.height() == 0) {
+        throw std::invalid_argument("resize: source image must be non-empty");
+    }
+
+    Image out(new_width, new_height, src.mode());
+    const double scale_x = static_cast<double>(src.width()) / new_width;
+    const double scale_y = static_cast<double>(src.height()) / new_height;
+
+    for (int y = 0; y < new_height; ++y) {
+        for (int x = 0; x < new_width; ++x) {
+            if (filter == ResampleFilter::Nearest) {
+                const int sx = std::min(static_cast<int>((x + 0.5) * scale_x), src.width() - 1);
+                const int sy = std::min(static_cast<int>((y + 0.5) * scale_y), src.height() - 1);
+                out.set_pixel(x, y, src.get_pixel(sx, sy));
+            } else {
+                const double sx = (x + 0.5) * scale_x - 0.5;
+                const double sy = (y + 0.5) * scale_y - 0.5;
+                out.set_pixel(x, y, detail::bilinear_sample(src, sx, sy));
+            }
+        }
+    }
+    return out;
+}
+
+/// @brief The sub-image [x, x+width) x [y, y+height) of @p src. Throws std::out_of_range if
+///        the requested rectangle isn't fully contained in @p src.
+[[nodiscard]] inline Image crop(const Image& src, int x, int y, int width, int height) {
+    if (width <= 0 || height <= 0) {
+        throw std::invalid_argument("crop: width and height must be positive");
+    }
+    if (x < 0 || y < 0 || x + width > src.width() || y + height > src.height()) {
+        throw std::out_of_range("crop: rectangle extends outside the source image");
+    }
+
+    Image out(width, height, src.mode());
+    for (int dy = 0; dy < height; ++dy) {
+        for (int dx = 0; dx < width; ++dx) {
+            out.set_pixel(dx, dy, src.get_pixel(x + dx, y + dy));
+        }
+    }
+    return out;
+}
+
+/// @brief A new image with every row reversed left-to-right (mirror image).
+[[nodiscard]] inline Image flip_horizontal(const Image& src) {
+    Image out(src.width(), src.height(), src.mode());
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            out.set_pixel(src.width() - 1 - x, y, src.get_pixel(x, y));
+        }
+    }
+    return out;
+}
+
+/// @brief A new image with every column reversed top-to-bottom (upside down).
+[[nodiscard]] inline Image flip_vertical(const Image& src) {
+    Image out(src.width(), src.height(), src.mode());
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            out.set_pixel(x, src.height() - 1 - y, src.get_pixel(x, y));
+        }
+    }
+    return out;
+}
+
+/// @brief A new image rotated clockwise by exactly 90, 180, or 270 degrees (any other value
+///        throws std::invalid_argument -- use rotate() for arbitrary angles). 90/270 swap
+///        width and height; 180 keeps them.
+[[nodiscard]] inline Image rotate90(const Image& src, int degrees) {
+    const int normalized = ((degrees % 360) + 360) % 360;
+    if (normalized == 0) {
+        return src;
+    }
+    if (normalized == 180) {
+        return flip_vertical(flip_horizontal(src));
+    }
+    if (normalized != 90 && normalized != 270) {
+        throw std::invalid_argument("rotate90: degrees must be a multiple of 90");
+    }
+
+    Image out(src.height(), src.width(), src.mode());
+    for (int y = 0; y < src.height(); ++y) {
+        for (int x = 0; x < src.width(); ++x) {
+            const Pixel p = src.get_pixel(x, y);
+            if (normalized == 90) {
+                out.set_pixel(src.height() - 1 - y, x, p);
+            } else { // 270
+                out.set_pixel(y, src.width() - 1 - x, p);
+            }
+        }
+    }
+    return out;
+}
+
+/// @brief A new image rotated clockwise by an arbitrary angle (in degrees) about its center,
+///        via inverse-mapping + bilinear resampling. The output canvas is exactly large enough
+///        to contain the fully-rotated source (like Pillow's expand=True), and pixels sourced
+///        from outside the original image are filled with @p fill_color.
+[[nodiscard]] inline Image rotate(const Image& src, double degrees, const Pixel& fill_color = Pixel()) {
+    if (src.width() == 0 || src.height() == 0) {
+        throw std::invalid_argument("rotate: source image must be non-empty");
+    }
+    constexpr double kPi = 3.14159265358979323846;
+    const double radians = degrees * kPi / 180.0;
+    const double cos_a = std::cos(radians);
+    const double sin_a = std::sin(radians);
+
+    const double w = src.width(), h = src.height();
+    const double new_w = std::abs(w * cos_a) + std::abs(h * sin_a);
+    const double new_h = std::abs(w * sin_a) + std::abs(h * cos_a);
+    const int out_w = std::max(1, static_cast<int>(std::round(new_w)));
+    const int out_h = std::max(1, static_cast<int>(std::round(new_h)));
+
+    Image out(out_w, out_h, src.mode(), fill_color);
+    const double src_cx = w / 2.0, src_cy = h / 2.0;
+    const double out_cx = out_w / 2.0, out_cy = out_h / 2.0;
+
+    for (int y = 0; y < out_h; ++y) {
+        for (int x = 0; x < out_w; ++x) {
+            // Inverse-map the destination pixel back into source space (rotate by -degrees).
+            const double dx = x + 0.5 - out_cx;
+            const double dy = y + 0.5 - out_cy;
+            const double sx = dx * cos_a + dy * sin_a + src_cx - 0.5;
+            const double sy = -dx * sin_a + dy * cos_a + src_cy - 0.5;
+
+            if (sx >= 0.0 && sx <= w - 1.0 && sy >= 0.0 && sy <= h - 1.0) {
+                out.set_pixel(x, y, detail::bilinear_sample(src, sx, sy));
+            }
+        }
+    }
+    return out;
+}
+
+} // namespace datamunge::image
+û`

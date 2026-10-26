@@ -11,9 +11,8 @@
 ///   nn::Optimizer opt(store, 1e-3, {nn::OptimizerKind::Adam});
 ///   for (...) { auto g = nn::grad(loss(), store.parameters()); opt.step(g); }
 
+#include <array>
 #include <cstdint>
-#include <deque>
-#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -38,18 +37,29 @@ enum class OptimizerKind {
   Lars,       // layer-wise trust ratio with momentum
   Lion,       // sign of an interpolated momentum (Chen et al. 2023)
   Adafactor,  // factored second moments (Shazeer & Stern 2018)
+  Adadelta,   // a = rho a + (1-rho) g^2; d = sqrt(u + eps) / sqrt(a + eps) g;
+              // u = rho u + (1-rho) d^2; w -= lr d   (TF ApplyAdadelta; TF uses
+              // rho 0.95, eps 1e-7 (Keras) / 1e-8 (tf.train), lr 1.0 (tf.train) - set them in the config)
 };
 
 std::string optimizer_name(OptimizerKind kind);
 
 struct OptimizerConfig {
   OptimizerKind kind{OptimizerKind::Sgd};
-  double        momentum{0.9}, beta1{0.9}, beta2{0.999}, rho{0.9};
-  double        epsilon{1e-8}, initial_accumulator{0.1}, weight_decay{0.0};
+  double        momentum{0.9};
+  double        beta1{0.9};
+  double        beta2{0.999};
+  double        rho{0.9};
+  double        epsilon{1e-8};
+  double        initial_accumulator{0.1};
+  double        weight_decay{0.0};
   double        trust_coefficient{0.001};                    // LARS
-  double        factor_epsilon{1e-30}, parameter_epsilon{1e-3};  // Adafactor
-  double        update_clip{1.0}, decay_exponent{0.8};           // Adafactor
-  bool          relative_step{true}, scale_parameter{true};      // Adafactor
+  double        factor_epsilon{1e-30};
+  double        parameter_epsilon{1e-3};  // Adafactor
+  double        update_clip{1.0};
+  double        decay_exponent{0.8};           // Adafactor
+  bool          relative_step{true};
+  bool          scale_parameter{true};      // Adafactor
   /// Throws std::invalid_argument for out-of-range settings.
   void validate() const;
 };
@@ -82,15 +92,20 @@ class Optimizer {
   void load_state(const std::vector<std::pair<std::string, Tensor>>& state);
 
  private:
-  Tensor& slot(const std::string& name, std::size_t index, const Shape& shape, double initial = 0.0);
+  enum class SlotKind { Velocity, Accumulator, Variance, Accum, AccumUpdate, M, U, V, VMax, Row, Col, Count };
+  static const char* slot_name(SlotKind kind);
+  Tensor& slot(SlotKind kind, std::size_t index, const Shape& shape, double initial = 0.0);
 
   std::vector<Tensor>                                  params_;
   double                                               lr_;
   OptimizerConfig                                      config_;
   std::int64_t                                         step_{0};
   double                                               nadam_product_{1.0};
-  std::deque<std::pair<std::string, Tensor>>           slots_;  // deque: slot() references stay valid
-  std::map<std::string, std::size_t>                   slot_index_;
+  // step() reserves room for all three possible slots before taking references.
+  std::vector<std::pair<std::string, Tensor>>          slots_;
+  // Direct [parameter][slot kind] offsets; zero means absent, otherwise index+1.
+  // Allocated lazily so SGD pays no slot-index cost.
+  std::vector<std::array<std::size_t, 11>>             slot_index_;
 };
 
 // ---- gradient utilities -----------------------------------------------------------------
@@ -101,6 +116,12 @@ double global_norm(const std::vector<Tensor>& tensors);
 std::vector<Tensor> clip_by_value(const std::vector<Tensor>& gradients, double low, double high);
 /// Rescales one tensor so its norm is at most max_norm.
 Tensor clip_by_norm(const Tensor& gradient, double max_norm);
+/// Max-norm weight constraint (Keras MaxNorm, Kim 2014's l2 constraint s):
+/// each slice's L2 norm over `axes` (default {0}: every column of a [in, out]
+/// kernel) is rescaled to at most max_norm: w / max(1, norm / max_norm).
+/// Apply it to the parameter after an optimizer step, e.g.
+/// `w.copy_(max_norm_constraint(w.detach(), 3.0))` under a NoGradGuard.
+Tensor max_norm_constraint(const Tensor& w, double max_norm, const std::vector<std::int64_t>& axes = {0});
 /// Rescales all tensors by max_norm / max(global_norm, max_norm) (TF
 /// clip_by_global_norm). Returns the clipped tensors and the norm before clipping.
 std::pair<std::vector<Tensor>, double> clip_by_global_norm(const std::vector<Tensor>& gradients, double max_norm);

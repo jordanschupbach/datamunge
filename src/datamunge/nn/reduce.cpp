@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "detail.hpp"
+#include "vector_math.hpp"
 
 namespace datamunge::nn {
 
@@ -52,14 +53,23 @@ Packed pack_for_reduce(const Tensor& x, const std::vector<std::int64_t>& axes, b
   p.keep_shape = detail::keepdims_shape(x.shape(), axes);
   if (keepdims) p.out_shape = p.keep_shape;
   NoGradGuard guard;
+  bool trailing = axes.size() <= static_cast<std::size_t>(rank);
+  for (std::size_t i = 0; i < axes.size(); ++i)
+    trailing = trailing && axes[i] == rank - static_cast<std::int64_t>(axes.size()) + static_cast<std::int64_t>(i);
+  if (trailing && x.is_contiguous()) {
+    // fold_rows reads only raw storage; shape/gradient metadata is handled
+    // separately, so a packed suffix needs neither a view nor a detached copy.
+    p.data = x;
+    return p;
+  }
   bool        leading = !axes.empty();
   for (std::size_t i = 0; i < axes.size(); ++i) leading = leading && axes[i] == static_cast<std::int64_t>(i);
   if (allow_columns && leading && p.outer > 1 && x.is_contiguous()) {
-    p.data    = nograd(x);
+    p.data    = x;
     p.columns = true;
     return p;
   }
-  p.data = detail::make_view(nograd(x), perm_shape, perm_strides, x.offset()).contiguous();
+  p.data = detail::make_view(x, perm_shape, perm_strides, x.offset()).contiguous();
   return p;
 }
 
@@ -96,7 +106,129 @@ Tensor expand_reduced(const Tensor& g, const Shape& keep_shape, const Shape& inp
   return broadcast_to(reshape(g, keep_shape), input_shape);
 }
 
-}  // namespace
+// Independent lanes remove the serial addition dependency in floating sums.
+// Float32 still accumulates in double; no fast-math or reassociation flags are used.
+template<typename T>
+Tensor sum_rows(const Packed& p, DType dtype) {
+  if (p.columns)
+    return fold_rows<T, double, T>(
+        p,
+        dtype,
+        0.0,
+        [](double a, T v) { return a + v; },
+        [](double a, std::int64_t) { return a; });
+  Tensor   out    = empty(p.out_shape, dtype);
+  const T* source = p.data.data_ptr<T>();
+  T*       dest   = out.data_ptr<T>();
+  parallel_for(
+      0,
+      p.outer,
+      std::max<std::int64_t>(1, detail::kParallelGrain / std::max<std::int64_t>(p.inner, 1)),
+      [&](std::int64_t lo, std::int64_t hi) {
+        for (std::int64_t row = lo; row < hi; ++row) {
+          dest[row] = static_cast<T>(detail::sum_values(source + row * p.inner, p.inner));
+        }
+      });
+  return out;
+}
+
+template<typename T>
+Tensor max_rows(const Packed& p, DType dtype) {
+  Tensor   out    = empty(p.out_shape, dtype);
+  const T* source = p.data.data_ptr<T>();
+  T*       dest   = out.data_ptr<T>();
+  parallel_for(
+      0,
+      p.outer,
+      std::max<std::int64_t>(1, detail::kParallelGrain / std::max<std::int64_t>(p.inner, 1)),
+      [&](std::int64_t lo, std::int64_t hi) {
+        for (auto row = lo; row < hi; ++row)
+          dest[row] = detail::max_values(source + row * p.inner, p.inner);
+      });
+  return out;
+}
+
+// Ordinary softmax VJP needs only one output allocation. Higher derivatives
+// keep the recorded expression below. Products round in T before double sums.
+Tensor softmax_vjp_rows(const Tensor& seed, const Tensor& probabilities) {
+#if defined(__clang__)
+#pragma clang fp contract(off)
+#endif
+  const auto width = probabilities.shape().back(), rows = probabilities.numel() / width;
+  Tensor     result = empty(probabilities.shape(), probabilities.dtype());
+  detail::dispatch_float(probabilities.dtype(), "softmax backward", [&](auto tag) {
+    using T      = typename decltype(tag)::type;
+    const T* g   = seed.data_ptr<T>();
+    const T* p   = probabilities.data_ptr<T>();
+    T*       out = result.data_ptr<T>();
+    parallel_for(
+        0,
+        rows,
+        std::max<std::int64_t>(1, detail::kParallelGrain / width),
+        [&](std::int64_t lo, std::int64_t hi) {
+          for (auto row = lo; row < hi; ++row) {
+            const auto   start = row * width;
+            double       lanes[8]{};
+            std::int64_t i = 0;
+            for (; i + 7 < width; i += 8)
+              for (int lane = 0; lane < 8; ++lane) {
+                const T product = g[start + i + lane] * p[start + i + lane];
+                lanes[lane] += static_cast<double>(product);
+              }
+            double total = ((lanes[0] + lanes[1]) + (lanes[2] + lanes[3])) +
+                           ((lanes[4] + lanes[5]) + (lanes[6] + lanes[7]));
+            for (; i < width; ++i) {
+              const T product = g[start + i] * p[start + i];
+              total += static_cast<double>(product);
+            }
+            const T dot = static_cast<T>(total);
+            for (i = 0; i < width; ++i) {
+              const T difference = g[start + i] - dot;
+              out[start + i]     = p[start + i] * difference;
+            }
+          }
+        });
+  });
+  return result;
+}
+
+template<bool Logarithmic>
+Tensor normalized_rows(const Tensor& x) {
+  const auto width = x.shape().back(), rows = x.numel() / width;
+  Tensor     out = empty(x.shape(), x.dtype());
+  detail::dispatch_float(x.dtype(), "softmax", [&](auto tag) {
+    using T         = typename decltype(tag)::type;
+    const T* source = x.data_ptr<T>();
+    T*       dest   = out.data_ptr<T>();
+    parallel_for(
+        0,
+        rows,
+        std::max<std::int64_t>(1, detail::kParallelGrain / width),
+        [&](std::int64_t lo, std::int64_t hi) {
+          for (std::int64_t row = lo; row < hi; ++row) {
+            const T* src     = source + row * width;
+            T*       dst     = dest + row * width;
+            const T  largest = detail::max_values(src, width);
+            // Reuse the output as exponential scratch; no full-size intermediates.
+            for (std::int64_t i = 0; i < width; ++i)
+              dst[i] = src[i] - largest;
+            detail::exp_values(dst, dst, width);
+            const T denominator = static_cast<T>(detail::sum_values(dst, width));
+            if constexpr (Logarithmic) {
+              const T log_total = std::log(denominator);
+              for (std::int64_t i = 0; i < width; ++i)
+                dst[i] = (src[i] - largest) - log_total;
+            } else {
+              for (std::int64_t i = 0; i < width; ++i)
+                dst[i] /= denominator;
+            }
+          }
+        });
+  });
+  return out;
+}
+
+} // namespace
 
 Tensor sum(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto  axes = detail::normalize_axes(axes_in, x.dim(), "sum");
@@ -107,10 +239,17 @@ Tensor sum(const Tensor& x, const Axes& axes_in, bool keepdims) {
     using T = typename decltype(tag)::type;
     if constexpr (std::is_same<T, bool>::value) {
       throw std::logic_error("sum: bool");
+    } else if constexpr (std::is_floating_point<T>::value) {
+      return sum_rows<T>(p, dt);
     } else {
-      using Acc = typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
-      return fold_rows<T, Acc, T>(p, dt, Acc(0), [](Acc a, T v) { return a + static_cast<Acc>(v); },
-                                  [](Acc a, std::int64_t) { return a; });
+      using Acc =
+          typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
+      return fold_rows<T, Acc, T>(
+          p,
+          dt,
+          Acc(0),
+          [](Acc a, T v) { return a + static_cast<Acc>(v); },
+          [](Acc a, std::int64_t) { return a; });
     }
   });
   const Shape keep = p.keep_shape, in_shape = x.shape();
@@ -123,25 +262,38 @@ Tensor sum(const Tensor& x, const Axes& axes_in, bool keepdims) {
 Tensor mean(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto   axes  = detail::normalize_axes(axes_in, x.dim(), "mean");
   std::int64_t count = 1;
-  for (auto a : axes) count *= x.shape()[static_cast<std::size_t>(a)];
+  for (auto a : axes)
+    count *= x.shape()[static_cast<std::size_t>(a)];
   Tensor xf = as_dtype(x, to_floating(x.dtype()));
   return div(sum(xf, axes, keepdims), scalar(static_cast<double>(count), xf.dtype()));
 }
 
 namespace {
 
-template <bool IsMax>
+template<bool IsMax>
 Tensor extremum(const Tensor& x, const Axes& axes_in, bool keepdims, const char* name) {
   const auto axes = detail::normalize_axes(axes_in, x.dim(), name);
   for (auto a : axes)
-    if (x.shape()[static_cast<std::size_t>(a)] == 0) throw std::invalid_argument(std::string(name) + ": empty axis");
-  Packed p   = pack_for_reduce(x, axes, keepdims, true);
-  Tensor out = dispatch(x.dtype(), [&](auto tag) {
+    if (x.shape()[static_cast<std::size_t>(a)] == 0)
+      throw std::invalid_argument(std::string(name) + ": empty axis");
+  Packed      p   = pack_for_reduce(x, axes, keepdims, true);
+  Tensor      out = dispatch(x.dtype(), [&](auto tag) {
     using T = typename decltype(tag)::type;
+    if constexpr (IsMax && std::is_floating_point<T>::value)
+      if (!p.columns)
+        return max_rows<T>(p, x.dtype());
+    T identity;
+    if constexpr (std::is_floating_point<T>::value)
+      identity = IsMax ? -std::numeric_limits<T>::infinity() : std::numeric_limits<T>::infinity();
+    else
+      identity = IsMax ? std::numeric_limits<T>::lowest() : std::numeric_limits<T>::max();
     return fold_rows<T, T, T>(
-        p, x.dtype(), IsMax ? std::numeric_limits<T>::lowest() : std::numeric_limits<T>::max(),
+        p,
+        x.dtype(),
+        identity,
         [](T a, T v) {
-          if (v != v) return v;  // NaN propagates
+          if (v != v)
+            return v; // NaN propagates
           return IsMax ? (v > a ? v : a) : (v < a ? v : a);
         },
         [](T a, std::int64_t) { return a; });
@@ -149,7 +301,9 @@ Tensor extremum(const Tensor& x, const Axes& axes_in, bool keepdims, const char*
   SavedTensor sx(x);
   const Shape keep = p.keep_shape;
   record(
-      name, {x}, {out},
+      name,
+      {x},
+      {out},
       [sx, keep, axes](const Grads& g, const Grads& o) {
         // Share the gradient equally between tied extrema (TF Max/Min).
         const Tensor& in    = sx.get();
@@ -162,10 +316,14 @@ Tensor extremum(const Tensor& x, const Axes& axes_in, bool keepdims, const char*
   return out;
 }
 
-}  // namespace
+} // namespace
 
-Tensor max(const Tensor& x, const Axes& axes, bool keepdims) { return extremum<true>(x, axes, keepdims, "Max"); }
-Tensor min(const Tensor& x, const Axes& axes, bool keepdims) { return extremum<false>(x, axes, keepdims, "Min"); }
+Tensor max(const Tensor& x, const Axes& axes, bool keepdims) {
+  return extremum<true>(x, axes, keepdims, "Max");
+}
+Tensor min(const Tensor& x, const Axes& axes, bool keepdims) {
+  return extremum<false>(x, axes, keepdims, "Min");
+}
 
 Tensor prod(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto  axes = detail::normalize_axes(axes_in, x.dim(), "prod");
@@ -177,15 +335,22 @@ Tensor prod(const Tensor& x, const Axes& axes_in, bool keepdims) {
     if constexpr (std::is_same<T, bool>::value) {
       throw std::logic_error("prod: bool");
     } else {
-      using Acc = typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
-      return fold_rows<T, Acc, T>(p, dt, Acc(1), [](Acc a, T v) { return a * static_cast<Acc>(v); },
-                                  [](Acc a, std::int64_t) { return a; });
+      using Acc =
+          typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
+      return fold_rows<T, Acc, T>(
+          p,
+          dt,
+          Acc(1),
+          [](Acc a, T v) { return a * static_cast<Acc>(v); },
+          [](Acc a, std::int64_t) { return a; });
     }
   });
   SavedTensor sx(xc);
   const Shape keep = p.keep_shape;
   record(
-      "Prod", {xc}, {out},
+      "Prod",
+      {xc},
+      {out},
       [sx, keep, axes](const Grads& g, const Grads& o) {
         // d prod / d x_i is the product of the other elements: prod / x_i
         // when nothing in the group is zero, else computed from the zero count.
@@ -197,9 +362,9 @@ Tensor prod(const Tensor& x, const Axes& axes_in, bool keepdims) {
           NoGradGuard guard;
           nonzero_prod = prod(where(is_zero, 1.0, nograd(in)), axes, true);
         }
-        const Tensor safe   = where(is_zero, 1.0, in);
-        const Tensor no_zero = equal(zeros_n, 0.0);
-        const Tensor one_zero = equal(zeros_n, 1.0);
+        const Tensor safe       = where(is_zero, 1.0, in);
+        const Tensor no_zero    = equal(zeros_n, 0.0);
+        const Tensor one_zero   = equal(zeros_n, 1.0);
         const Tensor at_nonzero = where(no_zero, div(reshape(o[0], keep), safe), 0.0);
         const Tensor at_zero    = where(one_zero, broadcast_to(nonzero_prod, in.shape()), 0.0);
         const Tensor local      = where(is_zero, at_zero, at_nonzero);
@@ -214,7 +379,9 @@ Tensor variance(const Tensor& x, const Axes& axes, bool keepdims) {
   return mean(square(sub(xf, mean(xf, axes, true))), axes, keepdims);
 }
 
-Tensor std_dev(const Tensor& x, const Axes& axes, bool keepdims) { return sqrt(variance(x, axes, keepdims)); }
+Tensor std_dev(const Tensor& x, const Axes& axes, bool keepdims) {
+  return sqrt(variance(x, axes, keepdims));
+}
 
 Tensor logsumexp(const Tensor& x, const Axes& axes_in, bool keepdims) {
   const auto axes = detail::normalize_axes(axes_in, x.dim(), "logsumexp");
@@ -285,14 +452,23 @@ Tensor softmax(const Tensor& x, std::int64_t axis_in) {
   Tensor             out;
   {
     NoGradGuard guard;
-    const Tensor xd = nograd(xf);
-    const Tensor e  = exp(sub(xd, max(xd, {axis}, true)));
-    out             = div(e, sum(e, {axis}, true));
+    if (axis == xf.dim() - 1 && xf.is_contiguous() && xf.shape().back() > 0) {
+      out = normalized_rows<false>(xf);
+    } else {
+      const Tensor xd = nograd(xf);
+      const Tensor e  = exp(sub(xd, max(xd, {axis}, true)));
+      out             = div(e, sum(e, {axis}, true));
+    }
   }
   record(
-      "Softmax", {xf}, {out},
+      "Softmax",
+      {xf},
+      {out},
       [axis](const Grads& g, const Grads& o) {
         const Tensor& s = o[0];
+        if (!is_grad_enabled() && axis == s.dim() - 1 && s.shape().back() > 0 &&
+            s.is_contiguous() && g[0].is_contiguous() && g[0].dtype() == s.dtype())
+          return Grads{softmax_vjp_rows(g[0], s)};
         return Grads{mul(s, sub(g[0], sum(mul(g[0], s), {axis}, true)))};
       },
       true);
@@ -305,12 +481,18 @@ Tensor log_softmax(const Tensor& x, std::int64_t axis_in) {
   Tensor             out;
   {
     NoGradGuard guard;
-    const Tensor xd      = nograd(xf);
-    const Tensor shifted = sub(xd, max(xd, {axis}, true));
-    out                  = sub(shifted, log(sum(exp(shifted), {axis}, true)));
+    if (axis == xf.dim() - 1 && xf.is_contiguous() && xf.shape().back() > 0) {
+      out = normalized_rows<true>(xf);
+    } else {
+      const Tensor xd      = nograd(xf);
+      const Tensor shifted = sub(xd, max(xd, {axis}, true));
+      out                  = sub(shifted, log(sum(exp(shifted), {axis}, true)));
+    }
   }
   record(
-      "LogSoftmax", {xf}, {out},
+      "LogSoftmax",
+      {xf},
+      {out},
       [axis](const Grads& g, const Grads& o) {
         return Grads{sub(g[0], mul(exp(o[0]), sum(g[0], {axis}, true)))};
       },
@@ -328,16 +510,18 @@ Tensor cumsum(const Tensor& x, std::int64_t axis_in, bool exclusive, bool revers
     // Move the axis last, scan rows, move it back.
     Axes perm;
     for (std::int64_t i = 0; i < x.dim(); ++i)
-      if (i != axis) perm.push_back(i);
+      if (i != axis)
+        perm.push_back(i);
     perm.push_back(axis);
-    const Tensor       moved = transpose(nograd(xc), perm).contiguous();
-    const std::int64_t n     = x.shape()[static_cast<std::size_t>(axis)];
-    const std::int64_t rows  = n ? moved.numel() / n : 0;
+    const Tensor       moved   = transpose(nograd(xc), perm).contiguous();
+    const std::int64_t n       = x.shape()[static_cast<std::size_t>(axis)];
+    const std::int64_t rows    = n ? moved.numel() / n : 0;
     Tensor             scanned = empty(moved.shape(), dt);
     dispatch(dt, [&](auto tag) {
       using T = typename decltype(tag)::type;
       if constexpr (!std::is_same<T, bool>::value) {
-        using Acc  = typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
+        using Acc =
+            typename std::conditional<std::is_floating_point<T>::value, double, std::int64_t>::type;
         const T* s = moved.data_ptr<T>();
         T*       d = scanned.data_ptr<T>();
         for (std::int64_t r = 0; r < rows; ++r) {

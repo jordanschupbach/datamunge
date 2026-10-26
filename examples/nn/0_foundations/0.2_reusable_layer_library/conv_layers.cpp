@@ -2,7 +2,7 @@
 // Convolution layers: 1D, 2D, 3D, depthwise, separable, transposed and dilated.
 //
 // Port of tflow's conv_layers. The layers in datamunge/nn/layers.hpp
-// (nn::conv1d, conv2d, depthwise_conv2d, separable_conv2d, conv2d_transpose)
+// (nn::conv1d, conv2d, conv3d, depthwise_conv2d, separable_conv2d, conv2d_transpose)
 // wrap the ops in datamunge/nn/conv.hpp. This program checks the output-size
 // rules for VALID / SAME padding, strides and dilations against the ops,
 // verifies the 1-D, 2-D, 3-D and depthwise convolutions against hand-written
@@ -14,9 +14,8 @@
 //
 // TF -> datamunge: graphs, placeholders and sessions disappear (layers run
 // eagerly), nn::Params is nn::ParameterStore, AddSymbolicGradients is
-// nn::grad, Conv2DBackpropInput is nn::conv2d_backprop_input. The library has
-// no 3-D convolution yet (planned for P3), so Conv3D is built locally below
-// as a sum of 2-D convolutions over the depth offsets of the kernel. Inputs
+// nn::grad, Conv2DBackpropInput is nn::conv2d_backprop_input and Conv3DLayer
+// is the nn::conv3d layer. Inputs
 // come from the same std::mt19937_64 streams as TF's; the weights come from
 // datamunge's own generator, so the printed 5x5 kernel differs from TF's
 // while every |diff| check holds for any weights.
@@ -24,6 +23,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <datamunge/nn/conv.hpp>
+#include <datamunge/nn/layers.hpp>
 #include <datamunge/nn/nn.hpp>
 #include <iostream>
 #include <random>
@@ -107,25 +108,6 @@ float MaxDiff(const Tensor& a, const Tensor& b) {
   return d;
 }
 
-// Local 3-D convolution (not in the library yet): x [N, D, H, W, C], W [kd, kh, kw, C, O],
-// VALID along depth, `padding` on H and W. y[:, d] = sum_a conv2d(x[:, d + a], W[a]).
-Tensor Conv3DLocal(const Tensor& x, const Tensor& W, Padding padding) {
-  const std::int64_t N = x.size(0), D = x.size(1), H = x.size(2), Wd = x.size(3), C = x.size(4);
-  const std::int64_t kd = W.size(0), Do = D - kd + 1;
-  std::vector<Tensor> slices;
-  for (std::int64_t d = 0; d < Do; ++d) {
-    Tensor acc;
-    for (std::int64_t a = 0; a < kd; ++a) {
-      const Tensor xs = nn::slice_axis(x, 1, d + a, d + a + 1).reshape({N, H, Wd, C});
-      const Tensor ws = nn::slice_axis(W, 0, a, a + 1).reshape({W.size(1), W.size(2), C, W.size(4)});
-      const Tensor y  = nn::conv2d(xs, ws, nn::conv_options(1, padding));
-      acc             = acc.defined() ? acc + y : y;
-    }
-    slices.push_back(acc);
-  }
-  return nn::stack(slices, 1);
-}
-
 // ---------------------------------------------------------------------------
 // 1. Output sizes
 // ---------------------------------------------------------------------------
@@ -196,8 +178,8 @@ void Conv1DAnd3D() {
   o.bias = false, o.padding = Padding::Valid;
   const Tensor x1v = Random({2, 9, 2}, rng), x3v = Random({1, 4, 4, 4, 2}, rng);
   const Tensor y1  = nn::conv1d(p, "c1", x1v, 3, 3, o);
-  const Tensor W3  = p.get("c3/W", {2, 2, 2, 2, 3}, nn::init::glorot_uniform());
-  const Tensor y3  = Conv3DLocal(x3v, W3, Padding::Valid);
+  const Tensor y3  = nn::conv3d(p, "c3", x3v, 3, 2, o);
+  const Tensor W3  = p.at("c3/W");
   // 1-D reference (W1 is [1, k, C, O]).
   const auto X1 = x1v.to_vector<float>(), W1 = p.at("c1/W").to_vector<float>(), Y1 = y1.to_vector<float>();
   float      d1 = 0;
@@ -225,7 +207,7 @@ void Conv1DAnd3D() {
                   acc += X3[(((i + a) * 4 + j + b) * 4 + l + c) * 2 + ci] * F3[(((a * 2 + b) * 2 + c) * 2 + ci) * 3 + o2];
           d3 = std::max<float>(d3, std::abs(acc - Y3[((i * 3 + j) * 3 + l) * 3 + o2]));
         }
-  std::printf("  Conv3D (local, sum of 2-D convs over depth): output shape %s, max |diff| = %.1e, parameters 2*2*2*2*3 = %lld\n",
+  std::printf("  Conv3D: output shape %s, max |diff| = %.1e, parameters 2*2*2*2*3 = %lld\n",
               ShapeStr(y3).c_str(), d3, static_cast<long long>(W3.numel()));
   check::Require(ShapeStr(y1) == "[2,7,3]" && ShapeStr(y3) == "[1,3,3,3,3]", "conv1d/conv3d shapes");
   check::Require(d1 < 1e-5f && d3 < 1e-5f, "conv1d/conv3d vs reference loops");

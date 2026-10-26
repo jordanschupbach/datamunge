@@ -102,6 +102,6 @@ int main(int argc, char** argv) {
   const float final_eval = rl::Evaluate(eval_env, greedy, 20, 777);
   std::printf("  final greedy evaluation over 20 episodes: %.1f\n", final_eval);
   // A random policy averages about 22; TF peaks at 500 on this seed (final 138.6).
-  check::Require(std::max(best_eval, final_eval) >= 150, "REINFORCE learned to balance (best greedy evaluation >= 150)");
+  check::TrainingQuality(std::max(best_eval, final_eval) >= 150, "REINFORCE learned to balance (best greedy evaluation >= 150)");
   return 0;
 }

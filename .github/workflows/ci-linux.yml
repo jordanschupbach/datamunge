@@ -60,3 +60,133 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build/tests --output-on-failure
+
+  backend-benchmark-smoke:
+    name: Backend benchmark build and smoke
+    runs-on: ubuntu-latest
+    env:
+      CPM_SOURCE_CACHE: ${{ github.workspace }}/.cpm-cache
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install benchmark dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake g++ python3 libbenchmark-dev libgtest-dev libopenblas-dev liblapack-dev
+      - name: Check benchmark runner
+        run: python3 -m unittest discover -s benchmarks -p 'test*runner.py'
+      - name: Build and smoke all focused benchmark families
+        run: python3 scripts/benchmark_backend.py run --jobs 2 --smoke --cmake-arg=-DDATAMUNGE_BENCH_CHECKS=ON --output benchmarks/results/ci-smoke.json
+      - name: List registered cases
+        run: ./build/benchmarks/backend_bench --benchmark_list_tests=true
+      - name: Check existing backend correctness tests
+        run: |
+          cmake --build build/benchmarks --target backend_checks -j 2
+          ./build/benchmarks/backend_checks
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-benchmark-smoke
+          retention-days: 90
+          path: |
+            benchmarks/results/ci-smoke.json
+            benchmarks/history/summaries/
+            benchmarks/history/runs/
+
+  python-source-package:
+    name: Python source archive and installed wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install binding tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swig g++
+          python -m pip install build pytest
+      - name: Generate and build source archive
+        run: |
+          python scripts/prebuild_bindings.py python
+          python -m build --sdist
+      - name: Install from source archive and test
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: '2'
+        run: |
+          python -m pip install dist/pydatamunge-*.tar.gz
+          python -m pytest --import-mode=importlib -q tests/python bindings_tests/python
+
+  r-source-package:
+    name: R source package and installed binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat
+          needs: check
+      - name: Install SWIG
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swig
+      - name: Generate and build source archive
+        run: |
+          python3 scripts/prebuild_bindings.py r
+          python3 scripts/build_r_source.py
+      - name: Install archive and test the installed package
+        run: |
+          mkdir -p build/r/library
+          R CMD INSTALL -l build/r/library dist/datamunger_*.tar.gz
+          Rscript -e 'library(datamunger, lib.loc="build/r/library"); testthat::test_dir("tests/testthat", stop_on_failure=TRUE); testthat::test_dir("bindings_tests/r", stop_on_failure=TRUE)'
+
+  nn-python-examples:
+    name: Optional SWIG NN example catalogue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swig g++
+          python -m pip install setuptools wheel pytest
+      - name: Generate core wrapper
+        run: python scripts/prebuild_bindings.py python
+      - name: Build NN-capable source archive
+        run: python setup.py sdist
+      - name: Build all 165 native example adapters from the source archive
+        env:
+          DATAMUNGE_BUILD_NN_EXAMPLES: '1'
+          CMAKE_BUILD_PARALLEL_LEVEL: '2'
+        run: python -m pip install dist/pydatamunge-*.tar.gz --no-build-isolation
+      - name: Test catalogue parity and data-free numerical fixtures
+        run: python -m pytest --import-mode=importlib -q tests/python bindings_tests/python
+
+  nn-r-examples:
+    name: Optional R SWIG NN example catalogue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat
+          needs: check
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swig g++
+      - name: Build functional R package without Python
+        env:
+          MAKEFLAGS: -j2
+        run: |
+          Rscript --vanilla scripts/prebuild_nn_r.R
+          mkdir -p build/r/library
+          R CMD INSTALL -l build/r/library build/nn-r-native/source/datamungerNN
+      - name: Test installed catalogue and numerical fixtures
+        run: |
+          Rscript -e 'library(datamungerNN, lib.loc="build/r/library"); testthat::test_dir("bindings_tests/r-nn", stop_on_failure=TRUE)'
+          R_LIBS_USER=build/r/library Rscript --vanilla -e 'stopifnot(datamungerNN::nn_example_run("convolution_im2col") == 0L)'

@@ -8,6 +8,7 @@
 #include <datamunge/nn/nn.hpp>
 #include <datamunge/nn/parallel.hpp>
 #include <limits>
+#include <thread>
 #include <vector>
 
 namespace nn = datamunge::nn;
@@ -437,4 +438,111 @@ TEST(NnConvLayers, GroupNormAndNoisyDense) {
   EXPECT_NE(a.to_vector<double>(), c.to_vector<double>());
   nn::sum(c).backward();
   EXPECT_TRUE(p.at("nd/sigma_W").grad().defined());
+}
+
+// ---- direct depthwise kernels ---------------------------------------------------------------
+
+TEST(NnConv, DepthwiseKernelMatchesPerChannelConv) {
+  struct Case {
+    nn::Shape         x, f;
+    nn::Conv2DOptions o;
+  };
+  nn::Conv2DOptions dil = nn::conv_options(1, Padding::Same, 2);
+  nn::Conv2DOptions ex  = nn::conv_options(2, Padding::Explicit);
+  ex.explicit_paddings  = {1, 0, 2, 1};
+  nn::Conv2DOptions rect;
+  rect.strides = {2, 1};
+  rect.padding = Padding::Valid;
+  const std::vector<Case> cases{{{2, 7, 6, 3}, {3, 3, 3, 1}, nn::conv_options(1)},
+                                {{2, 7, 6, 3}, {3, 3, 3, 2}, nn::conv_options(2)},
+                                {{1, 9, 8, 4}, {3, 3, 4, 1}, dil},
+                                {{2, 6, 7, 2}, {2, 3, 2, 3}, ex},
+                                {{1, 8, 7, 5}, {3, 2, 5, 2}, rect},
+                                {{3, 5, 5, 20}, {3, 3, 20, 1}, nn::conv_options(1, Padding::Valid)}};  // > one channel block
+  for (const auto& cs : cases) {
+    const Tensor x = rnd(cs.x, 141), f = rnd(cs.f, 142);
+    const Tensor y = nn::depthwise_conv2d(x, f, cs.o);
+    const auto   C = cs.x[3], M = cs.f[3];
+    for (std::int64_t c = 0; c < C; ++c)
+      for (std::int64_t m = 0; m < M; ++m) {
+        const auto ref = nn::conv2d(nn::slice(x, {0, 0, 0, c}, {-1, -1, -1, 1}),
+                                    nn::slice(f, {0, 0, c, m}, {-1, -1, 1, 1}), cs.o)
+                             .to_vector<double>();
+        const auto got = nn::slice(y, {0, 0, 0, c * M + m}, {-1, -1, -1, 1}).to_vector<double>();
+        ASSERT_EQ(got.size(), ref.size());
+        for (std::size_t i = 0; i < ref.size(); ++i) ASSERT_NEAR(got[i], ref[i], 1e-11) << nn::shape_str(cs.x);
+      }
+    const auto r = nn::gradcheck([&](const Inputs& in) { return nn::depthwise_conv2d(in[0], in[1], cs.o); },
+                                 {leaf(x), leaf(f)});
+    EXPECT_TRUE(r.ok) << nn::shape_str(cs.x) << ": " << r.message;
+  }
+  const auto r2 = nn::gradgradcheck([&](const Inputs& in) { return nn::depthwise_conv2d(in[0], in[1], nn::conv_options(2)); },
+                                    {leaf(rnd({1, 5, 6, 3}, 143)), leaf(rnd({3, 3, 3, 2}, 144))});
+  EXPECT_TRUE(r2.ok) << r2.message;
+}
+
+TEST(NnConv, DepthwiseKernelIsDeterministicAcrossThreadCounts) {
+  const Tensor x = rnd({4, 16, 16, 40}, 151, DType::Float32), f = rnd({3, 3, 40, 1}, 152, DType::Float32);
+  const Tensor g = rnd({4, 16, 16, 40}, 153, DType::Float32);
+  const int    before = nn::get_num_threads();
+  std::vector<std::vector<double>> runs;
+  for (int threads : {1, 3, 8}) {
+    nn::set_num_threads(threads);
+    runs.push_back(nn::depthwise_conv2d(x, f).to_vector<double>());
+    auto dx = nn::conv2d_backprop_input(x.shape(), nn::reshape(f, {3, 3, 1, 40}), g, [] {
+      nn::Conv2DOptions o;
+      o.groups = 40;
+      return o;
+    }());
+    runs.push_back(dx.to_vector<double>());
+  }
+  nn::set_num_threads(before);
+  for (std::size_t k = 2; k < runs.size(); ++k) EXPECT_EQ(runs[k], runs[k % 2]) << "run " << k;
+}
+
+TEST(NnParallel, ConcurrentSubmittersWaitForTheirOwnJobs) {
+  const int before = nn::get_num_threads();
+  nn::set_num_threads(4);
+  std::atomic<int> failures{0};
+  std::vector<std::thread> callers;
+  for (int user = 0; user < 4; ++user) {
+    callers.emplace_back([&] {
+      for (int rep = 0; rep < 250; ++rep) {
+        std::vector<int> hits(257, 0);
+        nn::parallel_for(0, 257, 3, [&](std::int64_t lo, std::int64_t hi) {
+          for (auto i = lo; i < hi; ++i) ++hits[static_cast<std::size_t>(i)];
+        });
+        for (int hit : hits) if (hit != 1) ++failures;
+      }
+    });
+  }
+  for (auto& caller : callers) caller.join();
+  nn::set_num_threads(before);
+  EXPECT_EQ(failures.load(), 0);
+}
+
+TEST(NnBatchNorm, ParallelPartialsMatchSerialAndRepeatDeterministically) {
+  const int original_threads = nn::get_num_threads();
+  struct RestoreThreads {
+    int count;
+    ~RestoreThreads() { nn::set_num_threads(count); }
+  } restore{original_threads};
+  nn::NoGradGuard guard;
+  for (const auto channels : {1, 3, 129}) {
+    const std::int64_t rows = channels == 129 ? 1027 : 20003;
+    std::vector<double> data(static_cast<std::size_t>(rows * channels));
+    for (std::size_t i = 0; i < data.size(); ++i) data[i] = (static_cast<int>(i % 251) - 125) / 128.0;
+    auto x = nn::from_vector(data, {rows, channels});
+    auto gamma = nn::ones({channels}, DType::Float64), beta = nn::zeros({channels}, DType::Float64);
+    nn::set_num_threads(1);
+    const auto serial = nn::batch_norm_train(x, gamma, beta);
+    nn::set_num_threads(4);
+    const auto parallel = nn::batch_norm_train(x, gamma, beta);
+    const auto repeat = nn::batch_norm_train(x, gamma, beta);
+    EXPECT_EQ(parallel.mean.to_vector<double>(), repeat.mean.to_vector<double>());
+    EXPECT_EQ(parallel.variance.to_vector<double>(), repeat.variance.to_vector<double>());
+    EXPECT_EQ(parallel.y.to_vector<double>(), repeat.y.to_vector<double>());
+    EXPECT_LT(nn::max(nn::abs(nn::sub(serial.y, parallel.y))).item(), 1e-12);
+    EXPECT_LT(nn::max(nn::abs(nn::sub(serial.variance, parallel.variance))).item(), 1e-12);
+  }
 }

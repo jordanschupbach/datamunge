@@ -1,5 +1,6 @@
 #include "datamunge/nn/params.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 
@@ -117,9 +118,9 @@ ParameterStore::ParameterStore(std::uint64_t seed, DType dtype) : gen_(seed * 10
 }
 
 Tensor ParameterStore::get(const std::string& name, const Shape& shape, const Initializer& initializer) {
-  auto it = index_.find(name);
-  if (it != index_.end()) {
-    const Tensor& existing = values_[it->second];
+  const auto found = find_index(name);
+  if (found != values_.size()) {
+    const Tensor& existing = values_[found];
     if (existing.shape() != shape)
       throw std::invalid_argument("ParameterStore: parameter '" + name + "' has shape " + shape_str(existing.shape()) +
                                   ", requested " + shape_str(shape));
@@ -134,27 +135,58 @@ Tensor ParameterStore::get(const std::string& name, const Shape& shape, const In
     throw std::logic_error("ParameterStore: initializer for '" + name + "' returned shape " +
                            shape_str(value.shape()) + ", expected " + shape_str(shape));
   value.requires_grad_(true);
-  index_[name] = values_.size();
+  // Rehash compact integer buckets at <= 50% occupancy. Unlike sorted-vector
+  // insertion, creation remains amortized O(1) even for very large stores.
+  const auto hash = std::hash<std::string>{};
+  if (index_.empty() || names_.size() + 1 > index_.size() / 2) {
+    std::vector<std::size_t> buckets(index_.empty() ? 32 : index_.size() * 2, 0);
+    for (std::size_t i = 0; i < names_.size(); ++i) {
+      auto bucket = hash(names_[i]) & (buckets.size() - 1);
+      while (buckets[bucket] != 0) bucket = (bucket + 1) & (buckets.size() - 1);
+      buckets[bucket] = i + 1;
+    }
+    index_.swap(buckets);
+  }
+  auto bucket = hash(name) & (index_.size() - 1);
+  while (index_[bucket] != 0) bucket = (bucket + 1) & (index_.size() - 1);
+  // Owning strings and tensors stay in creation order, without key copies.
   names_.push_back(name);
-  values_.push_back(value);
+  try {
+    values_.push_back(value);
+  } catch (...) {
+    names_.pop_back();
+    throw;
+  }
+  index_[bucket] = names_.size();
   return value;
 }
 
-Tensor ParameterStore::at(const std::string& name) const {
-  auto it = index_.find(name);
-  if (it == index_.end()) throw std::out_of_range("ParameterStore: no parameter named '" + name + "'");
-  return values_[it->second];
+std::size_t ParameterStore::find_index(const std::string& name) const {
+  if (index_.empty()) return values_.size();
+  auto bucket = std::hash<std::string>{}(name) & (index_.size() - 1);
+  while (index_[bucket] != 0) {
+    const auto index = index_[bucket] - 1;
+    if (names_[index] == name) return index;
+    bucket = (bucket + 1) & (index_.size() - 1);
+  }
+  return values_.size();
 }
 
-bool ParameterStore::contains(const std::string& name) const { return index_.count(name) > 0; }
+Tensor ParameterStore::at(const std::string& name) const {
+  const auto index = find_index(name);
+  if (index == values_.size()) throw std::out_of_range("ParameterStore: no parameter named '" + name + "'");
+  return values_[index];
+}
+
+bool ParameterStore::contains(const std::string& name) const { return find_index(name) != values_.size(); }
 
 void ParameterStore::set(const std::string& name, const Tensor& value) {
-  auto it = index_.find(name);
-  if (it == index_.end()) {
+  const auto index = find_index(name);
+  if (index == values_.size()) {
     get(name, value.shape(), [value](const Shape&, DType d, Generator&) { return cast(value.detach(), d); });
     return;
   }
-  Tensor& existing = values_[it->second];
+  Tensor& existing = values_[index];
   if (existing.shape() != value.shape())
     throw std::invalid_argument("ParameterStore::set: '" + name + "' has shape " + shape_str(existing.shape()) +
                                 ", value has " + shape_str(value.shape()));
@@ -175,9 +207,9 @@ void ParameterStore::copy_from(const ParameterStore& src, double tau) {
   NoGradGuard guard;
   for (std::size_t i = 0; i < src.names_.size(); ++i) {
     const std::string& name = src.names_[i];
-    auto               it   = index_.find(name);
-    if (it == index_.end()) throw std::invalid_argument("copy_from: parameter '" + name + "' is missing here");
-    Tensor&       mine   = values_[it->second];
+    const auto index = find_index(name);
+    if (index == values_.size()) throw std::invalid_argument("copy_from: parameter '" + name + "' is missing here");
+    Tensor&       mine   = values_[index];
     const Tensor& theirs = src.values_[i];
     if (mine.shape() != theirs.shape())
       throw std::invalid_argument("copy_from: parameter '" + name + "' shapes differ");

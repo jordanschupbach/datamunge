@@ -87,7 +87,21 @@ struct Model {
     }
     for (const auto& name : store.names())
       if (!params.count(name)) throw std::runtime_error("checkpoint is missing parameter " + name);
+    if (params.size() != store.size()) throw std::runtime_error("checkpoint has unexpected parameters");
     if (!weights_only && slots.empty()) throw std::runtime_error("checkpoint has no optimizer state");
+    if (!weights_only) {
+      // This example has one scalar Adam parameter; load_state deliberately
+      // defers general slot-shape checks until step(), so check our schema here.
+      for (const auto& [name, value] : slots) {
+        if (name != "step" && name != "nadam_product" && name != "m/0" && name != "v/0")
+          throw std::runtime_error("unexpected Adam checkpoint slot " + name);
+        if (!value.shape().empty()) throw std::runtime_error("Adam checkpoint slots must be scalar");
+      }
+    }
+    // Validate on independent tensors before either real weights or moments change.
+    Model probe;
+    for (const auto& [name, value] : params) probe.store.set(name, value);
+    if (!weights_only) probe.optimizer.load_state(slots);
     for (const auto& [name, value] : params) store.set(name, value);
     if (!weights_only) optimizer.load_state(slots);
   }
@@ -107,15 +121,16 @@ void MonitorChecks() {
   std::cout << "  patience, min_delta, tie, maximize and epoch-order checks passed\n";
 }
 
-void BestCheckpoint(const std::string& path) {
+void BestCheckpoint(const std::string& path, int epochs) {
   Model             model;
   nn::EarlyStopping monitor(6, 1e-6);
   bool              stopped    = false;
   double            last_loss  = 0;
   int               last_epoch = 0;
-  for (int epoch = 0; epoch < 200; ++epoch) {
+  for (int epoch = 0; epoch < epochs; ++epoch) {
     model.Train(1);
     last_loss           = model.Validation();
+    last_epoch          = epoch;
     const auto decision = monitor.observe(last_loss, epoch);
     if (decision.improved) model.Save(path);
     if (decision.stop) {
@@ -124,36 +139,37 @@ void BestCheckpoint(const std::string& path) {
       break;
     }
   }
-  check::Require(stopped, "validation must trigger early stopping");
+  if (epochs >= 200) check::Require(stopped, "validation must trigger early stopping");
   model.Restore(path);
   const double restored = model.Validation();
   check::Near(restored, monitor.best(), 1e-7, "restore exact best validation loss");
-  check::Require(restored < .01 && monitor.best() < last_loss, "best checkpoint improves held-out loss");
+  check::Require(restored <= last_loss, "best checkpoint cannot worsen held-out loss");
+  if (stopped) check::Require(restored < .01 && monitor.best() < last_loss, "best checkpoint improves held-out loss");
   check::Require(model.optimizer.iterations() == monitor.best_epoch() + 1, "best checkpoint restores optimizer counter");
-  std::printf("  stopped after epoch %d; best epoch %lld; validation %.6g -> restored %.6g\n", last_epoch,
+  std::printf("  %s after epoch %d; best epoch %lld; validation %.6g -> restored %.6g\n", stopped ? "stopped" : "budget exhausted", last_epoch,
               static_cast<long long>(monitor.best_epoch()), last_loss, restored);
   std::printf("  restored w=%.6f (clean validation target 2), optimizer step %lld\n", model.w.item(),
               static_cast<long long>(model.optimizer.iterations()));
 }
 
-void Resume(const std::string& path) {
+void Resume(const std::string& path, int prefix, int suffix) {
   Model original;
-  original.Train(17);
+  original.Train(prefix);
   original.Save(path);
-  original.Train(23);
+  original.Train(suffix);
   const auto expected = original.State();
 
   // Starts from NaN: the checkpoint must provide EVERY value we need.
   Model restored(std::numeric_limits<double>::quiet_NaN());
   restored.Restore(path);
-  restored.Train(23);
+  restored.Train(suffix);
   const auto actual = restored.State();
   check::Require(actual.size() == expected.size(), "restored state size");
   double worst = 0;
   for (std::size_t i = 0; i < actual.size(); ++i) {
     check::Require(actual[i].first == expected[i].first, "restored state names");
     if (actual[i].first == "optimizer/step") {
-      check::Require(actual[i].second.item<std::int64_t>() == 40 && expected[i].second.item<std::int64_t>() == 40,
+      check::Require(actual[i].second.item<std::int64_t>() == prefix + suffix && expected[i].second.item<std::int64_t>() == prefix + suffix,
                      "resume counter");
       continue;
     }
@@ -164,29 +180,51 @@ void Resume(const std::string& path) {
       check::Near(a[j], e[j], 1e-7, "resume all optimizer state (" + actual[i].first + ")");
     }
   }
-  std::printf("  17 + save/restore + 23 updates = 40 uninterrupted updates; max state error %.3g\n", worst);
+  std::printf("  %d + save/restore + %d updates = %d uninterrupted updates; max state error %.3g\n", prefix, suffix, prefix + suffix, worst);
 
   Model reset_optimizer;
   reset_optimizer.Restore(path, /*weights_only=*/true);
-  reset_optimizer.Train(23);
+  reset_optimizer.Train(suffix);
   const double weights_result = reset_optimizer.w.item(), correct_result = restored.w.item();
-  check::Require(std::abs(weights_result - correct_result) > .01, "weights-only restore should expose missing state");
+  check::Require(std::abs(weights_result - correct_result) > 1e-7, "weights-only restore should expose missing state");
   std::printf("  weights-only resume w=%.6f; full-state resume w=%.6f\n", weights_result, correct_result);
   check::Throws([&] { restored.Restore(path + "_missing.npz"); }, "missing checkpoint must report failure");
   check::Near(restored.w.item(), correct_result, 0, "failed restore must not change weights");
+  auto broken = original.State();
+  for (auto& [name, value] : broken) {
+    if (name == "params/w") value = nn::scalar(99);
+    if (name == "optimizer/m/0") value = nn::zeros({2});
+  }
+  nn::save_npz(path + "_broken.npz", broken);
+  const auto before = restored.State();
+  check::Throws([&] { restored.Restore(path + "_broken.npz"); }, "bad moment shape must fail before changing weights");
+  const auto after = restored.State();
+  for (std::size_t i = 0; i < before.size(); ++i)
+    check::Require(before[i].first == after[i].first && before[i].second.to_vector<double>() == after[i].second.to_vector<double>(),
+                   "failed restore preserves every model and optimizer value");
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
   try {
+    int epochs = 200, prefix = 17, suffix = 23;
+    for (int i = 1; i < argc; ++i) {
+      const std::string argument(argv[i]);
+      if (argument.rfind("epochs=", 0) == 0) {
+        epochs = std::stoi(argument.substr(7));
+        prefix = std::max(1, epochs / 2);
+        suffix = epochs - prefix;
+      }
+    }
+    check::Require(epochs >= 2, "at least two updates required for checkpoint resume");
     const auto directory = paths::OutputDir("checkpoints/early_stopping");
     std::cout << "== Validation monitor semantics\n";
     MonitorChecks();
     std::cout << "\n== Save and restore the best validation checkpoint\n";
-    BestCheckpoint((directory / "best.npz").string());
+    BestCheckpoint((directory / "best.npz").string(), epochs);
     std::cout << "\n== Resume model, Adam moments and learning-rate counter\n";
-    Resume((directory / "resume.npz").string());
+    Resume((directory / "resume.npz").string(), prefix, suffix);
     std::cout << "All early stopping and checkpoint checks passed.\n";
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

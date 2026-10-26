@@ -8,6 +8,7 @@
   libxml2,
   pkg-config,
   datamunge,
+  swigPkg,
 }:
 buildPythonPackage rec {
   pname = "pydatamunge";
@@ -26,7 +27,9 @@ buildPythonPackage rec {
   ];
   # Link the nix-built core instead of recompiling it here (see setup.py).
   env.DATAMUNGE_USE_SYSTEM_LIB = "1";
+  preBuild = "python scripts/prebuild_bindings.py python";
   nativeBuildInputs = [
+    swigPkg
     pkg-config
   ];
 }

@@ -35,7 +35,9 @@
         # `pkgs` with nixpkgs' swig replaced by the fork, for the binding packages in nix/ (which
         # take swig from `pkgs`). Only used there, so nothing else in nixpkgs gets rebuilt.
         swigPkg = swig.packages.${system}.swig;
-        bindingPkgs = pkgs // { swig = swigPkg; };
+        bindingPkgs = pkgs // {
+          swig = swigPkg;
+        };
         datamunge = import ./nix/datamunge.nix { inherit pkgs; };
         # The custom php-from-source flake only targets x86_64-linux; fall back to the
         # nixpkgs PHP (which supports darwin) on any host it doesn't provide.
@@ -60,8 +62,7 @@
           export DATAMUNGE_PREFIX="${datamunge}"
           export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
 
-          # just build-python: in-place editable install of src/pydatamunge
-          export PYTHONPATH="$datamungeRoot/src''${PYTHONPATH:+:}$PYTHONPATH"
+          # Python commands use the installed wheel in build/venv/pydatamunge-run.
           # just build-r
           export R_LIBS="$datamungeRoot/build/r/library''${R_LIBS:+:}$R_LIBS"
           # just build-javascript: build/Release/datamungejs.node behind ./index.js
@@ -118,7 +119,7 @@
 
         pythonPkgs = pkgs.python3.pkgs;
         pydatamunge = import ./nix/pydatamunge.nix {
-          inherit datamunge;
+          inherit datamunge swigPkg;
           inherit (pkgs)
             lib
             stdenv
@@ -152,6 +153,12 @@
           ];
           # Link the nix-built core instead of recompiling it here (see src/Makevars).
           env.DATAMUNGE_USE_SYSTEM_LIB = "1";
+          nativeBuildInputs = [
+            swigPkg
+            pkgs.python3
+            pkgs.pkg-config
+          ];
+          preConfigure = "python3 scripts/prebuild_bindings.py r";
         };
 
         datamungetcl = import ./nix/datamungetcl.nix { pkgs = bindingPkgs; };
@@ -311,7 +318,7 @@
             ];
             doCheck = true;
             checkPhase = ''
-              pytest -q tests/python
+              pytest --import-mode=importlib -q tests/python bindings_tests/python
             '';
             installPhase = "mkdir -p $out";
           };
@@ -322,6 +329,7 @@
             nativeBuildInputs = [
               pkgs.R
               pkgs.rPackages.testthat
+              datamunger
             ];
             phases = [
               "unpackPhase"
@@ -336,7 +344,7 @@
                 find . -maxdepth 3 -type d -print >&2
                 exit 1
               fi
-              R -q -e "testthat::test_local(\".\")"
+              Rscript -e 'library(datamunger); testthat::test_dir("tests/testthat", stop_on_failure=TRUE); testthat::test_dir("bindings_tests/r", stop_on_failure=TRUE)'
             '';
             installPhase = "mkdir -p $out";
           };
@@ -702,7 +710,6 @@
             pkgs.just
             pkgs.jq
 
-
             # Core library + pkg-config visibility
             datamunge
             pkgs.pkg-config
@@ -811,11 +818,12 @@
         };
 
         # NOTE: :( this ... seems to fail a lot
-        devShells.cpp = pkgs.mkShell {
+        devShells.cpp-tools = pkgs.mkShell {
 
           packages = [
 
-            datamunge
+            # Build the working tree with CMake; entering this shell must not
+            # first rebuild an installed copy of the library after every edit.
             pkgs.just
             pkgs.emacs
             pkgs.direnv
@@ -824,6 +832,7 @@
             pkgs.gtest
             (pkgs.python3.withPackages (
               python-pkgs: with python-pkgs; [
+                numpy
                 jinja2
                 pygments
               ]
@@ -851,6 +860,13 @@
           ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ];
         };
 
+        # Keep installed-library workflows (e.g. repl-cpp) available without
+        # making working-tree NN builds first rebuild that installed package.
+        devShells.cpp = pkgs.mkShell {
+          inputsFrom = [ self.devShells.${system}.cpp-tools ];
+          packages = [ datamunge ];
+        };
+
         devShells.java = pkgs.mkShell {
           packages = [
             gradleWrapped
@@ -868,6 +884,7 @@
 
         devShells.python = pkgs.mkShell {
           packages = [
+            swigPkg
             # pkgs.cmake
             pkgs.pkg-config
             pkgs.libxml2
@@ -876,6 +893,8 @@
               python-pkgs: with python-pkgs; [
                 ipython
                 pip
+                setuptools
+                wheel
                 pytest
                 numpy
                 matplotlib
@@ -913,6 +932,8 @@
 
         devShells.r = pkgs.mkShell {
           packages = [
+            swigPkg
+            pkgs.python3
             pkgs.R
             pkgs.rPackages.testthat
             pkgs.pkg-config
